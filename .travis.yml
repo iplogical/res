@@ -15,17 +15,13 @@ cache:
   - $HOME/app/.gradle
 
 before_install:
-  - pwd
   - cd app
-  - pwd
   - chmod +x gradlew
  
 before_script:
   - git fetch
   - git checkout -b build_branch
   - git merge origin/master
-  - ls -la
-  - pwd
 
 script:
   - ./gradlew build
