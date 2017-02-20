@@ -15,8 +15,10 @@ cache:
   - $HOME/.gradle
 
 before_script:
-  - git pull --rebase
-
+  - git fetch
+  - git checkout -b gh-pages
+  - git merge origin/master
 
 script:
+  - cd app
   - ./gradlew build
