@@ -12,13 +12,20 @@ branches:
 
 cache:
   directories:
-  - $HOME/.gradle
+  - $HOME/app/.gradle
 
+before_install:
+  - pwd
+  - cd app
+  - pwd
+  - chmod +x gradlew
+ 
 before_script:
   - git fetch
-  - git checkout -b gh-pages
+  - git checkout -b build_branch
   - git merge origin/master
+  - ls -la
+  - pwd
 
 script:
-  - cd app
   - ./gradlew build
