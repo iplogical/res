@@ -15,7 +15,6 @@
   <graph edgedefault="directed" id="G">
     <data key="d0"/>
     <node id="n0">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
           <y:Geometry height="270.5833333333333" width="167.45833333333331" x="105.3214319999999" y="-305.33333333333326"/>
@@ -51,7 +50,6 @@ Minimumkészlet (nap)
       </data>
     </node>
     <node id="n1">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
           <y:Geometry height="161.99999999999997" width="123.0" x="585.3570436368743" y="-267.9999999999999"/>
@@ -76,7 +74,6 @@ mennyiségi egység<y:LabelModel>
       </data>
     </node>
     <node id="n2">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
           <y:Geometry height="90.0" width="80.0" x="606.8570436368743" y="-412.83333333333326"/>
@@ -99,7 +96,6 @@ attribute 3<y:LabelModel>
       </data>
     </node>
     <node id="n3">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.relationship">
           <y:Geometry height="56.0" width="90.0" x="368.35704363687455" y="-395.83333333333326"/>
@@ -119,7 +115,6 @@ attribute 3<y:LabelModel>
       </data>
     </node>
     <node id="n4">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
           <y:Geometry height="90.0" width="80.0" x="-1375.2558463035405" y="-299.08333333333326"/>
@@ -141,7 +136,6 @@ attribute 3<y:LabelModel>
       </data>
     </node>
     <node id="n5">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
           <y:Geometry height="201.66666666666669" width="136.25" x="-1053.6369013333326" y="-305.33333333333326"/>
@@ -170,7 +164,6 @@ Virtuális
       </data>
     </node>
     <node id="n6">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.relationship">
           <y:Geometry height="56.0" width="90.0" x="-1219.4463738184365" y="-299.08333333333326"/>
@@ -190,7 +183,6 @@ Virtuális
       </data>
     </node>
     <node id="n7">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
           <y:Geometry height="282.4999999999999" width="189.9999999999999" x="-635.6257653333332" y="-305.33333333333326"/>
@@ -227,7 +219,6 @@ Vevő adószám<y:LabelModel>
       </data>
     </node>
     <node id="n8">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
           <y:Geometry height="201.66666666666669" width="115.9375" x="-225.65633333333312" y="-312.5925925925925"/>
@@ -258,7 +249,6 @@ Engedmény Ft<y:LabelModel>
       </data>
     </node>
     <node id="n9">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.relationship">
           <y:Geometry height="56.0" width="90.0" x="-821.5063333333329" y="-305.33333333333326"/>
@@ -278,13 +268,12 @@ Engedmény Ft<y:LabelModel>
       </data>
     </node>
     <node id="n10">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.relationship">
           <y:Geometry height="56.0" width="90.0" x="-377.49451533333337" y="-305.33333333333326"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="25.3515625" x="32.32421875" y="18.6494140625">Van<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="17.3359375" x="36.33203125" y="18.6494140625">Áll<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -298,13 +287,12 @@ Engedmény Ft<y:LabelModel>
       </data>
     </node>
     <node id="n11">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.relationship">
           <y:Geometry height="56.0" width="90.0" x="-44.54245066666658" y="-305.33333333333326"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="70.041015625" x="9.9794921875" y="18.6494140625">Relationship<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="57.34375" x="16.328125" y="18.6494140625">Tartalmaz<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -318,13 +306,12 @@ Engedmény Ft<y:LabelModel>
       </data>
     </node>
     <node id="n12">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
           <y:Geometry height="73.0" width="73.66250000000002" x="-369.3257653333334" y="-517.8958333333333"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="27.337890625" x="23.162304687499955" y="4.0">ÁFA</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="27.337890625" x="23.16230468750001" y="4.0">ÁFA</y:NodeLabel>
           <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="50.01953125" x="2.0" y="30.701171875">ÁFA %
 ÁFA név<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
@@ -340,7 +327,6 @@ Engedmény Ft<y:LabelModel>
       </data>
     </node>
     <node id="n13">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
           <y:Geometry height="90.0" width="80.0" x="-580.6257653333332" y="-517.8958333333333"/>
@@ -362,7 +348,6 @@ Engedmény Ft<y:LabelModel>
       </data>
     </node>
     <node id="n14">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
           <y:Geometry height="217.3208333333331" width="130.9999999999999" x="105.32143199999985" y="-807.2720052083324"/>
@@ -395,7 +380,6 @@ Határérték típus
     </node>
     <node id="n15">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLNoteNode>
           <y:Geometry height="181.0" width="192.2499999999999" x="266.32143199999973" y="-807.2720052083324"/>
@@ -420,16 +404,17 @@ Határérték típus
       </data>
     </node>
     <node id="n16">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
           <y:Geometry height="161.99999999999994" width="130.9999999999999" x="-202.54245066666635" y="-579.5208333333331"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="97.369140625" x="16.815429687499943" y="4.0">Termék kategória</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="62.8046875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="53.34765625" x="2.0" y="30.701171875">ID
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="92.20703125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="53.34765625" x="2.0" y="30.701171875">ID
 GU ID
 Verzió ID
+Név
+Szülő
 Típus<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
             </y:LabelModel>
@@ -445,7 +430,6 @@ Típus<y:LabelModel>
     </node>
     <node id="n17">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLNoteNode>
           <y:Geometry height="65.0" width="110.0" x="-231.1023437500002" y="-749.4490740740739"/>
@@ -465,13 +449,12 @@ Típus<y:LabelModel>
       </data>
     </node>
     <node id="n18">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
           <y:Geometry height="161.99999999999997" width="167.45833333333337" x="105.32143199999985" y="68.6708984374991"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="39.34375" x="64.05729166666669" y="4.0">Raktár</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="43.3515625" x="62.053385416666686" y="4.0">Készlet</y:NodeLabel>
           <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="106.908203125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="131.40625" x="2.0" y="30.701171875000014">ID
 GU ID
 Verzió ID
@@ -493,10 +476,9 @@ Bevételezett mennyiség<y:LabelModel>
     </node>
     <node id="n19">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="100.97999999999993" width="189.99999999999966" x="-635.625765333333" y="7.166666666666629"/>
+          <y:Geometry height="100.97999999999993" width="189.99999999999966" x="-427.4945153333332" y="-123.8133333333333"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="92.20703125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="185.400390625" x="2.2998046874997726" y="4.3864843749999665">Típus
@@ -516,15 +498,15 @@ Mit kell csinálni a raktárkészlettel?<y:LabelModel>
     </node>
     <node id="n20">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="58.25000000000051" width="167.45833333333331" x="287.9999999999992" y="-93.00000000000045"/>
+          <y:Geometry height="65.0" width="170.5714320000004" x="287.9999999999992" y="-99.74999999999994"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="48.103515625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.412109375" x="21.02311197916663" y="5.073242187500256">Típus
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="62.8046875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.412109375" x="22.579661312500207" y="1.09765625">Típus
  - Eladható
- - Speciálisan eladható<y:LabelModel>
+ - Speciálisan eladható
+ - Tört rész fizethető<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -535,7 +517,6 @@ Mit kell csinálni a raktárkészlettel?<y:LabelModel>
       </data>
     </node>
     <node id="n21">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.relationship">
           <y:Geometry height="58.25000000000051" width="107.5" x="384.06840448510366" y="-267.99999999999983"/>
@@ -556,7 +537,6 @@ Mit kell csinálni a raktárkészlettel?<y:LabelModel>
     </node>
     <node id="n22">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLNoteNode>
           <y:Geometry height="38.62500000000006" width="125.17638266666654" x="-79.71883333333312" y="-225.75925925925912"/>
@@ -574,7 +554,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </node>
     <edge id="e0" source="n0" target="n3">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -587,7 +566,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e1" source="n3" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -598,7 +576,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e2" source="n4" target="n6">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-10.881055029792066" sy="-16.99999999999997" tx="0.0" ty="0.0">
@@ -611,7 +588,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e3" source="n6" target="n5">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-28.125000000000114" ty="-66.58333333333331"/>
@@ -622,7 +598,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e4" source="n5" target="n9">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-18.494432000000074" sy="-72.83333333333334" tx="0.0" ty="0.0"/>
@@ -633,7 +608,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e5" source="n9" target="n7">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="12.129427442708106" ty="-113.24999999999994"/>
@@ -644,7 +618,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e6" source="n7" target="n10">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-34.54090133333398" sy="-108.9642857142857" tx="0.0" ty="0.0"/>
@@ -655,7 +628,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e7" source="n10" target="n8">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-15.779213541668014" ty="-65.5740740740741"/>
@@ -666,7 +638,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e8" source="n8" target="n11">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-25.154213541668014" sy="-65.5740740740741" tx="0.0" ty="0.0"/>
@@ -677,7 +648,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e9" source="n11" target="n0">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="8.266068000000388" ty="-107.29166666666666"/>
@@ -688,7 +658,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e10" source="n12" target="n13">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="2.118750000000091" sy="-8.5" tx="-3.1999999999999886" ty="-17.0"/>
@@ -699,7 +668,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e11" source="n13" target="n7">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -710,7 +678,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e12" source="n16" target="n16">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -723,7 +690,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e13" source="n16" target="n0">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="5.236981916666139" sy="18.213489583332887" tx="-68.32183825000112" ty="-102.97700000000063">
@@ -736,7 +702,6 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e14" source="n16" target="n14">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-38.95502575000029" ty="108.66598854166568">
@@ -749,18 +714,16 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e15" source="n18" target="n0">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="crows_foot_one" target="crows_foot_one"/>
+          <y:Arrows source="crows_foot_many_mandatory" target="crows_foot_one"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
     <edge id="e16" source="n0" target="n21">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="1.9494013333328724" sy="-68.83333333333297" tx="0.0" ty="0.0"/>
@@ -771,12 +734,24 @@ Számlák kezelése <y:LabelModel>
       </data>
     </edge>
     <edge id="e17" source="n21" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="7.8929563631247674" ty="-51.87499999999969"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="crows_foot_many_optional"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e18" source="n7" target="n18">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="-83.72038706792026" ty="-12.237753191939873">
+            <y:Point x="-540.6257653333332" y="137.43314524555922"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="crows_foot_many_mandatory" target="crows_foot_many_mandatory"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
