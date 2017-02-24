@@ -1,0 +1,40 @@
+package com.inspirationlogical.receipt.dummy;
+
+import java.util.UUID;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
+
+@MappedSuperclass
+public abstract class AbstractEntity {
+
+    @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long id;
+
+    public UUID GUID;
+
+    @Version
+    private Long version;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+}
