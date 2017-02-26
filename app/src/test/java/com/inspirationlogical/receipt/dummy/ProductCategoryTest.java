@@ -25,6 +25,9 @@ public class ProductCategoryTest {
         product.setLongName("Jack and Coke");
         product.setShortName("Jack and Coke");
         product.setSalePrice(1000);
+        product.setQuantityUnit(QunatityUnit.LITER);
+        product.setEtalonQuantity(EtalonQuantity.LITER);
+        product.setType(ProductType.SELLABLE);
 
         category = new ProductCategory();
         category.setName("Beverage");

@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
-import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
@@ -21,7 +20,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -56,9 +54,11 @@ public class Product {
     private int rapidCode;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private QunatityUnit quantityUnit;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private EtalonQuantity etalonQuantity;
 
     private double quantityMultiplier;
@@ -74,6 +74,7 @@ public class Product {
     private int VATTakeAway;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private ProductType type;
 
     private int minimumStore;
