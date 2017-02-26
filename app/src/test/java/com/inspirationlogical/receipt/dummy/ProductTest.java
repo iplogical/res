@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class ProductTestEntityManager {
+public class ProductTest {
 
     @Rule
     public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
@@ -25,7 +25,7 @@ public class ProductTestEntityManager {
         product.setShortName("FirstProd");
         product.setSalePrice(1000);
 
-//        manager.persist(product);
+        manager.persist(product);
         manager.getTransaction().commit();
 
         @SuppressWarnings("unchecked")

@@ -17,10 +17,10 @@ public class ProductCategoryTest {
     @Test
     public void testProductCategoryCreation() {
 
-//        Product product = new Product();
-//        product.setLongName("Jack and Coke");
-//        product.setShortName("Jack and Coke");
-//        product.setSalePrice(1000);
+        Product product = new Product();
+        product.setLongName("Jack and Coke");
+        product.setShortName("Jack and Coke");
+        product.setSalePrice(1000);
 
         EntityManager manager = factory.getEntityManager();
 
@@ -29,14 +29,14 @@ public class ProductCategoryTest {
         ProductCategory category = new ProductCategory();
 
         category.setName("Beverage");
-//        category.setProduct(product);
+        category.setProduct(product);
         manager.persist(category);
         manager.getTransaction().commit();
 
         @SuppressWarnings("unchecked")
         List<ProductCategory> entries = manager.createNamedQuery(ProductCategory.GET_TEST_CATEGORIES).getResultList();
         assertEquals(1, entries.size());
-//       assertEquals("Jack and Coke", entries.get(0).getProduct().getLongName());
+       assertEquals("Jack and Coke", entries.get(0).getProduct().getLongName());
 
     }
 }

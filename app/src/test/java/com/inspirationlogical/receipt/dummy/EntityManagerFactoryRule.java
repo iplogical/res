@@ -10,8 +10,8 @@ import org.junit.runners.model.Statement;
 
 public class EntityManagerFactoryRule implements TestRule {
 
-    EntityManagerFactory emf;
-    EntityManager em;
+    private EntityManagerFactory emf;
+    private EntityManager em;
 
     @Override
     public Statement apply(Statement base, Description description) {
