@@ -1,13 +1,19 @@
 package com.inspirationlogical.receipt.dummy;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -15,6 +21,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -28,12 +35,15 @@ public class Product {
     public static final String GET_TEST_PRODUCTS = "Product.GetTestProducts";
 
     @Id
+    @Column(name = "PRODUCT_ID")
     @SequenceGenerator(name = "PRODUCT_ID", sequenceName = "PRODUCT_SQ", allocationSize = 1)
     @GeneratedValue(generator = "PRODUCT_ID", strategy = GenerationType.SEQUENCE)
     public Long id;
 
-    @NotEmpty
-    private String category;
+    @OneToOne(mappedBy="product", optional = false, fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name="CATEGORY_ID")
+    @NotNull
+    private ProductCategory category;
 
     @NotEmpty
     @Length(max = 20, message = "The field has to be less then 20 characters")
@@ -78,11 +88,11 @@ public class Product {
         this.id = id;
     }
 
-    public String getCategory() {
+    public ProductCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ProductCategory category) {
         this.category = category;
     }
 

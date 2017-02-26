@@ -3,9 +3,11 @@ package com.inspirationlogical.receipt.dummy;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -30,6 +33,7 @@ public class ProductCategory {
     public static final String GET_TEST_CATEGORIES = "Product.GetTestCategories";
 
     @Id
+    @Column(name = "CATEGORY_ID")
     @SequenceGenerator(name = "CATEGORY_ID", sequenceName = "CATEGORY_SQ", allocationSize = 1)
     @GeneratedValue(generator = "CATEGORY_ID", strategy = GenerationType.SEQUENCE)
     public Long id;
@@ -46,7 +50,7 @@ public class ProductCategory {
     @Enumerated(EnumType.STRING)
     private ProductCategoryType type;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Product product;
 
     public String getName() {
