@@ -8,34 +8,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.RollbackException;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 public class ProductTest {
 
     private EntityManager manager;
-    private Product product;
-    private ProductCategory category;
 
     @Rule
     public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
 
-    @Before
-    public void createObjects() {
-        category = new ProductCategory();
-        category.setName("Beverage");
-
-        product = new Product();
-        product.setLongName("Jack and Coke");
-        product.setShortName("Jack and Coke");
-        product.setSalePrice(1000);
-        product.setQuantityUnit(QunatityUnit.LITER);
-        product.setEtalonQuantity(EtalonQuantity.LITER);
-        product.setType(ProductType.SELLABLE);
-        product.setCategory(category);
-        category.setProduct(product);
-    }
+    @Rule
+    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
     public void testProductCreation() {
@@ -44,43 +28,43 @@ public class ProductTest {
 
     @Test(expected = PersistenceException.class)
     public void testProductCategoryConstriant() {
-        product.setCategory(null);
+        schema.getProduct().setCategory(null);
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void testShortNameTooLong() {
-        product.setShortName("ExtremelyLongShortNameExceedsItsLimit");
+        schema.getProduct().setShortName("ExtremelyLongShortNameExceedsItsLimit");
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void testShortNameEmpty() {
-        product.setShortName("");
+        schema.getProduct().setShortName("");
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void testLongNameEmpty() {
-        product.setLongName("");
+        schema.getProduct().setLongName("");
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void testQualityUnitNull() {
-        product.setQuantityUnit(null);
+        schema.getProduct().setQuantityUnit(null);
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void testEtalonQuantityNull() {
-        product.setEtalonQuantity(null);
+        schema.getProduct().setEtalonQuantity(null);
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void testProductTypeNull() {
-        product.setType(null);
+        schema.getProduct().setType(null);
         assertListSize();
     }
 
@@ -98,7 +82,7 @@ public class ProductTest {
     private void persistProduct() {
         manager = factory.getEntityManager();
         manager.getTransaction().begin();
-        manager.persist(product);
+        manager.persist(schema.getProduct());
         manager.getTransaction().commit();
     }
 }

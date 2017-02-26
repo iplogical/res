@@ -6,38 +6,22 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 public class ProductCategoryTest {
 
     private EntityManager manager;
-    private Product product;
-    private ProductCategory category;
 
     @Rule
     public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
 
-    @Before
-    public void createObjects() {
-        product = new Product();
-        product.setLongName("Jack and Coke");
-        product.setShortName("Jack and Coke");
-        product.setSalePrice(1000);
-        product.setQuantityUnit(QunatityUnit.LITER);
-        product.setEtalonQuantity(EtalonQuantity.LITER);
-        product.setType(ProductType.SELLABLE);
-
-        category = new ProductCategory();
-        category.setName("Beverage");
-        category.setProduct(product);
-        product.setCategory(category);
-    }
+    @Rule
+    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
     public void testProductCategoryCreation() {
-        assertEquals(1, persistCategoryAndGetList().size());
+        assertListSize();
     }
 
     @Test
@@ -47,7 +31,11 @@ public class ProductCategoryTest {
 
     @Test
     public void testProductConstraint() {
-        category.setProduct(null);
+        schema.getCategory().setProduct(null);
+        assertListSize();
+    }
+
+    private void assertListSize() {
         assertEquals(1, persistCategoryAndGetList().size());
     }
 
@@ -61,7 +49,7 @@ public class ProductCategoryTest {
     private void persistCategory() {
         manager = factory.getEntityManager();
         manager.getTransaction().begin();
-        manager.persist(category);
+        manager.persist(schema.getCategory());
         manager.getTransaction().commit();
     }
 }
