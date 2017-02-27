@@ -21,8 +21,7 @@ public class EntityManagerFactoryRule implements TestRule {
             @Override
             public void evaluate() throws Throwable {
                 Properties props = new Properties();
-                props.setProperty("persistenceXmlLocation",
-                        "/C:/workspace/git/Receipt/app/src/test/resources/META-INF/persistence.xml");
+                props.setProperty("persistenceXmlLocation", "resources/META-INF/persistence.xml");
                 emf = Persistence.createEntityManagerFactory("TestPersistance");
                 em = emf.createEntityManager();
                 try {

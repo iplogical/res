@@ -26,7 +26,7 @@ public class ProductCategoryTest {
 
     @Test
     public void testProductCategoryName() {
-        assertEquals("Whisky", persistCategoryAndGetList().get(0).getName());
+        assertEquals("leafOne", persistCategoryAndGetList().get(0).getName());
     }
 
     @Test
@@ -36,11 +36,7 @@ public class ProductCategoryTest {
     }
 
     private void assertListSize() {
-        System.out.println("FindMeSomewhere");
-        System.out.println(getClass().getResource("src/test/resources/META-INF/persistence.xml"));
-        System.out.println(getClass().getResource("META-INF/persistence.xml"));
-        System.out.println(getClass().getResource("persistence.xml"));
-        assertEquals(1, persistCategoryAndGetList().size());
+        assertEquals(4, persistCategoryAndGetList().size());
     }
 
     private List<ProductCategory> persistCategoryAndGetList() {
