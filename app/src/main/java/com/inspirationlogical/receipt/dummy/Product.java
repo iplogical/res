@@ -1,15 +1,16 @@
 package com.inspirationlogical.receipt.dummy;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -17,26 +18,16 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-
 @Entity
 @Table(name = "PRODUCT")
 @NamedQueries({
     @NamedQuery(name = Product.GET_TEST_PRODUCTS,
             query="FROM Product p")
 })
-public class Product {
+@AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
+public class Product extends AbstractEntity {
 
     public static final String GET_TEST_PRODUCTS = "Product.GetTestProducts";
-
-    @Id
-    @Column(name = "PRODUCT_ID")
-    @SequenceGenerator(name = "PRODUCT_ID", sequenceName = "PRODUCT_SQ", allocationSize = 1)
-    @GeneratedValue(generator = "PRODUCT_ID", strategy = GenerationType.SEQUENCE)
-    public Long id;
 
     @OneToOne(mappedBy="product", optional = false, fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name="CATEGORY_ID")
@@ -80,14 +71,6 @@ public class Product {
     private int minimumStore;
 
     private int storeWindow;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public ProductCategory getCategory() {
         return category;

@@ -12,11 +12,8 @@ import javax.persistence.Version;
 public abstract class AbstractEntity {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_gen")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public Long id;
-
-    public UUID GUID;
 
     @Version
     private Long version;

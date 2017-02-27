@@ -2,21 +2,18 @@ package com.inspirationlogical.receipt.dummy;
 
 import java.util.Collection;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -27,15 +24,10 @@ import org.hibernate.validator.constraints.NotEmpty;
     @NamedQuery(name = ProductCategory.GET_TEST_CATEGORIES,
             query="FROM ProductCategory pc")
 })
-public class ProductCategory {
+@AttributeOverride(name = "id", column = @Column(name = "CATEGORY_ID"))
+public class ProductCategory extends AbstractEntity {
 
     public static final String GET_TEST_CATEGORIES = "Product.GetTestCategories";
-
-    @Id
-    @Column(name = "CATEGORY_ID")
-    @SequenceGenerator(name = "CATEGORY_ID", sequenceName = "CATEGORY_SQ", allocationSize = 1)
-    @GeneratedValue(generator = "CATEGORY_ID", strategy = GenerationType.SEQUENCE)
-    public Long id;
 
     @NotEmpty
     private String name;
