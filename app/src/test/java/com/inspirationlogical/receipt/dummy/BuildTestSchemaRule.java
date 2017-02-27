@@ -7,7 +7,13 @@ import org.junit.runners.model.Statement;
 public class BuildTestSchemaRule implements TestRule {
 
     private Product product;
-    private ProductCategory category;
+    private Product productTwo;
+    private Product productThree;
+    private Product productFour;
+    
+    private ProductCategory leafOne;
+    private ProductCategory leafTwo;
+    private ProductCategory aggregate;
 
     @Override
     public Statement apply(Statement base, Description description) {
@@ -26,7 +32,7 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     public ProductCategory getCategory() {
-        return category;
+        return leafOne;
     }
 
     private void buildTestSchema() {
@@ -40,22 +46,29 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void setUpObjectRelationShips() {
-        category.setProduct(product);
-        product.setCategory(category);
+        leafOne.setProduct(product);
+        product.setCategory(leafOne);
     }
  
     private void buildProduct() {
-        product = new Product();
-        product.setLongName("Jack and Coke");
-        product.setShortName("Jack and Coke");
-        product.setSalePrice(1000);
-        product.setQuantityUnit(QunatityUnit.LITER);
-        product.setEtalonQuantity(EtalonQuantity.LITER);
-        product.setType(ProductType.SELLABLE);
+        product = Product.builder()
+                .LongName("Jack and Coke")
+                .shortName("Jack and Coke")
+                .salePrice(1000)
+                .quantityUnit(QunatityUnit.LITER)
+                .etalonQuantity(EtalonQuantity.LITER)
+                .type(ProductType.SELLABLE)
+                .build();
     }
 
     private void buildProductCategory() {
-        category = new ProductCategory();
-        category.setName("Beverage");
+        aggregate = ProductCategory.builder()
+                .name("Beverage")
+                .type(ProductCategoryType.AGGREGATE)
+                .build();
+        leafOne = ProductCategory.builder()
+                .name("Whisky")
+                .type(ProductCategoryType.LEAF)
+                .build();
     }
 }

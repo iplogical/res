@@ -26,7 +26,7 @@ public class ProductCategoryTest {
 
     @Test
     public void testProductCategoryName() {
-        assertEquals("Beverage", persistCategoryAndGetList().get(0).getName());
+        assertEquals("Whisky", persistCategoryAndGetList().get(0).getName());
     }
 
     @Test

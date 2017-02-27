@@ -24,5 +24,6 @@
 	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/hibernate-release-5.2.8.Final"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/hibernate-validator-5.4.0.Final"/>
+	<classpathentry kind="lib" path="C:/java_jars/lombok/lombok.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
