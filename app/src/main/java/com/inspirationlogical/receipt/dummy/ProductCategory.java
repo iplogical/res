@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Builder
-@EqualsAndHashCode(callSuper = true, exclude = "product")
+@EqualsAndHashCode(callSuper = true, exclude = {"product", "children"})
 @Table(name = "PRODUCT_CATEGORY")
 @NamedQueries({
     @NamedQuery(name = ProductCategory.GET_TEST_CATEGORIES,
@@ -38,10 +38,10 @@ public @Data class ProductCategory extends AbstractEntity {
     @NotEmpty
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
     private ProductCategory parent;
 
-    @OneToMany(mappedBy="parent")
+    @OneToMany(mappedBy = "parent", fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Collection<ProductCategory> children;
 
     @Enumerated(EnumType.STRING)

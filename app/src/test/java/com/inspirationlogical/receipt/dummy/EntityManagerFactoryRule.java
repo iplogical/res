@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.dummy;
 
+import java.util.Properties;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -18,6 +20,9 @@ public class EntityManagerFactoryRule implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
+                Properties props = new Properties();
+                props.setProperty("persistenceXmlLocation",
+                        "/C:/workspace/git/Receipt/app/src/test/resources/META-INF/persistence.xml");
                 emf = Persistence.createEntityManagerFactory("TestPersistance");
                 em = emf.createEntityManager();
                 try {

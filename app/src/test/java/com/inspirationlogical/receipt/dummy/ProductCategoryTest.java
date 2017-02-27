@@ -36,6 +36,10 @@ public class ProductCategoryTest {
     }
 
     private void assertListSize() {
+        System.out.println("FindMeSomewhere");
+        System.out.println(getClass().getResource("src/test/resources/META-INF/persistence.xml"));
+        System.out.println(getClass().getResource("META-INF/persistence.xml"));
+        System.out.println(getClass().getResource("persistence.xml"));
         assertEquals(1, persistCategoryAndGetList().size());
     }
 
@@ -43,6 +47,9 @@ public class ProductCategoryTest {
         persistCategory();
         @SuppressWarnings("unchecked")
         List<ProductCategory> entries = manager.createNamedQuery(ProductCategory.GET_TEST_CATEGORIES).getResultList();
+        for(ProductCategory p : entries) {
+            System.out.println(p.getName());
+        }
         return entries;
     }
 
