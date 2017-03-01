@@ -31,6 +31,7 @@ import lombok.EqualsAndHashCode;
             query="FROM Product p")
 })
 @AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
+@ValidCategory
 public @Data class Product extends AbstractEntity {
 
     public static final String GET_TEST_PRODUCTS = "Product.GetTestProducts";

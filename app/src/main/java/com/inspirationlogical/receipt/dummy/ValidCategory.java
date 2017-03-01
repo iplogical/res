@@ -17,11 +17,11 @@ import javax.validation.Payload;
  **/
 @Target(value = {TYPE, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = ValidParentValidator.class)
+@Constraint(validatedBy = ValidCategoryValidator.class)
 @Documented
-public @interface ValidParent {
+public @interface ValidCategory {
 
-    String message() default "{ValidParent.message}";
+    String message() default "{ValidCategory.message}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
