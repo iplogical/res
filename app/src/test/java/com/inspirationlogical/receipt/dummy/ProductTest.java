@@ -69,7 +69,7 @@ public class ProductTest {
     }
 
     private void assertListSize() {
-        assertEquals(1, persistProductAndGetList().size());
+        assertEquals(4, persistProductAndGetList().size());
     }
 
     private List<Product> persistProductAndGetList() {

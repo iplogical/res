@@ -24,13 +24,15 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Builder
-@EqualsAndHashCode(callSuper = true, exclude = {"product", "children"})
+@EqualsAndHashCode(callSuper = true, exclude = {"product", "children", "parent"})
 @Table(name = "PRODUCT_CATEGORY")
 @NamedQueries({
     @NamedQuery(name = ProductCategory.GET_TEST_CATEGORIES,
             query="FROM ProductCategory pc")
 })
 @AttributeOverride(name = "id", column = @Column(name = "CATEGORY_ID"))
+@ValidProduct
+@ValidParent
 public @Data class ProductCategory extends AbstractEntity {
 
     public static final String GET_TEST_CATEGORIES = "Product.GetTestCategories";
@@ -38,10 +40,10 @@ public @Data class ProductCategory extends AbstractEntity {
     @NotEmpty
     private String name;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     private ProductCategory parent;
 
-    @OneToMany(mappedBy = "parent", fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "parent", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<ProductCategory> children;
 
     @Enumerated(EnumType.STRING)

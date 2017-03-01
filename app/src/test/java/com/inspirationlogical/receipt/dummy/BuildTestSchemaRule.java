@@ -7,21 +7,23 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
+import lombok.Getter;
+
 public class BuildTestSchemaRule implements TestRule {
 
-    private Product product;
-    private Product productTwo;
-    private Product productThree;
-    private Product productFour;
+    private @Getter Product product;
+    private @Getter Product productTwo;
+    private @Getter Product productThree;
+    private @Getter Product productFour;
     
-    private ProductCategory root;
-    private ProductCategory aggregate;
-    private ProductCategory leafOne;
-    private ProductCategory leafTwo;
-    private ProductCategory pseudoOne;
-    private ProductCategory pseudoTwo;
-    private ProductCategory pseudoThree;
-    private ProductCategory pseudoFour;
+    private @Getter ProductCategory root;
+    private @Getter ProductCategory aggregate;
+    private @Getter ProductCategory leafOne;
+    private @Getter ProductCategory leafTwo;
+    private @Getter ProductCategory pseudoOne;
+    private @Getter ProductCategory pseudoTwo;
+    private @Getter ProductCategory pseudoThree;
+    private @Getter ProductCategory pseudoFour;
 
 
     @Override
@@ -34,14 +36,6 @@ public class BuildTestSchemaRule implements TestRule {
                 base.evaluate();
             }
         };
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public ProductCategory getCategory() {
-        return leafOne;
     }
 
     private void buildTestSchema() {
@@ -57,10 +51,11 @@ public class BuildTestSchemaRule implements TestRule {
     private void setUpObjectRelationShips() {
         rootAndAggregates();
         aggregatesAndLeafs();
+        leafsAndPseudos();
         pseudosAndProducts();
 }
 
-    private void buildProducts() {
+	private void buildProducts() {
         buildProduct();
         buildProductTwo();
         buildProductThree();
@@ -190,6 +185,17 @@ public class BuildTestSchemaRule implements TestRule {
         aggregate.setChildren(new HashSet<ProductCategory>(
                 Arrays.asList(leafOne, leafTwo)));
     }
+    
+    private void leafsAndPseudos() {
+		leafOne.setChildren(new HashSet<ProductCategory>(
+                Arrays.asList(pseudoOne, pseudoTwo)));
+		leafTwo.setChildren(new HashSet<ProductCategory>(
+                Arrays.asList(pseudoThree, pseudoFour)));
+		pseudoOne.setParent(leafOne);
+		pseudoTwo.setParent(leafOne);
+		pseudoThree.setParent(leafTwo);
+		pseudoFour.setParent(leafTwo);
+	}
 
     private void pseudosAndProducts() {
         pseudoOne.setProduct(product);
