@@ -45,14 +45,17 @@ public class ProductCategoryTest {
     }
     
     @Test(expected = RollbackException.class)
-    public void testPseudoCategoryProductNull() {
+    public void testPseudoCategoryWithoutProduct() {
         schema.getPseudoOne().setProduct(null);
+     // When productOne set to null it becomes transient, but it is referenced
+     // by elementOne as not null so it has to be persisted manually.
+        persistProductOne();
         assertListSize();
     }
     
     @Test(expected = RollbackException.class)
     public void testLeafCategotyProductNotNull() {
-        schema.getLeafTwo().setProduct(schema.getProduct());
+        schema.getLeafTwo().setProduct(schema.getProductOne());
         assertListSize();
     }
     
@@ -131,6 +134,13 @@ public class ProductCategoryTest {
         manager = factory.getEntityManager();
         manager.getTransaction().begin();
         manager.persist(schema.getRoot());
+        manager.getTransaction().commit();
+    }
+
+    private void persistProductOne() {
+        manager = factory.getEntityManager();
+        manager.getTransaction().begin();
+        manager.persist(schema.getProductOne());
         manager.getTransaction().commit();
     }
 }

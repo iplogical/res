@@ -8,8 +8,9 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     
         <!-- entities -->
-        <class>com.inspirationlogical.receipt.dummy.Product</class>
-        <class>com.inspirationlogical.receipt.dummy.ProductCategory</class>
+        <class>com.inspirationlogical.receipt.model.Product</class>
+        <class>com.inspirationlogical.receipt.model.ProductCategory</class>
+        <class>com.inspirationlogical.receipt.model.Recipe</class>
         <!--          -->
 
         <properties>

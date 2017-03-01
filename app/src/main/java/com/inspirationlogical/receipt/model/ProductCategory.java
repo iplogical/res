@@ -38,7 +38,7 @@ import lombok.EqualsAndHashCode;
 @ValidParent
 public @Data class ProductCategory extends AbstractEntity {
 
-    public static final String GET_TEST_CATEGORIES = "Product.GetTestCategories";
+    public static final String GET_TEST_CATEGORIES = "ProductCategory.GetTestCategories";
 
     @NotEmpty
     private String name;

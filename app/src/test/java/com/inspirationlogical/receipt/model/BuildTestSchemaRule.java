@@ -18,7 +18,7 @@ import lombok.Getter;
 
 public class BuildTestSchemaRule implements TestRule {
 
-    private @Getter Product product;
+    private @Getter Product productOne;
     private @Getter Product productTwo;
     private @Getter Product productThree;
     private @Getter Product productFour;
@@ -31,6 +31,10 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter ProductCategory pseudoTwo;
     private @Getter ProductCategory pseudoThree;
     private @Getter ProductCategory pseudoFour;
+
+    private @Getter Recipe elementOne;
+    private @Getter Recipe elementTwo;
+    private @Getter Recipe elementThree;
 
 
     @Override
@@ -53,6 +57,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildObjects() {
         buildProducts();
         buildProductCategories();
+        buildRecipes();
     }
 
     private void setUpObjectRelationShips() {
@@ -60,9 +65,11 @@ public class BuildTestSchemaRule implements TestRule {
         aggregatesAndLeafs();
         leafsAndPseudos();
         pseudosAndProducts();
+        productFourAndRecipes();
+        recipesAndProducts();
 }
 
-	private void buildProducts() {
+    private void buildProducts() {
         buildProduct();
         buildProductTwo();
         buildProductThree();
@@ -80,10 +87,16 @@ public class BuildTestSchemaRule implements TestRule {
         buildPseudoFour();
     }
 
+    private void buildRecipes() {
+        buildElementOne();
+        buildElementTwo();
+        buildElementThree();
+    }
+
     private void buildProduct() {
-        product = Product.builder()
-                .LongName("Jack and Coke")
-                .shortName("Jack and Coke")
+        productOne = Product.builder()
+                .LongName("product")
+                .shortName("product")
                 .salePrice(1000)
                 .quantityUnit(QunatityUnit.LITER)
                 .etalonQuantity(EtalonQuantity.LITER)
@@ -93,8 +106,8 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void buildProductTwo() {
         productTwo = Product.builder()
-                .LongName("Wine of the House: Nagy and Nagy Rizling")
-                .shortName("Wine: Nagy Rizling")
+                .LongName("productTwo")
+                .shortName("productTwo")
                 .salePrice(200)
                 .quantityUnit(QunatityUnit.BOTTLE)
                 .etalonQuantity(EtalonQuantity.LITER)
@@ -104,8 +117,8 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void buildProductThree() {
         productThree = Product.builder()
-                .LongName("Hot Sandwich")
-                .shortName("Hot Sandwich")
+                .LongName("productThree")
+                .shortName("productThree")
                 .salePrice(790)
                 .quantityUnit(QunatityUnit.PIECE)
                 .etalonQuantity(EtalonQuantity.KILOGRAM)
@@ -115,8 +128,8 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void buildProductFour() {
         productFour = Product.builder()
-                .LongName("Cheese Plate")
-                .shortName("Cheese Plate")
+                .LongName("productFour")
+                .shortName("productFour")
                 .salePrice(990)
                 .quantityUnit(QunatityUnit.PIECE)
                 .etalonQuantity(EtalonQuantity.KILOGRAM)
@@ -180,6 +193,27 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
+    private void buildElementOne() {
+        elementOne = Recipe.builder()
+                .quantityMultiplier(0.2)
+                .quantityUnit(QunatityUnit.LITER)
+                .build();
+    }
+
+    private void buildElementTwo() {
+        elementTwo = Recipe.builder()
+                .quantityMultiplier(0.05)
+                .quantityUnit(QunatityUnit.LITER)
+                .build();
+    }
+
+    private void buildElementThree() {
+        elementThree = Recipe.builder()
+                .quantityMultiplier(0.1)
+                .quantityUnit(QunatityUnit.LITER)
+                .build();
+    }
+
     private void rootAndAggregates() {
         aggregate.setParent(root);
         root.setChildren(new HashSet<ProductCategory>(
@@ -194,19 +228,19 @@ public class BuildTestSchemaRule implements TestRule {
     }
     
     private void leafsAndPseudos() {
-		leafOne.setChildren(new HashSet<ProductCategory>(
+        leafOne.setChildren(new HashSet<ProductCategory>(
                 Arrays.asList(pseudoOne, pseudoTwo)));
-		leafTwo.setChildren(new HashSet<ProductCategory>(
+        leafTwo.setChildren(new HashSet<ProductCategory>(
                 Arrays.asList(pseudoThree, pseudoFour)));
-		pseudoOne.setParent(leafOne);
-		pseudoTwo.setParent(leafOne);
-		pseudoThree.setParent(leafTwo);
-		pseudoFour.setParent(leafTwo);
-	}
+        pseudoOne.setParent(leafOne);
+        pseudoTwo.setParent(leafOne);
+        pseudoThree.setParent(leafTwo);
+        pseudoFour.setParent(leafTwo);
+    }
 
     private void pseudosAndProducts() {
-        pseudoOne.setProduct(product);
-        product.setCategory(pseudoOne);
+        pseudoOne.setProduct(productOne);
+        productOne.setCategory(pseudoOne);
 
         pseudoTwo.setProduct(productTwo);
         productTwo.setCategory(pseudoTwo);
@@ -217,4 +251,20 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoFour.setProduct(productFour);
         productFour.setCategory(pseudoFour);
     }
+
+    private void productFourAndRecipes() {
+        productFour.setRecipe(new HashSet<Recipe>(
+                Arrays.asList(elementOne, elementTwo, elementThree)));
+        elementOne.setOwner(productFour);
+        elementTwo.setOwner(productFour);
+        elementThree.setOwner(productFour);
+    }
+
+    private void recipesAndProducts() {
+        elementOne.setElement(productOne);
+        elementTwo.setElement(productTwo);
+        elementThree.setElement(productThree);
+    }
+
+
 }

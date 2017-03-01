@@ -1,0 +1,66 @@
+package com.inspirationlogical.receipt.model;
+
+
+import static org.junit.Assert.*;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.RollbackException;
+
+import org.junit.Rule;
+import org.junit.Test;
+
+public class RecipeTest {
+
+    private EntityManager manager;
+
+    @Rule
+    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
+
+    @Rule
+    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
+
+    @Test
+    public void testRecipeCreation() {
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void recipeWithoutOwner() {
+        schema.getElementThree().setOwner(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void recipeWithoutElement() {
+        schema.getElementThree().setElement(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void recipeWithoutQuantityUnit() {
+        schema.getElementThree().setQuantityUnit(null);
+        assertListSize();
+    }
+
+    private void assertListSize() {
+        assertEquals(3, persistRecipeAndGetList().size());
+    }
+
+    private List<Recipe> persistRecipeAndGetList() {
+        persistRecipe();
+        @SuppressWarnings("unchecked")
+        List<Recipe> entries = manager.createNamedQuery(Recipe.GET_TEST_RECIPES).getResultList();
+        return entries;
+    }
+
+    private void persistRecipe() {
+        manager = factory.getEntityManager();
+        manager.getTransaction().begin();
+        manager.persist(schema.getElementOne());
+        manager.persist(schema.getElementTwo());
+        manager.persist(schema.getElementThree());
+        manager.getTransaction().commit();
+    }
+}

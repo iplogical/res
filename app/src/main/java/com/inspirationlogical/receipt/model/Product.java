@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.model;
 
+import java.util.Collection;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
@@ -38,10 +41,13 @@ public @Data class Product extends AbstractEntity {
 
     public static final String GET_TEST_PRODUCTS = "Product.GetTestProducts";
 
-    @OneToOne(mappedBy="product", optional = false, fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy="product", optional = false, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="CATEGORY_ID")
     @NotNull
     private ProductCategory category;
+
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    private Collection<Recipe> recipe;
 
     @NotEmpty
     @Length(max = 20, message = "The field has to be less then 20 characters")

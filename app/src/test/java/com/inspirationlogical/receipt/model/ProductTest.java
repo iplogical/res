@@ -11,8 +11,6 @@ import javax.persistence.RollbackException;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.inspirationlogical.receipt.model.Product;
-
 public class ProductTest {
 
     private EntityManager manager;
@@ -30,43 +28,43 @@ public class ProductTest {
 
     @Test(expected = PersistenceException.class)
     public void testProductCategoryConstriant() {
-        schema.getProduct().setCategory(null);
+        schema.getProductOne().setCategory(null);
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void testShortNameTooLong() {
-        schema.getProduct().setShortName("ExtremelyLongShortNameExceedsItsLimit");
+        schema.getProductOne().setShortName("ExtremelyLongShortNameExceedsItsLimit");
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void testShortNameEmpty() {
-        schema.getProduct().setShortName("");
+        schema.getProductOne().setShortName("");
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void testLongNameEmpty() {
-        schema.getProduct().setLongName("");
+        schema.getProductOne().setLongName("");
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void testQualityUnitNull() {
-        schema.getProduct().setQuantityUnit(null);
+        schema.getProductOne().setQuantityUnit(null);
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void testEtalonQuantityNull() {
-        schema.getProduct().setEtalonQuantity(null);
+        schema.getProductOne().setEtalonQuantity(null);
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void testProductTypeNull() {
-        schema.getProduct().setType(null);
+        schema.getProductOne().setType(null);
         assertListSize();
     }
     
@@ -80,6 +78,15 @@ public class ProductTest {
     public void productWithLeafCategory() {
         schema.getProductTwo().setCategory(schema.getLeafOne());
         assertListSize();
+    }
+
+    @Test
+    public void testNumberOfElements() {
+        for(Product p : persistProductAndGetList()) {
+            if(p.getLongName() == "productFour") {
+                assertEquals(3, p.getRecipe().size());
+            }
+        }
     }
 
     private void assertListSize() {
@@ -96,7 +103,7 @@ public class ProductTest {
     private void persistProduct() {
         manager = factory.getEntityManager();
         manager.getTransaction().begin();
-        manager.persist(schema.getProduct());
+        manager.persist(schema.getProductOne());
         manager.getTransaction().commit();
     }
 }
