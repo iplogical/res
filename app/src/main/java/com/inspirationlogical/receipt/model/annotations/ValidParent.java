@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.dummy;
+package com.inspirationlogical.receipt.model.annotations;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.TYPE;

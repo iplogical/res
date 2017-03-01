@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.dummy;
+package com.inspirationlogical.receipt.model;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

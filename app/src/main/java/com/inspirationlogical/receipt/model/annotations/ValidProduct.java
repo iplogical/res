@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.dummy;
+package com.inspirationlogical.receipt.model.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

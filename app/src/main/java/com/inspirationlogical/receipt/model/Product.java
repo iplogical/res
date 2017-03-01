@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.dummy;
+package com.inspirationlogical.receipt.model;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.inspirationlogical.receipt.model.annotations.ValidCategory;
 
 import lombok.Builder;
 import lombok.Data;

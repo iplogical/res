@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.dummy;
+package com.inspirationlogical.receipt.model;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -6,6 +6,13 @@ import java.util.HashSet;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+
+import com.inspirationlogical.receipt.model.EtalonQuantity;
+import com.inspirationlogical.receipt.model.Product;
+import com.inspirationlogical.receipt.model.ProductCategory;
+import com.inspirationlogical.receipt.model.ProductCategoryType;
+import com.inspirationlogical.receipt.model.ProductType;
+import com.inspirationlogical.receipt.model.QunatityUnit;
 
 import lombok.Getter;
 

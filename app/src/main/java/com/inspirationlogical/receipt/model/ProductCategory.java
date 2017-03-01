@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.dummy;
+package com.inspirationlogical.receipt.model;
 
 import java.util.Collection;
 
@@ -17,6 +17,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.inspirationlogical.receipt.model.annotations.ValidParent;
+import com.inspirationlogical.receipt.model.annotations.ValidProduct;
 
 import lombok.Builder;
 import lombok.Data;

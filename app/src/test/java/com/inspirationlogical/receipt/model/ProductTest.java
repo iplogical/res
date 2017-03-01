@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.dummy;
+package com.inspirationlogical.receipt.model;
 
 import static org.junit.Assert.*;
 
@@ -10,6 +10,8 @@ import javax.persistence.RollbackException;
 
 import org.junit.Rule;
 import org.junit.Test;
+
+import com.inspirationlogical.receipt.model.Product;
 
 public class ProductTest {
 

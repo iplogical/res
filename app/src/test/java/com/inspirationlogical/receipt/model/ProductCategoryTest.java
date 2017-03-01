@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.dummy;
+package com.inspirationlogical.receipt.model;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,6 +9,8 @@ import javax.persistence.RollbackException;
 
 import org.junit.Rule;
 import org.junit.Test;
+
+import com.inspirationlogical.receipt.model.ProductCategory;
 
 public class ProductCategoryTest {
 
