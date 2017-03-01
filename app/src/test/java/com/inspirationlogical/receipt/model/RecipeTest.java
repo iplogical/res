@@ -26,6 +26,11 @@ public class RecipeTest {
         assertListSize();
     }
 
+    @Test
+    public void testRecipeOwner() {
+        assertEquals("productFour", persistRecipeAndGetList().get(0).getOwner().getLongName());
+    }
+
     @Test(expected = RollbackException.class)
     public void recipeWithoutOwner() {
         schema.getElementThree().setOwner(null);

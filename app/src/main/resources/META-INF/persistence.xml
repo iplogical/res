@@ -11,6 +11,7 @@
         <class>com.inspirationlogical.receipt.model.Product</class>
         <class>com.inspirationlogical.receipt.model.ProductCategory</class>
         <class>com.inspirationlogical.receipt.model.Recipe</class>
+        <class>com.inspirationlogical.receipt.model.Stock</class>
         <!--          -->
 
         <properties>

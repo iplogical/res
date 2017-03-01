@@ -36,6 +36,9 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Recipe elementTwo;
     private @Getter Recipe elementThree;
 
+    private @Getter Stock stockOne;
+    private @Getter Stock stockTwo;
+    private @Getter Stock stockThree;
 
     @Override
     public Statement apply(Statement base, Description description) {
@@ -58,6 +61,7 @@ public class BuildTestSchemaRule implements TestRule {
         buildProducts();
         buildProductCategories();
         buildRecipes();
+        buildStocks();
     }
 
     private void setUpObjectRelationShips() {
@@ -67,6 +71,7 @@ public class BuildTestSchemaRule implements TestRule {
         pseudosAndProducts();
         productFourAndRecipes();
         recipesAndProducts();
+        ProductFourAndStocks();
 }
 
     private void buildProducts() {
@@ -91,6 +96,12 @@ public class BuildTestSchemaRule implements TestRule {
         buildElementOne();
         buildElementTwo();
         buildElementThree();
+    }
+
+    private void buildStocks() {
+        buildStockOne();
+        buildStockTwo();
+        BuildStockThree();
     }
 
     private void buildProduct() {
@@ -214,6 +225,27 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
+    private void buildStockOne() {
+        stockOne = Stock.builder()
+                .startingStock(50)
+                .soldQuantity(20)
+                .build();
+    }
+
+    private void buildStockTwo() {
+        stockTwo = Stock.builder()
+                .startingStock(60)
+                .soldQuantity(30)
+                .build();
+    }
+
+    private void BuildStockThree() {
+        stockThree = Stock.builder()
+                .startingStock(70)
+                .soldQuantity(40)
+                .build();
+    }
+
     private void rootAndAggregates() {
         aggregate.setParent(root);
         root.setChildren(new HashSet<ProductCategory>(
@@ -266,5 +298,11 @@ public class BuildTestSchemaRule implements TestRule {
         elementThree.setElement(productThree);
     }
 
-
+    private void ProductFourAndStocks() {
+        productFour.setStock(new HashSet<Stock>(
+                Arrays.asList(stockOne, stockTwo, stockThree)));
+        stockOne.setOwner(productFour);
+        stockTwo.setOwner(productFour);
+        stockThree.setOwner(productFour);
+    }
 }

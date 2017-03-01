@@ -49,6 +49,9 @@ public @Data class Product extends AbstractEntity {
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Recipe> recipe;
 
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    private Collection<Stock> stock;
+
     @NotEmpty
     @Length(max = 20, message = "The field has to be less then 20 characters")
     private String shortName;

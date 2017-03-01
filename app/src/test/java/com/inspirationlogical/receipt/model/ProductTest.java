@@ -89,6 +89,15 @@ public class ProductTest {
         }
     }
 
+    @Test
+    public void testNumberOfStocks() {
+        for(Product p : persistProductAndGetList()) {
+            if(p.getLongName() == "productFour") {
+                assertEquals(3, p.getStock().size());
+            }
+        }
+    }
+
     private void assertListSize() {
         assertEquals(4, persistProductAndGetList().size());
     }
