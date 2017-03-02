@@ -5,9 +5,12 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.RollbackException;
 
 import org.junit.Rule;
 import org.junit.Test;
+
+import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 
 public class ReceiptTest {
 
@@ -24,8 +27,69 @@ public class ReceiptTest {
         assertListSize();
     }
 
+    @Test(expected = RollbackException.class)
+    public void receiptWithoutOwner() {
+        schema.getReceiptSaleOne().setOwner(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void receiptWithoutType() {
+        schema.getReceiptSaleOne().setType(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void receiptWithoutStatus() {
+        schema.getReceiptSaleOne().setStatus(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void corruptClient() {
+        schema.getReceiptSaleOne().getClient().setName(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void moveVirtualReceiptToNormalTableTooManyOpen() {
+        schema.getReceiptSaleThree().setOwner(schema.getTableNormal());
+        schema.getTableNormal().getReceipt().add(schema.getReceiptSaleThree());
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void saleReceiptWithInvalidOwner() {
+        schema.getReceiptSaleOne().setOwner(schema.getTableDisposal());
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void purchaseReceiptWithInvalidOwner() {
+        schema.getReceiptPurchase().setOwner(schema.getTableDisposal());
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void inventoryReceiptWithInvalidOwner() {
+        schema.getReceiptInventory().setOwner(schema.getTableNormal());
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void disposalReceiptWithInvalidOwner() {
+        schema.getReceiptDisposal().setOwner(schema.getTableOther());
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void otherReceiptWithInvalidOwner() {
+        schema.getReceiptOther().setOwner(schema.getTableInventory());
+        assertListSize();
+    }
+
     private void assertListSize() {
-        assertEquals(4, persistReceiptAndGetList().size());
+        assertEquals(8, persistReceiptAndGetList().size());
     }
 
     private List<Receipt> persistReceiptAndGetList() {
@@ -38,7 +102,7 @@ public class ReceiptTest {
     private void persistReceipt() {
         manager = factory.getEntityManager();
         manager.getTransaction().begin();
-        manager.persist(schema.getReceiptOne());
+        manager.persist(schema.getReceiptSaleOne());
         manager.getTransaction().commit();
     }
 }

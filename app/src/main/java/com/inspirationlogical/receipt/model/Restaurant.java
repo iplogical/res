@@ -13,6 +13,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.inspirationlogical.receipt.model.annotations.ValidTables;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,6 +28,7 @@ import lombok.EqualsAndHashCode;
             query="FROM Restaurant r")
 })
 @AttributeOverride(name = "id", column = @Column(name = "RESTAURANT_ID"))
+@ValidTables
 public @Data class Restaurant extends AbstractEntity {
 
     public static final String GET_TEST_RESTAURANTS = "Restaurant.GetTestRestaurants";

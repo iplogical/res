@@ -7,7 +7,7 @@ import com.inspirationlogical.receipt.model.Product;
 import com.inspirationlogical.receipt.model.enums.ProductCategoryType;
 
 public class ValidCategoryValidator 
-    implements ConstraintValidator<ValidCategory, Product>{
+    implements ConstraintValidator<ValidCategory, Product> {
 
     @Override
     public void initialize(ValidCategory constraintAnnotation) {

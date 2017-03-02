@@ -10,6 +10,8 @@ import javax.persistence.RollbackException;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.inspirationlogical.receipt.model.enums.TableType;
+
 public class RestaurantTest {
 
 
@@ -28,7 +30,7 @@ public class RestaurantTest {
 
     @Test
     public void numberOfTables() {
-        assertEquals(2, persistRestaurantAndGetList().get(0).getTable().size());
+        assertEquals(6, persistRestaurantAndGetList().get(0).getTable().size());
     }
 
     @Test(expected = RollbackException.class)
@@ -46,6 +48,18 @@ public class RestaurantTest {
     @Test(expected = RollbackException.class)
     public void addressIsNull() {
         schema.getRestaurant().setAddress(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void noPurchaseTable() {
+        schema.getTablePurchase().setType(TableType.NORMAL);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void toManyDisposalTables() {
+        schema.getTableNormal().setType(TableType.DISPOSAL);
         assertListSize();
     }
 

@@ -7,5 +7,6 @@ public enum TableType {
     RESERVATION,
     PURCHASE,
     INVENTORY,
-    DISPOSAL;
+    DISPOSAL,
+    OTHER;
 }

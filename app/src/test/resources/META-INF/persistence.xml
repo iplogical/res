@@ -14,6 +14,7 @@
         <class>com.inspirationlogical.receipt.model.Stock</class>
         <class>com.inspirationlogical.receipt.model.Receipt</class>
         <class>com.inspirationlogical.receipt.model.Table</class>
+        <class>com.inspirationlogical.receipt.model.Restaurant</class>
         <!--          -->
 
         <properties>

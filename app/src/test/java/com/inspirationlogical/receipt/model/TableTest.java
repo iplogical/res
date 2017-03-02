@@ -5,9 +5,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.RollbackException;
 
 import org.junit.Rule;
 import org.junit.Test;
+
+import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 
 public class TableTest {
 
@@ -24,8 +27,38 @@ public class TableTest {
         assertListSize();
     }
 
+    @Test(expected = RollbackException.class)
+    public void notUniqueTableNumber() {
+        schema.getTableVirtual().setNumber(schema.getTableNormal().getNumber());
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void TableWithoutNumber() {
+        schema.getTableVirtual().setNumber(0);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void tableWithoutOwner() {
+        schema.getTableOther().setOwner(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void tableWithoutType() {
+        schema.getTableOther().setType(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void tableWithMoreOpenReceipts() {
+        schema.getReceiptSaleTwo().setStatus(ReceiptStatus.OPEN);
+        assertListSize();
+    }
+
     private void assertListSize() {
-        assertEquals(2, persistTebleAndGetList().size());
+        assertEquals(6, persistTebleAndGetList().size());
     }
 
     private List<Table> persistTebleAndGetList() {
@@ -38,8 +71,8 @@ public class TableTest {
     private void persistTable() {
         manager = factory.getEntityManager();
         manager.getTransaction().begin();
-        manager.persist(schema.getTableOne());
-        manager.persist(schema.getTableTwo());
+        manager.persist(schema.getTableNormal());
+        manager.persist(schema.getTableVirtual());
         manager.getTransaction().commit();
     }
 }

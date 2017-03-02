@@ -15,6 +15,7 @@ import com.inspirationlogical.receipt.model.enums.ProductType;
 import com.inspirationlogical.receipt.model.enums.QunatityUnit;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.model.enums.TableType;
 
 import lombok.Getter;
 
@@ -42,13 +43,21 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Stock stockTwo;
     private @Getter Stock stockThree;
 
-    private @Getter Receipt receiptOne;
-    private @Getter Receipt receiptTwo;
-    private @Getter Receipt receiptThree;
-    private @Getter Receipt receiptFour;
+    private @Getter Receipt receiptSaleOne;
+    private @Getter Receipt receiptSaleTwo;
+    private @Getter Receipt receiptSaleThree;
+    private @Getter Receipt receiptSaleFour;
+    private @Getter Receipt receiptPurchase;
+    private @Getter Receipt receiptInventory;
+    private @Getter Receipt receiptDisposal;
+    private @Getter Receipt receiptOther;
 
-    private @Getter Table tableOne;
-    private @Getter Table tableTwo;
+    private @Getter Table tableNormal;
+    private @Getter Table tableVirtual;
+    private @Getter Table tablePurchase;
+    private @Getter Table tableInventory;
+    private @Getter Table tableDisposal;
+    private @Getter Table tableOther;
 
     private @Getter Restaurant restaurant;
 
@@ -123,19 +132,26 @@ private void buildProducts() {
 
 
     private void buildReceipts() {
-        buildReceiptOne();
-        buildReceiptTwo();
-        buildReceiptThree();
-        buildReceiptFour();
+        buildReceiptSaleOne();
+        buildReceiptSaleTwo();
+        buildReceiptSaleThree();
+        buildReceiptSaleFour();
+        buildReceiptPurchase();
+        buildReceiptInventory();
+        buildReceiptDisposal();
+        buildReceiptOther();
     }
-
 
     private void buildTables() {
         buildTableOne();
         buildTableTwo();
+        buildTablePurchase();
+        buildTableInventory();
+        buildTableDisposal();
+        buildTableOther();
     }
 
-    private void buildProduct() {
+private void buildProduct() {
         productOne = Product.builder()
                 .LongName("product")
                 .shortName("product")
@@ -277,49 +293,132 @@ private void buildProducts() {
                 .build();
     }
 
-    private void buildReceiptOne() {
-        receiptOne = Receipt.builder()
+    private void buildReceiptSaleOne() {
+        receiptSaleOne = Receipt.builder()
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.OPEN)
+                .discountAbsolute(1000)
+                .client(buildDefaultClient())
                 .build();
     }
 
-    private void buildReceiptTwo() {
-        receiptTwo = Receipt.builder()
+    private void buildReceiptSaleTwo() {
+        receiptSaleTwo = Receipt.builder()
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.CLOSED)
+                .discountAbsolute(2000)
+                .client(buildDefaultClient())
                 .build();
     }
 
-    private void buildReceiptThree() {
-        receiptThree = Receipt.builder()
+
+    private void buildReceiptSaleThree() {
+        receiptSaleThree = Receipt.builder()
+                .type(ReceiptType.SALE)
+                .status(ReceiptStatus.OPEN)
+                .discountAbsolute(3000)
+                .client(buildDefaultClient())
+                .build();
+    }
+
+    private void buildReceiptSaleFour() {
+        receiptSaleFour = Receipt.builder()
+                .type(ReceiptType.SALE)
+                .status(ReceiptStatus.CLOSED)
+                .discountAbsolute(4000)
+                .client(buildDefaultClient())
+                .build();
+    }
+
+    private void buildReceiptPurchase() {
+        receiptPurchase = Receipt.builder()
                 .type(ReceiptType.PURCHASE)
                 .status(ReceiptStatus.OPEN)
+                .client(buildDefaultClient())
                 .build();
     }
 
-    private void buildReceiptFour() {
-        receiptFour = Receipt.builder()
-                .type(ReceiptType.PURCHASE)
+    private void buildReceiptInventory() {
+        receiptInventory = Receipt.builder()
+                .type(ReceiptType.INVENTORY)
                 .status(ReceiptStatus.CLOSED)
+                .client(buildDefaultClient())
                 .build();
     }
 
+    private void buildReceiptDisposal() {
+        receiptDisposal = Receipt.builder()
+                .type(ReceiptType.DISPOSAL)
+                .status(ReceiptStatus.CLOSED)
+                .client(buildDefaultClient())
+                .build();
+    }
+
+    private void buildReceiptOther() {
+        receiptOther = Receipt.builder()
+                .type(ReceiptType.OTHER)
+                .status(ReceiptStatus.CLOSED)
+                .client(buildDefaultClient())
+                .build();
+    }
+
+    private Client buildDefaultClient() {
+        return Client.builder()
+                .name("TestClient")
+                .address("TestAddress")
+                .TAXNumber("TestTaxNumber")
+                .build();
+    }
     private void buildTableOne() {
-        tableOne = Table.builder().build();
+        tableNormal = Table.builder()
+                .number(1)
+                .type(TableType.NORMAL)
+                .build();
     }
 
     private void buildTableTwo() {
-        tableTwo = Table.builder().build();
+        tableVirtual = Table.builder()
+                .number(2)
+                .type(TableType.VIRTUAL)
+                .build();
     }
 
 
+    private void buildTablePurchase() {
+        tablePurchase = Table.builder()
+                .number(1000)
+                .type(TableType.PURCHASE)
+                .build();
+    }
+
+    private void buildTableInventory() {
+        tableInventory = Table.builder()
+                .number(1001)
+                .type(TableType.INVENTORY)
+                .build();
+    }
+
+    private void buildTableDisposal() {
+        tableDisposal = Table.builder()
+                .number(1002)
+                .type(TableType.DISPOSAL)
+                .build();
+    }
+
+
+    private void buildTableOther() {
+        tableOther = Table.builder()
+                .number(1003)
+                .type(TableType.OTHER)
+                .build();
+       }
+
     private void BuildRestaurant() {
-         restaurant = Restaurant.builder()
-                 .name("TestRestaurant")
-                 .companyName("TestCompany")
-                 .address("TestAddress")
-                 .build();
+        restaurant = Restaurant.builder()
+                .name("TestRestaurant")
+                .companyName("TestCompany")
+                .address("TestAddress")
+                .build();
      }
 
     private void rootAndAggregates() {
@@ -383,21 +482,45 @@ private void buildProducts() {
     }
 
     private void tablesAndReceipts() {
-        tableOne.setReceipt(new HashSet<Receipt>(
-                Arrays.asList(receiptOne, receiptTwo)));
-        tableTwo.setReceipt(new HashSet<Receipt>(
-                Arrays.asList(receiptThree, receiptFour)));
-        receiptOne.setTable(tableOne);
-        receiptTwo.setTable(tableOne);
-        receiptThree.setTable(tableTwo);
-        receiptFour.setTable(tableTwo);
+        receiptsToTables();
+        tablesToReceipts();
      }
+
+    private void tablesToReceipts() {
+        receiptSaleOne.setOwner(tableNormal);
+        receiptSaleTwo.setOwner(tableNormal);
+        receiptSaleThree.setOwner(tableVirtual);
+        receiptSaleFour.setOwner(tableVirtual);
+        receiptPurchase.setOwner(tablePurchase);
+        receiptInventory.setOwner(tableInventory);
+        receiptDisposal.setOwner(tableDisposal);
+        receiptOther.setOwner(tableOther);
+    }
+
+    private void receiptsToTables() {
+        tableNormal.setReceipt(new HashSet<Receipt>(
+                Arrays.asList(receiptSaleOne, receiptSaleTwo)));
+        tableVirtual.setReceipt(new HashSet<Receipt>(
+                Arrays.asList(receiptSaleThree, receiptSaleFour)));
+        tablePurchase.setReceipt(new HashSet<Receipt>(
+                Arrays.asList(receiptPurchase)));
+        tableInventory.setReceipt(new HashSet<Receipt>(
+                Arrays.asList(receiptInventory)));
+        tableDisposal.setReceipt(new HashSet<Receipt>(
+                Arrays.asList(receiptDisposal)));
+        tableOther.setReceipt(new HashSet<Receipt>(
+                Arrays.asList(receiptOther)));
+    }
 
     private void restaurantAndTables() {
         restaurant.setTable(new HashSet<Table>(
-                Arrays.asList(tableOne, tableTwo)));
-        tableOne.setOwner(restaurant);
-        tableTwo.setOwner(restaurant);
+                Arrays.asList(tableNormal, tableVirtual, tablePurchase,
+                        tableInventory, tableDisposal, tableOther)));
+        tableNormal.setOwner(restaurant);
+        tableVirtual.setOwner(restaurant);
+        tablePurchase.setOwner(restaurant);
+        tableInventory.setOwner(restaurant);
+        tableDisposal.setOwner(restaurant);
+        tableOther.setOwner(restaurant);
    }
-
 }
