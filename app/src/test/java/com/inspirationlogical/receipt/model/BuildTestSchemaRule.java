@@ -7,12 +7,14 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-import com.inspirationlogical.receipt.model.EtalonQuantity;
 import com.inspirationlogical.receipt.model.Product;
 import com.inspirationlogical.receipt.model.ProductCategory;
-import com.inspirationlogical.receipt.model.ProductCategoryType;
-import com.inspirationlogical.receipt.model.ProductType;
-import com.inspirationlogical.receipt.model.QunatityUnit;
+import com.inspirationlogical.receipt.model.enums.EtalonQuantity;
+import com.inspirationlogical.receipt.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.model.enums.ProductType;
+import com.inspirationlogical.receipt.model.enums.QunatityUnit;
+import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.model.enums.ReceiptType;
 
 import lombok.Getter;
 
@@ -40,6 +42,16 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Stock stockTwo;
     private @Getter Stock stockThree;
 
+    private @Getter Receipt receiptOne;
+    private @Getter Receipt receiptTwo;
+    private @Getter Receipt receiptThree;
+    private @Getter Receipt receiptFour;
+
+    private @Getter Table tableOne;
+    private @Getter Table tableTwo;
+
+    private @Getter Restaurant restaurant;
+
     @Override
     public Statement apply(Statement base, Description description) {
         return new Statement() {
@@ -62,9 +74,12 @@ public class BuildTestSchemaRule implements TestRule {
         buildProductCategories();
         buildRecipes();
         buildStocks();
+        buildReceipts();
+        buildTables();
+        BuildRestaurant();
     }
 
-    private void setUpObjectRelationShips() {
+ private void setUpObjectRelationShips() {
         rootAndAggregates();
         aggregatesAndLeafs();
         leafsAndPseudos();
@@ -72,9 +87,11 @@ public class BuildTestSchemaRule implements TestRule {
         productFourAndRecipes();
         recipesAndProducts();
         ProductFourAndStocks();
+        tablesAndReceipts();
+        restaurantAndTables();
 }
 
-    private void buildProducts() {
+private void buildProducts() {
         buildProduct();
         buildProductTwo();
         buildProductThree();
@@ -102,6 +119,20 @@ public class BuildTestSchemaRule implements TestRule {
         buildStockOne();
         buildStockTwo();
         BuildStockThree();
+    }
+
+
+    private void buildReceipts() {
+        buildReceiptOne();
+        buildReceiptTwo();
+        buildReceiptThree();
+        buildReceiptFour();
+    }
+
+
+    private void buildTables() {
+        buildTableOne();
+        buildTableTwo();
     }
 
     private void buildProduct() {
@@ -246,6 +277,51 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
+    private void buildReceiptOne() {
+        receiptOne = Receipt.builder()
+                .type(ReceiptType.SALE)
+                .status(ReceiptStatus.OPEN)
+                .build();
+    }
+
+    private void buildReceiptTwo() {
+        receiptTwo = Receipt.builder()
+                .type(ReceiptType.SALE)
+                .status(ReceiptStatus.CLOSED)
+                .build();
+    }
+
+    private void buildReceiptThree() {
+        receiptThree = Receipt.builder()
+                .type(ReceiptType.PURCHASE)
+                .status(ReceiptStatus.OPEN)
+                .build();
+    }
+
+    private void buildReceiptFour() {
+        receiptFour = Receipt.builder()
+                .type(ReceiptType.PURCHASE)
+                .status(ReceiptStatus.CLOSED)
+                .build();
+    }
+
+    private void buildTableOne() {
+        tableOne = Table.builder().build();
+    }
+
+    private void buildTableTwo() {
+        tableTwo = Table.builder().build();
+    }
+
+
+    private void BuildRestaurant() {
+         restaurant = Restaurant.builder()
+                 .name("TestRestaurant")
+                 .companyName("TestCompany")
+                 .address("TestAddress")
+                 .build();
+     }
+
     private void rootAndAggregates() {
         aggregate.setParent(root);
         root.setChildren(new HashSet<ProductCategory>(
@@ -305,4 +381,23 @@ public class BuildTestSchemaRule implements TestRule {
         stockTwo.setOwner(productFour);
         stockThree.setOwner(productFour);
     }
+
+    private void tablesAndReceipts() {
+        tableOne.setReceipt(new HashSet<Receipt>(
+                Arrays.asList(receiptOne, receiptTwo)));
+        tableTwo.setReceipt(new HashSet<Receipt>(
+                Arrays.asList(receiptThree, receiptFour)));
+        receiptOne.setTable(tableOne);
+        receiptTwo.setTable(tableOne);
+        receiptThree.setTable(tableTwo);
+        receiptFour.setTable(tableTwo);
+     }
+
+    private void restaurantAndTables() {
+        restaurant.setTable(new HashSet<Table>(
+                Arrays.asList(tableOne, tableTwo)));
+        tableOne.setOwner(restaurant);
+        tableTwo.setOwner(restaurant);
+   }
+
 }

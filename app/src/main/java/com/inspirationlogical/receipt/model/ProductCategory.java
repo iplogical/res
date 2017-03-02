@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.inspirationlogical.receipt.model.annotations.ValidParent;
 import com.inspirationlogical.receipt.model.annotations.ValidProduct;
+import com.inspirationlogical.receipt.model.enums.ProductCategoryType;
 
 import lombok.Builder;
 import lombok.Data;

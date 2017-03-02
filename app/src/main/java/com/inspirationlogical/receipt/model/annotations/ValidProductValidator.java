@@ -4,7 +4,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import com.inspirationlogical.receipt.model.ProductCategory;
-import com.inspirationlogical.receipt.model.ProductCategoryType;
+import com.inspirationlogical.receipt.model.enums.ProductCategoryType;
 
 public class ValidProductValidator 
     implements ConstraintValidator<ValidProduct, ProductCategory> {

@@ -22,6 +22,9 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.inspirationlogical.receipt.model.annotations.ValidCategory;
+import com.inspirationlogical.receipt.model.enums.EtalonQuantity;
+import com.inspirationlogical.receipt.model.enums.ProductType;
+import com.inspirationlogical.receipt.model.enums.QunatityUnit;
 
 import lombok.Builder;
 import lombok.Data;

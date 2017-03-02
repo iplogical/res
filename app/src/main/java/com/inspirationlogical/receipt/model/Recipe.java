@@ -15,6 +15,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.inspirationlogical.receipt.model.enums.QunatityUnit;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
