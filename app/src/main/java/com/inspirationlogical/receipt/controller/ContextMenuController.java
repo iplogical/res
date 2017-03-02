@@ -2,26 +2,30 @@ package com.inspirationlogical.receipt.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javax.inject.Inject;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
+import javafx.geometry.Point2D;
+import javafx.scene.control.Button;
 
-public class LayoutController implements Initializable {
-
-    @FXML
-    AnchorPane layout;
+public class ContextMenuController implements Initializable {
 
     @FXML
-    Label test;
+    Button addTable;
 
-    @Inject
-    private String title;
+    @FXML
+    Button renameTable;
+
+    @FXML
+    Button deleteTable;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        test.setText("Test!");
+
+    }
+
+
+    @FXML
+    public void addNewTable(Point2D position) {
     }
 }
