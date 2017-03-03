@@ -3,16 +3,16 @@ package com.inspirationlogical.receipt.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.inspirationlogical.receipt.utility.Wrapper;
+
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.util.Duration;
 
@@ -23,53 +23,41 @@ public class RestaurantController implements Initializable {
     @FXML
     AnchorPane layout;
 
-    @FXML
-    Label test;
-
-    private ContextMenu contextMenu;
-
     Popup popup;
+
+    VBox contextMenu;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        test.setText("Test!");
 
-        contextMenu = new ContextMenu(new MenuItem("Test!!!"));
+        addPressAndHoldHandler(layout, Duration.millis(HOLD_DURATION_MILLIS));
 
-        addPressAndHoldHandler(layout, Duration.millis(HOLD_DURATION_MILLIS), contextMenu);
-
-        try {
-            AnchorPane contextMenu = FXMLLoader.load(getClass().getResource("/view/fxml/ContextMenu.fxml"));
-
-            popup = new Popup();
-
-            popup.getContent().add(contextMenu);
-
-        }
-        catch (Exception e) {
-
-        }
-
+        setUpContextMenu();
     }
 
-    private void addPressAndHoldHandler(Node node, Duration holdTime, ContextMenu contextMenu) {
+    private void setUpContextMenu() {
+        try {
+            contextMenu = FXMLLoader.load(getClass().getResource("/view/fxml/ContextMenu.fxml"));
+            popup = new Popup();
+            popup.getContent().add(contextMenu);
+            contextMenu.setUserData(popup);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
-        class Wrapper<T> { T content ; }
+    private void addPressAndHoldHandler(Node node, Duration holdTime) {
+
         Wrapper<MouseEvent> eventWrapper = new Wrapper<>();
-
         PauseTransition holdTimer = new PauseTransition(holdTime);
-        holdTimer.setOnFinished(event -> {
-            popup.show(
-                    node,
-                    eventWrapper.content.getScreenX(),
-                    eventWrapper.content.getScreenY());
-            /*contextMenu.show(
-                    node,
-                    eventWrapper.content.getScreenX(),
-                    eventWrapper.content.getScreenY()
-            );*/
-        });
 
+        holdTimer.setOnFinished(event -> {
+            if (eventWrapper.content.getSource() instanceof AnchorPane) {
+                contextMenu.getChildrenUnmodifiable().forEach(elem ->  elem.setManaged((Boolean) elem.getUserData()));
+            }
+            popup.show(node, eventWrapper.content.getScreenX(), eventWrapper.content.getScreenY());
+        });
 
         node.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             eventWrapper.content = event ;

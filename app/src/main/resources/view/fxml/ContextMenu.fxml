@@ -4,11 +4,12 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="74.0" prefWidth="160.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.inspirationlogical.receipt.controller.ContextMenuController">
+<VBox fx:id="view" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="128.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.inspirationlogical.receipt.controller.ContextMenuController">
    <children>
-      <Button fx:id="addTable" mnemonicParsing="false" text="Asztal hozzáadása" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-      <Button fx:id="renameTable" layoutY="25.0" mnemonicParsing="false" text="Asztal átnevezése" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-      <Button fx:id="deleteTable" layoutY="50.0" mnemonicParsing="false" text="Asztal törlése" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <Button fx:id="addTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onAddTable" text="Asztal hozzáadása" />
+      <Button fx:id="renameTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onRenameTable" text="Asztal átnevezése" />
+      <Button fx:id="deleteTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onDeleteTable" text="Asztal törlése" />
+      <Button fx:id="mergeTables" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onMergeTables" text="Asztalok összetolása" />
+      <Button fx:id="splitTables" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onSplitTables" text="Asztalok széthúzása" />
    </children>
-</AnchorPane>
+</VBox>

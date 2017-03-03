@@ -17,7 +17,7 @@
             <Insets bottom="4.0" left="8.0" right="8.0" top="4.0" />
          </padding>
       </Label>
-      <SplitPane dividerPositions="0.2" layoutX="352.0" layoutY="32.0" orientation="VERTICAL" prefHeight="736.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.0">
+      <SplitPane dividerPositions="0.05" layoutX="352.0" layoutY="32.0" orientation="VERTICAL" prefHeight="736.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="316.0" prefWidth="1022.0">
                <children>
@@ -31,17 +31,7 @@
                   </Label>
                </children>
             </AnchorPane>
-          <AnchorPane fx:id="layout" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <children>
-                  <Label fx:id="test" text="...">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <padding>
-                        <Insets left="8.0" top="4.0" />
-                     </padding>
-                  </Label>
-               </children></AnchorPane>
+          <AnchorPane fx:id="layout" minHeight="0.0" minWidth="0.0" prefHeight="602.0" prefWidth="1022.0" />
         </items>
       </SplitPane>
    </children>
