@@ -3,15 +3,20 @@ package com.inspirationlogical.receipt.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
 
+@Singleton
 public class ContextMenuController implements Initializable {
+
+    public static final String CONTEXT_MENU_VIEW_PATH = "/view/fxml/ContextMenu.fxml";
 
     @FXML
     VBox view;
@@ -31,7 +36,8 @@ public class ContextMenuController implements Initializable {
     @FXML
     Button splitTables;
 
-    Popup parent;
+    @Inject
+    RestaurantController restaurantController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -76,11 +82,6 @@ public class ContextMenuController implements Initializable {
     }
 
     private void hidePopup() {
-        if (parent == null) {
-            parent = (Popup) view.getUserData();
-        }
-        if (parent != null) {
-            parent.hide();
-        }
+        restaurantController.getPopup().hide();
     }
 }

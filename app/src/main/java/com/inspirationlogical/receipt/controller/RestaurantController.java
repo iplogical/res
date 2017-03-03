@@ -1,8 +1,14 @@
 package com.inspirationlogical.receipt.controller;
 
+import static com.inspirationlogical.receipt.controller.ContextMenuController.CONTEXT_MENU_VIEW_PATH;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.registry.FXMLLoaderProvider;
 import com.inspirationlogical.receipt.utility.Wrapper;
 
 import javafx.animation.PauseTransition;
@@ -16,16 +22,22 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.util.Duration;
 
+@Singleton
 public class RestaurantController implements Initializable {
 
+    public static final String RESTAURANT_VIEW_PATH = "/view/fxml/Restaurant.fxml";
     private static final int HOLD_DURATION_MILLIS = 500;
 
     @FXML
     AnchorPane layout;
 
-    Popup popup;
+    private Popup popup;
 
-    VBox contextMenu;
+    private VBox contextMenu;
+
+    @Inject
+    private ContextMenuController contextMenuController;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -37,14 +49,19 @@ public class RestaurantController implements Initializable {
 
     private void setUpContextMenu() {
         try {
-            contextMenu = FXMLLoader.load(getClass().getResource("/view/fxml/ContextMenu.fxml"));
+            FXMLLoader loader = FXMLLoaderProvider.getLoader(CONTEXT_MENU_VIEW_PATH);
+            loader.setController(contextMenuController);
+            contextMenu = loader.load();
             popup = new Popup();
             popup.getContent().add(contextMenu);
-            contextMenu.setUserData(popup);
         }
-        catch (Exception e) {
+        catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public Popup getPopup() {
+        return popup;
     }
 
     private void addPressAndHoldHandler(Node node, Duration holdTime) {

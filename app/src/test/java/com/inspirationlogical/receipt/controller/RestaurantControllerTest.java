@@ -12,7 +12,7 @@ public class RestaurantControllerTest {
 
     @Before
     public void setUp() {
-        underTest = new RestaurantController();
+        //underTest = new RestaurantController();
     }
 
     @Test
