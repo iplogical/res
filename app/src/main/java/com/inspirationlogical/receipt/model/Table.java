@@ -43,7 +43,7 @@ public @Data class Table extends AbstractEntity {
     @JoinColumn(name = "RESTAURANT_ID")
     private Restaurant owner;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Receipt> receipt;
 
     @NotNull

@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.model;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.AttributeOverride;
@@ -15,9 +16,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.model.annotations.ValidOwner;
@@ -30,7 +31,7 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Builder
-@EqualsAndHashCode(callSuper = true, exclude = "owner")
+@EqualsAndHashCode(callSuper = true, exclude = {"owner", "records"})
 @javax.persistence.Table(name = "RECEIPT")
 @NamedQueries({
     @NamedQuery(name = Receipt.GET_TEST_RECEIPTS,
@@ -46,6 +47,9 @@ public @Data class Receipt extends AbstractEntity {
     @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "TABLE_ID")
     private Table owner;
+
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Collection<ReceiptRecord> records;
 
     @NotNull
     @Enumerated(EnumType.STRING)

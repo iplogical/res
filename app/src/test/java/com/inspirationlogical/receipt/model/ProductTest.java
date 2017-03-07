@@ -67,7 +67,13 @@ public class ProductTest {
         schema.getProductOne().setType(null);
         assertListSize();
     }
-    
+
+    @Test(expected = RollbackException.class)
+    public void testProductStatusNull() {
+        schema.getProductOne().setStatus(null);
+        assertListSize();
+    }
+
     @Test(expected = RollbackException.class)
     public void productWithoutCategory() {
         schema.getProductTwo().setCategory(null);

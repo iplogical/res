@@ -11,8 +11,10 @@ import com.inspirationlogical.receipt.model.Product;
 import com.inspirationlogical.receipt.model.ProductCategory;
 import com.inspirationlogical.receipt.model.enums.EtalonQuantity;
 import com.inspirationlogical.receipt.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.model.enums.ProductType;
 import com.inspirationlogical.receipt.model.enums.QunatityUnit;
+import com.inspirationlogical.receipt.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.model.enums.TableType;
@@ -52,6 +54,11 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Receipt receiptDisposal;
     private @Getter Receipt receiptOther;
 
+    private @Getter ReceiptRecord receiptRecordSaleOne;
+    private @Getter ReceiptRecord receiptRecordSaleTwo;
+    private @Getter ReceiptRecord receiptRecordSaleThree;
+    private @Getter ReceiptRecord receiptRecordSaleFour;
+
     private @Getter Table tableNormal;
     private @Getter Table tableVirtual;
     private @Getter Table tablePurchase;
@@ -84,19 +91,22 @@ public class BuildTestSchemaRule implements TestRule {
         buildRecipes();
         buildStocks();
         buildReceipts();
+        buildReceptRecords();
         buildTables();
         BuildRestaurant();
     }
 
- private void setUpObjectRelationShips() {
+private void setUpObjectRelationShips() {
         rootAndAggregates();
         aggregatesAndLeafs();
         leafsAndPseudos();
         pseudosAndProducts();
         productFourAndRecipes();
         recipesAndProducts();
-        ProductFourAndStocks();
+        productFourAndStocks();
         tablesAndReceipts();
+        receiptsAndReceiptRecords();
+        receiptRecordsAndProducts();
         restaurantAndTables();
 }
 
@@ -142,6 +152,14 @@ private void buildProducts() {
         buildReceiptOther();
     }
 
+    private void buildReceptRecords() {
+        buildReceiptRecordSaleOne();
+        buildReceiptRecordSaleTwo();
+        buildReceiptRecordSaleThree();
+        buildReceiptRecordSaleFour();
+    }
+
+
     private void buildTables() {
         buildTableOne();
         buildTableTwo();
@@ -153,9 +171,10 @@ private void buildProducts() {
 
 private void buildProduct() {
         productOne = Product.builder()
-                .LongName("product")
+                .longName("product")
                 .shortName("product")
                 .salePrice(1000)
+                .status(ProductStatus.ACTIVE)
                 .quantityUnit(QunatityUnit.LITER)
                 .etalonQuantity(EtalonQuantity.LITER)
                 .type(ProductType.SELLABLE)
@@ -164,9 +183,10 @@ private void buildProduct() {
 
     private void buildProductTwo() {
         productTwo = Product.builder()
-                .LongName("productTwo")
+                .longName("productTwo")
                 .shortName("productTwo")
                 .salePrice(200)
+                .status(ProductStatus.ACTIVE)
                 .quantityUnit(QunatityUnit.BOTTLE)
                 .etalonQuantity(EtalonQuantity.LITER)
                 .type(ProductType.SELLABLE)
@@ -175,9 +195,10 @@ private void buildProduct() {
 
     private void buildProductThree() {
         productThree = Product.builder()
-                .LongName("productThree")
+                .longName("productThree")
                 .shortName("productThree")
                 .salePrice(790)
+                .status(ProductStatus.ACTIVE)
                 .quantityUnit(QunatityUnit.PIECE)
                 .etalonQuantity(EtalonQuantity.KILOGRAM)
                 .type(ProductType.SELLABLE)
@@ -186,9 +207,10 @@ private void buildProduct() {
 
     private void buildProductFour() {
         productFour = Product.builder()
-                .LongName("productFour")
+                .longName("productFour")
                 .shortName("productFour")
                 .salePrice(990)
+                .status(ProductStatus.ACTIVE)
                 .quantityUnit(QunatityUnit.PIECE)
                 .etalonQuantity(EtalonQuantity.KILOGRAM)
                 .type(ProductType.SELLABLE)
@@ -362,6 +384,38 @@ private void buildProduct() {
                 .build();
     }
 
+    private void buildReceiptRecordSaleOne() {
+        receiptRecordSaleOne = ReceiptRecord.builder()
+                .name("A")
+                .type(ReceiptRecordType.HERE)
+                .quantity(1D)
+                .build();
+    }
+
+    private void buildReceiptRecordSaleTwo() {
+        receiptRecordSaleTwo = ReceiptRecord.builder()
+                .name("B")
+                .quantity(2D)
+                .type(ReceiptRecordType.TAKE_AWAY)
+                .build();
+    }
+
+    private void buildReceiptRecordSaleThree() {
+        receiptRecordSaleThree = ReceiptRecord.builder()
+                .name("C")
+                .quantity(1D)
+                .type(ReceiptRecordType.HERE)
+                .build();
+    }
+
+    private void buildReceiptRecordSaleFour() {
+        receiptRecordSaleFour = ReceiptRecord.builder()
+                .name("D")
+                .quantity(0.5)
+                .type(ReceiptRecordType.HERE)
+                .build();
+    }
+
     private Client buildDefaultClient() {
         return Client.builder()
                 .name("TestClient")
@@ -473,7 +527,7 @@ private void buildProduct() {
         elementThree.setElement(productThree);
     }
 
-    private void ProductFourAndStocks() {
+    private void productFourAndStocks() {
         productFour.setStock(new HashSet<Stock>(
                 Arrays.asList(stockOne, stockTwo, stockThree)));
         stockOne.setOwner(productFour);
@@ -485,6 +539,37 @@ private void buildProduct() {
         receiptsToTables();
         tablesToReceipts();
      }
+
+    private void receiptsAndReceiptRecords() {
+        receiptSaleOne.setRecords(new HashSet<ReceiptRecord>(
+                Arrays.asList(receiptRecordSaleOne, receiptRecordSaleTwo)));
+        receiptSaleTwo.setRecords(new HashSet<ReceiptRecord>(
+                Arrays.asList(receiptRecordSaleThree, receiptRecordSaleFour)));
+        receiptRecordSaleOne.setOwner(receiptSaleOne);
+        receiptRecordSaleTwo.setOwner(receiptSaleOne);
+        receiptRecordSaleThree.setOwner(receiptSaleTwo);
+        receiptRecordSaleFour.setOwner(receiptSaleTwo);
+        
+    }
+
+    private void receiptRecordsAndProducts() {
+        receiptRecordSaleOne.setProduct(productOne);
+        receiptRecordSaleTwo.setProduct(productTwo);
+        receiptRecordSaleThree.setProduct(productThree);
+        receiptRecordSaleFour.setProduct(productFour);
+    }
+
+    private void restaurantAndTables() {
+        restaurant.setTable(new HashSet<Table>(
+                Arrays.asList(tableNormal, tableVirtual, tablePurchase,
+                        tableInventory, tableDisposal, tableOther)));
+        tableNormal.setOwner(restaurant);
+        tableVirtual.setOwner(restaurant);
+        tablePurchase.setOwner(restaurant);
+        tableInventory.setOwner(restaurant);
+        tableDisposal.setOwner(restaurant);
+        tableOther.setOwner(restaurant);
+   }
 
     private void tablesToReceipts() {
         receiptSaleOne.setOwner(tableNormal);
@@ -511,16 +596,4 @@ private void buildProduct() {
         tableOther.setReceipt(new HashSet<Receipt>(
                 Arrays.asList(receiptOther)));
     }
-
-    private void restaurantAndTables() {
-        restaurant.setTable(new HashSet<Table>(
-                Arrays.asList(tableNormal, tableVirtual, tablePurchase,
-                        tableInventory, tableDisposal, tableOther)));
-        tableNormal.setOwner(restaurant);
-        tableVirtual.setOwner(restaurant);
-        tablePurchase.setOwner(restaurant);
-        tableInventory.setOwner(restaurant);
-        tableDisposal.setOwner(restaurant);
-        tableOther.setOwner(restaurant);
-   }
 }

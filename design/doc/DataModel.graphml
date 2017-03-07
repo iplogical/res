@@ -17,11 +17,11 @@
     <node id="n0">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="291.0900176483564" width="167.45833333333331" x="297.51100703320037" y="-341.56461924198186"/>
+          <y:Geometry height="303.006684315023" width="167.45833333333331" x="297.51100703320037" y="-341.56461924198186"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="44.669921875" x="61.39420572916663" y="4.0">Termék</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="253.919921875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="121.36328125" x="2.0" y="30.701171875">ID
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="268.62109375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="121.36328125" x="2.0" y="30.701171875">ID
 GU ID
 Verzió ID
 kategória
@@ -36,6 +36,7 @@ eladási ár
 ÁFA kulcs helyszíni
 ÁFA kulcs elvitel
 Típus
+Statusz
 Minimumkészlet (nap)
 Készletezési ablak
 <y:LabelModel>
@@ -233,13 +234,14 @@ Vevő adószám<y:LabelModel>
     <node id="n8">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="201.66666666666669" width="115.9375" x="-33.46675830013271" y="-328.317194186218"/>
+          <y:Geometry height="230.88643726103578" width="139.82822045152727" x="-33.46675830013271" y="-328.317194186218"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="85.369140625" x="15.2841796875" y="4.0">Bzonylati Tételi</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="165.712890625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="82.046875" x="2.0" y="30.701171875">ID
+          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="85.369140625" x="27.229539913263636" y="4.0">Bzonylati Tételi</y:NodeLabel>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="180.4140625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="82.046875" x="2.0" y="30.701171875">ID
 GU ID
 Verzió ID
+Típus
 Vételi idő
 név
 mennyiség
@@ -520,14 +522,16 @@ Mit kell csinálni a raktárkészlettel?<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="90.0" width="139.82822045152727" x="494.96934036653363" y="-140.47460159362544"/>
+          <y:Geometry height="114.95742363877812" width="139.82822045152727" x="494.9693403665337" y="-140.47460159362544"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="77.505859375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.412109375" x="7.208055538263693" y="6.2470703125">Típus
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="106.908203125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.412109375" x="7.208055538263693" y="4.024610256889048">Típus
  - Eladható
  - Speciálisan eladható
  - Tört rész fizethető
- - Torolt 
+ Státusz
+ - Aktív
+ - Törölt
 <y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
@@ -561,10 +565,13 @@ Mit kell csinálni a raktárkészlettel?<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="38.62500000000006" width="125.17638266666654" x="112.47074169986729" y="-241.48386085288462"/>
+          <y:Geometry height="144.0531039277024" width="125.17638266666654" x="112.47074169986729" y="-241.48386085288462"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="104.04296875" x="10.56670695833327" y="2.6113281250000284">0 - Egyéb kimenő
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="77.505859375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="104.04296875" x="10.56670695833327" y="33.273622276351205">Típus
+ - Helyszini
+ - Elvitel
+0 - Egyéb kimenő
 Számlák kezelése <y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
@@ -582,7 +589,7 @@ Számlák kezelése <y:LabelModel>
           <y:Geometry height="153.34606984090053" width="139.82822045152727" x="-691.6191058486047" y="-256.63561167356977"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="151.01171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="124.7265625" x="7.550828975763693" y="1.1671755454502772">Típus
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="151.01171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="124.7265625" x="7.550828975763579" y="1.1671755454502772">Típus
  - Normál
  - Virtuális
  - Foglalás
@@ -715,7 +722,7 @@ Megjegyzes<y:LabelModel>
     <edge id="e6" source="n7" target="n10">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-34.54090133333398" sy="-108.9642857142857" tx="0.0" ty="0.0"/>
+          <y:Path sx="-39.604477061702426" sy="-113.24999999999994" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="crows_foot_one" target="none"/>
           <y:BendStyle smoothed="false"/>
@@ -725,7 +732,7 @@ Megjegyzes<y:LabelModel>
     <edge id="e7" source="n10" target="n8">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="-15.779213541668014" ty="-65.5740740740741"/>
+          <y:Path sx="0.0" sy="0.0" tx="-19.703952551283294" ty="-80.18395937125865"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="crows_foot_many_optional"/>
           <y:BendStyle smoothed="false"/>
@@ -735,7 +742,7 @@ Megjegyzes<y:LabelModel>
     <edge id="e8" source="n8" target="n11">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-25.154213541668014" sy="-65.5740740740741" tx="0.0" ty="0.0"/>
+          <y:Path sx="-33.19000051791522" sy="-80.18395937125865" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="crows_foot_one" target="none"/>
           <y:BendStyle smoothed="false"/>
@@ -745,7 +752,7 @@ Megjegyzes<y:LabelModel>
     <edge id="e9" source="n11" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="7.756914321311001" ty="-97.0383245091551"/>
+          <y:Path sx="0.0" sy="0.0" tx="7.756914321311001" ty="-101.01088727997586"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="crows_foot_one_optional"/>
           <y:BendStyle smoothed="false"/>
@@ -787,7 +794,7 @@ Megjegyzes<y:LabelModel>
     <edge id="e13" source="n16" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="5.236981916666139" sy="18.213489583332887" tx="-58.99211142725591" ty="-106.73220956896009">
+          <y:Path sx="5.236981916666139" sy="18.213489583332887" tx="-58.99211142725591" ty="-111.10162138976176">
             <y:Point x="322.2480622726111" y="-496.03194534362575"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
@@ -821,7 +828,7 @@ Megjegyzes<y:LabelModel>
     <edge id="e16" source="n0" target="n21">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="3.649965280940421" sy="-58.57999117582142" tx="0.0" ty="0.0"/>
+          <y:Path sx="-1.0518525319845367" sy="-64.5383245091547" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="crows_foot_one" target="none"/>
           <y:BendStyle smoothed="false"/>
@@ -851,7 +858,7 @@ Megjegyzes<y:LabelModel>
     <edge id="e19" source="n0" target="n25">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-9.197212281723125" sy="13.045008824178495" tx="0.0" ty="0.0"/>
+          <y:Path sx="-3.861445858366096" sy="7.086675490845238" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="crows_foot_one" target="none"/>
           <y:BendStyle smoothed="false"/>

@@ -23,6 +23,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.inspirationlogical.receipt.model.annotations.ValidCategory;
 import com.inspirationlogical.receipt.model.enums.EtalonQuantity;
+import com.inspirationlogical.receipt.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.model.enums.ProductType;
 import com.inspirationlogical.receipt.model.enums.QunatityUnit;
 
@@ -49,18 +50,26 @@ public @Data class Product extends AbstractEntity {
     @NotNull
     private ProductCategory category;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Recipe> recipe;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Stock> stock;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private ProductType type;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private ProductStatus status;
 
     @NotEmpty
     @Length(max = 20, message = "The field has to be less then 20 characters")
     private String shortName;
 
     @NotEmpty
-    private String LongName;
+    private String longName;
 
     @Max(10000)
     private int rapidCode;
@@ -80,14 +89,10 @@ public @Data class Product extends AbstractEntity {
     private int salePrice;
 
     @Max(100)
-    private int VATLocal;
+    private double VATLocal;
 
     @Max(100)
-    private int VATTakeAway;
-
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private ProductType type;
+    private double VATTakeAway;
 
     private int minimumStore;
 

@@ -10,8 +10,6 @@ import javax.persistence.RollbackException;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
-
 public class ReceiptTest {
 
     private EntityManager manager;
