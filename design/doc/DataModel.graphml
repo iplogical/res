@@ -123,10 +123,11 @@ attribute 3<y:LabelModel>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="46.01171875" x="21.994140625" y="4.0">Étterem</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="92.20703125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="53.34765625" x="2.0" y="30.701171875">ID
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="106.908203125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="53.34765625" x="2.0" y="30.701171875">ID
 GU ID
 Verzió ID
 Név
+Cégnév
 Cím
 Logo<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
@@ -148,17 +149,19 @@ Logo<y:LabelModel>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="36.677734375" x="51.57524303826369" y="4.0">Asztal</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="165.712890625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="96.724609375" x="2.0" y="30.701171875">ID
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="195.115234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="96.724609375" x="2.0" y="30.701171875">ID
 GU ID
 Verzió ID
+Típus
 Asztalszám
 Név
-Koordináta
+Koordináta_X
+Koordináta_Y
 Vendégek száma
 Férőhely
 Megjegyzés
 Látható
-Típus
+
 <y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
             </y:LabelModel>
@@ -498,10 +501,10 @@ Bevételezett mennyiség<y:LabelModel>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="106.908203125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="185.400390625" x="2.2998046874998295" y="4.024610256889076">Típus
- - Leltár
- - Bévételezési
  - Eladási
- - Selejtezése
+ - Bévételezési
+ - Leltár
+ - Selejtezési
  - Egyéb számla
 Mit kell csinálni a raktárkészlettel?<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
@@ -576,16 +579,17 @@ Számlák kezelése <y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="131.76839309428948" width="139.82822045152727" x="-691.6191058486048" y="-235.05793492695875"/>
+          <y:Geometry height="153.34606984090053" width="139.82822045152727" x="-691.6191058486047" y="-256.63561167356977"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="136.310546875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="124.7265625" x="7.550828975763693" y="-2.2710768903552605">Típus
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="151.01171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="124.7265625" x="7.550828975763693" y="1.1671755454502772">Típus
  - Normál
  - Virtuális
  - Foglalás
- - Leltár
  - Bevételezés
+ - Leltár
  - Selejtezés
+ - Egyéb számla
 A speciális asztalokból
 csak egy létezhet<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
@@ -626,7 +630,6 @@ Megjegyzes<y:LabelModel>
       </data>
     </node>
     <node id="n25">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.relationship">
           <y:Geometry height="58.25000000000051" width="107.50000000000011" x="576.257979518304" y="-212.09960159362538"/>
@@ -846,7 +849,6 @@ Megjegyzes<y:LabelModel>
       </data>
     </edge>
     <edge id="e19" source="n0" target="n25">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-9.197212281723125" sy="13.045008824178495" tx="0.0" ty="0.0"/>
@@ -857,7 +859,6 @@ Megjegyzes<y:LabelModel>
       </data>
     </edge>
     <edge id="e20" source="n25" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="9.222411569758265" ty="19.750000000000227"/>
