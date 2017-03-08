@@ -8,7 +8,11 @@ import javax.persistence.EntityManager;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
+import com.inspirationlogical.receipt.testsuite.ModelTest;
+
+@Category(ModelTest.class)
 public class VATSerieTest {
 
     private EntityManager manager;

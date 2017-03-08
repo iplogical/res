@@ -9,9 +9,12 @@ import javax.persistence.RollbackException;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.inspirationlogical.receipt.model.ProductCategory;
+import com.inspirationlogical.receipt.testsuite.ModelTest;
 
+@Category(ModelTest.class)
 public class ProductCategoryTest {
 
     private EntityManager manager;

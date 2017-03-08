@@ -7,8 +7,13 @@ import javax.persistence.RollbackException;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import com.inspirationlogical.receipt.testsuite.ModelTest;
+
 import static org.junit.Assert.*;
 
+@Category(ModelTest.class)
 public class ReceiptRecordTest {
 
     private EntityManager manager;

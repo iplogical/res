@@ -9,11 +9,13 @@ import javax.persistence.RollbackException;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.inspirationlogical.receipt.model.enums.TableType;
+import com.inspirationlogical.receipt.testsuite.ModelTest;
 
+@Category(ModelTest.class)
 public class RestaurantTest {
-
 
     private EntityManager manager;
 
