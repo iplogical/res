@@ -2,14 +2,7 @@ package com.inspirationlogical.receipt.model;
 
 import java.util.Collection;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.persistence.Table;
 
 import lombok.Builder;
