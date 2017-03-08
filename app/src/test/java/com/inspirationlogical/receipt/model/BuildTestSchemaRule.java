@@ -11,6 +11,8 @@ import org.junit.runners.model.Statement;
 import com.inspirationlogical.receipt.model.Product;
 import com.inspirationlogical.receipt.model.ProductCategory;
 import com.inspirationlogical.receipt.model.enums.EtalonQuantity;
+import com.inspirationlogical.receipt.model.enums.PriceModifierLimitType;
+import com.inspirationlogical.receipt.model.enums.PriceModifierType;
 import com.inspirationlogical.receipt.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.model.enums.ProductType;
@@ -18,6 +20,8 @@ import com.inspirationlogical.receipt.model.enums.QunatityUnit;
 import com.inspirationlogical.receipt.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.model.enums.PriceModifierRepeatPeriod;
+import com.inspirationlogical.receipt.model.enums.PriceModifierStatus;
 import com.inspirationlogical.receipt.model.enums.TableType;
 import com.inspirationlogical.receipt.model.enums.VATName;
 
@@ -29,7 +33,7 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Product productTwo;
     private @Getter Product productThree;
     private @Getter Product productFour;
-    
+
     private @Getter ProductCategory root;
     private @Getter ProductCategory aggregate;
     private @Getter ProductCategory leafOne;
@@ -38,6 +42,10 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter ProductCategory pseudoTwo;
     private @Getter ProductCategory pseudoThree;
     private @Getter ProductCategory pseudoFour;
+
+    private @Getter PriceModifier priceModifierOne;
+    private @Getter PriceModifier priceModifierTwo;
+    private @Getter PriceModifier priceModifierThree;
 
     private @Getter Recipe elementOne;
     private @Getter Recipe elementTwo;
@@ -101,6 +109,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildObjects() {
         buildProducts();
         buildProductCategories();
+        buildPriceModifiers();
         buildRecipes();
         buildStocks();
         buildReceipts();
@@ -113,10 +122,9 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
 private void setUpObjectRelationShips() {
-        rootAndAggregates();
-        aggregatesAndLeafs();
-        leafsAndPseudos();
-        pseudosAndProducts();
+        productCategories();
+        categoriesAndPriceModifiers();
+        productsAndCategories();
         productFourAndRecipes();
         recipesAndProducts();
         productFourAndStocks();
@@ -145,6 +153,13 @@ private void buildProducts() {
         buildPseudoTwo();
         buildPseudoThree();
         buildPseudoFour();
+    }
+
+
+    private void buildPriceModifiers() {
+        buildPriceModifierOne();
+        buildPriceModifierTwo();
+        buildPriceModifierThree();
     }
 
     private void buildRecipes() {
@@ -213,7 +228,7 @@ private void buildProducts() {
                 .build();
      }
 
-private void buildProduct() {
+    private void buildProduct() {
         productOne = Product.builder()
                 .longName("product")
                 .shortName("product")
@@ -314,6 +329,43 @@ private void buildProduct() {
         pseudoFour = ProductCategory.builder()
                 .name("pseudoFour")
                 .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+
+    private void buildPriceModifierOne() {
+        priceModifierOne = PriceModifier.builder()
+                .name("TestPriceModifier1")
+                .type(PriceModifierType.FUTURE_PRICE_MODIFICATION)
+                .status(PriceModifierStatus.PAST)
+                .period(PriceModifierRepeatPeriod.NO_REPETITION)
+                .startTime(new GregorianCalendar(2017, 1, 8, 16, 00))
+                .endTime(new GregorianCalendar(2017, 1, 8, 20, 20))
+                .limitType(PriceModifierLimitType.NONE)
+                .build();
+    }
+
+    private void buildPriceModifierTwo() {
+        priceModifierTwo = PriceModifier.builder()
+                .name("TestPriceModifier2")
+                .type(PriceModifierType.SIMPLE_DISCOUNT)
+                .status(PriceModifierStatus.ACTUAL)
+                .period(PriceModifierRepeatPeriod.DAILY)
+                .startTime(new GregorianCalendar(2017, 2, 8, 16, 00))
+                .endTime(new GregorianCalendar(2017, 3, 8, 20, 20))
+                .limitType(PriceModifierLimitType.EXACT)
+                .build();
+    }
+
+    private void buildPriceModifierThree() {
+        priceModifierThree = PriceModifier.builder()
+                .name("TestPriceModifier3")
+                .type(PriceModifierType.QUANTITY_DISCOUNT)
+                .status(PriceModifierStatus.FUTURE)
+                .period(PriceModifierRepeatPeriod.WEEKLY)
+                .startTime(new GregorianCalendar(2017, 3, 8, 16, 00))
+                .endTime(new GregorianCalendar(2017, 5, 8, 20, 20))
+                .limitType(PriceModifierLimitType.EXACT)
                 .build();
     }
 
@@ -570,6 +622,12 @@ private void buildProduct() {
                 .build();
     }
 
+    private void productCategories() {
+        rootAndAggregates();
+        aggregatesAndLeafs();
+        leafsAndPseudos();
+    }
+
     private void rootAndAggregates() {
         aggregate.setParent(root);
         root.setChildren(new HashSet<ProductCategory>(
@@ -594,7 +652,17 @@ private void buildProduct() {
         pseudoFour.setParent(leafTwo);
     }
 
-    private void pseudosAndProducts() {
+    private void categoriesAndPriceModifiers() {
+        pseudoOne.setPriceModifier(new HashSet<PriceModifier>(
+                Arrays.asList(priceModifierOne, priceModifierTwo)));
+        aggregate.setPriceModifier(new HashSet<PriceModifier>(
+                Arrays.asList(priceModifierThree)));
+        priceModifierOne.setOwner(pseudoOne);
+        priceModifierTwo.setOwner(pseudoOne);
+        priceModifierThree.setOwner(aggregate);
+    }
+
+    private void productsAndCategories() {
         pseudoOne.setProduct(productOne);
         productOne.setCategory(pseudoOne);
 

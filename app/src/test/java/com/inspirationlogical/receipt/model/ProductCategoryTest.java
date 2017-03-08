@@ -33,6 +33,16 @@ public class ProductCategoryTest {
     }
 
     @Test
+    public void testPriceModifierNumber() {
+        List<ProductCategory> categories = persistCategoryAndGetList();
+        for(ProductCategory p : categories) {
+            if(p.getName().equals("pseudoOne")) {
+                assertEquals(2, p.getPriceModifier().size());
+            }
+        }
+    }
+
+    @Test
     public void testProductConstraint() {
         schema.getRoot().setProduct(null);
         assertListSize();

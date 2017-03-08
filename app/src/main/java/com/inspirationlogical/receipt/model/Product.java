@@ -33,7 +33,7 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Builder
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "PRODUCT")
 @NamedQueries({
     @NamedQuery(name = Product.GET_TEST_PRODUCTS,

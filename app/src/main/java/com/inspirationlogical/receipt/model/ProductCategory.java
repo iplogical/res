@@ -44,15 +44,19 @@ public @Data class ProductCategory extends AbstractEntity {
     @NotEmpty
     private String name;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     private ProductCategory parent;
 
-    @OneToMany(mappedBy = "parent", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<ProductCategory> children;
+
+    @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    private Collection<PriceModifier> priceModifier;
+
+    @OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private Product product;
 
     @Enumerated(EnumType.STRING)
     private ProductCategoryType type;
 
-    @OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private Product product;
 }
