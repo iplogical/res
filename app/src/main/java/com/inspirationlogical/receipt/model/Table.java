@@ -46,6 +46,9 @@ public @Data class Table extends AbstractEntity {
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Receipt> receipt;
 
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Collection<Reservation> reservation;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     private TableType type;

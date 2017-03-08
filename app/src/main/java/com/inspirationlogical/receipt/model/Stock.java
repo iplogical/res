@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.model;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
@@ -43,5 +43,5 @@ public @Data class Stock extends AbstractEntity {
     double startingStock;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    private Calendar date;
 }

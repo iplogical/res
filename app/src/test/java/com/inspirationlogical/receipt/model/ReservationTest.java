@@ -10,7 +10,7 @@ import javax.persistence.RollbackException;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class VATTest {
+public class ReservationTest {
 
     private EntityManager manager;
 
@@ -21,37 +21,45 @@ public class VATTest {
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
-    public void testVATCreation() {
+    public void testReservationCreation() {
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
-    public void noSerie() {
-        schema.getVatOne().setSerie(null);
+    public void invalidTableNumber() {
+        schema.getReservationOne().setTableNumber(0);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void noStartTime() {
+        schema.getReservationOne().setStartTime(null);
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void noName() {
-        schema.getVatOne().setName(null);
+        schema.getReservationOne().setName(null);
         assertListSize();
     }
 
     private void assertListSize() {
-        assertEquals(5, persistVATAndGetList().size());
+        assertEquals(2, persistReservationAndGetList().size());
     }
 
-    private List<VAT> persistVATAndGetList() {
-        persistVAT();
+    private List<Reservation> persistReservationAndGetList() {
+        persistReservation();
         @SuppressWarnings("unchecked")
-        List<VAT> entries = manager.createNamedQuery(VAT.GET_TEST_VAT_RECORDS).getResultList();
+        List<Reservation> entries = manager.createNamedQuery(Reservation.GET_TEST_RESERVATIONS).getResultList();
         return entries;
     }
 
-    private void persistVAT() {
+    private void persistReservation() {
         manager = factory.getEntityManager();
         manager.getTransaction().begin();
-        manager.persist(schema.getVatOne());
+        manager.persist(schema.getReservationOne());
         manager.getTransaction().commit();
     }
+
+
 }

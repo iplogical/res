@@ -18,6 +18,7 @@
         <class>com.inspirationlogical.receipt.model.ReceiptRecord</class>
         <class>com.inspirationlogical.receipt.model.VATSerie</class>
         <class>com.inspirationlogical.receipt.model.VAT</class>
+        <class>com.inspirationlogical.receipt.model.Reservation</class>
         <!--          -->
 
         <properties>

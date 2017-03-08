@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.model;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
@@ -56,7 +56,7 @@ public @Data class ReceiptRecord extends AbstractEntity {
     private ReceiptRecordType type;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date created;
+    private Calendar created;
 
     @NotEmpty
     private String name;

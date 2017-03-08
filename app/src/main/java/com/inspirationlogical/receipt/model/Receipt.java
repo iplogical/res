@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.model;
 
 import java.util.Collection;
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -65,10 +65,10 @@ public @Data class Receipt extends AbstractEntity {
     private ReceiptStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date openTime;
+    private Calendar openTime;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date closureTime;
+    private Calendar closureTime;
 
     private int userCode;
 

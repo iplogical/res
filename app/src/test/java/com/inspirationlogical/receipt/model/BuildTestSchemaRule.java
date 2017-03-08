@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.model;
 
 import java.util.Arrays;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 
 import org.junit.rules.TestRule;
@@ -67,6 +68,9 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Table tableDisposal;
     private @Getter Table tableOther;
 
+    private @Getter Reservation reservationOne;
+    private @Getter Reservation reservationTwo;
+
     private @Getter Restaurant restaurant;
 
     private @Getter VATSerie vatSerie;
@@ -101,9 +105,10 @@ public class BuildTestSchemaRule implements TestRule {
         buildStocks();
         buildReceipts();
         buildReceptRecords();
-        BuildVatSerie();
+        buildVatSeries();
         BuildVATs();
         buildTables();
+        buildReservations();
         BuildRestaurant();
     }
 
@@ -116,6 +121,7 @@ private void setUpObjectRelationShips() {
         recipesAndProducts();
         productFourAndStocks();
         tablesAndReceipts();
+        tablesAndReservations();
         receiptsAndReceiptRecords();
         receiptsAndVatSerie();
         vatSerieAndVatValues();
@@ -172,25 +178,31 @@ private void buildProducts() {
         buildReceiptRecordSaleFour();
     }
 
-    private void BuildVatSerie() {
-        buildVatSerie();
+    private void buildVatSeries() {
+        buildVatSerieOne();
     }
 
     private void BuildVATs() {
-        buildVAT1();
-        buildVAT2();
-        buildVAT3();
-        buildVAT4();
-        buildVAT5();
+        buildVatOne();
+        buildVatTwo();
+        buildVatThree();
+        buildVatFour();
+        buildVatFive();
     }
 
     private void buildTables() {
-        buildTableOne();
-        buildTableTwo();
+        buildTableNormal();
+        buildTableVirtual();
         buildTablePurchase();
         buildTableInventory();
         buildTableDisposal();
         buildTableOther();
+    }
+
+    private void buildReservations() {
+        buildReservationOne();
+        buildReservationTwo();
+        
     }
 
     private void BuildRestaurant() {
@@ -456,60 +468,59 @@ private void buildProduct() {
                 .build();
     }
 
-    private void buildVatSerie() {
+    private void buildVatSerieOne() {
         vatSerie = VATSerie.builder()
                 .build();
     }
 
-    private void buildVAT1() {
+    private void buildVatOne() {
         vatOne = VAT.builder()
                 .name(VATName.NORMAL)
                 .VAT(27)
                 .build();
     }
 
-    private void buildVAT2() {
+    private void buildVatTwo() {
         vatTwo = VAT.builder()
                 .name(VATName.REDUCED)
                 .VAT(18)
                 .build();
     }
 
-    private void buildVAT3() {
+    private void buildVatThree() {
         vatThree = VAT.builder()
                 .name(VATName.GREATLY_REDUCED)
                 .VAT(5)
                 .build();
     }
 
-    private void buildVAT4() {
+    private void buildVatFour() {
         vatFour = VAT.builder()
                 .name(VATName.TAX_TICKET)
                 .VAT(0)
                 .build();
     }
 
-    private void buildVAT5() {
+    private void buildVatFive() {
         vatFive = VAT.builder()
                 .name(VATName.TAX_FREE)
                 .VAT(0)
                 .build();
     }
 
-    private void buildTableOne() {
+    private void buildTableNormal() {
         tableNormal = Table.builder()
                 .number(1)
                 .type(TableType.NORMAL)
                 .build();
     }
 
-    private void buildTableTwo() {
+    private void buildTableVirtual() {
         tableVirtual = Table.builder()
                 .number(2)
                 .type(TableType.VIRTUAL)
                 .build();
     }
-
 
     private void buildTablePurchase() {
         tablePurchase = Table.builder()
@@ -538,6 +549,26 @@ private void buildProduct() {
                 .type(TableType.OTHER)
                 .build();
        }
+
+    private void buildReservationOne() {
+        reservationOne = Reservation.builder()
+                .tableNumber(2)
+                .startTime(new GregorianCalendar(2017, 2, 8, 16, 00))
+                .endTime(new GregorianCalendar(2017, 2, 8, 20, 20))
+                .name("TestName1")
+                .note("TestNote1")
+                .build();
+    }
+
+    private void buildReservationTwo() {
+        reservationTwo = Reservation.builder()
+                .tableNumber(2)
+                .startTime(new GregorianCalendar(2017, 2, 12, 16, 00))
+                .endTime(new GregorianCalendar(2017, 2, 12, 20, 20))
+                .name("TestName2")
+                .note("TestNote2")
+                .build();
+    }
 
     private void rootAndAggregates() {
         aggregate.setParent(root);
@@ -603,6 +634,13 @@ private void buildProduct() {
         receiptsToTables();
         tablesToReceipts();
      }
+
+    private void tablesAndReservations() {
+        tableNormal.setReservation(new HashSet<Reservation>(
+                Arrays.asList(reservationOne, reservationTwo)));
+        reservationOne.setOwner(tableNormal);
+        reservationTwo.setOwner(tableNormal);
+    }
 
     private void receiptsAndReceiptRecords() {
         receiptSaleOne.setRecords(new HashSet<ReceiptRecord>(

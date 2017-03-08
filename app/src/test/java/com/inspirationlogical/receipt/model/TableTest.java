@@ -11,6 +11,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.model.enums.TableType;
 
 public class TableTest {
 
@@ -25,6 +26,16 @@ public class TableTest {
     @Test
     public void testTableCreation() {
         assertListSize();
+    }
+
+    @Test
+    public void testReservationNumber() {
+        List<Table> tables = persistTebleAndGetList();
+        for(Table t : tables) {
+            if(t.getType() == TableType.NORMAL) {
+                assertEquals(2, t.getReservation().size());
+            }
+        }
     }
 
     @Test(expected = RollbackException.class)
