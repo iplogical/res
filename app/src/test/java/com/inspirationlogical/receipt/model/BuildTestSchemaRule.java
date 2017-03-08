@@ -68,6 +68,7 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter ReceiptRecord receiptRecordSaleTwo;
     private @Getter ReceiptRecord receiptRecordSaleThree;
     private @Getter ReceiptRecord receiptRecordSaleFour;
+    private @Getter ReceiptRecord receiptRecordOther;
 
     private @Getter Table tableNormal;
     private @Getter Table tableVirtual;
@@ -113,7 +114,7 @@ public class BuildTestSchemaRule implements TestRule {
         buildRecipes();
         buildStocks();
         buildReceipts();
-        buildReceptRecords();
+        buildReceiptRecords();
         buildVatSeries();
         BuildVATs();
         buildTables();
@@ -186,11 +187,12 @@ private void buildProducts() {
         buildReceiptOther();
     }
 
-    private void buildReceptRecords() {
+    private void buildReceiptRecords() {
         buildReceiptRecordSaleOne();
         buildReceiptRecordSaleTwo();
         buildReceiptRecordSaleThree();
         buildReceiptRecordSaleFour();
+        buildReceiptRecordOther();
     }
 
     private void buildVatSeries() {
@@ -520,6 +522,15 @@ private void buildProducts() {
                 .build();
     }
 
+
+    private void buildReceiptRecordOther() {
+        receiptRecordOther = ReceiptRecord.builder()
+                .name("E")
+                .quantity(1)
+                .type(ReceiptRecordType.HERE)
+                .build();
+    }
+
     private void buildVatSerieOne() {
         vatSerie = VATSerie.builder()
                 .build();
@@ -715,10 +726,13 @@ private void buildProducts() {
                 Arrays.asList(receiptRecordSaleOne, receiptRecordSaleTwo)));
         receiptSaleTwo.setRecords(new HashSet<ReceiptRecord>(
                 Arrays.asList(receiptRecordSaleThree, receiptRecordSaleFour)));
+        receiptOther.setRecords(new HashSet<ReceiptRecord>(
+                Arrays.asList(receiptRecordOther)));
         receiptRecordSaleOne.setOwner(receiptSaleOne);
         receiptRecordSaleTwo.setOwner(receiptSaleOne);
         receiptRecordSaleThree.setOwner(receiptSaleTwo);
         receiptRecordSaleFour.setOwner(receiptSaleTwo);
+        receiptRecordOther.setOwner(receiptOther);
         
     }
 

@@ -16,7 +16,7 @@ import static java.lang.annotation.ElementType.*;
  **/
 @Target(value = {TYPE, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = ValidProductValidator.class)
+@Constraint(validatedBy = {ValidProductValidatorProductCategory.class, ValidProductValidatorReceiptRecord.class})
 @Documented
 public @interface ValidProduct {
 

@@ -21,6 +21,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.inspirationlogical.receipt.model.annotations.ValidProduct;
 import com.inspirationlogical.receipt.model.enums.ReceiptRecordType;
 
 import lombok.Builder;
@@ -38,6 +39,7 @@ import lombok.ToString;
             query="FROM ReceiptRecord r")
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECEIPT_RECORD_ID"))
+@ValidProduct
 public @Data class ReceiptRecord extends AbstractEntity {
 
     public static final String GET_TEST_RECEIPTS_RECORDS = "ReceiptRecord.GetTestReceiptsRecords";

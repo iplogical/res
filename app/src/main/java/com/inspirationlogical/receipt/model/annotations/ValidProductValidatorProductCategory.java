@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 import com.inspirationlogical.receipt.model.ProductCategory;
 import com.inspirationlogical.receipt.model.enums.ProductCategoryType;
 
-public class ValidProductValidator 
+public class ValidProductValidatorProductCategory 
     implements ConstraintValidator<ValidProduct, ProductCategory> {
     
     @Override

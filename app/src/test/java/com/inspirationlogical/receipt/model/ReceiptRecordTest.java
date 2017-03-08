@@ -42,8 +42,20 @@ public class ReceiptRecordTest {
         assertListSize();
     }
 
+    @Test(expected = RollbackException.class)
+    public void testNoProduct() {
+        schema.getReceiptRecordSaleOne().setProduct(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void testOtherReceiptRecordHasProduct() {
+        schema.getReceiptRecordOther().setProduct(schema.getProductOne());
+        assertListSize();
+    }
+
     private void assertListSize() {
-        assertEquals(4, persistReceiptRecordAndGetList().size());
+        assertEquals(5, persistReceiptRecordAndGetList().size());
     }
 
     private List<ReceiptRecord> persistReceiptRecordAndGetList() {
