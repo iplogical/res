@@ -18,6 +18,7 @@ import com.inspirationlogical.receipt.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.model.enums.TableType;
+import com.inspirationlogical.receipt.model.enums.VATName;
 
 import lombok.Getter;
 
@@ -68,6 +69,14 @@ public class BuildTestSchemaRule implements TestRule {
 
     private @Getter Restaurant restaurant;
 
+    private @Getter VATSerie vatSerie;
+
+    private @Getter VAT vatOne;
+    private @Getter VAT vatTwo;
+    private @Getter VAT vatThree;
+    private @Getter VAT vatFour;
+    private @Getter VAT vatFive;
+
     @Override
     public Statement apply(Statement base, Description description) {
         return new Statement() {
@@ -92,6 +101,8 @@ public class BuildTestSchemaRule implements TestRule {
         buildStocks();
         buildReceipts();
         buildReceptRecords();
+        BuildVatSerie();
+        BuildVATs();
         buildTables();
         BuildRestaurant();
     }
@@ -106,6 +117,8 @@ private void setUpObjectRelationShips() {
         productFourAndStocks();
         tablesAndReceipts();
         receiptsAndReceiptRecords();
+        receiptsAndVatSerie();
+        vatSerieAndVatValues();
         receiptRecordsAndProducts();
         restaurantAndTables();
 }
@@ -159,6 +172,17 @@ private void buildProducts() {
         buildReceiptRecordSaleFour();
     }
 
+    private void BuildVatSerie() {
+        buildVatSerie();
+    }
+
+    private void BuildVATs() {
+        buildVAT1();
+        buildVAT2();
+        buildVAT3();
+        buildVAT4();
+        buildVAT5();
+    }
 
     private void buildTables() {
         buildTableOne();
@@ -168,6 +192,14 @@ private void buildProducts() {
         buildTableDisposal();
         buildTableOther();
     }
+
+    private void BuildRestaurant() {
+        restaurant = Restaurant.builder()
+                .name("TestRestaurant")
+                .companyName("TestCompany")
+                .address("TestAddress")
+                .build();
+     }
 
 private void buildProduct() {
         productOne = Product.builder()
@@ -384,6 +416,14 @@ private void buildProduct() {
                 .build();
     }
 
+    private Client buildDefaultClient() {
+        return Client.builder()
+                .name("TestClient")
+                .address("TestAddress")
+                .TAXNumber("TestTaxNumber")
+                .build();
+    }
+
     private void buildReceiptRecordSaleOne() {
         receiptRecordSaleOne = ReceiptRecord.builder()
                 .name("A")
@@ -416,13 +456,46 @@ private void buildProduct() {
                 .build();
     }
 
-    private Client buildDefaultClient() {
-        return Client.builder()
-                .name("TestClient")
-                .address("TestAddress")
-                .TAXNumber("TestTaxNumber")
+    private void buildVatSerie() {
+        vatSerie = VATSerie.builder()
                 .build();
     }
+
+    private void buildVAT1() {
+        vatOne = VAT.builder()
+                .name(VATName.NORMAL)
+                .VAT(27)
+                .build();
+    }
+
+    private void buildVAT2() {
+        vatTwo = VAT.builder()
+                .name(VATName.REDUCED)
+                .VAT(18)
+                .build();
+    }
+
+    private void buildVAT3() {
+        vatThree = VAT.builder()
+                .name(VATName.GREATLY_REDUCED)
+                .VAT(5)
+                .build();
+    }
+
+    private void buildVAT4() {
+        vatFour = VAT.builder()
+                .name(VATName.TAX_TICKET)
+                .VAT(0)
+                .build();
+    }
+
+    private void buildVAT5() {
+        vatFive = VAT.builder()
+                .name(VATName.TAX_FREE)
+                .VAT(0)
+                .build();
+    }
+
     private void buildTableOne() {
         tableNormal = Table.builder()
                 .number(1)
@@ -459,21 +532,12 @@ private void buildProduct() {
                 .build();
     }
 
-
     private void buildTableOther() {
         tableOther = Table.builder()
                 .number(1003)
                 .type(TableType.OTHER)
                 .build();
        }
-
-    private void BuildRestaurant() {
-        restaurant = Restaurant.builder()
-                .name("TestRestaurant")
-                .companyName("TestCompany")
-                .address("TestAddress")
-                .build();
-     }
 
     private void rootAndAggregates() {
         aggregate.setParent(root);
@@ -557,6 +621,27 @@ private void buildProduct() {
         receiptRecordSaleTwo.setProduct(productTwo);
         receiptRecordSaleThree.setProduct(productThree);
         receiptRecordSaleFour.setProduct(productFour);
+    }
+
+    private void receiptsAndVatSerie() {
+        receiptSaleOne.setVATSerie(vatSerie);
+        receiptSaleTwo.setVATSerie(vatSerie);
+        receiptSaleThree.setVATSerie(vatSerie);
+        receiptSaleFour.setVATSerie(vatSerie);
+        receiptPurchase.setVATSerie(vatSerie);
+        receiptInventory.setVATSerie(vatSerie);
+        receiptDisposal.setVATSerie(vatSerie);
+        receiptOther.setVATSerie(vatSerie);
+    }
+
+    private void vatSerieAndVatValues() {
+        vatSerie.setVat(new HashSet<VAT>(
+                Arrays.asList(vatOne, vatTwo, vatThree, vatFour, vatFive)));
+        vatOne.setSerie(vatSerie);
+        vatTwo.setSerie(vatSerie);
+        vatThree.setSerie(vatSerie);
+        vatFour.setSerie(vatSerie);
+        vatFive.setSerie(vatSerie);
     }
 
     private void restaurantAndTables() {

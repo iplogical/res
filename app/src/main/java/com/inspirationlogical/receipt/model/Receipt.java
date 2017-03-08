@@ -52,6 +52,11 @@ public @Data class Receipt extends AbstractEntity {
     private Collection<ReceiptRecord> records;
 
     @NotNull
+    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "VAT_SERIE_ID")
+    private VATSerie VATSerie;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     private ReceiptType type;
 

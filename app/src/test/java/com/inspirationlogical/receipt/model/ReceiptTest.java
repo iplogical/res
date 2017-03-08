@@ -50,6 +50,12 @@ public class ReceiptTest {
     }
 
     @Test(expected = RollbackException.class)
+    public void noVatSerie() {
+        schema.getReceiptSaleOne().setVATSerie(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
     public void moveVirtualReceiptToNormalTableTooManyOpen() {
         schema.getReceiptSaleThree().setOwner(schema.getTableNormal());
         schema.getTableNormal().getReceipt().add(schema.getReceiptSaleThree());
