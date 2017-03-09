@@ -26,13 +26,16 @@ import lombok.EqualsAndHashCode;
 @Table(name = "PRODUCT")
 @NamedQueries({
     @NamedQuery(name = Product.GET_TEST_PRODUCTS,
-            query="FROM Product p")
+            query = "FROM Product p"),
+    @NamedQuery(name = Product.GET_PRODUCT_BY_NAME,
+            query = "SELECT p FROM Product p WHERE p.longName=:longName"),
 })
 @AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
 @ValidCategory
 public @Data class Product extends AbstractEntity {
 
     public static final String GET_TEST_PRODUCTS = "Product.GetTestProducts";
+    public static final String GET_PRODUCT_BY_NAME = "Product.GetProductByName";
 
     @OneToOne(mappedBy="product", optional = false, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="CATEGORY_ID")

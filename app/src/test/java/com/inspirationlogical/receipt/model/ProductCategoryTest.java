@@ -139,7 +139,7 @@ public class ProductCategoryTest {
     private List<ProductCategory> persistCategoryAndGetList() {
         persistCategory();
         @SuppressWarnings("unchecked")
-        List<ProductCategory> entries = manager.createNamedQuery(ProductCategory.GET_TEST_CATEGORIES).getResultList();
+        List<ProductCategory> entries = manager.createNamedQuery(ProductCategory.GET_ALL_CATEGORIES).getResultList();
         return entries;
     }
 

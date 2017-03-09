@@ -20,13 +20,16 @@ import lombok.EqualsAndHashCode;
 @javax.persistence.Table(name = "RECEIPT")
 @NamedQueries({
     @NamedQuery(name = Receipt.GET_TEST_RECEIPTS,
-            query="FROM Receipt r")
+            query="FROM Receipt r"),
+    @NamedQuery(name = Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
+            query="SELECT r FROM Receipt r WHERE r.status=:status AND r.owner.number=:number"),
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECEIPT_ID"))
 @ValidOwner
 public @Data class Receipt extends AbstractEntity {
 
     public static final String GET_TEST_RECEIPTS = "Receipt.GetTestReceipts";
+    public static final String GET_RECEIPT_BY_STATUS_AND_OWNER = "Receipt.GetActiveReceipt";
 
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)

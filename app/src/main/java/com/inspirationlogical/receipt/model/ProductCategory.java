@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true, exclude = {"product", "children", "parent"})
 @Table(name = "PRODUCT_CATEGORY")
 @NamedQueries({
-    @NamedQuery(name = ProductCategory.GET_TEST_CATEGORIES,
+    @NamedQuery(name = ProductCategory.GET_ALL_CATEGORIES,
             query="FROM ProductCategory pc")
 })
 @AttributeOverride(name = "id", column = @Column(name = "CATEGORY_ID"))
@@ -28,7 +28,7 @@ import lombok.EqualsAndHashCode;
 @ValidParent
 public @Data class ProductCategory extends AbstractEntity {
 
-    public static final String GET_TEST_CATEGORIES = "ProductCategory.GetTestCategories";
+    public static final String GET_ALL_CATEGORIES = "ProductCategory.GetTestCategories";
 
     @NotEmpty
     private String name;
