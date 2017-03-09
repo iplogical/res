@@ -31,7 +31,7 @@
           <y:UML clipContent="false" constraint="" omitDetails="false" stereotype="Interface" use3DEffect="true">
             <y:AttributeLabel/>
             <y:MethodLabel>+ setPrice(PriceUnit) : void
-+ getUnderlyingObject() : Product
++ getAdaptee() : Product
 </y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
@@ -41,7 +41,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="89.0" width="141.0" x="1099.225742861886" y="760.9542692563092"/>
+          <y:Geometry height="89.0" width="141.0" x="908.2257428618858" y="930.5596728243031"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="53.11181640625" x="43.944091796875" y="3.0">Product<y:LabelModel>
@@ -129,7 +129,7 @@ Category
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="111.8213418326693" width="177.56507622841957" x="880.443204747676" y="881.2525730411696"/>
+          <y:Geometry height="111.8213418326693" width="177.56507622841957" x="645.0688286000628" y="738.7291375551403"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="106.908203125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="166.052734375" x="5.7561709267097285" y="2.4565693538346522">void setPrice(PriceUnit p) {
@@ -152,7 +152,7 @@ manager.transactionCommit();
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="107.0" width="327.0" x="444.75703747509976" y="121.3596447543157"/>
+          <y:Geometry height="107.0" width="327.0" x="10.769254223868188" y="121.3596447543157"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="91.4453125" x="117.77734375" y="26.701171875">TableServices<y:LabelModel>
@@ -164,7 +164,8 @@ manager.transactionCommit();
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="Interface" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>+ sellProduct(TableView,ProductView,Amount,...) : void</y:MethodLabel>
+            <y:MethodLabel>+ getTables() : List&lt;TableView&gt;
++ sellProduct(TableView,ProductView,Amount,...) : void</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -173,7 +174,7 @@ manager.transactionCommit();
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="58.0" width="189.0" x="113.65709815809441" y="121.3596447543157"/>
+          <y:Geometry height="58.0" width="189.0" x="-320.33068509313716" y="121.3596447543157"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.39892578125" x="31.800537109375" y="26.701171875">RestaurantServices<y:LabelModel>
@@ -250,7 +251,7 @@ manager.transactionCommit();
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="Interface" use3DEffect="true">
             <y:AttributeLabel/>
             <y:MethodLabel>+ getActiveReceipt() : ReceiptAdapter 
-+ getUnderlyingObject() : Table
++ getAdaptee() : Table
 </y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
@@ -260,7 +261,7 @@ manager.transactionCommit();
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="89.0" width="141.0" x="1564.6088769920318" y="744.8338166666676"/>
+          <y:Geometry height="89.0" width="141.0" x="1371.6088769920318" y="930.5596728243031"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="37.95361328125" x="51.523193359375" y="3.0">Table<y:LabelModel>
@@ -303,7 +304,7 @@ Collection&lt;Receipt&gt;
     <node id="n13">
       <data key="d6">
         <y:SVGNode>
-          <y:Geometry height="47.612998962402344" width="39.25" x="1150.100742861886" y="901.3447313413025"/>
+          <y:Geometry height="47.612998962402344" width="39.25" x="959.1007428618858" y="1094.5446238026555"/>
           <y:Fill color="#CCCCFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="4.0" x="17.625" y="51.612998962402344">
@@ -325,10 +326,10 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="68.0" width="149.0" x="1810.1425405026725" y="342.83287682602923"/>
+          <y:Geometry height="68.0" width="204.0" x="1858.8639608494857" y="335.93153534819663"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="107.30810546875" x="20.845947265625" y="3.0">ReceiptViewImpl<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="107.30810546875" x="48.345947265625" y="3.0">ReceiptViewImpl<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -346,7 +347,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="119.0" width="204.0" x="1782.6425405026725" y="121.35964475431575"/>
+          <y:Geometry height="119.0" width="204.0" x="1858.8639608494857" y="131.85964475431564"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="80.58447265625" x="61.707763671875" y="26.701171875">ReceiptView<y:LabelModel>
@@ -368,10 +369,10 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="146.83660026560426" width="252.72775564408994" x="1759.8101708987467" y="461.46950863213834"/>
+          <y:Geometry height="146.83660026560426" width="252.7277556440897" x="1858.8639608494857" y="471.96950863213823"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="100.078125" x="76.32481532204497" y="26.701171875">ReceiptAdapter<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="100.078125" x="76.32481532204486" y="26.701171875">ReceiptAdapter<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -381,7 +382,7 @@ Collection&lt;Receipt&gt;
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="Interface" use3DEffect="true">
             <y:AttributeLabel>
 </y:AttributeLabel>
-            <y:MethodLabel>+ getUnderlyingObject() : Receipt
+            <y:MethodLabel>+ getAdaptee() : Receipt
 + addRecord(ReceiptRecordAdapter) :void
 + close() : void</y:MethodLabel>
           </y:UML>
@@ -392,7 +393,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="89.0" width="141.0" x="2146.487269426947" y="705.1855066559035"/>
+          <y:Geometry height="89.0" width="141.0" x="1930.3263712079454" y="922.1464308359757"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="50.9599609375" x="45.02001953125" y="3.0">Receipt<y:LabelModel>
@@ -416,7 +417,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="131.07685683530656" width="345.62082931996474" x="1713.3636340608093" y="692.2569598313612"/>
+          <y:Geometry height="131.07685683530656" width="345.62082931996474" x="1812.4174240115483" y="702.7569598313611"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="126.8017578125" x="109.40953575373237" y="3.0">ReceiptAdapterImpl<y:LabelModel>
@@ -440,10 +441,10 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="68.0" width="149.0" x="2330.7735018286903" y="342.83287682602923"/>
+          <y:Geometry height="68.0" width="202.43193891102237" x="2463.0438654238587" y="353.3328768260291"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="122.47265625" x="13.263671875" y="3.0">ReceiptRecordImpl<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="152.09716796875" x="25.167385471136186" y="3.0">ReceiptRecordViewImpl<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -461,7 +462,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="119.0" width="204.0" x="2303.2735018286903" y="121.35964475431575"/>
+          <y:Geometry height="119.0" width="204.0" x="2463.0438654238587" y="131.85964475431564"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.37353515625" x="39.313232421875" y="26.701171875">ReceiptRecordView<y:LabelModel>
@@ -483,10 +484,10 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="95.0" width="252.72775564408994" x="2278.909624006645" y="513.3061088977427"/>
+          <y:Geometry height="95.0" width="228.36387782204474" x="2463.0438654238587" y="523.8061088977425"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="144.8671875" x="53.93028407204497" y="26.701171875">ReceiptRecordAdapter<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="144.8671875" x="41.74834516102237" y="26.701171875">ReceiptRecordAdapter<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -495,7 +496,7 @@ Collection&lt;Receipt&gt;
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="Interface" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>+ getUnderlyingObject() : ReceiptRecord
+            <y:MethodLabel>+ getAdaptee() : ReceiptRecord
 </y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
@@ -505,7 +506,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="89.0" width="141.0" x="2537.2735018286903" y="705.1855066559035"/>
+          <y:Geometry height="89.0" width="141.0" x="2489.0438654238587" y="922.1464308359757"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="95.7490234375" x="22.62548828125" y="3.0">ReceiptRecord<y:LabelModel>
@@ -528,10 +529,10 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="67.99999999999989" width="182.0" x="2314.2735018286903" y="715.6855066559036"/>
+          <y:Geometry height="67.99999999999989" width="193.0" x="2463.0438654238587" y="726.1855066559034"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="171.5908203125" x="5.20458984375" y="3.0">ReceiptRecordAdapterImpl<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="171.5908203125" x="10.70458984375" y="3.0">ReceiptRecordAdapterImpl<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -549,7 +550,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="171.42422037084873" width="458.6581673306772" x="357.6949596468847" y="519.0136534267938"/>
+          <y:Geometry height="171.42422037084873" width="458.6581673306772" x="-559.9539073481892" y="341.2355253479759"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="136.310546875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="414.87109375" x="21.8935367903386" y="17.556836747924308"> void sellProduct(TableView table ,ProductView product ,Amount amount,...) {
@@ -574,10 +575,10 @@ table.getAdapter().getActiveReceipt().addRecord(rr);
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="77.27302552282731" width="399.4521912350598" x="408.53094185756987" y="370.69579896613817"/>
+          <y:Geometry height="77.27302552282731" width="391.12456839309425" x="-25.456841393661705" y="370.69579896613817"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="118.1689453125" x="140.6416229612799" y="3.0">TableServicesImpl<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="118.1689453125" x="136.47781154029713" y="3.0">TableServicesImpl<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -595,7 +596,7 @@ table.getAdapter().getActiveReceipt().addRecord(rr);
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="156.14528552456835" width="391.12456839309425" x="865.4971196866197" y="-212.0297349177945"/>
+          <y:Geometry height="156.14528552456835" width="391.12456839309425" x="431.50933643538815" y="-212.0297349177945"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="88.5380859375" x="151.29324122779713" y="3.0">SellViewState<y:LabelModel>
@@ -623,7 +624,7 @@ table.getAdapter().getActiveReceipt().addRecord(rr);
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="156.14528552456835" width="319.94050464807435" x="448.2867851510626" y="-212.0297349177945"/>
+          <y:Geometry height="156.14528552456835" width="319.94050464807435" x="14.299001899831012" y="-212.0297349177945"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="118.86083984375" x="100.53983240216218" y="3.0">SellViewController<y:LabelModel>
@@ -634,7 +635,7 @@ table.getAdapter().getActiveReceipt().addRecord(rr);
             </y:ModelParameter>
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel/>
+            <y:AttributeLabel>- sellViewState : SellViewState</y:AttributeLabel>
             <y:MethodLabel>+ onToggleControl(OnSellDecorator) : void
 + onSelectCategory(CategoryView) : void
 + onSelectProduct(ProductView)  : void</y:MethodLabel>
@@ -646,7 +647,7 @@ table.getAdapter().getActiveReceipt().addRecord(rr);
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="107.0" width="281.06305444887107" x="23.184851843746287" y="-319.8347892894718"/>
+          <y:Geometry height="107.0" width="281.06305444887107" x="-410.8029314074853" y="-319.8347892894718"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="106.908203125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="228.783203125" x="26.139925661935536" y="0.0458984375">void onToggleControl(OnSellDecorator d){
@@ -669,7 +670,7 @@ state.ActiveControls.add(d);
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="114.78980079681287" width="239.4477556440903" x="488.53315965305455" y="-551.1328622148498"/>
+          <y:Geometry height="114.78980079681287" width="239.4477556440903" x="54.54537640182298" y="-551.1328622148498"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="179.55712890625" x="29.945313368920154" y="26.701171875">EventHandler&lt;MouseEvent&gt;<y:LabelModel>
@@ -690,7 +691,7 @@ state.ActiveControls.add(d);
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="85.49482071713146" width="273.7621248339973" x="471.37597505810106" y="-376.15350019682876"/>
+          <y:Geometry height="85.49482071713146" width="273.7621248339973" x="37.388191806869486" y="-376.15350019682876"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="147.75537109375" x="63.003376870123645" y="3.0">SellViewToggleHandler<y:LabelModel>
@@ -713,7 +714,7 @@ state.ActiveControls.add(d);
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="48.44260292164677" width="239.4477556440903" x="792.566599027956" y="-357.6273912990864"/>
+          <y:Geometry height="48.44260292164677" width="239.4477556440903" x="358.57881577672447" y="-357.6273912990864"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="48.103515625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="202.09375" x="18.677002822045097" y="0.16954364832338342">void handle(MouseEvent) {
@@ -731,10 +732,9 @@ sellView.onToggleControl(decorator);
     </node>
     <node id="n32">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="36.1098815931108" width="147.75819160387516" x="534.377941673162" y="-636.1830348493003"/>
+          <y:Geometry height="36.1098815931108" width="147.75819160387516" x="100.39015842193044" y="-636.1830348493003"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="100.08447265625" x="23.83685947381258" y="3.0">JavaFXWidgets<y:LabelModel>
@@ -753,10 +753,9 @@ sellView.onToggleControl(decorator);
     </node>
     <node id="n33">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="58.0" width="440.61502691065664" x="-12.150415297233906" y="-182.83478928947181"/>
+          <y:Geometry height="58.0" width="440.61502691065664" x="-446.1381985484655" y="-182.83478928947181"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="48.103515625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="412.826171875" x="13.89442751782832" y="4.9482421875">void onSelectProduct(ProductView)  {
@@ -773,10 +772,9 @@ Services.getTableServices().sellProduct(ActiveTable,ActiveProduct,Amount);
     </node>
     <node id="n34">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="178.802109795479" width="252.72775564408994" x="1879.779412926062" y="1039.3119317814849"/>
+          <y:Geometry height="178.802109795479" width="252.72775564408994" x="2206.316109779769" y="860.7658076435541"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="121.609375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="200.435546875" x="26.14610438454497" y="28.596367397739414">void close() {
@@ -798,10 +796,9 @@ for(auto x: obs) obs.onClose(this);
     </node>
     <node id="n35">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="95.00000000000003" width="190.10979547900934" x="2746.3436510118427" y="324.16687046245596"/>
+          <y:Geometry height="95.00000000000003" width="190.10979547900934" x="2708.6965180069164" y="-268.42688980026986"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="108.05078125" x="41.02950711450467" y="26.701171875">ReceiptObserver<y:LabelModel>
@@ -820,10 +817,9 @@ for(auto x: obs) obs.onClose(this);
     </node>
     <node id="n36">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="82.96697524219587" width="356.869235737352" x="2662.9639308826713" y="513.3061088977427"/>
+          <y:Geometry height="82.96697524219587" width="356.869235737352" x="2625.316797877745" y="-79.28765136498316"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="92.86083984375" x="132.004197946801" y="3.0">ReceiptPrinter<y:LabelModel>
@@ -843,10 +839,9 @@ for(auto x: obs) obs.onClose(this);
     </node>
     <node id="n37">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="63.755566846071076" width="190.10979547900934" x="3093.2489893110974" y="521.7584077136737"/>
+          <y:Geometry height="63.755566846071076" width="190.10979547900934" x="3055.601856306171" y="-70.83535254905212"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="48.103515625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="171.42578125" x="9.342007114504668" y="7.826025610535567">void onClose(ReceiptAdapter) {
@@ -865,7 +860,7 @@ for(auto x: obs) obs.onClose(this);
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="95.0" width="427.6292164674635" x="1672.35944048706" y="928.3312775175987"/>
+          <y:Geometry height="95.0" width="427.6292164674635" x="2118.865379368082" y="1099.4590450052838"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="77.505859375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="416.201171875" x="5.714022296231633" y="8.7470703125">ReceiptRecordAdapterImpl  createRecord(ProductAdapterImpl p ,Amount a) {
@@ -882,10 +877,117 @@ product = p.getProduct();
         </y:UMLNoteNode>
       </data>
     </node>
+    <node id="n39">
+      <data key="d4"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="82.1497786009852" width="281.1013283940887" x="2950.0494775162047" y="279.1579485391759"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="274.181640625" x="3.459843884544341" y="26.701171875">AbstractAdapter&lt;T extends AbstractEntity&gt;<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="-0.03703090122767855" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="false" constraint="" omitDetails="false" stereotype="Interface" use3DEffect="true">
+            <y:AttributeLabel/>
+            <y:MethodLabel>+ getAdaptee() : T
+</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n40">
+      <data key="d4"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="126.30797410867433" width="259.61254980079684" x="2950.049477516204" y="508.1521218434053"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="132.578125" x="63.51721240039842" y="26.701171875">AbstractAdapterImpl<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="-0.03703090122767855" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="Abstract" use3DEffect="true">
+            <y:AttributeLabel>- adaptee : T
+- manager : EntityManager</y:AttributeLabel>
+            <y:MethodLabel>+ setPrice(PriceUnit) : void</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n41">
+      <data key="d4"/>
+      <data key="d5"/>
+      <data key="d6">
+        <y:UMLNoteNode>
+          <y:Geometry height="33.35425891625607" width="229.57306577339898" x="2950.049477516204" y="647.1044126826029"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="206.1015625" x="11.73575163669949" y="-0.024042416871907335">All adapter implementation classes 
+extend the AbstractAdapterImpl class.<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+        </y:UMLNoteNode>
+      </data>
+    </node>
+    <node id="n42">
+      <data key="d4"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="107.0" width="327.0" x="431.5093364353882" y="121.3596447543157"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="106.603515625" x="110.1982421875" y="26.701171875">ProductServices<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="-0.03703090122767855" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="Interface" use3DEffect="true">
+            <y:AttributeLabel/>
+            <y:MethodLabel>+ getProducts() : List&lt;ProductView&gt;
++ setPrice(ProductView, Price,...) : void
+</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n43">
+      <data key="d4"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="77.27302552282731" width="327.0" x="444.373991970077" y="370.69579896613817"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="133.3271484375" x="96.83642578125" y="3.0">ProductServicesImpl<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="-0.03703090122767855" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel/>
+            <y:MethodLabel>+ setPrice(ProductView, Price,...) : void &lt;&lt;&lt;override&gt;&gt;&gt;</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
     <edge id="e0" source="n2" target="n1">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="80.0" sy="0.0" tx="-70.5" ty="0.0"/>
+          <y:Path sx="0.0" sy="0.0" tx="-9.5" ty="-6.336527597374129"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="white_diamond" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -896,7 +998,7 @@ product = p.getProduct();
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="-13.517754649204562" tx="0.0" ty="-47.5"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="white_delta"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
@@ -906,7 +1008,7 @@ product = p.getProduct();
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="34.0" tx="0.0" ty="-59.5"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="white_delta"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
@@ -925,7 +1027,7 @@ product = p.getProduct();
     <edge id="e4" source="n12" target="n11">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="80.0" sy="0.0" tx="-70.5" ty="0.0"/>
+          <y:Path sx="0.0" sy="0.0" tx="-9.5" ty="0.5169238154337563"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="white_diamond" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -936,7 +1038,7 @@ product = p.getProduct();
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="34.0" tx="0.0" ty="-47.5"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="white_delta"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
@@ -1005,7 +1107,7 @@ product = p.getProduct();
     <edge id="e12" source="n18" target="n17">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="160.5742193093538" sy="-8.109881593110913" tx="-70.5" ty="0.0"/>
+          <y:Path sx="1.0353542979273698" sy="23.09470167151062" tx="-14.563178238487353" ty="3.7900772441552135"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="white_diamond" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -1015,8 +1117,8 @@ product = p.getProduct();
     <edge id="e13" source="n18" target="n16">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Path sx="-19.741177942466038" sy="0.8434491894092844" tx="-19.741177942466038" ty="-4.340401159028943"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="white_delta"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
@@ -1035,7 +1137,7 @@ product = p.getProduct();
     <edge id="e15" source="n14" target="n16">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="0.0" sy="0.0" tx="-24.36387782204497" ty="3.155561323729671"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="white_diamond" target="none"/>
           <y:BendStyle smoothed="false"/>
@@ -1055,7 +1157,7 @@ product = p.getProduct();
     <edge id="e17" source="n23" target="n22">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="91.0" sy="0.0" tx="-70.5" ty="0.0"/>
+          <y:Path sx="20.242861669737522" sy="3.567683491880075" tx="20.242861669737522" ty="-1.0857847753977694"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="white_diamond" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -1065,8 +1167,8 @@ product = p.getProduct();
     <edge id="e18" source="n23" target="n21">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="-47.5"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Path sx="17.68193891102237" sy="-2.043998000402894" tx="0.0" ty="-47.5"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="white_delta"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
@@ -1085,73 +1187,34 @@ product = p.getProduct();
     <edge id="e20" source="n19" target="n21">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="0.0" sy="0.0" tx="-12.965969455511186" ty="4.790596605048677"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="white_diamond" target="none"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e21" source="n22" target="n1">
+    <edge id="e21" source="n24" target="n25">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
-            <y:Point x="2607.7735018286903" y="881.502624184265"/>
-            <y:Point x="1230.08673306773" y="881.502624184265"/>
-          </y:Path>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="white_diamond" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e22" source="n17" target="n22">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
-            <y:Point x="2216.987269426947" y="860.1131819531893"/>
-            <y:Point x="2557.552245524541" y="860.1131819531893"/>
-          </y:Path>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="white_diamond" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e23" source="n11" target="n17">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
-            <y:Point x="1635.1088769920318" y="865.8170332148095"/>
-            <y:Point x="2035.7557237715812" y="865.8170332148095"/>
-          </y:Path>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="white_diamond" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e24" source="n24" target="n25">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="-21.232994162876448" ty="38.65506478915828"/>
+          <y:Path sx="0.0" sy="0.0" tx="-195.559021318734" ty="17.615323805848448"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e25" source="n25" target="n6">
+    <edge id="e22" source="n25" target="n6">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="white_delta"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e26" source="n27" target="n26">
+    <edge id="e23" source="n27" target="n26">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="140.99920318725094" sy="45.57819389110216" tx="-166.65512616201875" ty="45.57819389110216"/>
@@ -1161,7 +1224,7 @@ product = p.getProduct();
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e27" source="n27" target="n28">
+    <edge id="e24" source="n27" target="n28">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1171,7 +1234,7 @@ product = p.getProduct();
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e28" source="n30" target="n29">
+    <edge id="e25" source="n30" target="n29">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1181,7 +1244,7 @@ product = p.getProduct();
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e29" source="n30" target="n27">
+    <edge id="e26" source="n30" target="n27">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1191,7 +1254,7 @@ product = p.getProduct();
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e30" source="n30" target="n31">
+    <edge id="e27" source="n30" target="n31">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1201,9 +1264,8 @@ product = p.getProduct();
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e31" source="n27" target="n33">
+    <edge id="e28" source="n27" target="n33">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1213,9 +1275,8 @@ product = p.getProduct();
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e32" source="n27" target="n6">
+    <edge id="e29" source="n27" target="n6">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1225,9 +1286,8 @@ product = p.getProduct();
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e33" source="n29" target="n32">
+    <edge id="e30" source="n29" target="n32">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1237,9 +1297,8 @@ product = p.getProduct();
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e34" source="n18" target="n34">
+    <edge id="e31" source="n18" target="n34">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="119.96924202731515" sy="-12.370828256443541" tx="0.0" ty="0.0"/>
@@ -1249,21 +1308,19 @@ product = p.getProduct();
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e35" source="n36" target="n35">
+    <edge id="e32" source="n36" target="n35">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="white_delta"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e36" source="n36" target="n37">
+    <edge id="e33" source="n36" target="n37">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1273,14 +1330,50 @@ product = p.getProduct();
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e37" source="n18" target="n38">
+    <edge id="e34" source="n18" target="n38">
       <data key="d8"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="149.50692313339414" sy="39.7311788971266" tx="0.0" ty="0.0">
+            <y:Point x="2145.014938924137" y="1020.4835609431854"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e35" source="n40" target="n39">
       <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="0.0" sy="0.0" tx="-10.744389296645977" ty="2.6315048165430426"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e36" source="n43" target="n42">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="12.864655534688836" ty="0.9280486446994018"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e37" source="n4" target="n26">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
+            <y:Point x="980.5752134813912" y="-133.95709215551034"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
+          <y:Arrows source="none" target="white_diamond"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>

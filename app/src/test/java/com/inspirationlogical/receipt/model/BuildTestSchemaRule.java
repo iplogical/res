@@ -666,11 +666,11 @@ private void buildProducts() {
     private void categoriesAndPriceModifiers() {
         pseudoOne.setPriceModifier(new HashSet<PriceModifier>(
                 Arrays.asList(priceModifierOne, priceModifierTwo)));
-        aggregate.setPriceModifier(new HashSet<PriceModifier>(
+        leafTwo.setPriceModifier(new HashSet<PriceModifier>(
                 Arrays.asList(priceModifierThree)));
         priceModifierOne.setOwner(pseudoOne);
         priceModifierTwo.setOwner(pseudoOne);
-        priceModifierThree.setOwner(aggregate);
+        priceModifierThree.setOwner(leafTwo);
     }
 
     private void productsAndCategories() {
