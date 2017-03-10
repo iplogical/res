@@ -11,7 +11,7 @@ import com.inspirationlogical.receipt.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.model.view.ProductView;
 import com.inspirationlogical.receipt.model.view.ProductViewImpl;
 
-public class ProductServiceImpl implements ProductService {
+public class CommonServicesImpl implements CommonServices {
 
     public static List<ProductAdapter> createAdaptersFromAdaptees(List<Product> adaptees, EntityManager manager) {
         final List<ProductAdapter> adapters = new ArrayList<ProductAdapter>();
