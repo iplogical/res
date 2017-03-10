@@ -11,6 +11,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import com.inspirationlogical.receipt.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.testsuite.ModelTest;
 
 @Category(ModelTest.class)
@@ -44,6 +45,18 @@ public class ReceiptTest {
     @Test(expected = RollbackException.class)
     public void receiptWithoutStatus() {
         schema.getReceiptSaleOne().setStatus(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void saleReceiptWithoutPaymentMethod() {
+        schema.getReceiptSaleOne().setPaymentMethod(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void inventoryReceiptWithPaymentMethod() {
+        schema.getReceiptInventory().setPaymentMethod(PaymentMethod.CASH);
         assertListSize();
     }
 

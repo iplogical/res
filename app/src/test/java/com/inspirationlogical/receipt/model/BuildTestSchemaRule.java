@@ -11,6 +11,7 @@ import org.junit.runners.model.Statement;
 import com.inspirationlogical.receipt.model.Product;
 import com.inspirationlogical.receipt.model.ProductCategory;
 import com.inspirationlogical.receipt.model.enums.EtalonQuantity;
+import com.inspirationlogical.receipt.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.model.enums.PriceModifierLimitType;
 import com.inspirationlogical.receipt.model.enums.PriceModifierType;
 import com.inspirationlogical.receipt.model.enums.ProductCategoryType;
@@ -417,6 +418,7 @@ private void buildProducts() {
         receiptSaleOne = Receipt.builder()
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.OPEN)
+                .paymentMethod(PaymentMethod.CASH)
                 .discountAbsolute(1000)
                 .client(buildDefaultClient())
                 .build();
@@ -426,6 +428,7 @@ private void buildProducts() {
         receiptSaleTwo = Receipt.builder()
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.CLOSED)
+                .paymentMethod(PaymentMethod.CREDIT_CARD)
                 .discountAbsolute(2000)
                 .client(buildDefaultClient())
                 .build();
@@ -436,6 +439,7 @@ private void buildProducts() {
         receiptSaleThree = Receipt.builder()
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.OPEN)
+                .paymentMethod(PaymentMethod.CASH)
                 .discountAbsolute(3000)
                 .client(buildDefaultClient())
                 .build();
@@ -445,6 +449,7 @@ private void buildProducts() {
         receiptSaleFour = Receipt.builder()
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.CLOSED)
+                .paymentMethod(PaymentMethod.CASH)
                 .discountAbsolute(4000)
                 .client(buildDefaultClient())
                 .build();
@@ -454,6 +459,7 @@ private void buildProducts() {
         receiptPurchase = Receipt.builder()
                 .type(ReceiptType.PURCHASE)
                 .status(ReceiptStatus.OPEN)
+                .paymentMethod(PaymentMethod.CASH)
                 .client(buildDefaultClient())
                 .build();
     }
@@ -478,6 +484,7 @@ private void buildProducts() {
         receiptOther = Receipt.builder()
                 .type(ReceiptType.OTHER)
                 .status(ReceiptStatus.CLOSED)
+                .paymentMethod(PaymentMethod.CASH)
                 .client(buildDefaultClient())
                 .build();
     }

@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.model.annotations.ValidOwner;
+import com.inspirationlogical.receipt.model.annotations.ValidPaymentMethod;
+import com.inspirationlogical.receipt.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.model.enums.ReceiptType;
 
@@ -26,6 +28,7 @@ import lombok.EqualsAndHashCode;
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECEIPT_ID"))
 @ValidOwner
+@ValidPaymentMethod
 public @Data class Receipt extends AbstractEntity {
 
     public static final String GET_TEST_RECEIPTS = "Receipt.GetTestReceipts";
@@ -51,6 +54,9 @@ public @Data class Receipt extends AbstractEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     private ReceiptStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar openTime;

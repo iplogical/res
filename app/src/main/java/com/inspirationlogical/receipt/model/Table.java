@@ -46,7 +46,7 @@ public @Data class Table extends AbstractEntity {
     @Column(unique = true)
     private int number;
 
-    private int name;
+    private String name;
 
     private int coordinateX;
 
