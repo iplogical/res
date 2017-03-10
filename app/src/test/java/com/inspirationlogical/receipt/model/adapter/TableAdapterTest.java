@@ -31,7 +31,7 @@ public class TableAdapterTest {
 
     @Test
     public void testNormalTableHasAnActiveReceipt() {
-        TableAdapter tableAdapter = new TableAdapterImpl(schema.getTableNormal(), manager);
+        TableAdapter tableAdapter = new TableAdapter(schema.getTableNormal(), manager);
         assertNotNull(tableAdapter.getActiveReceipt());
     }
 }

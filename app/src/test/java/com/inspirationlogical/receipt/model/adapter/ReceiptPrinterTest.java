@@ -1,17 +1,13 @@
 package com.inspirationlogical.receipt.model.adapter;
 
-import static java.util.Arrays.*;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.model.listeners.ReceiptPrinter;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,7 +33,7 @@ public class ReceiptPrinterTest {
         manager.getTransaction().begin();
         manager.persist(schema.getRoot());
         manager.getTransaction().commit();
-        receipt = new ReceiptAdapterImpl(schema.getReceiptSaleOne(),manager);
+        receipt = new ReceiptAdapter(schema.getReceiptSaleOne(),manager);
     }
 
     @Test

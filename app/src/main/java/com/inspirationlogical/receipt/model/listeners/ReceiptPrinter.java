@@ -1,4 +1,6 @@
-package com.inspirationlogical.receipt.model.adapter;
+package com.inspirationlogical.receipt.model.listeners;
+
+import com.inspirationlogical.receipt.model.adapter.ReceiptAdapter;
 
 /**
  * Created by Ferenc on 2017. 03. 10..

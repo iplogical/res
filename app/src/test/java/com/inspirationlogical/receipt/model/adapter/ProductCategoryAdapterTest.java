@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
 
@@ -36,14 +35,14 @@ public class ProductCategoryAdapterTest {
 
     @Test
     public void testLeafNumberOfProductsUnderLeafOne() {
-        ProductCategoryAdapter leafOne = new ProductCategoryAdapterImpl(schema.getLeafOne(), manager);
+        ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne(), manager);
         List<ProductAdapter> products = leafOne.getAllProducts();
         assertEquals(2, products.size());
     }
 
     @Test
     public void testPrductNamesUnderLeafOne() {
-        ProductCategoryAdapter leafOne = new ProductCategoryAdapterImpl(schema.getLeafOne(), manager);
+        ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne(), manager);
         List<ProductAdapter> products = leafOne.getAllProducts();
         List<ProductAdapter> list_product_one =  products.stream().filter((elem) -> (elem.getAdaptee().getLongName().equals("product"))).collect(Collectors.toList());
         List<ProductAdapter> list_product_two =  products.stream().filter((elem) -> (elem.getAdaptee().getLongName().equals("productTwo"))).collect(Collectors.toList());
