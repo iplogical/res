@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.model.adapter;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
 
@@ -43,7 +44,9 @@ public class ProductCategoryAdapterTest {
     public void testPrductNamesUnderLeafOne() {
         ProductCategoryAdapter leafOne = new ProductCategoryAdapterImpl(schema.getLeafOne(), manager);
         List<ProductAdapter> products = leafOne.getAllProducts();
-        assertEquals("product", products.get(0).getAdaptee().getLongName());
-        assertEquals("productTwo", products.get(1).getAdaptee().getLongName());
+        Stream<ProductAdapter> stream_product =  products.stream().filter((elem) -> (elem.getAdaptee().getLongName().equals("product")));
+        Stream<ProductAdapter> stream_product_two =  products.stream().filter((elem) -> (elem.getAdaptee().getLongName().equals("productTwo")));
+        assertEquals(1,stream_product.count());
+        assertEquals(1,stream_product_two.count());
     }
 }
