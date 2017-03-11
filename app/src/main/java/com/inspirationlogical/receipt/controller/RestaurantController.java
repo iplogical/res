@@ -10,13 +10,14 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.registry.FXMLLoaderProvider;
 import com.inspirationlogical.receipt.utility.Wrapper;
+import com.inspirationlogical.receipt.view.TableView;
 
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -51,7 +52,6 @@ public class RestaurantController implements Initializable {
             contextMenu.setVisible(false);
             layout.getChildren().add(contextMenu);
 
-
             addPressAndHoldHandler(layout, Duration.millis(HOLD_DURATION_MILLIS));
         }
         catch (IOException e) {
@@ -84,14 +84,9 @@ public class RestaurantController implements Initializable {
     public void addTable() {
 
         // todo: Call service method to add a new table
+        Point2D position = new Point2D(contextMenu.getLayoutX(), contextMenu.getLayoutY());
 
-        Button table = new Button("Table");
 
-        table.setLayoutX(contextMenu.getLayoutX());
-        table.setLayoutY(contextMenu.getLayoutY());
-        table.setMinHeight(100.0);
-        table.setMinWidth(100.0);
-
-        layout.getChildren().add(table);
+        addPressAndHoldHandler(new TableView(layout, "Table", position).getView(), Duration.millis(HOLD_DURATION_MILLIS));
     }
 }
