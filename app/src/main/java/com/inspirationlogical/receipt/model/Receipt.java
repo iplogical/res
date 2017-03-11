@@ -15,6 +15,7 @@ import com.inspirationlogical.receipt.model.enums.ReceiptType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Tolerate;
 
 @Entity
 @Builder
@@ -87,4 +88,6 @@ public @Data class Receipt extends AbstractEntity {
     })
     private Client client;
 
+    @Tolerate
+    Receipt(){}
 }

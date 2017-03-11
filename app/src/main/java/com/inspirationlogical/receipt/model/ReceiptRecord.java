@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import lombok.experimental.Tolerate;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.inspirationlogical.receipt.model.annotations.ValidProduct;
@@ -59,4 +60,7 @@ public @Data class ReceiptRecord extends AbstractEntity {
     private double discountPercent;
 
     private double discountAbsolute;
+
+    @Tolerate
+    ReceiptRecord(){}
 }

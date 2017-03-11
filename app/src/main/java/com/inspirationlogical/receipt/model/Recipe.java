@@ -9,6 +9,7 @@ import com.inspirationlogical.receipt.model.enums.QunatityUnit;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Tolerate;
 
 @Entity
 @Builder
@@ -37,4 +38,7 @@ public @Data class Recipe extends AbstractEntity {
     private QunatityUnit quantityUnit;
 
     private double quantityMultiplier;
+
+    @Tolerate
+    Recipe(){}
 }

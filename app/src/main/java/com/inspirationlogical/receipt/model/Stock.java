@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Tolerate;
 
 @Entity
 @Builder
@@ -34,4 +35,7 @@ public @Data class Stock extends AbstractEntity {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar date;
+
+    @Tolerate
+    Stock(){}
 }

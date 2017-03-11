@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import lombok.experimental.Tolerate;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import lombok.Builder;
@@ -43,4 +44,7 @@ public @Data class Reservation extends AbstractEntity {
     private String name;
 
     private String note;
+
+    @Tolerate
+    Reservation(){}
 }

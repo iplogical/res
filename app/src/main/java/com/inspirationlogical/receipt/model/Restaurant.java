@@ -10,6 +10,8 @@ import com.inspirationlogical.receipt.model.annotations.ValidTables;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Tolerate;
 
 @Entity
 @Builder
@@ -39,4 +41,7 @@ public @Data class Restaurant extends AbstractEntity {
 
     @Lob
     private byte[] logo;
+
+    @Tolerate
+    Restaurant(){}
 }

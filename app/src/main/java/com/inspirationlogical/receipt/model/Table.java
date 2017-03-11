@@ -9,9 +9,8 @@ import javax.validation.constraints.NotNull;
 import com.inspirationlogical.receipt.model.annotations.ValidReceipts;
 import com.inspirationlogical.receipt.model.enums.TableType;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+import lombok.experimental.Tolerate;
 
 @Entity
 @Builder
@@ -19,13 +18,16 @@ import lombok.EqualsAndHashCode;
 @javax.persistence.Table(name = "_TABLE")
 @NamedQueries({
     @NamedQuery(name = Table.GET_TEST_TABLES,
-            query="FROM Table t")
+            query="FROM Table t"),
+    @NamedQuery(name = Table.GET_TABLE_BY_NUMBER,
+            query="FROM Table t WHERE t.number=:number")
 })
 @AttributeOverride(name = "id", column = @Column(name = "TABLE_ID"))
 @ValidReceipts
 public @Data class Table extends AbstractEntity {
 
     public static final String GET_TEST_TABLES = "Table.GetTestTables";
+    public static final String GET_TABLE_BY_NUMBER = "Table.GetTableByNumber";
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -59,4 +61,8 @@ public @Data class Table extends AbstractEntity {
     private String note;
 
     private boolean visibility;
+
+    @Tolerate
+    Table(){}
+
 }

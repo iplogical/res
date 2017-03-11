@@ -21,7 +21,6 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public void close(Collection<Listener> listeners) {
         GuardedTransaction.Run(manager,() -> {
             adaptee.setStatus(ReceiptStatus.CLOSED);
-            manager.persist(adaptee);
         });
         listeners.forEach((l) -> {l.onClose(this);});
     }

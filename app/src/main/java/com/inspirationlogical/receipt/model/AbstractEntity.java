@@ -7,8 +7,10 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @MappedSuperclass
+@NoArgsConstructor
 public @Data abstract class AbstractEntity {
 
     @Id

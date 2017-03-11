@@ -9,6 +9,7 @@ import com.inspirationlogical.receipt.model.enums.VATName;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Tolerate;
 
 @Entity
 @Builder
@@ -33,4 +34,7 @@ public @Data class VAT extends AbstractEntity {
     private VATName name;
 
     private double VAT;
+
+    @Tolerate
+    VAT(){}
 }

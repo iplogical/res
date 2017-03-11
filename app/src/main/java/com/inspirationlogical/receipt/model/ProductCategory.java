@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.persistence.*;
 import javax.persistence.Table;
 
+import lombok.experimental.Tolerate;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.inspirationlogical.receipt.model.annotations.ValidParent;
@@ -48,4 +49,6 @@ public @Data class ProductCategory extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private ProductCategoryType type;
 
+    @Tolerate
+    ProductCategory(){}
 }

@@ -7,6 +7,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
+import lombok.experimental.Tolerate;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -89,4 +90,7 @@ public @Data class Product extends AbstractEntity {
     private int minimumStore;
 
     private int storeWindow;
+
+    @Tolerate
+    Product(){}
 }

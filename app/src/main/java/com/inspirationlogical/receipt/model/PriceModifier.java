@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import lombok.experimental.Tolerate;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.inspirationlogical.receipt.model.enums.PriceModifierType;
@@ -69,4 +70,7 @@ public @Data class PriceModifier extends AbstractEntity {
     private PriceModifierLimitType limitType;
 
     private double discountPercent;
+
+    @Tolerate
+    PriceModifier() {}
 }

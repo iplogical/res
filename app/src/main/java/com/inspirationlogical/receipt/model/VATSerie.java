@@ -8,6 +8,8 @@ import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Tolerate;
+import org.hibernate.validator.constraints.br.TituloEleitoral;
 
 @Entity
 @Builder
@@ -24,4 +26,7 @@ public @Data class VATSerie extends AbstractEntity {
 
     @OneToMany(mappedBy = "serie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<VAT> vat;
+
+    @Tolerate
+    VATSerie(){}
 }
