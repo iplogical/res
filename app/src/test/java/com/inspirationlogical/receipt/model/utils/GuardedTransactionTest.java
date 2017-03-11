@@ -50,4 +50,17 @@ public class GuardedTransactionTest {
         assertEquals(old_capacity,table.getCapacity());
     }
 
+    @Test
+    public void test_nested_guarded_transactions_can_be_executed_successfully(){
+        int old_capacity = schema.getTableNormal().getCapacity();
+        GuardedTransaction.Run(manager,() -> {
+            schema.getTableNormal().setCapacity(schema.getTableNormal().getCapacity()+1);
+            GuardedTransaction.Run(manager,()->{
+                schema.getTableNormal().setCoordinateX(100);
+            });
+        });
+        assertEquals(old_capacity+1,schema.getTableNormal().getCapacity());
+        assertEquals(100,schema.getTableNormal().getCoordinateX());
+    }
+
 }

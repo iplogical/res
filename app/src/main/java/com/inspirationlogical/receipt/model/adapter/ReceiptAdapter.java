@@ -2,11 +2,11 @@ package com.inspirationlogical.receipt.model.adapter;
 
 import com.inspirationlogical.receipt.model.Receipt;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.model.listeners.ReceiptAdapterListeners;
 import com.inspirationlogical.receipt.model.utils.GuardedTransaction;
 
 import javax.persistence.EntityManager;
 import java.util.Collection;
-import java.util.Collections;
 
 public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public  interface Listener{
@@ -21,11 +21,12 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public void close(Collection<Listener> listeners) {
         GuardedTransaction.Run(manager,() -> {
             adaptee.setStatus(ReceiptStatus.CLOSED);
+            listeners.forEach((l) -> {l.onClose(this);});
         });
-        listeners.forEach((l) -> {l.onClose(this);});
+
     }
 
     void close(){
-        close(Collections.EMPTY_LIST);
+        close(ReceiptAdapterListeners.getAllListeners());
 }
 }

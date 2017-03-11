@@ -12,6 +12,9 @@ public class GuardedTransaction {
     }
 
     /**
+     * A Guarded transaction will execute the functor inside a transaction
+     * If the current manager's transaction is already in progress it will just execute the functor
+     * without establishing a new transaction
      *
      * @param manager the entity manager used for the transaction
      * @param f a functor which will be executed inside the transaction
@@ -19,10 +22,15 @@ public class GuardedTransaction {
      * are going to get in DETACHED state!
      */
     public static void Run(EntityManager manager,Functor f) {
-        manager.getTransaction().begin();
+        boolean myTransaction = !manager.getTransaction().isActive();
+        if(myTransaction){
+            manager.getTransaction().begin();
+        }
         try {
             f.doIt();
-            manager.getTransaction().commit();
+            if(myTransaction) {
+                manager.getTransaction().commit();
+            }
         } catch (Exception e){
             if(manager.getTransaction().isActive()) {
                 manager.getTransaction().rollback();

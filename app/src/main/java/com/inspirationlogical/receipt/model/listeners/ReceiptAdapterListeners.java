@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ReceiptAdapterListeners {
 
-    public static  List<ReceiptAdapter.Listener> getObservers(){
+    public static  List<ReceiptAdapter.Listener> getAllListeners(){
         List<ReceiptAdapter.Listener> list = new ArrayList<>();
         list.add(new ReceiptPrinter());
         return list;
