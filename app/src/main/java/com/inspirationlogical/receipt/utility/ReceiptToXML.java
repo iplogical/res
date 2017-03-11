@@ -56,12 +56,12 @@ public class ReceiptToXML {
     private static ReceiptFooter createFooter(ReceiptAdapter receiptAdapter,ObjectFactory factory) {
         ReceiptFooter footer = factory.createReceiptFooter();
         //TODO: add disclaimer in restaurant???
-        footer.setDisclaimer("Nem adougyi bizonylat, keszpenz atvetelere nem jogosit");
-        footer.setGreet("Koszonjuk, hogy nalunk fogyasztott!");
+        footer.setDisclaimer(Resources.PRINTER.getString("Disclaimer"));
+        footer.setGreet(Resources.PRINTER.getString("Greet"));
         GregorianCalendar gc = new GregorianCalendar();
         gc.setTimeInMillis(receiptAdapter.getAdaptee().getClosureTime().getTimeInMillis());
         footer.setDatetime(new XMLGregorianCalendarImpl(gc));
-        footer.setReceiptIdTag("Bizonylat azonosito:");
+        footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag"));
         footer.setReceiptId(receiptAdapter.getAdaptee().getId().toString());
         return footer;
     }
@@ -95,18 +95,26 @@ public class ReceiptToXML {
             return entry;
         }).collect(Collectors.toList());
         body.getEntry().addAll(records);
-        body.setBodyFooter(createReceiptBodyFooter(receiptAdapter,factory));
+        body.setBod:yFooter(createReceiptBodyFooter(receiptAdapter,factory));
         return body;
     }
 
     private static ReceiptBodyHeader createReceiptBodyHeader(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptBodyHeader header = factory.createReceiptBodyHeader();
         //TODO: add localization support
+<<<<<<< 834c541bdca2f51edb2edb647cf67036d01c3253
         header.setNameHeader("Megnev.");
         header.setQtyDimHeader("Egyseg");
         header.setQtyHeader("Menny.");
         header.setQtyPriceHeader("Egysegar");
         header.setTotalHeader("Ossz.");
+=======
+        header.setNameHeader(Resources.PRINTER.getString("NameHeader"));
+        header.setQtyDimHeader(Resources.PRINTER.getString("QtyDimHeader"));
+        header.setQtyHeader(Resources.PRINTER.getString("QtyHeader"));
+        header.setQtyPriceHeader(Resources.PRINTER.getString("QtyPriceHeader"));
+        header.setTotalHeader(Resources.PRINTER.getString("TotalHeader"));
+>>>>>>> Implement Resources class to read String from .properties files.
         return header;
     }
 
