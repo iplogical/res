@@ -31,19 +31,6 @@ public class ReceiptToXML {
 
     private static ReceiptFooter createFooter(ReceiptAdapter receiptAdapter,ObjectFactory factory) {
         ReceiptFooter footer = factory.createReceiptFooter();
-        //TODO: add localization support
-        footer.setTotalTag("Osszesen:");
-        footer.setTotal(BigInteger.valueOf(
-                receiptAdapter.getAdaptee().getRecords().stream()
-                        .map(e -> e.getSalePrice()*e.getQuantity())
-                        .reduce(0.0,(x,y)-> x+y).intValue())
-        );
-        //FIXME: add currency in model.Receipt
-        footer.setTotalCurrency("HUF");
-        footer.setTotalRoundedCurrency(footer.getTotalCurrency());
-        footer.setPaymentMethod(receiptAdapter.getAdaptee().getPaymentMethod().toString());
-        //TODO: add rounding logic based on paymentmethod
-        footer.setTotalRounded(footer.getTotal());
         //TODO: add disclaimer in restaurant???
         footer.setDisclaimer("Nem adougyi bizonylat, keszpenz atvetelere nem jogosit");
         footer.setGreet("Koszonjuk, hogy nalunk fogyasztott!");
@@ -84,17 +71,38 @@ public class ReceiptToXML {
             return entry;
         }).collect(Collectors.toList());
         body.getEntry().addAll(records);
+        body.setBodyFooter(createReceiptBodyFooter(receiptAdapter,factory));
         return body;
     }
 
     private static ReceiptBodyHeader createReceiptBodyHeader(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptBodyHeader header = factory.createReceiptBodyHeader();
         //TODO: add localization support
-        header.setNameHeader("Megnevezes");
+        header.setNameHeader("Megnev.");
         header.setQtyDimHeader("Egyseg");
-        header.setQtyHeader("Mennyiseg");
+        header.setQtyHeader("Menny.");
         header.setQtyPriceHeader("Egysegar");
-        header.setTotalHeader("Osszesen");
+        header.setTotalHeader("Ossz.");
         return header;
+    }
+
+    private static ReceiptBodyFooter createReceiptBodyFooter(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
+        ReceiptBodyFooter footer = factory.createReceiptBodyFooter();
+        //TODO: add localization support
+        footer.setTotalTag("Osszesen");
+        footer.setTotal(BigInteger.valueOf(
+                receiptAdapter.getAdaptee().getRecords().stream()
+                        .map(e -> e.getSalePrice()*e.getQuantity())
+                        .reduce(0.0,(x,y)-> x+y).intValue())
+        );
+        //FIXME: add currency in model.Receipt
+        footer.setTotalCurrency("HUF");
+        footer.setTotalRoundedTag("Osszesen(kerekitve)");
+        footer.setTotalRoundedCurrency(footer.getTotalCurrency());
+        footer.setPaymentMethodTag("Fizetesi mod");
+        footer.setPaymentMethod(receiptAdapter.getAdaptee().getPaymentMethod().toString());
+        //TODO: add rounding logic based on paymentmethod
+        footer.setTotalRounded(footer.getTotal());
+        return footer;
     }
 }
