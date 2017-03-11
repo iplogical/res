@@ -10,13 +10,21 @@
 
 # Gradle files #
 app/.gradle/*
+app/gradle/wrapper/*
 
-# Eclipse Files#
+# Eclipse Files #
 app/.settings/*
 app/.project
 app/build/*
-app/bin/
+app/bin/*
+
+# IntelliJ IDEA Files #
+app/.idea/*
+
+# Generated files #
+app/schema/*
+app/src/main/java/com/inspirationlogical/receipt/jaxb/*
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-app/.idea/
+

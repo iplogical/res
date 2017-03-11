@@ -16,10 +16,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
 import javafx.util.Duration;
 
 @Singleton
@@ -31,8 +31,6 @@ public class RestaurantController implements Initializable {
     @FXML
     AnchorPane layout;
 
-    private Popup popup;
-
     private VBox contextMenu;
 
     @Inject
@@ -42,8 +40,6 @@ public class RestaurantController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        addPressAndHoldHandler(layout, Duration.millis(HOLD_DURATION_MILLIS));
-
         setUpContextMenu();
     }
 
@@ -52,16 +48,15 @@ public class RestaurantController implements Initializable {
             FXMLLoader loader = FXMLLoaderProvider.getLoader(CONTEXT_MENU_VIEW_PATH);
             loader.setController(contextMenuController);
             contextMenu = loader.load();
-            popup = new Popup();
-            popup.getContent().add(contextMenu);
+            contextMenu.setVisible(false);
+            layout.getChildren().add(contextMenu);
+
+
+            addPressAndHoldHandler(layout, Duration.millis(HOLD_DURATION_MILLIS));
         }
         catch (IOException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    public Popup getPopup() {
-        return popup;
     }
 
     private void addPressAndHoldHandler(Node node, Duration holdTime) {
@@ -73,7 +68,9 @@ public class RestaurantController implements Initializable {
             if (eventWrapper.content.getSource() instanceof AnchorPane) {
                 contextMenu.getChildrenUnmodifiable().forEach(elem ->  elem.setManaged((Boolean) elem.getUserData()));
             }
-            popup.show(node, eventWrapper.content.getScreenX(), eventWrapper.content.getScreenY());
+            contextMenu.setLayoutX(eventWrapper.content.getX());
+            contextMenu.setLayoutY(eventWrapper.content.getY());
+            contextMenu.setVisible(true);
         });
 
         node.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
@@ -82,5 +79,19 @@ public class RestaurantController implements Initializable {
         });
         node.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> holdTimer.stop());
         node.addEventHandler(MouseEvent.DRAG_DETECTED, event -> holdTimer.stop());
+    }
+
+    public void addTable() {
+
+        // todo: Call service method to add a new table
+
+        Button table = new Button("Table");
+
+        table.setLayoutX(contextMenu.getLayoutX());
+        table.setLayoutY(contextMenu.getLayoutY());
+        table.setMinHeight(100.0);
+        table.setMinWidth(100.0);
+
+        layout.getChildren().add(table);
     }
 }

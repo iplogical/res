@@ -8,7 +8,6 @@ import com.google.inject.Singleton;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -53,9 +52,7 @@ public class ContextMenuController implements Initializable {
 
         hidePopup();
 
-        Point2D position = new Point2D(event.getScreenX(), event.getScreenY());
-
-        addNewTable(position);
+        restaurantController.addTable();
     }
 
     @FXML
@@ -78,10 +75,7 @@ public class ContextMenuController implements Initializable {
         hidePopup();
     }
 
-    private void addNewTable(Point2D position) {
-    }
-
     private void hidePopup() {
-        restaurantController.getPopup().hide();
+        view.setVisible(false);
     }
 }
