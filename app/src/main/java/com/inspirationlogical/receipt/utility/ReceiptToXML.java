@@ -5,7 +5,17 @@ import com.inspirationlogical.receipt.model.Restaurant;
 import com.inspirationlogical.receipt.model.adapter.ReceiptAdapter;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 
+import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -19,6 +29,20 @@ public class ReceiptToXML {
 
     public static Receipt Convert(ReceiptAdapter receiptAdapter){
         return createReceipt(receiptAdapter, new ObjectFactory());
+    }
+
+    public static InputStream ConvertToStream(ReceiptAdapter receiptAdapter){
+        Receipt r = createReceipt(receiptAdapter, new ObjectFactory());
+        try {
+            JAXBContext context = JAXBContext.newInstance("com.inspirationlogical.receipt.jaxb");
+            Marshaller jaxbMarshaller = context.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            jaxbMarshaller.marshal(r, baos);
+            return new ByteArrayInputStream(baos.toByteArray(),0,baos.size());
+        }catch (Exception e){
+            throw  new RuntimeException(e);
+        }
     }
 
     private static Receipt createReceipt(ReceiptAdapter receiptAdapter, ObjectFactory factory) {

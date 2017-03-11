@@ -1,10 +1,9 @@
 package com.inspirationlogical.receipt.utility;
 import static org.junit.Assert.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
+import java.io.*;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.xml.XMLConstants;
@@ -41,19 +40,30 @@ public class ReceiptToXMLTest {
         try {
             ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne(), manager);
             ra.close(Arrays.asList());
-            Receipt r = ReceiptToXML.Convert(ra);
-            JAXBContext context = JAXBContext.newInstance("com.inspirationlogical.receipt.jaxb");
-            Marshaller jaxbMarshaller = context.createMarshaller();
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            jaxbMarshaller.marshal(r, baos );
-            String xml_doc =  baos.toString();
+            String xml_doc =  new BufferedReader(new InputStreamReader(ReceiptToXML.ConvertToStream(ra)))
+                    .lines().collect(Collectors.joining("\n"));
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = factory.newSchema(new StreamSource(new File("src/main/resources/schema/receipt.xsd ")));
             schema.newValidator().validate(new StreamSource( new ByteArrayInputStream(xml_doc.getBytes())));
-            assertNotNull(r);
+            assertNotNull(xml_doc);
         }catch (Exception e){
             throw  new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void test_receipt_can_be_converted_to_PDF_from_XML(){
+        try {
+            ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne(), manager);
+            ra.close(Arrays.asList());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ReceiptXMLToPDF.convertToPDF(new FileOutputStream("test.pdf"),
+                    new FileInputStream("src/main/resources/schema/receipt_epsonTMT20II.xsl"),
+                    ReceiptToXML.ConvertToStream(ra)
+            );
+
+        } catch(Exception e){
+            throw new RuntimeException(e);
         }
     }
 
