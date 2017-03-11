@@ -43,7 +43,7 @@ public class ReceiptToXMLTest {
             String xml_doc =  new BufferedReader(new InputStreamReader(ReceiptToXML.ConvertToStream(ra)))
                     .lines().collect(Collectors.joining("\n"));
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = factory.newSchema(new StreamSource(new File("src/main/resources/schema/receipt.xsd ")));
+            Schema schema = factory.newSchema(new StreamSource(new File("src/main/resources/schema/receipt.xsd")));
             schema.newValidator().validate(new StreamSource( new ByteArrayInputStream(xml_doc.getBytes())));
             assertNotNull(xml_doc);
         }catch (Exception e){
