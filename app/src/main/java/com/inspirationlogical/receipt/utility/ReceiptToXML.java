@@ -95,43 +95,33 @@ public class ReceiptToXML {
             return entry;
         }).collect(Collectors.toList());
         body.getEntry().addAll(records);
-        body.setBod:yFooter(createReceiptBodyFooter(receiptAdapter,factory));
+        body.setBodyFooter(createReceiptBodyFooter(receiptAdapter,factory));
         return body;
     }
 
     private static ReceiptBodyHeader createReceiptBodyHeader(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptBodyHeader header = factory.createReceiptBodyHeader();
-        //TODO: add localization support
-<<<<<<< 834c541bdca2f51edb2edb647cf67036d01c3253
-        header.setNameHeader("Megnev.");
-        header.setQtyDimHeader("Egyseg");
-        header.setQtyHeader("Menny.");
-        header.setQtyPriceHeader("Egysegar");
-        header.setTotalHeader("Ossz.");
-=======
         header.setNameHeader(Resources.PRINTER.getString("NameHeader"));
         header.setQtyDimHeader(Resources.PRINTER.getString("QtyDimHeader"));
         header.setQtyHeader(Resources.PRINTER.getString("QtyHeader"));
         header.setQtyPriceHeader(Resources.PRINTER.getString("QtyPriceHeader"));
         header.setTotalHeader(Resources.PRINTER.getString("TotalHeader"));
->>>>>>> Implement Resources class to read String from .properties files.
         return header;
     }
 
     private static ReceiptBodyFooter createReceiptBodyFooter(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptBodyFooter footer = factory.createReceiptBodyFooter();
-        //TODO: add localization support
-        footer.setTotalTag("Osszesen");
+        footer.setTotalTag(Resources.PRINTER.getString("TotalTag"));
         footer.setTotal(BigInteger.valueOf(
                 receiptAdapter.getAdaptee().getRecords().stream()
                         .map(e -> e.getSalePrice()*e.getQuantity())
                         .reduce(0.0,(x,y)-> x+y).intValue())
         );
         //FIXME: add currency in model.Receipt
-        footer.setTotalCurrency("HUF");
-        footer.setTotalRoundedTag("Osszesen(kerekitve)");
+        footer.setTotalCurrency(Resources.PRINTER.getString("TotalCurrency"));
+        footer.setTotalRoundedTag(Resources.PRINTER.getString("TotalRoundedTag"));
         footer.setTotalRoundedCurrency(footer.getTotalCurrency());
-        footer.setPaymentMethodTag("Fizetesi mod");
+        footer.setPaymentMethodTag(Resources.PRINTER.getString("PaymentMethod"));
         footer.setPaymentMethod(receiptAdapter.getAdaptee().getPaymentMethod().toString());
         //TODO: add rounding logic based on paymentmethod
         footer.setTotalRounded(footer.getTotal());
