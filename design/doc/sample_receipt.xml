@@ -16,7 +16,6 @@
             <qty>5</qty>
             <qty_dim>db</qty_dim>
             <qty_price>250</qty_price>
-            <currency>HUF</currency>
             <total>1250</total>
         </entry>
         <entry>
@@ -24,7 +23,6 @@
             <qty>2</qty>
             <qty_dim>db</qty_dim>
             <qty_price>99</qty_price>
-            <currency>HUF</currency>
             <total>198</total>
         </entry>
     </body>
