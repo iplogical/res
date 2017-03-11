@@ -10,7 +10,10 @@
         <fo:layout-master-set>
             <fo:simple-page-master 
                 page-width="80mm"
-                margin="10mm 10mm 10mm 10mm" 
+                margin-top="0mm"
+                margin-left="0mm"
+                margin-bottom="10mm"
+                margin-right="10mm"
                 master-name="PageMaster" 
                 >
                 <fo:region-body margin-top="1cm" margin-bottom="1cm"/>
