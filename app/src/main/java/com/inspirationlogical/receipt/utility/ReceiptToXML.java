@@ -74,7 +74,7 @@ public class ReceiptToXML {
         header.setCompanyLocZIP("1111");
         header.setCompanyLocCity(restaurant.getAddress());
         header.setCompanyLocStreet("Lonyai 2.");
-        header.setCompanyTaxpayerId("1234567-8-90");
+        header.setCompanyTaxpayerId(Resources.PRINTER.getString("TaxationID")+":"+"1234567-8-90");
         header.setRestaurantName(restaurant.getCompanyName());
         header.setRestaurantLocZIP("1111");
         header.setRestaurantLocCity(restaurant.getAddress());

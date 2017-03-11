@@ -11,8 +11,9 @@ public enum Resources {
     private static final String DEFAULT_LOCATION = "properties.";
 
     Resources(String bundleFile) {
-        resourceBundle = ResourceBundle.getBundle(DEFAULT_LOCATION + bundleFile,
-                Locale.forLanguageTag("hu"));
+        String location = DEFAULT_LOCATION + bundleFile;
+        Locale l =Locale.forLanguageTag("hu");
+        resourceBundle = ResourceBundle.getBundle(location,l );
     }
 
     public String getString(String key) {

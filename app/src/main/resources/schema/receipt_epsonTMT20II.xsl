@@ -64,7 +64,7 @@
 
 <xsl:template match="body_header/*">
     <fo:table-cell>
-      <fo:block>
+      <fo:block padding-before="4pt" padding-after="4pt">
         <xsl:apply-templates  />
       </fo:block>
     </fo:table-cell>
@@ -84,7 +84,7 @@
 
 <xsl:template match="body_footer/total_tag|body_footer/total_rounded_tag|body_footer/payment_method_tag">
     <fo:table-cell number-columns-spanned="3">
-      <fo:block font-weight="bold">
+      <fo:block font-weight="bold"  padding-before="2pt">
         <xsl:apply-templates  />:
       </fo:block>
     </fo:table-cell>
@@ -92,7 +92,7 @@
 
 <xsl:template match="body_footer/payment_method">
     <fo:table-cell number-columns-spanned="2">
-      <fo:block font-weight="bold">
+      <fo:block font-weight="bold"  padding-before="2pt">
         <xsl:apply-templates  />
       </fo:block>
     </fo:table-cell>
@@ -100,7 +100,7 @@
 
 <xsl:template match="body_footer/total|body_footer/total_rounded|body_footer/total_currency|body_footer/total_rounded_currency">
     <fo:table-cell>
-      <fo:block font-weight="bold">
+      <fo:block font-weight="bold"  padding-before="2pt">
         <xsl:apply-templates  />
       </fo:block>
     </fo:table-cell>
