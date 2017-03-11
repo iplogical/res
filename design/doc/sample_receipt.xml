@@ -1,0 +1,43 @@
+<receipt>
+    <header>
+        <company_name>Judea Nepe Front Kft.</company_name>
+        <company_loc_ZIP>1111</company_loc_ZIP>
+        <company_loc_city>Budapest</company_loc_city>
+        <company_loc_street>Dohany utca 11.</company_loc_street>
+        <company_taxpayer_id>1234567-8-90</company_taxpayer_id>
+        <restaurant_name>Macesz Bar</restaurant_name>
+        <restaurant_loc_ZIP>1111</restaurant_loc_ZIP>
+        <restaurant_loc_city>Budapest</restaurant_loc_city>
+        <restaurant_loc_street>Dohany utca 11.</restaurant_loc_street>
+    </header>
+    <body>
+        <entry>
+            <name>BORSODI LAGER 0.5L</name>
+            <qty>5</qty>
+            <qty_dim>db</qty_dim>
+            <qty_price>250</qty_price>
+            <currency>HUF</currency>
+            <total>1250</total>
+        </entry>
+        <entry>
+            <name>MACESZ 100G</name>
+            <qty>2</qty>
+            <qty_dim>db</qty_dim>
+            <qty_price>99</qty_price>
+            <currency>HUF</currency>
+            <total>198</total>
+        </entry>
+    </body>
+    <footer>
+        <total>1448</total>
+        <total_currency>HUF</total_currency>
+        <payment_method>Keszpenz</payment_method>
+        <total_rounded>1450</total_rounded>
+        <total_rounded_currency>HUF</total_rounded_currency>
+        <disclaimer>Nem adougyi bizonylat, keszpenz atvetelere nem jogosit</disclaimer>
+        <greet>Koszonjuk hogy velunk macesztal!</greet>
+        <datetime>2017-03-11-11:10</datetime>
+        <receipt_id>1234</receipt_id>
+    </footer>
+    
+</receipt>
