@@ -31,6 +31,8 @@ public class ReceiptToXML {
 
     private static ReceiptFooter createFooter(ReceiptAdapter receiptAdapter,ObjectFactory factory) {
         ReceiptFooter footer = factory.createReceiptFooter();
+        //TODO: add localization support
+        footer.setTotalTag("Osszesen:");
         footer.setTotal(BigInteger.valueOf(
                 receiptAdapter.getAdaptee().getRecords().stream()
                         .map(e -> e.getSalePrice()*e.getQuantity())
@@ -48,6 +50,7 @@ public class ReceiptToXML {
         GregorianCalendar gc = new GregorianCalendar();
         gc.setTimeInMillis(receiptAdapter.getAdaptee().getClosureTime().getTimeInMillis());
         footer.setDatetime(new XMLGregorianCalendarImpl(gc));
+        footer.setReceiptIdTag("Bizonylat azonosito:");
         footer.setReceiptId(receiptAdapter.getAdaptee().getId().toString());
         return footer;
     }
@@ -70,6 +73,7 @@ public class ReceiptToXML {
 
     private static ReceiptBody createReceiptBody(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptBody body = factory.createReceiptBody();
+        body.setBodyHeader(createReceiptBodyHeader(receiptAdapter,factory));
         List<ReceiptBodyEntry> records = receiptAdapter.getAdaptee().getRecords().stream().map((record) ->{
             ReceiptBodyEntry entry = factory.createReceiptBodyEntry();
             entry.setName(record.getName());
@@ -81,5 +85,16 @@ public class ReceiptToXML {
         }).collect(Collectors.toList());
         body.getEntry().addAll(records);
         return body;
+    }
+
+    private static ReceiptBodyHeader createReceiptBodyHeader(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
+        ReceiptBodyHeader header = factory.createReceiptBodyHeader();
+        //TODO: add localization support
+        header.setNameHeader("Megnevezes");
+        header.setQtyDimHeader("Egyseg");
+        header.setQtyHeader("Mennyiseg");
+        header.setQtyPriceHeader("Egysegar");
+        header.setTotalHeader("Osszesen");
+        return header;
     }
 }

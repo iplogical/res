@@ -51,8 +51,9 @@ public class ReceiptToXMLTest {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = factory.newSchema(new StreamSource(new File("src/main/resources/schema/receipt.xsd ")));
             schema.newValidator().validate(new StreamSource( new ByteArrayInputStream(xml_doc.getBytes())));
+            assertNotNull(r);
         }catch (Exception e){
-            assertEquals(0,1);
+            throw  new RuntimeException(e);
         }
     }
 

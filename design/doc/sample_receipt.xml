@@ -34,7 +34,7 @@
         <total_rounded_currency>HUF</total_rounded_currency>
         <disclaimer>Nem adougyi bizonylat, keszpenz atvetelere nem jogosit</disclaimer>
         <greet>Koszonjuk hogy velunk macesztal!</greet>
-        <datetime>2017-03-11-11:10</datetime>
+        <datetime>2017-03-11T15:07:10.009+01:00</datetime>
         <receipt_id>1234</receipt_id>
     </footer>
     

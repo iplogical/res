@@ -27,7 +27,18 @@
 
 <xs:complexType name="receipt_body">
   <xs:sequence>
+    <xs:element name="body_header" type="receipt_body_header" />
     <xs:element name="entry" type="receipt_body_entry" minOccurs="1" maxOccurs="unbounded" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="receipt_body_header">
+  <xs:sequence>
+    <xs:element name="name_header" type="xs:string"/>
+    <xs:element name="qty_header" type="xs:string"/>
+    <xs:element name="qty_dim_header" type="xs:string"/>
+    <xs:element name="qty_price_header" type="xs:string"/>
+    <xs:element name="total_header" type="xs:string"/>
   </xs:sequence>
 </xs:complexType>
 
@@ -43,6 +54,7 @@
 
 <xs:complexType name="receipt_footer">
   <xs:sequence>
+    <xs:element name="total_tag" type="xs:string"/>
     <xs:element name="total" type="xs:integer"/>
     <xs:element name="total_currency" type="xs:string"/>
     <xs:element name="payment_method" type="xs:string"/>
@@ -51,7 +63,8 @@
     <xs:element name="disclaimer" type="xs:string" minOccurs="0"/>
     <xs:element name="note" type="xs:string" minOccurs="0"/>
     <xs:element name="greet" type="xs:string" minOccurs="0"/>
-    <xs:element name="datetime" type="xs:date"/>
+    <xs:element name="datetime" type="xs:dateTime"/>
+    <xs:element name="receipt_id_tag" type="xs:string"/>
     <xs:element name="receipt_id" type="xs:string"/>
   </xs:sequence>
 </xs:complexType>
