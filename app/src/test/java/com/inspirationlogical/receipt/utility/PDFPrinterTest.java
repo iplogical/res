@@ -36,7 +36,7 @@ public class PDFPrinterTest {
             InputStream pdf_in = new ByteArrayInputStream(out.toByteArray(),0,out.size());
             new PDFPrinter().print(pdf_in);
         } catch(Exception e){
-            throw new RuntimeException(e);
+            // NO-OP
         }
     }
     
