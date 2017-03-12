@@ -1,64 +1,50 @@
 package com.inspirationlogical.receipt.view;
 
+import com.inspirationlogical.receipt.utility.Wrapper;
+
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
-import javafx.scene.control.Button;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class TableView {
 
-    private Button button;
+    private Node view;
 
-    public TableView(Pane parent, String name, Point2D position) {
-        button = new Button(name);
-        button.setLayoutX(position.getX());
-        button.setLayoutY(position.getY());
-        button.setMinHeight(100.0);
-        button.setMinWidth(100.0);
-        final Delta dragDelta = new Delta();
-
-        button.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                // record a delta distance for the drag and drop operation.
-                dragDelta.x = button.getLayoutX() - mouseEvent.getSceneX();
-                dragDelta.y = button.getLayoutY() - mouseEvent.getSceneY();
-                button.setCursor(Cursor.MOVE);
-            }
-        });
-
-        button.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                button.setCursor(Cursor.HAND);
-            }
-        });
-
-        button.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                button.setLayoutX(mouseEvent.getSceneX() + dragDelta.x);
-                button.setLayoutY(mouseEvent.getSceneY() + dragDelta.y);
-            }
-        });
-
-        button.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                button.setCursor(Cursor.HAND);
-            }
-        });
-
-        parent.getChildren().add(button);
+    public TableView(Node view, Pane parent, Point2D position) {
+        this.view = view;
+        configureView(parent, position);
     }
 
-    class Delta {
-        double x, y;
+    private void configureView(Pane parent, Point2D position) {
+        view.setLayoutX(position.getX());
+        view.setLayoutY(position.getY());
+        view.setFocusTraversable(false);
+
+        final Wrapper<Point2D> deltaWrapper = new Wrapper<>();
+
+        view.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Point2D delta = new Point2D(view.getLayoutX() - mouseEvent.getSceneX(),
+                        view.getLayoutY() - mouseEvent.getSceneY());
+                deltaWrapper.setContent(delta);
+            }
+        });
+
+        view.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                view.setLayoutX(mouseEvent.getSceneX() + deltaWrapper.getContent().getX());
+                view.setLayoutY(mouseEvent.getSceneY() + deltaWrapper.getContent().getY());
+            }
+        });
+
+        parent.getChildren().add(view);
     }
 
-    public Button getView() {
-        return button;
+    public Node getView() {
+        return view;
     }
 }

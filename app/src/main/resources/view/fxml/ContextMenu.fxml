@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="view" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="128.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+<VBox fx:id="view" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="addTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onAddTable" text="Asztal hozzáadása" />
-      <Button fx:id="renameTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onRenameTable" text="Asztal átnevezése" />
-      <Button fx:id="deleteTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onDeleteTable" text="Asztal törlése" />
-      <Button fx:id="mergeTables" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onMergeTables" text="Asztalok összetolása" />
-      <Button fx:id="splitTables" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onSplitTables" text="Asztalok széthúzása" />
+      <Button fx:id="addTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onAddTable" text="Asztal hozzáadása">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <Button fx:id="renameTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onRenameTable" text="Asztal átnevezése">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <Button fx:id="deleteTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onDeleteTable" text="Asztal törlése">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <Button fx:id="mergeTables" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onMergeTables" text="Asztalok összetolása">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <Button fx:id="splitTables" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onSplitTables" text="Asztalok széthúzása">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
    </children>
 </VBox>

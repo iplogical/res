@@ -40,11 +40,6 @@ public class ContextMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addTable.setUserData(new Boolean(true));
-        renameTable.setUserData(new Boolean(false));
-        deleteTable.setUserData(new Boolean(false));
-        mergeTables.setUserData(new Boolean(true));
-        splitTables.setUserData(new Boolean(true));
     }
 
     @FXML

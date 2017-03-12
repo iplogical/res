@@ -18,9 +18,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 @Singleton
@@ -28,6 +31,8 @@ public class RestaurantController implements Initializable {
 
     public static final String RESTAURANT_VIEW_PATH = "/view/fxml/Restaurant.fxml";
     private static final int HOLD_DURATION_MILLIS = 500;
+    private static double TABLE_WIDTH = 100.0;
+    private static double TABLE_HEIGHT = 100.0;
 
     @FXML
     AnchorPane layout;
@@ -65,28 +70,36 @@ public class RestaurantController implements Initializable {
         PauseTransition holdTimer = new PauseTransition(holdTime);
 
         holdTimer.setOnFinished(event -> {
-            if (eventWrapper.content.getSource() instanceof AnchorPane) {
-                contextMenu.getChildrenUnmodifiable().forEach(elem ->  elem.setManaged((Boolean) elem.getUserData()));
-            }
-            contextMenu.setLayoutX(eventWrapper.content.getX());
-            contextMenu.setLayoutY(eventWrapper.content.getY());
+            contextMenu.setLayoutX(eventWrapper.getContent().getX() + node.getLayoutX());
+            contextMenu.setLayoutY(eventWrapper.getContent().getY() + node.getLayoutY());
+            contextMenu.toFront();
             contextMenu.setVisible(true);
         });
 
         node.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            eventWrapper.content = event ;
+            eventWrapper.setContent(event);
             holdTimer.playFromStart();
+            contextMenu.setVisible(false);
         });
+
         node.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> holdTimer.stop());
+
         node.addEventHandler(MouseEvent.DRAG_DETECTED, event -> holdTimer.stop());
     }
 
     public void addTable() {
 
-        // todo: Call service method to add a new table
         Point2D position = new Point2D(contextMenu.getLayoutX(), contextMenu.getLayoutY());
 
+        // todo: Call service method to add a new table (returns table details as table number, table name and people count)
 
-        addPressAndHoldHandler(new TableView(layout, "Table", position).getView(), Duration.millis(HOLD_DURATION_MILLIS));
+        Button button = new Button();
+        button.setMinWidth(TABLE_WIDTH);
+        button.setMinHeight(TABLE_HEIGHT);
+        button.setTextAlignment(TextAlignment.CENTER);
+        button.setFont(Font.font(16));
+        button.setText("6\n" + "Spicces Feri\n" + "3 fő");
+
+        addPressAndHoldHandler(new TableView(button, layout, position).getView(), Duration.millis(HOLD_DURATION_MILLIS));
     }
 }
