@@ -903,8 +903,8 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="Interface" use3DEffect="true">
             <y:AttributeLabel/>
             <y:MethodLabel>+ openTable(TableView) : void
-+ sellProduct(TableView,ProductView,Amount,...) : void
-+ sellAdHocProduct(TableView,Params.....) : void
++ sellProduct(TableView,ProductView,Amount,PaymentParams) : void
++ sellAdHocProduct(TableView,Amount,PaymentParams) : void
 + payTable(TableView, PaymentParams) : void
 + paySelective(TableView,Collection&lt;Pair&lt;ReceiptRecordView,Fraction&gt;&gt;, PaymentParams) : void 
 
@@ -930,13 +930,14 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="Interface" use3DEffect="true">
             <y:AttributeLabel/>
             <y:MethodLabel>+ getTables() : List&lt;TableView&gt;
-+ setName(TableView table,String name) : void
-+ setCapacity(TableView table,Number ): void
-+ addNote(TableView,String) : void
++ setTableName(TableView table,String name) : void
++ setTableCapacity(TableView table,Number ): void
++ addTableNote(TableView,String) : void
++ displayTable(TableView) : void
++ hideTable(TableView) : void
++ moveTable(TableView, Coordinates) : void
 + addTable(RestaurantView, Type, Number) : TableView
 + deleteTable(TableView) : void
-+ displayTable(TableView) : void
-+ moveTable(TableView, Coordinates) : void
 + getActiveReceipt(TableView) : ReceiptView</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
@@ -1287,12 +1288,12 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
     <edge id="e29" source="n36" target="n2">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="73.03646002656035" sy="-20.86940471445314" tx="0.0" ty="0.0">
+          <y:Path sx="73.03646002656035" sy="-20.86940471445314" tx="-1.5907498914677944" ty="-8.62819952191245">
             <y:Point x="261.86667914369286" y="376.8328768260292"/>
           </y:Path>
           <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="43.3515625" x="151.83317593503568" y="-188.62458957397035">creates<y:LabelModel>
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="43.3515625" x="151.83317593503568" y="-190.70758948256457">creates<y:LabelModel>
               <y:SmartEdgeLabelModel autoRotationEnabled="false" defaultAngle="0.0" defaultDistance="10.0"/>
             </y:LabelModel>
             <y:ModelParameter>
