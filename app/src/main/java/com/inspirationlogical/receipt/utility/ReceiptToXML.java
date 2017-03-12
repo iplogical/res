@@ -1,25 +1,26 @@
 package com.inspirationlogical.receipt.utility;
 
-import com.inspirationlogical.receipt.jaxb.*;
-import com.inspirationlogical.receipt.model.Restaurant;
-import com.inspirationlogical.receipt.model.adapter.ReceiptAdapter;
-import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
-
-import javax.xml.XMLConstants;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+
+import com.inspirationlogical.receipt.jaxb.ObjectFactory;
+import com.inspirationlogical.receipt.jaxb.Receipt;
+import com.inspirationlogical.receipt.jaxb.ReceiptBody;
+import com.inspirationlogical.receipt.jaxb.ReceiptBodyEntry;
+import com.inspirationlogical.receipt.jaxb.ReceiptBodyFooter;
+import com.inspirationlogical.receipt.jaxb.ReceiptBodyHeader;
+import com.inspirationlogical.receipt.jaxb.ReceiptFooter;
+import com.inspirationlogical.receipt.jaxb.ReceiptHeader;
+import com.inspirationlogical.receipt.model.Restaurant;
+import com.inspirationlogical.receipt.model.adapter.ReceiptAdapter;
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 
 
 /**
@@ -89,9 +90,9 @@ public class ReceiptToXML {
             ReceiptBodyEntry entry = factory.createReceiptBodyEntry();
             entry.setName(record.getName());
             entry.setQtyPrice(BigInteger.valueOf(record.getSalePrice()));
-            entry.setQty(BigInteger.valueOf((int)record.getQuantity()));
+            entry.setQty(BigInteger.valueOf((int)record.getSoldQuantity()));
             entry.setQtyDim(record.getProduct().getEtalonQuantity().toString());
-            entry.setTotal(BigInteger.valueOf((int)record.getQuantity()*record.getSalePrice()));
+            entry.setTotal(BigInteger.valueOf((int)record.getSoldQuantity() * record.getSalePrice()));
             return entry;
         }).collect(Collectors.toList());
         body.getEntry().addAll(records);
@@ -114,8 +115,8 @@ public class ReceiptToXML {
         footer.setTotalTag(Resources.PRINTER.getString("TotalTag"));
         footer.setTotal(BigInteger.valueOf(
                 receiptAdapter.getAdaptee().getRecords().stream()
-                        .map(e -> e.getSalePrice()*e.getQuantity())
-                        .reduce(0.0,(x,y)-> x+y).intValue())
+                        .map(e -> e.getSalePrice() * e.getSoldQuantity())
+                        .reduce(0.0,(x,y)-> x + y).intValue())
         );
         //FIXME: add currency in model.Receipt
         footer.setTotalCurrency(Resources.PRINTER.getString("TotalCurrency"));
