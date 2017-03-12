@@ -419,6 +419,7 @@ private void buildProducts() {
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
+                .openTime(new GregorianCalendar())
                 .discountAbsolute(1000)
                 .client(buildDefaultClient())
                 .build();
@@ -429,6 +430,8 @@ private void buildProducts() {
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.CLOSED)
                 .paymentMethod(PaymentMethod.CREDIT_CARD)
+                .openTime(new GregorianCalendar())
+                .closureTime(new GregorianCalendar())
                 .discountAbsolute(2000)
                 .client(buildDefaultClient())
                 .build();
@@ -441,6 +444,7 @@ private void buildProducts() {
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
                 .discountAbsolute(3000)
+                .openTime(new GregorianCalendar())
                 .client(buildDefaultClient())
                 .build();
     }
@@ -450,7 +454,9 @@ private void buildProducts() {
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.CLOSED)
                 .paymentMethod(PaymentMethod.CASH)
-                .discountAbsolute(4000)
+                .openTime(new GregorianCalendar())
+                .closureTime(new GregorianCalendar())
+                .discountPercent(20)
                 .client(buildDefaultClient())
                 .build();
     }
@@ -460,6 +466,7 @@ private void buildProducts() {
                 .type(ReceiptType.PURCHASE)
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
+                .openTime(new GregorianCalendar())
                 .client(buildDefaultClient())
                 .build();
     }
@@ -468,6 +475,8 @@ private void buildProducts() {
         receiptInventory = Receipt.builder()
                 .type(ReceiptType.INVENTORY)
                 .status(ReceiptStatus.CLOSED)
+                .openTime(new GregorianCalendar())
+                .closureTime(new GregorianCalendar())
                 .client(buildDefaultClient())
                 .build();
     }
@@ -476,6 +485,8 @@ private void buildProducts() {
         receiptDisposal = Receipt.builder()
                 .type(ReceiptType.DISPOSAL)
                 .status(ReceiptStatus.CLOSED)
+                .openTime(new GregorianCalendar())
+                .closureTime(new GregorianCalendar())
                 .client(buildDefaultClient())
                 .build();
     }
@@ -485,6 +496,8 @@ private void buildProducts() {
                 .type(ReceiptType.OTHER)
                 .status(ReceiptStatus.CLOSED)
                 .paymentMethod(PaymentMethod.CASH)
+                .openTime(new GregorianCalendar())
+                .closureTime(new GregorianCalendar())
                 .client(buildDefaultClient())
                 .build();
     }

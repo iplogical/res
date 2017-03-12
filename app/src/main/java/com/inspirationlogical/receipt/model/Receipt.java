@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.model.annotations.ValidOwner;
 import com.inspirationlogical.receipt.model.annotations.ValidPaymentMethod;
+import com.inspirationlogical.receipt.model.annotations.ValidTimeStamp;
 import com.inspirationlogical.receipt.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.model.enums.ReceiptType;
@@ -30,6 +31,7 @@ import lombok.experimental.Tolerate;
 @AttributeOverride(name = "id", column = @Column(name = "RECEIPT_ID"))
 @ValidOwner
 @ValidPaymentMethod
+@ValidTimeStamp
 public @Data class Receipt extends AbstractEntity {
 
     public static final String GET_TEST_RECEIPTS = "Receipt.GetTestReceipts";
@@ -59,6 +61,7 @@ public @Data class Receipt extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar openTime;
 

@@ -59,6 +59,19 @@ public class ReceiptRecordTest {
         assertListSize();
     }
 
+    @Test(expected = RollbackException.class)
+    public void testAbsoluteAndPercentDiscountSimultaneously() {
+        schema.getReceiptRecordSaleOne().setDiscountAbsolute(1000D);
+        schema.getReceiptRecordSaleOne().setDiscountPercent(10D);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void testPercentDiscountMoreThanHundred() {
+        schema.getReceiptRecordSaleOne().setDiscountPercent(150D);
+        assertListSize();
+    }
+
     private void assertListSize() {
         assertEquals(5, persistReceiptRecordAndGetList().size());
     }

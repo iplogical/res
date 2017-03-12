@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import lombok.experimental.Tolerate;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.inspirationlogical.receipt.model.annotations.ValidDiscount;
 import com.inspirationlogical.receipt.model.annotations.ValidProduct;
 import com.inspirationlogical.receipt.model.enums.ReceiptRecordType;
 
@@ -28,6 +29,7 @@ import lombok.ToString;
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECEIPT_RECORD_ID"))
 @ValidProduct
+@ValidDiscount
 public @Data class ReceiptRecord extends AbstractEntity {
 
     public static final String GET_TEST_RECEIPTS_RECORDS = "ReceiptRecord.GetTestReceiptsRecords";
@@ -51,15 +53,15 @@ public @Data class ReceiptRecord extends AbstractEntity {
     @NotEmpty
     private String name;
 
-    private double quantity;
+    private double soldQuantity;
 
     private int salePrice;
 
     private double VAT;
 
-    private double discountPercent;
+    private Double discountPercent;
 
-    private double discountAbsolute;
+    private Double discountAbsolute;
 
     @Tolerate
     ReceiptRecord(){}

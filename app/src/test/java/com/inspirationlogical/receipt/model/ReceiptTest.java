@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.model;
 
 import static org.junit.Assert.*;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -106,6 +107,18 @@ public class ReceiptTest {
     @Test(expected = RollbackException.class)
     public void otherReceiptWithInvalidOwner() {
         schema.getReceiptOther().setOwner(schema.getTableInventory());
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void openReceiptWithClosureTime() {
+        schema.getReceiptSaleOne().setClosureTime(new GregorianCalendar());
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void closedReceiptWithoutClosureTime() {
+        schema.getReceiptSaleTwo().setClosureTime(null);
         assertListSize();
     }
 
