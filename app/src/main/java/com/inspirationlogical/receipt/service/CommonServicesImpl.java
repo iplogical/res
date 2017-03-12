@@ -2,12 +2,12 @@ package com.inspirationlogical.receipt.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 
 import com.inspirationlogical.receipt.model.Product;
 import com.inspirationlogical.receipt.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.model.view.ProductCategoryView;
+import com.inspirationlogical.receipt.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.model.view.ProductView;
 import com.inspirationlogical.receipt.model.view.ProductViewImpl;
 
@@ -32,6 +32,6 @@ public class CommonServicesImpl implements CommonServices {
     @Override
     public List<ProductView> getProducts(ProductCategoryView category) {
 
-        return createViewsFromAdapters(category.getAdapter().getAllProducts());
+        return createViewsFromAdapters(((ProductCategoryViewImpl)category).getAdapter().getAllProducts());
     }
 }

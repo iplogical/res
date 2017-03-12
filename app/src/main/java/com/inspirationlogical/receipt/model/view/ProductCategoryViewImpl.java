@@ -4,10 +4,18 @@ import com.inspirationlogical.receipt.model.adapter.ProductCategoryAdapter;
 
 public class ProductCategoryViewImpl implements ProductCategoryView {
 
-    @Override
-    public ProductCategoryAdapter getAdapter() {
-        // TODO Auto-generated method stub
-        return null;
+    private ProductCategoryAdapter adapter;
+
+    public ProductCategoryViewImpl(ProductCategoryAdapter adapter) {
+        this.adapter = adapter;
     }
 
+    public ProductCategoryAdapter getAdapter() {
+        return adapter;
+    }
+
+    @Override
+    public String getCategoryName() {
+        return adapter.getAdaptee().getName();
+    }
 }
