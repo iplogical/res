@@ -225,8 +225,8 @@ private void buildProducts() {
 
     private void BuildRestaurant() {
         restaurant = Restaurant.builder()
-                .restaurantName("TestRestaurant")
-                .companyName("TestCompany")
+                .restaurantName("GameUp Pub")
+                .companyName("Arcopen Kft.")
                 .companyTaxPayerId("1-42-6518879")
                 .companyAddress(buildDefaultAddress())
                 .restaurantAddress(buildDefaultAddress())
@@ -235,9 +235,9 @@ private void buildProducts() {
 
     private Address buildDefaultAddress() {
         return Address.builder()
-                .ZIPCode("1212")
+                .ZIPCode("1066")
                 .city("Budapest")
-                .street("Nowhere Strasse")
+                .street("Zichy Jenõ utca 4.")
                 .build();
     }
 
@@ -522,17 +522,19 @@ private void buildProducts() {
 
     private void buildReceiptRecordSaleOne() {
         receiptRecordSaleOne = ReceiptRecord.builder()
-                .name("A")
+                .name("Soproni 0,5L")
                 .type(ReceiptRecordType.HERE)
+                .salePrice(440)
                 .soldQuantity(1D)
                 .build();
     }
 
     private void buildReceiptRecordSaleTwo() {
         receiptRecordSaleTwo = ReceiptRecord.builder()
-                .name("B")
+                .name("Jim Beam")
                 .soldQuantity(2D)
-                .type(ReceiptRecordType.TAKE_AWAY)
+                .salePrice(560)
+                .type(ReceiptRecordType.HERE)
                 .build();
     }
 
