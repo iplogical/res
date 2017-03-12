@@ -36,20 +36,32 @@ public class RestaurantTest {
     }
 
     @Test(expected = RollbackException.class)
-    public void nameIsNull() {
-        schema.getRestaurant().setName(null);
+    public void restaurantNameIsNull() {
+        schema.getRestaurant().setRestaurantName(null);
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
     public void companyNameIsNull() {
-        schema.getRestaurant().setCompanyName(null);;
+        schema.getRestaurant().setCompanyName(null);
         assertListSize();
     }
 
     @Test(expected = RollbackException.class)
-    public void addressIsNull() {
-        schema.getRestaurant().setAddress(null);
+    public void companyTaxPayerIdNull() {
+        schema.getRestaurant().setCompanyTaxPayerId(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void restaurantAddressIsNull() {
+        schema.getRestaurant().setRestaurantAddress(null);
+        assertListSize();
+    }
+
+    @Test(expected = RollbackException.class)
+    public void companyAddressIsNull() {
+        schema.getRestaurant().setCompanyAddress(null);
         assertListSize();
     }
 

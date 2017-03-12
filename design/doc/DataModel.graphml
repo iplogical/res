@@ -120,16 +120,18 @@ attribute 3<y:LabelModel>
     <node id="n4">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="161.99999999999994" width="90.0" x="-1183.0662712703402" y="-314.80793492695875"/>
+          <y:Geometry height="184.4767466110531" width="105.92102884949622" x="-1198.9873001198362" y="-314.80793492695875"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="46.01171875" x="21.994140625" y="4.0">Étterem</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="106.908203125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="53.34765625" x="2.0" y="30.701171875">ID
+          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="46.01171875" x="29.954655049748226" y="4.0">Étterem</y:NodeLabel>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="136.310546875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="67.3515625" x="2.0" y="30.701171875">ID
 GU ID
 Verzió ID
-Név
+ÉtteremNév
 Cégnév
-Cím
+Adószám
+Étterm Cím
+Cég Cím
 Logo<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
             </y:LabelModel>
@@ -685,7 +687,7 @@ Megjegyzes<y:LabelModel>
     <edge id="e2" source="n4" target="n6">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-16.736873749404594" sy="-52.99999999999997" tx="0.0" ty="0.0">
+          <y:Path sx="-19.69763208067844" sy="-60.353503520900084" tx="0.0" ty="0.0">
             <y:Point x="-1027.6973263001323" y="-286.80793492695875"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>

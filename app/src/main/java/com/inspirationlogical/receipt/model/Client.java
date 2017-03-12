@@ -10,12 +10,12 @@ import lombok.experimental.Tolerate;
 @Embeddable
 public @Data class Client {
 
-    @Tolerate
-    public Client() {}
-
     private String name;
 
     private String address;
 
     private String TAXNumber;
+
+    @Tolerate
+    public Client() {}
 }

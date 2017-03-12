@@ -31,13 +31,31 @@ public @Data class Restaurant extends AbstractEntity {
     private Collection<Table> table;
 
     @NotNull
-    private String name;
+    private String restaurantName;
 
     @NotNull
     private String companyName;
 
     @NotNull
-    private String address;
+    private String companyTaxPayerId;
+
+    @NotNull
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "ZIPCode", column = @Column(name = "restaurantZIPCode", nullable = false)),
+        @AttributeOverride(name = "city", column = @Column(name = "restaurantCity", nullable = false)),
+        @AttributeOverride(name = "street", column = @Column(name = "restaurantStreet", nullable = false))
+    })
+    private Address restaurantAddress;
+
+    @NotNull
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "ZIPCode", column = @Column(name = "companyZIPCode", nullable = false)),
+        @AttributeOverride(name = "city", column = @Column(name = "companyCity", nullable = false)),
+        @AttributeOverride(name = "street", column = @Column(name = "companyStreet", nullable = false))
+    })
+    private Address companyAddress;
 
     @Lob
     private byte[] logo;

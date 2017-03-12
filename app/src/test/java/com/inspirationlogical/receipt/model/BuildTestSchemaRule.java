@@ -225,11 +225,21 @@ private void buildProducts() {
 
     private void BuildRestaurant() {
         restaurant = Restaurant.builder()
-                .name("TestRestaurant")
+                .restaurantName("TestRestaurant")
                 .companyName("TestCompany")
-                .address("TestAddress")
+                .companyTaxPayerId("1-42-6518879")
+                .companyAddress(buildDefaultAddress())
+                .restaurantAddress(buildDefaultAddress())
                 .build();
      }
+
+    private Address buildDefaultAddress() {
+        return Address.builder()
+                .ZIPCode("1212")
+                .city("Budapest")
+                .street("Nowhere Strasse")
+                .build();
+    }
 
     private void buildProduct() {
         productOne = Product.builder()
@@ -514,14 +524,14 @@ private void buildProducts() {
         receiptRecordSaleOne = ReceiptRecord.builder()
                 .name("A")
                 .type(ReceiptRecordType.HERE)
-                .quantity(1D)
+                .soldQuantity(1D)
                 .build();
     }
 
     private void buildReceiptRecordSaleTwo() {
         receiptRecordSaleTwo = ReceiptRecord.builder()
                 .name("B")
-                .quantity(2D)
+                .soldQuantity(2D)
                 .type(ReceiptRecordType.TAKE_AWAY)
                 .build();
     }
@@ -529,7 +539,7 @@ private void buildProducts() {
     private void buildReceiptRecordSaleThree() {
         receiptRecordSaleThree = ReceiptRecord.builder()
                 .name("C")
-                .quantity(1D)
+                .soldQuantity(1D)
                 .type(ReceiptRecordType.HERE)
                 .build();
     }
@@ -537,7 +547,7 @@ private void buildProducts() {
     private void buildReceiptRecordSaleFour() {
         receiptRecordSaleFour = ReceiptRecord.builder()
                 .name("D")
-                .quantity(0.5)
+                .soldQuantity(0.5)
                 .type(ReceiptRecordType.HERE)
                 .build();
     }
@@ -546,7 +556,7 @@ private void buildProducts() {
     private void buildReceiptRecordOther() {
         receiptRecordOther = ReceiptRecord.builder()
                 .name("E")
-                .quantity(1)
+                .soldQuantity(1)
                 .type(ReceiptRecordType.HERE)
                 .build();
     }

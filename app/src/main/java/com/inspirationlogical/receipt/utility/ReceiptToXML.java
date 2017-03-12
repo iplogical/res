@@ -71,14 +71,14 @@ public class ReceiptToXML {
         Restaurant restaurant = receiptAdapter.getAdaptee().getOwner().getOwner();
         header.setCompanyName(restaurant.getCompanyName());
         //FIXME: add owner and restaurant ZIP,Street addr,city, taxation ID in DataModel
-        header.setCompanyLocZIP("1111");
-        header.setCompanyLocCity(restaurant.getAddress());
-        header.setCompanyLocStreet("Lonyai 2.");
-        header.setCompanyTaxpayerId(Resources.PRINTER.getString("TaxationID")+":"+"1234567-8-90");
-        header.setRestaurantName(restaurant.getCompanyName());
-        header.setRestaurantLocZIP("1111");
-        header.setRestaurantLocCity(restaurant.getAddress());
-        header.setRestaurantLocStreet("Lonyai 2.");
+        header.setCompanyLocZIP(restaurant.getCompanyAddress().getZIPCode());
+        header.setCompanyLocCity(restaurant.getCompanyAddress().getCity());
+        header.setCompanyLocStreet(restaurant.getCompanyAddress().getStreet());
+        header.setCompanyTaxpayerId(Resources.PRINTER.getString("TaxationID")+": "+ restaurant.getCompanyTaxPayerId());
+        header.setRestaurantName(restaurant.getRestaurantName());
+        header.setRestaurantLocZIP(restaurant.getRestaurantAddress().getZIPCode());
+        header.setRestaurantLocCity(restaurant.getRestaurantAddress().getCity());
+        header.setRestaurantLocStreet(restaurant.getRestaurantAddress().getStreet());
         return  header;
     }
 
