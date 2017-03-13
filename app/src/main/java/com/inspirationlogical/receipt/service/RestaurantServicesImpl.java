@@ -1,17 +1,38 @@
 package com.inspirationlogical.receipt.service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.inspirationlogical.receipt.model.adapter.EntityManagerProvider;
+import com.inspirationlogical.receipt.model.adapter.RestaurantAdapter;
+import com.inspirationlogical.receipt.model.adapter.TableAdapter;
+import com.inspirationlogical.receipt.model.entity.Restaurant;
 import com.inspirationlogical.receipt.model.enums.TableType;
-import com.inspirationlogical.receipt.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.view.RestaurantView;
-import com.inspirationlogical.receipt.view.TableView;
+import com.inspirationlogical.receipt.model.view.*;
+
+import javax.persistence.EntityManager;
 
 public class RestaurantServicesImpl implements RestaurantServices {
 
+    private EntityManager manager;
+
+    public RestaurantServicesImpl(EntityManager manager) {
+        this.manager = manager;
+    }
+
     @Override
-    public List<TableView> getTables() {
-        return null;
+    public RestaurantView getActiveRestaurant() {
+        List<Restaurant> restaurantList = manager.createNamedQuery(Restaurant.GET_ACTIVE_RESTAURANT).getResultList();
+        return new RestaurantViewImpl(new RestaurantAdapter(restaurantList.get(0), manager));
+    }
+
+    @Override
+    public List<TableView> getTables(RestaurantView restaurant) {
+        Collection<TableAdapter> tableAdapters =((RestaurantViewImpl)restaurant).getAdapter().getDisplayableTables();
+        return tableAdapters.stream()
+                .map(tableAdapter -> new TableViewImpl(tableAdapter))
+                .collect(Collectors.toList());
     }
 
     @Override

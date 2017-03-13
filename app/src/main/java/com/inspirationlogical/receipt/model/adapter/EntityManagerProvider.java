@@ -9,22 +9,19 @@ import javax.persistence.Persistence;
 public class EntityManagerProvider {
 
     private static EntityManagerFactory emf;
-    private static List<EntityManager> emList;
+    private static EntityManager em;
 
     public static EntityManager getEntityManager() {
         if(emf == null) {
             emf = Persistence.createEntityManagerFactory("TestPersistance");
+            em = emf.createEntityManager();
         }
-        EntityManager em = emf.createEntityManager();
-        emList.add(em);
         return em;
     }
 
-    public static void closeEntityManager(EntityManager em) {
-        emList.remove(em);
+    public static void closeEntityManager() {
         em.close();
-        if(emList.isEmpty()) {
-            emf.close();
-        }
+        emf.close();
+
     }
 }

@@ -18,13 +18,16 @@ import lombok.experimental.Tolerate;
 @javax.persistence.Table(name = "RESTAURANT")
 @NamedQueries({
     @NamedQuery(name = Restaurant.GET_TEST_RESTAURANTS,
-            query="FROM Restaurant r")
+            query="FROM Restaurant r"),
+    @NamedQuery(name = Restaurant.GET_ACTIVE_RESTAURANT,
+            query="FROM Restaurant r"),
 })
 @AttributeOverride(name = "id", column = @Column(name = "RESTAURANT_ID"))
 @ValidTables
 public @Data class Restaurant extends AbstractEntity {
 
     public static final String GET_TEST_RESTAURANTS = "Restaurant.GetTestRestaurants";
+    public static final String GET_ACTIVE_RESTAURANT = "Restaurant.GetActiveRestaurant";
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Table> table;

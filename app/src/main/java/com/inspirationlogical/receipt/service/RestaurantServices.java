@@ -4,12 +4,14 @@ import java.util.List;
 
 import com.inspirationlogical.receipt.model.enums.TableType;
 import com.inspirationlogical.receipt.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.view.RestaurantView;
-import com.inspirationlogical.receipt.view.TableView;
+import com.inspirationlogical.receipt.model.view.RestaurantView;
+import com.inspirationlogical.receipt.model.view.TableView;
 
 public interface RestaurantServices {
 
-    List<TableView> getTables();
+    RestaurantView getActiveRestaurant();
+
+    List<TableView> getTables(RestaurantView restaurant);
 
     void setTableName(TableView table, String name);
 
