@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.model.adapter;
 
+import com.inspirationlogical.receipt.exception.RestaurantNotFoundException;
 import com.inspirationlogical.receipt.model.entity.Restaurant;
 import com.inspirationlogical.receipt.model.entity.Table;
 import com.inspirationlogical.receipt.model.enums.TableType;
@@ -16,6 +17,14 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
 
     public RestaurantAdapter(Restaurant adaptee, EntityManager manager) {
         super(adaptee, manager);
+    }
+
+    public static RestaurantAdapter restaurantAdapterFactory(EntityManager manager) {
+        List<Restaurant> restaurantList = manager.createNamedQuery(Restaurant.GET_ACTIVE_RESTAURANT).getResultList();
+        if (restaurantList.isEmpty()) {
+            throw new RestaurantNotFoundException();
+        }
+        return new RestaurantAdapter(restaurantList.get(0), manager);
     }
 
     public List<TableAdapter> getDisplayableTables() {

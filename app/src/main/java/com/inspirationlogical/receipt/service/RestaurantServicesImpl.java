@@ -26,11 +26,7 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
 
     @Override
     public RestaurantView getActiveRestaurant() {
-        List<Restaurant> restaurantList = manager.createNamedQuery(Restaurant.GET_ACTIVE_RESTAURANT).getResultList();
-        if (restaurantList.isEmpty()) {
-            throw new RestaurantNotFoundException();
-        }
-        return new RestaurantViewImpl(new RestaurantAdapter(restaurantList.get(0), manager));
+        return new RestaurantViewImpl(RestaurantAdapter.restaurantAdapterFactory(manager));
     }
 
     @Override
