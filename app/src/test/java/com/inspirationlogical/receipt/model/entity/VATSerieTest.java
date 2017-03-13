@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.model;
+package com.inspirationlogical.receipt.model.entity;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
 import com.inspirationlogical.receipt.model.entity.VATSerie;
 import org.junit.Rule;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.model;
+package com.inspirationlogical.receipt.model.entity;
 
 import static org.junit.Assert.*;
 
@@ -8,6 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.RollbackException;
 
+import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
 import com.inspirationlogical.receipt.model.entity.Product;
 import org.junit.Rule;
 import org.junit.Test;

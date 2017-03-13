@@ -1,11 +1,10 @@
 package com.inspirationlogical.receipt.testsuite;
 
+import com.inspirationlogical.receipt.model.entity.*;
 import org.junit.experimental.categories.Categories;
 import org.junit.experimental.categories.Categories.IncludeCategory;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
-
-import com.inspirationlogical.receipt.model.*;
 
 @RunWith(Categories.class)
 @IncludeCategory(ModelTest.class)
