@@ -20,6 +20,8 @@ app/bin/*
 
 # IntelliJ IDEA Files #
 app/.idea/*
+app/out
+*.iml
 
 # Generated files #
 app/schema/*

@@ -11,7 +11,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import com.inspirationlogical.receipt.model.ProductCategory;
+import com.inspirationlogical.receipt.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.testsuite.ModelTest;
 
 @Category(ModelTest.class)

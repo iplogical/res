@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.model.adapter;
 
-import com.inspirationlogical.receipt.model.Receipt;
+import com.inspirationlogical.receipt.model.entity.Receipt;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.model.listeners.ReceiptAdapterListeners;
 import com.inspirationlogical.receipt.model.utils.GuardedTransaction;

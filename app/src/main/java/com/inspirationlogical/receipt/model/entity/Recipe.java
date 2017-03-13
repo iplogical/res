@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.model;
+package com.inspirationlogical.receipt.model.entity;
 
 import javax.persistence.*;
 import javax.persistence.Table;

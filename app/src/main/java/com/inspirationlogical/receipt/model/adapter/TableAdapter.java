@@ -3,8 +3,8 @@ package com.inspirationlogical.receipt.model.adapter;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import com.inspirationlogical.receipt.model.Receipt;
-import com.inspirationlogical.receipt.model.Table;
+import com.inspirationlogical.receipt.model.entity.Receipt;
+import com.inspirationlogical.receipt.model.entity.Table;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 
 public class TableAdapter extends AbstractAdapter<Table>

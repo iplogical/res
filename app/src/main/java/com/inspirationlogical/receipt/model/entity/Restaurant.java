@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.model;
+package com.inspirationlogical.receipt.model.entity;
 
 import java.util.Collection;
 
@@ -10,7 +10,6 @@ import com.inspirationlogical.receipt.model.annotations.ValidTables;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Tolerate;
 
 @Entity

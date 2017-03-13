@@ -4,12 +4,11 @@ import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 
+import com.inspirationlogical.receipt.model.entity.*;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-import com.inspirationlogical.receipt.model.Product;
-import com.inspirationlogical.receipt.model.ProductCategory;
 import com.inspirationlogical.receipt.model.enums.EtalonQuantity;
 import com.inspirationlogical.receipt.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.model.enums.PriceModifierLimitType;
@@ -66,7 +65,8 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Receipt receiptOther;
 
     private @Getter ReceiptRecord receiptRecordSaleOne;
-    private @Getter ReceiptRecord receiptRecordSaleTwo;
+    private @Getter
+    ReceiptRecord receiptRecordSaleTwo;
     private @Getter ReceiptRecord receiptRecordSaleThree;
     private @Getter ReceiptRecord receiptRecordSaleFour;
     private @Getter ReceiptRecord receiptRecordOther;
@@ -76,7 +76,8 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Table tablePurchase;
     private @Getter Table tableInventory;
     private @Getter Table tableDisposal;
-    private @Getter Table tableOther;
+    private @Getter
+    Table tableOther;
 
     private @Getter Reservation reservationOne;
     private @Getter Reservation reservationTwo;
@@ -237,7 +238,7 @@ private void buildProducts() {
         return Address.builder()
                 .ZIPCode("1066")
                 .city("Budapest")
-                .street("Zichy Jenõ utca 4.")
+                .street("Zichy Jenï¿½ utca 4.")
                 .build();
     }
 

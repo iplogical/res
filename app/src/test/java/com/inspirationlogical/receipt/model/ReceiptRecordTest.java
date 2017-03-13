@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 
+import com.inspirationlogical.receipt.model.entity.ReceiptRecord;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;

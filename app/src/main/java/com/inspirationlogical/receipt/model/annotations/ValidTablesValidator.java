@@ -3,7 +3,7 @@ package com.inspirationlogical.receipt.model.annotations;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.inspirationlogical.receipt.model.Restaurant;
+import com.inspirationlogical.receipt.model.entity.Restaurant;
 import com.inspirationlogical.receipt.model.enums.TableType;
 
 public class ValidTablesValidator 

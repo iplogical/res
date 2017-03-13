@@ -2,7 +2,7 @@ package com.inspirationlogical.receipt.model.adapter;
 
 import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.model.Product;
+import com.inspirationlogical.receipt.model.entity.Product;
 
 public class ProductAdapter extends AbstractAdapter<Product> {
     public ProductAdapter(Product adaptee, EntityManager manager) {

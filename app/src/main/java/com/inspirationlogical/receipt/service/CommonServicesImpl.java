@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.model.Product;
+import com.inspirationlogical.receipt.model.entity.Product;
 import com.inspirationlogical.receipt.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.model.view.ProductCategoryViewImpl;

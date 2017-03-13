@@ -18,7 +18,7 @@ import com.inspirationlogical.receipt.jaxb.ReceiptBodyFooter;
 import com.inspirationlogical.receipt.jaxb.ReceiptBodyHeader;
 import com.inspirationlogical.receipt.jaxb.ReceiptFooter;
 import com.inspirationlogical.receipt.jaxb.ReceiptHeader;
-import com.inspirationlogical.receipt.model.Restaurant;
+import com.inspirationlogical.receipt.model.entity.Restaurant;
 import com.inspirationlogical.receipt.model.adapter.ReceiptAdapter;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 

@@ -2,15 +2,12 @@ package com.inspirationlogical.receipt.model.utils;
 
 import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
-import com.inspirationlogical.receipt.model.Table;
-import com.inspirationlogical.receipt.model.adapter.TableAdapter;
+import com.inspirationlogical.receipt.model.entity.Table;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

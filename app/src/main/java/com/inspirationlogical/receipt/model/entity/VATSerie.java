@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.model;
+package com.inspirationlogical.receipt.model.entity;
 
 import java.util.Collection;
 
@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Tolerate;
-import org.hibernate.validator.constraints.br.TituloEleitoral;
 
 @Entity
 @Builder

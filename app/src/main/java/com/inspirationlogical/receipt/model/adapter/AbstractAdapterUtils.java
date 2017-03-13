@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.model.AbstractEntity;
+import com.inspirationlogical.receipt.model.entity.AbstractEntity;
 
 public class AbstractAdapterUtils {
 

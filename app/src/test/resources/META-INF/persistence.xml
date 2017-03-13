@@ -8,18 +8,18 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     
         <!-- entities -->
-        <class>com.inspirationlogical.receipt.model.Product</class>
-        <class>com.inspirationlogical.receipt.model.ProductCategory</class>
-        <class>com.inspirationlogical.receipt.model.Recipe</class>
-        <class>com.inspirationlogical.receipt.model.Stock</class>
-        <class>com.inspirationlogical.receipt.model.Receipt</class>
-        <class>com.inspirationlogical.receipt.model.Table</class>
-        <class>com.inspirationlogical.receipt.model.Restaurant</class>
-        <class>com.inspirationlogical.receipt.model.ReceiptRecord</class>
-        <class>com.inspirationlogical.receipt.model.VATSerie</class>
-        <class>com.inspirationlogical.receipt.model.VAT</class>
-        <class>com.inspirationlogical.receipt.model.Reservation</class>
-        <class>com.inspirationlogical.receipt.model.PriceModifier</class>
+        <class>com.inspirationlogical.receipt.model.entity.Product</class>
+        <class>com.inspirationlogical.receipt.model.entity.ProductCategory</class>
+        <class>com.inspirationlogical.receipt.model.entity.Recipe</class>
+        <class>com.inspirationlogical.receipt.model.entity.Stock</class>
+        <class>com.inspirationlogical.receipt.model.entity.Receipt</class>
+        <class>com.inspirationlogical.receipt.model.entity.Table</class>
+        <class>com.inspirationlogical.receipt.model.entity.Restaurant</class>
+        <class>com.inspirationlogical.receipt.model.entity.ReceiptRecord</class>
+        <class>com.inspirationlogical.receipt.model.entity.VATSerie</class>
+        <class>com.inspirationlogical.receipt.model.entity.VAT</class>
+        <class>com.inspirationlogical.receipt.model.entity.Reservation</class>
+        <class>com.inspirationlogical.receipt.model.entity.PriceModifier</class>
         <!--          -->
 
         <properties>

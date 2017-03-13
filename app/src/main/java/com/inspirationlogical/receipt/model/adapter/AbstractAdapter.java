@@ -1,12 +1,8 @@
 package com.inspirationlogical.receipt.model.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.model.AbstractEntity;
+import com.inspirationlogical.receipt.model.entity.AbstractEntity;
 
 public abstract class AbstractAdapter<T extends AbstractEntity>
 {

@@ -3,7 +3,7 @@ package com.inspirationlogical.receipt.model.annotations;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.inspirationlogical.receipt.model.ReceiptRecord;
+import com.inspirationlogical.receipt.model.entity.ReceiptRecord;
 
 public class ValidDiscountValidator
     implements ConstraintValidator<ValidDiscount, ReceiptRecord> {

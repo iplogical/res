@@ -3,7 +3,7 @@ package com.inspirationlogical.receipt.model.annotations;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.inspirationlogical.receipt.model.ProductCategory;
+import com.inspirationlogical.receipt.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.model.enums.ProductCategoryType;
 
 public class ValidParentValidator

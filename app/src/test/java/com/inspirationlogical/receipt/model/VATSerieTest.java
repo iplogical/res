@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import com.inspirationlogical.receipt.model.entity.VATSerie;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;

@@ -3,7 +3,7 @@ package com.inspirationlogical.receipt.model.annotations;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.inspirationlogical.receipt.model.Receipt;
+import com.inspirationlogical.receipt.model.entity.Receipt;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 
 public class ValidTimeStampValidator 
