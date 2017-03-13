@@ -14,9 +14,10 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'com.github.jacobono.jaxb'
 apply plugin: 'application'
+mainClassName = 'com.inspirationlogical.receipt.application.Main'
 
 run {
-    main = 'com.inspirationlogical.receipt.application.Main'
+    main = project.getProperty('mainClassName')
 }
 
 // In this section you declare where to find the dependencies of your project
