@@ -3,27 +3,33 @@ package com.inspirationlogical.receipt.service;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.model.adapter.EntityManagerProvider;
+import com.google.inject.Inject;
 import com.inspirationlogical.receipt.model.adapter.RestaurantAdapter;
 import com.inspirationlogical.receipt.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.model.entity.Restaurant;
 import com.inspirationlogical.receipt.model.enums.TableType;
-import com.inspirationlogical.receipt.model.view.*;
+import com.inspirationlogical.receipt.model.view.ReceiptRecordView;
+import com.inspirationlogical.receipt.model.view.RestaurantView;
+import com.inspirationlogical.receipt.model.view.RestaurantViewImpl;
+import com.inspirationlogical.receipt.model.view.TableView;
+import com.inspirationlogical.receipt.model.view.TableViewImpl;
 
-import javax.persistence.EntityManager;
+public class RestaurantServicesImpl extends AbstractServices implements RestaurantServices {
 
-public class RestaurantServicesImpl implements RestaurantServices {
-
-    private EntityManager manager;
-
+    @Inject
     public RestaurantServicesImpl(EntityManager manager) {
-        this.manager = manager;
+        super(manager);
     }
 
     @Override
     public RestaurantView getActiveRestaurant() {
         List<Restaurant> restaurantList = manager.createNamedQuery(Restaurant.GET_ACTIVE_RESTAURANT).getResultList();
+        if (restaurantList.isEmpty()) {
+            //throw new RestaurantNotFoundException();
+            return null;
+        }
         return new RestaurantViewImpl(new RestaurantAdapter(restaurantList.get(0), manager));
     }
 

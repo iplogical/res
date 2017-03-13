@@ -12,11 +12,11 @@ import com.inspirationlogical.receipt.testsuite.ControllerTest;
 @Category(ControllerTest.class)
 public class RestaurantControllerTest {
 
-    private RestaurantController underTest;
+    private RestaurantControllerImpl underTest;
 
     @Before
     public void setUp() {
-        //underTest = new RestaurantController();
+        //underTest = new RestaurantControllerImpl();
     }
 
     @Test

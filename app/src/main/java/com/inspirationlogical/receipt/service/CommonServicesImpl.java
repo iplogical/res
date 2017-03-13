@@ -1,18 +1,23 @@
 package com.inspirationlogical.receipt.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.model.entity.Product;
+import com.google.inject.Inject;
 import com.inspirationlogical.receipt.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.model.view.ProductView;
 import com.inspirationlogical.receipt.model.view.ProductViewImpl;
 
-public class CommonServicesImpl implements CommonServices {
+public class CommonServicesImpl extends AbstractServices implements CommonServices {
+
+    @Inject
+    public CommonServicesImpl(EntityManager manager) {
+        super(manager);
+    }
 
     public static List<ProductView> createViewsFromAdapters(List<ProductAdapter> adapters) {
         return adapters.stream()

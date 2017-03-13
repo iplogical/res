@@ -32,14 +32,15 @@ repositories {
 dependencies {
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'mysql:mysql-connector-java:5.1.6'
     compile 'org.hibernate:hibernate-core:5.2.8.Final'
     compile 'org.hibernate:hibernate-validator:5.4.0.Final'
     compile 'org.apache.xmlgraphics:fop:2.1'
 
     // https://mvnrepository.com/artifact/javax.el/el-api
-    compile group: 'javax.el', name: 'el-api', version: '2.2'
+    compile 'javax.el:el-api:2.2'
     // https://mvnrepository.com/artifact/org.glassfish.web/javax.el
-    compile group: 'org.glassfish.web', name: 'javax.el', version: '2.2.6'
+    compile 'org.glassfish.web:javax.el:2.2.6'
 
     compile 'com.google.inject:guice:4.1.0'
     compile "org.projectlombok:lombok:1.16.14"
@@ -52,9 +53,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:1.10.19'
     // https://mvnrepository.com/artifact/com.h2database/h2
-    testCompile group: 'com.h2database', name: 'h2', version: '1.0.60'
+    testCompile 'com.h2database:h2:1.0.60'
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-    testCompile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
+    testCompile 'mysql:mysql-connector-java:5.1.6'
 
 
     jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.7-b41'

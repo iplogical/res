@@ -9,6 +9,10 @@ public class FXMLLoaderProvider {
 
     private static final Injector injector = Guice.createInjector(new Registry());
 
+    public static Injector getInjector() {
+        return injector;
+    }
+
     public static FXMLLoader getLoader(String viewPath) {
         FXMLLoader loader = new FXMLLoader(FXMLLoaderProvider.class.getResource(viewPath));
         loader.setControllerFactory(injector::getInstance);

@@ -27,9 +27,10 @@ public class EntityManagerFactoryRule implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                Properties props = new Properties();
-                props.setProperty("persistenceXmlLocation", "resources/META-INF/persistence.xml");
+
                 if(viewTestSchema) {
+                    Properties props = new Properties();
+                    props.setProperty("persistenceXmlLocation", "resources/META-INF/persistence.xml");
                     props.setProperty("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/ReceiptViewTest");
                     props.setProperty("javax.persistence.schema-generation.database.action", "create");
                     emf = Persistence.createEntityManagerFactory("TestPersistance", props);
