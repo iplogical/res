@@ -21,3 +21,7 @@ https://www.lifewire.com/run-ubuntu-within-windows-virtualbox-2202098
 
 # How to set up Java 8 JDK on Ubuntu?
 https://tecadmin.net/install-oracle-java-8-ubuntu-via-ppa/#
+
+# How to calibrate touch display on Ubuntu
+sudo ./scripts/touch_calibrate.sh 
+
