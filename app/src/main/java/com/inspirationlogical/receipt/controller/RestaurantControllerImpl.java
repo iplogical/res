@@ -105,7 +105,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         button.setMinHeight(TABLE_HEIGHT);
         button.setTextAlignment(TextAlignment.CENTER);
         button.setFont(Font.font(16));
-        button.setText("6.\n" + "Spicces Feri\n" + "3/6 fı");
+        button.setText("6.\n" + "Spicces Feri\n" + "3/6 f≈ë");
 
         addPressAndHoldHandler(new TableView(button, layout, position).getView(), Duration.millis(HOLD_DURATION_MILLIS));
     }
