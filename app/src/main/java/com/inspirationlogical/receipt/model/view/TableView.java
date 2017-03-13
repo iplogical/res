@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.model.view;
 
+import com.inspirationlogical.receipt.model.enums.TableType;
 import javafx.geometry.Point2D;
 
 import java.util.Collection;
@@ -13,6 +14,8 @@ public interface TableView {
     boolean isVisible();
 
     boolean isVirtual();
+
+    TableType getType();
 
     int getTableNumber();
 
