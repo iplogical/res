@@ -151,10 +151,10 @@ manager.transactionCommit();
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="236.95268497848608" width="204.0" x="1330.6088769920318" y="66.77723336520536"/>
+          <y:Geometry height="236.95268497848608" width="306.13860315346847" x="1279.5395754152976" y="66.77723336520536"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="67.578125" x="68.2109375" y="26.701171875">TableView<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="67.578125" x="119.28023907673423" y="26.701171875">TableView<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -163,16 +163,17 @@ manager.transactionCommit();
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="Interface" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>+ getCoordinates(void) : Point2D
-+ isOpen()
+            <y:MethodLabel>+ isOpen()
 + isVisible() : boolean
 + isVirtual() : boolean
++ getType() : TableType
 + getTableNumber() : int
 + getGuestNumber() : int
 + getCapacity() : int
 + getName() : String
 + getNote() : String
-+ getSoldProducts&lt;Collection&lt;ReceiptRecordView&gt;&gt;</y:MethodLabel>
++ getCoordinates(void) : Point2D
++ getSoldProducts() : Collection&lt;ReceiptRecordView&gt;</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -204,10 +205,10 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="68.0" width="160.0" x="1352.6088769920318" y="630.8301080706367"/>
+          <y:Geometry height="68.0" width="216.1525885392332" x="1324.532582722415" y="630.8301080706367"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="87.07177734375" x="36.464111328125" y="3.0">TableAdapter<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="87.07177734375" x="64.5404055977416" y="3.0">TableAdapter<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -246,7 +247,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="89.0" width="281.00371208499337" x="1820.362104806989" y="335.93153534819663"/>
+          <y:Geometry height="89.0" width="281.00371208499337" x="2080.392407773067" y="313.88503051646154"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="107.30810546875" x="86.84780330812168" y="3.0">ReceiptViewImpl<y:LabelModel>
@@ -267,7 +268,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="119.0" width="372.49244676759645" x="1774.6177374656877" y="92.90599269588267"/>
+          <y:Geometry height="119.0" width="372.49244676759645" x="2034.6480404317658" y="70.85948786414758"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="80.58447265625" x="145.95398705567322" y="26.701171875">ReceiptView<y:LabelModel>
@@ -289,7 +290,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="89.0" width="141.0" x="1905.9624933859004" y="670.2572805444506"/>
+          <y:Geometry height="89.0" width="141.0" x="2165.9927963519785" y="648.2107757127155"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="50.9599609375" x="45.02001953125" y="3.0">Receipt<y:LabelModel>
@@ -313,7 +314,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="131.07685683530656" width="345.62082931996474" x="1788.0535461895033" y="482.0855306553739"/>
+          <y:Geometry height="131.07685683530656" width="345.62082931996474" x="2048.0838491555814" y="460.0390258236388"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="100.078125" x="122.77135215998237" y="3.0">ReceiptAdapter<y:LabelModel>
@@ -337,7 +338,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="97.15398705433716" width="252.72775564408994" x="2433.179987601814" y="353.33287682602906"/>
+          <y:Geometry height="97.15398705433716" width="252.72775564408994" x="2693.210290567892" y="331.286371994294"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="152.09716796875" x="50.31529383766997" y="3.0">ReceiptRecordViewImpl<y:LabelModel>
@@ -359,7 +360,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="119.0" width="204.0" x="2463.0438654238587" y="103.40599269588262"/>
+          <y:Geometry height="119.0" width="204.0" x="2717.574168389937" y="81.35948786414752"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.37353515625" x="39.313232421875" y="26.701171875">ReceiptRecordView<y:LabelModel>
@@ -381,7 +382,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="89.0" width="141.0" x="2489.0438654238587" y="695.8179527483263"/>
+          <y:Geometry height="89.0" width="141.0" x="2749.074168389937" y="673.7714479165912"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="95.7490234375" x="22.62548828125" y="3.0">ReceiptRecord<y:LabelModel>
@@ -404,7 +405,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="67.99999999999989" width="193.0" x="2463.0438654238587" y="499.857028568254"/>
+          <y:Geometry height="67.99999999999989" width="193.0" x="2723.074168389937" y="477.8105237365189"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="144.8671875" x="24.06640625" y="3.0">ReceiptRecordAdapter<y:LabelModel>
@@ -425,7 +426,7 @@ Collection&lt;Receipt&gt;
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="171.42422037084873" width="458.6581673306772" x="-1354.1608771944748" y="511.0891205328312"/>
+          <y:Geometry height="171.42422037084873" width="458.6581673306772" x="-856.0844858747415" y="650.5855113323933"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="136.310546875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="414.87109375" x="21.893536790338658" y="17.556836747924308"> void sellProduct(TableView table ,ProductView product ,Amount amount,...) {
@@ -650,7 +651,7 @@ Services.getTableServices().sellProduct(ActiveTable,ActiveProduct,Amount);
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="178.802109795479" width="252.72775564408994" x="2168.5164232339084" y="640.0943784675669"/>
+          <y:Geometry height="178.802109795479" width="252.72775564408994" x="2428.5467261999866" y="618.0478736358318"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="121.609375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="200.435546875" x="26.146104384544742" y="28.596367397739527">void close() {
@@ -674,10 +675,10 @@ for(auto x: obs) obs.onClose(this);
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="95.00000000000003" width="190.10979547900934" x="3424.102626904659" y="115.40599269588262"/>
+          <y:Geometry height="95.00000000000003" width="190.10979547900934" x="3645.7575816647905" y="105.55466137321008"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="108.05078125" x="41.02950711450467" y="34.01892961774553">ReceiptObserver<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="108.05078125" x="41.02950711450467" y="26.701171875">ReceiptObserver<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -695,10 +696,10 @@ for(auto x: obs) obs.onClose(this);
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="82.96697524219587" width="356.869235737352" x="3340.7229067754874" y="304.5452311311693"/>
+          <y:Geometry height="82.96697524219587" width="356.869235737352" x="3562.377861535619" y="294.6938998084968"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="92.86083984375" x="132.004197946801" y="28.44801099011994">ReceiptPrinter<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="92.86083984375" x="132.004197946801" y="3.0">ReceiptPrinter<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -717,7 +718,7 @@ for(auto x: obs) obs.onClose(this);
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="63.755566846071076" width="190.10979547900934" x="3771.0079652039135" y="312.99752994710036"/>
+          <y:Geometry height="63.755566846071076" width="190.10979547900934" x="3992.662919964045" y="303.1461986244278"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="48.103515625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="171.42578125" x="9.342007114504668" y="7.826025610535567">void onClose(ReceiptAdapter) {
@@ -736,7 +737,7 @@ for(auto x: obs) obs.onClose(this);
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="95.0" width="427.6292164674635" x="1892.5266846620852" y="878.7876158292966"/>
+          <y:Geometry height="95.0" width="427.6292164674635" x="2152.5569876281634" y="856.7411109975615"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="77.505859375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="416.201171875" x="5.714022296231633" y="8.7470703125">ReceiptRecordAdapterImpl  createRecord(ProductAdapterImpl p ,Amount a) {
@@ -757,7 +758,7 @@ product = p.getProduct();
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="126.30797410867433" width="259.61254980079684" x="2786.0003530540525" y="324.17888977169196"/>
+          <y:Geometry height="126.30797410867433" width="259.61254980079684" x="3046.0306560201307" y="302.13238493995686"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="132.578125" x="63.51721240039842" y="26.701171875">AbstractAdapterImpl<y:LabelModel>
@@ -779,7 +780,7 @@ product = p.getProduct();
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="33.35425891625607" width="229.57306577339898" x="2786.0003530540525" y="463.1311806108895"/>
+          <y:Geometry height="33.35425891625607" width="229.57306577339898" x="3046.0306560201307" y="441.0846757791544"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="206.1015625" x="11.73575163669966" y="-0.02404241687196418">All adapter implementation classes 
@@ -1047,10 +1048,32 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="142.52428491367903" width="104.0457015105161" x="-1145.3263487415013" y="178.71458385126078"/>
+          <y:Geometry height="71.19669464223114" width="204.0" x="1708.1631095002658" y="460.03902582363867"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="76.9853515625" x="13.530174974008048" y="26.701171875">InitServices<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="128.25537109375" x="37.872314453125" y="3.0">RestaurantViewImpl<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="-0.03703090122767855" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel>- adapter : TableAdapter</y:AttributeLabel>
+            <y:MethodLabel>+ getAdapter(void) : TableAdapter
+</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n47">
+      <data key="d4"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="123.08225449894226" width="306.13860315346847" x="1657.0938079235316" y="66.77723336520533"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="101.53173828125" x="102.30343243610923" y="26.701171875">RestaurnatView<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -1059,8 +1082,53 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="Interface" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>+ init() : void
+            <y:MethodLabel>+getRestaurantName() : String
++getCompanyName() : String
 </y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n48">
+      <data key="d4"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="89.0" width="141.0" x="1749.1631095002658" y="764.4323360742217"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="71.9072265625" x="34.54638671875" y="3.0">Restaurant<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="-0.03703090122767855" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel>ID
+Collection&lt;Table&gt;
+...</y:AttributeLabel>
+            <y:MethodLabel/>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n49">
+      <data key="d4"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="68.0" width="160.0" x="1730.1631095002658" y="630.8301080706367"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="121.025390625" x="19.4873046875" y="3.0">RestaurantAdapter<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="-0.03703090122767855" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel/>
+            <y:MethodLabel/>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -1085,17 +1153,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e2" source="n5" target="n6">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="35.59834732111557" tx="0.0" ty="-118.47634248924301"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="white_delta"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e3" source="n8" target="n7">
+    <edge id="e2" source="n8" target="n7">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-9.5" ty="0.5169238154337563"/>
@@ -1105,7 +1163,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e4" source="n5" target="n6">
+    <edge id="e3" source="n5" target="n6">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1115,7 +1173,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e5" source="n1" target="n4">
+    <edge id="e4" source="n1" target="n4">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-1.1368683772161603E-13" sy="-10.81446078483441" tx="0.0" ty="0.0"/>
@@ -1125,7 +1183,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e6" source="n0" target="n9">
+    <edge id="e5" source="n0" target="n9">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1135,7 +1193,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e7" source="n10" target="n11">
+    <edge id="e6" source="n10" target="n11">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="44.50000000000001" tx="0.0" ty="-59.5"/>
@@ -1145,7 +1203,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e8" source="n13" target="n12">
+    <edge id="e7" source="n13" target="n12">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="1.0353542979273698" sy="23.09470167151062" tx="-14.563178238487353" ty="3.7900772441552135"/>
@@ -1155,17 +1213,17 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e9" source="n10" target="n11">
+    <edge id="e8" source="n10" target="n11">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="white_delta"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e10" source="n14" target="n15">
+    <edge id="e9" source="n14" target="n15">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="48.576993527168575" tx="0.0" ty="-59.5"/>
@@ -1175,7 +1233,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e11" source="n17" target="n16">
+    <edge id="e10" source="n17" target="n16">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="20.242861669737522" sy="3.567683491880075" tx="20.242861669737522" ty="-1.0857847753977694"/>
@@ -1185,7 +1243,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e12" source="n14" target="n15">
+    <edge id="e11" source="n14" target="n15">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1195,7 +1253,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e13" source="n18" target="n19">
+    <edge id="e12" source="n18" target="n19">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-195.559021318734" ty="17.615323805848448"/>
@@ -1205,7 +1263,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e14" source="n21" target="n20">
+    <edge id="e13" source="n21" target="n20">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="140.99920318725094" sy="45.57819389110216" tx="-166.65512616201875" ty="45.57819389110216"/>
@@ -1215,7 +1273,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e15" source="n21" target="n22">
+    <edge id="e14" source="n21" target="n22">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1225,7 +1283,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e16" source="n24" target="n23">
+    <edge id="e15" source="n24" target="n23">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1235,7 +1293,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e17" source="n24" target="n21">
+    <edge id="e16" source="n24" target="n21">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1245,7 +1303,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e18" source="n24" target="n25">
+    <edge id="e17" source="n24" target="n25">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1255,7 +1313,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e19" source="n21" target="n27">
+    <edge id="e18" source="n21" target="n27">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1266,7 +1324,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e20" source="n21" target="n41">
+    <edge id="e19" source="n21" target="n41">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1277,7 +1335,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e21" source="n23" target="n26">
+    <edge id="e20" source="n23" target="n26">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1288,7 +1346,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e22" source="n13" target="n28">
+    <edge id="e21" source="n13" target="n28">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1299,7 +1357,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e23" source="n30" target="n29">
+    <edge id="e22" source="n30" target="n29">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1310,7 +1368,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e24" source="n30" target="n31">
+    <edge id="e23" source="n30" target="n31">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1321,7 +1379,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e25" source="n13" target="n32">
+    <edge id="e24" source="n13" target="n32">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1332,7 +1390,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e26" source="n36" target="n37">
+    <edge id="e25" source="n36" target="n37">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="14.560964893264327" ty="-1.5440630221889777"/>
@@ -1342,7 +1400,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e27" source="n3" target="n20">
+    <edge id="e26" source="n3" target="n20">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -1354,7 +1412,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e28" source="n21" target="n37">
+    <edge id="e27" source="n21" target="n37">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="-21.966352873847732"/>
@@ -1364,7 +1422,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e29" source="n36" target="n2">
+    <edge id="e28" source="n36" target="n2">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="73.03646002656035" sy="-20.86940471445314" tx="-1.5907498914677944" ty="-8.62819952191245">
@@ -1384,7 +1442,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e30" source="n36" target="n1">
+    <edge id="e29" source="n36" target="n1">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -1394,7 +1452,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e31" source="n36" target="n0">
+    <edge id="e30" source="n36" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -1406,7 +1464,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e32" source="n43" target="n35">
+    <edge id="e31" source="n43" target="n35">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1417,20 +1475,20 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e33" source="n39" target="n38">
+    <edge id="e32" source="n39" target="n38">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="dashed" width="5.0"/>
           <y:Arrows source="none" target="none"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="124.7265625" x="1174.6147168081447" y="-25.78866719226751">Core Library Boundary<y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/>
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="free" modelPosition="anywhere" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="124.7265625" x="1174.6147168081443" y="-25.78866719226751">Core Library Boundary<y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/>
           </y:EdgeLabel>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e34" source="n21" target="n40">
+    <edge id="e33" source="n21" target="n40">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1441,7 +1499,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e35" source="n19" target="n40">
+    <edge id="e34" source="n19" target="n40">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1452,7 +1510,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e36" source="n42" target="n41">
+    <edge id="e35" source="n42" target="n41">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1463,7 +1521,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e37" source="n2" target="n1">
+    <edge id="e36" source="n2" target="n1">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1474,7 +1532,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e38" source="n5" target="n8">
+    <edge id="e37" source="n5" target="n8">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1485,7 +1543,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e39" source="n10" target="n13">
+    <edge id="e38" source="n10" target="n13">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1496,7 +1554,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e40" source="n14" target="n17">
+    <edge id="e39" source="n14" target="n17">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1507,7 +1565,7 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e41" source="n17" target="n33">
+    <edge id="e40" source="n17" target="n33">
       <data key="d8"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -1518,13 +1576,43 @@ extend the AbstractAdapterImpl class.<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e42" source="n45" target="n44">
-      <data key="d9"/>
+    <edge id="e41" source="n45" target="n44">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e42" source="n49" target="n48">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="-9.5" ty="0.5169238154337563"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="white_diamond" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e43" source="n46" target="n47">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e44" source="n46" target="n49">
+      <data key="d8"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="white_diamond" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>

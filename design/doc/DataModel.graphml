@@ -123,7 +123,7 @@ attribute 3<y:LabelModel>
           <y:Geometry height="184.4767466110531" width="105.92102884949622" x="-1198.9873001198362" y="-314.80793492695875"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="46.01171875" x="29.954655049748226" y="4.0">Étterem</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="46.01171875" x="29.954655049748" y="4.0">Étterem</y:NodeLabel>
           <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="136.310546875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="67.3515625" x="2.0" y="30.701171875">ID
 GU ID
 Verzió ID
@@ -532,7 +532,7 @@ Mit kell csinálni a raktárkészlettel?<y:LabelModel>
           <y:Geometry height="114.95742363877812" width="139.82822045152727" x="494.9693403665337" y="-140.47460159362544"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="106.908203125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.412109375" x="7.208055538263693" y="4.024610256889048">Típus
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="106.908203125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.412109375" x="7.208055538263636" y="4.024610256889048">Típus
  - Eladható
  - Speciálisan eladható
  - Tört rész fizethető
@@ -687,7 +687,7 @@ Megjegyzes<y:LabelModel>
     <edge id="e2" source="n4" target="n6">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-19.69763208067844" sy="-60.353503520900084" tx="0.0" ty="0.0">
+          <y:Path sx="-20.662852859128634" sy="-64.23837330552655" tx="0.0" ty="0.0">
             <y:Point x="-1027.6973263001323" y="-286.80793492695875"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
