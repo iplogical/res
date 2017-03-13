@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.service;
 
 import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
+import com.inspirationlogical.receipt.model.TestType;
 import com.inspirationlogical.receipt.model.view.RestaurantView;
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,7 +20,7 @@ public class RestaurantServicesTest {
     RestaurantServices service;
 
     @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
+    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule(TestType.VALIDATE);
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
@@ -27,9 +28,6 @@ public class RestaurantServicesTest {
     @Before
     public void persistObjects() {
         manager = factory.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getRestaurant());
-        manager.getTransaction().commit();
         service = new RestaurantServicesImpl(manager);
     }
 

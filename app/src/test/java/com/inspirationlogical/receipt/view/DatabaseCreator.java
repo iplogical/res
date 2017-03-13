@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.view;
 
 import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
+import com.inspirationlogical.receipt.model.TestType;
 import com.inspirationlogical.receipt.model.entity.Restaurant;
 import com.inspirationlogical.receipt.service.RestaurantServices;
 import com.inspirationlogical.receipt.service.RestaurantServicesImpl;
@@ -18,10 +19,9 @@ import static org.junit.Assert.assertNotNull;
  */
 public class DatabaseCreator {
     private EntityManager manager;
-    RestaurantServices service;
 
     @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule(true);
+    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule(TestType.CREATE);
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();

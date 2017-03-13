@@ -607,7 +607,13 @@ private void buildProducts() {
     private void buildTableNormal() {
         tableNormal = Table.builder()
                 .number(1)
+                .name("NormalTable1")
                 .type(TableType.NORMAL)
+                .visibility(true)
+                .capacity(6)
+                .guestNumber(4)
+                .coordinateX(20)
+                .coordinateY(20)
                 .build();
     }
 

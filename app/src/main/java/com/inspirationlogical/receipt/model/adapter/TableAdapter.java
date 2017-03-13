@@ -7,6 +7,8 @@ import com.inspirationlogical.receipt.model.entity.Receipt;
 import com.inspirationlogical.receipt.model.entity.Table;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 
+import java.util.List;
+
 public class TableAdapter extends AbstractAdapter<Table>
 {
 
@@ -14,16 +16,16 @@ public class TableAdapter extends AbstractAdapter<Table>
         super(adaptee, manager);
     }
 
-
     public ReceiptAdapter getActiveReceipt() {
         Query query = manager.createNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER);
         query.setParameter("number", adaptee.getNumber());
         query.setParameter("status", ReceiptStatus.OPEN);
-        Receipt active = (Receipt)query.getSingleResult();
+        @SuppressWarnings("unchecked")
+        List<Receipt> active = query.getResultList();
         if(active == null) {
             return null;
         }
-        else return new ReceiptAdapter(active, manager);
+        else return new ReceiptAdapter(active.get(0), manager);
     }
 
 }
