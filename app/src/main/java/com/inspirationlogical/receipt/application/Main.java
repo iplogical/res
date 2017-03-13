@@ -25,6 +25,7 @@ public class Main extends Application {
         Parent root = loader.load();
         stage.setTitle(APP_TITLE);
         stage.setScene(new Scene(root, APP_WIDTH, APP_HEIGHT));
+        stage.setFullScreen(true);
         stage.show();
     }
 
