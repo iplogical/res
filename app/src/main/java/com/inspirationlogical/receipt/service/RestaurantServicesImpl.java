@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
+import com.inspirationlogical.receipt.exception.RestaurantNotFoundException;
 import com.inspirationlogical.receipt.model.adapter.RestaurantAdapter;
 import com.inspirationlogical.receipt.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.model.entity.Restaurant;
@@ -27,8 +28,7 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     public RestaurantView getActiveRestaurant() {
         List<Restaurant> restaurantList = manager.createNamedQuery(Restaurant.GET_ACTIVE_RESTAURANT).getResultList();
         if (restaurantList.isEmpty()) {
-            //throw new RestaurantNotFoundException();
-            return null;
+            throw new RestaurantNotFoundException();
         }
         return new RestaurantViewImpl(new RestaurantAdapter(restaurantList.get(0), manager));
     }

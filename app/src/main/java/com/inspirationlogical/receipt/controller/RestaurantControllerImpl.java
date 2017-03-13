@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.model.view.RestaurantView;
 import com.inspirationlogical.receipt.registry.FXMLLoaderProvider;
 import com.inspirationlogical.receipt.service.RestaurantServices;
 import com.inspirationlogical.receipt.utility.Wrapper;
@@ -52,7 +53,8 @@ public class RestaurantControllerImpl implements RestaurantController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        restaurantServices.getActiveRestaurant();
+        RestaurantView restaurantView = restaurantServices.getActiveRestaurant();
+        restaurantServices.getTables(restaurantView);
         setUpContextMenu();
     }
 

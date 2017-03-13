@@ -11,7 +11,7 @@ public class EntityManagerProvider {
 
     public static EntityManager getEntityManager() {
         if(emf == null) {
-            emf = Persistence.createEntityManagerFactory("TestPersistance");
+            emf = Persistence.createEntityManagerFactory("ProductionPersistance");
             em = emf.createEntityManager();
         }
         return em;
