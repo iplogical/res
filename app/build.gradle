@@ -28,6 +28,20 @@ repositories {
     mavenCentral()
 }
 
+test {
+    exclude 'com/inspirationlogical/receipt/model/entity'
+}
+
+configurations {
+    modelCompile.extendsFrom testCompile
+    modelRuntime.extendsFrom testRuntime
+}
+
+task model(type: Test, description: 'Runs the entity class tests.', group: 'Verification') {
+    testClassesDir = new File('build/classes/test/com/inspirationlogical/receipt/model/entity')
+    classpath = sourceSets.test.runtimeClasspath
+}
+
 // In this section you declare the dependencies for your production and test code
 dependencies {
     // The production code uses the SLF4J logging API at compile time

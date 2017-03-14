@@ -31,7 +31,7 @@ public class EntityManagerFactoryRule implements TestRule {
                 if(testType == TestType.CREATE) {
                     props.setProperty("persistenceXmlLocation", "resources/META-INF/persistence.xml");
                     props.setProperty("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/ReceiptViewTest");
-                    props.setProperty("javax.persistence.schema-generation.database.action", "create");
+                    props.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
                     emf = Persistence.createEntityManagerFactory("TestPersistance", props);
                 } else if (testType == TestType.VALIDATE){
                     props.setProperty("persistenceXmlLocation", "resources/META-INF/persistence.xml");

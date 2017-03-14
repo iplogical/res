@@ -42,5 +42,7 @@ public class RestaurantServicesTest {
     public void testGetTables() {
         RestaurantView restaurantView = service.getActiveRestaurant();
         assertNotNull(service.getTables(restaurantView));
+        assertEquals(2, service.getTables(restaurantView).size());
+        assertEquals(2, service.getTables(restaurantView).size());
     }
 }
