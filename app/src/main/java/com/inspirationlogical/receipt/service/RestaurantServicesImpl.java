@@ -38,7 +38,8 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     }
 
     @Override
-    public void setTableName(TableView table, String name) {
+    public void setTableName(TableView tableView, String name) {
+        ((TableViewImpl)tableView).getAdapter().setTableName(name);
     }
 
     @Override
