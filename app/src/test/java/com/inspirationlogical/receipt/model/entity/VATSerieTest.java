@@ -1,21 +1,15 @@
 package com.inspirationlogical.receipt.model.entity;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-
-import javax.persistence.EntityManager;
-
 import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
-import com.inspirationlogical.receipt.model.entity.VATSerie;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
-import com.inspirationlogical.receipt.testsuite.ModelTest;
+import javax.persistence.EntityManager;
+import java.util.List;
 
-@Category(ModelTest.class)
+import static org.junit.Assert.assertEquals;
+
 public class VATSerieTest {
 
     private EntityManager manager;

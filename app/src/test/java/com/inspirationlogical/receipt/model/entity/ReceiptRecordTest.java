@@ -1,22 +1,16 @@
 package com.inspirationlogical.receipt.model.entity;
 
-import java.util.List;
+import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
+import org.junit.Rule;
+import org.junit.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
+import java.util.List;
 
-import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
-import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
-import com.inspirationlogical.receipt.model.entity.ReceiptRecord;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import static org.junit.Assert.assertEquals;
 
-import com.inspirationlogical.receipt.testsuite.ModelTest;
-
-import static org.junit.Assert.*;
-
-@Category(ModelTest.class)
 public class ReceiptRecordTest {
 
     private EntityManager manager;

@@ -1,24 +1,18 @@
 package com.inspirationlogical.receipt.model.entity;
 
-import static org.junit.Assert.*;
-
-import java.util.GregorianCalendar;
-import java.util.List;
+import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
+import com.inspirationlogical.receipt.model.enums.PaymentMethod;
+import org.junit.Rule;
+import org.junit.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
+import java.util.GregorianCalendar;
+import java.util.List;
 
-import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
-import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
-import com.inspirationlogical.receipt.model.entity.Receipt;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import static org.junit.Assert.assertEquals;
 
-import com.inspirationlogical.receipt.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.testsuite.ModelTest;
-
-@Category(ModelTest.class)
 public class ReceiptTest {
 
     private EntityManager manager;
