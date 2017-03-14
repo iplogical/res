@@ -13,19 +13,28 @@ import java.util.stream.Collectors;
 /**
  * Created by Ferenc on 2017. 03. 11..
  */
-public class PDFPrinter {
+public class EpsonTMT20IIPrinter implements Printer {
     private  PrintService service;
-    PDFPrinter(){
+    private static final String PRINTER_NAME = "Epson-TM-T20II";
+
+    EpsonTMT20IIPrinter(){
         List<PrintService> service = Arrays.asList(PrintServiceLookup.lookupPrintServices(null,null));
         List<PrintService> filtered = service.stream()
-                .filter((s) -> s.getName().contains("Epson-TM-T20II")).collect(Collectors.toList());
+                .filter((s) -> s.getName().contains(PRINTER_NAME)).collect(Collectors.toList());
         if(filtered.isEmpty()) {
-            throw new RuntimeException("Couldn't find Epson-TM-T20II printer");
+            throw new RuntimeException("Couldn't find "+PRINTER_NAME+ " printer");
         }
         this.service = filtered.get(0);
     }
 
-    void print(InputStream pdf) {
+
+    @Override
+    public String getName() {
+        return PRINTER_NAME;
+    }
+
+    @Override
+    public void print(InputStream pdf) {
         try {
             DocPrintJob job = service.createPrintJob();
             Doc doc = new SimpleDoc(pdf, DocFlavor.INPUT_STREAM.PDF, null);

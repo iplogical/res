@@ -3,32 +3,22 @@ package com.inspirationlogical.receipt.utility;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-class NoLocaleTag
-{
-}
-
-public enum Resources {
-
-
-    PRINTER("printer"),
-    CONFIG("appconfig",new NoLocaleTag());
+/**
+ * Created by Ferenc on 2017. 03. 14..
+ */
+public class AppConfig {
 
     private final ResourceBundle resourceBundle;
     private static final String DEFAULT_LOCATION = "properties.";
 
-    Resources(String bundleFile) {
+    AppConfig(String bundleFile) {
         String location = DEFAULT_LOCATION + bundleFile;
         Locale l =Locale.forLanguageTag("hu");
         resourceBundle = ResourceBundle.getBundle(location,l );
     }
 
-    Resources(String bundleFile,@SuppressWarnings("unused") NoLocaleTag t) {
-        String location = DEFAULT_LOCATION + bundleFile;
-        resourceBundle = ResourceBundle.getBundle(location);
-    }
-
-
     public String getString(String key) {
         return resourceBundle.getString(key);
     }
+
 }

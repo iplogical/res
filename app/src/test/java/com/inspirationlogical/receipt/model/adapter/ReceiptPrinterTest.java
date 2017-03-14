@@ -1,9 +1,11 @@
 package com.inspirationlogical.receipt.model.adapter;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -14,6 +16,8 @@ import org.junit.Test;
 
 import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 public class ReceiptPrinterTest {
 
@@ -36,12 +40,13 @@ public class ReceiptPrinterTest {
         receipt = new ReceiptAdapter(schema.getReceiptSaleOne(),manager);
     }
 
+
     @Test
     public void test_receipt_is_printed_on_close() {
-        ReceiptPrinter printer = new ReceiptPrinter();
+        ReceiptAdapter.Listener printer = Mockito.mock(ReceiptAdapter.Listener.class);
         Collection<ReceiptAdapter.Listener> listeners = Arrays.asList(printer);
         receipt.close(listeners);
-        assertEquals(1, 1);
+        verify(printer).onClose(receipt);
     }
 
 

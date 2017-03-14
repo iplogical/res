@@ -7,14 +7,10 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.xml.XMLConstants;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 
-import com.inspirationlogical.receipt.jaxb.Receipt;
 import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
 import com.inspirationlogical.receipt.model.adapter.ReceiptAdapter;
@@ -22,7 +18,6 @@ import com.inspirationlogical.receipt.model.adapter.ReceiptAdapter;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import sun.misc.IOUtils;
 
 public class ReceiptToXMLTest {
 
@@ -57,8 +52,7 @@ public class ReceiptToXMLTest {
             ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne(), manager);
             ra.close(Arrays.asList());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ReceiptXMLToPDF.convertToPDF(new FileOutputStream("test.pdf"),
-                    new FileInputStream("src/main/resources/schema/receipt_epsonTMT20II.xsl"),
+            new ReceiptXMLToPDFEpsonTMT20II().convertToPDF(new FileOutputStream("test.pdf"),
                     ReceiptToXML.ConvertToStream(ra)
             );
 

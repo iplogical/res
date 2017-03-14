@@ -14,7 +14,7 @@ import java.util.Arrays;
 /**
  * Created by Ferenc on 2017. 03. 11..
  */
-public class PDFPrinterTest {
+public class PrinterTest {
     private EntityManager manager;
 
     @Rule
@@ -24,22 +24,35 @@ public class PDFPrinterTest {
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
-    public void test_dummy(){
+    public void test_epson_printer(){
         try {
             ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne(), manager);
             ra.close(Arrays.asList());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ReceiptXMLToPDF.convertToPDF(out,
-                    new FileInputStream("src/main/resources/schema/receipt_epsonTMT20II.xsl"),
+            new ReceiptXMLToPDFEpsonTMT20II().convertToPDF(out,
                     ReceiptToXML.ConvertToStream(ra)
             );
             InputStream pdf_in = new ByteArrayInputStream(out.toByteArray(),0,out.size());
-            new PDFPrinter().print(pdf_in);
+            new EpsonTMT20IIPrinter().print(pdf_in);
         } catch(Exception e){
             // NO-OP
         }
     }
-    
+
+    @Test
+    public void test_file_printer(){
+        try {
+            ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne(), manager);
+            ra.close(Arrays.asList());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            new ReceiptXMLToPDFEpsonTMT20II().convertToPDF(out,ReceiptToXML.ConvertToStream(ra));
+            InputStream pdf_in = new ByteArrayInputStream(out.toByteArray(),0,out.size());
+            new FilePrinter().print(pdf_in);
+        } catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
     @Before
     public void persistReceipt() {
         manager = factory.getEntityManager();

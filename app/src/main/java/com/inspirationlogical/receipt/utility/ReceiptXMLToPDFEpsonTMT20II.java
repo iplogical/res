@@ -7,24 +7,34 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Paths;
 
+import com.google.common.io.Files;
 import org.apache.fop.apps.*;
 
 /**
  * Created by Ferenc on 2017. 03. 11..
  */
-public class ReceiptXMLToPDF {
+public class ReceiptXMLToPDFEpsonTMT20II implements  ReceiptXMLtoPDF {
+
+    private String xslTemplate;
+    ReceiptXMLToPDFEpsonTMT20II(){
+        try {
+            xslTemplate = Files.toString(
+                    Paths.get(Resources.CONFIG.getString("ReceiptXSLTPath")).toFile(),
+                    Charset.defaultCharset());
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
     /**
      * Method that will convert the given XML to PDF
-     * @throws IOException
-     * @throws FOPException
-     * @throws TransformerException
      */
-    static public void convertToPDF(OutputStream out, InputStream xsl, InputStream xml)  throws IOException, FOPException, TransformerException {
+    @Override
+    public void convertToPDF(OutputStream out, InputStream xml) {
+        InputStream xsl = new ByteArrayInputStream(xslTemplate.getBytes(Charset.defaultCharset()));
         StreamSource xmlSource = new StreamSource(xml);
         // create an instance of fop factory
         FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
@@ -45,9 +55,9 @@ public class ReceiptXMLToPDF {
             // That's where the XML is first transformed to XSL-FO and then
             // PDF is created
             transformer.transform(xmlSource, res);
-        } finally {
-            out.close();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
-
 }
