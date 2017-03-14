@@ -68,26 +68,28 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void initTables() {
-        restaurantServices.getTables(restaurantView).stream().filter(NORMAL_TABLE).forEach(this::drawTable);
+        restaurantServices.getTables(restaurantView).stream().filter(NORMAL_VISIBLE_TABLE).forEach(this::drawTable);
     }
 
     private void initContextMenu() {
-        try {
-            FXMLLoader loader = FXMLLoaderProvider.getLoader(CONTEXT_MENU_VIEW_PATH);
-            loader.setController(contextMenuController);
-            contextMenu = loader.load();
-            contextMenu.setVisible(false);
-            layout.getChildren().add(contextMenu);
 
-            addPressAndHoldHandler(layout, Duration.millis(HOLD_DURATION_MILLIS));
-        }
-        catch (IOException e) {
+        FXMLLoader loader = FXMLLoaderProvider.getLoader(CONTEXT_MENU_VIEW_PATH);
+        loader.setController(contextMenuController);
+
+        try {
+            contextMenu = loader.load();
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+
+        contextMenu.setVisible(false);
+
+        layout.getChildren().add(contextMenu);
+
+        addPressAndHoldHandler(layout, Duration.millis(HOLD_DURATION_MILLIS));
     }
 
     private void addPressAndHoldHandler(Node node, Duration holdTime) {
-
         Wrapper<MouseEvent> eventWrapper = new Wrapper<>();
         PauseTransition holdTimer = new PauseTransition(holdTime);
 
@@ -110,7 +112,6 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     public void addTable() {
-
         Point2D position = new Point2D(contextMenu.getLayoutX(), contextMenu.getLayoutY());
 
         TableView tableView = restaurantServices.addTable(restaurantView, TableType.NORMAL, new Random(1).nextInt(10));
@@ -121,7 +122,6 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void drawTable(TableView tableView) {
-
         FXMLLoader loader = FXMLLoaderProvider.getLoader(TABLE_VIEW_PATH);
         TableController tableController = new TableControllerImpl(tableView);
         loader.setController(tableController);

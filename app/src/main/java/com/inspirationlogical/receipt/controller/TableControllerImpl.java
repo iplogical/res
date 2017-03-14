@@ -45,11 +45,8 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         initHandlers();
-
         initVisual();
-
         initData();
     }
 
