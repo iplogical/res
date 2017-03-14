@@ -4,6 +4,7 @@ import com.inspirationlogical.receipt.exception.RestaurantNotFoundException;
 import com.inspirationlogical.receipt.model.entity.Restaurant;
 import com.inspirationlogical.receipt.model.entity.Table;
 import com.inspirationlogical.receipt.model.enums.TableType;
+import com.inspirationlogical.receipt.model.utils.GuardedTransaction;
 
 import javax.persistence.EntityManager;
 import java.util.Collection;
@@ -28,6 +29,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     }
 
     public List<TableAdapter> getDisplayableTables() {
+        GuardedTransaction.Run(manager, () -> manager.refresh(adaptee));
         Collection<Table> tables = adaptee.getTable();
         return tables.stream()
                 .filter(table -> table.getType().equals(TableType.NORMAL) ||
