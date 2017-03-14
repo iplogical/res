@@ -1,18 +1,21 @@
 package com.inspirationlogical.receipt.model.view;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import javax.persistence.EntityManager;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
 import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
 import com.inspirationlogical.receipt.model.TestType;
 import com.inspirationlogical.receipt.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.model.enums.TableType;
+
 import javafx.geometry.Point2D;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
-import javax.persistence.EntityManager;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -60,7 +63,7 @@ public class TableViewTest {
 
     @Test
     public void testGetGuestNumber() {
-        assertEquals(4, tableView.getGuestNumber());
+        assertEquals(4, tableView.getGuestCount());
     }
 
     @Test
@@ -70,6 +73,6 @@ public class TableViewTest {
 
     @Test
     public void testGetCoordinates() {
-        assertEquals(new Point2D(20,20), tableView.getCoordinates());
+        assertEquals(new Point2D(20,20), tableView.getPosition());
     }
 }

@@ -7,6 +7,8 @@ import com.inspirationlogical.receipt.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.model.view.RestaurantView;
 import com.inspirationlogical.receipt.model.view.TableView;
 
+import javafx.geometry.Point2D;
+
 public interface RestaurantServices {
 
     RestaurantView getActiveRestaurant();
@@ -23,7 +25,7 @@ public interface RestaurantServices {
 
     void hideTable(TableView table);
 
-    void moveTable(TableView table, int coordinateX, int coordinateY);
+    void moveTable(TableView table, Point2D position);
 
     TableView addTable(RestaurantView restaurant, TableType type, int tableNumber);
 

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import com.inspirationlogical.receipt.model.view.ProductView;
 import com.inspirationlogical.receipt.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.view.TableView;
+import com.inspirationlogical.receipt.model.view.TableView;
 
 public interface RetailServices {
 

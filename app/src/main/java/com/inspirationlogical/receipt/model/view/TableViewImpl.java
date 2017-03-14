@@ -1,12 +1,13 @@
 package com.inspirationlogical.receipt.model.view;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import com.inspirationlogical.receipt.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.model.enums.TableType;
-import javafx.geometry.Point2D;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
+import javafx.geometry.Point2D;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -43,7 +44,7 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     }
 
     @Override
-    public int getGuestNumber() {
+    public int getGuestCount() {
         return adapter.getAdaptee().getGuestNumber();
     }
 
@@ -63,7 +64,7 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     }
 
     @Override
-    public Point2D getCoordinates() {
+    public Point2D getPosition() {
         return new Point2D(adapter.getAdaptee().getCoordinateX(), adapter.getAdaptee().getCoordinateY());
     }
 

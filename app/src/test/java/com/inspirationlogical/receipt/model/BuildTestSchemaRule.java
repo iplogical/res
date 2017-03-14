@@ -4,14 +4,29 @@ import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 
-import com.inspirationlogical.receipt.model.entity.*;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
+import com.inspirationlogical.receipt.model.entity.Address;
+import com.inspirationlogical.receipt.model.entity.Client;
+import com.inspirationlogical.receipt.model.entity.PriceModifier;
+import com.inspirationlogical.receipt.model.entity.Product;
+import com.inspirationlogical.receipt.model.entity.ProductCategory;
+import com.inspirationlogical.receipt.model.entity.Receipt;
+import com.inspirationlogical.receipt.model.entity.ReceiptRecord;
+import com.inspirationlogical.receipt.model.entity.Recipe;
+import com.inspirationlogical.receipt.model.entity.Reservation;
+import com.inspirationlogical.receipt.model.entity.Restaurant;
+import com.inspirationlogical.receipt.model.entity.Stock;
+import com.inspirationlogical.receipt.model.entity.Table;
+import com.inspirationlogical.receipt.model.entity.VAT;
+import com.inspirationlogical.receipt.model.entity.VATSerie;
 import com.inspirationlogical.receipt.model.enums.EtalonQuantity;
 import com.inspirationlogical.receipt.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.model.enums.PriceModifierLimitType;
+import com.inspirationlogical.receipt.model.enums.PriceModifierRepeatPeriod;
+import com.inspirationlogical.receipt.model.enums.PriceModifierStatus;
 import com.inspirationlogical.receipt.model.enums.PriceModifierType;
 import com.inspirationlogical.receipt.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.model.enums.ProductStatus;
@@ -20,8 +35,6 @@ import com.inspirationlogical.receipt.model.enums.QunatityUnit;
 import com.inspirationlogical.receipt.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.model.enums.PriceModifierRepeatPeriod;
-import com.inspirationlogical.receipt.model.enums.PriceModifierStatus;
 import com.inspirationlogical.receipt.model.enums.TableType;
 import com.inspirationlogical.receipt.model.enums.VATName;
 
@@ -607,7 +620,7 @@ private void buildProducts() {
     private void buildTableNormal() {
         tableNormal = Table.builder()
                 .number(1)
-                .name("NormalTable1")
+                .name("Spicces Feri")
                 .type(TableType.NORMAL)
                 .visibility(true)
                 .capacity(6)
