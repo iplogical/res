@@ -64,11 +64,13 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
 
     @Override
     public TableView addTable(RestaurantView restaurant, TableType type, int tableNumber) {
-        return null;
+        RestaurantAdapter restaurantAdapter = ((RestaurantViewImpl)restaurant).getAdapter();
+        return new TableViewImpl(restaurantAdapter.addTable(type, tableNumber));
     }
 
     @Override
     public TableView addTable(RestaurantView restaurant, TableType type, int tableNumber, int tableCapacity, Point2D position) {
+
         return null;
     }
 

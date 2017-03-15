@@ -37,4 +37,16 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                 .map(table -> new TableAdapter(table, manager))
                 .collect(Collectors.toList());
     }
+
+    public TableAdapter addTable(TableType type, int tableNumber) {
+        GuardedTransaction.Run(manager, () -> manager.refresh(adaptee));
+        Table newTable = Table.builder()
+                .type(type)
+                .number(tableNumber)
+                .build();
+        adaptee.getTable().add(newTable);
+        newTable.setOwner(adaptee);
+        GuardedTransaction.Run(manager, () -> manager.persist(adaptee));
+        return new TableAdapter(newTable, manager);
+    }
 }

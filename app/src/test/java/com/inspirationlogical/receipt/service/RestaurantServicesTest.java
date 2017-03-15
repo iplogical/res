@@ -3,7 +3,9 @@ package com.inspirationlogical.receipt.service;
 import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
 import com.inspirationlogical.receipt.model.TestType;
+import com.inspirationlogical.receipt.model.enums.TableType;
 import com.inspirationlogical.receipt.model.view.RestaurantView;
+import com.inspirationlogical.receipt.model.view.TableView;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,6 +20,7 @@ import static org.junit.Assert.*;
 public class RestaurantServicesTest {
     private EntityManager manager;
     RestaurantServices service;
+    RestaurantView restaurantView;
 
     @Rule
     public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule(TestType.VALIDATE);
@@ -29,11 +32,12 @@ public class RestaurantServicesTest {
     public void persistObjects() {
         manager = factory.getEntityManager();
         service = new RestaurantServicesImpl(manager);
+        restaurantView = service.getActiveRestaurant();
     }
 
     @Test
     public void testGetActiveRestaurant() {
-        RestaurantView restaurantView = service.getActiveRestaurant();
+        restaurantView = service.getActiveRestaurant();
         assertNotNull(restaurantView);
         assertEquals("GameUp Pub",restaurantView.getRestaurantName());
     }
@@ -42,7 +46,12 @@ public class RestaurantServicesTest {
     public void testGetTables() {
         RestaurantView restaurantView = service.getActiveRestaurant();
         assertNotNull(service.getTables(restaurantView));
-        assertEquals(2, service.getTables(restaurantView).size());
-        assertEquals(2, service.getTables(restaurantView).size());
+    }
+
+    @Test
+    public void testAddTable() {
+        TableView tableView = service.addTable(restaurantView, TableType.NORMAL, 3);
+        assertEquals(3, tableView.getTableNumber());
+        assertEquals(TableType.NORMAL, tableView.getType());
     }
 }

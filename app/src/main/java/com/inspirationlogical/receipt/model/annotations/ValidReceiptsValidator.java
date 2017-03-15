@@ -6,6 +6,8 @@ import javax.validation.ConstraintValidatorContext;
 import com.inspirationlogical.receipt.model.entity.Table;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 
+import java.util.stream.Collectors;
+
 public class ValidReceiptsValidator 
     implements ConstraintValidator<ValidReceipts, Table> {
 
@@ -19,11 +21,13 @@ public class ValidReceiptsValidator
     @Override
     public boolean isValid(Table value, ConstraintValidatorContext context) {
         open = 0;
-        value.getReceipt().forEach(receipt -> {
-            if(receipt.getStatus() == ReceiptStatus.OPEN) {
-                open++;
-            }
-        });
+        if(value.getReceipt() == null) {
+            return true;
+        }
+        value.getReceipt().stream()
+                .filter(receipt -> receipt.getStatus().equals(ReceiptStatus.OPEN))
+                .map(receipt -> open++)
+                .collect(Collectors.toList());
         if(open > 1) {
             addConstraintViolation(context,
                     "There can be only 0 or 1 open receipt per table, but found: " + open);

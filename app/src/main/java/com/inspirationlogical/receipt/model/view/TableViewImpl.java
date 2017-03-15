@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.model.enums.TableType;
 
 import javafx.geometry.Point2D;
+import lombok.Builder;
 
 /**
  * Created by Bálint on 2017.03.13..
