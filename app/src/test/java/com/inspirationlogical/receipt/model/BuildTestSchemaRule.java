@@ -275,7 +275,7 @@ private void buildProducts() {
         return Address.builder()
                 .ZIPCode("1066")
                 .city("Budapest")
-                .street("Zichy Jen� utca 4.")
+                .street("Zichy Jenő utca 4.")
                 .build();
     }
 
