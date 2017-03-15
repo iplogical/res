@@ -1,13 +1,19 @@
 package com.inspirationlogical.receipt.controller;
 
+import static com.inspirationlogical.receipt.controller.AddTableFormControllerImpl.ADD_TABLE_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.controller.ContextMenuControllerImpl.CONTEXT_MENU_VIEW_PATH;
 import static com.inspirationlogical.receipt.controller.TableControllerImpl.TABLE_VIEW_PATH;
+import static com.inspirationlogical.receipt.model.enums.TableType.NORMAL;
+import static com.inspirationlogical.receipt.model.enums.TableType.VIRTUAL;
 import static com.inspirationlogical.receipt.utility.PredicateOperations.and;
 import static com.inspirationlogical.receipt.utility.PredicateOperations.not;
+import static com.inspirationlogical.receipt.view.NodeUtility.getNodePosition;
+import static com.inspirationlogical.receipt.view.NodeUtility.hideNode;
+import static com.inspirationlogical.receipt.view.NodeUtility.showNode;
+import static com.inspirationlogical.receipt.view.ViewLoader.loadView;
+import static com.inspirationlogical.receipt.view.ViewLoader.loadViewHidden;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
@@ -16,13 +22,11 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.model.enums.TableType;
 import com.inspirationlogical.receipt.model.view.RestaurantView;
 import com.inspirationlogical.receipt.model.view.TableView;
-import com.inspirationlogical.receipt.registry.FXMLLoaderProvider;
 import com.inspirationlogical.receipt.service.RestaurantServices;
 import com.inspirationlogical.receipt.utility.Wrapper;
 
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -44,16 +48,22 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private VBox contextMenu;
 
+    private VBox addTableForm;
+
     private ContextMenuController contextMenuController;
+
+    private AddTableFormController addTableFormController;
 
     private RestaurantServices restaurantServices;
 
     private RestaurantView restaurantView;
 
     @Inject
-    public RestaurantControllerImpl(ContextMenuController contextMenuController, RestaurantServices restaurantServices) {
+    public RestaurantControllerImpl(RestaurantServices restaurantServices, ContextMenuController contextMenuController,
+                                    AddTableFormController addTableFormController) {
         this.contextMenuController = contextMenuController;
         this.restaurantServices = restaurantServices;
+        this.addTableFormController = addTableFormController;
     }
 
     @Override
@@ -61,6 +71,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         initRestaurant();
         initTables();
         initContextMenu();
+        initAddTableForm();
     }
 
     private void initRestaurant() {
@@ -72,36 +83,28 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void initContextMenu() {
-
-        FXMLLoader loader = FXMLLoaderProvider.getLoader(CONTEXT_MENU_VIEW_PATH);
-        loader.setController(contextMenuController);
-
-        try {
-            contextMenu = loader.load();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        contextMenu.setVisible(false);
-
+        contextMenu = (VBox) loadViewHidden(CONTEXT_MENU_VIEW_PATH, contextMenuController);
         layout.getChildren().add(contextMenu);
 
         addPressAndHoldHandler(layout, Duration.millis(HOLD_DURATION_MILLIS));
     }
 
+    private void initAddTableForm() {
+        addTableForm = (VBox) loadViewHidden(ADD_TABLE_FORM_VIEW_PATH, addTableFormController);
+        layout.getChildren().add(addTableForm);
+    }
+
     private void addPressAndHoldHandler(Node node, Duration holdTime) {
-        Wrapper<MouseEvent> eventWrapper = new Wrapper<>();
+        Wrapper<Point2D> positionWrapper = new Wrapper<>();
         PauseTransition holdTimer = new PauseTransition(holdTime);
 
         holdTimer.setOnFinished(event -> {
-            contextMenu.setLayoutX(eventWrapper.getContent().getX() + node.getLayoutX());
-            contextMenu.setLayoutY(eventWrapper.getContent().getY() + node.getLayoutY());
-            contextMenu.toFront();
-            contextMenu.setVisible(true);
+            Point2D position = positionWrapper.getContent().add(getNodePosition(node));
+            showNode(contextMenu, position);
         });
 
         node.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            eventWrapper.setContent(event);
+            positionWrapper.setContent(new Point2D(event.getX(), event.getY()));
             holdTimer.playFromStart();
             contextMenu.setVisible(false);
         });
@@ -111,26 +114,31 @@ public class RestaurantControllerImpl implements RestaurantController {
         node.addEventHandler(MouseEvent.DRAG_DETECTED, event -> holdTimer.stop());
     }
 
-    public void addTable() {
-        Point2D position = new Point2D(contextMenu.getLayoutX(), contextMenu.getLayoutY());
+    @Override
+    public void showAddTableForm() {
+        Point2D position = getNodePosition(contextMenu);
 
-        TableView tableView = restaurantServices.addTable(restaurantView, TableType.NORMAL, new Random(1).nextInt(10));
+        showNode(addTableForm, position);
+    }
 
+    @Override
+    public void createTable(int number, int capacity, boolean isVirtual) {
+        Point2D position = getNodePosition(addTableForm);
+        TableType tableType = isVirtual ? VIRTUAL : NORMAL;
+
+        TableView tableView = restaurantServices.addTable(restaurantView, tableType, number);
+
+        restaurantServices.setTableCapacity(tableView, capacity);
         restaurantServices.moveTable(tableView, position);
 
+        hideNode(addTableForm);
         drawTable(tableView);
     }
 
     private void drawTable(TableView tableView) {
-        FXMLLoader loader = FXMLLoaderProvider.getLoader(TABLE_VIEW_PATH);
         TableController tableController = new TableControllerImpl(tableView);
-        loader.setController(tableController);
 
-        try {
-            loader.load();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        loadView(TABLE_VIEW_PATH, tableController);
 
         addPressAndHoldHandler(tableController.getView(), Duration.millis(HOLD_DURATION_MILLIS));
 

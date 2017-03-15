@@ -1,8 +1,8 @@
 package com.inspirationlogical.receipt.exception;
 
-public class RestaurantNotFoundException extends RuntimeException {
+public class RestaurantNotFoundException extends EntityNotFoundException {
 
     public RestaurantNotFoundException() {
-        super("Restaurant entry could not be retrieved from database!");
+        super("Restaurant");
     }
 }

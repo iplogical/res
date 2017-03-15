@@ -29,6 +29,8 @@ public interface RestaurantServices {
 
     TableView addTable(RestaurantView restaurant, TableType type, int tableNumber);
 
+    TableView addTable(RestaurantView restaurant, TableType type, int tableNumber, int tableCapacity, Point2D position);
+
     ReceiptRecordView getActiveReceipt(TableView table);
 
 }

@@ -4,6 +4,8 @@ import javax.persistence.EntityManager;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.inspirationlogical.receipt.controller.AddTableFormController;
+import com.inspirationlogical.receipt.controller.AddTableFormControllerImpl;
 import com.inspirationlogical.receipt.controller.ContextMenuController;
 import com.inspirationlogical.receipt.controller.ContextMenuControllerImpl;
 import com.inspirationlogical.receipt.controller.RestaurantController;
@@ -18,6 +20,7 @@ public class Registry extends AbstractModule {
     protected void configure() {
         bind(RestaurantController.class).to(RestaurantControllerImpl.class);
         bind(ContextMenuController.class).to(ContextMenuControllerImpl.class);
+        bind(AddTableFormController.class).to(AddTableFormControllerImpl.class);
         bind(RestaurantServices.class).to(RestaurantServicesImpl.class);
     }
 

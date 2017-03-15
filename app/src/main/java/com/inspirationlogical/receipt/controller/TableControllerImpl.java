@@ -1,19 +1,17 @@
 package com.inspirationlogical.receipt.controller;
 
+import static com.inspirationlogical.receipt.view.DragAndDropHandler.initHandlers;
+import static com.inspirationlogical.receipt.view.NodeUtility.showNode;
 import static java.lang.String.valueOf;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.inspirationlogical.receipt.model.view.TableView;
-import com.inspirationlogical.receipt.utility.Wrapper;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 public class TableControllerImpl implements TableController {
@@ -45,39 +43,15 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initHandlers();
+        initHandlers(view);
         initVisual();
         initData();
     }
 
-    private void initHandlers() {
-        final Wrapper<Point2D> deltaWrapper = new Wrapper<>();
-
-        view.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                Point2D delta = new Point2D(view.getLayoutX() - mouseEvent.getSceneX(),
-                        view.getLayoutY() - mouseEvent.getSceneY());
-                deltaWrapper.setContent(delta);
-            }
-        });
-
-        view.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                view.setLayoutX(mouseEvent.getSceneX() + deltaWrapper.getContent().getX());
-                view.setLayoutY(mouseEvent.getSceneY() + deltaWrapper.getContent().getY());
-            }
-        });
-    }
-
     private void initVisual() {
-        Point2D position = tableView.getPosition();
-
-        view.setLayoutX(position.getX());
-        view.setLayoutY(position.getY());
         view.setMinWidth(TABLE_WIDTH);
         view.setMinHeight(TABLE_HEIGHT);
+        showNode(view, tableView.getPosition());
     }
 
     private void initData() {

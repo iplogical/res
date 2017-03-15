@@ -68,6 +68,11 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     }
 
     @Override
+    public TableView addTable(RestaurantView restaurant, TableType type, int tableNumber, int tableCapacity, Point2D position) {
+        return null;
+    }
+
+    @Override
     public ReceiptRecordView getActiveReceipt(TableView table) {
         return null;
     }

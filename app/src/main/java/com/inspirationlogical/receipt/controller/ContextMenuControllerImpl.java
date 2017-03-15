@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.controller;
 
+import static com.inspirationlogical.receipt.view.DragAndDropHandler.initHandlers;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -34,7 +36,7 @@ public class ContextMenuControllerImpl implements ContextMenuController {
     @FXML
     Button splitTables;
 
-    RestaurantController restaurantController;
+    private RestaurantController restaurantController;
 
     @Inject
     public ContextMenuControllerImpl(RestaurantController restaurantController) {
@@ -43,14 +45,13 @@ public class ContextMenuControllerImpl implements ContextMenuController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initHandlers(view);
     }
 
     @FXML
     public void onAddTable(MouseEvent event) {
-
         hidePopup();
-
-        restaurantController.addTable();
+        restaurantController.showAddTableForm();
     }
 
     @FXML
