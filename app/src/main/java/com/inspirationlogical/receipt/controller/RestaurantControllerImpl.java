@@ -27,6 +27,8 @@ import com.inspirationlogical.receipt.service.RestaurantServices;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -41,7 +43,19 @@ public class RestaurantControllerImpl implements RestaurantController {
     private static Predicate<TableView> NORMAL_VISIBLE_TABLE = and(NORMAL_TABLE, VISIBLE_TABLE);
 
     @FXML
-    AnchorPane layout;
+    AnchorPane tables;
+
+    @FXML
+    AnchorPane virtual;
+
+    @FXML
+    Button consumption;
+
+    @FXML
+    Button reservation;
+
+    @FXML
+    ToggleButton configuration;
 
     private VBox contextMenu;
 
@@ -81,14 +95,14 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private void initContextMenu() {
         contextMenu = (VBox) loadViewHidden(CONTEXT_MENU_VIEW_PATH, contextMenuController);
-        layout.getChildren().add(contextMenu);
+        tables.getChildren().add(contextMenu);
 
-        addPressAndHold(layout, contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
+        addPressAndHold(tables, contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
     }
 
     private void initAddTableForm() {
         addTableForm = (VBox) loadViewHidden(ADD_TABLE_FORM_VIEW_PATH, addTableFormController);
-        layout.getChildren().add(addTableForm);
+        tables.getChildren().add(addTableForm);
     }
 
     @Override
@@ -119,6 +133,6 @@ public class RestaurantControllerImpl implements RestaurantController {
 
         addPressAndHold(tableController.getView(), contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
 
-        layout.getChildren().add(tableController.getView());
+        tables.getChildren().add(tableController.getView());
     }
 }

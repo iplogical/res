@@ -38,7 +38,7 @@ import javafx.scene.layout.VBox;
 public class RestaurantControllerTest {
 
     @Mock(answer = RETURNS_DEEP_STUBS)
-    private AnchorPane layout;
+    private AnchorPane tables;
 
     @Mock
     private VBox contextMenu;
@@ -76,7 +76,7 @@ public class RestaurantControllerTest {
 
         jfxPanel = new JFXPanel();
         underTest = new RestaurantControllerImpl(restaurantServices, contextMenuController, addTableFormController);
-        underTest.layout = layout;
+        underTest.tables = tables;
     }
 
     @Test
@@ -87,13 +87,13 @@ public class RestaurantControllerTest {
         underTest.initialize(null, null);
 
         // Then
-        verify(layout.getChildren()).add(contextMenu);
+        verify(tables.getChildren()).add(contextMenu);
 
         verifyStatic(times(1));
         ViewLoader.loadViewHidden(eq(CONTEXT_MENU_VIEW_PATH), eq(contextMenuController));
 
         verifyStatic(times(1));
-        PressAndHoldHandler.addPressAndHold(eq(layout), eq(contextMenu), any());
+        PressAndHoldHandler.addPressAndHold(eq(tables), eq(contextMenu), any());
     }
 
     @Test
@@ -104,7 +104,7 @@ public class RestaurantControllerTest {
         underTest.initialize(null, null);
 
         // Then
-        verify(layout.getChildren()).add(addTableForm);
+        verify(tables.getChildren()).add(addTableForm);
 
         verifyStatic(times(1));
         ViewLoader.loadViewHidden(eq(ADD_TABLE_FORM_VIEW_PATH), eq(addTableFormController));
@@ -174,7 +174,7 @@ public class RestaurantControllerTest {
         NodeUtility.hideNode(eq(addTableForm));
 
         verifyStatic(times(1));
-        PressAndHoldHandler.addPressAndHold(eq(layout), eq(contextMenu), any());
+        PressAndHoldHandler.addPressAndHold(eq(tables), eq(contextMenu), any());
     }
 
     @Test

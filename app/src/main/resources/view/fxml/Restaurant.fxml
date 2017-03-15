@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.shape.*?>
@@ -9,30 +10,46 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label alignment="CENTER" layoutX="14.0" layoutY="2.0" prefHeight="30.0" prefWidth="192.0" text="Étterem nézet" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #FFFFFF;" text="Étterem nézet" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font size="16.0" />
          </font>
-         <padding>
-            <Insets bottom="4.0" left="8.0" right="8.0" top="4.0" />
-         </padding>
       </Label>
-      <SplitPane dividerPositions="0.05" layoutX="352.0" layoutY="32.0" orientation="VERTICAL" prefHeight="736.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.0">
+      <ToolBar layoutX="121.0" layoutY="30.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="316.0" prefWidth="1022.0">
-               <children>
-                  <Label text="Étterem konfiguráció" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <padding>
-                        <Insets left="8.0" top="4.0" />
-                     </padding>
-                  </Label>
-               </children>
-            </AnchorPane>
-          <AnchorPane fx:id="layout" minHeight="0.0" minWidth="0.0" prefHeight="602.0" prefWidth="1022.0" />
+          <Button fx:id="consumption" mnemonicParsing="false" text="Napi fogyasztás">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="reservation" mnemonicParsing="false" text="Foglalás felvétele">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <ToggleButton fx:id="configuration" alignment="TOP_RIGHT" mnemonicParsing="false" text="Szerkesztő mód">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </ToggleButton>
         </items>
-      </SplitPane>
+      </ToolBar>
+      <TabPane layoutX="5.0" layoutY="82.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+        <tabs>
+          <Tab closable="false" text="Asztalok">
+            <content>
+              <AnchorPane fx:id="tables" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+            </content>
+          </Tab>
+          <Tab closable="false" text="Virtuális asztalok">
+            <content>
+              <AnchorPane fx:id="virtual" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
    </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
 </AnchorPane>
