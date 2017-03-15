@@ -155,6 +155,7 @@ public class RestaurantControllerTest {
         Point2D position = new Point2D(0, 0);
         int tableNumber = 5;
         int tableCapacity = 4;
+        boolean isVirtual = false;
 
         when(restaurantServices.addTable(restaurantView, TableType.NORMAL, tableNumber)).thenReturn(tableView);
 
@@ -163,7 +164,7 @@ public class RestaurantControllerTest {
 
         // When
         underTest.initialize(null, null);
-        underTest.createTable(tableNumber, tableCapacity, false);
+        underTest.createTable(tableNumber, tableCapacity, isVirtual);
 
         // Then
         verify(restaurantServices).setTableCapacity(eq(tableView), eq(tableCapacity));
@@ -181,10 +182,11 @@ public class RestaurantControllerTest {
         // Given
         int tableNumber = 5;
         int tableCapacity = 4;
+        boolean isVirtual = false;
 
         // When
         underTest.initialize(null, null);
-        underTest.createTable(tableNumber, tableCapacity, false);
+        underTest.createTable(tableNumber, tableCapacity, isVirtual);
 
         // Then
         verify(restaurantServices).addTable(eq(restaurantView), eq(NORMAL), eq(tableNumber));
@@ -195,10 +197,11 @@ public class RestaurantControllerTest {
         // Given
         int tableNumber = 5;
         int tableCapacity = 4;
+        boolean isVirtual = true;
 
         // When
         underTest.initialize(null, null);
-        underTest.createTable(tableNumber, tableCapacity, true);
+        underTest.createTable(tableNumber, tableCapacity, isVirtual);
 
         // Then
         verify(restaurantServices).addTable(eq(restaurantView), eq(VIRTUAL), eq(tableNumber));
