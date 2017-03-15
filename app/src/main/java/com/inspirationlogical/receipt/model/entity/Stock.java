@@ -24,8 +24,8 @@ public @Data class Stock extends AbstractEntity {
 
     public static final String GET_TEST_STOCKS = "Stock.GetTestStocks";
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "PRODUCT_ID")
+    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @JoinColumn(name = "PRODUCT_ID",foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     @NotNull
     private Product owner;
 

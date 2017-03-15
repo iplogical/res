@@ -26,7 +26,7 @@ public @Data class Reservation extends AbstractEntity {
 
     public static final String GET_TEST_RESERVATIONS = "Reservation.GetTestReservations";
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(name = "TABLE_ID")
     private Table owner;
 

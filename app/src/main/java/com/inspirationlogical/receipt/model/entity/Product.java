@@ -29,7 +29,7 @@ import lombok.EqualsAndHashCode;
     @NamedQuery(name = Product.GET_TEST_PRODUCTS,
             query = "FROM Product p"),
     @NamedQuery(name = Product.GET_PRODUCT_BY_NAME,
-            query = "SELECT p FROM Product p WHERE p.longName=:longName"),
+            query = "SELECT p FROM Product p WHERE p.longName=:longName")
 })
 @AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
 @ValidCategory
@@ -37,16 +37,17 @@ public @Data class Product extends AbstractEntity {
 
     public static final String GET_TEST_PRODUCTS = "Product.GetTestProducts";
     public static final String GET_PRODUCT_BY_NAME = "Product.GetProductByName";
+    public static final String DROP_ALL = "Product.DropAll";
 
-    @OneToOne(mappedBy="product", optional = false, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy="product", optional = false, fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(name="CATEGORY_ID")
     @NotNull
     private ProductCategory category;
 
-    @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     private Collection<Recipe> recipe;
 
-    @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     private Collection<Stock> stock;
 
     @Enumerated(EnumType.STRING)

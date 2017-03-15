@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 
+import com.inspirationlogical.receipt.model.utils.GuardedTransaction;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -39,6 +40,9 @@ import com.inspirationlogical.receipt.model.enums.TableType;
 import com.inspirationlogical.receipt.model.enums.VATName;
 
 import lombok.Getter;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 public class BuildTestSchemaRule implements TestRule {
 
@@ -117,7 +121,27 @@ public class BuildTestSchemaRule implements TestRule {
         };
     }
 
-    private void buildTestSchema() {
+    private void dropAll(){
+
+        EntityManager em = EntityManagerFactoryHolder.get().createEntityManager();
+        GuardedTransaction.Run(em,() -> {
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.PriceModifier").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Recipe").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Stock").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Product").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Receipt").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Table").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Restaurant").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.ReceiptRecord").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.VATSerie").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.VAT").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Reservation").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.ProductCategory").executeUpdate();
+        });
+    }
+
+    public void buildTestSchema() {
+        dropAll();
         buildObjects();
         setUpObjectRelationShips();
     }

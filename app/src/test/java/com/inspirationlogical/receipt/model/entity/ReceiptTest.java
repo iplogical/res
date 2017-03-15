@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.model.entity;
 import com.inspirationlogical.receipt.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
 import com.inspirationlogical.receipt.model.enums.PaymentMethod;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,8 +21,12 @@ public class ReceiptTest {
     @Rule
     public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
 
-    @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
+    BuildTestSchemaRule schema;
+    @Before
+    public void setUp(){
+        schema = new BuildTestSchemaRule();
+        schema.buildTestSchema();
+    }
 
     @Test
     public void testReceiptCreation() {

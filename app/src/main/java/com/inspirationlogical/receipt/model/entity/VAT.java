@@ -25,7 +25,7 @@ public @Data class VAT extends AbstractEntity {
     public static final String GET_TEST_VAT_RECORDS = "VAT.GetTestVATRecords";
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(name = "VAT_SERIE_ID")
     private VATSerie serie;
 

@@ -23,7 +23,7 @@ public @Data class VATSerie extends AbstractEntity {
 
     public static final String GET_TEST_VAT_SERIES = "VATSerie.GetTestVATSeries";
 
-    @OneToMany(mappedBy = "serie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "serie", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     private Collection<VAT> vat;
 
     @Tolerate

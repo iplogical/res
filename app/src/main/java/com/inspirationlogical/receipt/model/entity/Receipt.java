@@ -42,11 +42,11 @@ public @Data class Receipt extends AbstractEntity {
     @JoinColumn(name = "TABLE_ID")
     private Table owner;
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     private Collection<ReceiptRecord> records;
 
     @NotNull
-    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(name = "VAT_SERIE_ID")
     private VATSerie VATSerie;
 

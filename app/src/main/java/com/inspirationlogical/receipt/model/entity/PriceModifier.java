@@ -30,9 +30,10 @@ import lombok.EqualsAndHashCode;
 public @Data class PriceModifier extends AbstractEntity {
 
     public static final String GET_TEST_PRICE_MODIFIERS = "PriceModifier.GetTestPriceModifiers";
+    public static final String DROP_ALL = "PriceModifier.DropAll";
 
     @NotNull
-    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(name = "PRODUCT_CATEGORY_ID")
     private ProductCategory owner;
 

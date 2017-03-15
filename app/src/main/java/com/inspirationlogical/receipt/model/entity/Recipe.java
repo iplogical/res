@@ -24,7 +24,7 @@ public @Data class Recipe extends AbstractEntity {
 
     public static final String GET_TEST_RECIPES = "Recipe.GetTestRecipes";
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(name = "PRODUCT_ID")
     @NotNull
     private Product owner;
