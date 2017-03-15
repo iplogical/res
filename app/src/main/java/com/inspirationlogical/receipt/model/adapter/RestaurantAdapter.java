@@ -5,6 +5,7 @@ import com.inspirationlogical.receipt.model.entity.Restaurant;
 import com.inspirationlogical.receipt.model.entity.Table;
 import com.inspirationlogical.receipt.model.enums.TableType;
 import com.inspirationlogical.receipt.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.model.view.TableViewBuilder;
 
 import javax.persistence.EntityManager;
 import java.util.Collection;
@@ -43,6 +44,25 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         Table newTable = Table.builder()
                 .type(type)
                 .number(tableNumber)
+                .build();
+        adaptee.getTable().add(newTable);
+        newTable.setOwner(adaptee);
+        GuardedTransaction.Run(manager, () -> manager.persist(adaptee));
+        return new TableAdapter(newTable, manager);
+    }
+
+    public TableAdapter addTable(TableViewBuilder builder) {
+        GuardedTransaction.Run(manager, () -> manager.refresh(adaptee));
+        Table newTable = Table.builder()
+                .type(builder.getType())
+                .number(builder.getTableNumber())
+                .name(builder.getName())
+                .coordinateX((int)builder.getPosition().getX())
+                .coordinateY((int)builder.getPosition().getY())
+                .guestNumber(builder.getGuestNumber())
+                .capacity(builder.getTableCapacity())
+                .note(builder.getNote())
+                .visibility(builder.isVisibility())
                 .build();
         adaptee.getTable().add(newTable);
         newTable.setOwner(adaptee);

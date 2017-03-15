@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.model.view.RestaurantView;
 import com.inspirationlogical.receipt.model.view.TableView;
 
+import com.inspirationlogical.receipt.model.view.TableViewBuilder;
 import javafx.geometry.Point2D;
 
 public interface RestaurantServices {
@@ -29,7 +30,7 @@ public interface RestaurantServices {
 
     TableView addTable(RestaurantView restaurant, TableType type, int tableNumber);
 
-    TableView addTable(RestaurantView restaurant, TableType type, int tableNumber, int tableCapacity, Point2D position);
+    TableView addTable(RestaurantView restaurant, TableViewBuilder builder);
 
     ReceiptRecordView getActiveReceipt(TableView table);
 

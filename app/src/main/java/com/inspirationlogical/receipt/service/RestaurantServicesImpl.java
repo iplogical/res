@@ -9,11 +9,7 @@ import com.google.inject.Inject;
 import com.inspirationlogical.receipt.model.adapter.RestaurantAdapter;
 import com.inspirationlogical.receipt.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.model.enums.TableType;
-import com.inspirationlogical.receipt.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.model.view.RestaurantView;
-import com.inspirationlogical.receipt.model.view.RestaurantViewImpl;
-import com.inspirationlogical.receipt.model.view.TableView;
-import com.inspirationlogical.receipt.model.view.TableViewImpl;
+import com.inspirationlogical.receipt.model.view.*;
 
 import javafx.geometry.Point2D;
 
@@ -69,9 +65,9 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     }
 
     @Override
-    public TableView addTable(RestaurantView restaurant, TableType type, int tableNumber, int tableCapacity, Point2D position) {
-
-        return null;
+    public TableView addTable(RestaurantView restaurant, TableViewBuilder builder) {
+        RestaurantAdapter restaurantAdapter = ((RestaurantViewImpl)restaurant).getAdapter();
+        return new TableViewImpl(restaurantAdapter.addTable(builder));
     }
 
     @Override
