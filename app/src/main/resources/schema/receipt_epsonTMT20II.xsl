@@ -184,10 +184,20 @@
     </fo:block>
 </xsl:template>
 
-<xsl:template match="footer/disclaimer|footer/note|footer/greet|footer/vendor_info">
+<xsl:template match="footer/disclaimer|footer/greet|footer/vendor_info">
     <fo:table-row>
         <fo:table-cell number-columns-spanned="2" text-align="center">
-            <fo:block padding-before="4pt" padding-after="4pt"> 
+            <fo:block padding-before="8pt" padding-after="8pt">
+                <xsl:apply-templates />
+            </fo:block>
+        </fo:table-cell>
+    </fo:table-row>
+</xsl:template>
+
+<xsl:template match="footer/note">
+    <fo:table-row border-left-style="dashed" border-right-style="dashed" border-top-style="dashed" border-bottom-style="dashed">
+        <fo:table-cell number-columns-spanned="2" text-align="center">
+            <fo:block padding-before="8pt" padding-after="8pt">
                 <xsl:apply-templates />
             </fo:block>
         </fo:table-cell>

@@ -453,7 +453,7 @@ Típus<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLNoteNode>
-          <y:Geometry height="104.36042496679943" width="107.5" x="173.70662039342605" y="-654.9797845654417"/>
+          <y:Geometry height="104.36042496679943" width="107.5" x="150.64712436653394" y="-646.0742612881802"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="106.908203125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="92.01953125" x="7.740234375" y="-1.273889079100286">Típus

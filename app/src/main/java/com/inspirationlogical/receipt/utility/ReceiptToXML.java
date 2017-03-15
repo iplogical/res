@@ -60,11 +60,15 @@ public class ReceiptToXML {
         ReceiptFooter footer = factory.createReceiptFooter();
         //TODO: add disclaimer in restaurant???
         footer.setDisclaimer(Resources.PRINTER.getString("Disclaimer"));
+        //TODO: get active note from Entity and set only if present
+        footer.setNote("Jovo het csutortokon Happy Hours egesz nap!");
         footer.setGreet(Resources.PRINTER.getString("Greet"));
         GregorianCalendar gc = new GregorianCalendar();
         gc.setTimeInMillis(receiptAdapter.getAdaptee().getClosureTime().getTimeInMillis());
         footer.setDatetime(new XMLGregorianCalendarImpl(gc));
         footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag")+":"+receiptAdapter.getAdaptee().getId().toString());
+        //TODO: get vendor info from resource file, version from git tag
+        footer.setVendorInfo("© InspirationLogical, Receipt v4.3");
         return footer;
     }
 
@@ -78,6 +82,9 @@ public class ReceiptToXML {
                 String.join(",", Arrays.asList(restaurant.getRestaurantAddress().getZIPCode(),
                         restaurant.getRestaurantAddress().getCity(),
                         restaurant.getRestaurantAddress().getStreet())));
+        //FIXME: add these to datamodel
+        header.setRestaurantSocialMediaInfo("facebook.com/gameuppub");
+        header.setRestaurantWebsite("www.gameuppub.com");
         return  header;
     }
 
