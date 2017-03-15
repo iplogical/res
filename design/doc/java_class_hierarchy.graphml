@@ -173,7 +173,7 @@ manager.transactionCommit();
 + getName() : String
 + getNote() : String
 + getCoordinates(void) : Point2D
-+ getSoldProducts() : Collection&lt;ReceiptRecordView&gt;</y:MethodLabel>
+</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>

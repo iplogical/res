@@ -5,7 +5,6 @@ import java.util.Collection;
 import com.inspirationlogical.receipt.model.enums.TableType;
 
 import javafx.geometry.Point2D;
-import lombok.Builder;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -30,7 +29,4 @@ public interface TableView {
     String getNote();
 
     Point2D getPosition();
-
-    Collection<ReceiptRecordView> getSoldProducts();
-
 }

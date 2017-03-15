@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 
 import com.inspirationlogical.receipt.model.TestType;
 import com.inspirationlogical.receipt.view.DatabaseCreator;
+import javafx.geometry.Point2D;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -20,7 +21,7 @@ public class TableAdapterTest {
     TableAdapter tableAdapter;
 
     @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule(TestType.VALIDATE);
+    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
@@ -28,6 +29,9 @@ public class TableAdapterTest {
     @Before
     public void persistObjects() {
         manager = factory.getEntityManager();
+        manager.getTransaction().begin();
+        manager.persist(schema.getRestaurant());
+        manager.getTransaction().commit();
         tableAdapter = new TableAdapter(schema.getTableNormal(), manager);
     }
 
@@ -41,5 +45,43 @@ public class TableAdapterTest {
         tableAdapter.setTableName("New Table Name");
         assertEquals("New Table Name", TableAdapter.getTableByNumber(manager,
                 tableAdapter.getAdaptee().getNumber()).getAdaptee().getName());
+    }
+
+    @Test
+    public void testSetCapacity() {
+        tableAdapter.setCapacity(10);
+        assertEquals(10, TableAdapter.getTableByNumber(manager,
+                tableAdapter.getAdaptee().getNumber()).getAdaptee().getCapacity());
+    }
+
+    @Test
+    public void testSetNote() {
+        tableAdapter.setNote("Big chocklate cake for Spicces Feri");
+        assertEquals("Big chocklate cake for Spicces Feri",
+                TableAdapter.getTableByNumber(manager,
+                tableAdapter.getAdaptee().getNumber()).getAdaptee().getNote());
+    }
+
+    @Test
+    public void testDisplayTable() {
+        tableAdapter.displayTable();
+        assertTrue(TableAdapter.getTableByNumber(manager,
+                        tableAdapter.getAdaptee().getNumber()).getAdaptee().isVisibility());
+    }
+
+    @Test
+    public void testHideTable() {
+        tableAdapter.hideTable();
+        assertFalse(TableAdapter.getTableByNumber(manager,
+                tableAdapter.getAdaptee().getNumber()).getAdaptee().isVisibility());
+    }
+
+    @Test
+    public void testMoveTable() {
+        tableAdapter.moveTable(new Point2D(50, 70));
+        assertEquals(50, TableAdapter.getTableByNumber(manager,
+                tableAdapter.getAdaptee().getNumber()).getAdaptee().getCoordinateX());
+        assertEquals(70, TableAdapter.getTableByNumber(manager,
+                tableAdapter.getAdaptee().getNumber()).getAdaptee().getCoordinateY());
     }
 }

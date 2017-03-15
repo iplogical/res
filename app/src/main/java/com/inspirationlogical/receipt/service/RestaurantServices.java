@@ -1,14 +1,13 @@
 package com.inspirationlogical.receipt.service;
 
-import java.util.List;
-
 import com.inspirationlogical.receipt.model.enums.TableType;
-import com.inspirationlogical.receipt.model.view.ReceiptRecordView;
+import com.inspirationlogical.receipt.model.view.ReceiptView;
 import com.inspirationlogical.receipt.model.view.RestaurantView;
 import com.inspirationlogical.receipt.model.view.TableView;
-
 import com.inspirationlogical.receipt.model.view.TableViewBuilder;
 import javafx.geometry.Point2D;
+
+import java.util.List;
 
 public interface RestaurantServices {
 
@@ -32,6 +31,6 @@ public interface RestaurantServices {
 
     TableView addTable(RestaurantView restaurant, TableViewBuilder builder);
 
-    ReceiptRecordView getActiveReceipt(TableView table);
+    ReceiptView getActiveReceipt(TableView table);
 
 }

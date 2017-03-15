@@ -8,7 +8,6 @@ import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.model.enums.TableType;
 
 import javafx.geometry.Point2D;
-import lombok.Builder;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -67,12 +66,5 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     @Override
     public Point2D getPosition() {
         return new Point2D(adapter.getAdaptee().getCoordinateX(), adapter.getAdaptee().getCoordinateY());
-    }
-
-    @Override
-    public Collection<ReceiptRecordView> getSoldProducts() {
-        return adapter.getActiveReceipt().getSoldProducts().stream()
-                .map(receiptRecordAdapter -> new ReceiptRecordViewImpl(receiptRecordAdapter))
-                .collect(Collectors.toList());
     }
 }

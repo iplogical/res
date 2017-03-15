@@ -1,17 +1,16 @@
 package com.inspirationlogical.receipt.service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.model.adapter.RestaurantAdapter;
 import com.inspirationlogical.receipt.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.model.enums.TableType;
 import com.inspirationlogical.receipt.model.view.*;
-
 import javafx.geometry.Point2D;
+
+import javax.persistence.EntityManager;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RestaurantServicesImpl extends AbstractServices implements RestaurantServices {
 
@@ -39,23 +38,28 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     }
 
     @Override
-    public void setTableCapacity(TableView table, int capacity) {
+    public void setTableCapacity(TableView tableView, int capacity) {
+        ((TableViewImpl)tableView).getAdapter().setCapacity(capacity);
     }
 
     @Override
-    public void addTableNote(TableView table, String note) {
+    public void addTableNote(TableView tableView, String note) {
+        ((TableViewImpl)tableView).getAdapter().setNote(note);
     }
 
     @Override
-    public void displayTable(TableView table) {
+    public void displayTable(TableView tableView) {
+        ((TableViewImpl)tableView).getAdapter().displayTable();
     }
 
     @Override
-    public void hideTable(TableView table) {
+    public void hideTable(TableView tableView) {
+        ((TableViewImpl)tableView).getAdapter().hideTable();
     }
 
     @Override
-    public void moveTable(TableView table, Point2D position) {
+    public void moveTable(TableView tableView, Point2D position) {
+        ((TableViewImpl)tableView).getAdapter().moveTable(position);
     }
 
     @Override
@@ -71,8 +75,8 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     }
 
     @Override
-    public ReceiptRecordView getActiveReceipt(TableView table) {
-        return null;
+    public ReceiptView getActiveReceipt(TableView tableView) {
+        return new ReceiptViewImpl(((TableViewImpl)tableView).getAdapter().getActiveReceipt());
     }
 
 }
