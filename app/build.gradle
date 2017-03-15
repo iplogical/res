@@ -64,8 +64,10 @@ dependencies {
     // TestNG is also supported by the Gradle Test task. Just change the
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
     // 'test.useTestNG()' to your build script.
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-all:1.10.19'
+    testCompile 'junit:junit:4.12',
+    'org.powermock:powermock-core:1.6.5',
+    'org.powermock:powermock-module-junit4:1.6.5',
+    'org.powermock:powermock-api-mockito:1.6.5'
     // https://mvnrepository.com/artifact/com.h2database/h2
     testCompile 'com.h2database:h2:1.0.60'
 
