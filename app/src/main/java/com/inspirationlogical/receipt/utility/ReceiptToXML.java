@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,9 +74,10 @@ public class ReceiptToXML {
         //FIXME: add owner and restaurant ZIP,Street addr,city, taxation ID in DataModel
         header.setRestaurantLogoPath(Paths.get(Resources.CONFIG.getString("ReceiptLogoPath")).toUri().toString());
         header.setRestaurantName(restaurant.getRestaurantName());
-        header.setRestaurantLocZIP(restaurant.getRestaurantAddress().getZIPCode());
-        header.setRestaurantLocCity(restaurant.getRestaurantAddress().getCity());
-        header.setRestaurantLocStreet(restaurant.getRestaurantAddress().getStreet());
+        header.setRestaurantAddress(
+                String.join(",", Arrays.asList(restaurant.getRestaurantAddress().getZIPCode(),
+                        restaurant.getRestaurantAddress().getCity(),
+                        restaurant.getRestaurantAddress().getStreet())));
         return  header;
     }
 

@@ -15,9 +15,7 @@
   <xs:sequence>
     <xs:element name="restaurant_logo_path" type="xs:string"/>
     <xs:element name="restaurant_name" type="xs:string"/>
-    <xs:element name="restaurant_loc_ZIP" type="xs:string"/>
-    <xs:element name="restaurant_loc_city" type="xs:string"/>
-    <xs:element name="restaurant_loc_street" type="xs:string"/>
+    <xs:element name="restaurant_address" type="xs:string"/>
     <xs:element name="restaurant_social_media_info" type="xs:string" minOccurs="0"/>
     <xs:element name="restaurant_website" type="xs:string" minOccurs="0"/>
   </xs:sequence>

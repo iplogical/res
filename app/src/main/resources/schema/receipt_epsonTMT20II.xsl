@@ -39,20 +39,20 @@
 <fo:block text-align="center" border-top-style="double" border-top-width="4pt"/>
 </xsl:template>
 
-<xsl:template match="header/restaurant_name|header/restaurant_loc_ZIP|header/restaurant_loc_city|header/restaurant_loc_street|header/restaurant_social_media_info|header/restaurant_website">
-<fo:table-row>
-<fo:table-cell>
-    <fo:block  padding-before="2pt">
-        <xsl:apply-templates  />
-    </fo:block>
-</fo:table-cell>
-</fo:table-row>
-</xsl:template>
-
 <xsl:template match="header/restaurant_name">
     <fo:table-row>
-        <fo:table-cell>
-            <fo:block font-weight="bold" font-size="8pt" padding-before="2pt">
+        <fo:table-cell  number-columns-spanned="3">
+            <fo:block font-weight="bold" font-size="10pt" padding-before="2pt">
+                <xsl:apply-templates  />
+            </fo:block>
+        </fo:table-cell>
+    </fo:table-row>
+</xsl:template>
+
+<xsl:template match="header/restaurant_social_media_info|header/restaurant_website|header/restaurant_address">
+    <fo:table-row>
+        <fo:table-cell  number-columns-spanned="3">
+            <fo:block font-size="6pt" padding-before="2pt">
                 <xsl:apply-templates  />
             </fo:block>
         </fo:table-cell>
@@ -61,7 +61,7 @@
 
 <xsl:template match="header/restaurant_logo_path">
     <fo:table-row>
-    <fo:table-cell>
+    <fo:table-cell  number-columns-spanned="3">
     <fo:block font-weight="bold"  padding-before="2pt">
         <fo:external-graphic src="{.}" width="100%" />
     </fo:block>
