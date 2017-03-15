@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.nio.file.Paths;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,20 +63,15 @@ public class ReceiptToXML {
         GregorianCalendar gc = new GregorianCalendar();
         gc.setTimeInMillis(receiptAdapter.getAdaptee().getClosureTime().getTimeInMillis());
         footer.setDatetime(new XMLGregorianCalendarImpl(gc));
-        footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag"));
-        footer.setReceiptId(receiptAdapter.getAdaptee().getId().toString());
+        footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag")+":"+receiptAdapter.getAdaptee().getId().toString());
         return footer;
     }
 
     private static ReceiptHeader createHeader(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptHeader header = factory.createReceiptHeader();
         Restaurant restaurant = receiptAdapter.getAdaptee().getOwner().getOwner();
-        header.setCompanyName(restaurant.getCompanyName());
         //FIXME: add owner and restaurant ZIP,Street addr,city, taxation ID in DataModel
-        header.setCompanyLocZIP(restaurant.getCompanyAddress().getZIPCode());
-        header.setCompanyLocCity(restaurant.getCompanyAddress().getCity());
-        header.setCompanyLocStreet(restaurant.getCompanyAddress().getStreet());
-        header.setCompanyTaxpayerId(Resources.PRINTER.getString("TaxationID")+": "+ restaurant.getCompanyTaxPayerId());
+        header.setRestaurantLogoPath(Paths.get(Resources.CONFIG.getString("ReceiptLogoPath")).toUri().toString());
         header.setRestaurantName(restaurant.getRestaurantName());
         header.setRestaurantLocZIP(restaurant.getRestaurantAddress().getZIPCode());
         header.setRestaurantLocCity(restaurant.getRestaurantAddress().getCity());
@@ -91,7 +87,6 @@ public class ReceiptToXML {
             entry.setName(record.getName());
             entry.setQtyPrice(BigInteger.valueOf(record.getSalePrice()));
             entry.setQty(BigInteger.valueOf((int)record.getSoldQuantity()));
-            entry.setQtyDim(record.getProduct().getEtalonQuantity().toString());
             entry.setTotal(BigInteger.valueOf((int)record.getSoldQuantity() * record.getSalePrice()));
             return entry;
         }).collect(Collectors.toList());
@@ -103,7 +98,6 @@ public class ReceiptToXML {
     private static ReceiptBodyHeader createReceiptBodyHeader(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptBodyHeader header = factory.createReceiptBodyHeader();
         header.setNameHeader(Resources.PRINTER.getString("NameHeader"));
-        header.setQtyDimHeader(Resources.PRINTER.getString("QtyDimHeader"));
         header.setQtyHeader(Resources.PRINTER.getString("QtyHeader"));
         header.setQtyPriceHeader(Resources.PRINTER.getString("QtyPriceHeader"));
         header.setTotalHeader(Resources.PRINTER.getString("TotalHeader"));

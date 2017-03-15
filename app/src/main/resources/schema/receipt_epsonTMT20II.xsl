@@ -29,15 +29,44 @@
 
 <!-- Header style definition -->
 <xsl:template match="header">
-    <fo:block     font-family="Helvetica" font-size="6pt"
-                  text-align="center">
-        <xsl:for-each select="*">
-            <fo:block>
-                <xsl:apply-templates />
-            </fo:block>
-        </xsl:for-each>
+<fo:block font-family="Helvetica" font-size="6pt" >
+<fo:table  width="100%" text-align="center">
+<fo:table-body >
+    <xsl:apply-templates  select="*"/>
+</fo:table-body>
+</fo:table>
+</fo:block>
+<fo:block text-align="center" border-top-style="double" border-top-width="4pt"/>
+</xsl:template>
+
+<xsl:template match="header/restaurant_name|header/restaurant_loc_ZIP|header/restaurant_loc_city|header/restaurant_loc_street|header/restaurant_social_media_info|header/restaurant_website">
+<fo:table-row>
+<fo:table-cell>
+    <fo:block  padding-before="2pt">
+        <xsl:apply-templates  />
     </fo:block>
-    <fo:block text-align="center" border-top-style="double" border-top-width="4pt"/>
+</fo:table-cell>
+</fo:table-row>
+</xsl:template>
+
+<xsl:template match="header/restaurant_name">
+    <fo:table-row>
+        <fo:table-cell>
+            <fo:block font-weight="bold" font-size="8pt" padding-before="2pt">
+                <xsl:apply-templates  />
+            </fo:block>
+        </fo:table-cell>
+    </fo:table-row>
+</xsl:template>
+
+<xsl:template match="header/restaurant_logo_path">
+    <fo:table-row>
+    <fo:table-cell>
+    <fo:block font-weight="bold"  padding-before="2pt">
+        <fo:external-graphic src="{.}" width="100%" />
+    </fo:block>
+    </fo:table-cell>
+    </fo:table-row>
 </xsl:template>
 
 <!-- Body style definition -->
@@ -64,7 +93,7 @@
 
 <xsl:template match="body_header/*">
     <fo:table-cell>
-      <fo:block padding-before="4pt" padding-after="4pt">
+      <fo:block padding-before="4pt" padding-after="4pt" text-align="end">
         <xsl:apply-templates  />
       </fo:block>
     </fo:table-cell>
@@ -83,29 +112,20 @@
 </xsl:template>
 
 <xsl:template match="body_footer/total_tag|body_footer/total_rounded_tag|body_footer/payment_method_tag">
-    <fo:table-cell number-columns-spanned="3">
+    <fo:table-cell number-columns-spanned="2">
       <fo:block font-weight="bold"  padding-before="2pt">
         <xsl:apply-templates  />:
       </fo:block>
     </fo:table-cell>
 </xsl:template>
 
-<xsl:template match="body_footer/payment_method">
-    <fo:table-cell number-columns-spanned="2">
-      <fo:block font-weight="bold"  padding-before="2pt">
-        <xsl:apply-templates  />
-      </fo:block>
-    </fo:table-cell>
-</xsl:template>
-
-<xsl:template match="body_footer/total|body_footer/total_rounded|body_footer/total_currency|body_footer/total_rounded_currency">
+<xsl:template match="body_footer/total|body_footer/total_rounded|body_footer/total_currency|body_footer/total_rounded_currency|body_footer/payment_method">
     <fo:table-cell>
-      <fo:block font-weight="bold"  padding-before="2pt">
+      <fo:block font-weight="bold"  padding-before="2pt" text-align="end">
         <xsl:apply-templates  />
       </fo:block>
     </fo:table-cell>
 </xsl:template>
-
 
 
 <xsl:template match="entry">
@@ -116,29 +136,29 @@
         <fo:table-cell>
             <fo:block />
         </fo:table-cell>
-        <xsl:apply-templates select="qty|qty_dim|qty_price|total" />
+        <xsl:apply-templates select="qty|qty_price|total" />
     </fo:table-row>
 </xsl:template>
 
 <xsl:template match="entry/name">
-    <fo:table-cell number-columns-spanned="5">
+    <fo:table-cell number-columns-spanned="4">
         <fo:block >
             <xsl:value-of select="."/>
         </fo:block>
     </fo:table-cell>
 </xsl:template>
 
-<xsl:template match="entry/qty | entry/total">
+<xsl:template match="entry/total">
         <fo:table-cell>
-            <fo:block >
+            <fo:block  text-align="end">
                 <xsl:apply-templates  />
             </fo:block>
         </fo:table-cell>
 </xsl:template>
 
-<xsl:template match="entry/qty_dim">
+<xsl:template match="entry/qty">
         <fo:table-cell>
-            <fo:block >
+            <fo:block text-align="end">
                 <xsl:apply-templates  /> x
             </fo:block>
         </fo:table-cell>
@@ -146,7 +166,7 @@
 
 <xsl:template match="entry/qty_price">
         <fo:table-cell>
-            <fo:block >
+            <fo:block text-align="end">
                 <xsl:apply-templates  /> =
             </fo:block>
         </fo:table-cell>
@@ -174,7 +194,7 @@
     </fo:table-row>
 </xsl:template>
 
-<xsl:template match="footer/receipt_id_tag|footer/receipt_id|footer/datetime">
+<xsl:template match="footer/receipt_id_tag|footer/datetime">
     <fo:table-row>
         <fo:table-cell number-columns-spanned="2" text-align="end">
             <fo:block> 
