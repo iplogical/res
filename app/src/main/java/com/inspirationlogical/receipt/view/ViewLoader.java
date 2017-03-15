@@ -26,7 +26,7 @@ public class ViewLoader {
 
     public static Node loadViewHidden(String viewPath, Initializable controller) {
         Node view = loadView(viewPath, controller);
-        view.setVisible(false);
+        if (view != null) view.setVisible(false);
 
         return view;
     }

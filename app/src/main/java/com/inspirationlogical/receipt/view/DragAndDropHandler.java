@@ -9,7 +9,7 @@ import javafx.scene.input.MouseEvent;
 
 public class DragAndDropHandler {
 
-    public static void initHandlers(Node view) {
+    public static void addDragAndDrop(Node view) {
         final Wrapper<Point2D> deltaWrapper = new Wrapper<>();
 
         view.setOnMousePressed(new EventHandler<MouseEvent>() {

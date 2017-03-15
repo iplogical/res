@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.controller;
 
-import static com.inspirationlogical.receipt.view.DragAndDropHandler.initHandlers;
+import static com.inspirationlogical.receipt.view.DragAndDropHandler.addDragAndDrop;
 import static com.inspirationlogical.receipt.view.NodeUtility.hideNode;
 import static java.lang.Integer.valueOf;
 
@@ -48,7 +48,7 @@ public class AddTableFormControllerImpl implements AddTableFormController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initHandlers(view);
+        addDragAndDrop(view);
         number.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         capacity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
     }

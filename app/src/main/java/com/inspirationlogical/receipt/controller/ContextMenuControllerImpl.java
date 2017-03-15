@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.controller;
 
-import static com.inspirationlogical.receipt.view.DragAndDropHandler.initHandlers;
+import static com.inspirationlogical.receipt.view.DragAndDropHandler.addDragAndDrop;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -45,7 +45,7 @@ public class ContextMenuControllerImpl implements ContextMenuController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initHandlers(view);
+        addDragAndDrop(view);
     }
 
     @FXML

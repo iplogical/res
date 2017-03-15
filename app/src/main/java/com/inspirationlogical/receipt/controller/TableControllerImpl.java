@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.controller;
 
-import static com.inspirationlogical.receipt.view.DragAndDropHandler.initHandlers;
+import static com.inspirationlogical.receipt.view.DragAndDropHandler.addDragAndDrop;
 import static com.inspirationlogical.receipt.view.NodeUtility.showNode;
 import static java.lang.String.valueOf;
 
@@ -43,7 +43,7 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initHandlers(view);
+        addDragAndDrop(view);
         initVisual();
         initData();
     }

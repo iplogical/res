@@ -10,6 +10,7 @@ import static com.inspirationlogical.receipt.utility.PredicateOperations.not;
 import static com.inspirationlogical.receipt.view.NodeUtility.getNodePosition;
 import static com.inspirationlogical.receipt.view.NodeUtility.hideNode;
 import static com.inspirationlogical.receipt.view.NodeUtility.showNode;
+import static com.inspirationlogical.receipt.view.PressAndHoldHandler.addPressAndHold;
 import static com.inspirationlogical.receipt.view.ViewLoader.loadView;
 import static com.inspirationlogical.receipt.view.ViewLoader.loadViewHidden;
 
@@ -23,13 +24,9 @@ import com.inspirationlogical.receipt.model.enums.TableType;
 import com.inspirationlogical.receipt.model.view.RestaurantView;
 import com.inspirationlogical.receipt.model.view.TableView;
 import com.inspirationlogical.receipt.service.RestaurantServices;
-import com.inspirationlogical.receipt.utility.Wrapper;
 
-import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -68,10 +65,10 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initRestaurant();
-        initTables();
         initContextMenu();
         initAddTableForm();
+        initRestaurant();
+        initTables();
     }
 
     private void initRestaurant() {
@@ -86,32 +83,12 @@ public class RestaurantControllerImpl implements RestaurantController {
         contextMenu = (VBox) loadViewHidden(CONTEXT_MENU_VIEW_PATH, contextMenuController);
         layout.getChildren().add(contextMenu);
 
-        addPressAndHoldHandler(layout, Duration.millis(HOLD_DURATION_MILLIS));
+        addPressAndHold(layout, contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
     }
 
     private void initAddTableForm() {
         addTableForm = (VBox) loadViewHidden(ADD_TABLE_FORM_VIEW_PATH, addTableFormController);
         layout.getChildren().add(addTableForm);
-    }
-
-    private void addPressAndHoldHandler(Node node, Duration holdTime) {
-        Wrapper<Point2D> positionWrapper = new Wrapper<>();
-        PauseTransition holdTimer = new PauseTransition(holdTime);
-
-        holdTimer.setOnFinished(event -> {
-            Point2D position = positionWrapper.getContent().add(getNodePosition(node));
-            showNode(contextMenu, position);
-        });
-
-        node.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            positionWrapper.setContent(new Point2D(event.getX(), event.getY()));
-            holdTimer.playFromStart();
-            contextMenu.setVisible(false);
-        });
-
-        node.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> holdTimer.stop());
-
-        node.addEventHandler(MouseEvent.DRAG_DETECTED, event -> holdTimer.stop());
     }
 
     @Override
@@ -140,7 +117,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
         loadView(TABLE_VIEW_PATH, tableController);
 
-        addPressAndHoldHandler(tableController.getView(), Duration.millis(HOLD_DURATION_MILLIS));
+        addPressAndHold(tableController.getView(), contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
 
         layout.getChildren().add(tableController.getView());
     }
