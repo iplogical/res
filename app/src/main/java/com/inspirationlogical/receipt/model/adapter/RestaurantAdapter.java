@@ -17,10 +17,6 @@ import com.inspirationlogical.receipt.model.view.TableViewBuilder;
  */
 public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
 
-    public RestaurantAdapter(Restaurant adaptee, EntityManager manager) {
-        super(adaptee, manager);
-    }
-
     public static RestaurantAdapter restaurantAdapterFactory(EntityManager manager) {
         List<Restaurant> restaurantList = manager.createNamedQuery(Restaurant.GET_ACTIVE_RESTAURANT).getResultList();
         if (restaurantList.isEmpty()) {
@@ -28,6 +24,11 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         }
         return new RestaurantAdapter(restaurantList.get(0), manager);
     }
+
+    public RestaurantAdapter(Restaurant adaptee, EntityManager manager) {
+        super(adaptee, manager);
+    }
+
 
     public List<TableAdapter> getDisplayableTables() {
         GuardedTransaction.Run(manager, () -> manager.refresh(adaptee));

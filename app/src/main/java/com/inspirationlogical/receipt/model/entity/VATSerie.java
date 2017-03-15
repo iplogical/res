@@ -22,6 +22,7 @@ import lombok.experimental.Tolerate;
 public @Data class VATSerie extends AbstractEntity {
 
     public static final String GET_TEST_VAT_SERIES = "VATSerie.GetTestVATSeries";
+    public static final String GET_VAT_SERIE = "VATSerie.GetTestVATSeries";
 
     @OneToMany(mappedBy = "serie", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     private Collection<VAT> vat;

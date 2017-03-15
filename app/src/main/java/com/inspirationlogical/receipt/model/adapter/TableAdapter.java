@@ -3,9 +3,11 @@ package com.inspirationlogical.receipt.model.adapter;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import com.inspirationlogical.receipt.exception.TableAlreadyOpenException;
 import com.inspirationlogical.receipt.model.entity.Receipt;
 import com.inspirationlogical.receipt.model.entity.Table;
 import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.model.utils.GuardedTransaction;
 import javafx.geometry.Point2D;
 
@@ -36,7 +38,7 @@ public class TableAdapter extends AbstractAdapter<Table>
         query.setParameter("status", ReceiptStatus.OPEN);
         @SuppressWarnings("unchecked")
         List<Receipt> active = query.getResultList();
-        if(active == null) {
+        if(active.size() == 0) {
             return null;
         }
         else return new ReceiptAdapter(active.get(0), manager);
@@ -67,5 +69,24 @@ public class TableAdapter extends AbstractAdapter<Table>
             adaptee.setCoordinateX((int)position.getX());
             adaptee.setCoordinateY((int)position.getY());
         });
+    }
+
+    public void openTable() {
+        GuardedTransaction.Run(manager,() -> manager.refresh(adaptee));
+        if(isTableOpen()) {
+            throw new TableAlreadyOpenException(adaptee.getNumber());
+        }
+        ReceiptAdapter receiptAdapter = ReceiptAdapter.receiptAdapterFactory(manager, ReceiptType.SALE);
+        bindReceiptToTable(receiptAdapter);
+        GuardedTransaction.Run(manager,() -> manager.persist(adaptee));
+    }
+
+    private void bindReceiptToTable(ReceiptAdapter receiptAdapter) {
+        receiptAdapter.getAdaptee().setOwner(adaptee);
+        adaptee.getReceipt().add(receiptAdapter.getAdaptee());
+    }
+
+    private boolean isTableOpen() {
+        return this.getActiveReceipt() != null;
     }
 }

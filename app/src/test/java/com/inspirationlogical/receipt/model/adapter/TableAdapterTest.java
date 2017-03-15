@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import javax.persistence.EntityManager;
 
+import com.inspirationlogical.receipt.exception.TableAlreadyOpenException;
 import com.inspirationlogical.receipt.model.TestType;
 import com.inspirationlogical.receipt.view.DatabaseCreator;
 import javafx.geometry.Point2D;
@@ -19,6 +20,7 @@ public class TableAdapterTest {
 
     private EntityManager manager;
     TableAdapter tableAdapter;
+    TableAdapter closedTableAdapter;
 
     @Rule
     public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
@@ -33,6 +35,7 @@ public class TableAdapterTest {
         manager.persist(schema.getRestaurant());
         manager.getTransaction().commit();
         tableAdapter = new TableAdapter(schema.getTableNormal(), manager);
+        closedTableAdapter = new TableAdapter(schema.getTableNormalClosed(), manager);
     }
 
     @Test
@@ -83,5 +86,16 @@ public class TableAdapterTest {
                 tableAdapter.getAdaptee().getNumber()).getAdaptee().getCoordinateX());
         assertEquals(70, TableAdapter.getTableByNumber(manager,
                 tableAdapter.getAdaptee().getNumber()).getAdaptee().getCoordinateY());
+    }
+
+    @Test(expected = TableAlreadyOpenException.class)
+    public void testOpenTableAlreadyOpen() {
+        tableAdapter.openTable();
+    }
+
+    @Test
+    public void testOpenTable() {
+        closedTableAdapter.openTable();
+        assertNotNull(closedTableAdapter.getActiveReceipt());
     }
 }

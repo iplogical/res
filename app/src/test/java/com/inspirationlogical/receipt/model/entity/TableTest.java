@@ -32,7 +32,7 @@ public class TableTest {
     public void testReservationNumber() {
         List<Table> tables = persistTebleAndGetList();
         for(Table t : tables) {
-            if(t.getType() == TableType.NORMAL) {
+            if(t.getNumber() == 1) {
                 assertEquals(2, t.getReservation().size());
             }
         }
@@ -69,7 +69,7 @@ public class TableTest {
     }
 
     private void assertListSize() {
-        assertEquals(6, persistTebleAndGetList().size());
+        assertEquals(7, persistTebleAndGetList().size());
     }
 
     private List<Table> persistTebleAndGetList() {

@@ -37,26 +37,26 @@ public class RestaurantAdapterTest {
     @Test
     public void testRestaurantHasDisplayableTables() {
         RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant(), manager);
-        assertEquals(2, restaurantAdapter.getDisplayableTables().size());
+        assertEquals(3, restaurantAdapter.getDisplayableTables().size());
     }
 
     @Test
     public void testAddTable() {
         RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant(), manager);
-        restaurantAdapter.addTable(TableType.NORMAL, 3);
-        assertEquals(3, restaurantAdapter.getDisplayableTables().size());
+        restaurantAdapter.addTable(TableType.NORMAL, 4);
+        assertEquals(4, restaurantAdapter.getDisplayableTables().size());
     }
 
     @Test
     public void testAddTableBuilder() {
         RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant(), manager);
-        restaurantAdapter.addTable(new TableViewBuilder(TableType.NORMAL, 3)
+        restaurantAdapter.addTable(new TableViewBuilder(TableType.NORMAL, 4)
                 .name("Ittas Juci")
                 .position(new Point2D(20, 20))
                 .guestNumber(5)
                 .tableCapacity(5)
                 .note("Big Chocklate Cake")
                 .visibility(true));
-        assertEquals(3, restaurantAdapter.getDisplayableTables().size());
+        assertEquals(4, restaurantAdapter.getDisplayableTables().size());
     }
 }

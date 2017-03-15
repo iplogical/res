@@ -73,6 +73,6 @@ public class TableViewTest {
 
     @Test
     public void testGetCoordinates() {
-        assertEquals(new Point2D(20,20), tableView.getPosition());
+        assertEquals(new Point2D(100,50), tableView.getPosition());
     }
 }

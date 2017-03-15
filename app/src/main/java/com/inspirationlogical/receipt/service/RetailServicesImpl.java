@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.inspirationlogical.receipt.model.view.ProductView;
 import com.inspirationlogical.receipt.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.model.view.TableView;
+import com.inspirationlogical.receipt.model.view.TableViewImpl;
 
 import javax.persistence.EntityManager;
 import java.util.Collection;
@@ -17,7 +18,7 @@ public class RetailServicesImpl extends AbstractServices implements RetailServic
 
     @Override
     public void openTable(TableView tableView) {
-
+        ((TableViewImpl)tableView).getAdapter().openTable();
     }
 
     @Override

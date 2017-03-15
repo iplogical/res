@@ -87,6 +87,7 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter ReceiptRecord receiptRecordOther;
 
     private @Getter Table tableNormal;
+    private @Getter Table tableNormalClosed;
     private @Getter Table tableVirtual;
     private @Getter Table tablePurchase;
     private @Getter Table tableInventory;
@@ -246,6 +247,7 @@ private void buildProducts() {
 
     private void buildTables() {
         buildTableNormal();
+        buildTableNormalClosed();
         buildTableVirtual();
         buildTablePurchase();
         buildTableInventory();
@@ -652,6 +654,19 @@ private void buildProducts() {
                 .build();
     }
 
+    private void buildTableNormalClosed() {
+        tableNormalClosed = Table.builder()
+                .number(3)
+                .name("Ittas Juci")
+                .type(TableType.NORMAL)
+                .visibility(true)
+                .capacity(6)
+                .guestNumber(6)
+                .coordinateX(250)
+                .coordinateY(50)
+                .build();
+    }
+
     private void buildTableVirtual() {
         tableVirtual = Table.builder()
                 .number(2)
@@ -846,9 +861,10 @@ private void buildProducts() {
 
     private void restaurantAndTables() {
         restaurant.setTable(new HashSet<Table>(
-                Arrays.asList(tableNormal, tableVirtual, tablePurchase,
+                Arrays.asList(tableNormal, tableNormalClosed, tableVirtual, tablePurchase,
                         tableInventory, tableDisposal, tableOther)));
         tableNormal.setOwner(restaurant);
+        tableNormalClosed.setOwner(restaurant);
         tableVirtual.setOwner(restaurant);
         tablePurchase.setOwner(restaurant);
         tableInventory.setOwner(restaurant);

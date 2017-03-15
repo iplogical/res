@@ -29,7 +29,7 @@ public class RestaurantTest {
 
     @Test
     public void numberOfTables() {
-        assertEquals(6, persistRestaurantAndGetList().get(0).getTable().size());
+        assertEquals(7, persistRestaurantAndGetList().get(0).getTable().size());
     }
 
     @Test(expected = RollbackException.class)

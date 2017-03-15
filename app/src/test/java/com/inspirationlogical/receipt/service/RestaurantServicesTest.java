@@ -42,7 +42,6 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class RestaurantServicesTest {
     private RestaurantServices service;
 
-
     @Mock
     private EntityManager manager;
 
@@ -65,7 +64,7 @@ public class RestaurantServicesTest {
     Point2D position;
 
     @Before
-    public void persistObjects() {
+    public void createService() {
         service = new RestaurantServicesImpl(manager);
     }
 
