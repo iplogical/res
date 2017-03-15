@@ -30,14 +30,15 @@ public class EntityManagerFactoryRule implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
+                Properties props = new Properties();
                 if(testType == TestType.DROP_AND_CREATE) {
                     em = emf.createEntityManager();
                 } else if(testType == TestType.CREATE) {
-                    Properties props = new Properties();
                     props.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
                     emfView = Persistence.createEntityManagerFactory("TestViewPersistence", props);
                     em = emfView.createEntityManager();
                 } else if(testType == TestType.VALIDATE){
+                    props.setProperty("javax.persistence.schema-generation.database.action", "validate");
                     em = emfView.createEntityManager();
                 }
                 try {
