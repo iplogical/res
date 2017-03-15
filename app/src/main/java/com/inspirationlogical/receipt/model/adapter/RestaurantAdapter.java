@@ -1,16 +1,16 @@
 package com.inspirationlogical.receipt.model.adapter;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+
 import com.inspirationlogical.receipt.exception.RestaurantNotFoundException;
 import com.inspirationlogical.receipt.model.entity.Restaurant;
 import com.inspirationlogical.receipt.model.entity.Table;
 import com.inspirationlogical.receipt.model.enums.TableType;
 import com.inspirationlogical.receipt.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.model.view.TableViewBuilder;
-
-import javax.persistence.EntityManager;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -44,6 +44,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         Table newTable = Table.builder()
                 .type(type)
                 .number(tableNumber)
+                .visibility(true)
                 .build();
         adaptee.getTable().add(newTable);
         newTable.setOwner(adaptee);
