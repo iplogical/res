@@ -15,6 +15,7 @@ import org.junit.runners.model.Statement;
 public class EntityManagerFactoryRule implements TestRule {
 
     private EntityManagerFactory emf = EntityManagerFactoryHolder.get();
+    private EntityManagerFactory emfView = EntityManagerFactoryHolder.getView();
     private EntityManager em;
     private TestType testType = TestType.DROP_AND_CREATE;
 
@@ -29,7 +30,16 @@ public class EntityManagerFactoryRule implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                em = emf.createEntityManager();
+                if(testType == TestType.DROP_AND_CREATE) {
+                    em = emf.createEntityManager();
+                } else if(testType == TestType.CREATE) {
+                    Properties props = new Properties();
+                    props.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
+                    emfView = Persistence.createEntityManagerFactory("TestViewPersistence", props);
+                    em = emfView.createEntityManager();
+                } else if(testType == TestType.VALIDATE){
+                    em = emfView.createEntityManager();
+                }
                 try {
                     base.evaluate();
                 } finally {

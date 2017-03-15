@@ -68,7 +68,7 @@ public class TableViewTest {
 
     @Test
     public void testGetName() {
-        assertEquals("NormalTable1", tableView.getName());
+        assertEquals("Spicces Feri", tableView.getName());
     }
 
     @Test

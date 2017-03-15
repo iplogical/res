@@ -36,4 +36,37 @@
                   value="drop-and-create"/>
         </properties>
     </persistence-unit>
+
+    <persistence-unit name="TestViewPersistence"  transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- entities -->
+        <class>com.inspirationlogical.receipt.model.entity.Product</class>
+        <class>com.inspirationlogical.receipt.model.entity.ProductCategory</class>
+        <class>com.inspirationlogical.receipt.model.entity.Recipe</class>
+        <class>com.inspirationlogical.receipt.model.entity.Stock</class>
+        <class>com.inspirationlogical.receipt.model.entity.Receipt</class>
+        <class>com.inspirationlogical.receipt.model.entity.Table</class>
+        <class>com.inspirationlogical.receipt.model.entity.Restaurant</class>
+        <class>com.inspirationlogical.receipt.model.entity.ReceiptRecord</class>
+        <class>com.inspirationlogical.receipt.model.entity.VATSerie</class>
+        <class>com.inspirationlogical.receipt.model.entity.VAT</class>
+        <class>com.inspirationlogical.receipt.model.entity.Reservation</class>
+        <class>com.inspirationlogical.receipt.model.entity.PriceModifier</class>
+        <!--          -->
+
+        <properties>
+            <property name="javax.persistence.jdbc.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ReceiptViewTest"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="test"/>
+            <property name="javax.persistence.jdbc.show_sql" value="true"/>
+            <!-- entities -->
+            <property name="hbm2ddl.auto" value="create"/>
+            <!--          -->
+            <property name="javax.persistence.schema-generation.database.action"
+                      value="validate"/>
+        </properties>
+    </persistence-unit>
 </persistence>

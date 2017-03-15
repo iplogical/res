@@ -9,9 +9,12 @@ import java.util.Properties;
  */
 class EntityManagerFactoryHolder{
     static private EntityManagerFactory emf;
+    static private EntityManagerFactory emfView;
     static{
         emf = Persistence.createEntityManagerFactory("TestPersistance");
+        emfView = Persistence.createEntityManagerFactory("TestViewPersistence");
     }
 
     static public EntityManagerFactory get(){return emf;}
+    static public EntityManagerFactory getView(){return emfView;}
 }
