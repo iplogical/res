@@ -29,7 +29,7 @@ public class ContextMenuControllerTest {
         // Given
 
         // When
-        underTest.initialize(null, null);
+        //underTest.initialize(null, null);
 
         // Then
     }

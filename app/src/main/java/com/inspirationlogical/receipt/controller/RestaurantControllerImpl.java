@@ -30,6 +30,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -90,7 +91,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void initTables() {
-        restaurantServices.getTables(restaurantView).stream().filter(NORMAL_VISIBLE_TABLE).forEach(this::drawTable);
+        restaurantServices.getTables(restaurantView).stream().filter(VISIBLE_TABLE).forEach(this::drawTable);
     }
 
     private void initContextMenu() {
@@ -133,6 +134,8 @@ public class RestaurantControllerImpl implements RestaurantController {
 
         addPressAndHold(tableController.getView(), contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
 
-        tables.getChildren().add(tableController.getView());
+        Pane pane = tableView.isVirtual() ? virtual : tables;
+
+        pane.getChildren().add(tableController.getView());
     }
 }

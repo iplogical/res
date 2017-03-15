@@ -3,8 +3,8 @@ package com.inspirationlogical.receipt.model;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.model.utils.GuardedTransaction;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -38,11 +38,9 @@ import com.inspirationlogical.receipt.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.model.enums.TableType;
 import com.inspirationlogical.receipt.model.enums.VATName;
+import com.inspirationlogical.receipt.model.utils.GuardedTransaction;
 
 import lombok.Getter;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 public class BuildTestSchemaRule implements TestRule {
 
@@ -649,15 +647,21 @@ private void buildProducts() {
                 .visibility(true)
                 .capacity(6)
                 .guestNumber(4)
-                .coordinateX(20)
-                .coordinateY(20)
+                .coordinateX(100)
+                .coordinateY(50)
                 .build();
     }
 
     private void buildTableVirtual() {
         tableVirtual = Table.builder()
                 .number(2)
+                .name("Bódult Karcsi")
                 .type(TableType.VIRTUAL)
+                .visibility(true)
+                .capacity(1)
+                .guestNumber(1)
+                .coordinateX(100)
+                .coordinateY(100)
                 .build();
     }
 
