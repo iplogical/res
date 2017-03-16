@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.persistence.*;
 import javax.persistence.Table;
 
+import com.inspirationlogical.receipt.corelib.model.annotations.ValidCategory;
 import lombok.experimental.Tolerate;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -27,6 +28,7 @@ import lombok.EqualsAndHashCode;
 @AttributeOverride(name = "id", column = @Column(name = "CATEGORY_ID"))
 @ValidProduct
 @ValidParent
+@ValidCategory
 public @Data class ProductCategory extends AbstractEntity {
 
     public static final String GET_ALL_CATEGORIES = "ProductCategory.GetTestCategories";

@@ -26,6 +26,7 @@ public class ProductTest {
     @Test(expected = PersistenceException.class)
     public void testProductCategoryConstriant() {
         GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getProductOne().getCategory().setProduct(null);
             schema.getProductOne().setCategory(null);
         });
     }
@@ -68,6 +69,7 @@ public class ProductTest {
     @Test(expected = RollbackException.class)
     public void productWithoutCategory() {
         GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getProductTwo().getCategory().setProduct(null);
             schema.getProductTwo().setCategory(null);
         });
     }
@@ -75,6 +77,7 @@ public class ProductTest {
     @Test(expected = RollbackException.class)
     public void productWithLeafCategory() {
         GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getLeafOne().setProduct(schema.getProductTwo());
             schema.getProductTwo().setCategory(schema.getLeafOne());
         });
     }
