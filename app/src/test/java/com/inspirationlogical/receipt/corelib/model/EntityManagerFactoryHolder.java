@@ -6,7 +6,7 @@ import javax.persistence.Persistence;
 /**
  * Created by Ferenc on 2017. 03. 14..
  */
-class EntityManagerFactoryHolder{
+public class EntityManagerFactoryHolder{
     static private EntityManagerFactory emf;
     static private EntityManagerFactory emfView;
     static{

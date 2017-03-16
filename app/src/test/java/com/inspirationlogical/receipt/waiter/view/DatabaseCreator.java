@@ -6,6 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.EntityManagerFactoryHolder;
 import com.inspirationlogical.receipt.corelib.model.EntityManagerFactoryRule;
 import com.inspirationlogical.receipt.corelib.model.TestType;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
@@ -19,7 +20,7 @@ public class DatabaseCreator {
     public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule(TestType.CREATE);
 
     @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
+    public final BuildTestSchemaRule schema = new BuildTestSchemaRule(EntityManagerFactoryHolder.getView().createEntityManager());
 
     @Test
     public void buildTestDatabase() {

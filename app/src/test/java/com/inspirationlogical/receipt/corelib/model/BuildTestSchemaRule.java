@@ -123,16 +123,22 @@ public class BuildTestSchemaRule implements TestRule {
     private TestType testType;
 
     public BuildTestSchemaRule(){
+        this.entityManager = EntityManagerFactoryHolder.get().createEntityManager();
         this.testType = TestType.DROP_AND_CREATE;
     }
 
     public BuildTestSchemaRule(TestType testType){
+        this.entityManager = EntityManagerFactoryHolder.get().createEntityManager();
         this.testType = testType;
+    }
+
+    public BuildTestSchemaRule(EntityManager entityManager){
+        this.entityManager = entityManager;
+        this.testType = TestType.DROP_AND_CREATE;
     }
 
     private void dropAll(){
 
-        entityManager = EntityManagerFactoryHolder.get().createEntityManager();
         GuardedTransaction.Run(entityManager,() -> {
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.PriceModifier").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Recipe").executeUpdate();
