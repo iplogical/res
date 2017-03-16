@@ -18,9 +18,6 @@ public class TableTest {
     private EntityManager manager;
 
     @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
-
-    @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
@@ -80,7 +77,7 @@ public class TableTest {
     }
 
     private void persistTable() {
-        manager = factory.getEntityManager();
+        manager = schema.getEntityManager();
         manager.getTransaction().begin();
         manager.persist(schema.getTableNormal());
         manager.persist(schema.getTableVirtual());

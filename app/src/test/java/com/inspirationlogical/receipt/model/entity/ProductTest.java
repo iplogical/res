@@ -17,9 +17,6 @@ public class ProductTest {
     private EntityManager manager;
 
     @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
-
-    @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
@@ -117,7 +114,7 @@ public class ProductTest {
     }
 
     private void persistProduct() {
-        manager = factory.getEntityManager();
+        manager = schema.getEntityManager();
         manager.getTransaction().begin();
         manager.persist(schema.getProductOne());
         manager.getTransaction().commit();

@@ -19,14 +19,7 @@ public class ReceiptTest {
     private EntityManager manager;
 
     @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
-
-    BuildTestSchemaRule schema;
-    @Before
-    public void setUp(){
-        schema = new BuildTestSchemaRule();
-        schema.buildTestSchema();
-    }
+    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
     public void testReceiptCreation() {
@@ -136,10 +129,9 @@ public class ReceiptTest {
     }
 
     private void persistReceipt() {
-        manager = factory.getEntityManager();
+        manager = schema.getEntityManager();
         manager.getTransaction().begin();
-        manager.persist(schema.getReceiptSaleOne());
+        manager.persist(schema.getRestaurant());
         manager.getTransaction().commit();
-        manager.detach(schema.getReceiptSaleOne());
     }
 }

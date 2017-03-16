@@ -17,9 +17,6 @@ public class RestaurantTest {
     private EntityManager manager;
 
     @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
-
-    @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
@@ -86,7 +83,7 @@ public class RestaurantTest {
     }
 
     private void persistRestaurant() {
-        manager = factory.getEntityManager();
+        manager = schema.getEntityManager();
         manager.getTransaction().begin();
         manager.persist(schema.getRestaurant());
         manager.getTransaction().commit();

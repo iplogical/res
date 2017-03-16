@@ -16,9 +16,6 @@ public class StockTest {
     private EntityManager manager;
 
     @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
-
-    @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
@@ -49,7 +46,7 @@ public class StockTest {
     }
 
     private void persistRecipe() {
-        manager = factory.getEntityManager();
+        manager = schema.getEntityManager();
         manager.getTransaction().begin();
         manager.persist(schema.getStockOne());
         manager.getTransaction().commit();

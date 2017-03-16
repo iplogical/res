@@ -16,9 +16,6 @@ public class VATTest {
     private EntityManager manager;
 
     @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
-
-    @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
@@ -50,7 +47,7 @@ public class VATTest {
     }
 
     private void persistVAT() {
-        manager = factory.getEntityManager();
+        manager = schema.getEntityManager();
         manager.getTransaction().begin();
         manager.persist(schema.getVatOne());
         manager.getTransaction().commit();

@@ -16,9 +16,6 @@ public class ReservationTest {
     private EntityManager manager;
 
     @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
-
-    @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
@@ -56,7 +53,7 @@ public class ReservationTest {
     }
 
     private void persistReservation() {
-        manager = factory.getEntityManager();
+        manager = schema.getEntityManager();
         manager.getTransaction().begin();
         manager.persist(schema.getReservationOne());
         manager.getTransaction().commit();

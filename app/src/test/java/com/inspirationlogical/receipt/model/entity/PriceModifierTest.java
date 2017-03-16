@@ -17,14 +17,7 @@ public class PriceModifierTest {
     private EntityManager manager;
 
     @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
-
-    BuildTestSchemaRule schema;
-    @Before
-    public void setUp(){
-        schema = new BuildTestSchemaRule();
-        schema.buildTestSchema();
-    }
+    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
     public void testPriceModifierCreation() {
@@ -86,12 +79,12 @@ public class PriceModifierTest {
     private List<PriceModifier> persistPriceModifierAndGetList() {
         persistPriceModifier();
         @SuppressWarnings("unchecked")
-        List<PriceModifier> entries = manager.createNamedQuery(PriceModifier.GET_TEST_PRICE_MODIFIERS).getResultList();
+        List<PriceModifier> entries = schema.getEntityManager().createNamedQuery(PriceModifier.GET_TEST_PRICE_MODIFIERS).getResultList();
         return entries;
     }
 
     private void persistPriceModifier() {
-        manager = factory.getEntityManager();
+        manager = schema.getEntityManager();
         manager.getTransaction().begin();
         manager.persist(schema.getPriceModifierOne());
         manager.getTransaction().commit();

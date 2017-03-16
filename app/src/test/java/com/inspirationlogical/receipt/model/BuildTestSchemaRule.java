@@ -147,6 +147,7 @@ public class BuildTestSchemaRule implements TestRule {
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.VATSerie").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.ProductCategory").executeUpdate();
             entityManager.createNativeQuery("DELETE FROM product_category_relations").executeUpdate();
+            entityManager.createNativeQuery("UPDATE hibernate_sequence SET next_val=1").executeUpdate();
         });
     }
 

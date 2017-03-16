@@ -17,9 +17,6 @@ public class RecipeTest {
     private EntityManager manager;
 
     @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
-
-    @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
@@ -62,7 +59,7 @@ public class RecipeTest {
     }
 
     private void persistRecipe() {
-        manager = factory.getEntityManager();
+        manager = schema.getEntityManager();
         manager.getTransaction().begin();
         manager.persist(schema.getElementOne());
         manager.persist(schema.getElementTwo());
