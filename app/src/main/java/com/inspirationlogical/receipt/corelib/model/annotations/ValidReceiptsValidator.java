@@ -43,7 +43,7 @@ public class ValidReceiptsValidator implements ConstraintValidator<ValidReceipts
                     getDeclaredMethod("isValid", value.getClass(), ConstraintValidatorContext.class);
             return (boolean)isValidMethod.invoke(this,value,context);
         }catch (NoSuchMethodException | InvocationTargetException |IllegalAccessException e){
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
