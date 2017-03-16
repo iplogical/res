@@ -21,7 +21,6 @@ import javafx.geometry.Point2D;
  * Created by Bálint on 2017.03.13..
  */
 public class TableViewTest {
-    private EntityManager manager;
     private TableView tableView;
 
     @Rule
@@ -29,7 +28,7 @@ public class TableViewTest {
 
     @Before
     public void createTableView() {
-        tableView = new TableViewImpl(new TableAdapter(schema.getTableNormal(), manager));
+        tableView = new TableViewImpl(new TableAdapter(schema.getTableNormal(), schema.getEntityManager()));
     }
 
     @Test

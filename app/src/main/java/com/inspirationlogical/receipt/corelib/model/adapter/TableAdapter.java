@@ -9,6 +9,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import javafx.geometry.Point2D;
+import lombok.NonNull;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 public class TableAdapter extends AbstractAdapter<Table>
 {
 
-    public TableAdapter(Table adaptee, EntityManager manager) {
+    public TableAdapter(@NonNull Table adaptee,@NonNull EntityManager manager) {
         super(adaptee, manager);
     }
 
