@@ -7,6 +7,7 @@ import static com.inspirationlogical.receipt.model.enums.TableType.NORMAL;
 import static com.inspirationlogical.receipt.model.enums.TableType.VIRTUAL;
 import static com.inspirationlogical.receipt.utility.PredicateOperations.and;
 import static com.inspirationlogical.receipt.utility.PredicateOperations.not;
+import static com.inspirationlogical.receipt.view.DragAndDropHandler.setEnableControl;
 import static com.inspirationlogical.receipt.view.NodeUtility.getNodePosition;
 import static com.inspirationlogical.receipt.view.NodeUtility.hideNode;
 import static com.inspirationlogical.receipt.view.NodeUtility.showNode;
@@ -84,6 +85,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         initAddTableForm();
         initRestaurant();
         initTables();
+        setEnableControl(configuration);
     }
 
     private void initRestaurant() {
