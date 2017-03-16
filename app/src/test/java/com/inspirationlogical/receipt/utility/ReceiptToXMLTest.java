@@ -67,6 +67,5 @@ public class ReceiptToXMLTest {
         manager.getTransaction().begin();
         manager.persist(schema.getReceiptSaleOne());
         manager.getTransaction().commit();
-        manager.detach(schema.getReceiptSaleOne());
     }
 }
