@@ -8,18 +8,18 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     
         <!-- entities -->
-        <class>com.inspirationlogical.receipt.model.entity.Product</class>
-        <class>com.inspirationlogical.receipt.model.entity.ProductCategory</class>
-        <class>com.inspirationlogical.receipt.model.entity.Recipe</class>
-        <class>com.inspirationlogical.receipt.model.entity.Stock</class>
-        <class>com.inspirationlogical.receipt.model.entity.Receipt</class>
-        <class>com.inspirationlogical.receipt.model.entity.Table</class>
-        <class>com.inspirationlogical.receipt.model.entity.Restaurant</class>
-        <class>com.inspirationlogical.receipt.model.entity.ReceiptRecord</class>
-        <class>com.inspirationlogical.receipt.model.entity.VATSerie</class>
-        <class>com.inspirationlogical.receipt.model.entity.VAT</class>
-        <class>com.inspirationlogical.receipt.model.entity.Reservation</class>
-        <class>com.inspirationlogical.receipt.model.entity.PriceModifier</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Product</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ProductCategory</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Recipe</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Stock</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Receipt</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Table</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Restaurant</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.VATSerie</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.VAT</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Reservation</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.PriceModifier</class>
         <!--          -->
 
         <properties>

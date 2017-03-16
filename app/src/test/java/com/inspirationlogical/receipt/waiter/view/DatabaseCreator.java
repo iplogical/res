@@ -1,0 +1,30 @@
+package com.inspirationlogical.receipt.waiter.view;
+
+import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.EntityManagerFactoryRule;
+import com.inspirationlogical.receipt.corelib.model.TestType;
+import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import javax.persistence.EntityManager;
+
+import static org.junit.Assert.assertNotNull;
+
+/**
+ * Created by Bálint on 2017.03.13..
+ */
+public class DatabaseCreator {
+
+    @Rule
+    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule(TestType.CREATE);
+
+    @Rule
+    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
+
+    @Test
+    public void buildTestDatabase() {
+        assertNotNull(schema.getEntityManager().createNamedQuery(Restaurant.GET_ACTIVE_RESTAURANT).getResultList());
+    }
+}

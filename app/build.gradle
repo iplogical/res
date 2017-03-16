@@ -14,7 +14,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'com.github.jacobono.jaxb'
 apply plugin: 'application'
-mainClassName = 'com.inspirationlogical.receipt.application.Main'
+mainClassName = 'com.inspirationlogical.receipt.waiter.application.Main'
 
 run {
     main = project.getProperty('mainClassName')
@@ -80,7 +80,7 @@ dependencies {
 jaxb {
     xsdDir = "src/main/resources/schema"
     xjc {
-        generatePackage = "com.inspirationlogical.receipt.jaxb"
+        generatePackage = "com.inspirationlogical.receipt.corelib.jaxb"
     }
 }
 
