@@ -35,7 +35,6 @@ public class EntityManagerFactoryRule implements TestRule {
                     em = emf.createEntityManager();
                 } else if(testType == TestType.CREATE) {
                     props.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
-                    emfView = Persistence.createEntityManagerFactory("TestViewPersistence", props);
                     em = emfView.createEntityManager();
                 } else if(testType == TestType.VALIDATE){
                     props.setProperty("javax.persistence.schema-generation.database.action", "validate");

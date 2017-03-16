@@ -38,7 +38,13 @@ public @Data class ProductCategory extends AbstractEntity {
     @JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private ProductCategory parent;
 
-    @OneToMany(mappedBy = "parent", fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @OneToMany(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @JoinTable(
+            name = "Product_Category_Relations",
+            joinColumns = @JoinColumn(name = "parent",foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)),
+            inverseJoinColumns = @JoinColumn(name = "children",
+                    foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    )
     private Collection<ProductCategory> children;
 
     @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})

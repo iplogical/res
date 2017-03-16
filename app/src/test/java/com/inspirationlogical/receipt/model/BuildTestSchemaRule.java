@@ -119,6 +119,15 @@ public class BuildTestSchemaRule implements TestRule {
             }
         };
     }
+    private TestType testType;
+
+    public BuildTestSchemaRule(){
+        this.testType = TestType.DROP_AND_CREATE;
+    }
+
+    public BuildTestSchemaRule(TestType testType){
+        this.testType = testType;
+    }
 
     private void dropAll(){
 
@@ -128,19 +137,22 @@ public class BuildTestSchemaRule implements TestRule {
             em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Recipe").executeUpdate();
             em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Stock").executeUpdate();
             em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Product").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.ReceiptRecord").executeUpdate();
             em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Receipt").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Reservation").executeUpdate();
             em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Table").executeUpdate();
             em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Restaurant").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.ReceiptRecord").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.VATSerie").executeUpdate();
             em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.VAT").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Reservation").executeUpdate();
+            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.VATSerie").executeUpdate();
             em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.ProductCategory").executeUpdate();
+            em.createNativeQuery("DELETE FROM product_category_relations").executeUpdate();
         });
     }
 
     public void buildTestSchema() {
-        dropAll();
+        if(testType == TestType.CREATE || testType == TestType.DROP_AND_CREATE) {
+            dropAll();
+        }
         buildObjects();
         setUpObjectRelationShips();
     }

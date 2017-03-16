@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
 
+import com.inspirationlogical.receipt.model.utils.GuardedTransaction;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class TableViewTest {
     private TableView tableView;
 
     @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule(TestType.VALIDATE);
+    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
@@ -33,6 +34,7 @@ public class TableViewTest {
     @Before
     public void createTableView() {
         manager = factory.getEntityManager();
+        GuardedTransaction.Run(manager,()-> {manager.persist(schema.getRestaurant());});
         tableView = new TableViewImpl(new TableAdapter(schema.getTableNormal(), manager));
     }
 
