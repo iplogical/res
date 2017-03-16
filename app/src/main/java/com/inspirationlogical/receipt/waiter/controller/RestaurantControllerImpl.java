@@ -1,12 +1,12 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import static com.inspirationlogical.receipt.waiter.controller.AddTableFormControllerImpl.ADD_TABLE_FORM_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.controller.ContextMenuControllerImpl.CONTEXT_MENU_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.controller.TableControllerImpl.TABLE_VIEW_PATH;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
 import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations.and;
 import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations.not;
+import static com.inspirationlogical.receipt.waiter.controller.AddTableFormControllerImpl.ADD_TABLE_FORM_VIEW_PATH;
+import static com.inspirationlogical.receipt.waiter.controller.ContextMenuControllerImpl.CONTEXT_MENU_VIEW_PATH;
+import static com.inspirationlogical.receipt.waiter.controller.TableControllerImpl.TABLE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.setEnableControl;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.getNodePosition;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.hideNode;
@@ -16,7 +16,9 @@ import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadViewHidden;
 
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import com.google.inject.Inject;
@@ -28,8 +30,10 @@ import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -67,6 +71,8 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private AddTableFormController addTableFormController;
 
+    private Set<TableController> tableControllers;
+
     private RestaurantServices restaurantServices;
 
     private RestaurantView restaurantView;
@@ -77,6 +83,18 @@ public class RestaurantControllerImpl implements RestaurantController {
         this.contextMenuController = contextMenuController;
         this.restaurantServices = restaurantServices;
         this.addTableFormController = addTableFormController;
+    }
+
+    @FXML
+    public void onConfigToggle(MouseEvent event) {
+        if (!configuration.isSelected()) {
+            tableControllers.forEach(tableController -> {
+                Node view = tableController.getView();
+                Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
+                restaurantServices.moveTable(tableController.getViewData(), position);
+                return;
+            });
+        }
     }
 
     @Override
@@ -93,6 +111,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void initTables() {
+        tableControllers = new HashSet<>();
         restaurantServices.getTables(restaurantView).stream().filter(VISIBLE_TABLE).forEach(this::drawTable);
     }
 
@@ -131,6 +150,8 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private void drawTable(TableView tableView) {
         TableController tableController = new TableControllerImpl(tableView);
+
+        tableControllers.add(tableController);
 
         loadView(TABLE_VIEW_PATH, tableController);
 

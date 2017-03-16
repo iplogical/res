@@ -62,6 +62,11 @@ public class TableControllerImpl implements TableController {
     }
 
     @Override
+    public TableView getViewData() {
+        return tableView;
+    }
+
+    @Override
     public Node getView() {
         return view;
     }

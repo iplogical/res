@@ -27,7 +27,7 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <ToggleButton fx:id="configuration" alignment="TOP_RIGHT" mnemonicParsing="false" text="Szerkesztő mód">
+            <ToggleButton fx:id="configuration" alignment="TOP_RIGHT" mnemonicParsing="false" onMouseClicked="#onConfigToggle" text="Szerkesztő mód">
                <font>
                   <Font size="16.0" />
                </font>
