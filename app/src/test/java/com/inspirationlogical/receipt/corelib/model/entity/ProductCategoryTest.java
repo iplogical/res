@@ -1,18 +1,18 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class ProductCategoryTest {
-
-    private EntityManager manager;
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
@@ -24,128 +24,125 @@ public class ProductCategoryTest {
 
     @Test
     public void testProductCategoryName() {
-        assertEquals("root", persistCategoryAndGetList().get(0).getName());
+        assertNotEquals("",getAllCategories().get(0).getName());
     }
 
     @Test
     public void testPriceModifierNumber() {
-        List<ProductCategory> categories = persistCategoryAndGetList();
-        for(ProductCategory p : categories) {
-            if(p.getName().equals("pseudoOne")) {
-                assertEquals(2, p.getPriceModifier().size());
-            }
-        }
+        List<ProductCategory> categories = getAllCategories()
+                .stream().filter(cat -> cat.getName() == "pseudoOne").collect(Collectors.toList());
+        assertEquals(1,categories.size());
+        assertEquals(2, categories.get(0).getPriceModifier().size());
     }
 
     @Test
     public void testProductConstraint() {
-        schema.getRoot().setProduct(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getRoot().setProduct(null);
+        });
     }
 
     @Test(expected = RollbackException.class)
     public void testNameNotEmpty() {
-        schema.getLeafOne().setName("");
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getLeafOne().setName("");
+        });
     }
     
     @Test(expected = RollbackException.class)
     public void testPseudoCategoryWithoutProduct() {
-        schema.getPseudoOne().setProduct(null);
-     // When productOne set to null it becomes transient, but it is referenced
-     // by elementOne as not null so it has to be persisted manually.
-        persistProductOne();
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getPseudoOne().setProduct(null);
+        });
     }
     
     @Test(expected = RollbackException.class)
     public void testLeafCategotyProductNotNull() {
-        schema.getLeafTwo().setProduct(schema.getProductOne());
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getLeafTwo().setProduct(schema.getProductOne());
+        });
     }
     
     @Test(expected = RollbackException.class)
     public void rootHasParent() {
-        schema.getRoot().setParent(schema.getAggregate());
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getRoot().setParent(schema.getAggregate());
+        });
     }
  
     @Test(expected = RollbackException.class)
     public void aggregateHasNoParent() {
-        schema.getAggregate().setParent(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getAggregate().setParent(null);
+        });
     }
 
     @Test(expected = RollbackException.class)
     public void aggregateHasLeafAsParent() {
-        schema.getAggregate().setParent(schema.getLeafOne());
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getAggregate().setParent(schema.getLeafOne());
+        });
     }
 
     @Test(expected = RollbackException.class)
     public void aggregateHasPseudoAsParent() {
-        schema.getAggregate().setParent(schema.getPseudoOne());
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getAggregate().setParent(schema.getPseudoOne());
+        });
     }
 
     @Test(expected = RollbackException.class)
     public void leafHasNoParent() {
-        schema.getLeafTwo().setParent(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getLeafTwo().setParent(null);
+        });
     }
 
     @Test(expected = RollbackException.class)
     public void leafHasRootAsParent() {
-        schema.getLeafTwo().setParent(schema.getRoot());
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getLeafTwo().setParent(schema.getRoot());
+        });
     }
 
     @Test(expected = RollbackException.class)
     public void leafHasPseudoAsParent() {
-        schema.getLeafTwo().setParent(schema.getPseudoOne());
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getLeafTwo().setParent(schema.getPseudoOne());
+        });
     }
 
     @Test(expected = RollbackException.class)
     public void pseudoHasNoParent() {
-        schema.getPseudoThree().setParent(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getPseudoThree().setParent(null);
+        });
     }
 
     @Test(expected = RollbackException.class)
     public void pseudoHasRootAsParent() {
-        schema.getPseudoFour().setParent(schema.getRoot());
-        assertListSize();
+
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getPseudoFour().setParent(schema.getRoot());
+        });
     }
 
     @Test(expected = RollbackException.class)
     public void pseudoHasAggregateAsParent() {
-        schema.getPseudoFour().setParent(schema.getAggregate());
-        assertListSize();
+
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getPseudoFour().setParent(schema.getAggregate());
+        });
     }
 
     private void assertListSize() {
-        assertEquals(8, persistCategoryAndGetList().size());
+        assertEquals(8, getAllCategories().size());
     }
 
-    private List<ProductCategory> persistCategoryAndGetList() {
-        persistCategory();
+    private List<ProductCategory> getAllCategories() {
         @SuppressWarnings("unchecked")
-        List<ProductCategory> entries = manager.createNamedQuery(ProductCategory.GET_ALL_CATEGORIES).getResultList();
+        List<ProductCategory> entries = schema.getEntityManager().createNamedQuery(ProductCategory.GET_ALL_CATEGORIES).getResultList();
         return entries;
     }
 
-    private void persistCategory() {
-        manager = schema.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getRoot());
-        manager.getTransaction().commit();
-    }
-
-    private void persistProductOne() {
-        manager = schema.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getProductOne());
-        manager.getTransaction().commit();
-    }
 }
