@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.inspirationlogical.receipt.application.Main;
 import com.inspirationlogical.receipt.model.enums.TableType;
 import com.inspirationlogical.receipt.model.view.RestaurantView;
 import com.inspirationlogical.receipt.model.view.TableView;
@@ -28,7 +29,6 @@ import com.inspirationlogical.receipt.view.NodeUtility;
 import com.inspirationlogical.receipt.view.PressAndHoldHandler;
 import com.inspirationlogical.receipt.view.ViewLoader;
 
-import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -61,7 +61,7 @@ public class RestaurantControllerTest {
     @Mock
     private TableView tableView;
 
-    private JFXPanel jfxPanel;
+    private Main main;
 
     private RestaurantControllerImpl underTest;
 
@@ -74,7 +74,7 @@ public class RestaurantControllerTest {
         when(ViewLoader.loadViewHidden(CONTEXT_MENU_VIEW_PATH, contextMenuController)).thenReturn(contextMenu);
         when(ViewLoader.loadViewHidden(ADD_TABLE_FORM_VIEW_PATH, addTableFormController)).thenReturn(addTableForm);
 
-        jfxPanel = new JFXPanel();
+        main = new Main();
         underTest = new RestaurantControllerImpl(restaurantServices, contextMenuController, addTableFormController);
         underTest.tables = tables;
     }
@@ -184,6 +184,8 @@ public class RestaurantControllerTest {
         int tableCapacity = 4;
         boolean isVirtual = false;
 
+        when(restaurantServices.addTable(restaurantView, TableType.NORMAL, tableNumber)).thenReturn(tableView);
+
         // When
         underTest.initialize(null, null);
         underTest.createTable(tableNumber, tableCapacity, isVirtual);
@@ -198,6 +200,8 @@ public class RestaurantControllerTest {
         int tableNumber = 5;
         int tableCapacity = 4;
         boolean isVirtual = true;
+
+        when(restaurantServices.addTable(restaurantView, TableType.VIRTUAL, tableNumber)).thenReturn(tableView);
 
         // When
         underTest.initialize(null, null);

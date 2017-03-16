@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import javafx.embed.swing.JFXPanel;
+import com.inspirationlogical.receipt.application.Main;
 
 @RunWith(PowerMockRunner.class)
 public class ContextMenuControllerTest {
@@ -14,13 +14,13 @@ public class ContextMenuControllerTest {
     @Mock
     private RestaurantController restaurantController;
 
-    private JFXPanel jfxPanel;
+    private Main main;
 
     private ContextMenuControllerImpl underTest;
 
     @Before
     public void setUp() throws Exception {
-        jfxPanel = new JFXPanel();
+        main = new Main();
         underTest = new ContextMenuControllerImpl(restaurantController);
     }
 
