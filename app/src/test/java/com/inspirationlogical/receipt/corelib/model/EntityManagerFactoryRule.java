@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model;
 
-import java.util.Properties;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -27,14 +25,13 @@ public class EntityManagerFactoryRule implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                Properties props = new Properties();
                 if(testType == TestType.DROP_AND_CREATE) {
                     em = emf.createEntityManager();
                 } else if(testType == TestType.CREATE) {
-                    props.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
+                    emfView.getProperties().put("javax.persistence.schema-generation.database.action", "drop-and-create");
                     em = emfView.createEntityManager();
                 } else if(testType == TestType.VALIDATE){
-                    props.setProperty("javax.persistence.schema-generation.database.action", "validate");
+                    emfView.getProperties().put("javax.persistence.schema-generation.database.action", "validate");
                     em = emfView.createEntityManager();
                 }
                 try {
