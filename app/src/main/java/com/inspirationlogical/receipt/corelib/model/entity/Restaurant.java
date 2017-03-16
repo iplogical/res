@@ -1,12 +1,14 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidTables;
 
+import com.sun.org.apache.regexp.internal.RE;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,7 +16,7 @@ import lombok.experimental.Tolerate;
 
 @Entity
 @Builder
-@EqualsAndHashCode(callSuper = true)
+//@EqualsAndHashCode(callSuper = true)
 @javax.persistence.Table(name = "RESTAURANT")
 @NamedQueries({
     @NamedQuery(name = Restaurant.GET_TEST_RESTAURANTS,
@@ -64,4 +66,36 @@ public @Data class Restaurant extends AbstractEntity {
 
     @Tolerate
     Restaurant(){}
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == this) {
+            return true;
+        }
+        if(!(o instanceof Restaurant)) {
+            return false;
+        }
+        Restaurant r = (Restaurant) o;
+        return r.restaurantName.equals(restaurantName) &&
+                r.companyName.equals(companyName) &&
+                r.companyTaxPayerId.equals(companyTaxPayerId) &&
+                r.restaurantAddress.equals(restaurantAddress) &&
+                r.companyAddress.equals(companyAddress) &&
+                r.restaurantName.equals(restaurantName) &&
+                r.hashCode() == hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = result * 31 + restaurantName.hashCode();
+        result = result * 31 + companyName.hashCode();
+        result = result * 31 + companyTaxPayerId.hashCode();
+        result = result * 31 + restaurantAddress.hashCode();
+        result = result * 31 + companyAddress.hashCode();
+        for(Table t : table) {
+            result = result * 31 + t.hashCode();
+        }
+        return result;
+    }
 }

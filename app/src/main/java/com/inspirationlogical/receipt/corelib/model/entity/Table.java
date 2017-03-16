@@ -14,7 +14,7 @@ import lombok.experimental.Tolerate;
 
 @Entity
 @Builder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "owner")
 @javax.persistence.Table(name = "_TABLE")
 @NamedQueries({
     @NamedQuery(name = Table.GET_TEST_TABLES,
@@ -64,5 +64,4 @@ public @Data class Table extends AbstractEntity {
 
     @Tolerate
     Table(){}
-
 }

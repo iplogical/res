@@ -13,7 +13,6 @@ import static org.junit.Assert.assertEquals;
 
 public class RestaurantTest {
 
-
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
@@ -54,7 +53,10 @@ public class RestaurantTest {
 
     @Test(expected = RollbackException.class)
     public void noPurchaseTable() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getTablePurchase().setType(TableType.NORMAL);});
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            int hash1 = schema.getRestaurant().hashCode();
+            schema.getTablePurchase().setType(TableType.NORMAL);});
+            int hash2 = schema.getRestaurant().hashCode();
     }
 
     @Test(expected = RollbackException.class)
