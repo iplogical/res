@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -8,12 +9,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.RollbackException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
 public class ProductTest {
-
-    private EntityManager manager;
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
@@ -25,97 +25,82 @@ public class ProductTest {
 
     @Test(expected = PersistenceException.class)
     public void testProductCategoryConstriant() {
-        schema.getProductOne().setCategory(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getProductOne().setCategory(null);
+        });
     }
 
     @Test(expected = RollbackException.class)
     public void testShortNameTooLong() {
-        schema.getProductOne().setShortName("ExtremelyLongShortNameExceedsItsLimit");
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setShortName("ExtremelyLongShortNameExceedsItsLimit");});
     }
 
     @Test(expected = RollbackException.class)
     public void testShortNameEmpty() {
-        schema.getProductOne().setShortName("");
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setShortName("");});
     }
 
     @Test(expected = RollbackException.class)
     public void testLongNameEmpty() {
-        schema.getProductOne().setLongName("");
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setLongName("");});
     }
 
     @Test(expected = RollbackException.class)
     public void testQualityUnitNull() {
-        schema.getProductOne().setQuantityUnit(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setQuantityUnit(null);});
     }
 
     @Test(expected = RollbackException.class)
     public void testEtalonQuantityNull() {
-        schema.getProductOne().setEtalonQuantity(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setEtalonQuantity(null);});
     }
 
     @Test(expected = RollbackException.class)
     public void testProductTypeNull() {
-        schema.getProductOne().setType(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setType(null);});
     }
 
     @Test(expected = RollbackException.class)
     public void testProductStatusNull() {
-        schema.getProductOne().setStatus(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setStatus(null);});
     }
 
     @Test(expected = RollbackException.class)
     public void productWithoutCategory() {
-        schema.getProductTwo().setCategory(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getProductTwo().setCategory(null);
+        });
     }
 
     @Test(expected = RollbackException.class)
     public void productWithLeafCategory() {
-        schema.getProductTwo().setCategory(schema.getLeafOne());
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getProductTwo().setCategory(schema.getLeafOne());
+        });
     }
 
     @Test
     public void testNumberOfElements() {
-        for(Product p : persistProductAndGetList()) {
-            if(p.getLongName() == "productFour") {
-                assertEquals(3, p.getRecipe().size());
-            }
-        }
+        List<Product> products = getProductList().stream().filter(p -> p.getLongName() == "productFour").collect(Collectors.toList());
+        assertEquals(1,products.size());
+        assertEquals(3, products.get(0).getRecipe().size());
     }
 
     @Test
     public void testNumberOfStocks() {
-        for(Product p : persistProductAndGetList()) {
-            if(p.getLongName() == "productFour") {
-                assertEquals(3, p.getStock().size());
-            }
-        }
+        List<Product> products = getProductList().stream().filter(p -> p.getLongName() == "productFour").collect(Collectors.toList());
+        assertEquals(1,products.size());
+        assertEquals(3, products.get(0).getStock().size());
     }
 
     private void assertListSize() {
-        assertEquals(4, persistProductAndGetList().size());
+        assertEquals(4, getProductList().size());
     }
 
-    private List<Product> persistProductAndGetList() {
-        persistProduct();
+    private List<Product> getProductList() {
         @SuppressWarnings("unchecked")
-        List<Product> entries = manager.createNamedQuery(Product.GET_TEST_PRODUCTS).getResultList();
+        List<Product> entries = schema.getEntityManager().createNamedQuery(Product.GET_TEST_PRODUCTS).getResultList();
         return entries;
     }
 
-    private void persistProduct() {
-        manager = schema.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getProductOne());
-        manager.getTransaction().commit();
-    }
 }

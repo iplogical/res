@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidOwner;
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidPaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.annotations.ValidReceipts;
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidTimeStamp;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
@@ -32,6 +33,7 @@ import lombok.experimental.Tolerate;
 @ValidOwner
 @ValidPaymentMethod
 @ValidTimeStamp
+@ValidReceipts
 public @Data class Receipt extends AbstractEntity {
 
     public static final String GET_TEST_RECEIPTS = "Receipt.GetTestReceipts";

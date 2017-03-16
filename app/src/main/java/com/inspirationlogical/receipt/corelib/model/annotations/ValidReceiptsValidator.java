@@ -3,15 +3,33 @@ package com.inspirationlogical.receipt.corelib.model.annotations;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class ValidReceiptsValidator 
-    implements ConstraintValidator<ValidReceipts, Table> {
+//abstract class TableValidReceiptsValidator implements ConstraintValidator<ValidReceipts, Table>
+//{
+//    abstract boolean isValidTable(Table value, ConstraintValidatorContext context);
+//    abstract void initializeTable(ValidReceipts constraintAnnotation);
+//
+//    @Override
+//    public final void initialize(ValidReceipts constraintAnnotation) {
+//        initializeTable(constraintAnnotation);
+//    }
+//
+//    @Override
+//    public final boolean isValid(Table value, ConstraintValidatorContext context) {
+//        return  isValidTable(value,context);
+//    }
+//}
 
-    private int open;
+public class ValidReceiptsValidator implements ConstraintValidator<ValidReceipts,Object>{
 
     @Override
     public void initialize(ValidReceipts constraintAnnotation) {
@@ -19,20 +37,32 @@ public class ValidReceiptsValidator
     }
 
     @Override
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
+        try {
+            Method isValidMethod = this.getClass().
+                    getDeclaredMethod("isValid", value.getClass(), ConstraintValidatorContext.class);
+            return (boolean)isValidMethod.invoke(this,value,context);
+        }catch (NoSuchMethodException | InvocationTargetException |IllegalAccessException e){
+            return false;
+        }
+    }
+
     public boolean isValid(Table value, ConstraintValidatorContext context) {
-        open = 0;
         if(value.getReceipt() == null) {
             return true;
         }
-        value.getReceipt().stream()
+        List<Receipt> open =  value.getReceipt().stream()
                 .filter(receipt -> receipt.getStatus().equals(ReceiptStatus.OPEN))
-                .map(receipt -> open++)
                 .collect(Collectors.toList());
-        if(open > 1) {
+        if(open.size() > 1) {
             addConstraintViolation(context,
                     "There can be only 0 or 1 open receipt per table, but found: " + open);
             return false;
         } else return true;
+    }
+
+    public boolean isValid(Receipt value, ConstraintValidatorContext context) {
+        return isValid(value.getOwner(),context);
     }
 
     private void addConstraintViolation(ConstraintValidatorContext context, String message) {
@@ -40,4 +70,6 @@ public class ValidReceiptsValidator
         context.buildConstraintViolationWithTemplate(message)
                 .addConstraintViolation();
     }
+
+
 }
