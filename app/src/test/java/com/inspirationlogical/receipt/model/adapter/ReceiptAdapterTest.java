@@ -21,7 +21,7 @@ public class ReceiptAdapterTest {
 
     @Test
     public void testGetSoldProducts() {
-        ReceiptAdapter receiptAdapter = new ReceiptAdapter(schema.getReceiptSaleOne(), manager);
+        ReceiptAdapter receiptAdapter = new ReceiptAdapter(schema.getReceiptSaleOne(), schema.getEntityManager());
         assertEquals(2, receiptAdapter.getSoldProducts().size());
     }
 }

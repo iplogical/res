@@ -18,24 +18,16 @@ import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
 
 public class TableAdapterTest {
 
-    private EntityManager manager;
     TableAdapter tableAdapter;
     TableAdapter closedTableAdapter;
-
-    @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Before
     public void persistObjects() {
-        manager = factory.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getRestaurant());
-        manager.getTransaction().commit();
-        tableAdapter = new TableAdapter(schema.getTableNormal(), manager);
-        closedTableAdapter = new TableAdapter(schema.getTableNormalClosed(), manager);
+        tableAdapter = new TableAdapter(schema.getTableNormal(), schema.getEntityManager());
+        closedTableAdapter = new TableAdapter(schema.getTableNormalClosed(), schema.getEntityManager());
     }
 
     @Test
@@ -46,14 +38,14 @@ public class TableAdapterTest {
     @Test
     public void testSetTableName() {
         tableAdapter.setTableName("New Table Name");
-        assertEquals("New Table Name", TableAdapter.getTableByNumber(manager,
+        assertEquals("New Table Name", TableAdapter.getTableByNumber(schema.getEntityManager(),
                 tableAdapter.getAdaptee().getNumber()).getAdaptee().getName());
     }
 
     @Test
     public void testSetCapacity() {
         tableAdapter.setCapacity(10);
-        assertEquals(10, TableAdapter.getTableByNumber(manager,
+        assertEquals(10, TableAdapter.getTableByNumber(schema.getEntityManager(),
                 tableAdapter.getAdaptee().getNumber()).getAdaptee().getCapacity());
     }
 
@@ -61,30 +53,30 @@ public class TableAdapterTest {
     public void testSetNote() {
         tableAdapter.setNote("Big chocklate cake for Spicces Feri");
         assertEquals("Big chocklate cake for Spicces Feri",
-                TableAdapter.getTableByNumber(manager,
+                TableAdapter.getTableByNumber(schema.getEntityManager(),
                 tableAdapter.getAdaptee().getNumber()).getAdaptee().getNote());
     }
 
     @Test
     public void testDisplayTable() {
         tableAdapter.displayTable();
-        assertTrue(TableAdapter.getTableByNumber(manager,
+        assertTrue(TableAdapter.getTableByNumber(schema.getEntityManager(),
                         tableAdapter.getAdaptee().getNumber()).getAdaptee().isVisibility());
     }
 
     @Test
     public void testHideTable() {
         tableAdapter.hideTable();
-        assertFalse(TableAdapter.getTableByNumber(manager,
+        assertFalse(TableAdapter.getTableByNumber(schema.getEntityManager(),
                 tableAdapter.getAdaptee().getNumber()).getAdaptee().isVisibility());
     }
 
     @Test
     public void testMoveTable() {
         tableAdapter.moveTable(new Point2D(50, 70));
-        assertEquals(50, TableAdapter.getTableByNumber(manager,
+        assertEquals(50, TableAdapter.getTableByNumber(schema.getEntityManager(),
                 tableAdapter.getAdaptee().getNumber()).getAdaptee().getCoordinateX());
-        assertEquals(70, TableAdapter.getTableByNumber(manager,
+        assertEquals(70, TableAdapter.getTableByNumber(schema.getEntityManager(),
                 tableAdapter.getAdaptee().getNumber()).getAdaptee().getCoordinateY());
     }
 

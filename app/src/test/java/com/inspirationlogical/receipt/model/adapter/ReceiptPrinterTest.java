@@ -21,23 +21,14 @@ import org.mockito.Mockito;
 
 public class ReceiptPrinterTest {
 
-
-    private EntityManager manager;
     private ReceiptAdapter receipt;
-
-    @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Before
     public void persistObjects() {
-        manager = factory.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getRoot());
-        manager.getTransaction().commit();
-        receipt = new ReceiptAdapter(schema.getReceiptSaleOne(),manager);
+        receipt = new ReceiptAdapter(schema.getReceiptSaleOne(), schema.getEntityManager());
     }
 
 
@@ -48,6 +39,4 @@ public class ReceiptPrinterTest {
         receipt.close(listeners);
         verify(printer).onClose(receipt);
     }
-
-
 }

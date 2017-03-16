@@ -44,6 +44,7 @@ import lombok.Getter;
 
 public class BuildTestSchemaRule implements TestRule {
 
+    private @Getter EntityManager entityManager;
     private @Getter Product productOne;
     private @Getter Product productTwo;
     private @Getter Product productThree;
@@ -131,30 +132,29 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void dropAll(){
 
-        EntityManager em = EntityManagerFactoryHolder.get().createEntityManager();
-        GuardedTransaction.Run(em,() -> {
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.PriceModifier").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Recipe").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Stock").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Product").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.ReceiptRecord").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Receipt").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Reservation").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Table").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Restaurant").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.VAT").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.VATSerie").executeUpdate();
-            em.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.ProductCategory").executeUpdate();
-            em.createNativeQuery("DELETE FROM product_category_relations").executeUpdate();
+        entityManager = EntityManagerFactoryHolder.get().createEntityManager();
+        GuardedTransaction.Run(entityManager,() -> {
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.PriceModifier").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Recipe").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Stock").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Product").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.ReceiptRecord").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Receipt").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Reservation").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Table").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.Restaurant").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.VAT").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.VATSerie").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.model.entity.ProductCategory").executeUpdate();
+            entityManager.createNativeQuery("DELETE FROM product_category_relations").executeUpdate();
         });
     }
 
     public void buildTestSchema() {
-        if(testType == TestType.CREATE || testType == TestType.DROP_AND_CREATE) {
-            dropAll();
-        }
+        dropAll();
         buildObjects();
         setUpObjectRelationShips();
+        persistObjects();
     }
 
     private void buildObjects() {
@@ -172,7 +172,7 @@ public class BuildTestSchemaRule implements TestRule {
         BuildRestaurant();
     }
 
-private void setUpObjectRelationShips() {
+    private void setUpObjectRelationShips() {
         productCategories();
         categoriesAndPriceModifiers();
         productsAndCategories();
@@ -186,9 +186,13 @@ private void setUpObjectRelationShips() {
         vatSerieAndVatValues();
         receiptRecordsAndProducts();
         restaurantAndTables();
-}
+    }
 
-private void buildProducts() {
+    private void persistObjects() {
+        GuardedTransaction.Run(entityManager, () -> entityManager.persist(restaurant));
+    }
+
+    private void buildProducts() {
         buildProduct();
         buildProductTwo();
         buildProductThree();

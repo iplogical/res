@@ -18,38 +18,25 @@ import static org.junit.Assert.*;
  */
 public class RestaurantAdapterTest {
 
-    private EntityManager manager;
-
-    @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
-
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
-    @Before
-    public void persistObjects() {
-        manager = factory.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getRestaurant());
-        manager.getTransaction().commit();
-    }
-
     @Test
     public void testRestaurantHasDisplayableTables() {
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant(), manager);
+        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant(), schema.getEntityManager());
         assertEquals(3, restaurantAdapter.getDisplayableTables().size());
     }
 
     @Test
     public void testAddTable() {
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant(), manager);
+        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant(), schema.getEntityManager());
         restaurantAdapter.addTable(TableType.NORMAL, 4);
         assertEquals(4, restaurantAdapter.getDisplayableTables().size());
     }
 
     @Test
     public void testAddTableBuilder() {
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant(), manager);
+        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant(), schema.getEntityManager());
         restaurantAdapter.addTable(new TableViewBuilder(TableType.NORMAL, 4)
                 .name("Ittas Juci")
                 .position(new Point2D(20, 20))

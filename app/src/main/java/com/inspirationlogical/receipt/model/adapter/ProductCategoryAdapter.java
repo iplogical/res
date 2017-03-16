@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 
 import com.inspirationlogical.receipt.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.model.utils.GuardedTransaction;
 
 public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 {
@@ -25,6 +26,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     }
 
     public List<ProductAdapter> getAllProducts() {
+        GuardedTransaction.Run(manager,() -> manager.refresh(adaptee));
         List<ProductCategory> childCategories = new ArrayList<>();
         traverseChildren(this.adaptee, childCategories);
         return childCategories.stream()

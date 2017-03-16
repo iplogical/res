@@ -16,33 +16,19 @@ import com.inspirationlogical.receipt.model.EntityManagerFactoryRule;
 
 public class ProductCategoryAdapterTest {
 
-
-    private EntityManager manager;
-
-    @Rule
-    public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule();
-
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
-    @Before
-    public void persistObjects() {
-        manager = factory.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getRoot());
-        manager.getTransaction().commit();
-    }
-
     @Test
     public void testLeafNumberOfProductsUnderLeafOne() {
-        ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne(), manager);
+        ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne(), schema.getEntityManager());
         List<ProductAdapter> products = leafOne.getAllProducts();
         assertEquals(2, products.size());
     }
 
     @Test
     public void testPrductNamesUnderLeafOne() {
-        ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne(), manager);
+        ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne(), schema.getEntityManager());
         List<ProductAdapter> products = leafOne.getAllProducts();
         List<ProductAdapter> list_product_one =  products.stream().filter((elem) -> (elem.getAdaptee().getLongName().equals("product"))).collect(Collectors.toList());
         List<ProductAdapter> list_product_two =  products.stream().filter((elem) -> (elem.getAdaptee().getLongName().equals("productTwo"))).collect(Collectors.toList());

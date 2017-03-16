@@ -41,6 +41,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public Collection<ReceiptRecordAdapter> getSoldProducts() {
+        GuardedTransaction.Run(manager,() -> manager.refresh(adaptee));
         return adaptee.getRecords().stream()
                 .map(receiptRecord -> new ReceiptRecordAdapter(receiptRecord, manager))
                 .collect(Collectors.toList());

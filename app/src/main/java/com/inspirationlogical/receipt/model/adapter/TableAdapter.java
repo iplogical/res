@@ -11,7 +11,9 @@ import com.inspirationlogical.receipt.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.model.utils.GuardedTransaction;
 import javafx.geometry.Point2D;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TableAdapter extends AbstractAdapter<Table>
 {
@@ -33,15 +35,27 @@ public class TableAdapter extends AbstractAdapter<Table>
     }
 
     public ReceiptAdapter getActiveReceipt() {
-        Query query = manager.createNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER);
-        query.setParameter("number", adaptee.getNumber());
-        query.setParameter("status", ReceiptStatus.OPEN);
-        @SuppressWarnings("unchecked")
-        List<Receipt> active = query.getResultList();
-        if(active.size() == 0) {
+        GuardedTransaction.Run(manager, () -> manager.refresh(adaptee));
+        List<ReceiptAdapter> adapters = adaptee.getReceipt()
+                .stream()
+                .filter(elem -> elem.getStatus().equals(ReceiptStatus.OPEN))
+                .map(elem -> new ReceiptAdapter(elem, manager))
+                .collect(Collectors.toList());
+        if(adapters.size() == 0) {
             return null;
+        } else if(adapters.size() > 1) {
+            throw new RuntimeException();
         }
-        else return new ReceiptAdapter(active.get(0), manager);
+        return adapters.get(0);
+//        Query query = manager.createNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER);
+//        query.setParameter("number", adaptee.getNumber());
+//        query.setParameter("status", ReceiptStatus.OPEN);
+//        @SuppressWarnings("unchecked")
+//        List<Receipt> active = query.getResultList();
+//        if(active.size() == 0) {
+//            return null;
+//        }
+//        else return new ReceiptAdapter(active.get(0), manager);
     }
 
     public void setTableName(String name) {
