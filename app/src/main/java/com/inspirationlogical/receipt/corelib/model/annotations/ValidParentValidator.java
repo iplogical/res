@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 
-public class ValidParentValidator
+public class ValidParentValidator extends AbstractValidator
     implements ConstraintValidator<ValidParent, ProductCategory> {
 
     @Override
@@ -61,11 +61,4 @@ public class ValidParentValidator
                 return true;
         }
     }
-
-    private void addConstraintViolation(ConstraintValidatorContext context, String message) {
-        context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(message)
-                .addConstraintViolation();
-    }
-
 }

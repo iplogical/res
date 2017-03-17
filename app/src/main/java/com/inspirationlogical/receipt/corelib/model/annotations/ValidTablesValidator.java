@@ -9,14 +9,15 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
-public class ValidTablesValidator 
+public class ValidTablesValidator extends AbstractValidator
     implements ConstraintValidator<ValidTables, Object> {
-
-    int purchase;
-    int inventory;
-    int disposal;
-    int other;
 
     @Override
     public void initialize(ValidTables constraintAnnotation) {
@@ -39,49 +40,26 @@ public class ValidTablesValidator
     }
 
     public boolean isValid(Restaurant value, ConstraintValidatorContext context) {
-        getTableTypes(value);
-        return assertConstraints(context);
-    }
-
-    private void getTableTypes(Restaurant value) {
-        purchase = 0;
-        inventory = 0;
-        disposal = 0;
-        other = 0;
-
-        value.getTable().forEach(table -> {
-
-            if(table.getType() == TableType.PURCHASE) purchase++;
-            if(table.getType() == TableType.INVENTORY) inventory++;
-            if(table.getType() == TableType.DISPOSAL) disposal++;
-            if(table.getType() == TableType.OTHER) other++;
-        });
-    }
-
-    private boolean assertConstraints(ConstraintValidatorContext context) {
-        if(purchase != 1) {
-            addConstraintViolation(context,
-                    "The number of PURCHASE type tables has to be exactly 1, but was:" + purchase);
-            return false;
-        } else if(inventory != 1) {
-            addConstraintViolation(context,
-                    "The number of INVENTORY type tables has to be exactly 1, but was:" + inventory);
-            return false;
-        } else if(disposal != 1) {
-            addConstraintViolation(context,
-                    "The number of DISPOSAL type tables has to be exactly 1, but was:" + disposal);
-            return false;
-        } else if(other != 1) {
-            addConstraintViolation(context,
-                    "The number of OTHER type tables has to be exactly 1, but was:" + disposal);
-            return false;
+        List<Map.Entry<TableType, Long>> entries = value.getTable().stream()
+                .filter(table -> TableType.isSpecial(table.getType()))
+                .collect(Collectors.groupingBy(t -> t.getType(), Collectors.counting()))
+            .entrySet().stream().collect(Collectors.toList());
+        entries.sort(TableType.getComparator());
+        Iterator<Map.Entry<TableType, Long>> current = entries.iterator(), expected = TableType.specialTypes().iterator();
+        while(expected.hasNext()) {
+            Map.Entry<TableType, Long> expectedEntry = expected.next();
+            if(!current.hasNext()) {
+                addConstraintViolation(context,
+                        "The number of "+ expectedEntry.getKey() +" type tables has to be exactly 1, but was: " + 0);
+                return false;
+            }
+            Map.Entry<TableType, Long> currentEntry = current.next();
+            if(!currentEntry.equals(expectedEntry)) {
+                addConstraintViolation(context,
+                        "The number of "+ currentEntry.getKey() +" type tables has to be exactly 1, but was: " + currentEntry.getValue());
+                return false;
+            }
         }
         return true;
-    }
-
-    private void addConstraintViolation(ConstraintValidatorContext context, String message) {
-        context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(message)
-                .addConstraintViolation();
     }
 }

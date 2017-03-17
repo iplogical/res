@@ -5,7 +5,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 
-public class ValidPaymentMethodValidator
+public class ValidPaymentMethodValidator extends AbstractValidator
 implements ConstraintValidator<ValidPaymentMethod, Receipt> {
 
     @Override
@@ -48,11 +48,5 @@ implements ConstraintValidator<ValidPaymentMethod, Receipt> {
 
     private boolean isPaymentMethodNull(Receipt value) {
         return value.getPaymentMethod() == null;
-    }
-
-    private void addConstraintViolation(ConstraintValidatorContext context, String message) {
-        context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(message)
-                .addConstraintViolation();
     }
 }

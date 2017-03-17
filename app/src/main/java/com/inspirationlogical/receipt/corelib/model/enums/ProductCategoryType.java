@@ -7,4 +7,8 @@ public enum ProductCategoryType {
     LEAF,
     PSEUDO,
     PSEUDO_DELETED;
+
+    public static boolean isPseudo(ProductCategoryType type) {
+        return type.equals(PSEUDO) || type.equals(PSEUDO_DELETED);
+    }
 }

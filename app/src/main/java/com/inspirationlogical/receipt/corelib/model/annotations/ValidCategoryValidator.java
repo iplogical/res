@@ -11,7 +11,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class ValidCategoryValidator 
+public class ValidCategoryValidator  extends AbstractValidator
     implements ConstraintValidator<ValidCategory, Object> {
 
     @Override
@@ -45,11 +45,5 @@ public class ValidCategoryValidator
         if(value.getType().equals(ProductCategoryType.PSEUDO)) {
             return isValid(value.getProduct(),context);
         } else return true;
-    }
-
-    private void addConstraintViolation(ConstraintValidatorContext context, String message) {
-        context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(message)
-                .addConstraintViolation();
     }
 }

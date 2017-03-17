@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 
-public class ValidTimeStampValidator 
+public class ValidTimeStampValidator extends AbstractValidator
     implements ConstraintValidator<ValidTimeStamp, Receipt>{
 
     @Override
@@ -32,11 +32,5 @@ public class ValidTimeStampValidator
             return true;
         }
         return true;
-    }
-
-    private void addConstraintViolation(ConstraintValidatorContext context, String message) {
-        context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(message)
-                .addConstraintViolation();
     }
 }

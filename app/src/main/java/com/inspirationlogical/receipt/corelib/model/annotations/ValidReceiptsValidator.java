@@ -29,7 +29,8 @@ import java.util.stream.Collectors;
 //    }
 //}
 
-public class ValidReceiptsValidator implements ConstraintValidator<ValidReceipts,Object>{
+public class ValidReceiptsValidator extends AbstractValidator
+        implements ConstraintValidator<ValidReceipts,Object>{
 
     @Override
     public void initialize(ValidReceipts constraintAnnotation) {
@@ -64,12 +65,4 @@ public class ValidReceiptsValidator implements ConstraintValidator<ValidReceipts
     public boolean isValid(Receipt value, ConstraintValidatorContext context) {
         return isValid(value.getOwner(),context);
     }
-
-    private void addConstraintViolation(ConstraintValidatorContext context, String message) {
-        context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(message)
-                .addConstraintViolation();
-    }
-
-
 }

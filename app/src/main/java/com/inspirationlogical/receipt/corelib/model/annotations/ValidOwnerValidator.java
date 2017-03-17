@@ -7,7 +7,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
-public class ValidOwnerValidator 
+public class ValidOwnerValidator extends AbstractValidator
     implements ConstraintValidator<ValidOwner, Receipt> {
 
     @Override
@@ -57,11 +57,4 @@ public class ValidOwnerValidator
                 return true;
         }
     }
-
-    private void addConstraintViolation(ConstraintValidatorContext context, String message) {
-        context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(message)
-                .addConstraintViolation();
-    }
-
 }

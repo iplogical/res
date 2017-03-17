@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 
-public class ValidProductValidatorReceiptRecord
+public class ValidProductValidatorReceiptRecord extends AbstractValidator
     implements ConstraintValidator<ValidProduct, ReceiptRecord>{
 
     @Override
@@ -28,11 +28,5 @@ public class ValidProductValidatorReceiptRecord
             }
         }
         return true;
-    }
-
-    private void addConstraintViolation(ConstraintValidatorContext context, String message) {
-        context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(message)
-                .addConstraintViolation();
     }
 }

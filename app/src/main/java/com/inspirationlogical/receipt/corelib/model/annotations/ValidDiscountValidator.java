@@ -5,7 +5,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 
-public class ValidDiscountValidator
+public class ValidDiscountValidator extends AbstractValidator
     implements ConstraintValidator<ValidDiscount, ReceiptRecord> {
 
     @Override
@@ -26,11 +26,5 @@ public class ValidDiscountValidator
             return false;
         }
         return true;
-    }
-
-    private void addConstraintViolation(ConstraintValidatorContext context, String message) {
-        context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(message)
-                .addConstraintViolation();
     }
 }
