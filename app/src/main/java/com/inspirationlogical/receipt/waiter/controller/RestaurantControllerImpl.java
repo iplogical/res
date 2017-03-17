@@ -10,6 +10,7 @@ import static com.inspirationlogical.receipt.waiter.controller.TableControllerIm
 import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.setEnableControl;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.getNodePosition;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.hideNode;
+import static com.inspirationlogical.receipt.waiter.view.NodeUtility.moveNode;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showNode;
 import static com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler.addPressAndHold;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
@@ -28,12 +29,12 @@ import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -86,7 +87,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @FXML
-    public void onConfigToggle(MouseEvent event) {
+    public void onConfigToggle(Event event) {
         if (!configuration.isSelected()) {
             tableControllers.forEach(tableController -> {
                 Node view = tableController.getView();
@@ -95,6 +96,18 @@ public class RestaurantControllerImpl implements RestaurantController {
                 return;
             });
         }
+    }
+
+    @FXML
+    public void onTablesSelected(Event event) {
+        moveNode(virtual, tables, contextMenu);
+        moveNode(virtual, tables, addTableForm);
+    }
+
+    @FXML
+    public void onVirtualSelected(Event event) {
+        moveNode(tables, virtual, contextMenu);
+        moveNode(tables, virtual, addTableForm);
     }
 
     @Override
@@ -120,6 +133,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         tables.getChildren().add(contextMenu);
 
         addPressAndHold(tables, contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
+        addPressAndHold(virtual, contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
     }
 
     private void initAddTableForm() {

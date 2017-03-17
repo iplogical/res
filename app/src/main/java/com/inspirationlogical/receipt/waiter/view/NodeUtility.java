@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.waiter.view;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 
 public class NodeUtility {
 
@@ -18,5 +19,12 @@ public class NodeUtility {
 
     public static void hideNode(Node node) {
         node.setVisible(false);
+    }
+
+    public static void moveNode(Pane source, Pane target, Node node) {
+        if (node != null) {
+            if (source.getChildren().contains(node)) source.getChildren().remove(node);
+            if (!target.getChildren().contains(node)) target.getChildren().add(node);
+        }
     }
 }

@@ -27,7 +27,7 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <ToggleButton fx:id="configuration" alignment="TOP_RIGHT" mnemonicParsing="false" onMouseClicked="#onConfigToggle" text="Szerkesztő mód">
+            <ToggleButton fx:id="configuration" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#onConfigToggle" text="Szerkesztő mód">
                <font>
                   <Font size="16.0" />
                </font>
@@ -36,12 +36,12 @@
       </ToolBar>
       <TabPane layoutX="5.0" layoutY="82.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
         <tabs>
-          <Tab closable="false" text="Asztalok">
+          <Tab closable="false" onSelectionChanged="#onTablesSelected" text="Asztalok">
             <content>
               <AnchorPane fx:id="tables" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
             </content>
           </Tab>
-          <Tab closable="false" text="Virtuális asztalok">
+          <Tab closable="false" onSelectionChanged="#onVirtualSelected" text="Virtuális asztalok">
             <content>
               <AnchorPane fx:id="virtual" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
             </content>
