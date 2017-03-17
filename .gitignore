@@ -26,6 +26,7 @@ app/**/*.iml
 # Generated files #
 app/schema/*
 app/src/main/java/com/inspirationlogical/receipt/corelib/jaxb/*
+app/test.pdf
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
