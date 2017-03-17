@@ -30,6 +30,11 @@ public class VATTest {
         GuardedTransaction.Run(schema.getEntityManager(),()->schema.getVatOne().setName(null));
     }
 
+    @Test(expected = RollbackException.class)
+    public void noStatus() {
+        GuardedTransaction.Run(schema.getEntityManager(),()->schema.getVatOne().setStatus(null));
+    }
+
     private void assertListSize() {
         assertEquals(5, getVATs().size());
     }

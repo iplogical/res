@@ -55,13 +55,15 @@ public @Data class ReceiptRecord extends AbstractEntity {
 
     private double soldQuantity;
 
+    private int purchasePrice;
+
     private int salePrice;
 
     private double VAT;
 
     private Double discountPercent;
 
-    private Double discountAbsolute;
+    private int discountAbsolute;
 
     @Tolerate
     ReceiptRecord(){}

@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 import javafx.geometry.Point2D;
 import lombok.NonNull;
 
@@ -46,15 +47,6 @@ public class TableAdapter extends AbstractAdapter<Table>
             throw new RuntimeException();
         }
         return adapters.get(0);
-//        Query query = manager.createNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER);
-//        query.setParameter("number", adaptee.getNumber());
-//        query.setParameter("status", ReceiptStatus.OPEN);
-//        @SuppressWarnings("unchecked")
-//        List<Receipt> active = query.getResultList();
-//        if(active.size() == 0) {
-//            return null;
-//        }
-//        else return new ReceiptAdapter(active.get(0), manager);
     }
 
     public void setTableName(String name) {

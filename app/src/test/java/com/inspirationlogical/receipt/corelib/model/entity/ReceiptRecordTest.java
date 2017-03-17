@@ -54,7 +54,7 @@ public class ReceiptRecordTest {
     @Test(expected = RollbackException.class)
     public void testAbsoluteAndPercentDiscountSimultaneously() {
         GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getReceiptRecordSaleOne().setDiscountAbsolute(1000D);
+            schema.getReceiptRecordSaleOne().setDiscountAbsolute(1000);
             schema.getReceiptRecordSaleOne().setDiscountPercent(10D);});
     }
 

@@ -2,11 +2,11 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
+import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptAdapterListeners;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 
 import javax.persistence.EntityManager;
 import java.util.Calendar;
@@ -15,6 +15,7 @@ import java.util.GregorianCalendar;
 import java.util.stream.Collectors;
 
 public class ReceiptAdapter extends AbstractAdapter<Receipt> {
+
     public  interface Listener{
         void onOpen(ReceiptAdapter receipt);
         void onClose(ReceiptAdapter receipt);
@@ -37,6 +38,26 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
 
     public ReceiptAdapter(Receipt receipt, EntityManager manager) {
         super(receipt, manager);
+    }
+
+    public void sellProduct(ProductAdapter productAdapter, int amount, PaymentParams paymentParams) {
+        GuardedTransaction.Run(manager,() -> {
+            ReceiptRecord record = ReceiptRecord.builder()
+                    .product(productAdapter.getAdaptee())
+                    .type(paymentParams.getReceiptRecordType())
+                    .created(new GregorianCalendar())
+                    .name(productAdapter.getAdaptee().getLongName())
+                    .soldQuantity(amount)
+                    .purchasePrice(productAdapter.getAdaptee().getPurchasePrice())
+                    .salePrice(productAdapter.getAdaptee().getSalePrice())
+                    .VAT(VATAdapter.getVatByName(manager, paymentParams.getReceiptRecordType(), VATStatus.VALID).getAdaptee().getVAT())
+                    .discountAbsolute(paymentParams.getDiscountAbsolute())
+                    .discountPercent(paymentParams.getDiscountPercent())
+                    .build();
+            record.setOwner(adaptee);
+            adaptee.getRecords().add(record);
+            manager.persist(adaptee);
+        });
     }
 
     public Collection<ReceiptRecordAdapter> getSoldProducts() {

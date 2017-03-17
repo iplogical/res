@@ -15,7 +15,7 @@ public class ValidDiscountValidator extends AbstractValidator
 
     @Override
     public boolean isValid(ReceiptRecord value, ConstraintValidatorContext context) {
-        if(value.getDiscountAbsolute() != null && value.getDiscountPercent() != null) {
+        if(value.getDiscountAbsolute() != 0 && value.getDiscountPercent() != null) {
             addConstraintViolation(context,
                     "There cannot be percent and absolute discounts simultaneously.");
             return false;

@@ -1,10 +1,13 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
+import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,6 +29,10 @@ public @Data class VATSerie extends AbstractEntity {
 
     @OneToMany(mappedBy = "serie", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     private Collection<VAT> vat;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private VATStatus status;
 
     @Tolerate
     VATSerie(){}

@@ -1,6 +1,10 @@
 package com.inspirationlogical.receipt.corelib.service;
 
+import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +34,18 @@ public class RetailServicesTest {
     @Mock
     private TableAdapter tableAdapter;
 
+    @Mock
+    private ReceiptAdapter receiptAdapter;
+
+    @Mock
+    private ProductViewImpl productView;
+
+    @Mock
+    private PaymentParams paymentParams;
+
+    @Mock
+    private ProductAdapter productAdapter;
+
     @Before
     public void createService() {
         service = new RetailServicesImpl(manager);
@@ -43,5 +59,18 @@ public class RetailServicesTest {
         service.openTable(tableView);
         //then
         verify(tableAdapter).openTable();
+    }
+
+    @Test
+    public void testSellProduct() {
+        //given
+        when(tableView.getAdapter()).thenReturn(tableAdapter);
+        when(productView.getAdapter()).thenReturn(productAdapter);
+        when(tableAdapter.getActiveReceipt()).thenReturn(receiptAdapter);
+        //when
+        service.sellProduct(tableView, productView, 1, paymentParams);
+        //then
+        verify(tableAdapter).getActiveReceipt();
+        verify(receiptAdapter).sellProduct(productAdapter, 1, paymentParams);
     }
 }

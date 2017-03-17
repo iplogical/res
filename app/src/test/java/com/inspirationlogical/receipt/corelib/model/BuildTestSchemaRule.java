@@ -5,6 +5,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import javax.persistence.EntityManager;
 
+import com.inspirationlogical.receipt.corelib.model.enums.*;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -23,21 +24,6 @@ import com.inspirationlogical.receipt.corelib.model.entity.Stock;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.entity.VAT;
 import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
-import com.inspirationlogical.receipt.corelib.model.enums.EtalonQuantity;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierLimitType;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
-import com.inspirationlogical.receipt.corelib.model.enums.QunatityUnit;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
 import lombok.Getter;
@@ -626,12 +612,14 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void buildVatSerieOne() {
         vatSerie = VATSerie.builder()
+                .status(VATStatus.VALID)
                 .build();
     }
 
     private void buildVatOne() {
         vatOne = VAT.builder()
                 .name(VATName.NORMAL)
+                .status(VATStatus.VALID)
                 .VAT(27)
                 .build();
     }
@@ -639,6 +627,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildVatTwo() {
         vatTwo = VAT.builder()
                 .name(VATName.REDUCED)
+                .status(VATStatus.VALID)
                 .VAT(18)
                 .build();
     }
@@ -646,6 +635,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildVatThree() {
         vatThree = VAT.builder()
                 .name(VATName.GREATLY_REDUCED)
+                .status(VATStatus.VALID)
                 .VAT(5)
                 .build();
     }
@@ -653,6 +643,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildVatFour() {
         vatFour = VAT.builder()
                 .name(VATName.TAX_TICKET)
+                .status(VATStatus.VALID)
                 .VAT(0)
                 .build();
     }
@@ -660,6 +651,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildVatFive() {
         vatFive = VAT.builder()
                 .name(VATName.TAX_FREE)
+                .status(VATStatus.VALID)
                 .VAT(0)
                 .build();
     }
