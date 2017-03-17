@@ -54,9 +54,7 @@ public class RestaurantTest {
     @Test(expected = RollbackException.class)
     public void noPurchaseTable() {
         GuardedTransaction.Run(schema.getEntityManager(),()->{
-            int hash1 = schema.getRestaurant().hashCode();
             schema.getTablePurchase().setType(TableType.NORMAL);});
-            int hash2 = schema.getRestaurant().hashCode();
     }
 
     @Test(expected = RollbackException.class)

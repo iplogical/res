@@ -7,6 +7,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidReceipts;
+import com.inspirationlogical.receipt.corelib.model.annotations.ValidTables;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
 import lombok.*;
@@ -24,6 +25,7 @@ import lombok.experimental.Tolerate;
 })
 @AttributeOverride(name = "id", column = @Column(name = "TABLE_ID"))
 @ValidReceipts
+@ValidTables
 public @Data class Table extends AbstractEntity {
 
     public static final String GET_TEST_TABLES = "Table.GetTestTables";

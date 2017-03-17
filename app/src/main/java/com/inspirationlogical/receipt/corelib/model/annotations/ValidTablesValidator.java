@@ -4,10 +4,14 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 public class ValidTablesValidator 
-    implements ConstraintValidator<ValidTables, Restaurant> {
+    implements ConstraintValidator<ValidTables, Object> {
 
     int purchase;
     int inventory;
@@ -20,6 +24,20 @@ public class ValidTablesValidator
     }
 
     @Override
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
+        try {
+            Method isValidMethod = this.getClass().
+                    getDeclaredMethod("isValid", value.getClass(), ConstraintValidatorContext.class);
+            return (boolean)isValidMethod.invoke(this,value,context);
+        }catch (NoSuchMethodException | InvocationTargetException |IllegalAccessException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean isValid(Table value, ConstraintValidatorContext context) {
+        return isValid(value.getOwner(), context);
+    }
+
     public boolean isValid(Restaurant value, ConstraintValidatorContext context) {
         getTableTypes(value);
         return assertConstraints(context);
