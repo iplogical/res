@@ -19,7 +19,7 @@ public class ProductCategoryTest {
 
     @Test
     public void testProductCategoryCreation() {
-        assertListSize();
+        assertEquals(8, getAllCategories().size());
     }
 
     @Test
@@ -37,106 +37,88 @@ public class ProductCategoryTest {
 
     @Test
     public void testProductConstraint() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getRoot().setProduct(null);
-        });
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getRoot().setProduct(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testNameNotEmpty() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getLeafOne().setName("");
-        });
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getLeafOne().setName(""));
     }
     
     @Test(expected = RollbackException.class)
     public void testPseudoCategoryWithoutProduct() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getPseudoOne().setProduct(null);
-        });
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getPseudoOne().setProduct(null));
     }
     
     @Test(expected = RollbackException.class)
     public void testLeafCategotyProductNotNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getLeafTwo().setProduct(schema.getProductOne());
-        });
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getLeafTwo().setProduct(schema.getProductOne()));
     }
     
     @Test(expected = RollbackException.class)
     public void rootHasParent() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getRoot().setParent(schema.getAggregate());
-        });
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getRoot().setParent(schema.getAggregate()));
     }
  
     @Test(expected = RollbackException.class)
     public void aggregateHasNoParent() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getAggregate().setParent(null);
-        });
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getAggregate().setParent(null));
     }
 
     @Test(expected = RollbackException.class)
     public void aggregateHasLeafAsParent() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getAggregate().setParent(schema.getLeafOne());
-        });
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getAggregate().setParent(schema.getLeafOne()));
     }
 
     @Test(expected = RollbackException.class)
     public void aggregateHasPseudoAsParent() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getAggregate().setParent(schema.getPseudoOne());
-        });
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getAggregate().setParent(schema.getPseudoOne()));
     }
 
     @Test(expected = RollbackException.class)
     public void leafHasNoParent() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getLeafTwo().setParent(null);
-        });
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getLeafTwo().setParent(null));
     }
 
     @Test(expected = RollbackException.class)
     public void leafHasRootAsParent() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getLeafTwo().setParent(schema.getRoot());
-        });
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getLeafTwo().setParent(schema.getRoot()));
     }
 
     @Test(expected = RollbackException.class)
     public void leafHasPseudoAsParent() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getLeafTwo().setParent(schema.getPseudoOne());
-        });
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getLeafTwo().setParent(schema.getPseudoOne()));
     }
 
     @Test(expected = RollbackException.class)
     public void pseudoHasNoParent() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getPseudoThree().setParent(null);
-        });
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getPseudoThree().setParent(null));
     }
 
     @Test(expected = RollbackException.class)
     public void pseudoHasRootAsParent() {
 
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getPseudoFour().setParent(schema.getRoot());
-        });
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getPseudoFour().setParent(schema.getRoot()));
     }
 
     @Test(expected = RollbackException.class)
     public void pseudoHasAggregateAsParent() {
 
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getPseudoFour().setParent(schema.getAggregate());
-        });
-    }
-
-    private void assertListSize() {
-        assertEquals(8, getAllCategories().size());
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getPseudoFour().setParent(schema.getAggregate()));
     }
 
     private List<ProductCategory> getAllCategories() {

@@ -18,7 +18,7 @@ public class RestaurantTest {
 
     @Test
     public void testRestaurantCreation() {
-        assertListSize();
+        assertEquals(1, getRestaurants().size());
     }
 
     @Test
@@ -28,42 +28,44 @@ public class RestaurantTest {
 
     @Test(expected = RollbackException.class)
     public void restaurantNameIsNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getRestaurant().setRestaurantName(null);});
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getRestaurant().setRestaurantName(null));
     }
 
     @Test(expected = RollbackException.class)
     public void companyNameIsNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getRestaurant().setCompanyName(null);});
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getRestaurant().setCompanyName(null));
     }
 
     @Test(expected = RollbackException.class)
     public void companyTaxPayerIdNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getRestaurant().setCompanyTaxPayerId(null);});
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getRestaurant().setCompanyTaxPayerId(null));
     }
 
     @Test(expected = RollbackException.class)
     public void restaurantAddressIsNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getRestaurant().setRestaurantAddress(null);});
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getRestaurant().setRestaurantAddress(null));
     }
 
     @Test(expected = RollbackException.class)
     public void companyAddressIsNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getRestaurant().setCompanyAddress(null);});
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getRestaurant().setCompanyAddress(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noPurchaseTable() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
-            schema.getTablePurchase().setType(TableType.NORMAL);});
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getTablePurchase().setType(TableType.NORMAL));
     }
 
     @Test(expected = RollbackException.class)
     public void toManyDisposalTables() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getTableNormal().setType(TableType.DISPOSAL);});
-    }
-
-    private void assertListSize() {
-        assertEquals(1, getRestaurants().size());
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getTableNormal().setType(TableType.DISPOSAL));
     }
 
     private List<Restaurant> getRestaurants() {

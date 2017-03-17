@@ -2,10 +2,10 @@ package com.inspirationlogical.receipt.corelib.model.entity;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -14,122 +14,108 @@ import static org.junit.Assert.assertEquals;
 
 public class ReceiptTest {
 
-    private EntityManager manager;
-
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
     public void testReceiptCreation() {
-        assertListSize();
+        assertEquals(8, getReceipts().size());
     }
 
     @Test(expected = RollbackException.class)
     public void receiptWithoutOwner() {
-        schema.getReceiptSaleOne().setOwner(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getReceiptSaleOne().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void receiptWithoutType() {
-        schema.getReceiptSaleOne().setType(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getReceiptSaleOne().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void receiptWithoutStatus() {
-        schema.getReceiptSaleOne().setStatus(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getReceiptSaleOne().setStatus(null));
     }
 
     @Test(expected = RollbackException.class)
     public void saleReceiptWithoutPaymentMethod() {
-        schema.getReceiptSaleOne().setPaymentMethod(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getReceiptSaleOne().setPaymentMethod(null));
     }
 
     @Test(expected = RollbackException.class)
     public void inventoryReceiptWithPaymentMethod() {
-        schema.getReceiptInventory().setPaymentMethod(PaymentMethod.CASH);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getReceiptInventory().setPaymentMethod(PaymentMethod.CASH));
     }
 
     @Test(expected = RollbackException.class)
     public void corruptClient() {
-        schema.getReceiptSaleOne().getClient().setName(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getReceiptSaleOne().getClient().setName(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noVatSerie() {
-        schema.getReceiptSaleOne().setVATSerie(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getReceiptSaleOne().setVATSerie(null));
     }
 
     @Test(expected = RollbackException.class)
     public void moveVirtualReceiptToNormalTableTooManyOpen() {
-        schema.getReceiptSaleThree().setOwner(schema.getTableNormal());
-        schema.getTableNormal().getReceipt().add(schema.getReceiptSaleThree());
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()-> {
+            schema.getReceiptSaleThree().setOwner(schema.getTableNormal());
+            schema.getTableNormal().getReceipt().add(schema.getReceiptSaleThree());});
     }
 
     @Test(expected = RollbackException.class)
     public void saleReceiptWithInvalidOwner() {
-        schema.getReceiptSaleOne().setOwner(schema.getTableDisposal());
-        assertListSize();
+            GuardedTransaction.Run(schema.getEntityManager(),()->
+                    schema.getReceiptSaleOne().setOwner(schema.getTableDisposal()));
     }
 
     @Test(expected = RollbackException.class)
     public void purchaseReceiptWithInvalidOwner() {
-        schema.getReceiptPurchase().setOwner(schema.getTableDisposal());
-        assertListSize();
+            GuardedTransaction.Run(schema.getEntityManager(),()->
+                    schema.getReceiptPurchase().setOwner(schema.getTableDisposal()));
     }
 
     @Test(expected = RollbackException.class)
     public void inventoryReceiptWithInvalidOwner() {
-        schema.getReceiptInventory().setOwner(schema.getTableNormal());
-        assertListSize();
+            GuardedTransaction.Run(schema.getEntityManager(),()->
+                    schema.getReceiptInventory().setOwner(schema.getTableNormal()));
     }
 
     @Test(expected = RollbackException.class)
     public void disposalReceiptWithInvalidOwner() {
-        schema.getReceiptDisposal().setOwner(schema.getTableOther());
-        assertListSize();
+            GuardedTransaction.Run(schema.getEntityManager(),()->
+                    schema.getReceiptDisposal().setOwner(schema.getTableOther()));
     }
 
     @Test(expected = RollbackException.class)
     public void otherReceiptWithInvalidOwner() {
-        schema.getReceiptOther().setOwner(schema.getTableInventory());
-        assertListSize();
+            GuardedTransaction.Run(schema.getEntityManager(),()->
+                    schema.getReceiptOther().setOwner(schema.getTableInventory()));
     }
 
     @Test(expected = RollbackException.class)
     public void openReceiptWithClosureTime() {
-        schema.getReceiptSaleOne().setClosureTime(new GregorianCalendar());
-        assertListSize();
+            GuardedTransaction.Run(schema.getEntityManager(),()->
+                    schema.getReceiptSaleOne().setClosureTime(new GregorianCalendar()));
     }
 
     @Test(expected = RollbackException.class)
     public void closedReceiptWithoutClosureTime() {
-        schema.getReceiptSaleTwo().setClosureTime(null);
-        assertListSize();
+            GuardedTransaction.Run(schema.getEntityManager(),()->
+                    schema.getReceiptSaleTwo().setClosureTime(null));
     }
 
-    private void assertListSize() {
-        assertEquals(8, persistReceiptAndGetList().size());
-    }
-
-    private List<Receipt> persistReceiptAndGetList() {
-        persistReceipt();
+    private List<Receipt> getReceipts() {
         @SuppressWarnings("unchecked")
-        List<Receipt> entries = manager.createNamedQuery(Receipt.GET_TEST_RECEIPTS).getResultList();
+        List<Receipt> entries = schema.getEntityManager().createNamedQuery(Receipt.GET_TEST_RECEIPTS).getResultList();
         return entries;
-    }
-
-    private void persistReceipt() {
-        manager = schema.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getRestaurant());
-        manager.getTransaction().commit();
     }
 }

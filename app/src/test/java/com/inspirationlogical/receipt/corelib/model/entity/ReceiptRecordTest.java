@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -12,75 +13,60 @@ import static org.junit.Assert.assertEquals;
 
 public class ReceiptRecordTest {
 
-    private EntityManager manager;
-
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
     public void testReceiptRecordCreation() {
-        assertListSize();
+        assertEquals(5, getReceiptRecords().size());
     }
 
     @Test(expected = RollbackException.class)
     public void testNoType() {
-        schema.getReceiptRecordSaleOne().setType(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getReceiptRecordSaleOne().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testNoOwner() {
-        schema.getReceiptRecordSaleOne().setOwner(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getReceiptRecordSaleOne().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testNoName() {
-        schema.getReceiptRecordSaleOne().setName("");
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getReceiptRecordSaleOne().setName(""));
     }
 
     @Test(expected = RollbackException.class)
     public void testNoProduct() {
-        schema.getReceiptRecordSaleOne().setProduct(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getReceiptRecordSaleOne().setProduct(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testOtherReceiptRecordHasProduct() {
-        schema.getReceiptRecordOther().setProduct(schema.getProductOne());
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getReceiptRecordOther().setProduct(schema.getProductOne()));
     }
 
     @Test(expected = RollbackException.class)
     public void testAbsoluteAndPercentDiscountSimultaneously() {
-        schema.getReceiptRecordSaleOne().setDiscountAbsolute(1000D);
-        schema.getReceiptRecordSaleOne().setDiscountPercent(10D);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->{
+            schema.getReceiptRecordSaleOne().setDiscountAbsolute(1000D);
+            schema.getReceiptRecordSaleOne().setDiscountPercent(10D);});
     }
 
     @Test(expected = RollbackException.class)
     public void testPercentDiscountMoreThanHundred() {
-        schema.getReceiptRecordSaleOne().setDiscountPercent(150D);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+            schema.getReceiptRecordSaleOne().setDiscountPercent(150D));
     }
 
-    private void assertListSize() {
-        assertEquals(5, persistReceiptRecordAndGetList().size());
-    }
-
-    private List<ReceiptRecord> persistReceiptRecordAndGetList() {
-        persistReceiptRecord();
+    private List<ReceiptRecord> getReceiptRecords() {
         @SuppressWarnings("unchecked")
-        List<ReceiptRecord> entries = manager.createNamedQuery(ReceiptRecord.GET_TEST_RECEIPTS_RECORDS).getResultList();
+        List<ReceiptRecord> entries = schema.getEntityManager().createNamedQuery(ReceiptRecord.GET_TEST_RECEIPTS_RECORDS).getResultList();
         return entries;
     }
-
-    private void persistReceiptRecord() {
-        manager = schema.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getReceiptRecordSaleOne());
-        manager.getTransaction().commit();
-    }
-
 }

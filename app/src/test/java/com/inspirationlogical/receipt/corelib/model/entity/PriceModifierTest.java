@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -12,79 +13,66 @@ import static org.junit.Assert.assertEquals;
 
 public class PriceModifierTest {
 
-    private EntityManager manager;
-
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
     public void testPriceModifierCreation() {
-        assertListSize();
+        assertEquals(3, getPriceModifiers().size());
     }
 
     @Test(expected = RollbackException.class)
     public void noOwner() {
-        schema.getPriceModifierOne().setOwner(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getPriceModifierOne().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noName() {
-        schema.getPriceModifierOne().setName(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getPriceModifierOne().setName(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noType() {
-        schema.getPriceModifierOne().setType(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getPriceModifierOne().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noStatus() {
-        schema.getPriceModifierOne().setStatus(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getPriceModifierOne().setStatus(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noRepeatPeriod() {
-        schema.getPriceModifierOne().setPeriod(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getPriceModifierOne().setPeriod(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noStartTime() {
-        schema.getPriceModifierOne().setStartTime(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getPriceModifierOne().setStartTime(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noEndTime() {
-        schema.getPriceModifierOne().setEndTime(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getPriceModifierOne().setEndTime(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noLimitType() {
-        schema.getPriceModifierOne().setLimitType(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getPriceModifierOne().setLimitType(null));
     }
 
-    private void assertListSize() {
-        assertEquals(3, persistPriceModifierAndGetList().size());
-    }
-
-    private List<PriceModifier> persistPriceModifierAndGetList() {
-        persistPriceModifier();
+    private List<PriceModifier> getPriceModifiers() {
         @SuppressWarnings("unchecked")
-        List<PriceModifier> entries = schema.getEntityManager().createNamedQuery(PriceModifier.GET_TEST_PRICE_MODIFIERS).getResultList();
+        List<PriceModifier> entries =
+                schema.getEntityManager().createNamedQuery(PriceModifier.GET_TEST_PRICE_MODIFIERS).getResultList();
         return entries;
-    }
-
-    private void persistPriceModifier() {
-        manager = schema.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getPriceModifierOne());
-        manager.getTransaction().commit();
     }
 }

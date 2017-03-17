@@ -11,36 +11,22 @@ import static org.junit.Assert.assertEquals;
 
 public class VATSerieTest {
 
-    private EntityManager manager;
-
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
     public void testVATSerieCreation() {
-        assertListSize();
+        assertEquals(1, getVATSerie().size());
     }
 
     @Test
     public void testVatValueNumber() {
-        assertEquals(5, persistVATSerieAndGetList().get(0).getVat().size());
+        assertEquals(5, getVATSerie().get(0).getVat().size());
     }
 
-    private void assertListSize() {
-        assertEquals(1, persistVATSerieAndGetList().size());
-    }
-
-    private List<VATSerie> persistVATSerieAndGetList() {
-        persistVATSerie();
+    private List<VATSerie> getVATSerie() {
         @SuppressWarnings("unchecked")
-        List<VATSerie> entries = manager.createNamedQuery(VATSerie.GET_TEST_VAT_SERIES).getResultList();
+        List<VATSerie> entries = schema.getEntityManager().createNamedQuery(VATSerie.GET_TEST_VAT_SERIES).getResultList();
         return entries;
-    }
-
-    private void persistVATSerie() {
-        manager = schema.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getVatSerie());
-        manager.getTransaction().commit();
     }
 }

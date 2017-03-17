@@ -2,83 +2,69 @@ package com.inspirationlogical.receipt.corelib.model.entity;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
 public class TableTest {
-
-    private EntityManager manager;
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
     public void testTableCreation() {
-        assertListSize();
+        assertEquals(7, getTables().size());
     }
 
     @Test
     public void testReservationNumber() {
-        List<Table> tables = persistTebleAndGetList();
-        for(Table t : tables) {
-            if(t.getNumber() == 1) {
-                assertEquals(2, t.getReservation().size());
-            }
-        }
+        List<Table> tables = getTables().stream()
+                .filter(table -> table.getNumber()==1)
+                .collect(Collectors.toList());
+        assertEquals(1, tables.size());
+        assertEquals(2, tables.get(0).getReservation().size());
     }
 
     @Test(expected = RollbackException.class)
     public void notUniqueTableNumber() {
-        schema.getTableVirtual().setNumber(schema.getTableNormal().getNumber());
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getTableVirtual().setNumber(schema.getTableNormal().getNumber()));
     }
 
     @Test(expected = RollbackException.class)
     public void TableWithoutNumber() {
-        schema.getTableVirtual().setNumber(0);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getTableVirtual().setNumber(0));
     }
 
     @Test(expected = RollbackException.class)
     public void tableWithoutOwner() {
-        schema.getTableOther().setOwner(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getTableOther().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void tableWithoutType() {
-        schema.getTableOther().setType(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getTableOther().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void tableWithMoreOpenReceipts() {
-        schema.getReceiptSaleTwo().setStatus(ReceiptStatus.OPEN);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getReceiptSaleTwo().setStatus(ReceiptStatus.OPEN));
     }
 
-    private void assertListSize() {
-        assertEquals(7, persistTebleAndGetList().size());
-    }
-
-    private List<Table> persistTebleAndGetList() {
-        persistTable();
+    private List<Table> getTables() {
         @SuppressWarnings("unchecked")
-        List<Table> entries = manager.createNamedQuery(Table.GET_TEST_TABLES).getResultList();
+        List<Table> entries = schema.getEntityManager().createNamedQuery(Table.GET_TEST_TABLES).getResultList();
         return entries;
-    }
-
-    private void persistTable() {
-        manager = schema.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getTableNormal());
-        manager.persist(schema.getTableVirtual());
-        manager.getTransaction().commit();
     }
 }

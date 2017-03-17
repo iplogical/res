@@ -33,37 +33,44 @@ public class ProductTest {
 
     @Test(expected = RollbackException.class)
     public void testShortNameTooLong() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setShortName("ExtremelyLongShortNameExceedsItsLimit");});
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getProductOne().setShortName("ExtremelyLongShortNameExceedsItsLimit"));
     }
 
     @Test(expected = RollbackException.class)
     public void testShortNameEmpty() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setShortName("");});
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getProductOne().setShortName(""));
     }
 
     @Test(expected = RollbackException.class)
     public void testLongNameEmpty() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setLongName("");});
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getProductOne().setLongName(""));
     }
 
     @Test(expected = RollbackException.class)
     public void testQualityUnitNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setQuantityUnit(null);});
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getProductOne().setQuantityUnit(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testEtalonQuantityNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setEtalonQuantity(null);});
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getProductOne().setEtalonQuantity(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testProductTypeNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setType(null);});
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getProductOne().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testProductStatusNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{schema.getProductOne().setStatus(null);});
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getProductOne().setStatus(null));
     }
 
     @Test(expected = RollbackException.class)

@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.entity;
 
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -13,56 +14,38 @@ import static org.junit.Assert.assertEquals;
 
 public class RecipeTest {
 
-    private EntityManager manager;
-
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
     public void testRecipeCreation() {
-        assertListSize();
+        assertEquals(3, getRecipes().size());
     }
 
     @Test
     public void testRecipeOwner() {
-        assertEquals("productFour", persistRecipeAndGetList().get(0).getOwner().getLongName());
+        assertEquals("productFour", getRecipes().get(0).getOwner().getLongName());
     }
 
     @Test(expected = RollbackException.class)
     public void recipeWithoutOwner() {
-        schema.getElementThree().setOwner(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->schema.getElementThree().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void recipeWithoutElement() {
-        schema.getElementThree().setElement(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->schema.getElementThree().setElement(null));
     }
 
     @Test(expected = RollbackException.class)
     public void recipeWithoutQuantityUnit() {
-        schema.getElementThree().setQuantityUnit(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->schema.getElementThree().setQuantityUnit(null));
     }
 
-    private void assertListSize() {
-        assertEquals(3, persistRecipeAndGetList().size());
-    }
-
-    private List<Recipe> persistRecipeAndGetList() {
-        persistRecipe();
+    private List<Recipe> getRecipes() {
         @SuppressWarnings("unchecked")
-        List<Recipe> entries = manager.createNamedQuery(Recipe.GET_TEST_RECIPES).getResultList();
+        List<Recipe> entries = schema.getEntityManager().createNamedQuery(Recipe.GET_TEST_RECIPES).getResultList();
         return entries;
     }
 
-    private void persistRecipe() {
-        manager = schema.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getElementOne());
-        manager.persist(schema.getElementTwo());
-        manager.persist(schema.getElementThree());
-        manager.getTransaction().commit();
-    }
 }

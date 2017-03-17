@@ -1,10 +1,10 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.List;
 
@@ -12,43 +12,31 @@ import static org.junit.Assert.assertEquals;
 
 public class VATTest {
 
-    private EntityManager manager;
-
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
     public void testVATCreation() {
-        assertListSize();
+        assertEquals(5, getVATs().size());
     }
 
     @Test(expected = RollbackException.class)
     public void noSerie() {
-        schema.getVatOne().setSerie(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->schema.getVatOne().setSerie(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noName() {
-        schema.getVatOne().setName(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->schema.getVatOne().setName(null));
     }
 
     private void assertListSize() {
-        assertEquals(5, persistVATAndGetList().size());
+        assertEquals(5, getVATs().size());
     }
 
-    private List<VAT> persistVATAndGetList() {
-        persistVAT();
+    private List<VAT> getVATs() {
         @SuppressWarnings("unchecked")
-        List<VAT> entries = manager.createNamedQuery(VAT.GET_TEST_VAT_RECORDS).getResultList();
+        List<VAT> entries = schema.getEntityManager().createNamedQuery(VAT.GET_TEST_VAT_RECORDS).getResultList();
         return entries;
-    }
-
-    private void persistVAT() {
-        manager = schema.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getVatOne());
-        manager.getTransaction().commit();
     }
 }

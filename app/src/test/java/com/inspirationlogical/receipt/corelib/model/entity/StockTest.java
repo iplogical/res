@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -19,36 +20,25 @@ public class StockTest {
 
     @Test
     public void testStockCreation() {
-        assertListSize();
+        assertEquals(3, getStocks().size());
     }
 
     @Test
     public void stockOwner() {
-        assertEquals("productFour", persistStockAndGetList().get(0).getOwner().getLongName());
+        assertEquals("productFour", getStocks().get(0).getOwner().getLongName());
     }
 
     @Test(expected = RollbackException.class)
     public void stockWithoutOwner() {
-        schema.getStockOne().setOwner(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getStockOne().setOwner(null));
+
     }
 
-    private void assertListSize() {
-        assertEquals(3, persistStockAndGetList().size());
-    }
-
-    private List<Stock> persistStockAndGetList() {
-        persistRecipe();
+    private List<Stock> getStocks() {
         @SuppressWarnings("unchecked")
-        List<Stock> entries = manager.createNamedQuery(Stock.GET_TEST_STOCKS).getResultList();
+        List<Stock> entries = schema.getEntityManager().createNamedQuery(Stock.GET_TEST_STOCKS).getResultList();
         return entries;
-    }
-
-    private void persistRecipe() {
-        manager = schema.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getStockOne());
-        manager.getTransaction().commit();
     }
 }
  

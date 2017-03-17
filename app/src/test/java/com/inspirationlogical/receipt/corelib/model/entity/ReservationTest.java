@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -12,51 +13,35 @@ import static org.junit.Assert.assertEquals;
 
 public class ReservationTest {
 
-    private EntityManager manager;
-
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
     public void testReservationCreation() {
-        assertListSize();
+        assertEquals(2, getReservations().size());
     }
 
     @Test(expected = RollbackException.class)
     public void invalidTableNumber() {
-        schema.getReservationOne().setTableNumber(0);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getReservationOne().setTableNumber(0));
     }
 
     @Test(expected = RollbackException.class)
     public void noStartTime() {
-        schema.getReservationOne().setStartTime(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getReservationOne().setStartTime(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noName() {
-        schema.getReservationOne().setName(null);
-        assertListSize();
+        GuardedTransaction.Run(schema.getEntityManager(),()->
+                schema.getReservationOne().setName(null));
     }
 
-    private void assertListSize() {
-        assertEquals(2, persistReservationAndGetList().size());
-    }
-
-    private List<Reservation> persistReservationAndGetList() {
-        persistReservation();
+    private List<Reservation> getReservations() {
         @SuppressWarnings("unchecked")
-        List<Reservation> entries = manager.createNamedQuery(Reservation.GET_TEST_RESERVATIONS).getResultList();
+        List<Reservation> entries = schema.getEntityManager().createNamedQuery(Reservation.GET_TEST_RESERVATIONS).getResultList();
         return entries;
     }
-
-    private void persistReservation() {
-        manager = schema.getEntityManager();
-        manager.getTransaction().begin();
-        manager.persist(schema.getReservationOne());
-        manager.getTransaction().commit();
-    }
-
-
 }
