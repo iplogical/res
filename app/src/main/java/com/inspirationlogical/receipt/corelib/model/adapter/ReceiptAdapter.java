@@ -41,6 +41,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public void sellProduct(ProductAdapter productAdapter, int amount, PaymentParams paymentParams) {
+        GuardedTransaction.Run(manager, () -> manager.refresh(adaptee));
         GuardedTransaction.Run(manager,() -> {
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(productAdapter.getAdaptee())
