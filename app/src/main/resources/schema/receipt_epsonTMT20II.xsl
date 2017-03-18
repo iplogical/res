@@ -21,7 +21,7 @@
             </fo:simple-page-master>
         </fo:layout-master-set>
         <fo:page-sequence master-reference="PageMaster">
-            <fo:flow flow-name="xsl-region-body" >
+            <fo:flow flow-name="xsl-region-body" font-family="SourceSansPro" language="HU" >
                 <xsl:apply-templates />
             </fo:flow>
         </fo:page-sequence>
@@ -30,20 +30,19 @@
 
 <!-- Header style definition -->
 <xsl:template match="header">
-<fo:block font-family="SourceSansPro" language="hu" font-size="6pt" >
+<fo:block>
 <fo:table  width="100%" text-align="center">
 <fo:table-body >
     <xsl:apply-templates  select="*"/>
 </fo:table-body>
 </fo:table>
 </fo:block>
-<fo:block text-align="center" border-top-style="double" border-top-width="4pt"/>
 </xsl:template>
 
 <xsl:template match="header/restaurant_name">
     <fo:table-row>
         <fo:table-cell  number-columns-spanned="3">
-            <fo:block font-weight="bold" font-size="10pt" padding-before="2pt">
+            <fo:block font-weight="bold" font-size="14pt" padding-before="2pt">
                 <xsl:apply-templates  />
             </fo:block>
         </fo:table-cell>
@@ -53,7 +52,7 @@
 <xsl:template match="header/restaurant_social_media_info|header/restaurant_website|header/restaurant_address">
     <fo:table-row>
         <fo:table-cell  number-columns-spanned="3">
-            <fo:block font-size="6pt" padding-before="2pt">
+            <fo:block font-size="10pt" padding-before="2pt">
                 <xsl:apply-templates  />
             </fo:block>
         </fo:table-cell>
@@ -72,12 +71,20 @@
 
 <!-- Body style definition -->
 <xsl:template match="body">
-    <fo:block font-family="SourceSansPro" language="hu" font-size="8pt">
+    <!-- Header-Body Separator Line -->
+    <fo:block text-align="center"
+              font-weight="bold"
+              border-top-style="double"
+              border-top-width="4pt"
+              border-bottom-style="double"
+              border-bottom-width="4pt">
+        <xsl:apply-templates select="body_type" />
+    </fo:block>
+    <fo:block   font-size="12pt">
             <fo:table  width="100%">
-                <fo:table-header 
-                    font-family="SourceSansPro" language="hu" 
+                <fo:table-header
                     font-weight="bold"
-                    font-size="6pt" 
+                    font-size="9pt"
                     border-bottom-style="solid" 
                     border-bottom-width="2pt" >
                     <fo:table-row>
@@ -102,30 +109,44 @@
 
 <xsl:template match="body_footer">
     <fo:table-row border-top-style="solid" border-top-width="2pt" font-weight="bold">
-        <xsl:apply-templates  select="total_tag|total|total_currency"/>
+        <fo:table-cell><fo:block /></fo:table-cell>
     </fo:table-row>
-    <fo:table-row font-weight="bold">
-        <xsl:apply-templates  select="total_rounded_tag|total_rounded|total_rounded_currency"/>
-    </fo:table-row >
-    <fo:table-row font-weight="bold">
-        <xsl:apply-templates  select="payment_method_tag|payment_method"/>
-    </fo:table-row>
+    <xsl:apply-templates select="./*"/>
 </xsl:template>
 
-<xsl:template match="body_footer/total_tag|body_footer/total_rounded_tag|body_footer/payment_method_tag">
+<xsl:template match="body_footer/total|body_footer/total_rounded">
+    <fo:table-row font-weight="bold">
     <fo:table-cell number-columns-spanned="2">
-      <fo:block font-weight="bold"  padding-before="2pt">
-        <xsl:apply-templates  />:
-      </fo:block>
+        <fo:block font-weight="bold"  padding-before="2pt">
+            <xsl:apply-templates  select="./tag"/>:
+        </fo:block>
     </fo:table-cell>
+    <fo:table-cell >
+        <fo:block font-weight="bold"  padding-before="2pt" text-align="end">
+            <xsl:apply-templates  select="./currency"/>
+        </fo:block>
+    </fo:table-cell>
+    <fo:table-cell >
+        <fo:block font-weight="bold"  padding-before="2pt" text-align="end">
+            <xsl:apply-templates  select="./value"/>
+        </fo:block>
+    </fo:table-cell>
+    </fo:table-row >
 </xsl:template>
 
-<xsl:template match="body_footer/total|body_footer/total_rounded|body_footer/total_currency|body_footer/total_rounded_currency|body_footer/payment_method">
-    <fo:table-cell>
-      <fo:block font-weight="bold"  padding-before="2pt" text-align="end">
-        <xsl:apply-templates  />
-      </fo:block>
-    </fo:table-cell>
+<xsl:template match="body_footer/payment_method">
+    <fo:table-row font-weight="bold">
+        <fo:table-cell number-columns-spanned="2">
+            <fo:block font-weight="bold"  padding-before="2pt">
+                <xsl:apply-templates  select="./tag"/>:
+            </fo:block>
+        </fo:table-cell>
+        <fo:table-cell >
+            <fo:block font-weight="bold" number-columns-spanned="2" padding-before="2pt" text-align="end">
+                <xsl:apply-templates  select="./value"/>
+            </fo:block>
+        </fo:table-cell>
+    </fo:table-row >
 </xsl:template>
 
 
@@ -176,7 +197,7 @@
 
     <!-- footer style definition -->
 <xsl:template match="footer">
-    <fo:block font-family="SourceSansPro" language="hu" font-size="8pt">
+    <fo:block   font-size="10pt">
             <fo:table  width="100%">
                 <fo:table-body border-top-style="double" border-top-width="4pt">
                     <xsl:apply-templates />

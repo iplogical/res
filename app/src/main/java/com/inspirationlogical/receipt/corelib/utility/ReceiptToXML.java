@@ -12,16 +12,10 @@ import java.util.stream.Collectors;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import com.inspirationlogical.receipt.corelib.jaxb.ObjectFactory;
-import com.inspirationlogical.receipt.corelib.jaxb.Receipt;
-import com.inspirationlogical.receipt.corelib.jaxb.ReceiptBody;
-import com.inspirationlogical.receipt.corelib.jaxb.ReceiptBodyEntry;
-import com.inspirationlogical.receipt.corelib.jaxb.ReceiptBodyFooter;
-import com.inspirationlogical.receipt.corelib.jaxb.ReceiptBodyHeader;
-import com.inspirationlogical.receipt.corelib.jaxb.ReceiptFooter;
-import com.inspirationlogical.receipt.corelib.jaxb.ReceiptHeader;
+import com.inspirationlogical.receipt.corelib.jaxb.*;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 
 
@@ -90,6 +84,7 @@ public class ReceiptToXML {
 
     private static ReceiptBody createReceiptBody(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptBody body = factory.createReceiptBody();
+        body.setBodyType(Resources.PRINTER.getString("RECEIPTTYPE_" +receiptAdapter.getAdaptee().getType().toString()));
         body.setBodyHeader(createReceiptBodyHeader(receiptAdapter,factory));
         List<ReceiptBodyEntry> records = receiptAdapter.getAdaptee().getRecords().stream().map((record) ->{
             ReceiptBodyEntry entry = factory.createReceiptBodyEntry();
@@ -112,23 +107,35 @@ public class ReceiptToXML {
         header.setTotalHeader(Resources.PRINTER.getString("TotalHeader"));
         return header;
     }
+    static private TagCurrencyValue createTagCurrencyValue(ObjectFactory f,String tag,String currency,Long value){
+        TagCurrencyValue tcv = f.createTagCurrencyValue();
+        tcv.setTag(tag);
+        tcv.setCurrency(currency);
+        tcv.setValue(BigInteger.valueOf(value));
+        return tcv;
+    }
 
     private static ReceiptBodyFooter createReceiptBodyFooter(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptBodyFooter footer = factory.createReceiptBodyFooter();
-        footer.setTotalTag(Resources.PRINTER.getString("TotalTag"));
-        footer.setTotal(BigInteger.valueOf(
+        footer.setTotal(createTagCurrencyValue(factory,
+                Resources.PRINTER.getString("TotalTag"),
+                Resources.PRINTER.getString("TotalCurrency"),
                 receiptAdapter.getAdaptee().getRecords().stream()
-                        .map(e -> e.getSalePrice() * e.getSoldQuantity())
-                        .reduce(0.0,(x,y)-> x + y).intValue())
+                .map(e -> e.getSalePrice() * e.getSoldQuantity())
+                .reduce(0.0,(x,y)-> x + y).longValue())
         );
         //FIXME: add currency in model.Receipt
-        footer.setTotalCurrency(Resources.PRINTER.getString("TotalCurrency"));
-        footer.setTotalRoundedTag(Resources.PRINTER.getString("TotalRoundedTag"));
-        footer.setTotalRoundedCurrency(footer.getTotalCurrency());
-        footer.setPaymentMethodTag(Resources.PRINTER.getString("PaymentMethod"));
-        footer.setPaymentMethod(receiptAdapter.getAdaptee().getPaymentMethod().toString());
-        //TODO: add rounding logic based on paymentmethod
-        footer.setTotalRounded(footer.getTotal());
+        TagValuePair paymentMethod = factory.createTagValuePair();
+        paymentMethod.setTag(Resources.PRINTER.getString("PaymentMethod"));
+        paymentMethod.setValue(Resources.PRINTER.getString("PAYMENTMETHOD_"+receiptAdapter.getAdaptee().getPaymentMethod().toString()));
+        footer.setPaymentMethod(paymentMethod);
+        if(receiptAdapter.getAdaptee().getPaymentMethod() == PaymentMethod.CASH) {
+            footer.setTotalRounded(createTagCurrencyValue(factory,
+                    Resources.PRINTER.getString("TotalRoundedTag"),
+                    Resources.PRINTER.getString("TotalRoundedCurrency"),
+                    footer.getTotal().getValue().longValue())
+            );
+        }
         return footer;
     }
 }

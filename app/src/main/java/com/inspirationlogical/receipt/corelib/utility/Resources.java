@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.utility;
 
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 class NoLocaleTag
@@ -29,6 +30,10 @@ public enum Resources {
 
 
     public String getString(String key) {
-        return resourceBundle.getString(key);
+        try {
+            return resourceBundle.getString(key);
+        }catch(MissingResourceException e){
+            return key;
+        }
     }
 }
