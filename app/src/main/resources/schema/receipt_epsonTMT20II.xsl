@@ -22,7 +22,15 @@
         </fo:layout-master-set>
         <fo:page-sequence master-reference="PageMaster">
             <fo:flow flow-name="xsl-region-body" font-family="SourceSansPro" language="HU" >
-                <xsl:apply-templates />
+                <fo:block border-bottom-style="double" border-bottom-width="4pt">
+                    <xsl:apply-templates select="header"/>
+                </fo:block>
+                <fo:block border-bottom-style="double" border-bottom-width="4pt">
+                    <xsl:apply-templates select="body"/>
+                </fo:block>
+                <fo:block>
+                    <xsl:apply-templates select="footer"/>
+                </fo:block>
             </fo:flow>
         </fo:page-sequence>
     </fo:root>
@@ -73,12 +81,12 @@
 <xsl:template match="body">
     <!-- Header-Body Separator Line -->
     <fo:block text-align="center"
-              font-weight="bold"
-              border-top-style="double"
-              border-top-width="4pt"
-              border-bottom-style="double"
-              border-bottom-width="4pt">
-        <xsl:apply-templates select="body_type" />
+              font-weight="bold">
+        <xsl:apply-templates select="type" />
+    </fo:block>
+    <fo:block border-bottom-style="double" border-bottom-width="4pt" />
+    <fo:block>
+        <xsl:apply-templates select="customer" />
     </fo:block>
     <fo:block   font-size="12pt">
             <fo:table  width="100%">
@@ -88,18 +96,49 @@
                     border-bottom-style="solid" 
                     border-bottom-width="2pt" >
                     <fo:table-row>
-                        <xsl:apply-templates  select="body_header/*" />   
+                        <xsl:apply-templates  select="./header/*" />   
                     </fo:table-row>
                 </fo:table-header >
                 <fo:table-body>
                     <xsl:apply-templates select="entry" />
-                    <xsl:apply-templates select="body_footer" />
+                    <!-- Separtor between body entries and body footer-->
+                    <fo:table-row border-top-style="solid" border-top-width="1pt" font-weight="bold">
+                        <fo:table-cell><fo:block /></fo:table-cell>
+                    </fo:table-row>
+                    <xsl:apply-templates select="footer/*" />
                 </fo:table-body>
             </fo:table>
     </fo:block>
 </xsl:template>
 
-<xsl:template match="body_header/*">
+
+<xsl:template match="body/customer">
+<fo:table  width="100%" text-align="start" font-size="8pt">
+<fo:table-body >
+    <xsl:apply-templates  select="./*"/>
+</fo:table-body>
+</fo:table>
+<fo:block border-bottom-style="double" border-bottom-width="4pt">
+    <xsl:apply-templates select="header"/>
+</fo:block>
+</xsl:template>
+
+<xsl:template match="body/customer/*">
+<fo:table-row>
+    <fo:table-cell number-columns-spanned="2">
+        <fo:block>
+            <xsl:apply-templates select="tag"/>:
+        </fo:block>
+    </fo:table-cell>
+    <fo:table-cell number-columns-spanned="3">
+        <fo:block>
+            <xsl:apply-templates select="value"/>
+        </fo:block>
+    </fo:table-cell>
+</fo:table-row>
+</xsl:template>
+
+<xsl:template match="body/header/*">
     <fo:table-cell>
       <fo:block padding-before="4pt" padding-after="4pt" text-align="end">
         <xsl:apply-templates  />
@@ -107,14 +146,7 @@
     </fo:table-cell>
 </xsl:template>
 
-<xsl:template match="body_footer">
-    <fo:table-row border-top-style="solid" border-top-width="2pt" font-weight="bold">
-        <fo:table-cell><fo:block /></fo:table-cell>
-    </fo:table-row>
-    <xsl:apply-templates select="./*"/>
-</xsl:template>
-
-<xsl:template match="body_footer/total|body_footer/total_rounded">
+<xsl:template match="body/footer/total|body/footer/total_rounded">
     <fo:table-row font-weight="bold">
     <fo:table-cell number-columns-spanned="2">
         <fo:block font-weight="bold"  padding-before="2pt">
@@ -134,15 +166,15 @@
     </fo:table-row >
 </xsl:template>
 
-<xsl:template match="body_footer/payment_method">
+<xsl:template match="body/footer/payment_method">
     <fo:table-row font-weight="bold">
         <fo:table-cell number-columns-spanned="2">
             <fo:block font-weight="bold"  padding-before="2pt">
                 <xsl:apply-templates  select="./tag"/>:
             </fo:block>
         </fo:table-cell>
-        <fo:table-cell >
-            <fo:block font-weight="bold" number-columns-spanned="2" padding-before="2pt" text-align="end">
+        <fo:table-cell number-columns-spanned="2">
+            <fo:block font-weight="bold"  padding-before="2pt" text-align="end">
                 <xsl:apply-templates  select="./value"/>
             </fo:block>
         </fo:table-cell>
@@ -199,7 +231,7 @@
 <xsl:template match="footer">
     <fo:block   font-size="10pt">
             <fo:table  width="100%">
-                <fo:table-body border-top-style="double" border-top-width="4pt">
+                <fo:table-body>
                     <xsl:apply-templates />
                 </fo:table-body>
             </fo:table>

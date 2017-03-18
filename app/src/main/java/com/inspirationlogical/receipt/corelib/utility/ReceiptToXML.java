@@ -13,6 +13,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
 import com.inspirationlogical.receipt.corelib.jaxb.*;
+import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
@@ -82,10 +83,25 @@ public class ReceiptToXML {
         return  header;
     }
 
+    private static void setCustomerInfo(ReceiptAdapter adapter,ReceiptBody body,ObjectFactory factory)
+    {
+        Client client = adapter.getAdaptee().getClient();
+        if(client != null) {
+            CustomerInfo customer = factory.createCustomerInfo();
+            customer.setName(createTagValue(factory,Resources.PRINTER.getString("CustomerName") ,client.getName()));
+            if(!client.getAddress().isEmpty())
+                customer.setAddress(createTagValue(factory,Resources.PRINTER.getString("CustomerAddress") ,client.getAddress()));
+            if(!client.getTAXNumber().isEmpty())
+                customer.setTaxNumber(createTagValue(factory,Resources.PRINTER.getString("CustomerTAXnumber") ,client.getTAXNumber()));
+            body.setCustomer(customer);
+        }
+    }
+
     private static ReceiptBody createReceiptBody(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptBody body = factory.createReceiptBody();
-        body.setBodyType(Resources.PRINTER.getString("RECEIPTTYPE_" +receiptAdapter.getAdaptee().getType().toString()));
-        body.setBodyHeader(createReceiptBodyHeader(receiptAdapter,factory));
+        setCustomerInfo(receiptAdapter,body,factory);
+        body.setType(Resources.PRINTER.getString("RECEIPTTYPE_" +receiptAdapter.getAdaptee().getType().toString()));
+        body.setHeader(createReceiptBodyHeader(receiptAdapter,factory));
         List<ReceiptBodyEntry> records = receiptAdapter.getAdaptee().getRecords().stream().map((record) ->{
             ReceiptBodyEntry entry = factory.createReceiptBodyEntry();
             entry.setName(record.getName());
@@ -95,7 +111,7 @@ public class ReceiptToXML {
             return entry;
         }).collect(Collectors.toList());
         body.getEntry().addAll(records);
-        body.setBodyFooter(createReceiptBodyFooter(receiptAdapter,factory));
+        body.setFooter(createReceiptBodyFooter(receiptAdapter,factory));
         return body;
     }
 
@@ -113,6 +129,13 @@ public class ReceiptToXML {
         tcv.setCurrency(currency);
         tcv.setValue(BigInteger.valueOf(value));
         return tcv;
+    }
+
+    static private TagValuePair createTagValue(ObjectFactory f,String tag,String value){
+        TagValuePair tv = f.createTagValuePair();
+        tv.setTag(tag);
+        tv.setValue(value);
+        return tv;
     }
 
     private static ReceiptBodyFooter createReceiptBodyFooter(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
