@@ -45,13 +45,21 @@ public class ReceiptToXMLTest {
             ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne(), schema.getEntityManager());
             ra.close(Arrays.asList());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            new ReceiptFormatterEpsonTMT20II().convertToPDF(new FileOutputStream("test.pdf"),
+            new ReceiptFormatterEpsonTMT20II().convertToPDF(out,
                     ReceiptToXML.ConvertToStream(ra)
             );
 
         } catch(Exception e){
             throw new RuntimeException(e);
         }
+    }
+
+    @Test
+    public void test_receipt_formatting_through_dependency_injection(){
+        ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne(), schema.getEntityManager());
+        ra.close(Arrays.asList());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        FormatterService.create().convertToPDF(out,ReceiptToXML.ConvertToStream(ra));
     }
 
 }
