@@ -30,7 +30,7 @@
 
 <!-- Header style definition -->
 <xsl:template match="header">
-<fo:block font-family="Helvetica" language="hu" font-size="6pt" >
+<fo:block font-family="SourceSansPro" language="hu" font-size="6pt" >
 <fo:table  width="100%" text-align="center">
 <fo:table-body >
     <xsl:apply-templates  select="*"/>
@@ -72,10 +72,10 @@
 
 <!-- Body style definition -->
 <xsl:template match="body">
-    <fo:block font-family="Helvetica" language="hu" font-size="8pt">
+    <fo:block font-family="SourceSansPro" language="hu" font-size="8pt">
             <fo:table  width="100%">
                 <fo:table-header 
-                    font-family="Helvetica" language="hu" 
+                    font-family="SourceSansPro" language="hu" 
                     font-weight="bold"
                     font-size="6pt" 
                     border-bottom-style="solid" 
@@ -176,7 +176,7 @@
 
     <!-- footer style definition -->
 <xsl:template match="footer">
-    <fo:block font-family="Helvetica" language="hu" font-size="8pt">
+    <fo:block font-family="SourceSansPro" language="hu" font-size="8pt">
             <fo:table  width="100%">
                 <fo:table-body border-top-style="double" border-top-width="4pt">
                     <xsl:apply-templates />

@@ -10,13 +10,39 @@ import java.nio.charset.Charset;
 import java.nio.file.Paths;
 
 import com.google.common.io.Files;
+import com.inspirationlogical.receipt.corelib.exception.FOPCfgXMLFormatException;
+import com.inspirationlogical.receipt.corelib.exception.FOPCfgXMLNotFoundException;
+import com.inspirationlogical.receipt.corelib.exception.FOPConfigurationErrorException;
+import com.inspirationlogical.receipt.corelib.exception.ReceiptXSLTNotFoundException;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.fop.apps.*;
+import org.apache.xml.utils.URI;
+import org.xml.sax.SAXException;
 
 /**
  * Created by Ferenc on 2017. 03. 11..
  */
 public class ReceiptFormatterEpsonTMT20II implements ReceiptFormatter {
+    private static FopFactory fopFactory;
+    static {
+        DefaultConfigurationBuilder cfgBuilder = new DefaultConfigurationBuilder();
+        String cfgFilePath = Resources.CONFIG.getString("FopConfigDir") + File.separator + Resources.CONFIG.getString("FopConfigFile");
+        Configuration cfg;
+        try {
+            cfg = cfgBuilder.buildFromFile(new File(cfgFilePath));
+        } catch (SAXException e) {
+            throw new FOPCfgXMLFormatException(e);
+        } catch (IOException e) {
+            throw new FOPCfgXMLNotFoundException(e);
+        } catch (ConfigurationException e) {
+            throw new FOPConfigurationErrorException(e);
+        }
+        FopFactoryBuilder fopFactoryBuilder = new FopFactoryBuilder(Paths.get(Resources.CONFIG.getString("FopConfigDir")).toUri()).setConfiguration(cfg);
+        fopFactory = fopFactoryBuilder.build();
+    }
 
     private String xslTemplate;
     ReceiptFormatterEpsonTMT20II(){
@@ -24,8 +50,8 @@ public class ReceiptFormatterEpsonTMT20II implements ReceiptFormatter {
             xslTemplate = Files.toString(
                     Paths.get(Resources.CONFIG.getString("ReceiptXSLTPath")).toFile(),
                     Charset.defaultCharset());
-        }catch (Exception e){
-            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new ReceiptXSLTNotFoundException(Resources.CONFIG.getString("ReceiptXSLTPath"));
         }
     }
     /**
@@ -35,10 +61,10 @@ public class ReceiptFormatterEpsonTMT20II implements ReceiptFormatter {
     public void convertToPDF(OutputStream out, InputStream xml) {
         InputStream xsl = new ByteArrayInputStream(xslTemplate.getBytes(Charset.defaultCharset()));
         StreamSource xmlSource = new StreamSource(xml);
-        // create an instance of fop factory
-        FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
+
         // a user agent is needed for transformation
         FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
+
         try {
             // Construct fop with desired output format
             Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);

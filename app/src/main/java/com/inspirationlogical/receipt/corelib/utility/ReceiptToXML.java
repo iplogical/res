@@ -61,7 +61,7 @@ public class ReceiptToXML {
         //TODO: add disclaimer in restaurant???
         footer.setDisclaimer(Resources.PRINTER.getString("Disclaimer"));
         //TODO: get active note from Entity and set only if present
-        footer.setNote("Jovo het csutortokon Happy Hours egesz nap!");
+        footer.setNote("Árvíztűrő tükörfúrógép!");
         footer.setGreet(Resources.PRINTER.getString("Greet"));
         GregorianCalendar gc = new GregorianCalendar();
         gc.setTimeInMillis(receiptAdapter.getAdaptee().getClosureTime().getTimeInMillis());
