@@ -1,18 +1,26 @@
 package com.inspirationlogical.receipt.corelib.service;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
+import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.view.*;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
+import com.inspirationlogical.receipt.corelib.model.view.RestaurantViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
+import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
+
 import javafx.geometry.Point2D;
 
-import javax.persistence.EntityManager;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
+;
 
 public class RestaurantServicesImpl extends AbstractServices implements RestaurantServices {
 
@@ -67,6 +75,11 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     @Override
     public void moveTable(TableView tableView, Point2D position) {
         ((TableViewImpl)tableView).getAdapter().moveTable(position);
+    }
+
+    @Override
+    public void deleteTable(TableView tableView) {
+        ((TableViewImpl)tableView).getAdapter().deleteTable();
     }
 
     @Override

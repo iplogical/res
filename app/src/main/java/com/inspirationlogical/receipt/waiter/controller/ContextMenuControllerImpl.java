@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -38,6 +39,8 @@ public class ContextMenuControllerImpl implements ContextMenuController {
 
     private RestaurantController restaurantController;
 
+    private Node source;
+
     @Inject
     public ContextMenuControllerImpl(RestaurantController restaurantController) {
         this.restaurantController = restaurantController;
@@ -46,6 +49,11 @@ public class ContextMenuControllerImpl implements ContextMenuController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addDragAndDrop(view);
+    }
+
+    @Override
+    public void setSourceNode(Node node) {
+        this.source = node;
     }
 
     @FXML
@@ -61,6 +69,7 @@ public class ContextMenuControllerImpl implements ContextMenuController {
 
     @FXML
     public void onDeleteTable(MouseEvent event) {
+        restaurantController.deleteTable(source);
         hidePopup();
     }
 

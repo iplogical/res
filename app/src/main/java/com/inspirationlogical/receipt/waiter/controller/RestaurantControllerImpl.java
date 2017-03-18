@@ -7,7 +7,6 @@ import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations
 import static com.inspirationlogical.receipt.waiter.controller.AddTableFormControllerImpl.ADD_TABLE_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.ContextMenuControllerImpl.CONTEXT_MENU_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableControllerImpl.TABLE_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.setEnableControl;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.getNodePosition;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.hideNode;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.moveNode;
@@ -28,6 +27,9 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
+import com.inspirationlogical.receipt.waiter.exception.ViewNotFoundException;
+import com.inspirationlogical.receipt.waiter.view.DragAndDropHandler;
+import com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -116,7 +118,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         initAddTableForm();
         initRestaurant();
         initTables();
-        setEnableControl(configuration);
+        DragAndDropHandler.setEnableControl(configuration);
     }
 
     private void initRestaurant() {
@@ -131,6 +133,8 @@ public class RestaurantControllerImpl implements RestaurantController {
     private void initContextMenu() {
         contextMenu = (VBox) loadViewHidden(CONTEXT_MENU_VIEW_PATH, contextMenuController);
         tables.getChildren().add(contextMenu);
+
+        PressAndHoldHandler.setController(contextMenuController);
 
         addPressAndHold(tables, contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
         addPressAndHold(virtual, contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
@@ -160,6 +164,17 @@ public class RestaurantControllerImpl implements RestaurantController {
 
         hideNode(addTableForm);
         drawTable(tableView);
+    }
+
+    @Override
+    public void deleteTable(Node node) {
+        TableView tableView = tableControllers
+                .stream()
+                .filter(tableController -> tableController.getView().equals(node))
+                .findFirst()
+                .orElseThrow(() -> new ViewNotFoundException("Table view could not be found")).getViewData();
+        System.out.println("Delete table " + tableView.getTableNumber());
+        restaurantServices.deleteTable(tableView);
     }
 
     private void drawTable(TableView tableView) {

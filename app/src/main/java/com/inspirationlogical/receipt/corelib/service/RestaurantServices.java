@@ -1,13 +1,14 @@
 package com.inspirationlogical.receipt.corelib.service;
 
+import java.util.List;
+
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
-import javafx.geometry.Point2D;
 
-import java.util.List;
+import javafx.geometry.Point2D;
 
 public interface RestaurantServices {
     TableBuilder tableBuilder();
@@ -16,22 +17,24 @@ public interface RestaurantServices {
 
     List<TableView> getTables(RestaurantView restaurant);
 
-    void setTableName(TableView table, String name);
+    void setTableName(TableView tableView, String name);
 
-    void setTableCapacity(TableView table, int capacity);
+    void setTableCapacity(TableView tableView, int capacity);
 
-    void addTableNote(TableView table, String note);
+    void addTableNote(TableView tableView, String note);
 
-    void displayTable(TableView table);
+    void displayTable(TableView tableView);
 
-    void hideTable(TableView table);
+    void hideTable(TableView tableView);
 
-    void moveTable(TableView table, Point2D position);
+    void moveTable(TableView tableView, Point2D position);
+
+    void deleteTable(TableView tableView);
 
     TableView addTable(RestaurantView restaurant, TableType type, int tableNumber);
 
     TableView addTable(RestaurantView restaurant, TableBuilder builder);
 
-    ReceiptView getActiveReceipt(TableView table);
+    ReceiptView getActiveReceipt(TableView tableView);
 
 }

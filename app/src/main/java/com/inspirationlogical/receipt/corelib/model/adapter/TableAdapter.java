@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -9,11 +11,9 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
+
 import javafx.geometry.Point2D;
 import lombok.NonNull;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class TableAdapter extends AbstractAdapter<Table>
 {
@@ -74,6 +74,10 @@ public class TableAdapter extends AbstractAdapter<Table>
             adaptee.setCoordinateX((int)position.getX());
             adaptee.setCoordinateY((int)position.getY());
         });
+    }
+
+    public void deleteTable() {
+        // todo: implement
     }
 
     public void openTable() {

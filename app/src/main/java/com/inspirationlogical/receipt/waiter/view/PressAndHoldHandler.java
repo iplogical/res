@@ -5,6 +5,7 @@ import static com.inspirationlogical.receipt.waiter.view.NodeUtility.hideNode;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showNode;
 
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
+import com.inspirationlogical.receipt.waiter.controller.ContextMenuController;
 
 import javafx.animation.PauseTransition;
 import javafx.geometry.Point2D;
@@ -14,17 +15,26 @@ import javafx.util.Duration;
 
 public class PressAndHoldHandler {
 
+    private static ContextMenuController controller;
+
+    public static void setController(ContextMenuController controller) {
+        PressAndHoldHandler.controller = controller;
+    }
+
     public static void addPressAndHold(Node node, Node popup, Duration holdTime) {
-        Wrapper<Point2D> positionWrapper = new Wrapper<>();
+        Wrapper<MouseEvent> mouseEventWrapper = new Wrapper<>();
         PauseTransition holdTimer = new PauseTransition(holdTime);
 
         holdTimer.setOnFinished(event -> {
-            Point2D position = positionWrapper.getContent().add(getNodePosition(node));
+            MouseEvent mouseEvent = mouseEventWrapper.getContent();
+            Point2D position = new Point2D(mouseEvent.getX(), mouseEvent.getY()).add(getNodePosition(node));
+            controller.setSourceNode((Node) mouseEvent.getSource());
             showNode(popup, position);
         });
 
-        node.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            positionWrapper.setContent(new Point2D(event.getX(), event.getY()));
+        node.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
+            mouseEvent.consume();
+            mouseEventWrapper.setContent(mouseEvent);
             holdTimer.playFromStart();
             hideNode(popup);
         });
