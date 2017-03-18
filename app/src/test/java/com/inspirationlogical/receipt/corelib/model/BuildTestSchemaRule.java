@@ -31,8 +31,7 @@ import lombok.Getter;
 
 public class BuildTestSchemaRule implements TestRule {
 
-    private static @Getter EntityManager entityManager = EntityManagerProvider.getEntityManager("TestPersistance");
-
+    private @Getter EntityManager entityManager;
     private @Getter Product productOne;
     private @Getter Product productTwo;
     private @Getter Product productThree;
@@ -112,10 +111,15 @@ public class BuildTestSchemaRule implements TestRule {
 
     public BuildTestSchemaRule(){
         this.testType = TestType.DROP_AND_CREATE;
+        entityManager = EntityManagerProvider.getEntityManager("TestPersistance");
     }
-
+    public BuildTestSchemaRule(String persistenceName) {
+        this.testType = TestType.DROP_AND_CREATE;
+        entityManager = EntityManagerProvider.getEntityManager(persistenceName);
+    }
     public BuildTestSchemaRule(TestType testType){
         this.testType = testType;
+        entityManager = EntityManagerProvider.getEntityManager("TestPersistance");
     }
 
     private void dropAll(){
