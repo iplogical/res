@@ -30,7 +30,7 @@ public class StockTest {
 
     @Test(expected = RollbackException.class)
     public void stockWithoutOwner() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getStockOne().setOwner(null));
 
     }

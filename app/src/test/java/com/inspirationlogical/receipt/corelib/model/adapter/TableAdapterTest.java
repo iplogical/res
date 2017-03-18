@@ -2,7 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import static org.junit.Assert.*;
 
-import com.inspirationlogical.receipt.corelib.exception.TableAlreadyOpenException;
+import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import javafx.geometry.Point2D;
 import org.junit.Before;
 import org.junit.Rule;
@@ -20,8 +20,8 @@ public class TableAdapterTest {
 
     @Before
     public void persistObjects() {
-        tableAdapter = new TableAdapter(schema.getTableNormal(), schema.getEntityManager());
-        closedTableAdapter = new TableAdapter(schema.getTableNormalClosed(), schema.getEntityManager());
+        tableAdapter = new TableAdapter(schema.getTableNormal());
+        closedTableAdapter = new TableAdapter(schema.getTableNormalClosed());
     }
 
     @Test
@@ -74,7 +74,7 @@ public class TableAdapterTest {
                 tableAdapter.getAdaptee().getNumber()).getAdaptee().getCoordinateY());
     }
 
-    @Test(expected = TableAlreadyOpenException.class)
+    @Test(expected = IllegalTableStateException.class)
     public void testOpenTableAlreadyOpen() {
         tableAdapter.openTable();
     }

@@ -22,7 +22,7 @@ public class PrinterTest {
 
     @Before
     public void closeReceiptSaleOneAndGeneratePDF(){
-        ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne(), schema.getEntityManager());
+        ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne());
         ra.close(Arrays.asList());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         new ReceiptFormatterEpsonTMT20II().convertToPDF(out,

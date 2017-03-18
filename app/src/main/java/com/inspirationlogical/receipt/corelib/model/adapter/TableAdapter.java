@@ -3,7 +3,7 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import com.inspirationlogical.receipt.corelib.exception.TableAlreadyOpenException;
+import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
 public class TableAdapter extends AbstractAdapter<Table>
 {
 
-    public TableAdapter(@NonNull Table adaptee,@NonNull EntityManager manager) {
-        super(adaptee, manager);
+    public TableAdapter(@NonNull Table adaptee) {
+        super(adaptee);
     }
 
     public static TableAdapter getTableByNumber(EntityManager manager, int number) {
         @SuppressWarnings("unchecked")
         List<Table> table = getTablesByNumber(manager, number);
-        return new TableAdapter(table.get(0), manager);
+        return new TableAdapter(table.get(0));
     }
 
     private static List<Table> getTablesByNumber(EntityManager manager, int number) {
@@ -35,11 +35,11 @@ public class TableAdapter extends AbstractAdapter<Table>
     }
 
     public ReceiptAdapter getActiveReceipt() {
-        GuardedTransaction.Run(manager, () -> manager.refresh(adaptee));
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
         List<ReceiptAdapter> adapters = adaptee.getReceipt()
                 .stream()
                 .filter(elem -> elem.getStatus().equals(ReceiptStatus.OPEN))
-                .map(elem -> new ReceiptAdapter(elem, manager))
+                .map(elem -> new ReceiptAdapter(elem))
                 .collect(Collectors.toList());
         if(adapters.size() == 0) {
             return null;
@@ -50,40 +50,49 @@ public class TableAdapter extends AbstractAdapter<Table>
     }
 
     public void setTableName(String name) {
-        GuardedTransaction.Run(manager,() -> adaptee.setName(name));
+        GuardedTransaction.Run(() -> adaptee.setName(name));
     }
 
     public void setCapacity(int capacity) {
-        GuardedTransaction.Run(manager,() -> adaptee.setCapacity(capacity));
+        GuardedTransaction.Run(() -> adaptee.setCapacity(capacity));
     }
 
     public void setNote(String note) {
-        GuardedTransaction.Run(manager,() -> adaptee.setNote(note));
+        GuardedTransaction.Run(() -> adaptee.setNote(note));
     }
 
     public void displayTable() {
-        GuardedTransaction.Run(manager,() -> adaptee.setVisibility(true));
+        GuardedTransaction.Run(() -> adaptee.setVisibility(true));
     }
 
     public void hideTable() {
-        GuardedTransaction.Run(manager,() -> adaptee.setVisibility(false));
+        GuardedTransaction.Run(() -> adaptee.setVisibility(false));
     }
 
     public void moveTable(Point2D position) {
-        GuardedTransaction.Run(manager,() -> {
+        GuardedTransaction.Run(() -> {
             adaptee.setCoordinateX((int)position.getX());
             adaptee.setCoordinateY((int)position.getY());
         });
     }
 
     public void openTable() {
-        GuardedTransaction.Run(manager,() -> manager.refresh(adaptee));
-        if(isTableOpen()) {
-            throw new TableAlreadyOpenException(adaptee.getNumber());
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            if(isTableOpen()) {
+                throw new IllegalTableStateException("Open table for an open table. Table number: " + adaptee.getNumber());
+            }
+            ReceiptAdapter receiptAdapter = ReceiptAdapter.receiptAdapterFactory(ReceiptType.SALE);
+            bindReceiptToTable(receiptAdapter);
+            // FIXME: persist new Receipt?
+        });
+    }
+
+    public void payTable(PaymentParams paymentParams) {
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
+        if(!isTableOpen()) {
+            throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
         }
-        ReceiptAdapter receiptAdapter = ReceiptAdapter.receiptAdapterFactory(manager, ReceiptType.SALE);
-        bindReceiptToTable(receiptAdapter);
-        GuardedTransaction.Run(manager,() -> manager.persist(adaptee));
+
     }
 
     private void bindReceiptToTable(ReceiptAdapter receiptAdapter) {

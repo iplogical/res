@@ -21,7 +21,7 @@ public class ReceiptPrinterTest {
 
     @Before
     public void persistObjects() {
-        receipt = new ReceiptAdapter(schema.getReceiptSaleOne(), schema.getEntityManager());
+        receipt = new ReceiptAdapter(schema.getReceiptSaleOne());
     }
 
 

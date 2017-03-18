@@ -5,7 +5,6 @@ import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.List;
 
@@ -23,44 +22,44 @@ public class ReceiptRecordTest {
 
     @Test(expected = RollbackException.class)
     public void testNoType() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
             schema.getReceiptRecordSaleOne().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testNoOwner() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
             schema.getReceiptRecordSaleOne().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testNoName() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
             schema.getReceiptRecordSaleOne().setName(""));
     }
 
     @Test(expected = RollbackException.class)
     public void testNoProduct() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
             schema.getReceiptRecordSaleOne().setProduct(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testOtherReceiptRecordHasProduct() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
             schema.getReceiptRecordOther().setProduct(schema.getProductOne()));
     }
 
     @Test(expected = RollbackException.class)
     public void testAbsoluteAndPercentDiscountSimultaneously() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
+        GuardedTransaction.Run(()->{
             schema.getReceiptRecordSaleOne().setDiscountAbsolute(1000);
             schema.getReceiptRecordSaleOne().setDiscountPercent(10D);});
     }
 
     @Test(expected = RollbackException.class)
     public void testPercentDiscountMoreThanHundred() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
             schema.getReceiptRecordSaleOne().setDiscountPercent(150D));
     }
 

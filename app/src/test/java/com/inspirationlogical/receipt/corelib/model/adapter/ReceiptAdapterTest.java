@@ -1,14 +1,11 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import javax.persistence.EntityManager;
 
 import static org.junit.Assert.*;
 
@@ -26,8 +23,8 @@ public class ReceiptAdapterTest {
 
     @Before
     public void createAdapters() {
-        receiptAdapter = new ReceiptAdapter(schema.getReceiptSaleOne(), schema.getEntityManager());
-        productAdapter = new ProductAdapter(schema.getProductOne(), schema.getEntityManager());
+        receiptAdapter = new ReceiptAdapter(schema.getReceiptSaleOne());
+        productAdapter = new ProductAdapter(schema.getProductOne());
         paymentParams = PaymentParams.builder()
                 .receiptRecordType(ReceiptRecordType.HERE)
                 .discountAbsolute(0)

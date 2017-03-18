@@ -32,7 +32,7 @@ public class RetailServicesImpl extends AbstractServices implements RetailServic
 
     @Override
     public void payTable(TableView tableView, PaymentParams paymentParams) {
-
+        ((TableViewImpl)tableView).getAdapter().payTable(paymentParams);
     }
 
     @Override

@@ -5,6 +5,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import javax.persistence.EntityManager;
 
+import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -30,7 +31,8 @@ import lombok.Getter;
 
 public class BuildTestSchemaRule implements TestRule {
 
-    private @Getter EntityManager entityManager;
+    private static @Getter EntityManager entityManager = EntityManagerProvider.getEntityManager("TestPersistance");
+
     private @Getter Product productOne;
     private @Getter Product productTwo;
     private @Getter Product productThree;
@@ -109,23 +111,16 @@ public class BuildTestSchemaRule implements TestRule {
     private TestType testType;
 
     public BuildTestSchemaRule(){
-        this.entityManager = EntityManagerFactoryHolder.get().createEntityManager();
         this.testType = TestType.DROP_AND_CREATE;
     }
 
     public BuildTestSchemaRule(TestType testType){
-        this.entityManager = EntityManagerFactoryHolder.get().createEntityManager();
         this.testType = testType;
-    }
-
-    public BuildTestSchemaRule(EntityManager entityManager){
-        this.entityManager = entityManager;
-        this.testType = TestType.DROP_AND_CREATE;
     }
 
     private void dropAll(){
 
-        GuardedTransaction.Run(entityManager,() -> {
+        GuardedTransaction.Run(() -> {
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.PriceModifier").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Recipe").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Stock").executeUpdate();
@@ -141,6 +136,7 @@ public class BuildTestSchemaRule implements TestRule {
             entityManager.createNativeQuery("DELETE FROM PRODUCT_CATEGORY_RELATIONS").executeUpdate();
             entityManager.createNativeQuery("UPDATE hibernate_sequence SET next_val=1").executeUpdate();
         });
+        entityManager.clear();
     }
 
     public void buildTestSchema() {
@@ -182,7 +178,8 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void persistObjects() {
-        GuardedTransaction.Run(entityManager, () -> entityManager.persist(restaurant));
+        GuardedTransaction.Run(() -> {
+            entityManager.persist(restaurant);});
     }
 
     private void buildProducts() {

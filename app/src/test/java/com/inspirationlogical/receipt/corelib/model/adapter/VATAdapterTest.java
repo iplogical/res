@@ -19,13 +19,13 @@ public class VATAdapterTest {
 
     @Test
     public void testGetVatByReceiptRecordTypeHere() {
-        VATAdapter vatAdapter = VATAdapter.getVatByName(schema.getEntityManager(), ReceiptRecordType.HERE, VATStatus.VALID);
+        VATAdapter vatAdapter = VATAdapter.getVatByName(ReceiptRecordType.HERE, VATStatus.VALID);
         assertEquals(VATName.REDUCED, vatAdapter.getAdaptee().getName());
     }
 
     @Test
     public void testGetVatByReceiptRecordTypeTakeAway() {
-        VATAdapter vatAdapter = VATAdapter.getVatByName(schema.getEntityManager(), ReceiptRecordType.TAKE_AWAY, VATStatus.VALID);
+        VATAdapter vatAdapter = VATAdapter.getVatByName(ReceiptRecordType.TAKE_AWAY, VATStatus.VALID);
         assertEquals(VATName.NORMAL, vatAdapter.getAdaptee().getName());
     }
 }

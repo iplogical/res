@@ -5,7 +5,6 @@ import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.List;
 
@@ -23,19 +22,19 @@ public class ReservationTest {
 
     @Test(expected = RollbackException.class)
     public void invalidTableNumber() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getReservationOne().setTableNumber(0));
     }
 
     @Test(expected = RollbackException.class)
     public void noStartTime() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getReservationOne().setStartTime(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noName() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getReservationOne().setName(null));
     }
 

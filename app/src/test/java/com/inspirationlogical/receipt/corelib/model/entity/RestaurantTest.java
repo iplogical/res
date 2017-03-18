@@ -28,43 +28,43 @@ public class RestaurantTest {
 
     @Test(expected = RollbackException.class)
     public void restaurantNameIsNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getRestaurant().setRestaurantName(null));
     }
 
     @Test(expected = RollbackException.class)
     public void companyNameIsNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getRestaurant().setCompanyName(null));
     }
 
     @Test(expected = RollbackException.class)
     public void companyTaxPayerIdNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getRestaurant().setCompanyTaxPayerId(null));
     }
 
     @Test(expected = RollbackException.class)
     public void restaurantAddressIsNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getRestaurant().setRestaurantAddress(null));
     }
 
     @Test(expected = RollbackException.class)
     public void companyAddressIsNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getRestaurant().setCompanyAddress(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noPurchaseTable() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
             schema.getTablePurchase().setType(TableType.NORMAL));
     }
 
     @Test(expected = RollbackException.class)
     public void toManyDisposalTables() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getTableNormal().setType(TableType.DISPOSAL));
     }
 

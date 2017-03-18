@@ -5,7 +5,6 @@ import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class VATSerieTest {
 
     @Test(expected = RollbackException.class)
     public void noStatus() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->schema.getVatSerie().setStatus(null));
+        GuardedTransaction.Run(()->schema.getVatSerie().setStatus(null));
     }
 
     private List<VATSerie> getVATSerie() {

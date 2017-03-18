@@ -22,17 +22,17 @@ public class VATTest {
 
     @Test(expected = RollbackException.class)
     public void noSerie() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->schema.getVatOne().setSerie(null));
+        GuardedTransaction.Run(()->schema.getVatOne().setSerie(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noName() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->schema.getVatOne().setName(null));
+        GuardedTransaction.Run(()->schema.getVatOne().setName(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noStatus() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->schema.getVatOne().setStatus(null));
+        GuardedTransaction.Run(()->schema.getVatOne().setStatus(null));
     }
 
     private void assertListSize() {

@@ -19,20 +19,20 @@ public class RestaurantAdapterTest {
 
     @Test
     public void testRestaurantHasDisplayableTables() {
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant(), schema.getEntityManager());
+        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant());
         assertEquals(3, restaurantAdapter.getDisplayableTables().size());
     }
 
     @Test
     public void testAddTable() {
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant(), schema.getEntityManager());
+        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant());
         restaurantAdapter.addTable(TableType.NORMAL, 4);
         assertEquals(4, restaurantAdapter.getDisplayableTables().size());
     }
 
     @Test
     public void testAddTableBuilder() {
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant(), schema.getEntityManager());
+        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant());
         restaurantAdapter.addTable(new TableViewBuilder(TableType.NORMAL, 4)
                 .name("Ittas Juci")
                 .position(new Point2D(20, 20))

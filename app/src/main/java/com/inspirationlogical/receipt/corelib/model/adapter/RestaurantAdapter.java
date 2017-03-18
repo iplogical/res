@@ -22,53 +22,57 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         if (restaurantList.isEmpty()) {
             throw new RestaurantNotFoundException();
         }
-        return new RestaurantAdapter(restaurantList.get(0), manager);
+        return new RestaurantAdapter(restaurantList.get(0));
     }
 
-    public RestaurantAdapter(Restaurant adaptee, EntityManager manager) {
-        super(adaptee, manager);
+    public RestaurantAdapter(Restaurant adaptee) {
+        super(adaptee);
     }
 
 
     public List<TableAdapter> getDisplayableTables() {
-        GuardedTransaction.Run(manager, () -> manager.refresh(adaptee));
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
         Collection<Table> tables = adaptee.getTable();
         return tables.stream()
                 .filter(table -> table.getType().equals(TableType.NORMAL) ||
                         table.getType().equals(TableType.VIRTUAL))
-                .map(table -> new TableAdapter(table, manager))
+                .map(table -> new TableAdapter(table))
                 .collect(Collectors.toList());
     }
 
     public TableAdapter addTable(TableType type, int tableNumber) {
-        GuardedTransaction.Run(manager, () -> manager.refresh(adaptee));
-        Table newTable = Table.builder()
-                .type(type)
-                .number(tableNumber)
-                .visibility(true)
-                .build();
-        adaptee.getTable().add(newTable);
-        newTable.setOwner(adaptee);
-        GuardedTransaction.Run(manager, () -> manager.persist(adaptee));
-        return new TableAdapter(newTable, manager);
+        final Table[] newTable = new Table[1];
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            newTable[0] = Table.builder()
+                    .type(type)
+                    .number(tableNumber)
+                    .visibility(true)
+                    .build();
+            adaptee.getTable().add(newTable[0]);
+            newTable[0].setOwner(adaptee);
+            // FIXME: persist new Table?
+        });
+        return new TableAdapter(newTable[0]);
     }
 
     public TableAdapter addTable(TableViewBuilder builder) {
-        GuardedTransaction.Run(manager, () -> manager.refresh(adaptee));
-        Table newTable = Table.builder()
-                .type(builder.getType())
-                .number(builder.getTableNumber())
-                .name(builder.getName())
-                .coordinateX((int)builder.getPosition().getX())
-                .coordinateY((int)builder.getPosition().getY())
-                .guestNumber(builder.getGuestNumber())
-                .capacity(builder.getTableCapacity())
-                .note(builder.getNote())
-                .visibility(builder.isVisibility())
-                .build();
-        adaptee.getTable().add(newTable);
-        newTable.setOwner(adaptee);
-        GuardedTransaction.Run(manager, () -> manager.persist(adaptee));
-        return new TableAdapter(newTable, manager);
+        final Table[] newTable = new Table[1];
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            newTable[0] = Table.builder()
+                    .type(builder.getType())
+                    .number(builder.getTableNumber())
+                    .name(builder.getName())
+                    .coordinateX((int)builder.getPosition().getX())
+                    .coordinateY((int)builder.getPosition().getY())
+                    .guestNumber(builder.getGuestNumber())
+                    .capacity(builder.getTableCapacity())
+                    .note(builder.getNote())
+                    .visibility(builder.isVisibility())
+                    .build();
+            adaptee.getTable().add(newTable[0]);
+            newTable[0].setOwner(adaptee);
+            // FIXME: persist new Table?
+        });
+        return new TableAdapter(newTable[0]);
     }
 }

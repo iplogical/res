@@ -3,15 +3,11 @@ package com.inspirationlogical.receipt.corelib.model.view;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import javax.persistence.EntityManager;
-
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
-import com.inspirationlogical.receipt.corelib.model.EntityManagerFactoryRule;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
@@ -28,7 +24,7 @@ public class TableViewTest {
 
     @Before
     public void createTableView() {
-        tableView = new TableViewImpl(new TableAdapter(schema.getTableNormal(), schema.getEntityManager()));
+        tableView = new TableViewImpl(new TableAdapter(schema.getTableNormal()));
     }
 
     @Test

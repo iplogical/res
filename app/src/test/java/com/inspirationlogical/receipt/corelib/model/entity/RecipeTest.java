@@ -6,7 +6,6 @@ import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.List;
 
@@ -29,17 +28,17 @@ public class RecipeTest {
 
     @Test(expected = RollbackException.class)
     public void recipeWithoutOwner() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->schema.getElementThree().setOwner(null));
+        GuardedTransaction.Run(()->schema.getElementThree().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void recipeWithoutElement() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->schema.getElementThree().setElement(null));
+        GuardedTransaction.Run(()->schema.getElementThree().setElement(null));
     }
 
     @Test(expected = RollbackException.class)
     public void recipeWithoutQuantityUnit() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->schema.getElementThree().setQuantityUnit(null));
+        GuardedTransaction.Run(()->schema.getElementThree().setQuantityUnit(null));
     }
 
     private List<Recipe> getRecipes() {

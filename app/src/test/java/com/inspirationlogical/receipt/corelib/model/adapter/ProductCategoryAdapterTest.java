@@ -17,14 +17,14 @@ public class ProductCategoryAdapterTest {
 
     @Test
     public void testLeafNumberOfProductsUnderLeafOne() {
-        ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne(), schema.getEntityManager());
+        ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne());
         List<ProductAdapter> products = leafOne.getAllProducts();
         assertEquals(2, products.size());
     }
 
     @Test
     public void testPrductNamesUnderLeafOne() {
-        ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne(), schema.getEntityManager());
+        ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne());
         List<ProductAdapter> products = leafOne.getAllProducts();
         List<ProductAdapter> list_product_one =  products.stream().filter((elem) -> (elem.getAdaptee().getLongName().equals("product"))).collect(Collectors.toList());
         List<ProductAdapter> list_product_two =  products.stream().filter((elem) -> (elem.getAdaptee().getLongName().equals("productTwo"))).collect(Collectors.toList());

@@ -6,7 +6,6 @@ import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,31 +33,31 @@ public class TableTest {
 
     @Test(expected = RollbackException.class)
     public void notUniqueTableNumber() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getTableVirtual().setNumber(schema.getTableNormal().getNumber()));
     }
 
     @Test(expected = RollbackException.class)
     public void TableWithoutNumber() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getTableVirtual().setNumber(0));
     }
 
     @Test(expected = RollbackException.class)
     public void tableWithoutOwner() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getTableOther().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void tableWithoutType() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getTableOther().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void tableWithMoreOpenReceipts() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getReceiptSaleTwo().setStatus(ReceiptStatus.OPEN));
     }
 

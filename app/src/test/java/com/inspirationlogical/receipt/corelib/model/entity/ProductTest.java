@@ -5,7 +5,6 @@ import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.RollbackException;
 import java.util.List;
@@ -25,7 +24,7 @@ public class ProductTest {
 
     @Test(expected = PersistenceException.class)
     public void testProductCategoryConstriant() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
+        GuardedTransaction.Run(()->{
             schema.getProductOne().getCategory().setProduct(null);
             schema.getProductOne().setCategory(null);
         });
@@ -33,49 +32,49 @@ public class ProductTest {
 
     @Test(expected = RollbackException.class)
     public void testShortNameTooLong() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getProductOne().setShortName("ExtremelyLongShortNameExceedsItsLimit"));
     }
 
     @Test(expected = RollbackException.class)
     public void testShortNameEmpty() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getProductOne().setShortName(""));
     }
 
     @Test(expected = RollbackException.class)
     public void testLongNameEmpty() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getProductOne().setLongName(""));
     }
 
     @Test(expected = RollbackException.class)
     public void testQualityUnitNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getProductOne().setQuantityUnit(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testEtalonQuantityNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getProductOne().setEtalonQuantity(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testProductTypeNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getProductOne().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testProductStatusNull() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getProductOne().setStatus(null));
     }
 
     @Test(expected = RollbackException.class)
     public void productWithoutCategory() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
+        GuardedTransaction.Run(()->{
             schema.getProductTwo().getCategory().setProduct(null);
             schema.getProductTwo().setCategory(null);
         });
@@ -83,7 +82,7 @@ public class ProductTest {
 
     @Test(expected = RollbackException.class)
     public void productWithLeafCategory() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->{
+        GuardedTransaction.Run(()->{
             schema.getLeafOne().setProduct(schema.getProductTwo());
             schema.getProductTwo().setCategory(schema.getLeafOne());
         });

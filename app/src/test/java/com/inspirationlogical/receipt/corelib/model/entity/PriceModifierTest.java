@@ -5,7 +5,6 @@ import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.List;
 
@@ -23,49 +22,49 @@ public class PriceModifierTest {
 
     @Test(expected = RollbackException.class)
     public void noOwner() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getPriceModifierOne().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noName() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getPriceModifierOne().setName(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noType() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getPriceModifierOne().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noStatus() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getPriceModifierOne().setStatus(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noRepeatPeriod() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getPriceModifierOne().setPeriod(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noStartTime() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getPriceModifierOne().setStartTime(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noEndTime() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getPriceModifierOne().setEndTime(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noLimitType() {
-        GuardedTransaction.Run(schema.getEntityManager(),()->
+        GuardedTransaction.Run(()->
                 schema.getPriceModifierOne().setLimitType(null));
     }
 
