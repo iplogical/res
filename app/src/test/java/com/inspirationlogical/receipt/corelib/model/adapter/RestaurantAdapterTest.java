@@ -1,8 +1,10 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.view.TableViewBuilder;
+import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import javafx.geometry.Point2D;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,11 +35,14 @@ public class RestaurantAdapterTest {
     @Test
     public void testAddTableBuilder() {
         RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant());
-        restaurantAdapter.addTable(new TableViewBuilder(TableType.NORMAL, 4)
+        restaurantAdapter.addTable(Table.builder()
                 .name("Ittas Juci")
-                .position(new Point2D(20, 20))
+                .number(88)
+                .type(TableType.NORMAL)
+                .coordinateX(20)
+                .coordinateY(20)
                 .guestNumber(5)
-                .tableCapacity(5)
+                .capacity(5)
                 .note("Big Chocklate Cake")
                 .visibility(true));
         assertEquals(4, restaurantAdapter.getDisplayableTables().size());

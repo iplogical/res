@@ -4,12 +4,13 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.model.view.TableViewBuilder;
+import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import javafx.geometry.Point2D;
 
 import java.util.List;
 
 public interface RestaurantServices {
+    TableBuilder tableBuilder();
 
     RestaurantView getActiveRestaurant();
 
@@ -29,7 +30,7 @@ public interface RestaurantServices {
 
     TableView addTable(RestaurantView restaurant, TableType type, int tableNumber);
 
-    TableView addTable(RestaurantView restaurant, TableViewBuilder builder);
+    TableView addTable(RestaurantView restaurant, TableBuilder builder);
 
     ReceiptView getActiveReceipt(TableView table);
 

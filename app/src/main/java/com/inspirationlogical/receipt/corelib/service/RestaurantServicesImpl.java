@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.corelib.service;
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import javafx.geometry.Point2D;
@@ -11,12 +12,18 @@ import javax.persistence.EntityManager;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 
 public class RestaurantServicesImpl extends AbstractServices implements RestaurantServices {
 
     @Inject
     public RestaurantServicesImpl(EntityManager manager) {
         super(manager);
+    }
+
+    @Override
+    public TableBuilder tableBuilder() {
+        return Table.builder();
     }
 
     @Override
@@ -69,7 +76,7 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     }
 
     @Override
-    public TableView addTable(RestaurantView restaurant, TableViewBuilder builder) {
+    public TableView addTable(RestaurantView restaurant, TableBuilder builder) {
         RestaurantAdapter restaurantAdapter = ((RestaurantViewImpl)restaurant).getAdapter();
         return new TableViewImpl(restaurantAdapter.addTable(builder));
     }

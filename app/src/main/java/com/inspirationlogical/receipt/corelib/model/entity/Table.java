@@ -31,7 +31,7 @@ public @Data class Table extends AbstractEntity {
     public static final String GET_TEST_TABLES = "Table.GetTestTables";
     public static final String GET_TABLE_BY_NUMBER = "Table.GetTableByNumber";
 
-    @NotNull
+    @NotNull(message = "A table must belong to a restaurant")
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(name = "RESTAURANT_ID")
     private Restaurant owner;
@@ -42,11 +42,11 @@ public @Data class Table extends AbstractEntity {
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     private Collection<Reservation> reservation;
 
-    @NotNull
+    @NotNull(message = "TableType must not be NULL")
     @Enumerated(EnumType.STRING)
     private TableType type;
 
-    @Min(1)
+    @Min(value = 1,message = "Table number must be greater than or equal to 1")
     @Column(unique = true)
     private int number;
 

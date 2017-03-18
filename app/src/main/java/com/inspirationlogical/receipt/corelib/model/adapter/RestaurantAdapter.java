@@ -10,7 +10,6 @@ import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.model.view.TableViewBuilder;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -55,20 +54,10 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         return new TableAdapter(newTable[0]);
     }
 
-    public TableAdapter addTable(TableViewBuilder builder) {
+    public TableAdapter addTable(Table.TableBuilder builder) {
         final Table[] newTable = new Table[1];
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
-            newTable[0] = Table.builder()
-                    .type(builder.getType())
-                    .number(builder.getTableNumber())
-                    .name(builder.getName())
-                    .coordinateX((int)builder.getPosition().getX())
-                    .coordinateY((int)builder.getPosition().getY())
-                    .guestNumber(builder.getGuestNumber())
-                    .capacity(builder.getTableCapacity())
-                    .note(builder.getNote())
-                    .visibility(builder.isVisibility())
-                    .build();
+            newTable[0] = builder.build();
             adaptee.getTable().add(newTable[0]);
             newTable[0].setOwner(adaptee);
             // FIXME: persist new Table?

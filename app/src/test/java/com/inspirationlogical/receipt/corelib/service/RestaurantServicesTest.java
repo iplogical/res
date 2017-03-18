@@ -4,6 +4,7 @@ import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
+import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import javafx.geometry.Point2D;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +47,7 @@ public class RestaurantServicesTest {
     private TableAdapter tableAdapter;
 
     @Mock
-    TableViewBuilder builder;
+    TableBuilder builder;
 
     @Mock
     Point2D position;
