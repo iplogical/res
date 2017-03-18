@@ -2,6 +2,9 @@ package com.inspirationlogical.receipt.corelib.model.listeners;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.utility.*;
+import com.inspirationlogical.receipt.corelib.utility.printing.FilePrinter;
+import com.inspirationlogical.receipt.corelib.utility.printing.FormatterService;
+import com.inspirationlogical.receipt.corelib.utility.printing.PrintService;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,10 +19,15 @@ public class ReceiptPrinter implements ReceiptAdapter.Listener {
         // No-op
     }
 
+    /**
+     * by default prints through printer and also through File Printer
+     * @param receipt to print
+     */
     @Override
     public void onClose(ReceiptAdapter receipt) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ReceiptXMLtoPDF.getDefaultInstance().convertToPDF(out,ReceiptToXML.ConvertToStream(receipt));
-        Printer.getDefaultInstance().print(new ByteArrayInputStream(out.toByteArray(),0,out.size()));
+        FormatterService.create().convertToPDF(out,ReceiptToXML.ConvertToStream(receipt));
+        PrintService.create().print(new ByteArrayInputStream(out.toByteArray(),0,out.size()));
+        new FilePrinter().print(new ByteArrayInputStream(out.toByteArray(),0,out.size()));
     }
 }

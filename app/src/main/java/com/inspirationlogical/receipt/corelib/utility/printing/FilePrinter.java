@@ -1,5 +1,7 @@
-package com.inspirationlogical.receipt.corelib.utility;
+package com.inspirationlogical.receipt.corelib.utility.printing;
 
+import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.printing.Printer;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;

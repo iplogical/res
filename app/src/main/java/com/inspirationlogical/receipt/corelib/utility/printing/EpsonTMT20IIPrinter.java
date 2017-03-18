@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.utility;
+package com.inspirationlogical.receipt.corelib.utility.printing;
 
 import javax.print.*;
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
  * Created by Ferenc on 2017. 03. 11..
  */
 public class EpsonTMT20IIPrinter implements Printer {
-    private  PrintService service;
+    private  javax.print.PrintService service;
     private static final String PRINTER_NAME = "Epson-TM-T20II";
 
     EpsonTMT20IIPrinter(){
-        List<PrintService> service = Arrays.asList(PrintServiceLookup.lookupPrintServices(null,null));
-        List<PrintService> filtered = service.stream()
+        List<javax.print.PrintService> service = Arrays.asList(PrintServiceLookup.lookupPrintServices(null,null));
+        List<javax.print.PrintService> filtered = service.stream()
                 .filter((s) -> s.getName().contains(PRINTER_NAME)).collect(Collectors.toList());
         if(filtered.isEmpty()) {
             throw new RuntimeException("Couldn't find "+PRINTER_NAME+ " printer");

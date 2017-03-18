@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.utility;
+package com.inspirationlogical.receipt.corelib.utility.printing;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
@@ -10,15 +10,16 @@ import java.nio.charset.Charset;
 import java.nio.file.Paths;
 
 import com.google.common.io.Files;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import org.apache.fop.apps.*;
 
 /**
  * Created by Ferenc on 2017. 03. 11..
  */
-public class ReceiptXMLToPDFEpsonTMT20II implements  ReceiptXMLtoPDF {
+public class ReceiptFormatterEpsonTMT20II implements ReceiptFormatter {
 
     private String xslTemplate;
-    ReceiptXMLToPDFEpsonTMT20II(){
+    ReceiptFormatterEpsonTMT20II(){
         try {
             xslTemplate = Files.toString(
                     Paths.get(Resources.CONFIG.getString("ReceiptXSLTPath")).toFile(),

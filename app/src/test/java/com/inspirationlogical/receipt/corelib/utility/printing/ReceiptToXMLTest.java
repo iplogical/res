@@ -1,21 +1,19 @@
-package com.inspirationlogical.receipt.corelib.utility;
+package com.inspirationlogical.receipt.corelib.utility.printing;
 import static org.junit.Assert.*;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
-import com.inspirationlogical.receipt.corelib.model.EntityManagerFactoryRule;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 
-import org.junit.Before;
+import com.inspirationlogical.receipt.corelib.utility.ReceiptToXML;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -47,7 +45,7 @@ public class ReceiptToXMLTest {
             ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne(), schema.getEntityManager());
             ra.close(Arrays.asList());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            new ReceiptXMLToPDFEpsonTMT20II().convertToPDF(new FileOutputStream("test.pdf"),
+            new ReceiptFormatterEpsonTMT20II().convertToPDF(new FileOutputStream("test.pdf"),
                     ReceiptToXML.ConvertToStream(ra)
             );
 
