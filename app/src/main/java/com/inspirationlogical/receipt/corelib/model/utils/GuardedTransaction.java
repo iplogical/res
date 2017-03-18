@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.utils;
 
+import com.inspirationlogical.receipt.corelib.model.entity.AbstractEntity;
+
 import javax.persistence.EntityManager;
 
 /**
@@ -21,12 +23,13 @@ public class GuardedTransaction {
      * @exception Exception in case of an exception the transaction will be rolled back, but the persistence objects
      * are going to get in DETACHED state!
      */
-    public static void Run(EntityManager manager,Functor f) {
+    public static void Run(EntityManager manager,Functor f, Functor before) {
         boolean myTransaction = !manager.getTransaction().isActive();
         if(myTransaction){
             manager.getTransaction().begin();
         }
         try {
+            before.doIt();
             f.doIt();
             if(myTransaction) {
                 manager.getTransaction().commit();
@@ -38,4 +41,14 @@ public class GuardedTransaction {
             throw e;
         }
     }
+
+    public static void RunWithRefresh(EntityManager manager,AbstractEntity e, Functor f) {
+        Run(manager,f,()->{manager.refresh(e);});
+    }
+
+    public static void Run(EntityManager manager, Functor f) {
+        Run(manager,f,()->{});
+    }
+
+
 }
