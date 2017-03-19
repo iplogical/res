@@ -50,7 +50,7 @@
             <content>
               <AnchorPane fx:id="virtualTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                      <children>
-                        <Label fx:id="virtualLab">
+                        <Label fx:id="virtualLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <graphic>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                            </graphic>
