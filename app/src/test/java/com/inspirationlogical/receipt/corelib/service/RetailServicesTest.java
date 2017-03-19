@@ -52,7 +52,7 @@ public class RetailServicesTest {
     }
 
     @Test
-    public void testSetTableName() {
+    public void testOpenTable() {
         //given
         when(tableView.getAdapter()).thenReturn(tableAdapter);
         //when
@@ -72,5 +72,15 @@ public class RetailServicesTest {
         //then
         verify(tableAdapter).getActiveReceipt();
         verify(receiptAdapter).sellProduct(productAdapter, 1, paymentParams);
+    }
+
+    @Test
+    public void testPayTable() {
+        //given
+        when(tableView.getAdapter()).thenReturn(tableAdapter);
+        //when
+        service.payTable(tableView, paymentParams);
+        //then
+        verify(tableAdapter).payTable(paymentParams);
     }
 }

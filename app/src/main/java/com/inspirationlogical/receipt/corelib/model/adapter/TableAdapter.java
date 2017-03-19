@@ -83,15 +83,19 @@ public class TableAdapter extends AbstractAdapter<Table>
             }
             ReceiptAdapter receiptAdapter = ReceiptAdapter.receiptAdapterFactory(ReceiptType.SALE);
             bindReceiptToTable(receiptAdapter);
-            // FIXME: persist new Receipt?
         });
     }
 
     public void payTable(PaymentParams paymentParams) {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
-        if(!isTableOpen()) {
-            throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
-        }
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            if(!isTableOpen()) {
+                throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
+            }
+            getActiveReceipt().close(paymentParams);
+            adaptee.setName("");
+            adaptee.setGuestNumber(0);
+            adaptee.setNote("");
+        });
 
     }
 

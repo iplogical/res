@@ -51,8 +51,8 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                     .purchasePrice(productAdapter.getAdaptee().getPurchasePrice())
                     .salePrice(productAdapter.getAdaptee().getSalePrice())
                     .VAT(VATAdapter.getVatByName(paymentParams.getReceiptRecordType(), VATStatus.VALID).getAdaptee().getVAT())
-                    .discountAbsolute(paymentParams.getDiscountAbsolute())
-                    .discountPercent(paymentParams.getDiscountPercent())
+                    // TODO: calculate discount based on the PriceModifiers.
+                    //.discountPercent(paymentParams.getDiscountPercent())
                     .build();
             record.setOwner(adaptee);
             adaptee.getRecords().add(record);
@@ -67,16 +67,63 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                 .collect(Collectors.toList());
     }
 
-    public void close(Collection<Listener> listeners) {
-        GuardedTransaction.Run(() -> {
+    public void close(PaymentParams paymentParams){
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
             adaptee.setStatus(ReceiptStatus.CLOSED);
+            adaptee.setPaymentMethod(paymentParams.getPaymentMethod());
             adaptee.setClosureTime(Calendar.getInstance());
-            listeners.forEach((l) -> {l.onClose(this);});
+            adaptee.setUserCode(paymentParams.getUserCode());
+            adaptee.setSumPurchaseGrossPrice((int)adaptee.getRecords().stream()
+                    .mapToDouble(ReceiptAdapter::calculatePurchaseGrossPrice).sum());
+            adaptee.setSumPurchaseNetPrice((int)adaptee.getRecords().stream()
+                    .mapToDouble(ReceiptAdapter::calculatePurchaseNetPrice).sum());
+            adaptee.setSumSaleGrossPrice((int)adaptee.getRecords().stream()
+                    .mapToDouble(ReceiptAdapter::calculateSaleGrossPrice).sum());
+            adaptee.setSumSaleNetPrice((int)adaptee.getRecords().stream()
+                    .mapToDouble(ReceiptAdapter::calculateSaleNetPrice).sum());
+            adaptee.setDiscountPercent(calculateDiscount(paymentParams));
+            applyDiscountOnSalePrices();
+            ReceiptAdapterListeners.getAllListeners().forEach((l) -> {l.onClose(this);});
         });
-
     }
 
-    void close(){
-        close(ReceiptAdapterListeners.getAllListeners());
-}
+    private double calculateDiscount(PaymentParams paymentParams) {
+        if(paymentParams.getDiscountPercent() != 0) {
+            return paymentParams.getDiscountPercent();
+        } else if(paymentParams.getDiscountAbsolute() != 0) {
+            double discountAbs = paymentParams.getDiscountAbsolute();
+            double sumSale = getAdaptee().getSumSaleGrossPrice();
+            double discount = discountAbs / sumSale * 100;
+            return discount;
+        } else return 0;
+    }
+
+    private void applyDiscountOnSalePrices() {
+        adaptee.setSumSaleGrossPrice((int)(adaptee.getSumSaleGrossPrice() * getDiscountMultiplier(adaptee.getDiscountPercent())));
+        adaptee.setSumSaleNetPrice((int)(adaptee.getSumSaleNetPrice() * getDiscountMultiplier(adaptee.getDiscountPercent())));
+    }
+
+    private static double calculatePurchaseGrossPrice(ReceiptRecord record) {
+        return record.getPurchasePrice() * record.getSoldQuantity();
+    }
+
+    private static double calculatePurchaseNetPrice(ReceiptRecord record) {
+        return calculatePurchaseGrossPrice(record) / calculateVATDivider(record);
+    }
+
+    private static double calculateSaleGrossPrice(ReceiptRecord record) {
+        return record.getSalePrice() * record.getSoldQuantity() * getDiscountMultiplier(record.getDiscountPercent());
+    }
+
+    private static double calculateSaleNetPrice(ReceiptRecord record) {
+        return calculateSaleGrossPrice(record) / calculateVATDivider(record);
+    }
+
+    private static double calculateVATDivider(ReceiptRecord record) {
+        return (100 + record.getVAT()) / 100;
+    }
+
+    private static double getDiscountMultiplier(double discountPercent) {
+        return (100D - discountPercent) / 100;
+    }
 }

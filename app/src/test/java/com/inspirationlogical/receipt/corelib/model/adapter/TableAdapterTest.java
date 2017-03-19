@@ -3,6 +3,8 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 import static org.junit.Assert.*;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 import javafx.geometry.Point2D;
 import org.junit.Before;
 import org.junit.Rule;
@@ -14,6 +16,7 @@ public class TableAdapterTest {
 
     TableAdapter tableAdapter;
     TableAdapter closedTableAdapter;
+    PaymentParams paymentParams;
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
@@ -22,6 +25,12 @@ public class TableAdapterTest {
     public void persistObjects() {
         tableAdapter = new TableAdapter(schema.getTableNormal());
         closedTableAdapter = new TableAdapter(schema.getTableNormalClosed());
+        paymentParams = PaymentParams.builder()
+                .paymentMethod(PaymentMethod.COUPON)
+                .userCode(1000)
+                .discountAbsolute(0)
+                .discountPercent(0D)
+                .build();
     }
 
     @Test
@@ -83,5 +92,11 @@ public class TableAdapterTest {
     public void testOpenTable() {
         closedTableAdapter.openTable();
         assertNotNull(closedTableAdapter.getActiveReceipt());
+    }
+
+    @Test
+    public void testPayTable() {
+        tableAdapter.payTable(paymentParams);
+        assertNull(tableAdapter.getActiveReceipt());
     }
 }

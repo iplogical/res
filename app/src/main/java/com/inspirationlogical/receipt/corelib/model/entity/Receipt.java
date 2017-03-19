@@ -74,15 +74,13 @@ public @Data class Receipt extends AbstractEntity {
 
     private int sumPurchaseNetPrice;
 
-    private int sumPurchaseGrossePrice;
+    private int sumPurchaseGrossPrice;
 
     private int sumSaleNetPrice;
 
-    private int sumSaleGrossePrice;
+    private int sumSaleGrossPrice;
 
     private double discountPercent;
-
-    private int discountAbsolute;
 
     @NotNull
     @Embedded

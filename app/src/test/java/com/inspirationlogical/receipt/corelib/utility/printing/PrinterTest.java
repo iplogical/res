@@ -22,8 +22,7 @@ public class PrinterTest {
 
     @Before
     public void closeReceiptSaleOneAndGeneratePDF(){
-        ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne());
-        ra.close(Arrays.asList());
+        ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleTwo());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         new ReceiptFormatterEpsonTMT20II().convertToPDF(out,
                 ReceiptToXML.ConvertToStream(ra)

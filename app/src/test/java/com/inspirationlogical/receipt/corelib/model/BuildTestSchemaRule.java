@@ -478,7 +478,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(new GregorianCalendar())
-                .discountAbsolute(1000)
+                .discountPercent(10)
                 .client(buildDefaultClient())
                 .build();
     }
@@ -490,7 +490,6 @@ public class BuildTestSchemaRule implements TestRule {
                 .paymentMethod(PaymentMethod.CREDIT_CARD)
                 .openTime(new GregorianCalendar())
                 .closureTime(new GregorianCalendar())
-                .discountAbsolute(2000)
                 .client(buildDefaultClient())
                 .build();
     }
@@ -501,7 +500,6 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
-                .discountAbsolute(3000)
                 .openTime(new GregorianCalendar())
                 .client(buildDefaultClient())
                 .build();
@@ -572,7 +570,9 @@ public class BuildTestSchemaRule implements TestRule {
         receiptRecordSaleOne = ReceiptRecord.builder()
                 .name("Soproni 0,5L")
                 .type(ReceiptRecordType.HERE)
+                .VAT(27)
                 .salePrice(440)
+                .purchasePrice(250)
                 .soldQuantity(1D)
                 .build();
     }
@@ -580,9 +580,11 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildReceiptRecordSaleTwo() {
         receiptRecordSaleTwo = ReceiptRecord.builder()
                 .name("Jim Beam")
+                .type(ReceiptRecordType.HERE)
+                .VAT(27)
                 .soldQuantity(2D)
                 .salePrice(560)
-                .type(ReceiptRecordType.HERE)
+                .purchasePrice(300)
                 .build();
     }
 

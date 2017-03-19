@@ -12,8 +12,10 @@ public @Data class PaymentParams {
 
     private ReceiptRecordType receiptRecordType;
 
+    private int userCode;
+
     private int discountAbsolute;
 
-    private Double discountPercent;
+    private double discountPercent;
 
 }

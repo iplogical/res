@@ -200,11 +200,11 @@ Látható
     <node id="n7">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="304.7969326381646" width="189.9999999999999" x="-443.4361903001328" y="-321.05793492695875"/>
+          <y:Geometry height="288.9706705571131" width="189.9999999999999" x="-443.4361903001328" y="-321.05793492695875"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="52.69140625" x="68.65429687499994" y="4.0">Bizonylat</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="268.62109375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="160.05859375" x="2.0" y="30.701171875">ID
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="253.919921875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="160.05859375" x="2.0" y="30.701171875">ID
 GU ID
 Verzió ID
 Típus
@@ -218,7 +218,6 @@ Szumma beszerzési bruttó ár
 Szumma eladási nettó ár
 Szumma eladási bruttó ár
 Engedmény %
-Engedmény Ft
 Vevő név
 Vevő cím
 Vevő adószám<y:LabelModel>
@@ -241,7 +240,7 @@ Vevő adószám<y:LabelModel>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="85.369140625" x="27.229539913263636" y="4.0">Bzonylati Tételi</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="180.4140625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="101.39453125" x="2.0" y="30.701171875">ID
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="165.712890625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="101.39453125" x="2.0" y="30.701171875">ID
 GU ID
 Verzió ID
 Típus
@@ -251,8 +250,7 @@ eladott mennyiség
 beszerzési ár
 eladási ár
 ÁFA kulcs
-Engedmény %
-Engedmény Ft<y:LabelModel>
+Engedmény %<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -686,7 +684,6 @@ GyerekID<y:LabelModel>
       </data>
     </node>
     <node id="n27">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.relationship">
           <y:Geometry height="56.0" width="90.0" x="-40.76750114366733" y="-732.0742612881802"/>
@@ -706,7 +703,6 @@ GyerekID<y:LabelModel>
       </data>
     </node>
     <node id="n28">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.relationship">
           <y:Geometry height="56.0" width="90.0" x="67.4022337536519" y="-732.0742612881802"/>
@@ -721,6 +717,27 @@ GyerekID<y:LabelModel>
           </y:NodeLabel>
           <y:StyleProperties>
             <y:Property class="java.lang.Boolean" name="y.view.ShadowNodePainter.SHADOW_PAINTING" value="true"/>
+          </y:StyleProperties>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="n29">
+      <data key="d5"/>
+      <data key="d6">
+        <y:GenericNode configuration="com.yworks.entityRelationship.small_entity">
+          <y:Geometry height="40.0" width="80.0" x="-620.4379846659365" y="-411.6692223439211"/>
+          <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="34.01171875" x="22.994140625" y="10.6494140625">Entity<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Boolean" name="y.view.ShadowNodePainter.SHADOW_PAINTING" value="true"/>
+            <y:Property class="java.lang.Boolean" name="doubleBorder" value="true"/>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
@@ -782,7 +799,7 @@ GyerekID<y:LabelModel>
     <edge id="e5" source="n9" target="n7">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="12.129427442708106" ty="-122.18850485406072"/>
+          <y:Path sx="0.0" sy="0.0" tx="11.781250541096767" ty="-117.9392060063027"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="crows_foot_many_optional"/>
           <y:BendStyle smoothed="false"/>
@@ -792,7 +809,7 @@ GyerekID<y:LabelModel>
     <edge id="e6" source="n7" target="n10">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-39.604477061702426" sy="-122.18850485406072" tx="0.0" ty="0.0"/>
+          <y:Path sx="-39.604477061702426" sy="-115.84399447997548" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="crows_foot_one" target="none"/>
           <y:BendStyle smoothed="false"/>
@@ -935,7 +952,6 @@ GyerekID<y:LabelModel>
     </edge>
     <edge id="e20" source="n16" target="n27">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-50.91462551020133" sy="-80.98202162020561" tx="0.0" ty="0.0"/>
@@ -947,7 +963,6 @@ GyerekID<y:LabelModel>
     </edge>
     <edge id="e21" source="n27" target="n26">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-50.91462551020133" ty="81.02340637449981"/>
@@ -959,7 +974,6 @@ GyerekID<y:LabelModel>
     </edge>
     <edge id="e22" source="n26" target="n28">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="57.2551093871179" sy="80.98117529880267" tx="0.0" ty="0.0"/>
@@ -971,7 +985,6 @@ GyerekID<y:LabelModel>
     </edge>
     <edge id="e23" source="n28" target="n16">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="57.2551093871179" ty="-81.03159030544657"/>

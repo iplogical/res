@@ -26,8 +26,7 @@ public class ReceiptToXMLTest {
     @Test
     public void test_receipt_XML_created_from_a_closed_recipt_can_be_validated_against_the_schema() {
         try {
-            ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne());
-            ra.close(Arrays.asList());
+            ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleTwo());
             String xml_doc =  new BufferedReader(new InputStreamReader(ReceiptToXML.ConvertToStream(ra)))
                     .lines().collect(Collectors.joining("\n"));
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -42,8 +41,7 @@ public class ReceiptToXMLTest {
     @Test
     public void test_receipt_can_be_converted_to_PDF_from_XML(){
         try {
-            ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne());
-            ra.close(Arrays.asList());
+            ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleTwo());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             new ReceiptFormatterEpsonTMT20II().convertToPDF(out,
                     ReceiptToXML.ConvertToStream(ra)
@@ -56,8 +54,7 @@ public class ReceiptToXMLTest {
 
     @Test
     public void test_receipt_formatting_through_dependency_injection(){
-        ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleOne());
-        ra.close(Arrays.asList());
+        ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleTwo());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         FormatterService.create().convertToPDF(out,ReceiptToXML.ConvertToStream(ra));
     }

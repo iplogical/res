@@ -4,12 +4,12 @@ import java.util.Calendar;
 
 import javax.persistence.*;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 import lombok.experimental.Tolerate;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.inspirationlogical.receipt.corelib.model.annotations.ValidDiscount;
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidProduct;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 
@@ -29,7 +29,6 @@ import lombok.ToString;
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECEIPT_RECORD_ID"))
 @ValidProduct
-@ValidDiscount
 public @Data class ReceiptRecord extends AbstractEntity {
 
     public static final String GET_TEST_RECEIPTS_RECORDS = "ReceiptRecord.GetTestReceiptsRecords";
@@ -61,9 +60,8 @@ public @Data class ReceiptRecord extends AbstractEntity {
 
     private double VAT;
 
-    private Double discountPercent;
-
-    private int discountAbsolute;
+    @Max(100)
+    private double discountPercent;
 
     @Tolerate
     ReceiptRecord(){}
