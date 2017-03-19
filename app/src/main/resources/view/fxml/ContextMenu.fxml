@@ -6,17 +6,22 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="view" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" style="-fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #FFFFFF; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="node" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" style="-fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #FFFFFF; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button fx:id="addTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onAddTable" text="Asztal hozzáadása">
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Button fx:id="renameTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onRenameTable" text="Asztal átnevezése">
+      <Button fx:id="editTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onEditTable" text="Asztal szerkesztése">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="deleteTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onDeleteTable" text="Asztal törlése">
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Button fx:id="deleteTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onDeleteTable" text="Asztal törlése">
+      <Button fx:id="renameTable" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onRenameTable" text="Asztal átnevezése">
          <font>
             <Font size="16.0" />
          </font></Button>

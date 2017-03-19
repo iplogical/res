@@ -7,7 +7,9 @@ import javafx.scene.Node;
 
 public interface TableController extends Initializable {
 
-    TableView getViewData();
+    TableView getView();
 
-    Node getView();
+    Node getNode();
+
+    void updateNode();
 }

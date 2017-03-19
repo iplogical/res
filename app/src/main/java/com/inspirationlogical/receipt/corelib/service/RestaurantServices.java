@@ -17,9 +17,13 @@ public interface RestaurantServices {
 
     List<TableView> getTables(RestaurantView restaurant);
 
+    void setTableNumber(TableView tableView, int tableNumber);
+
+    void setTableType(TableView tableView, TableType tableType);
+
     void setTableName(TableView tableView, String name);
 
-    void setTableCapacity(TableView tableView, int capacity);
+    void setTableCapacity(TableView tableView, int tableCapacity);
 
     void addTableNote(TableView tableView, String note);
 
@@ -36,5 +40,4 @@ public interface RestaurantServices {
     TableView addTable(RestaurantView restaurant, TableBuilder builder);
 
     ReceiptView getActiveReceipt(TableView tableView);
-
 }

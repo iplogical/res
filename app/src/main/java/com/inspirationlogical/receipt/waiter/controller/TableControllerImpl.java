@@ -21,7 +21,7 @@ public class TableControllerImpl implements TableController {
     private static double TABLE_HEIGHT = 100.0;
 
     @FXML
-    VBox view;
+    VBox node;
 
     @FXML
     Label name;
@@ -43,31 +43,32 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(view);
+        addDragAndDrop(node);
         initVisual();
-        initData();
+        updateNode();
     }
 
     private void initVisual() {
-        view.setMinWidth(TABLE_WIDTH);
-        view.setMinHeight(TABLE_HEIGHT);
-        showNode(view, tableView.getPosition());
-    }
-
-    private void initData() {
-        name.setText(tableView.getName());
-        number.setText(valueOf(tableView.getTableNumber()));
-        guests.setText(valueOf(tableView.getGuestCount()));
-        capacity.setText(valueOf(tableView.getCapacity()));
+        node.setMinWidth(TABLE_WIDTH);
+        node.setMinHeight(TABLE_HEIGHT);
     }
 
     @Override
-    public TableView getViewData() {
+    public TableView getView() {
         return tableView;
     }
 
     @Override
-    public Node getView() {
-        return view;
+    public Node getNode() {
+        return node;
+    }
+
+    @Override
+    public void updateNode() {
+        name.setText(tableView.getName());
+        number.setText(valueOf(tableView.getTableNumber()));
+        guests.setText(valueOf(tableView.getGuestCount()));
+        capacity.setText(valueOf(tableView.getTableCapacity()));
+        showNode(node, tableView.getPosition());
     }
 }

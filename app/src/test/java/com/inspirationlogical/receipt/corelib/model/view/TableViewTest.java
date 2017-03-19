@@ -49,7 +49,7 @@ public class TableViewTest {
 
     @Test
     public void testGetCapacity() {
-        assertEquals(6, tableView.getCapacity());
+        assertEquals(6, tableView.getTableCapacity());
     }
 
     @Test

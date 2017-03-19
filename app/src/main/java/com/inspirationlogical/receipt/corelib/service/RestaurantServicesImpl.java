@@ -48,13 +48,23 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     }
 
     @Override
+    public void setTableNumber(TableView tableView, int tableNumber) {
+        // todo: implement
+    }
+
+    @Override
+    public void setTableType(TableView tableView, TableType tableType) {
+        // todo: implement
+    }
+
+    @Override
     public void setTableName(TableView tableView, String name) {
         ((TableViewImpl)tableView).getAdapter().setTableName(name);
     }
 
     @Override
-    public void setTableCapacity(TableView tableView, int capacity) {
-        ((TableViewImpl)tableView).getAdapter().setCapacity(capacity);
+    public void setTableCapacity(TableView tableView, int tableCapacity) {
+        ((TableViewImpl)tableView).getAdapter().setCapacity(tableCapacity);
     }
 
     @Override
@@ -79,7 +89,7 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
 
     @Override
     public void deleteTable(TableView tableView) {
-        ((TableViewImpl)tableView).getAdapter().deleteTable();
+        // todo: implement
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import static com.inspirationlogical.receipt.waiter.controller.AddTableFormControllerImpl.ADD_TABLE_FORM_VIEW_PATH;
+import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.ContextMenuControllerImpl.CONTEXT_MENU_VIEW_PATH;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
@@ -50,7 +50,7 @@ public class RestaurantControllerTest {
     private ContextMenuController contextMenuController;
 
     @Mock
-    private AddTableFormController addTableFormController;
+    private TableFormController tableFormController;
 
     @Mock
     private RestaurantServices restaurantServices;
@@ -72,10 +72,10 @@ public class RestaurantControllerTest {
         mockStatic(PressAndHoldHandler.class);
         mockStatic(ViewLoader.class);
         when(ViewLoader.loadViewHidden(CONTEXT_MENU_VIEW_PATH, contextMenuController)).thenReturn(contextMenu);
-        when(ViewLoader.loadViewHidden(ADD_TABLE_FORM_VIEW_PATH, addTableFormController)).thenReturn(addTableForm);
+        when(ViewLoader.loadViewHidden(TABLE_FORM_VIEW_PATH, tableFormController)).thenReturn(addTableForm);
 
         main = new Main();
-        underTest = new RestaurantControllerImpl(restaurantServices, contextMenuController, addTableFormController);
+        underTest = new RestaurantControllerImpl(restaurantServices, contextMenuController, tableFormController);
         underTest.tables = tables;
     }
 
@@ -107,7 +107,7 @@ public class RestaurantControllerTest {
         verify(tables.getChildren()).add(addTableForm);
 
         verifyStatic(times(1));
-        ViewLoader.loadViewHidden(eq(ADD_TABLE_FORM_VIEW_PATH), eq(addTableFormController));
+        ViewLoader.loadViewHidden(eq(TABLE_FORM_VIEW_PATH), eq(tableFormController));
     }
 
     @Test

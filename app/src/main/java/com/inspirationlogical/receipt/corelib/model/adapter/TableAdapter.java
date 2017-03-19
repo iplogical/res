@@ -76,10 +76,6 @@ public class TableAdapter extends AbstractAdapter<Table>
         });
     }
 
-    public void deleteTable() {
-        // todo: implement
-    }
-
     public void openTable() {
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
             if(isTableOpen()) {

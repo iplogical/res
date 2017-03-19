@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="view" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" style="-fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #FFFFFF; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="node" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" style="-fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #FFFFFF; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox spacing="5.0">
          <children>
@@ -29,7 +29,7 @@
       </CheckBox>
       <HBox spacing="5.0">
          <children>
-            <Button fx:id="create" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onCreate" prefWidth="100.0" text="Létrehozás">
+            <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onConfirm" prefWidth="100.0" text="Rendben">
                <font>
                   <Font size="16.0" />
                </font>

@@ -5,8 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<VBox fx:id="view" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="100.0" style="-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-color: #FFFFFF; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="node" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="100.0" style="-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-color: #FFFFFF; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="name" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Name" />
       <Label fx:id="number" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="No">

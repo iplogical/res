@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 
 import javafx.geometry.Point2D;
 
@@ -22,7 +21,7 @@ public interface TableView {
 
     int getGuestCount();
 
-    int getCapacity();
+    int getTableCapacity();
 
     String getName();
 

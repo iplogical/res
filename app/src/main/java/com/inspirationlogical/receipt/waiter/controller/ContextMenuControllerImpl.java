@@ -20,16 +20,19 @@ public class ContextMenuControllerImpl implements ContextMenuController {
     public static final String CONTEXT_MENU_VIEW_PATH = "/view/fxml/ContextMenu.fxml";
 
     @FXML
-    VBox view;
+    VBox node;
 
     @FXML
     Button addTable;
 
     @FXML
-    Button renameTable;
+    Button editTable;
 
     @FXML
     Button deleteTable;
+
+    @FXML
+    Button renameTable;
 
     @FXML
     Button mergeTables;
@@ -48,7 +51,7 @@ public class ContextMenuControllerImpl implements ContextMenuController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(view);
+        addDragAndDrop(node);
     }
 
     @Override
@@ -63,14 +66,21 @@ public class ContextMenuControllerImpl implements ContextMenuController {
     }
 
     @FXML
-    public void onRenameTable(MouseEvent event) {
+    public void onEditTable(MouseEvent event) {
         hidePopup();
+        restaurantController.showEditTableForm(source);
     }
 
     @FXML
     public void onDeleteTable(MouseEvent event) {
-        restaurantController.deleteTable(source);
         hidePopup();
+        restaurantController.deleteTable(source);
+    }
+
+    @FXML
+    public void onRenameTable(MouseEvent event) {
+        hidePopup();
+
     }
 
     @FXML
@@ -84,6 +94,6 @@ public class ContextMenuControllerImpl implements ContextMenuController {
     }
 
     private void hidePopup() {
-        view.setVisible(false);
+        node.setVisible(false);
     }
 }

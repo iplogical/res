@@ -4,9 +4,9 @@ import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMA
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
 import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations.and;
 import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations.not;
-import static com.inspirationlogical.receipt.waiter.controller.AddTableFormControllerImpl.ADD_TABLE_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.ContextMenuControllerImpl.CONTEXT_MENU_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableControllerImpl.TABLE_VIEW_PATH;
+import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.getNodePosition;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.hideNode;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.moveNode;
@@ -68,11 +68,11 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private VBox contextMenu;
 
-    private VBox addTableForm;
+    private VBox tableForm;
 
     private ContextMenuController contextMenuController;
 
-    private AddTableFormController addTableFormController;
+    private TableFormController tableFormController;
 
     private Set<TableController> tableControllers;
 
@@ -82,19 +82,19 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Inject
     public RestaurantControllerImpl(RestaurantServices restaurantServices, ContextMenuController contextMenuController,
-                                    AddTableFormController addTableFormController) {
+                                    TableFormController tableFormController) {
         this.contextMenuController = contextMenuController;
         this.restaurantServices = restaurantServices;
-        this.addTableFormController = addTableFormController;
+        this.tableFormController = tableFormController;
     }
 
     @FXML
     public void onConfigToggle(Event event) {
         if (!configuration.isSelected()) {
             tableControllers.forEach(tableController -> {
-                Node view = tableController.getView();
+                Node view = tableController.getNode();
                 Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
-                restaurantServices.moveTable(tableController.getViewData(), position);
+                restaurantServices.moveTable(tableController.getView(), position);
                 return;
             });
         }
@@ -102,20 +102,20 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     public void onTablesSelected(Event event) {
-        moveNode(virtual, tables, contextMenu);
-        moveNode(virtual, tables, addTableForm);
+        toTablesPane(contextMenu);
+        toTablesPane(tableForm);
     }
 
     @FXML
     public void onVirtualSelected(Event event) {
-        moveNode(tables, virtual, contextMenu);
-        moveNode(tables, virtual, addTableForm);
+        toVirtualPane(contextMenu);
+        toVirtualPane(tableForm);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initContextMenu();
-        initAddTableForm();
+        initTableForm();
         initRestaurant();
         initTables();
         DragAndDropHandler.setEnableControl(configuration);
@@ -140,41 +140,91 @@ public class RestaurantControllerImpl implements RestaurantController {
         addPressAndHold(virtual, contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
     }
 
-    private void initAddTableForm() {
-        addTableForm = (VBox) loadViewHidden(ADD_TABLE_FORM_VIEW_PATH, addTableFormController);
-        tables.getChildren().add(addTableForm);
+    private void initTableForm() {
+        tableForm = (VBox) loadViewHidden(TABLE_FORM_VIEW_PATH, tableFormController);
+        tables.getChildren().add(tableForm);
     }
 
     @Override
     public void showAddTableForm() {
         Point2D position = getNodePosition(contextMenu);
-
-        showNode(addTableForm, position);
+        tableFormController.loadTable(null);
+        showNode(tableForm, position);
     }
 
     @Override
-    public void createTable(int number, int capacity, boolean isVirtual) {
-        Point2D position = getNodePosition(addTableForm);
+    public void showEditTableForm(Node node) {
+        Point2D position = getNodePosition(contextMenu);
+        TableController tableController = getTableController(node);
+        tableFormController.loadTable(tableController);
+        showNode(tableForm, position);
+    }
+
+    @Override
+    public void createTable(int tableNumber, int tableCapacity, boolean isVirtual) {
+        Point2D position = getNodePosition(tableForm);
         TableType tableType = isVirtual ? VIRTUAL : NORMAL;
 
-        TableView tableView = restaurantServices.addTable(restaurantView, tableType, number);
+        TableView tableView = restaurantServices.addTable(restaurantView, tableType, tableNumber);
 
-        restaurantServices.setTableCapacity(tableView, capacity);
+        restaurantServices.setTableCapacity(tableView, tableCapacity);
         restaurantServices.moveTable(tableView, position);
 
-        hideNode(addTableForm);
+        hideNode(tableForm);
         drawTable(tableView);
     }
 
     @Override
+    public void editTable(TableController tableController, Integer tableNumber, Integer tableCapacity, boolean isVirtual) {
+        TableView tableView = tableController.getView();
+        System.out.println("Edit table " + tableView.getTableNumber());
+
+        restaurantServices.setTableNumber(tableView, tableNumber);
+        restaurantServices.setTableType(tableView, isVirtual ? VIRTUAL : NORMAL);
+        restaurantServices.setTableCapacity(tableView, tableCapacity);
+
+        hideNode(tableForm);
+        Node node = tableController.getNode();
+        if (isVirtual) {
+            toVirtualPane(node);
+        } else {
+            toTablesPane(node);
+        }
+        tableController.updateNode();
+    }
+
+    @Override
     public void deleteTable(Node node) {
-        TableView tableView = tableControllers
-                .stream()
-                .filter(tableController -> tableController.getView().equals(node))
-                .findFirst()
-                .orElseThrow(() -> new ViewNotFoundException("Table view could not be found")).getViewData();
+        TableView tableView = getTableController(node).getView();
         System.out.println("Delete table " + tableView.getTableNumber());
+
         restaurantServices.deleteTable(tableView);
+    }
+
+    @Override
+    public void mergeTables(Node node, int consumedTableNumber) {
+
+    }
+
+    @Override
+    public void splitTables(Node node, int producedTableNumber) {
+
+    }
+
+    private void toTablesPane(Node node) {
+        moveNode(virtual, tables, node);
+    }
+
+    private void toVirtualPane(Node node) {
+        moveNode(tables, virtual, node);
+    }
+
+    private TableController getTableController(Node node) {
+        return tableControllers
+                .stream()
+                .filter(tableController -> tableController.getNode().equals(node))
+                .findFirst()
+                .orElseThrow(() -> new ViewNotFoundException("Table node could not be found"));
     }
 
     private void drawTable(TableView tableView) {
@@ -184,10 +234,10 @@ public class RestaurantControllerImpl implements RestaurantController {
 
         loadView(TABLE_VIEW_PATH, tableController);
 
-        addPressAndHold(tableController.getView(), contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
+        addPressAndHold(tableController.getNode(), contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
 
         Pane pane = tableView.isVirtual() ? virtual : tables;
 
-        pane.getChildren().add(tableController.getView());
+        pane.getChildren().add(tableController.getNode());
     }
 }
