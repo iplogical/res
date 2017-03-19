@@ -25,7 +25,8 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
-import com.inspirationlogical.receipt.waiter.builder.RestaurantContextMenuBuilder;
+import com.inspirationlogical.receipt.waiter.builder.BaseContextMenuBuilder;
+import com.inspirationlogical.receipt.waiter.builder.RestaurantContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.builder.TableContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.exception.ViewNotFoundException;
 import com.inspirationlogical.receipt.waiter.view.DragAndDropHandler;
@@ -131,7 +132,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private void initContextMenu() {
 
-        addPressAndHold(tablesLab, new RestaurantContextMenuBuilder(), Duration.millis(HOLD_DURATION_MILLIS));
+        addPressAndHold(tablesLab, new RestaurantContextMenuBuilderDecorator(new BaseContextMenuBuilder()), Duration.millis(HOLD_DURATION_MILLIS));
         //addPressAndHold(virtual, contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
     }
 
@@ -229,7 +230,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
         loadView(TABLE_VIEW_PATH, tableController);
 
-        addPressAndHold(tableController.getRoot(), new TableContextMenuBuilderDecorator(new RestaurantContextMenuBuilder()), Duration.millis(HOLD_DURATION_MILLIS));
+        addPressAndHold(tableController.getRoot(), new TableContextMenuBuilderDecorator(new BaseContextMenuBuilder()), Duration.millis(HOLD_DURATION_MILLIS));
 
          //pane = tableView.isVirtual() ? virtual : tablesTab;
 

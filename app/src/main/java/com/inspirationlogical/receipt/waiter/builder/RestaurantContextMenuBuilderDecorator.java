@@ -5,18 +5,18 @@ import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 
-public class RestaurantContextMenuBuilder implements ContextMenuBuilder {
+public class RestaurantContextMenuBuilderDecorator extends ContextMenuBuilderDecorator {
 
-    public RestaurantContextMenuBuilder() {
-        super();
+    public RestaurantContextMenuBuilderDecorator(ContextMenuBuilder b) {
+        super(b);
     }
 
 
     @Override
     public ContextMenu build(ViewState viewState) {
         // add restaurant specific menu items
-        ContextMenu c =new ContextMenu();
-        c.getItems().add(0,new MenuItem("Lofasz"));
+        ContextMenu c =super.build(viewState);
+        c.getItems().add(c.getItems().size(),new MenuItem("Restaurant Menu Item"));
         return c;
     }
 }

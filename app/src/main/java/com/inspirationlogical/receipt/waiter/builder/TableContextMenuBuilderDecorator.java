@@ -14,7 +14,7 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
     @Override
     public ContextMenu build(ViewState viewState) {
         ContextMenu contextMenu = super.build(viewState);
-        contextMenu.getItems().add(new MenuItem("Table Lufasz"));
+        contextMenu.getItems().add(new MenuItem("Table Menu Item"));
         // add table specific menu items
         return contextMenu;
     }
