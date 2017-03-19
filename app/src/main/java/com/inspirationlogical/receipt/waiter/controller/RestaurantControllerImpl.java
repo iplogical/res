@@ -38,7 +38,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -52,7 +51,11 @@ public class RestaurantControllerImpl implements RestaurantController {
     private static Predicate<TableView> NORMAL_VISIBLE_TABLE = and(NORMAL_TABLE, VISIBLE_TABLE);
 
     @FXML
-    Label tables;
+    AnchorPane tablesTab;
+
+    @FXML
+    Label tablesLab;
+
 
     @FXML
     AnchorPane virtual;
@@ -128,13 +131,13 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private void initContextMenu() {
 
-        addPressAndHold(tables, new RestaurantContextMenuBuilder(), Duration.millis(HOLD_DURATION_MILLIS));
+        addPressAndHold(tablesLab, new RestaurantContextMenuBuilder(), Duration.millis(HOLD_DURATION_MILLIS));
         //addPressAndHold(virtual, contextMenu, Duration.millis(HOLD_DURATION_MILLIS));
     }
 
     private void initTableForm() {
         tableForm = (VBox) loadViewHidden(TABLE_FORM_VIEW_PATH, tableFormController);
-        //tables.getChildren().add(tableForm);
+        //tablesTab.getChildren().add(tableForm);
     }
 
     @Override
@@ -204,11 +207,11 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void toTablesPane(Node node) {
-        //moveNode(virtual, tables, root);
+        //moveNode(virtual, tablesTab, root);
     }
 
     private void toVirtualPane(Node node) {
-        //moveNode(tables, virtual, root);
+        //moveNode(tablesTab, virtual, root);
     }
 
     private TableController getTableController(Node node) {
@@ -228,8 +231,8 @@ public class RestaurantControllerImpl implements RestaurantController {
 
         addPressAndHold(tableController.getRoot(), new TableContextMenuBuilderDecorator(new RestaurantContextMenuBuilder()), Duration.millis(HOLD_DURATION_MILLIS));
 
-         //pane = tableView.isVirtual() ? virtual : tables;
+         //pane = tableView.isVirtual() ? virtual : tablesTab;
 
-        tables.getGraphic().getChildren().add(tableController.getRoot());
+        ((AnchorPane) tablesLab.getGraphic()).getChildren().add(tableController.getRoot());
     }
 }

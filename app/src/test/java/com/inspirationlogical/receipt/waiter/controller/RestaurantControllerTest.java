@@ -76,7 +76,7 @@ public class RestaurantControllerTest {
 
         main = new Main();
         underTest = new RestaurantControllerImpl(restaurantServices, contextMenuController, tableFormController);
-        underTest.tables = tables;
+        //underTest.tablesTab = tablesTab;
     }
 
     @Test
@@ -93,7 +93,7 @@ public class RestaurantControllerTest {
         ViewLoader.loadViewHidden(eq(CONTEXT_MENU_VIEW_PATH), eq(contextMenuController));
 
         verifyStatic(times(1));
-        PressAndHoldHandler.addPressAndHold(eq(tables), eq(contextMenu), any());
+//        PressAndHoldHandler.addPressAndHold(eq(futykos), eq(contextMenu), any());
     }
 
     @Test
@@ -174,7 +174,7 @@ public class RestaurantControllerTest {
         NodeUtility.hideNode(eq(addTableForm));
 
         verifyStatic(times(1));
-        PressAndHoldHandler.addPressAndHold(eq(tables), eq(contextMenu), any());
+//        PressAndHoldHandler.addPressAndHold(eq(futykos), eq(contextMenu), any());
     }
 
     @Test

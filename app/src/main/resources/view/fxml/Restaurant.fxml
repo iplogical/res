@@ -38,7 +38,14 @@
         <tabs>
           <Tab closable="false" onSelectionChanged="#onTablesSelected" text="Asztalok">
             <content>
-              <AnchorPane fx:id="tables" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+              <AnchorPane fx:id="tablesTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <children>
+                        <Label fx:id="tablesLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <graphic>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                           </graphic>
+                        </Label>
+                     </children></AnchorPane>
             </content>
           </Tab>
           <Tab closable="false" onSelectionChanged="#onVirtualSelected" text="Virtuális asztalok">

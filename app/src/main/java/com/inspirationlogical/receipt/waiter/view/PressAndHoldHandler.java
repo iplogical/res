@@ -25,7 +25,7 @@ public class PressAndHoldHandler {
         holdTimer.setOnFinished(event -> {
             MouseEvent mouseEvent = mouseEventWrapper.getContent();
             Point2D position = new Point2D(mouseEvent.getX(), mouseEvent.getY()).add(getNodePosition(control));
-            contextMenuWrapper.getContent().show(control, 0, 0);
+            contextMenuWrapper.getContent().show(control, position.getX(), position.getY());
         });
 
         control.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
