@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -61,8 +62,9 @@ public class ContextMenuControllerImpl implements ContextMenuController {
 
     @FXML
     public void onAddTable(MouseEvent event) {
+        Point2D position = new Point2D(event.getSceneX(), event.getSceneY());
         hidePopup();
-        restaurantController.showAddTableForm();
+        restaurantController.showAddTableForm(position);
     }
 
     @FXML

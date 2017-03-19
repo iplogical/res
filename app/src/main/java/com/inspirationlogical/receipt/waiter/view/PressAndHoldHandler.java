@@ -1,38 +1,28 @@
 package com.inspirationlogical.receipt.waiter.view;
 
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.getNodePosition;
-
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 import com.inspirationlogical.receipt.waiter.builder.ContextMenuBuilder;
-import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
+import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
 
 import javafx.animation.PauseTransition;
-import javafx.geometry.Point2D;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Control;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 public class PressAndHoldHandler {
 
-    private static RestaurantViewState restaurantViewState;
-
-    public static void addPressAndHold(Control control, ContextMenuBuilder contextMenuBuilder, Duration holdTime) {
+    public static void addPressAndHold(ViewState viewState, Control control, ContextMenuBuilder contextMenuBuilder, Duration holdTime) {
         Wrapper<MouseEvent> mouseEventWrapper = new Wrapper<>();
-        Wrapper<ContextMenu> contextMenuWrapper = new Wrapper<>();
         PauseTransition holdTimer = new PauseTransition(holdTime);
 
         holdTimer.setOnFinished(event -> {
             MouseEvent mouseEvent = mouseEventWrapper.getContent();
-            Point2D position = new Point2D(mouseEvent.getX(), mouseEvent.getY()).add(getNodePosition(control));
-            contextMenuWrapper.getContent().show(control, position.getX(), position.getY());
+            contextMenuBuilder.build(viewState).show(control, mouseEvent.getScreenX(), mouseEvent.getScreenY());
         });
 
         control.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
             mouseEvent.consume();
             mouseEventWrapper.setContent(mouseEvent);
-            contextMenuWrapper.setContent(contextMenuBuilder.build(restaurantViewState));
-            control.setContextMenu(contextMenuWrapper.getContent());
             holdTimer.playFromStart();
         });
 

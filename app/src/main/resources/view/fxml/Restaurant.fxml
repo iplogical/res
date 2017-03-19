@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.control.*?>
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -50,7 +48,14 @@
           </Tab>
           <Tab closable="false" onSelectionChanged="#onVirtualSelected" text="Virtuális asztalok">
             <content>
-              <AnchorPane fx:id="virtual" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+              <AnchorPane fx:id="virtualTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <children>
+                        <Label fx:id="virtualLab">
+                           <graphic>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                           </graphic>
+                        </Label>
+                     </children></AnchorPane>
             </content>
           </Tab>
         </tabs>

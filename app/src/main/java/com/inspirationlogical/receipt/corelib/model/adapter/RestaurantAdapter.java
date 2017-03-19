@@ -59,6 +59,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
             newTable[0] = builder.build();
             adaptee.getTable().add(newTable[0]);
             newTable[0].setOwner(adaptee);
+            // FIXME(efereja): persist new Table?
         });
         return new TableAdapter(newTable[0]);
     }

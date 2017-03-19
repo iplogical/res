@@ -1,11 +1,10 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.controller.ContextMenuControllerImpl.CONTEXT_MENU_VIEW_PATH;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
+import static com.inspirationlogical.receipt.waiter.controller.ContextMenuControllerImpl.CONTEXT_MENU_VIEW_PATH;
+import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
 import static org.mockito.Answers.RETURNS_DEEP_STUBS;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -20,11 +19,11 @@ import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.inspirationlogical.receipt.waiter.application.Main;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
+import com.inspirationlogical.receipt.waiter.application.Main;
 import com.inspirationlogical.receipt.waiter.view.NodeUtility;
 import com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler;
 import com.inspirationlogical.receipt.waiter.view.ViewLoader;
@@ -75,7 +74,7 @@ public class RestaurantControllerTest {
         when(ViewLoader.loadViewHidden(TABLE_FORM_VIEW_PATH, tableFormController)).thenReturn(addTableForm);
 
         main = new Main();
-        underTest = new RestaurantControllerImpl(restaurantServices, contextMenuController, tableFormController);
+        underTest = new RestaurantControllerImpl(restaurantServices, tableFormController);
         //underTest.tablesTab = tablesTab;
     }
 
@@ -142,7 +141,7 @@ public class RestaurantControllerTest {
 
         // When
         underTest.initialize(null, null);
-        underTest.showAddTableForm();
+        underTest.showAddTableForm(position);
 
         // Then
         verifyStatic(times(1));
