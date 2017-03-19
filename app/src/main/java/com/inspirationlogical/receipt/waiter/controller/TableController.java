@@ -3,13 +3,13 @@ package com.inspirationlogical.receipt.waiter.controller;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.scene.control.Control;
 
 public interface TableController extends Initializable {
 
     TableView getView();
 
-    Node getNode();
+    Control getRoot();
 
     void updateNode();
 }

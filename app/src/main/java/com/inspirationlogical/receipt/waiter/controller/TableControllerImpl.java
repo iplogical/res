@@ -10,9 +10,8 @@ import java.util.ResourceBundle;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 
 public class TableControllerImpl implements TableController {
 
@@ -21,7 +20,7 @@ public class TableControllerImpl implements TableController {
     private static double TABLE_HEIGHT = 100.0;
 
     @FXML
-    VBox node;
+    Label root;
 
     @FXML
     Label name;
@@ -43,14 +42,14 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(node);
+        addDragAndDrop(root);
         initVisual();
         updateNode();
     }
 
     private void initVisual() {
-        node.setMinWidth(TABLE_WIDTH);
-        node.setMinHeight(TABLE_HEIGHT);
+        root.setMinWidth(TABLE_WIDTH);
+        root.setMinHeight(TABLE_HEIGHT);
     }
 
     @Override
@@ -59,8 +58,8 @@ public class TableControllerImpl implements TableController {
     }
 
     @Override
-    public Node getNode() {
-        return node;
+    public Control getRoot() {
+        return root;
     }
 
     @Override
@@ -69,6 +68,6 @@ public class TableControllerImpl implements TableController {
         number.setText(valueOf(tableView.getTableNumber()));
         guests.setText(valueOf(tableView.getGuestCount()));
         capacity.setText(valueOf(tableView.getTableCapacity()));
-        showNode(node, tableView.getPosition());
+        showNode(root, tableView.getPosition());
     }
 }
