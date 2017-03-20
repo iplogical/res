@@ -19,7 +19,7 @@ public class TableTest {
 
     @Test
     public void testTableCreation() {
-        assertEquals(7, getTables().size());
+        assertEquals(8, getTables().size());
     }
 
     @Test

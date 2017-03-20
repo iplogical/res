@@ -21,7 +21,9 @@ import lombok.experimental.Tolerate;
     @NamedQuery(name = Table.GET_TEST_TABLES,
             query="FROM Table t"),
     @NamedQuery(name = Table.GET_TABLE_BY_NUMBER,
-            query="FROM Table t WHERE t.number=:number")
+            query="FROM Table t WHERE t.number=:number"),
+    @NamedQuery(name = Table.GET_TABLE_ORPHANAGE,
+            query="FROM Table t WHERE t.type='ORPHANAGE'")
 })
 @AttributeOverride(name = "id", column = @Column(name = "TABLE_ID"))
 @ValidReceipts
@@ -30,6 +32,7 @@ public @Data class Table extends AbstractEntity {
 
     public static final String GET_TEST_TABLES = "Table.GetTestTables";
     public static final String GET_TABLE_BY_NUMBER = "Table.GetTableByNumber";
+    public static final String GET_TABLE_ORPHANAGE = "Table.GetTableOrphanage";
 
     @NotNull(message = "A table must belong to a restaurant")
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})

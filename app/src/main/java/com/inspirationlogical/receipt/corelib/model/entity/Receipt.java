@@ -41,7 +41,7 @@ public @Data class Receipt extends AbstractEntity {
 
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "TABLE_ID")
+    @JoinColumn(name = "TABLE_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Table owner;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
@@ -49,7 +49,7 @@ public @Data class Receipt extends AbstractEntity {
 
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
-    @JoinColumn(name = "VAT_SERIE_ID")
+    @JoinColumn(name = "VAT_SERIE_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private VATSerie VATSerie;
 
     @NotNull

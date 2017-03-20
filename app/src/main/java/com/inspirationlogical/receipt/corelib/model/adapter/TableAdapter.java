@@ -125,6 +125,16 @@ public class TableAdapter extends AbstractAdapter<Table>
     }
 
     public void deleteTable() {
+        GuardedTransaction.RunWithRefresh(adaptee,() -> {
+            if(isTableOpen()) {
+                throw new IllegalTableStateException("Delete table for an open table. Table number: " + adaptee.getNumber());
+            }
+            List<Table> orpahnageList = GuardedTransaction.RunNamedQuery(Table.GET_TABLE_ORPHANAGE);
+            Table orpahnage = orpahnageList.get(0);
+            orpahnage.getReceipt().addAll(adaptee.getReceipt().stream()
+                    .map(receipt -> {receipt.setOwner(orpahnage);return receipt;}).collect(Collectors.toList()));
+            adaptee.getReceipt().clear();
+        });
         GuardedTransaction.RunWithDelete(adaptee, () -> {
             if(isTableOpen()) {
                 throw new IllegalTableStateException("Delete table for an open table. Table number: " + adaptee.getNumber());

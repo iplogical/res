@@ -91,7 +91,7 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Table tableDisposal;
     private @Getter
     Table tableOther;
-
+    private @Getter Table tableOrphanage;
     private @Getter Reservation reservationOne;
     private @Getter Reservation reservationTwo;
 
@@ -279,6 +279,7 @@ public class BuildTestSchemaRule implements TestRule {
         buildTablePurchase();
         buildTableInventory();
         buildTableDisposal();
+        buildTableOrphanage();
         buildTableOther();
     }
 
@@ -835,6 +836,13 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
+    private void buildTableOrphanage() {
+        tableOrphanage = Table.builder()
+                .number(1004)
+                .type(TableType.ORPHANAGE)
+                .build();
+    }
+
     private void buildTableOther() {
         tableOther = Table.builder()
                 .number(1003)
@@ -1012,9 +1020,10 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void restaurantAndTables() {
+        //FIXME: Add service for building special tables in production
         restaurant.setTable(new HashSet<Table>(
                 Arrays.asList(tableNormal, tableNormalClosed, tableVirtual, tablePurchase,
-                        tableInventory, tableDisposal, tableOther)));
+                        tableInventory, tableDisposal, tableOther,tableOrphanage)));
         tableNormal.setOwner(restaurant);
         tableNormalClosed.setOwner(restaurant);
         tableVirtual.setOwner(restaurant);
@@ -1022,6 +1031,8 @@ public class BuildTestSchemaRule implements TestRule {
         tableInventory.setOwner(restaurant);
         tableDisposal.setOwner(restaurant);
         tableOther.setOwner(restaurant);
+        tableOrphanage.setOwner(restaurant);
+
    }
 
     private void tablesToReceipts() {

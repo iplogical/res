@@ -2,8 +2,6 @@ package com.inspirationlogical.receipt.corelib.model.enums;
 
 import java.util.*;
 
-import static java.util.Arrays.asList;
-
 public enum TableType {
 
     NORMAL,
@@ -11,10 +9,11 @@ public enum TableType {
     PURCHASE,
     INVENTORY,
     DISPOSAL,
+    ORPHANAGE,
     OTHER;
 
     public static boolean isSpecial(TableType type) {
-        return type.equals(PURCHASE) || type.equals(INVENTORY) || type.equals(DISPOSAL) || type.equals(OTHER);
+        return type.equals(PURCHASE) || type.equals(INVENTORY) || type.equals(DISPOSAL) || type.equals(OTHER) || type.equals(ORPHANAGE);
     }
 
     public static List<Map.Entry<TableType, Long>> specialTypes() {
@@ -22,6 +21,7 @@ public enum TableType {
                 new AbstractMap.SimpleEntry<TableType, Long>(PURCHASE, 1L),
                 new AbstractMap.SimpleEntry<TableType, Long>(INVENTORY, 1L),
                 new AbstractMap.SimpleEntry<TableType, Long>(DISPOSAL, 1L),
+                new AbstractMap.SimpleEntry<TableType, Long>(ORPHANAGE, 1L),
                 new AbstractMap.SimpleEntry<TableType, Long>(OTHER, 1L));
         list.sort(getComparator());
         return list;

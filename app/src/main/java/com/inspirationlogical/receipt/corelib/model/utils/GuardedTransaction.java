@@ -2,8 +2,10 @@ package com.inspirationlogical.receipt.corelib.model.utils;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.entity.AbstractEntity;
+import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  * Created by Ferenc on 2017. 03. 10..
@@ -44,6 +46,12 @@ public class GuardedTransaction {
             }
             throw e;
         }
+    }
+
+    public static <T extends AbstractEntity> List<T> RunNamedQuery(String name){
+        Wrapper<List<T>> results = new Wrapper<>();
+        Run(()->{results.setContent(manager.createNamedQuery(name).getResultList());},()->{},()->{});
+        return results.getContent();
     }
 
     public static void RunWithRefresh(AbstractEntity e, Functor f) {
