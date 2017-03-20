@@ -90,6 +90,26 @@ public class RestaurantServicesTest {
     }
 
     @Test
+    public void testSetTableNumber() {
+        //given
+        when(tableView.getAdapter()).thenReturn(tableAdapter);
+        //when
+        service.setTableNumber(tableView, 8);
+        //then
+        verify(tableAdapter).setTableNumber(eq(8));
+    }
+
+    @Test
+    public void testSetTableType() {
+        //given
+        when(tableView.getAdapter()).thenReturn(tableAdapter);
+        //when
+        service.setTableType(tableView, TableType.VIRTUAL);
+        //then
+        verify(tableAdapter).setTableType(eq(TableType.VIRTUAL));
+    }
+
+    @Test
     public void testSetTableCapacity() {
         //given
         when(tableView.getAdapter()).thenReturn(tableAdapter);
@@ -137,6 +157,16 @@ public class RestaurantServicesTest {
         service.moveTable(tableView, position);
         //then
         verify(tableAdapter).moveTable(eq(position));
+    }
+
+    @Test
+    public void testDeleteTable() {
+        //given
+        when(tableView.getAdapter()).thenReturn(tableAdapter);
+        //when
+        service.deleteTable(tableView);
+        //then
+        verify(tableAdapter).deleteTable();
     }
 
     @Test

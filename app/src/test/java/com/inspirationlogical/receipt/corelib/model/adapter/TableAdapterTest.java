@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 import javafx.geometry.Point2D;
 import org.junit.Before;
@@ -11,6 +12,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+
+import javax.persistence.RollbackException;
 
 public class TableAdapterTest {
 
@@ -43,6 +46,27 @@ public class TableAdapterTest {
         tableAdapter.setTableName("New Table Name");
         assertEquals("New Table Name", TableAdapter.getTableByNumber(schema.getEntityManager(),
                 tableAdapter.getAdaptee().getNumber()).getAdaptee().getName());
+    }
+
+    @Test
+    public void testSetTableNumber() {
+        tableAdapter.setTableNumber(8);
+        assertEquals(8, TableAdapter.getTableByNumber(schema.getEntityManager(),
+                tableAdapter.getAdaptee().getNumber()).getAdaptee().getNumber());
+    }
+
+    @Test(expected = RollbackException.class)
+    public void testSetTableNumberAlreadyUsed() {
+        tableAdapter.setTableNumber(3);
+        assertEquals(3, TableAdapter.getTableByNumber(schema.getEntityManager(),
+                tableAdapter.getAdaptee().getNumber()).getAdaptee().getNumber());
+    }
+
+    @Test
+    public void testSetTableType() {
+        tableAdapter.setTableType(TableType.VIRTUAL);
+        assertEquals(TableType.VIRTUAL, TableAdapter.getTableByNumber(schema.getEntityManager(),
+                tableAdapter.getAdaptee().getNumber()).getAdaptee().getType());
     }
 
     @Test
@@ -94,9 +118,35 @@ public class TableAdapterTest {
         assertNotNull(closedTableAdapter.getActiveReceipt());
     }
 
+    @Test(expected = IllegalTableStateException.class)
+    public void testOpenTableForOpen() {
+        tableAdapter.openTable();
+        assertNotNull(tableAdapter.getActiveReceipt());
+    }
+
     @Test
     public void testPayTable() {
         tableAdapter.payTable(paymentParams);
         assertNull(tableAdapter.getActiveReceipt());
+    }
+
+    @Test(expected = IllegalTableStateException.class)
+    public void testPayTableWithClosedTable() {
+        closedTableAdapter.payTable(paymentParams);
+        assertNull(closedTableAdapter.getActiveReceipt());
+    }
+
+    @Test
+    public void testDeleteTable() {
+        closedTableAdapter.deleteTable();
+        assertNull(TableAdapter.getTableByNumber(schema.getEntityManager(),
+                closedTableAdapter.getAdaptee().getNumber()));
+    }
+
+    @Test(expected = IllegalTableStateException.class)
+    public void testDeleteTableWithOpenTable() {
+        tableAdapter.deleteTable();
+        assertNull(TableAdapter.getTableByNumber(schema.getEntityManager(),
+                tableAdapter.getAdaptee().getNumber()));
     }
 }

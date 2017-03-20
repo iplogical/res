@@ -26,7 +26,7 @@ public class GuardedTransaction {
      * @exception Exception in case of an exception the transaction will be rolled back, but the persistence objects
      * are going to get in DETACHED state!
      */
-    public static void Run(Functor f, Functor before) {
+    public static void Run(Functor f, Functor before, Functor after) {
         boolean myTransaction = !manager.getTransaction().isActive();
         if(myTransaction){
             manager.getTransaction().begin();
@@ -34,6 +34,7 @@ public class GuardedTransaction {
         try {
             before.doIt();
             f.doIt();
+            after.doIt();
             if(myTransaction) {
                 manager.getTransaction().commit();
             }
@@ -46,12 +47,18 @@ public class GuardedTransaction {
     }
 
     public static void RunWithRefresh(AbstractEntity e, Functor f) {
-        Run(f,()->{manager.refresh(e);});
+        Run(f,()->{manager.refresh(e);}, () -> {});
+    }
+
+    public static void RunWithDelete(AbstractEntity e, Functor f) {
+        Run(f,()->{manager.refresh(e);}, ()->{
+            manager.clear();
+            AbstractEntity entity = manager.find(e.getClass(), e.getId());
+            manager.remove(entity);
+        });
     }
 
     public static void Run(Functor f) {
-        Run(f,()->{});
+        Run(f,()->{}, ()->{});
     }
-
-
 }

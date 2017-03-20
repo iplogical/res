@@ -9,6 +9,7 @@ import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateExcepti
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 
@@ -25,6 +26,9 @@ public class TableAdapter extends AbstractAdapter<Table>
     public static TableAdapter getTableByNumber(EntityManager manager, int number) {
         @SuppressWarnings("unchecked")
         List<Table> table = getTablesByNumber(manager, number);
+        if(table.isEmpty()) {
+            return null;
+        }
         return new TableAdapter(table.get(0));
     }
 
@@ -51,6 +55,14 @@ public class TableAdapter extends AbstractAdapter<Table>
 
     public void setTableName(String name) {
         GuardedTransaction.Run(() -> adaptee.setName(name));
+    }
+
+    public void setTableNumber(int tableNumber) {
+        GuardedTransaction.Run(() -> adaptee.setNumber(tableNumber));
+    }
+
+    public void setTableType(TableType tableType) {
+        GuardedTransaction.Run(() -> adaptee.setType(tableType));
     }
 
     public void setCapacity(int capacity) {
@@ -96,7 +108,14 @@ public class TableAdapter extends AbstractAdapter<Table>
             adaptee.setGuestNumber(0);
             adaptee.setNote("");
         });
+    }
 
+    public void deleteTable() {
+        GuardedTransaction.RunWithDelete(adaptee, () -> {
+            if(isTableOpen()) {
+                throw new IllegalTableStateException("Delete table for an open table. Table number: " + adaptee.getNumber());
+            }
+        });
     }
 
     private void bindReceiptToTable(ReceiptAdapter receiptAdapter) {

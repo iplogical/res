@@ -19,7 +19,7 @@ public class ReceiptTest {
 
     @Test
     public void testReceiptCreation() {
-        assertEquals(8, getReceipts().size());
+        assertEquals(9, getReceipts().size());
     }
 
     @Test(expected = RollbackException.class)

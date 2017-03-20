@@ -62,14 +62,14 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Receipt receiptSaleTwo;
     private @Getter Receipt receiptSaleThree;
     private @Getter Receipt receiptSaleFour;
+    private @Getter Receipt receiptSaleClosedTable;
     private @Getter Receipt receiptPurchase;
     private @Getter Receipt receiptInventory;
     private @Getter Receipt receiptDisposal;
     private @Getter Receipt receiptOther;
 
     private @Getter ReceiptRecord receiptRecordSaleOne;
-    private @Getter
-    ReceiptRecord receiptRecordSaleTwo;
+    private @Getter ReceiptRecord receiptRecordSaleTwo;
     private @Getter ReceiptRecord receiptRecordSaleThree;
     private @Getter ReceiptRecord receiptRecordSaleFour;
     private @Getter ReceiptRecord receiptRecordOther;
@@ -229,6 +229,7 @@ public class BuildTestSchemaRule implements TestRule {
         buildReceiptSaleTwo();
         buildReceiptSaleThree();
         buildReceiptSaleFour();
+        buildReceiptSaleClosedTable();
         buildReceiptPurchase();
         buildReceiptInventory();
         buildReceiptDisposal();
@@ -513,6 +514,19 @@ public class BuildTestSchemaRule implements TestRule {
                 .openTime(new GregorianCalendar())
                 .closureTime(new GregorianCalendar())
                 .discountPercent(20)
+                .client(buildDefaultClient())
+                .build();
+    }
+
+
+    private void buildReceiptSaleClosedTable() {
+        receiptSaleClosedTable = Receipt.builder()
+                .type(ReceiptType.SALE)
+                .status(ReceiptStatus.CLOSED)
+                .paymentMethod(PaymentMethod.CASH)
+                .openTime(new GregorianCalendar())
+                .closureTime(new GregorianCalendar())
+                .discountPercent(0)
                 .client(buildDefaultClient())
                 .build();
     }
@@ -861,6 +875,7 @@ public class BuildTestSchemaRule implements TestRule {
         receiptSaleTwo.setVATSerie(vatSerie);
         receiptSaleThree.setVATSerie(vatSerie);
         receiptSaleFour.setVATSerie(vatSerie);
+        receiptSaleClosedTable.setVATSerie(vatSerie);
         receiptPurchase.setVATSerie(vatSerie);
         receiptInventory.setVATSerie(vatSerie);
         receiptDisposal.setVATSerie(vatSerie);
@@ -895,6 +910,7 @@ public class BuildTestSchemaRule implements TestRule {
         receiptSaleTwo.setOwner(tableNormal);
         receiptSaleThree.setOwner(tableVirtual);
         receiptSaleFour.setOwner(tableVirtual);
+        receiptSaleClosedTable.setOwner(tableNormalClosed);
         receiptPurchase.setOwner(tablePurchase);
         receiptInventory.setOwner(tableInventory);
         receiptDisposal.setOwner(tableDisposal);
@@ -904,6 +920,8 @@ public class BuildTestSchemaRule implements TestRule {
     private void receiptsToTables() {
         tableNormal.setReceipt(new HashSet<Receipt>(
                 Arrays.asList(receiptSaleOne, receiptSaleTwo)));
+        tableNormalClosed.setReceipt(new HashSet<Receipt>(
+                Arrays.asList(receiptSaleClosedTable)));
         tableVirtual.setReceipt(new HashSet<Receipt>(
                 Arrays.asList(receiptSaleThree, receiptSaleFour)));
         tablePurchase.setReceipt(new HashSet<Receipt>(
