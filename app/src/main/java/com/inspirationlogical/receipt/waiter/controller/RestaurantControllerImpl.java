@@ -6,7 +6,6 @@ import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations
 import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations.not;
 import static com.inspirationlogical.receipt.waiter.controller.TableControllerImpl.TABLE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.getNodePosition;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.moveNode;
 import static com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler.addPressAndHold;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
@@ -148,7 +147,8 @@ public class RestaurantControllerImpl implements RestaurantController {
         tableForm.getContent().add(loadView(TABLE_FORM_VIEW_PATH, tableFormController));
         tableFormController.loadTable(tableController);
 
-        tableForm.show(tablesLab, control.getLayoutX(), control.getLayoutY());
+        tableForm.show(tablesLab, control.getLayoutX() + tablesLab.getScene().getWindow().getX(),
+                control.getLayoutY() + tablesLab.getScene().getWindow().getY() + 100);
     }
 
     @Override
@@ -159,10 +159,11 @@ public class RestaurantControllerImpl implements RestaurantController {
                 .tableBuilder()
                 .type(tableType)
                 .number(tableNumber)
+                .name("Névtelen")
                 .capacity(tableCapacity)
                 .visibility(true)
                 .coordinateX((int) (tableForm.getX() - tablesLab.getScene().getWindow().getX()))
-                .coordinateY((int) (tableForm.getY() - 100 - tablesLab.getScene().getWindow().getY())));
+                .coordinateY((int) (tableForm.getY() - tablesLab.getScene().getWindow().getY() - 100)));
 
         tableForm.hide();
         drawTable(tableView);

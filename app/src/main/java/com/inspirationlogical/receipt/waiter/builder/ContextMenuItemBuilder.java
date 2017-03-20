@@ -18,14 +18,14 @@ public class ContextMenuItemBuilder {
         return this;
     }
 
-    public ContextMenuItemBuilder withClickHandler(Consumer<Point2D> consumer) {
+    public ContextMenuItemBuilder withClickHandlerPoint2D(Consumer<Point2D> consumer) {
         menuItem.setOnAction(event -> {
             consumer.accept(new Point2D(menuItem.getParentPopup().getAnchorX(), menuItem.getParentPopup().getAnchorY()));
         });
         return this;
     }
 
-    public ContextMenuItemBuilder withClickHandler1(Consumer<Control> consumer) {
+    public ContextMenuItemBuilder withClickHandlerControl(Consumer<Control> consumer) {
         menuItem.setOnAction(event -> {
             Control control = (Control) menuItem.getParentPopup().getUserData();
             consumer.accept(control);

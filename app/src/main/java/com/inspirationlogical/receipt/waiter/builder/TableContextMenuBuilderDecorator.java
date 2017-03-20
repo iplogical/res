@@ -21,11 +21,25 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
         RestaurantViewState restaurantViewState = (RestaurantViewState) viewState;
         ContextMenu contextMenu = super.build(viewState);
         if (restaurantViewState.isConfigurationEnabled()) {
-            MenuItem menuItem = new ContextMenuItemBuilder()
+            MenuItem editTable = new ContextMenuItemBuilder()
                     .withLabel("Asztal szerkesztése")
-                    .withClickHandler1(restaurantController::showEditTableForm)
+                    .withClickHandlerControl(restaurantController::showEditTableForm)
                     .build();
-            contextMenu.getItems().add(contextMenu.getItems().size(), menuItem);
+            MenuItem deleteTable = new ContextMenuItemBuilder()
+                    .withLabel("Asztal törlése")
+                    .build();
+            MenuItem splitTables = new ContextMenuItemBuilder()
+                    .withLabel("Asztalok széthúzása")
+                    .build();
+            contextMenu.getItems().addAll(editTable, deleteTable, splitTables);
+        } else {
+            MenuItem rename = new ContextMenuItemBuilder()
+                    .withLabel("Átnevezés")
+                    .build();
+            MenuItem addGuests = new ContextMenuItemBuilder()
+                    .withLabel("Vendégek hozzáadása")
+                    .build();
+            contextMenu.getItems().addAll(rename, addGuests);
         }
         return contextMenu;
     }
