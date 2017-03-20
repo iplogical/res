@@ -107,7 +107,7 @@ public class ReceiptToXML {
             ReceiptBodyEntry entry = factory.createReceiptBodyEntry();
             entry.setName(record.getName());
             entry.setQtyPrice(BigInteger.valueOf(record.getSalePrice()));
-            entry.setQty(BigDecimal.valueOf(record.getSoldQuantity()).toBigInteger());
+            entry.setQty(BigDecimal.valueOf(record.getSoldQuantity()));
             entry.setTotal(BigInteger.valueOf((int)(record.getSoldQuantity() * record.getSalePrice())));
             return entry;
         }).collect(Collectors.toList());
