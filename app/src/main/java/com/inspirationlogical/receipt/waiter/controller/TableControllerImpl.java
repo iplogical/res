@@ -12,6 +12,7 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.Toggle;
 
 public class TableControllerImpl implements TableController {
 
@@ -36,13 +37,16 @@ public class TableControllerImpl implements TableController {
 
     private TableView tableView;
 
-    public TableControllerImpl(TableView tableView) {
+    private Toggle dragControl;
+
+    public TableControllerImpl(TableView tableView, Toggle dragControl) {
         this.tableView = tableView;
+        this.dragControl = dragControl;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(root);
+        addDragAndDrop(root, dragControl);
         initVisual();
         updateNode();
     }

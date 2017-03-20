@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.waiter.controller;
 
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
-import static com.inspirationlogical.receipt.waiter.controller.ContextMenuControllerImpl.CONTEXT_MENU_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
 import static org.mockito.Answers.RETURNS_DEEP_STUBS;
 import static org.mockito.Matchers.eq;
@@ -46,9 +45,6 @@ public class RestaurantControllerTest {
     private VBox addTableForm;
 
     @Mock
-    private ContextMenuController contextMenuController;
-
-    @Mock
     private TableFormController tableFormController;
 
     @Mock
@@ -70,7 +66,6 @@ public class RestaurantControllerTest {
 
         mockStatic(PressAndHoldHandler.class);
         mockStatic(ViewLoader.class);
-        when(ViewLoader.loadViewHidden(CONTEXT_MENU_VIEW_PATH, contextMenuController)).thenReturn(contextMenu);
         when(ViewLoader.loadViewHidden(TABLE_FORM_VIEW_PATH, tableFormController)).thenReturn(addTableForm);
 
         main = new Main();
@@ -88,8 +83,6 @@ public class RestaurantControllerTest {
         // Then
         verify(tables.getChildren()).add(contextMenu);
 
-        verifyStatic(times(1));
-        ViewLoader.loadViewHidden(eq(CONTEXT_MENU_VIEW_PATH), eq(contextMenuController));
 
         verifyStatic(times(1));
 //        PressAndHoldHandler.addPressAndHold(eq(futykos), eq(contextMenu), any());

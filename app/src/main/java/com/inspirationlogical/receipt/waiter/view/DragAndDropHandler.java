@@ -10,13 +10,7 @@ import javafx.scene.input.MouseEvent;
 
 public class DragAndDropHandler {
 
-    private static Toggle enableControl;
-
-    public static void setEnableControl(Toggle enableControl) {
-        DragAndDropHandler.enableControl = enableControl;
-    }
-
-    public static void addDragAndDrop(Node view) {
+    public static void addDragAndDrop(Node view, Toggle enableControl) {
         final Wrapper<Point2D> deltaWrapper = new Wrapper<>();
 
         view.setOnMousePressed(new EventHandler<MouseEvent>() {

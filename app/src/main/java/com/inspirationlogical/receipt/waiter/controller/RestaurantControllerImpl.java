@@ -7,12 +7,9 @@ import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations
 import static com.inspirationlogical.receipt.waiter.controller.TableControllerImpl.TABLE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.getNodePosition;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.hideNode;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.moveNode;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showNode;
 import static com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler.addPressAndHold;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
-import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadViewHidden;
 
 import java.net.URL;
 import java.util.HashSet;
@@ -30,7 +27,6 @@ import com.inspirationlogical.receipt.waiter.builder.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.builder.RestaurantContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.builder.TableContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.exception.ViewNotFoundException;
-import com.inspirationlogical.receipt.waiter.view.DragAndDropHandler;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 
 import javafx.event.Event;
@@ -38,11 +34,12 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
 import javafx.util.Duration;
 
 @Singleton
@@ -53,6 +50,9 @@ public class RestaurantControllerImpl implements RestaurantController {
     private static Predicate<TableView> NORMAL_TABLE = not(TableView::isVirtual);
     private static Predicate<TableView> VISIBLE_TABLE = TableView::isVisible;
     private static Predicate<TableView> NORMAL_VISIBLE_TABLE = and(NORMAL_TABLE, VISIBLE_TABLE);
+
+    @FXML
+    AnchorPane root;
 
     @FXML
     Button consumption;
@@ -75,7 +75,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     Label virtualLab;
 
-    private VBox tableForm;
+    private Popup tableForm;
 
     private TableFormController tableFormController;
 
@@ -107,23 +107,11 @@ public class RestaurantControllerImpl implements RestaurantController {
         }
     }
 
-    @FXML
-    public void onTablesSelected(Event event) {
-        toTablesPane(tableForm);
-    }
-
-    @FXML
-    public void onVirtualSelected(Event event) {
-        toVirtualPane(tableForm);
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initContextMenu();
-        initTableForm();
         initRestaurant();
         initTables();
-        DragAndDropHandler.setEnableControl(configuration);
     }
 
     private void initRestaurant() {
@@ -136,35 +124,35 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void initContextMenu() {
-        addPressAndHold(restaurantViewState, tablesLab, new RestaurantContextMenuBuilderDecorator(this, new BaseContextMenuBuilder()), Duration.millis(HOLD_DURATION_MILLIS));
-        addPressAndHold(restaurantViewState, virtualLab, new RestaurantContextMenuBuilderDecorator(this, new BaseContextMenuBuilder()), Duration.millis(HOLD_DURATION_MILLIS));
-    }
-
-    private void initTableForm() {
-        tableForm = (VBox) loadViewHidden(TABLE_FORM_VIEW_PATH, tableFormController);
-        tablesTab.getChildren().add(tableForm);
+        addPressAndHold(restaurantViewState, tablesLab,
+                new RestaurantContextMenuBuilderDecorator(this, new BaseContextMenuBuilder()),
+                Duration.millis(HOLD_DURATION_MILLIS));
+        addPressAndHold(restaurantViewState, virtualLab,
+                new RestaurantContextMenuBuilderDecorator(this, new BaseContextMenuBuilder()),
+                Duration.millis(HOLD_DURATION_MILLIS));
     }
 
     @Override
     public void showAddTableForm(Point2D position) {
+        tableForm = new Popup();
+        tableForm.getContent().add(loadView(TABLE_FORM_VIEW_PATH, tableFormController));
         tableFormController.loadTable(null);
-
-        showNode(tableForm, position);
+        tableForm.show(tablesLab, position.getX(), position.getY());
     }
 
     @Override
-    public void showEditTableForm(Node node) {
-        Point2D position = getNodePosition(node);
-        TableController tableController = getTableController(node);
+    public void showEditTableForm(Control control) {
+        TableController tableController = getTableController(control);
 
+        tableForm = new Popup();
+        tableForm.getContent().add(loadView(TABLE_FORM_VIEW_PATH, tableFormController));
         tableFormController.loadTable(tableController);
 
-        showNode(tableForm, position);
+        tableForm.show(tablesLab, control.getLayoutX(), control.getLayoutY());
     }
 
     @Override
     public void createTable(int tableNumber, int tableCapacity, boolean isVirtual) {
-        Point2D position = getNodePosition(tableForm);
         TableType tableType = isVirtual ? VIRTUAL : NORMAL;
 
         TableView tableView = restaurantServices.addTable(restaurantView, restaurantServices
@@ -172,10 +160,11 @@ public class RestaurantControllerImpl implements RestaurantController {
                 .type(tableType)
                 .number(tableNumber)
                 .capacity(tableCapacity)
-                .coordinateX((int) position.getX())
-                .coordinateY((int) position.getY()));
+                .visibility(true)
+                .coordinateX((int) (tableForm.getX() - tablesLab.getScene().getWindow().getX()))
+                .coordinateY((int) (tableForm.getY() - 100 - tablesLab.getScene().getWindow().getY())));
 
-        hideNode(tableForm);
+        tableForm.hide();
         drawTable(tableView);
     }
 
@@ -188,7 +177,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         restaurantServices.setTableType(tableView, isVirtual ? VIRTUAL : NORMAL);
         restaurantServices.setTableCapacity(tableView, tableCapacity);
 
-        hideNode(tableForm);
+        tableForm.hide();
         Node node = tableController.getRoot();
         if (isVirtual) {
             toVirtualPane(node);
@@ -233,13 +222,15 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void drawTable(TableView tableView) {
-        TableController tableController = new TableControllerImpl(tableView);
+        TableController tableController = new TableControllerImpl(tableView, configuration);
 
         tableControllers.add(tableController);
 
         loadView(TABLE_VIEW_PATH, tableController);
 
-        addPressAndHold(restaurantViewState, tableController.getRoot(), new TableContextMenuBuilderDecorator(new BaseContextMenuBuilder()), Duration.millis(HOLD_DURATION_MILLIS));
+        addPressAndHold(restaurantViewState, tableController.getRoot(),
+                new TableContextMenuBuilderDecorator(this, new BaseContextMenuBuilder()),
+                Duration.millis(HOLD_DURATION_MILLIS));
 
          Label label = tableView.isVirtual() ? virtualLab : tablesLab;
 

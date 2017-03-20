@@ -25,7 +25,7 @@ public class TableFormControllerImpl implements TableFormController {
     public static final String TABLE_FORM_VIEW_PATH = "/view/fxml/TableForm.fxml";
 
     @FXML
-    VBox node;
+    VBox root;
 
     @FXML
     TextField number;
@@ -52,7 +52,7 @@ public class TableFormControllerImpl implements TableFormController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(node);
+        addDragAndDrop(root, null);
         number.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         capacity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
     }
@@ -75,7 +75,7 @@ public class TableFormControllerImpl implements TableFormController {
 
     @FXML
     public void onCancel(MouseEvent event) {
-        hideNode(node);
+        hideNode(root);
     }
 
     @Override
