@@ -27,6 +27,7 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
                     .build();
             MenuItem deleteTable = new ContextMenuItemBuilder()
                     .withLabel("Asztal törlése")
+                    .withClickHandlerControl(restaurantController::deleteTable)
                     .build();
             MenuItem splitTables = new ContextMenuItemBuilder()
                     .withLabel("Asztalok széthúzása")

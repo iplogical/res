@@ -7,6 +7,7 @@ import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations
 import static com.inspirationlogical.receipt.waiter.controller.TableControllerImpl.TABLE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.moveNode;
+import static com.inspirationlogical.receipt.waiter.view.NodeUtility.removeNode;
 import static com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler.addPressAndHold;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 
@@ -46,6 +47,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     public static final String RESTAURANT_VIEW_PATH = "/view/fxml/Restaurant.fxml";
     private static final int HOLD_DURATION_MILLIS = 500;
+    private static final int LAYOUT_OFFSET_Y = 100;
     private static Predicate<TableView> NORMAL_TABLE = not(TableView::isVirtual);
     private static Predicate<TableView> VISIBLE_TABLE = TableView::isVisible;
     private static Predicate<TableView> NORMAL_VISIBLE_TABLE = and(NORMAL_TABLE, VISIBLE_TABLE);
@@ -97,13 +99,14 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void onConfigToggle(Event event) {
         restaurantViewState.setConfigurationEnabled(configuration.isSelected());
         if (!configuration.isSelected()) {
-            tableControllers.forEach(tableController -> {
-                Node view = tableController.getRoot();
-                Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
-                restaurantServices.moveTable(tableController.getView(), position);
-                return;
-            });
+            tableControllers.forEach(this::saveTablePosition);
         }
+    }
+
+    private void saveTablePosition(TableController tableController) {
+        Node view = tableController.getRoot();
+        Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
+        restaurantServices.moveTable(tableController.getView(), position);
     }
 
     @Override
@@ -136,6 +139,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         tableForm = new Popup();
         tableForm.getContent().add(loadView(TABLE_FORM_VIEW_PATH, tableFormController));
         tableFormController.loadTable(null);
+
         tableForm.show(tablesLab, position.getX(), position.getY());
     }
 
@@ -147,13 +151,15 @@ public class RestaurantControllerImpl implements RestaurantController {
         tableForm.getContent().add(loadView(TABLE_FORM_VIEW_PATH, tableFormController));
         tableFormController.loadTable(tableController);
 
-        tableForm.show(tablesLab, control.getLayoutX() + tablesLab.getScene().getWindow().getX(),
-                control.getLayoutY() + tablesLab.getScene().getWindow().getY() + 100);
+        Point2D position = calculatePopupPosition(control, tablesTab);
+
+        tableForm.show(tablesTab, position.getX(), position.getY());
     }
 
     @Override
     public void createTable(int tableNumber, int tableCapacity, boolean isVirtual) {
         TableType tableType = isVirtual ? VIRTUAL : NORMAL;
+        Point2D position = calculateTablePosition(tableForm, tablesTab);
 
         TableView tableView = restaurantServices.addTable(restaurantView, restaurantServices
                 .tableBuilder()
@@ -162,38 +168,41 @@ public class RestaurantControllerImpl implements RestaurantController {
                 .name("Névtelen")
                 .capacity(tableCapacity)
                 .visibility(true)
-                .coordinateX((int) (tableForm.getX() - tablesLab.getScene().getWindow().getX()))
-                .coordinateY((int) (tableForm.getY() - tablesLab.getScene().getWindow().getY() - 100)));
+                .coordinateX((int) position.getX())
+                .coordinateY((int) position.getY()));
 
         tableForm.hide();
+        
         drawTable(tableView);
     }
 
     @Override
     public void editTable(TableController tableController, Integer tableNumber, Integer tableCapacity, boolean isVirtual) {
         TableView tableView = tableController.getView();
-        System.out.println("Edit table " + tableView.getTableNumber());
 
         restaurantServices.setTableNumber(tableView, tableNumber);
         restaurantServices.setTableType(tableView, isVirtual ? VIRTUAL : NORMAL);
         restaurantServices.setTableCapacity(tableView, tableCapacity);
 
         tableForm.hide();
+
         Node node = tableController.getRoot();
-        if (isVirtual) {
-            toVirtualPane(node);
-        } else {
-            toTablesPane(node);
-        }
+
+        addNodeToPane(node, isVirtual);
+
         tableController.updateNode();
     }
 
     @Override
     public void deleteTable(Node node) {
-        TableView tableView = getTableController(node).getView();
-        System.out.println("Delete table " + tableView.getTableNumber());
+        TableController tableController = getTableController(node);
+        TableView tableView = tableController.getView();
 
         restaurantServices.deleteTable(tableView);
+
+        removeNode((Pane) node.getParent(), node);
+
+        tableControllers.remove(tableController);
     }
 
     @Override
@@ -204,6 +213,28 @@ public class RestaurantControllerImpl implements RestaurantController {
     @Override
     public void splitTables(Node node, int producedTableNumber) {
 
+    }
+
+    private Point2D calculatePopupPosition(Control source, Pane owner) {
+        double posX = source.getLayoutX() + owner.getScene().getWindow().getX();
+        double posY = source.getLayoutY() + owner.getScene().getWindow().getY() + LAYOUT_OFFSET_Y;
+
+        return new Point2D(posX, posY);
+    }
+
+    private Point2D calculateTablePosition(Popup source, Pane owner) {
+        double posX = source.getX() - owner.getScene().getWindow().getX();
+        double posY = source.getY() - owner.getScene().getWindow().getY() - LAYOUT_OFFSET_Y;
+
+        return new Point2D(posX, posY);
+    }
+
+    private void addNodeToPane(Node node, boolean isVirtual) {
+        if (isVirtual) {
+            toVirtualPane(node);
+        } else {
+            toTablesPane(node);
+        }
     }
 
     private void toTablesPane(Node node) {
@@ -233,8 +264,6 @@ public class RestaurantControllerImpl implements RestaurantController {
                 new TableContextMenuBuilderDecorator(this, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
 
-         Label label = tableView.isVirtual() ? virtualLab : tablesLab;
-
-        ((Pane) label.getGraphic()).getChildren().add(tableController.getRoot());
+        addNodeToPane(tableController.getRoot(), tableView.isVirtual());
     }
 }

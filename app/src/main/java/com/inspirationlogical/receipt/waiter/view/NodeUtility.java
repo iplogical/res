@@ -27,4 +27,10 @@ public class NodeUtility {
             if (!target.getChildren().contains(node)) target.getChildren().add(node);
         }
     }
+
+    public static void removeNode(Pane parent, Node node) {
+        if (node != null) {
+            if (parent.getChildren().contains(node)) parent.getChildren().remove(node);
+        }
+    }
 }
