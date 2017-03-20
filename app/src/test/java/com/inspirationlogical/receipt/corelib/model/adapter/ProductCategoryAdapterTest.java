@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -14,6 +15,12 @@ public class ProductCategoryAdapterTest {
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
+
+    @Test
+    public void testGetRootCategory() {
+        ProductCategoryAdapter rootCategory = ProductCategoryAdapter.getRootCategory(schema.getEntityManager());
+        assertEquals(ProductCategoryType.ROOT, rootCategory.getAdaptee().getType());
+    }
 
     @Test
     public void testLeafNumberOfProductsUnderLeafOne() {
@@ -33,4 +40,10 @@ public class ProductCategoryAdapterTest {
         assertEquals(1,list_product_two.size());
         assertEquals("productTwo",list_product_two.get(0).getAdaptee().getLongName());
     }
+
+    @Test
+    public void testGetAdHocProduct() {
+
+    }
+
 }

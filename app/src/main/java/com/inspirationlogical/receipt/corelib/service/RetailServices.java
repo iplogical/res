@@ -12,7 +12,7 @@ public interface RetailServices {
 
     void sellProduct(TableView tableView, ProductView productView, int amount, PaymentParams paymentParams);
 
-    void sellAdHocProduct(TableView tableView, ProductView productView, int amount, PaymentParams paymentParams);
+    void sellAdHocProduct(TableView tableView, int amount, AdHocProductParams adHocProductParams, PaymentParams paymentParams);
 
     void payTable(TableView tableView, PaymentParams paymentParams);
 

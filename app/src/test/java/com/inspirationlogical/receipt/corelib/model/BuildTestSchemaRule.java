@@ -39,6 +39,7 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Product productFour;
     private @Getter Product productFive;
     private @Getter Product productSix;
+    private @Getter Product productAdHoc;
 
     private @Getter ProductCategory root;
     private @Getter ProductCategory aggregate;
@@ -50,6 +51,7 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter ProductCategory pseudoFour;
     private @Getter ProductCategory pseudoFive;
     private @Getter ProductCategory pseudoSix;
+    private @Getter ProductCategory pseudoAdHoc;
 
     private @Getter PriceModifier priceModifierOne;
     private @Getter PriceModifier priceModifierTwo;
@@ -200,6 +202,7 @@ public class BuildTestSchemaRule implements TestRule {
         buildProductFour();
         buildProductFive();
         buildProductSix();
+        buildProductAdHoc();
     }
 
     private void buildProductCategories() {
@@ -213,6 +216,7 @@ public class BuildTestSchemaRule implements TestRule {
         buildPseudoFour();
         buildPseudoFive();
         buildPseudoSix();
+        buildPseudoAdHoc();
     }
 
     private void buildPriceModifiers() {
@@ -374,6 +378,18 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
+    private void buildProductAdHoc() {
+        productAdHoc = Product.builder()
+                .longName("productAdHoc")
+                .shortName("productAdHoc")
+                 .status(ProductStatus.ACTIVE)
+                .quantityUnit(QunatityUnit.PIECE)
+                .etalonQuantity(EtalonQuantity.KILOGRAM)
+                .type(ProductType.AD_HOC_PRODUCT)
+                .build();
+    }
+
+
     private void buildRoot() {
         root = ProductCategory.builder()
                 .name("root")
@@ -441,6 +457,13 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildPseudoSix() {
         pseudoSix = ProductCategory.builder()
                 .name("pseudoSix")
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoAdHoc() {
+        pseudoAdHoc = ProductCategory.builder()
+                .name("pseudoAdHoc")
                 .type(ProductCategoryType.PSEUDO)
                 .build();
     }
@@ -860,13 +883,14 @@ public class BuildTestSchemaRule implements TestRule {
     
     private void leafsAndPseudos() {
         leafOne.setChildren(new HashSet<ProductCategory>(
-                Arrays.asList(pseudoOne, pseudoTwo, pseudoFive, pseudoSix)));
+                Arrays.asList(pseudoOne, pseudoTwo, pseudoFive, pseudoSix, pseudoAdHoc)));
         leafTwo.setChildren(new HashSet<ProductCategory>(
                 Arrays.asList(pseudoThree, pseudoFour)));
         pseudoOne.setParent(leafOne);
         pseudoTwo.setParent(leafOne);
         pseudoFive.setParent(leafOne);
         pseudoSix.setParent(leafOne);
+        pseudoAdHoc.setParent(leafOne);
         pseudoThree.setParent(leafTwo);
         pseudoFour.setParent(leafTwo);
     }
@@ -899,6 +923,9 @@ public class BuildTestSchemaRule implements TestRule {
 
         pseudoSix.setProduct(productSix);
         productSix.setCategory(pseudoSix);
+
+        pseudoAdHoc.setProduct(productAdHoc);
+        productAdHoc.setCategory(pseudoAdHoc);
     }
 
     private void productFourAndRecipes() {

@@ -50,6 +50,9 @@ public class RetailServicesTest {
     private PaymentParams paymentParams;
 
     @Mock
+    private AdHocProductParams adHocParams;
+
+    @Mock
     private ProductAdapter productAdapter;
 
     @Before
@@ -78,6 +81,19 @@ public class RetailServicesTest {
         //then
         verify(tableAdapter).getActiveReceipt();
         verify(receiptAdapter).sellProduct(productAdapter, 1, paymentParams);
+    }
+
+    @Test
+    public void testSellAdHocProduct() {
+        //given
+        when(tableView.getAdapter()).thenReturn(tableAdapter);
+        when(productView.getAdapter()).thenReturn(productAdapter);
+        when(tableAdapter.getActiveReceipt()).thenReturn(receiptAdapter);
+        //when
+        service.sellAdHocProduct(tableView, 1, adHocParams, paymentParams);
+        //then
+        verify(tableAdapter).getActiveReceipt();
+        verify(receiptAdapter).sellAdHocProduct(1, adHocParams, paymentParams);
     }
 
     @Test

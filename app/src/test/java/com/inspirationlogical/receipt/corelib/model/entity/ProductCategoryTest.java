@@ -19,7 +19,7 @@ public class ProductCategoryTest {
 
     @Test
     public void testProductCategoryCreation() {
-        assertEquals(10, getAllCategories().size());
+        assertEquals(11, getAllCategories().size());
     }
 
     @Test

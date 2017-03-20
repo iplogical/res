@@ -3,6 +3,6 @@ package com.inspirationlogical.receipt.corelib.model.enums;
 public enum ProductType {
 
     SELLABLE,
-    SPECIAL_SELLABLE,
+    AD_HOC_PRODUCT,
     PARTIALLY_PAYABLE;
 }

@@ -2,12 +2,14 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
+import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptAdapterListeners;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
+import com.inspirationlogical.receipt.corelib.service.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.service.Pair;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 
@@ -59,6 +61,26 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             record.setOwner(adaptee);
             adaptee.getRecords().add(record);
         });
+    }
+
+    public void sellAdHocProduct(int amount, AdHocProductParams adHocProductParams, PaymentParams paymentParams) {
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            ProductAdapter adHocProduct = ProductAdapter.getAdHocProduct(EntityManagerProvider.getEntityManager());
+            ReceiptRecord record = ReceiptRecord.builder()
+                    .product(adHocProduct.getAdaptee())
+                    .type(paymentParams.getReceiptRecordType())
+                    .created(new GregorianCalendar())
+                    .name(adHocProductParams.getName())
+                    .soldQuantity(amount)
+                    .purchasePrice(adHocProductParams.getPurchasePrice())
+                    .salePrice(adHocProductParams.getSalePrice())
+                    .VAT(VATAdapter.getVatByName(paymentParams.getReceiptRecordType(), VATStatus.VALID).getAdaptee().getVAT())
+                    .discountPercent(0)
+                    .build();
+            record.setOwner(adaptee);
+            adaptee.getRecords().add(record);
+        });
+
     }
 
     public Collection<ReceiptRecordAdapter> getSoldProducts() {

@@ -19,7 +19,7 @@ public class ProductTest {
 
     @Test
     public void testProductCreation() {
-        assertListSize();
+        assertEquals(7, getProductList().size());
     }
 
     @Test(expected = PersistenceException.class)
@@ -100,10 +100,6 @@ public class ProductTest {
         List<Product> products = getProductList().stream().filter(p -> p.getLongName() == "productFour").collect(Collectors.toList());
         assertEquals(1,products.size());
         assertEquals(3, products.get(0).getStock().size());
-    }
-
-    private void assertListSize() {
-        assertEquals(6, getProductList().size());
     }
 
     private List<Product> getProductList() {

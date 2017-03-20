@@ -10,6 +10,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
+import com.inspirationlogical.receipt.corelib.service.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 import org.junit.Before;
 import org.junit.Rule;
@@ -56,6 +57,17 @@ public class ReceiptAdapterTest {
     @Test
     public void testSellProduct() {
         receiptAdapter.sellProduct(productAdapter, 1, paymentParams);
+        assertEquals(5, receiptAdapter.getSoldProducts().size());
+    }
+
+    @Test
+    public void testAdHocSellProduct() {
+        AdHocProductParams productParams = AdHocProductParams.builder()
+                .name("Hot Milk")
+                .purchasePrice(200)
+                .salePrice(400)
+                .build();
+        receiptAdapter.sellAdHocProduct(1, productParams, paymentParams);
         assertEquals(5, receiptAdapter.getSoldProducts().size());
     }
 
