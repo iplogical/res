@@ -36,7 +36,7 @@ public class RetailServicesImpl extends AbstractServices implements RetailServic
     }
 
     @Override
-    public void paySelective(TableView tableView, Collection<Pair<ReceiptRecordView, Double>> records, PaymentParams paymentParams) {
-
+    public void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
+        ((TableViewImpl)tableView).getAdapter().paySelective(records, paymentParams);
     }
 }

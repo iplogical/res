@@ -36,4 +36,9 @@ public @Data class VATSerie extends AbstractEntity {
 
     @Tolerate
     VATSerie(){}
+
+    @Override
+    public String toString() {
+        return "VATSerie: status=" + status;
+    }
 }

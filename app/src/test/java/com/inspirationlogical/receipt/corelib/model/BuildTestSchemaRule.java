@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import javax.persistence.EntityManager;
@@ -36,6 +37,8 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Product productTwo;
     private @Getter Product productThree;
     private @Getter Product productFour;
+    private @Getter Product productFive;
+    private @Getter Product productSix;
 
     private @Getter ProductCategory root;
     private @Getter ProductCategory aggregate;
@@ -45,6 +48,8 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter ProductCategory pseudoTwo;
     private @Getter ProductCategory pseudoThree;
     private @Getter ProductCategory pseudoFour;
+    private @Getter ProductCategory pseudoFive;
+    private @Getter ProductCategory pseudoSix;
 
     private @Getter PriceModifier priceModifierOne;
     private @Getter PriceModifier priceModifierTwo;
@@ -72,6 +77,8 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter ReceiptRecord receiptRecordSaleTwo;
     private @Getter ReceiptRecord receiptRecordSaleThree;
     private @Getter ReceiptRecord receiptRecordSaleFour;
+    private @Getter ReceiptRecord receiptRecordSaleFive;
+    private @Getter ReceiptRecord receiptRecordSaleSix;
     private @Getter ReceiptRecord receiptRecordOther;
 
     private @Getter Table tableNormal;
@@ -191,6 +198,8 @@ public class BuildTestSchemaRule implements TestRule {
         buildProductTwo();
         buildProductThree();
         buildProductFour();
+        buildProductFive();
+        buildProductSix();
     }
 
     private void buildProductCategories() {
@@ -202,8 +211,9 @@ public class BuildTestSchemaRule implements TestRule {
         buildPseudoTwo();
         buildPseudoThree();
         buildPseudoFour();
+        buildPseudoFive();
+        buildPseudoSix();
     }
-
 
     private void buildPriceModifiers() {
         buildPriceModifierOne();
@@ -241,6 +251,8 @@ public class BuildTestSchemaRule implements TestRule {
         buildReceiptRecordSaleTwo();
         buildReceiptRecordSaleThree();
         buildReceiptRecordSaleFour();
+        buildReceiptRecordSaleFive();
+        buildReceiptRecordSaleSix();
         buildReceiptRecordOther();
     }
 
@@ -338,6 +350,30 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
+    private void buildProductFive() {
+        productFive = Product.builder()
+                .longName("productFive")
+                .shortName("productFive")
+                .salePrice(780)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QunatityUnit.PIECE)
+                .etalonQuantity(EtalonQuantity.KILOGRAM)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildProductSix() {
+        productSix = Product.builder()
+                .longName("productSix")
+                .shortName("productSix")
+                .salePrice(4990)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QunatityUnit.PIECE)
+                .etalonQuantity(EtalonQuantity.KILOGRAM)
+                .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+
     private void buildRoot() {
         root = ProductCategory.builder()
                 .name("root")
@@ -394,6 +430,20 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
+
+    private void buildPseudoFive() {
+        pseudoFive = ProductCategory.builder()
+                .name("pseudoFive")
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoSix() {
+        pseudoSix = ProductCategory.builder()
+                .name("pseudoSix")
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
 
     private void buildPriceModifierOne() {
         priceModifierOne = PriceModifier.builder()
@@ -588,6 +638,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .salePrice(440)
                 .purchasePrice(250)
                 .soldQuantity(1D)
+                .created(Calendar.getInstance())
                 .build();
     }
 
@@ -599,6 +650,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .soldQuantity(2D)
                 .salePrice(560)
                 .purchasePrice(300)
+                .created(Calendar.getInstance())
                 .build();
     }
 
@@ -607,6 +659,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("C")
                 .soldQuantity(1D)
                 .type(ReceiptRecordType.HERE)
+                .created(Calendar.getInstance())
                 .build();
     }
 
@@ -615,15 +668,41 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("D")
                 .soldQuantity(0.5)
                 .type(ReceiptRecordType.HERE)
+                .created(Calendar.getInstance())
                 .build();
     }
 
+
+    private void buildReceiptRecordSaleFive() {
+        receiptRecordSaleFive = ReceiptRecord.builder()
+                .name("Edelweiss 0,5L")
+                .type(ReceiptRecordType.HERE)
+                .VAT(27)
+                .salePrice(780)
+                .purchasePrice(350)
+                .soldQuantity(2D)
+                .created(Calendar.getInstance())
+                .build();
+    }
+
+    private void buildReceiptRecordSaleSix() {
+        receiptRecordSaleSix = ReceiptRecord.builder()
+                .name("Game Up Menu")
+                .type(ReceiptRecordType.HERE)
+                .VAT(27)
+                .salePrice(4990)
+                .purchasePrice(2500)
+                .soldQuantity(2D)
+                .created(Calendar.getInstance())
+                .build();
+    }
 
     private void buildReceiptRecordOther() {
         receiptRecordOther = ReceiptRecord.builder()
                 .name("E")
                 .soldQuantity(1)
                 .type(ReceiptRecordType.HERE)
+                .created(Calendar.getInstance())
                 .build();
     }
 
@@ -781,11 +860,13 @@ public class BuildTestSchemaRule implements TestRule {
     
     private void leafsAndPseudos() {
         leafOne.setChildren(new HashSet<ProductCategory>(
-                Arrays.asList(pseudoOne, pseudoTwo)));
+                Arrays.asList(pseudoOne, pseudoTwo, pseudoFive, pseudoSix)));
         leafTwo.setChildren(new HashSet<ProductCategory>(
                 Arrays.asList(pseudoThree, pseudoFour)));
         pseudoOne.setParent(leafOne);
         pseudoTwo.setParent(leafOne);
+        pseudoFive.setParent(leafOne);
+        pseudoSix.setParent(leafOne);
         pseudoThree.setParent(leafTwo);
         pseudoFour.setParent(leafTwo);
     }
@@ -812,6 +893,12 @@ public class BuildTestSchemaRule implements TestRule {
 
         pseudoFour.setProduct(productFour);
         productFour.setCategory(pseudoFour);
+
+        pseudoFive.setProduct(productFive);
+        productFive.setCategory(pseudoFive);
+
+        pseudoSix.setProduct(productSix);
+        productSix.setCategory(pseudoSix);
     }
 
     private void productFourAndRecipes() {
@@ -850,13 +937,16 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void receiptsAndReceiptRecords() {
         receiptSaleOne.setRecords(new HashSet<ReceiptRecord>(
-                Arrays.asList(receiptRecordSaleOne, receiptRecordSaleTwo)));
+                Arrays.asList(receiptRecordSaleOne, receiptRecordSaleTwo,
+                        receiptRecordSaleFive, receiptRecordSaleSix)));
         receiptSaleTwo.setRecords(new HashSet<ReceiptRecord>(
                 Arrays.asList(receiptRecordSaleThree, receiptRecordSaleFour)));
         receiptOther.setRecords(new HashSet<ReceiptRecord>(
                 Arrays.asList(receiptRecordOther)));
         receiptRecordSaleOne.setOwner(receiptSaleOne);
         receiptRecordSaleTwo.setOwner(receiptSaleOne);
+        receiptRecordSaleFive.setOwner(receiptSaleOne);
+        receiptRecordSaleSix.setOwner(receiptSaleOne);
         receiptRecordSaleThree.setOwner(receiptSaleTwo);
         receiptRecordSaleFour.setOwner(receiptSaleTwo);
         receiptRecordOther.setOwner(receiptOther);
@@ -868,6 +958,8 @@ public class BuildTestSchemaRule implements TestRule {
         receiptRecordSaleTwo.setProduct(productTwo);
         receiptRecordSaleThree.setProduct(productThree);
         receiptRecordSaleFour.setProduct(productFour);
+        receiptRecordSaleFive.setProduct(productFive);
+        receiptRecordSaleSix.setProduct(productSix);
     }
 
     private void receiptsAndVatSerie() {

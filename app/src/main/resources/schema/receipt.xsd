@@ -60,7 +60,7 @@
 <xs:complexType name="receipt_body_entry">
   <xs:sequence>
     <xs:element name="name" type="xs:string"/>
-    <xs:element name="qty" type="xs:integer"/>
+    <xs:element name="qty" type="xs:double"/>
     <xs:element name="qty_price" type="xs:integer"/>
     <xs:element name="total" type="xs:integer"/>
   </xs:sequence>

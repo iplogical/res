@@ -66,4 +66,9 @@ public @Data class Table extends AbstractEntity {
 
     @Tolerate
     Table(){}
+
+    @Override
+    public String toString() {
+        return "Table: type=" + type + ", number=" + number + ", name=" + name + ", visibility=" + visibility;
+    }
 }

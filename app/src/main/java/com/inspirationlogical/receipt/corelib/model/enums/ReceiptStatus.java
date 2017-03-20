@@ -4,5 +4,6 @@ public enum ReceiptStatus {
 
     OPEN,
     CLOSED,
+    PENDING,
     CANCELED;
 }

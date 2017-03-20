@@ -5,6 +5,7 @@ import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,8 @@ import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.persistence.EntityManager;
+
+import java.util.Collection;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -39,6 +42,9 @@ public class RetailServicesTest {
 
     @Mock
     private ProductViewImpl productView;
+
+    @Mock
+    private Collection<ReceiptRecordView> records;
 
     @Mock
     private PaymentParams paymentParams;
@@ -82,5 +88,15 @@ public class RetailServicesTest {
         service.payTable(tableView, paymentParams);
         //then
         verify(tableAdapter).payTable(paymentParams);
+    }
+
+    @Test
+    public void testPaySelective() {
+        //given
+        when(tableView.getAdapter()).thenReturn(tableAdapter);
+        //when
+        service.paySelective(tableView, records, paymentParams);
+        //then
+        verify(tableAdapter).paySelective(records, paymentParams);
     }
 }

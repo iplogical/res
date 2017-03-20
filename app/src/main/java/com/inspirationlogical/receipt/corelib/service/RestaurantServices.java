@@ -35,6 +35,7 @@ public interface RestaurantServices {
 
     void deleteTable(TableView tableView);
 
+    // TODO: remove this when not used by the UI.
     TableView addTable(RestaurantView restaurant, TableType type, int tableNumber);
 
     TableView addTable(RestaurantView restaurant, TableBuilder builder);

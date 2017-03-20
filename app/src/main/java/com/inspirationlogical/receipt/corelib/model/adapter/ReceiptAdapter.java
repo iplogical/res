@@ -1,16 +1,18 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptAdapterListeners;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
+import com.inspirationlogical.receipt.corelib.service.Pair;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.GregorianCalendar;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ReceiptAdapter extends AbstractAdapter<Receipt> {
@@ -56,7 +58,6 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                     .build();
             record.setOwner(adaptee);
             adaptee.getRecords().add(record);
-            // FIXME: Persist new ReciptRecord?
         });
     }
 
@@ -69,10 +70,11 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
 
     public void close(PaymentParams paymentParams){
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            if(adaptee.getStatus() == ReceiptStatus.CLOSED) {
+                throw new IllegalReceiptStateException("Close operation is illegal for a CLOSED receipt");
+            }
             adaptee.setStatus(ReceiptStatus.CLOSED);
-            adaptee.setPaymentMethod(paymentParams.getPaymentMethod());
             adaptee.setClosureTime(Calendar.getInstance());
-            adaptee.setUserCode(paymentParams.getUserCode());
             adaptee.setSumPurchaseGrossPrice((int)adaptee.getRecords().stream()
                     .mapToDouble(ReceiptAdapter::calculatePurchaseGrossPrice).sum());
             adaptee.setSumPurchaseNetPrice((int)adaptee.getRecords().stream()
@@ -82,9 +84,55 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             adaptee.setSumSaleNetPrice((int)adaptee.getRecords().stream()
                     .mapToDouble(ReceiptAdapter::calculateSaleNetPrice).sum());
             adaptee.setDiscountPercent(calculateDiscount(paymentParams));
+            adaptee.setUserCode(paymentParams.getUserCode());
+            adaptee.setPaymentMethod(paymentParams.getPaymentMethod());
             applyDiscountOnSalePrices();
             ReceiptAdapterListeners.getAllListeners().forEach((l) -> {l.onClose(this);});
         });
+    }
+
+    public void paySelective(TableAdapter tableAdapter, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
+        final ReceiptAdapter[] paidReceipt = new ReceiptAdapter[1];
+
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            Map<Long, ReceiptRecordView> recordsToPay = records.stream()
+                    .collect(Collectors.toMap(ReceiptRecordView::getId, Function.identity()));
+            List<ReceiptRecord> notPaidRecords = adaptee.getRecords().stream()
+                    .filter(record -> !recordsToPay.containsKey(record.getId()))
+                    .collect(Collectors.toList());
+            List<ReceiptRecord> paidRecords = adaptee.getRecords().stream()
+                    .filter(record -> recordsToPay.containsKey(record.getId()))
+                    .filter(record -> recordsToPay.get(record.getId()).getPaidQuantity() == record.getSoldQuantity())
+                    .collect(Collectors.toList());
+            List<ReceiptRecord> partiallyNotPaidRecords = adaptee.getRecords().stream()
+                    .filter(record -> recordsToPay.containsKey(record.getId()))
+                    .filter(record -> recordsToPay.get(record.getId()).getPaidQuantity() != record.getSoldQuantity())
+                    .filter(record -> { paidRecords.add(ReceiptRecord.builder()
+                            .product(record.getProduct())
+                            .type(record.getType())
+                            .created(Calendar.getInstance())
+                            .name(record.getName())
+                            .soldQuantity(recordsToPay.get(record.getId()).getPaidQuantity())
+                            .purchasePrice(record.getPurchasePrice())
+                            .salePrice(record.getSalePrice())
+                            .VAT(record.getVAT())
+                            .discountPercent(record.getDiscountPercent())
+                            .build());
+                        record.setSoldQuantity(record.getSoldQuantity() - recordsToPay.get(record.getId()).getPaidQuantity());
+                        return true;})
+                    .collect(Collectors.toList());
+            notPaidRecords.addAll(partiallyNotPaidRecords);
+            notPaidRecords.forEach(record -> record.setOwner(adaptee));
+            adaptee.setRecords(notPaidRecords);
+
+            paidReceipt[0] = receiptAdapterFactory(ReceiptType.SALE);
+            paidReceipt[0].getAdaptee().setRecords(paidRecords);
+            paidRecords.forEach(record -> record.setOwner(paidReceipt[0].getAdaptee()));
+            paidReceipt[0].getAdaptee().setStatus(ReceiptStatus.PENDING);
+            paidReceipt[0].getAdaptee().setOwner(tableAdapter.getAdaptee());
+            tableAdapter.getAdaptee().getReceipt().add(paidReceipt[0].getAdaptee());
+        });
+        paidReceipt[0].close(paymentParams);
     }
 
     private double calculateDiscount(PaymentParams paymentParams) {

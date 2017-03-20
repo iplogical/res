@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import java.util.Collection;
 import java.util.Calendar;
+import java.util.Collection;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

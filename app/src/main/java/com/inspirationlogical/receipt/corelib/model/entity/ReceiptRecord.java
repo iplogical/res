@@ -46,9 +46,6 @@ public @Data class ReceiptRecord extends AbstractEntity {
     @NotNull
     private ReceiptRecordType type;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar created;
-
     @NotEmpty
     private String name;
 
@@ -62,6 +59,10 @@ public @Data class ReceiptRecord extends AbstractEntity {
 
     @Max(100)
     private double discountPercent;
+
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar created;
 
     @Tolerate
     ReceiptRecord(){}

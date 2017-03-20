@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.corelib.utility;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -106,8 +107,8 @@ public class ReceiptToXML {
             ReceiptBodyEntry entry = factory.createReceiptBodyEntry();
             entry.setName(record.getName());
             entry.setQtyPrice(BigInteger.valueOf(record.getSalePrice()));
-            entry.setQty(BigInteger.valueOf((int)record.getSoldQuantity()));
-            entry.setTotal(BigInteger.valueOf((int)record.getSoldQuantity() * record.getSalePrice()));
+            entry.setQty(BigDecimal.valueOf(record.getSoldQuantity()));
+            entry.setTotal(BigInteger.valueOf((int)(record.getSoldQuantity() * record.getSalePrice())));
             return entry;
         }).collect(Collectors.toList());
         body.getEntry().addAll(records);

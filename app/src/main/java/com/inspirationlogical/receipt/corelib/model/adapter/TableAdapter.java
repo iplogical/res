@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
@@ -11,6 +12,8 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
+import com.inspirationlogical.receipt.corelib.service.Pair;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 
 import javafx.geometry.Point2D;
@@ -39,7 +42,9 @@ public class TableAdapter extends AbstractAdapter<Table>
     }
 
     public ReceiptAdapter getActiveReceipt() {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+
+        });
         List<ReceiptAdapter> adapters = adaptee.getReceipt()
                 .stream()
                 .filter(elem -> elem.getStatus().equals(ReceiptStatus.OPEN))
@@ -110,6 +115,15 @@ public class TableAdapter extends AbstractAdapter<Table>
         });
     }
 
+    public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            if (!isTableOpen()) {
+                throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
+            }
+            getActiveReceipt().paySelective(this, records, paymentParams);
+        });
+    }
+
     public void deleteTable() {
         GuardedTransaction.RunWithDelete(adaptee, () -> {
             if(isTableOpen()) {
@@ -123,7 +137,8 @@ public class TableAdapter extends AbstractAdapter<Table>
         adaptee.getReceipt().add(receiptAdapter.getAdaptee());
     }
 
-    private boolean isTableOpen() {
+    protected boolean isTableOpen() {
         return this.getActiveReceipt() != null;
     }
+
 }

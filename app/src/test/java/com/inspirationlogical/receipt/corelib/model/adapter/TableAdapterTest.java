@@ -1,10 +1,15 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 import javafx.geometry.Point2D;
 import org.junit.Before;
@@ -12,8 +17,13 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.persistence.RollbackException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class TableAdapterTest {
 
@@ -133,6 +143,12 @@ public class TableAdapterTest {
     @Test(expected = IllegalTableStateException.class)
     public void testPayTableWithClosedTable() {
         closedTableAdapter.payTable(paymentParams);
+        assertNull(closedTableAdapter.getActiveReceipt());
+    }
+
+    @Test(expected = IllegalTableStateException.class)
+    public void testPaySelectiveWithClosedTable() {
+        closedTableAdapter.paySelective(new ArrayList<>(), paymentParams);
         assertNull(closedTableAdapter.getActiveReceipt());
     }
 
