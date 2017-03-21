@@ -2,9 +2,13 @@ package com.inspirationlogical.receipt.waiter.view;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
+import javafx.stage.Popup;
 
 public class NodeUtility {
+
+    private static final int LAYOUT_OFFSET_Y = 100;
 
     public static Point2D getNodePosition(Node node) {
         return new Point2D(node.getLayoutX(), node.getLayoutY());
@@ -32,5 +36,19 @@ public class NodeUtility {
         if (node != null) {
             if (parent.getChildren().contains(node)) parent.getChildren().remove(node);
         }
+    }
+
+    public static Point2D calculatePopupPosition(Control source, Pane owner) {
+        double posX = source.getLayoutX() + owner.getScene().getWindow().getX();
+        double posY = source.getLayoutY() + owner.getScene().getWindow().getY() + LAYOUT_OFFSET_Y;
+
+        return new Point2D(posX, posY);
+    }
+
+    public static Point2D calculateTablePosition(Popup source, Pane owner) {
+        double posX = source.getX() - owner.getScene().getWindow().getX();
+        double posY = source.getY() - owner.getScene().getWindow().getY() - LAYOUT_OFFSET_Y;
+
+        return new Point2D(posX, posY);
     }
 }

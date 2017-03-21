@@ -55,7 +55,6 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         return new TableAdapter(newTable[0]);
     }
 
-    @SneakyThrows
     public TableAdapter addTable(Table.TableBuilder builder) {
         final Table[] newTable = new Table[1];
         GuardedTransaction.RunWithRefresh(adaptee, () -> {

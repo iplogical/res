@@ -19,7 +19,6 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 
 import javafx.geometry.Point2D;
-import lombok.SneakyThrows;
 
 ;
 
@@ -59,9 +58,8 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     }
 
     @Override
-    public TableView setTableName(TableView tableView, String name) {
-        TableAdapter newTable = ((TableViewImpl)tableView).getAdapter().setTableName(name);
-        return new TableViewImpl(newTable);
+    public void setTableName(TableView tableView, String name) {
+        ((TableViewImpl)tableView).getAdapter().setTableName(name);
     }
 
     @Override
@@ -70,9 +68,8 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     }
 
     @Override
-    public TableView setTableGuestNumber(TableView tableView, int guestNumber) {
-        TableAdapter newTable = ((TableViewImpl)tableView).getAdapter().setGuestNumber(guestNumber);
-        return new TableViewImpl(newTable);
+    public void setTableGuestNumber(TableView tableView, int guestNumber) {
+        ((TableViewImpl)tableView).getAdapter().setGuestNumber(guestNumber);
     }
 
     @Override
@@ -106,7 +103,6 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
         return new TableViewImpl(restaurantAdapter.addTable(type, tableNumber));
     }
 
-    @SneakyThrows
     @Override
     public TableView addTable(RestaurantView restaurant, TableBuilder builder) {
         RestaurantAdapter restaurantAdapter = ((RestaurantViewImpl)restaurant).getAdapter();

@@ -1,8 +1,8 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
 import static com.inspirationlogical.receipt.waiter.controller.ConfigureTableFormControllerImpl.CONFIGURE_TABLE_FORM_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.controller.RestaurantControllerImpl.LAYOUT_OFFSET_Y;
 import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculatePopupPosition;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showNode;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 import static java.lang.String.valueOf;
@@ -10,19 +10,17 @@ import static java.lang.String.valueOf;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Toggle;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 import javafx.stage.Popup;
 
 public class TableControllerImpl implements TableController {
@@ -52,9 +50,9 @@ public class TableControllerImpl implements TableController {
     @FXML
     Label capacity;
 
-    private Popup renameTableForm;
+    private Popup configureTableForm;
 
-    private ConfigureTableFormController renameTableFormController;
+    private ConfigureTableFormController configureTableFormController;
 
     private RestaurantServices restaurantServices;
 
@@ -62,11 +60,11 @@ public class TableControllerImpl implements TableController {
 
     private Toggle dragControl;
 
-    @Inject
-    public TableControllerImpl(RestaurantServices restaurantServices, TableView tableView, Toggle dragControl) {
+    public TableControllerImpl(RestaurantServices restaurantServices, TableView tableView, Toggle dragControl, ConfigureTableFormController configureTableFormController) {
         this.restaurantServices = restaurantServices;
         this.tableView = tableView;
         this.dragControl = dragControl;
+        this.configureTableFormController = configureTableFormController;
     }
 
     @Override
@@ -103,18 +101,18 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void showConfigureTableForm(Control control) {
-        renameTableFormController = new ConfigureTableFormControllerImpl(this);
-        renameTableForm = new Popup();
-        renameTableForm.getContent().add(loadView(CONFIGURE_TABLE_FORM_VIEW_PATH, renameTableFormController));
-        renameTableFormController.loadConfigureTable(this);
+        configureTableForm = new Popup();
+        configureTableForm.getContent().add(loadView(CONFIGURE_TABLE_FORM_VIEW_PATH, configureTableFormController));
+        configureTableFormController.loadConfigureTable(this);
 
-        renameTableForm.show(root, tableView.getPosition().getX(), tableView.getPosition().getY() + LAYOUT_OFFSET_Y);
+        Point2D point = calculatePopupPosition(control, (Pane)root.getParent());
+        configureTableForm.show(root, point.getX(), point.getY());
     }
 
     @Override
     public void configureTable(String name, int guestNumber) {
-        tableView = restaurantServices.setTableName(tableView, name);
-        tableView = restaurantServices.setTableGuestNumber(tableView, guestNumber);
+        restaurantServices.setTableName(tableView, name);
+        restaurantServices.setTableGuestNumber(tableView, guestNumber);
         updateNode();
     }
 

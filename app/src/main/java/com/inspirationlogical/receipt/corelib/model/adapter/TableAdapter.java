@@ -58,9 +58,8 @@ public class TableAdapter extends AbstractAdapter<Table>
         return adapters.get(0);
     }
 
-    public TableAdapter setTableName(String name) {
+    public void setTableName(String name) {
         GuardedTransaction.Run(() -> adaptee.setName(name));
-        return new TableAdapter(adaptee);
     }
 
     public void setTableNumber(int tableNumber) {
@@ -75,9 +74,8 @@ public class TableAdapter extends AbstractAdapter<Table>
         GuardedTransaction.Run(() -> adaptee.setCapacity(capacity));
     }
 
-    public TableAdapter setGuestNumber(int guestNumber) {
+    public void setGuestNumber(int guestNumber) {
         GuardedTransaction.Run(() -> adaptee.setGuestNumber(guestNumber));
-        return new TableAdapter(adaptee);
     }
 
     public void setNote(String note) {

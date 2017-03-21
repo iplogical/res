@@ -36,14 +36,9 @@ public class ConfigureTableFormControllerImpl implements ConfigureTableFormContr
 
     private TableController tableController;
 
-    @Inject
-    public ConfigureTableFormControllerImpl(TableController tableController) {
-        this.tableController = tableController;
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(root, null);
+        addDragAndDrop(root);
         guestNumber.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
     }
 

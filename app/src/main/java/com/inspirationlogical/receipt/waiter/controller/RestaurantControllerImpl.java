@@ -6,8 +6,7 @@ import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations
 import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations.not;
 import static com.inspirationlogical.receipt.waiter.controller.TableControllerImpl.TABLE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.moveNode;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.removeNode;
+import static com.inspirationlogical.receipt.waiter.view.NodeUtility.*;
 import static com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler.addPressAndHold;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 
@@ -50,7 +49,6 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     public static final String RESTAURANT_VIEW_PATH = "/view/fxml/Restaurant.fxml";
     private static final int HOLD_DURATION_MILLIS = 500;
-    protected static final int LAYOUT_OFFSET_Y = 100;
     private static Predicate<TableView> NORMAL_TABLE = not(TableView::isVirtual);
     private static Predicate<TableView> VISIBLE_TABLE = TableView::isVisible;
     private static Predicate<TableView> NORMAL_VISIBLE_TABLE = and(NORMAL_TABLE, VISIBLE_TABLE);
@@ -83,6 +81,8 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private TableFormController tableFormController;
 
+    private ConfigureTableFormController configureTableFormController;
+
     private Set<TableController> tableControllers;
 
     private RestaurantServices restaurantServices;
@@ -92,9 +92,12 @@ public class RestaurantControllerImpl implements RestaurantController {
     private RestaurantViewState restaurantViewState;
 
     @Inject
-    public RestaurantControllerImpl(RestaurantServices restaurantServices, TableFormController tableFormController) {
+    public RestaurantControllerImpl(RestaurantServices restaurantServices,
+                                    TableFormController tableFormController,
+                                    ConfigureTableFormController configureTableFormController) {
         this.restaurantServices = restaurantServices;
         this.tableFormController = tableFormController;
+        this.configureTableFormController = configureTableFormController;
         restaurantViewState = new RestaurantViewState();
     }
 
@@ -223,20 +226,6 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     }
 
-    private Point2D calculatePopupPosition(Control source, Pane owner) {
-        double posX = source.getLayoutX() + owner.getScene().getWindow().getX();
-        double posY = source.getLayoutY() + owner.getScene().getWindow().getY() + LAYOUT_OFFSET_Y;
-
-        return new Point2D(posX, posY);
-    }
-
-    private Point2D calculateTablePosition(Popup source, Pane owner) {
-        double posX = source.getX() - owner.getScene().getWindow().getX();
-        double posY = source.getY() - owner.getScene().getWindow().getY() - LAYOUT_OFFSET_Y;
-
-        return new Point2D(posX, posY);
-    }
-
     private void addNodeToPane(Node node, boolean isVirtual) {
         if (isVirtual) {
             toVirtualPane(node);
@@ -262,7 +251,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void drawTable(TableView tableView) {
-        TableController tableController = new TableControllerImpl(restaurantServices, tableView, configuration);
+        TableController tableController = new TableControllerImpl(restaurantServices, tableView, configuration, configureTableFormController);
 
         tableControllers.add(tableController);
 

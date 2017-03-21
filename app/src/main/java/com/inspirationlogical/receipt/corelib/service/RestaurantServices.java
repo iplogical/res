@@ -21,9 +21,9 @@ public interface RestaurantServices {
 
     void setTableType(TableView tableView, TableType tableType);
 
-    TableView setTableName(TableView tableView, String name);
+    void setTableName(TableView tableView, String name);
 
-    TableView setTableGuestNumber(TableView tableView, int guestNumber);
+    void setTableGuestNumber(TableView tableView, int guestNumber);
 
     void setTableCapacity(TableView tableView, int tableCapacity);
 

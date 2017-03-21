@@ -52,7 +52,7 @@ public class TableFormControllerImpl implements TableFormController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(root, null);
+        addDragAndDrop(root);
         number.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         capacity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
     }
