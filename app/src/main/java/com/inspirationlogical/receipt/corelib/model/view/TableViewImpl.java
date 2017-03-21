@@ -17,7 +17,7 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
 
     @Override
     public boolean isOpen() {
-        return adapter.getActiveReceipt().getAdaptee().getStatus().equals(ReceiptStatus.OPEN);
+        return adapter.getActiveReceipt() != null;
     }
 
     @Override

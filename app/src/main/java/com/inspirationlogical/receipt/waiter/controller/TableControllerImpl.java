@@ -19,6 +19,10 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Toggle;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.stage.Popup;
 
 public class TableControllerImpl implements TableController {
@@ -32,6 +36,9 @@ public class TableControllerImpl implements TableController {
 
     @FXML
     Label root;
+
+    @FXML
+    VBox vBox;
 
     @FXML
     Label name;
@@ -90,6 +97,7 @@ public class TableControllerImpl implements TableController {
         number.setText(valueOf(tableView.getTableNumber()));
         guests.setText(valueOf(tableView.getGuestCount()));
         capacity.setText(valueOf(tableView.getTableCapacity()));
+        setOpenTableBackgroundColor();
         showNode(root, tableView.getPosition());
     }
 
@@ -108,5 +116,12 @@ public class TableControllerImpl implements TableController {
         tableView = restaurantServices.setTableName(tableView, name);
         tableView = restaurantServices.setTableGuestNumber(tableView, guestNumber);
         updateNode();
+    }
+
+    private void setOpenTableBackgroundColor() {
+        if(tableView.isOpen()) {
+            //TODO: Find a way to change the background color separetely.
+            vBox.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-color: #42e01a; -fx-background-radius: 10;");
+        }
     }
 }
