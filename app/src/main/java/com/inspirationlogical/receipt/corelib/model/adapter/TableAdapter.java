@@ -58,8 +58,9 @@ public class TableAdapter extends AbstractAdapter<Table>
         return adapters.get(0);
     }
 
-    public void setTableName(String name) {
+    public TableAdapter setTableName(String name) {
         GuardedTransaction.Run(() -> adaptee.setName(name));
+        return new TableAdapter(adaptee);
     }
 
     public void setTableNumber(int tableNumber) {
@@ -72,6 +73,11 @@ public class TableAdapter extends AbstractAdapter<Table>
 
     public void setCapacity(int capacity) {
         GuardedTransaction.Run(() -> adaptee.setCapacity(capacity));
+    }
+
+    public TableAdapter setGuestNumber(int guestNumber) {
+        GuardedTransaction.Run(() -> adaptee.setGuestNumber(guestNumber));
+        return new TableAdapter(adaptee);
     }
 
     public void setNote(String note) {
@@ -150,5 +156,4 @@ public class TableAdapter extends AbstractAdapter<Table>
     protected boolean isTableOpen() {
         return this.getActiveReceipt() != null;
     }
-
 }

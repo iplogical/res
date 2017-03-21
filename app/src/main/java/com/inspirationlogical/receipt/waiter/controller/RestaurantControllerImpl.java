@@ -35,7 +35,6 @@ import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -45,14 +44,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
 
 @Singleton
 public class RestaurantControllerImpl implements RestaurantController {
 
     public static final String RESTAURANT_VIEW_PATH = "/view/fxml/Restaurant.fxml";
     private static final int HOLD_DURATION_MILLIS = 500;
-    private static final int LAYOUT_OFFSET_Y = 100;
+    protected static final int LAYOUT_OFFSET_Y = 100;
     private static Predicate<TableView> NORMAL_TABLE = not(TableView::isVirtual);
     private static Predicate<TableView> VISIBLE_TABLE = TableView::isVisible;
     private static Predicate<TableView> NORMAL_VISIBLE_TABLE = and(NORMAL_TABLE, VISIBLE_TABLE);
@@ -264,14 +262,14 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void drawTable(TableView tableView) {
-        TableController tableController = new TableControllerImpl(tableView, configuration);
+        TableController tableController = new TableControllerImpl(restaurantServices, tableView, configuration);
 
         tableControllers.add(tableController);
 
         loadView(TABLE_VIEW_PATH, tableController);
 
         addPressAndHold(restaurantViewState, tableController.getRoot(),
-                new TableContextMenuBuilderDecorator(this, new BaseContextMenuBuilder()),
+                new TableContextMenuBuilderDecorator(this, tableController, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
 
         addNodeToPane(tableController.getRoot(), tableView.isVirtual());

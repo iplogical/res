@@ -12,4 +12,8 @@ public interface TableController extends Initializable {
     Control getRoot();
 
     void updateNode();
+
+    void showConfigureTableForm(Control control);
+
+    void configureTable(String name, int guestNumber);
 }

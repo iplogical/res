@@ -87,6 +87,13 @@ public class TableAdapterTest {
     }
 
     @Test
+    public void testSetGuestNumber() {
+        tableAdapter.setGuestNumber(5);
+        assertEquals(5, TableAdapter.getTableByNumber(schema.getEntityManager(),
+                tableAdapter.getAdaptee().getNumber()).getAdaptee().getGuestNumber());
+    }
+
+    @Test
     public void testSetNote() {
         tableAdapter.setNote("Big chocklate cake for Spicces Feri");
         assertEquals("Big chocklate cake for Spicces Feri",
