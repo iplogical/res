@@ -12,6 +12,7 @@ public enum Resources {
 
 
     PRINTER("printer"),
+    UI("ui"),
     CONFIG("appconfig",new NoLocaleTag());
 
     private final ResourceBundle resourceBundle;

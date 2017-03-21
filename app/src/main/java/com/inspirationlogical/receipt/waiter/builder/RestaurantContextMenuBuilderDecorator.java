@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.waiter.builder;
 
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.RestaurantController;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
@@ -22,11 +23,11 @@ public class RestaurantContextMenuBuilderDecorator extends ContextMenuBuilderDec
         ContextMenu contextMenu = super.build(viewState);
         if (restaurantViewState.isConfigurationEnabled()) {
             MenuItem addTable = new ContextMenuItemBuilder()
-                    .withLabel("Asztal hozzáadása")
+                    .withLabel(Resources.UI.getString("ContextMenu.AddTable"))
                     .withClickHandlerPoint2D(restaurantController::showAddTableForm)
                     .build();
             MenuItem mergeTables = new ContextMenuItemBuilder()
-                    .withLabel("Asztalok összetolása")
+                    .withLabel(Resources.UI.getString("ContextMenu.MergeTable"))
                     .build();
             contextMenu.getItems().addAll(addTable, mergeTables);
         }

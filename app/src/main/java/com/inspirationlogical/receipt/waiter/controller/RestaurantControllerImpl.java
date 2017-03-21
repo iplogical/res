@@ -19,19 +19,23 @@ import java.util.function.Predicate;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.builder.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.builder.RestaurantContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.builder.TableContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.exception.ViewNotFoundException;
+import com.inspirationlogical.receipt.waiter.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -41,6 +45,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 @Singleton
 public class RestaurantControllerImpl implements RestaurantController {
@@ -160,20 +165,25 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void createTable(int tableNumber, int tableCapacity, boolean isVirtual) {
         TableType tableType = isVirtual ? VIRTUAL : NORMAL;
         Point2D position = calculateTablePosition(tableForm, tablesTab);
-
-        TableView tableView = restaurantServices.addTable(restaurantView, restaurantServices
-                .tableBuilder()
-                .type(tableType)
-                .number(tableNumber)
-                .name("Névtelen")
-                .capacity(tableCapacity)
-                .visibility(true)
-                .coordinateX((int) position.getX())
-                .coordinateY((int) position.getY()));
-
-        tableForm.hide();
-        
-        drawTable(tableView);
+        TableView tableView;
+        try{
+            tableView = restaurantServices.addTable(restaurantView, restaurantServices
+                    .tableBuilder()
+                    .type(tableType)
+                    .number(tableNumber)
+                    .name("")
+                    .capacity(tableCapacity)
+                    .visibility(true)
+                    .coordinateX((int) position.getX())
+                    .coordinateY((int) position.getY()));
+            tableForm.hide();
+            drawTable(tableView);
+        } catch (IllegalTableStateException e) {
+            ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("TableAlreadyUsed") + tableNumber);
+            initRestaurant();
+        } catch (Exception e) {
+            initRestaurant();
+        }
     }
 
     @Override

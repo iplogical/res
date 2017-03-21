@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
+import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import lombok.SneakyThrows;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -53,13 +55,17 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         return new TableAdapter(newTable[0]);
     }
 
+    @SneakyThrows
     public TableAdapter addTable(Table.TableBuilder builder) {
         final Table[] newTable = new Table[1];
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
             newTable[0] = builder.build();
+            adaptee.getTable().stream()
+                    .filter(table -> table.getNumber() == newTable[0].getNumber())
+                    .map(table -> {throw new IllegalTableStateException("The table number " + newTable[0].getNumber() + " is already in use");})
+                    .collect(Collectors.toList());
             adaptee.getTable().add(newTable[0]);
             newTable[0].setOwner(adaptee);
-            // FIXME(efereja): persist new Table?
         });
         return new TableAdapter(newTable[0]);
     }
