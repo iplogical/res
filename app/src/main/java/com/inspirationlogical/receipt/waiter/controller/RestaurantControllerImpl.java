@@ -114,7 +114,9 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initContextMenu();
+        initContextMenu(tablesLab);
+        initContextMenu(virtualLab);
+        initTableForm();
         initRestaurant();
         initTables();
     }
@@ -128,30 +130,28 @@ public class RestaurantControllerImpl implements RestaurantController {
         restaurantServices.getTables(restaurantView).stream().filter(VISIBLE_TABLE).forEach(this::drawTable);
     }
 
-    private void initContextMenu() {
-        addPressAndHold(restaurantViewState, tablesLab,
-                new RestaurantContextMenuBuilderDecorator(this, new BaseContextMenuBuilder()),
-                Duration.millis(HOLD_DURATION_MILLIS));
-        addPressAndHold(restaurantViewState, virtualLab,
+    private void initContextMenu(Control control) {
+        addPressAndHold(restaurantViewState, control,
                 new RestaurantContextMenuBuilderDecorator(this, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
     }
 
-    @Override
-    public void showAddTableForm(Point2D position) {
+    private void initTableForm() {
         tableForm = new Popup();
         tableForm.getContent().add(loadView(TABLE_FORM_VIEW_PATH, tableFormController));
+    }
+
+    @Override
+    public void showAddTableForm(Point2D position) {
         tableFormController.loadTable(null);
 
-        tableForm.show(tablesLab, position.getX(), position.getY());
+        tableForm.show(tablesTab, position.getX(), position.getY());
     }
 
     @Override
     public void showEditTableForm(Control control) {
         TableController tableController = getTableController(control);
 
-        tableForm = new Popup();
-        tableForm.getContent().add(loadView(TABLE_FORM_VIEW_PATH, tableFormController));
         tableFormController.loadTable(tableController);
 
         Point2D position = calculatePopupPosition(control, tablesTab);
