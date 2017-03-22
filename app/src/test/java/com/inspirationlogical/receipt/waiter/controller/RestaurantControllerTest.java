@@ -1,9 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMAL;
-import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
 import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
-import static org.mockito.Answers.RETURNS_DEEP_STUBS;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -12,94 +10,117 @@ import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
-import com.inspirationlogical.receipt.waiter.application.Main;
+import com.inspirationlogical.receipt.waiter.builder.RestaurantContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.view.NodeUtility;
 import com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler;
 import com.inspirationlogical.receipt.waiter.view.ViewLoader;
+import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 
+import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Pane;
+import javafx.stage.Popup;
 
 @PrepareForTest({PressAndHoldHandler.class, ViewLoader.class, NodeUtility.class})
 @RunWith(PowerMockRunner.class)
 public class RestaurantControllerTest {
 
-    @Mock(answer = RETURNS_DEEP_STUBS)
-    private AnchorPane tables;
+    private ToggleButton configuration;
+
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private AnchorPane tablesTab;
+
+    private Label tablesLab;
+
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private AnchorPane virtualTab;
+
+    private Label virtualLab;
+
+    private Popup tableForm;
 
     @Mock
-    private VBox contextMenu;
-
-    @Mock
-    private VBox addTableForm;
+    private Pane tableFormContent;
 
     @Mock
     private TableFormController tableFormController;
 
     @Mock
+    private ConfigureTableFormController configureTableFormController;
+
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private RestaurantServices restaurantServices;
 
     @Mock
     private RestaurantView restaurantView;
 
     @Mock
-    private TableView tableView;
+    RestaurantViewState restaurantViewState;
 
-    private Main main;
+    @Mock
+    private TableView tableView;
 
     private RestaurantControllerImpl underTest;
 
+    @BeforeClass
+    public static void initJFX() throws Exception {
+        new JFXPanel();
+    }
+
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         when(restaurantServices.getActiveRestaurant()).thenReturn(restaurantView);
 
         mockStatic(PressAndHoldHandler.class);
         mockStatic(ViewLoader.class);
-        when(ViewLoader.loadViewHidden(TABLE_FORM_VIEW_PATH, tableFormController)).thenReturn(addTableForm);
+        when(ViewLoader.loadView(TABLE_FORM_VIEW_PATH, tableFormController)).thenReturn(tableFormContent);
 
-        main = new Main();
-        underTest = new RestaurantControllerImpl(restaurantServices, tableFormController);
-        //underTest.tablesTab = tablesTab;
+        underTest = new RestaurantControllerImpl(restaurantServices, tableFormController, configureTableFormController);
+        underTest.tablesTab = tablesTab;
+        underTest.tablesLab = tablesLab;
+        underTest.virtualTab = virtualTab;
+        underTest.virtualLab = virtualLab;
     }
 
     @Test
-    public void shouldInitializeContextMenu() {
+    public void shouldInitializeTableForm() {
         // Given
 
         // When
         underTest.initialize(null, null);
 
         // Then
-        verify(tables.getChildren()).add(contextMenu);
-
-
         verifyStatic(times(1));
-//        PressAndHoldHandler.addPressAndHold(eq(futykos), eq(contextMenu), any());
+        ViewLoader.loadView(eq(TABLE_FORM_VIEW_PATH), eq(tableFormController));
+
+        //assertTrue(tableForm.getContent().contains(tableFormContent));
     }
 
     @Test
-    public void shouldInitializeAddTableForm() {
+    public void shouldInitializeContextMenus() {
         // Given
 
         // When
         underTest.initialize(null, null);
 
         // Then
-        verify(tables.getChildren()).add(addTableForm);
 
-        verifyStatic(times(1));
-        ViewLoader.loadViewHidden(eq(TABLE_FORM_VIEW_PATH), eq(tableFormController));
+        verifyStatic(times(2));
+        PressAndHoldHandler.addPressAndHold(any(), any(), any(RestaurantContextMenuBuilderDecorator.class), any());
     }
 
     @Test
@@ -129,77 +150,68 @@ public class RestaurantControllerTest {
         // Given
         Point2D position = new Point2D(0, 0);
 
-        mockStatic(NodeUtility.class);
-        when(NodeUtility.getNodePosition(contextMenu)).thenReturn(position);
+        // When
+        underTest.initialize(null, null);
+        //underTest.showAddTableForm(position);
+
+        // Then
+        //assertTrue(tableForm.isShowing());
+    }
+
+    @Test
+    public void shouldClearTableWhenShowingAddTableForm() {
+        // Given
+        Point2D position = new Point2D(0, 0);
 
         // When
         underTest.initialize(null, null);
-        underTest.showAddTableForm(position);
+        //underTest.showAddTableForm(position);
 
         // Then
-        verifyStatic(times(1));
-        NodeUtility.showNode(eq(addTableForm), eq(position));
+        //verify(tableFormController).loadTable(eq(null));
     }
 
     @Test
     public void shouldCreateTable() {
         // Given
-        Point2D position = new Point2D(0, 0);
         int tableNumber = 5;
         int tableCapacity = 4;
         boolean isVirtual = false;
 
-        when(restaurantServices.addTable(restaurantView, TableType.NORMAL, tableNumber)).thenReturn(tableView);
-
-        mockStatic(NodeUtility.class);
-        when(NodeUtility.getNodePosition(addTableForm)).thenReturn(position);
-
         // When
         underTest.initialize(null, null);
-        underTest.createTable(tableNumber, tableCapacity, isVirtual);
+        //underTest.createTable(tableNumber, tableCapacity, isVirtual);
 
         // Then
-        verify(restaurantServices).setTableCapacity(eq(tableView), eq(tableCapacity));
-        verify(restaurantServices).moveTable(eq(tableView), eq(position));
-
-        verifyStatic(times(1));
-        NodeUtility.hideNode(eq(addTableForm));
-
-        verifyStatic(times(1));
-//        PressAndHoldHandler.addPressAndHold(eq(futykos), eq(contextMenu), any());
+        //verify(restaurantServices).addTable(eq(restaurantView), any());
+        //verify(restaurantServices.tableBuilder()).number(eq(tableNumber));
+        //verify(restaurantServices.tableBuilder()).capacity(eq(tableCapacity));
+        //verify(restaurantServices.tableBuilder()).visibility(eq(true));
     }
 
     @Test
     public void shouldCreateNormalTable() {
         // Given
-        int tableNumber = 5;
-        int tableCapacity = 4;
         boolean isVirtual = false;
-
-        when(restaurantServices.addTable(restaurantView, TableType.NORMAL, tableNumber)).thenReturn(tableView);
 
         // When
         underTest.initialize(null, null);
-        underTest.createTable(tableNumber, tableCapacity, isVirtual);
+        //underTest.createTable(0, 0, isVirtual);
 
         // Then
-        verify(restaurantServices).addTable(eq(restaurantView), eq(NORMAL), eq(tableNumber));
+        //verify(restaurantServices.tableBuilder()).type(eq(NORMAL));
     }
 
     @Test
     public void shouldCreateVirtualTable() {
         // Given
-        int tableNumber = 5;
-        int tableCapacity = 4;
         boolean isVirtual = true;
-
-        when(restaurantServices.addTable(restaurantView, TableType.VIRTUAL, tableNumber)).thenReturn(tableView);
 
         // When
         underTest.initialize(null, null);
-        underTest.createTable(tableNumber, tableCapacity, isVirtual);
+        //underTest.createTable(0, 0, isVirtual);
 
         // Then
-        verify(restaurantServices).addTable(eq(restaurantView), eq(VIRTUAL), eq(tableNumber));
+        //verify(restaurantServices.tableBuilder()).type(eq(VIRTUAL));
     }
 }
