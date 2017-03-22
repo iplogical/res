@@ -53,7 +53,6 @@ public class TableSettingsFormControllerImpl implements TableSettingsFormControl
     @FXML
     public void onConfirm(MouseEvent event) {
         tableController.setTable(tableName.getText(), Integer.valueOf(guestNumber.getText()));
-        hideNode(root);
     }
 
     @FXML

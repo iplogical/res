@@ -212,6 +212,11 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void editTable(TableController tableController, Integer tableNumber, Integer tableCapacity, boolean isVirtual) {
         TableView tableView = tableController.getView();
 
+        if (tableCapacity < tableView.getGuestCount()) {
+            ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("CapacityTooLow"));
+            return;
+        }
+
         try{
             restaurantServices.setTableNumber(tableView, tableNumber);
             restaurantServices.setTableType(tableView, isVirtual ? VIRTUAL : NORMAL);

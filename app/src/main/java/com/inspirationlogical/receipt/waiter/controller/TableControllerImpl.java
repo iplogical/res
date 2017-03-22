@@ -16,7 +16,9 @@ import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.application.Main;
+import com.inspirationlogical.receipt.waiter.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
 import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
 
@@ -137,9 +139,14 @@ public class TableControllerImpl implements TableController {
     }
 
     @Override
-    public void setTable(String name, int guestNumber) {
+    public void setTable(String name, int guestCount) {
+        if (guestCount > tableView.getTableCapacity()) {
+            ErrorMessage.showErrorMessage(root.getParent(), Resources.UI.getString("GuestCountTooHigh"));
+            return;
+        }
         restaurantServices.setTableName(tableView, name);
-        restaurantServices.setTableGuestNumber(tableView, guestNumber);
+        restaurantServices.setTableGuestNumber(tableView, guestCount);
+        tableSettingsForm.hide();
         updateNode();
     }
 
