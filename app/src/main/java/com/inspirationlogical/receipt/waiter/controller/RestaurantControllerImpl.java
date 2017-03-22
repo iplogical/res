@@ -23,6 +23,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
+import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.builder.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.builder.RestaurantContextMenuBuilderDecorator;
@@ -87,15 +88,19 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private RestaurantServices restaurantServices;
 
+    private RetailServices retailServices;
+
     private RestaurantView restaurantView;
 
     private RestaurantViewState restaurantViewState;
 
     @Inject
     public RestaurantControllerImpl(RestaurantServices restaurantServices,
+                                    RetailServices retailServices,
                                     TableFormController tableFormController,
                                     ConfigureTableFormController configureTableFormController) {
         this.restaurantServices = restaurantServices;
+        this.retailServices = retailServices;
         this.tableFormController = tableFormController;
         this.configureTableFormController = configureTableFormController;
         restaurantViewState = new RestaurantViewState();
@@ -251,7 +256,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void drawTable(TableView tableView) {
-        TableController tableController = new TableControllerImpl(restaurantServices, tableView, restaurantViewState, configureTableFormController);
+        TableController tableController = new TableControllerImpl(restaurantServices, retailServices, tableView, restaurantViewState, configureTableFormController);
 
         tableControllers.add(tableController);
 

@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
+import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
 import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
@@ -20,7 +21,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.control.Toggle;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -59,12 +59,19 @@ public class TableControllerImpl implements TableController {
 
     private RestaurantServices restaurantServices;
 
+    private RetailServices retailServices;
+
     private TableView tableView;
 
     private TableViewState tableViewState;
 
-    public TableControllerImpl(RestaurantServices restaurantServices, TableView tableView, RestaurantViewState restaurantViewState, ConfigureTableFormController configureTableFormController) {
+    public TableControllerImpl(RestaurantServices restaurantServices,
+                               RetailServices retailServices,
+                               TableView tableView,
+                               RestaurantViewState restaurantViewState,
+                               ConfigureTableFormController configureTableFormController) {
         this.restaurantServices = restaurantServices;
+        this.retailServices = retailServices;
         this.tableView = tableView;
         this.tableViewState = new TableViewState();
         this.tableViewState.setRestaurantViewState(restaurantViewState);
@@ -73,7 +80,7 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(root, tableViewState.getRestaurantViewState().isConfigurationEnabled());
+        addDragAndDrop(root, tableViewState.getRestaurantViewState());
         initVisual();
         updateNode();
     }
@@ -105,7 +112,7 @@ public class TableControllerImpl implements TableController {
         guests.setText(valueOf(tableView.getGuestCount()));
         capacity.setText(valueOf(tableView.getTableCapacity()));
         tableViewState.setOpen(tableView.isOpen());
-        setOpenTableBackgroundColor(tableViewState.isOpen());
+        setTableBackgroundColor(tableViewState.isOpen());
         showNode(root, tableView.getPosition());
     }
 
@@ -128,13 +135,16 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void openTable(Control control) {
-
+        retailServices.openTable(tableView);
+        updateNode();
     }
 
-    private void setOpenTableBackgroundColor(boolean isOpen) {
+    private void setTableBackgroundColor(boolean isOpen) {
         if(isOpen) {
             //TODO: Find a way to change the background color separately.
             vBox.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-color: #42e01a; -fx-background-radius: 10;");
+        } else {
+            vBox.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;");
         }
     }
 }
