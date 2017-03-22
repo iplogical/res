@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import javafx.fxml.Initializable;
-
-public interface TableFormController extends Initializable {
+public interface TableFormController extends Controller {
     void loadTable(TableController tableView);
 }

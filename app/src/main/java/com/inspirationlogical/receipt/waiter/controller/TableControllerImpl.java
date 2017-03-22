@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import static com.inspirationlogical.receipt.waiter.application.Main.APP_HEIGHT;
-import static com.inspirationlogical.receipt.waiter.application.Main.APP_WIDTH;
 import static com.inspirationlogical.receipt.waiter.controller.SaleViewControllerImpl.SALE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableSettingsFormControllerImpl.TABLE_SETTINGS_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
@@ -24,8 +22,8 @@ import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -125,7 +123,6 @@ public class TableControllerImpl implements TableController {
         guests.setText(valueOf(tableView.getGuestCount()));
         capacity.setText(valueOf(tableView.getTableCapacity()));
         setTableBackgroundColor();
-        //setTableBorderColor();
         showNode(root, tableView.getPosition());
     }
 
@@ -168,23 +165,32 @@ public class TableControllerImpl implements TableController {
         }
     }
 
+    @Override
+    public void selectTable() {
+        tableViewState.setSelected(!tableViewState.isSelected());
+        setTableBorderColor();
+    }
+
     @FXML
     public void onTableClicked(MouseEvent event) {
         if(tableViewState.isConfigurable() && !isContextMenuOpen()) {
-            tableViewState.setSelected(!tableViewState.isSelected());
-            setTableBorderColor();
+            selectTable();
             restaurantController.selectTable(this, tableViewState.isSelected());
         } else {
             if(!tableView.isOpen()) {
                 return;
             }
             Parent root = (Parent) loadView(SALE_VIEW_PATH, getInjector().getInstance(SaleViewController.class));
-            Main.getWindow().setScene(new Scene(root, APP_WIDTH, APP_HEIGHT));
-            Main.getWindow().setFullScreen(true);
+            Main.getWindow().getScene().setRoot(root);
         }
     }
 
     private boolean isContextMenuOpen() {
         return root.getContextMenu() != null && root.getContextMenu().isShowing();
+    }
+
+    @Override
+    public Node getRootNode() {
+        return root;
     }
 }

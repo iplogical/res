@@ -11,6 +11,7 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -102,5 +103,10 @@ public class TableFormControllerImpl implements TableFormController {
             capacity.clear();
             virtual.setSelected(false);
         }
+    }
+
+    @Override
+    public Node getRootNode() {
+        return root;
     }
 }

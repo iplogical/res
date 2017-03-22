@@ -114,6 +114,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         this.tableFormController = tableFormController;
         this.tableSettingsFormController = tableSettingsFormController;
         restaurantViewState = new RestaurantViewState();
+        restaurantViewState.setFullScreen(true);
     }
 
     @FXML
@@ -121,6 +122,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         restaurantViewState.setConfigurable(configuration.isSelected());
         if (!configuration.isSelected()) {
             tableControllers.forEach(this::saveTablePosition);
+            selectedTables.forEach(TableController::selectTable);
         }
     }
 
@@ -304,5 +306,10 @@ public class RestaurantControllerImpl implements RestaurantController {
                 Duration.millis(HOLD_DURATION_MILLIS));
 
         addNodeToPane(tableController.getRoot(), tableView.isVirtual());
+    }
+
+    @Override
+    public Node getRootNode() {
+        return root;
     }
 }

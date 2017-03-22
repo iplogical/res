@@ -1,32 +1,30 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.application.Main;
+import com.inspirationlogical.receipt.waiter.viewstate.SaleViewState;
+
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import static com.inspirationlogical.receipt.waiter.application.Main.APP_HEIGHT;
-import static com.inspirationlogical.receipt.waiter.application.Main.APP_WIDTH;
-import static com.inspirationlogical.receipt.waiter.controller.RestaurantControllerImpl.RESTAURANT_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
-import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
-
 /**
  * Created by Bálint on 2017.03.22..
  */
+@Singleton
 public class SaleViewControllerImpl implements SaleViewController {
+
+    public static final String SALE_VIEW_PATH = "/view/fxml/SaleView.fxml";
 
     @FXML
     BorderPane root;
@@ -40,14 +38,19 @@ public class SaleViewControllerImpl implements SaleViewController {
     @FXML
     Button backToRestaurantView;
 
+    private RestaurantController restaurantController;
+
     private RetailServices retailServices;
 
-    @Inject
-    public SaleViewControllerImpl(RetailServices retailServices) {
-        this.retailServices = retailServices;
-    }
+    private SaleViewState saleViewState;
 
-    public static final String SALE_VIEW_PATH = "/view/fxml/SaleView.fxml";
+    @Inject
+    public SaleViewControllerImpl(RestaurantController restaurantController, RetailServices retailServices) {
+        this.restaurantController = restaurantController;
+        this.retailServices = retailServices;
+        saleViewState = new SaleViewState();
+        saleViewState.setFullScreen(restaurantController.getViewState().isFullScreen());
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -56,10 +59,12 @@ public class SaleViewControllerImpl implements SaleViewController {
 
     @FXML
     public void onBackToRestaurantView(Event event) {
-        Parent root = (Parent) loadView(RESTAURANT_VIEW_PATH, getInjector().getInstance(RestaurantController.class));
-        Main.getWindow().hide();
-        Main.getWindow().setScene(new Scene(root, APP_WIDTH, APP_HEIGHT));
-        Main.getWindow().setFullScreen(true);
-        Main.getWindow().show();
+        Parent root = (Parent) restaurantController.getRootNode();
+        Main.getWindow().getScene().setRoot(root);
+    }
+
+    @Override
+    public Node getRootNode() {
+        return root;
     }
 }

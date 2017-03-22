@@ -1,20 +1,21 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.waiter.view.NodeUtility.hideNode;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
+
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.converter.IntegerStringConverter;
-
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.hideNode;
 
 /**
  * Created by Bálint on 2017.03.21..
@@ -58,6 +59,11 @@ public class TableSettingsFormControllerImpl implements TableSettingsFormControl
     @FXML
     public void onCancel(MouseEvent event) {
         hideNode(root);
+    }
+
+    @Override
+    public Node getRootNode() {
+        return root;
     }
 }
 

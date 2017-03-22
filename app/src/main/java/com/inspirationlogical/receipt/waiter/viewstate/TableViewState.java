@@ -18,8 +18,14 @@ public class TableViewState implements ViewState {
         this.tableView = tableView;
     }
 
+    @Override
     public boolean isConfigurable() {
         return restaurantViewState.isConfigurable();
+    }
+
+    @Override
+    public boolean isFullScreen() {
+        return restaurantViewState.isFullScreen();
     }
 
     public boolean isOpen() {
