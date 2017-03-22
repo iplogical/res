@@ -20,11 +20,19 @@ public class Registry extends AbstractModule {
         bind(TableFormController.class).to(TableFormControllerImpl.class);
         bind(RestaurantServices.class).to(RestaurantServicesImpl.class);
         bind(RetailServices.class).to(RetailServicesImpl.class);
-        bind(ConfigureTableFormController.class).to(ConfigureTableFormControllerImpl.class);
+        bind(TableSettingsFormController.class).to(TableSettingsFormControllerImpl.class);
     }
 
     @Provides
     EntityManager provideEntityManager() {
         return EntityManagerProvider.getEntityManager();
+    }
+
+    @Provides
+    TableController provideTableController(RestaurantController restaurantController,
+                                           TableSettingsFormController tableSettingsFormController,
+                                           RestaurantServices restaurantServices,
+                                           RetailServices retailServices) {
+        return new TableControllerImpl(restaurantController, tableSettingsFormController, restaurantServices, retailServices);
     }
 }

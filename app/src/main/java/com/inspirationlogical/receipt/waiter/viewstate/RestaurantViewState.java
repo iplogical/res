@@ -4,5 +4,7 @@ import lombok.Data;
 
 public @Data class RestaurantViewState implements ViewState {
 
-    private boolean configurationEnabled;
+    private boolean configurable;
+
+    private boolean fullScreen;
 }

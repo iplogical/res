@@ -2,9 +2,8 @@ package com.inspirationlogical.receipt.waiter.controller;
 
 import static com.inspirationlogical.receipt.waiter.application.Main.APP_HEIGHT;
 import static com.inspirationlogical.receipt.waiter.application.Main.APP_WIDTH;
-import static com.inspirationlogical.receipt.waiter.controller.ConfigureTableFormControllerImpl.CONFIGURE_TABLE_FORM_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.controller.RestaurantControllerImpl.RESTAURANT_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.SaleViewControllerImpl.SALE_VIEW_PATH;
+import static com.inspirationlogical.receipt.waiter.controller.TableSettingsFormControllerImpl.TABLE_SETTINGS_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
 import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.addDragAndDrop;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculatePopupPosition;
@@ -15,11 +14,11 @@ import static java.lang.String.valueOf;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.application.Main;
-import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
 import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
 
@@ -62,9 +61,11 @@ public class TableControllerImpl implements TableController {
     @FXML
     Label capacity;
 
-    private Popup configureTableForm;
+    private Popup tableSettingsForm;
 
-    private ConfigureTableFormController configureTableFormController;
+    private RestaurantController restaurantController;
+
+    private TableSettingsFormController tableSettingsFormController;
 
     private RestaurantServices restaurantServices;
 
@@ -74,22 +75,25 @@ public class TableControllerImpl implements TableController {
 
     private TableViewState tableViewState;
 
-    public TableControllerImpl(RestaurantServices restaurantServices,
-                               RetailServices retailServices,
-                               TableView tableView,
-                               RestaurantViewState restaurantViewState,
-                               ConfigureTableFormController configureTableFormController) {
+    @Inject
+    public TableControllerImpl(RestaurantController restaurantController,
+                               TableSettingsFormController tableSettingsFormController,
+                               RestaurantServices restaurantServices,
+                               RetailServices retailServices) {
+        this.restaurantController = restaurantController;
+        this.tableSettingsFormController = tableSettingsFormController;
         this.restaurantServices = restaurantServices;
         this.retailServices = retailServices;
+    }
+
+    public void setView(TableView tableView) {
         this.tableView = tableView;
-        this.tableViewState = new TableViewState();
-        this.tableViewState.setRestaurantViewState(restaurantViewState);
-        this.configureTableFormController = configureTableFormController;
+        this.tableViewState = new TableViewState(restaurantController.getViewState(), tableView);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(root, tableViewState.getRestaurantViewState());
+        addDragAndDrop(root, tableViewState);
         initVisual();
         updateNode();
     }
@@ -120,23 +124,23 @@ public class TableControllerImpl implements TableController {
         number.setText(valueOf(tableView.getTableNumber()));
         guests.setText(valueOf(tableView.getGuestCount()));
         capacity.setText(valueOf(tableView.getTableCapacity()));
-        tableViewState.setOpen(tableView.isOpen());
-        setTableBackgroundColor(tableViewState.isOpen());
+        setTableBackgroundColor();
+        //setTableBorderColor();
         showNode(root, tableView.getPosition());
     }
 
     @Override
-    public void showConfigureTableForm(Control control) {
-        configureTableForm = new Popup();
-        configureTableForm.getContent().add(loadView(CONFIGURE_TABLE_FORM_VIEW_PATH, configureTableFormController));
-        configureTableFormController.loadConfigureTable(this);
+    public void showTableSettingsForm(Control control) {
+        tableSettingsForm = new Popup();
+        tableSettingsForm.getContent().add(loadView(TABLE_SETTINGS_FORM_VIEW_PATH, tableSettingsFormController));
+        tableSettingsFormController.loadTableSettings(this);
 
         Point2D point = calculatePopupPosition(control, (Pane)root.getParent());
-        configureTableForm.show(root, point.getX(), point.getY());
+        tableSettingsForm.show(root, point.getX(), point.getY());
     }
 
     @Override
-    public void configureTable(String name, int guestNumber) {
+    public void setTable(String name, int guestNumber) {
         restaurantServices.setTableName(tableView, name);
         restaurantServices.setTableGuestNumber(tableView, guestNumber);
         updateNode();
@@ -148,22 +152,35 @@ public class TableControllerImpl implements TableController {
         updateNode();
     }
 
-    private void setTableBackgroundColor(boolean isOpen) {
-        if(isOpen) {
-            //TODO: Find a way to change the background color separately.
-            vBox.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-color: #42e01a; -fx-background-radius: 10;");
+    private void setTableBackgroundColor() {
+        if(tableViewState.isOpen()) {
+            vBox.setStyle(vBox.getStyle().replaceFirst("(-fx-background-color: #[0-9a-fA-F]*;)", "-fx-background-color: #33ff33;"));
         } else {
-            vBox.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;");
+            vBox.setStyle(vBox.getStyle().replaceFirst("(-fx-background-color: #[0-9a-fA-F]*;)", "-fx-background-color: #ffffff;"));
+        }
+    }
+
+    private void setTableBorderColor() {
+        if(tableViewState.isSelected()) {
+            vBox.setStyle(vBox.getStyle().replaceFirst("(-fx-border-color: #[0-9a-fA-F]*;)", "-fx-border-color: #00bfff;"));
+        } else {
+            vBox.setStyle(vBox.getStyle().replaceFirst("(-fx-border-color: #[0-9a-fA-F]*;)", "-fx-border-color: #000000;"));
         }
     }
 
     @FXML
     public void onTableClicked(MouseEvent event) {
-        if(!tableView.isOpen()) {
-            return;
+        if(tableViewState.isConfigurable()) {
+            tableViewState.setSelected(!tableViewState.isSelected());
+            setTableBorderColor();
+            restaurantController.selectTable(this, tableViewState.isSelected());
+        } else {
+            if(!tableView.isOpen()) {
+                return;
+            }
+            Parent root = (Parent) loadView(SALE_VIEW_PATH, getInjector().getInstance(SaleViewController.class));
+            Main.getWindow().setScene(new Scene(root, APP_WIDTH, APP_HEIGHT));
+            Main.getWindow().setFullScreen(true);
         }
-        Parent root = (Parent) loadView(SALE_VIEW_PATH, getInjector().getInstance(SaleViewController.class));
-        Main.getWindow().setScene(new Scene(root, APP_WIDTH, APP_HEIGHT));
-        Main.getWindow().setFullScreen(true);
     }
 }

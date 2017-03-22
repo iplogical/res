@@ -8,19 +8,19 @@
 
 <VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" style="-fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #FFFFFF; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%ConfigureTableForm.Configure" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%TableSettingsForm.Configure" textAlignment="CENTER">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
       <HBox alignment="CENTER_LEFT" spacing="5.0">
          <children>
-            <Label prefWidth="45.0" text="%ConfigureTableForm.Name">
+            <Label prefWidth="45.0" text="%TableSettingsForm.Name">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="tableName" alignment="CENTER" prefWidth="155.0" promptText="%ConfigureTableForm.TableName">
+            <TextField fx:id="tableName" alignment="CENTER" prefWidth="155.0" promptText="%TableSettingsForm.TableName">
                <font>
                   <Font size="16.0" />
                </font>
@@ -29,7 +29,7 @@
       </HBox>
       <HBox spacing="5.0">
          <children>
-            <Label prefWidth="100.0" text="%ConfigureTableForm.Guests">
+            <Label prefWidth="100.0" text="%TableSettingsForm.Guests">
                <font>
                   <Font size="16.0" />
                </font>
@@ -37,7 +37,7 @@
                   <Insets top="5.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="guestNumber" alignment="CENTER" prefWidth="100.0" promptText="%ConfigureTableForm.Guests">
+            <TextField fx:id="guestNumber" alignment="CENTER" prefWidth="100.0" promptText="%TableSettingsForm.Guests">
                <font>
                   <Font size="16.0" />
                </font>

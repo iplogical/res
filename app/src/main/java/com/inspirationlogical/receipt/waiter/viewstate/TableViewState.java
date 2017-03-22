@@ -1,13 +1,36 @@
 package com.inspirationlogical.receipt.waiter.viewstate;
 
-import lombok.Data;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 /**
  * Created by Bálint on 2017.03.22..
  */
-public @Data class TableViewState implements ViewState {
+public class TableViewState implements ViewState {
 
     private RestaurantViewState restaurantViewState;
 
-    private boolean isOpen;
+    private TableView tableView;
+
+    private boolean selected;
+
+    public TableViewState(RestaurantViewState restaurantViewState, TableView tableView) {
+        this.restaurantViewState = restaurantViewState;
+        this.tableView = tableView;
+    }
+
+    public boolean isConfigurable() {
+        return restaurantViewState.isConfigurable();
+    }
+
+    public boolean isOpen() {
+        return tableView.isOpen();
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 }

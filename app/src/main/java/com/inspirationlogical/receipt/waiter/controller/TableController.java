@@ -8,6 +8,8 @@ import javafx.scene.control.Control;
 
 public interface TableController extends Initializable {
 
+    void setView(TableView tableView);
+
     TableView getView();
 
     Control getRoot();
@@ -16,9 +18,9 @@ public interface TableController extends Initializable {
 
     void updateNode();
 
-    void showConfigureTableForm(Control control);
+    void showTableSettingsForm(Control control);
 
-    void configureTable(String name, int guestNumber);
+    void setTable(String name, int guestNumber);
 
     void openTable(Control control);
 }

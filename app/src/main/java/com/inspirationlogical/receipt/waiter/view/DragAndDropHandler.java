@@ -1,8 +1,8 @@
 package com.inspirationlogical.receipt.waiter.view;
 
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
+import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
 
-import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -10,13 +10,13 @@ import javafx.scene.input.MouseEvent;
 
 public class DragAndDropHandler {
 
-    public static void addDragAndDrop(Node view, RestaurantViewState enableControl) {
+    public static void addDragAndDrop(Node view, ViewState enableControl) {
         final Wrapper<Point2D> deltaWrapper = new Wrapper<>();
 
         view.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (enableControl.isConfigurationEnabled()) {
+                if (enableControl.isConfigurable()) {
                     savePosition(mouseEvent, view, deltaWrapper);
                 }
             }
@@ -25,7 +25,7 @@ public class DragAndDropHandler {
         view.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (enableControl.isConfigurationEnabled()) {
+                if (enableControl.isConfigurable()) {
                     updatePosition(mouseEvent, view, deltaWrapper);
                 }
             }

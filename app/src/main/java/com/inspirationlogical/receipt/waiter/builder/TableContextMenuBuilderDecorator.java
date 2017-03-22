@@ -24,7 +24,7 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
     public ContextMenu build(ViewState viewState) {
         TableViewState tableViewState = (TableViewState) viewState;
         ContextMenu contextMenu = super.build(viewState);
-        if (tableViewState.getRestaurantViewState().isConfigurationEnabled()) {
+        if (tableViewState.isConfigurable()) {
             MenuItem editTable = new ContextMenuItemBuilder()
                     .withLabel(Resources.UI.getString("ContextMenu.editTable"))
                     .withClickHandlerControl(restaurantController::showEditTableForm)
@@ -39,8 +39,8 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
             contextMenu.getItems().addAll(editTable, deleteTable, splitTables);
         } else {
             MenuItem rename = new ContextMenuItemBuilder()
-                    .withLabel(Resources.UI.getString("ContextMenu.configureTable"))
-                    .withClickHandlerControl(tableController::showConfigureTableForm)
+                    .withLabel(Resources.UI.getString("ContextMenu.setTable"))
+                    .withClickHandlerControl(tableController::showTableSettingsForm)
                     .build();
             contextMenu.getItems().addAll(rename);
             if(!tableViewState.isOpen()) {

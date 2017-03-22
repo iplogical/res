@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import javafx.fxml.FXML;
@@ -21,9 +20,9 @@ import static com.inspirationlogical.receipt.waiter.view.NodeUtility.hideNode;
  * Created by Bálint on 2017.03.21..
  */
 @Singleton
-public class ConfigureTableFormControllerImpl implements ConfigureTableFormController {
+public class TableSettingsFormControllerImpl implements TableSettingsFormController {
 
-    public static final String CONFIGURE_TABLE_FORM_VIEW_PATH = "/view/fxml/ConfigureTableForm.fxml";
+    public static final String TABLE_SETTINGS_FORM_VIEW_PATH = "/view/fxml/TableSettingsForm.fxml";
 
     @FXML
     private VBox root;
@@ -43,7 +42,7 @@ public class ConfigureTableFormControllerImpl implements ConfigureTableFormContr
     }
 
     @Override
-    public void loadConfigureTable(TableController tableController) {
+    public void loadTableSettings(TableController tableController) {
         this.tableController = tableController;
         TableView tableView = tableController.getView();
         tableName.setText(tableView.getName());
@@ -52,7 +51,7 @@ public class ConfigureTableFormControllerImpl implements ConfigureTableFormContr
 
     @FXML
     public void onConfirm(MouseEvent event) {
-        tableController.configureTable(tableName.getText(), Integer.valueOf(guestNumber.getText()));
+        tableController.setTable(tableName.getText(), Integer.valueOf(guestNumber.getText()));
         hideNode(root);
     }
 

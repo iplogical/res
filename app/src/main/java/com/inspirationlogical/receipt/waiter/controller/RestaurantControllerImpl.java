@@ -6,6 +6,7 @@ import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations
 import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations.not;
 import static com.inspirationlogical.receipt.waiter.controller.TableControllerImpl.TABLE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
+import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculatePopupPosition;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculateTablePosition;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.moveNode;
@@ -14,10 +15,14 @@ import static com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler.add
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -85,9 +90,11 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private TableFormController tableFormController;
 
-    private ConfigureTableFormController configureTableFormController;
+    private TableSettingsFormController tableSettingsFormController;
 
     private Set<TableController> tableControllers;
+
+    private Set<TableController> selectedTables;
 
     private RestaurantServices restaurantServices;
 
@@ -101,17 +108,17 @@ public class RestaurantControllerImpl implements RestaurantController {
     public RestaurantControllerImpl(RestaurantServices restaurantServices,
                                     RetailServices retailServices,
                                     TableFormController tableFormController,
-                                    ConfigureTableFormController configureTableFormController) {
+                                    TableSettingsFormController tableSettingsFormController) {
         this.restaurantServices = restaurantServices;
         this.retailServices = retailServices;
         this.tableFormController = tableFormController;
-        this.configureTableFormController = configureTableFormController;
+        this.tableSettingsFormController = tableSettingsFormController;
         restaurantViewState = new RestaurantViewState();
     }
 
     @FXML
     public void onConfigToggle(Event event) {
-        restaurantViewState.setConfigurationEnabled(configuration.isSelected());
+        restaurantViewState.setConfigurable(configuration.isSelected());
         if (!configuration.isSelected()) {
             tableControllers.forEach(this::saveTablePosition);
         }
@@ -137,6 +144,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private void initTables() {
         tableControllers = new HashSet<>();
+        selectedTables = new LinkedHashSet<>();
         restaurantServices.getTables(restaurantView).stream().filter(VISIBLE_TABLE).forEach(this::drawTable);
     }
 
@@ -233,13 +241,30 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
-    public void mergeTables(Node node, int consumedTableNumber) {
+    public void mergeTables() {
+        if (selectedTables.size() > 1) {
+            TableView aggregate = selectedTables.iterator().next().getView();
+            List<TableView> consumed = new ArrayList<>();
+            selectedTables.iterator().forEachRemaining(tableController -> consumed.add(tableController.getView()));
 
+            System.out.println("Merged tables "
+                    + consumed.stream().map(tableView -> tableView.getTableNumber()).collect(Collectors.toList())
+                    + " into " + aggregate.getTableNumber());
+        }
     }
 
     @Override
-    public void splitTables(Node node, int producedTableNumber) {
+    public void selectTable(TableController tableController, boolean selected) {
+        if (selected) {
+            selectedTables.add(tableController);
+        } else {
+            selectedTables.remove(tableController);
+        }
+    }
 
+    @Override
+    public RestaurantViewState getViewState() {
+        return restaurantViewState;
     }
 
     private void addNodeToPane(Node node, boolean isVirtual) {
@@ -267,7 +292,8 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void drawTable(TableView tableView) {
-        TableController tableController = new TableControllerImpl(restaurantServices, retailServices, tableView, restaurantViewState, configureTableFormController);
+        TableController tableController = getInjector().getInstance(TableController.class);
+        tableController.setView(tableView);
 
         tableControllers.add(tableController);
 
