@@ -127,7 +127,6 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void initialize(URL location, ResourceBundle resources) {
         initContextMenu(tablesLab);
         initContextMenu(virtualLab);
-        initTableForm();
         initRestaurant();
         initTables();
     }
@@ -154,6 +153,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void showCreateTableForm(Point2D position) {
+        initTableForm();
         tableFormController.loadTable(null);
 
         tableForm.show(tablesTab, position.getX(), position.getY());
@@ -161,6 +161,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void showEditTableForm(Control control) {
+        initTableForm();
         TableController tableController = getTableController(control);
 
         tableFormController.loadTable(tableController);
@@ -175,6 +176,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         TableType tableType = isVirtual ? VIRTUAL : NORMAL;
         Point2D position = calculateTablePosition(tableForm, tablesTab);
         TableView tableView;
+
         try{
             tableView = restaurantServices.addTable(restaurantView, restaurantServices
                     .tableBuilder()
@@ -184,7 +186,9 @@ public class RestaurantControllerImpl implements RestaurantController {
                     .visibility(true)
                     .coordinateX((int) position.getX())
                     .coordinateY((int) position.getY()));
+
             tableForm.hide();
+
             drawTable(tableView);
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("TableAlreadyUsed") + tableNumber);
@@ -198,17 +202,22 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void editTable(TableController tableController, Integer tableNumber, Integer tableCapacity, boolean isVirtual) {
         TableView tableView = tableController.getView();
 
-        restaurantServices.setTableNumber(tableView, tableNumber);
-        restaurantServices.setTableType(tableView, isVirtual ? VIRTUAL : NORMAL);
-        restaurantServices.setTableCapacity(tableView, tableCapacity);
+        try{
+            restaurantServices.setTableNumber(tableView, tableNumber);
+            restaurantServices.setTableType(tableView, isVirtual ? VIRTUAL : NORMAL);
+            restaurantServices.setTableCapacity(tableView, tableCapacity);
 
-        tableForm.hide();
+            tableForm.hide();
 
-        Node node = tableController.getRoot();
-
-        addNodeToPane(node, isVirtual);
-
-        tableController.updateNode();
+            Node node = tableController.getRoot();
+            addNodeToPane(node, isVirtual);
+            tableController.updateNode();
+        } catch (IllegalTableStateException e) {
+            ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("TableAlreadyUsed") + tableNumber);
+            initRestaurant();
+        } catch (Exception e) {
+            initRestaurant();
+        }
     }
 
     @Override

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <AnchorPane fx:id="centrer" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
@@ -19,8 +21,25 @@
             <RadioButton fx:id="creditCard" mnemonicParsing="false" text="Bankkártya" toggleGroup="$paymentMethod" />
             <RadioButton fx:id="Coupon" mnemonicParsing="false" text="Kupon" toggleGroup="$paymentMethod" />
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="300.0" />
-            <Button fx:id="backToRestaurantView" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="Étterem nézet" />
+            <Button fx:id="backToRestaurantView" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%PaymentView.Back" />
          </children>
       </VBox>
    </right>
+   <top>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%PaymentView.Title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" />
+         </BorderPane.margin>
+      </AnchorPane>
+   </top>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
 </BorderPane>

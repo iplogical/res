@@ -20,7 +20,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="tableName" alignment="CENTER" prefWidth="155.0" promptText="%ConfigureTableForm.Name">
+            <TextField fx:id="tableName" alignment="CENTER" prefWidth="155.0" promptText="%ConfigureTableForm.TableName">
                <font>
                   <Font size="16.0" />
                </font>
