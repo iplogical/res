@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.waiter.view;
 
 import java.io.IOException;
 
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider;
 
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ public class ViewLoader {
     public static Node loadView(String viewPath, Initializable controller) {
         FXMLLoader loader = FXMLLoaderProvider.getLoader(viewPath);
         loader.setController(controller);
+        loader.setResources(Resources.UI.getBundle());
         Node view = null;
 
         try {
@@ -20,13 +22,6 @@ public class ViewLoader {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-
-        return view;
-    }
-
-    public static Node loadViewHidden(String viewPath, Initializable controller) {
-        Node view = loadView(viewPath, controller);
-        if (view != null) view.setVisible(false);
 
         return view;
     }

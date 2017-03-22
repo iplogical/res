@@ -6,7 +6,10 @@ import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations
 import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations.not;
 import static com.inspirationlogical.receipt.waiter.controller.TableControllerImpl.TABLE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.*;
+import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculatePopupPosition;
+import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculateTablePosition;
+import static com.inspirationlogical.receipt.waiter.view.NodeUtility.moveNode;
+import static com.inspirationlogical.receipt.waiter.view.NodeUtility.removeNode;
 import static com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler.addPressAndHold;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 
@@ -150,7 +153,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
-    public void showAddTableForm(Point2D position) {
+    public void showCreateTableForm(Point2D position) {
         tableFormController.loadTable(null);
 
         tableForm.show(tablesTab, position.getX(), position.getY());
@@ -177,7 +180,6 @@ public class RestaurantControllerImpl implements RestaurantController {
                     .tableBuilder()
                     .type(tableType)
                     .number(tableNumber)
-                    .name("")
                     .capacity(tableCapacity)
                     .visibility(true)
                     .coordinateX((int) position.getX())

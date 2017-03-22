@@ -4,8 +4,8 @@ import static com.inspirationlogical.receipt.waiter.controller.RestaurantControl
 import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 
-import com.inspirationlogical.receipt.waiter.controller.RestaurantController;
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
+import com.inspirationlogical.receipt.waiter.controller.RestaurantController;
 
 import javafx.application.Application;
 import javafx.scene.Parent;

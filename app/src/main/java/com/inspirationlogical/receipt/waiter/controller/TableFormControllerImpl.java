@@ -13,6 +13,7 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
@@ -26,6 +27,9 @@ public class TableFormControllerImpl implements TableFormController {
 
     @FXML
     VBox root;
+
+    @FXML
+    Label title;
 
     @FXML
     TextField number;
@@ -45,6 +49,8 @@ public class TableFormControllerImpl implements TableFormController {
 
     private RestaurantController restaurantController;
 
+    private ResourceBundle resourceBundle;
+
     @Inject
     public TableFormControllerImpl(RestaurantController restaurantController) {
         this.restaurantController = restaurantController;
@@ -52,6 +58,7 @@ public class TableFormControllerImpl implements TableFormController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        resourceBundle = resources;
         addDragAndDrop(root);
         number.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         capacity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
@@ -83,12 +90,14 @@ public class TableFormControllerImpl implements TableFormController {
         this.tableController = tableController;
         if (tableController != null) {
             creation = false;
+            title.setText(resourceBundle.getString("TableForm.Edit"));
             TableView tableView = tableController.getView();
             number.setText(String.valueOf(tableView.getTableNumber()));
             capacity.setText(String.valueOf(tableView.getTableCapacity()));
             virtual.setSelected(tableView.isVirtual());
         } else {
             creation = true;
+            title.setText(resourceBundle.getString("TableForm.Create"));
             number.clear();
             capacity.clear();
             virtual.setSelected(false);

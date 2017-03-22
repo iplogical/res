@@ -24,7 +24,7 @@ public class RestaurantContextMenuBuilderDecorator extends ContextMenuBuilderDec
         if (restaurantViewState.isConfigurationEnabled()) {
             MenuItem addTable = new ContextMenuItemBuilder()
                     .withLabel(Resources.UI.getString("ContextMenu.AddTable"))
-                    .withClickHandlerPoint2D(restaurantController::showAddTableForm)
+                    .withClickHandlerPoint2D(restaurantController::showCreateTableForm)
                     .build();
             MenuItem mergeTables = new ContextMenuItemBuilder()
                     .withLabel(Resources.UI.getString("ContextMenu.MergeTable"))

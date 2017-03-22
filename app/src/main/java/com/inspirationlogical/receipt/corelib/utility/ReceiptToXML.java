@@ -3,7 +3,6 @@ package com.inspirationlogical.receipt.corelib.utility;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -55,14 +54,14 @@ public class ReceiptToXML {
     private static ReceiptFooter createFooter(ReceiptAdapter receiptAdapter,ObjectFactory factory) {
         ReceiptFooter footer = factory.createReceiptFooter();
         //TODO: add disclaimer in restaurant???
-        footer.setDisclaimer(Resources.PRINTER.getStringISO88591("Disclaimer"));
+        footer.setDisclaimer(Resources.PRINTER.getString("Disclaimer"));
         //TODO: get active note from Entity and set only if present
         footer.setNote("Árvíztűrő tükörfúrógép!");
-        footer.setGreet(Resources.PRINTER.getStringISO88591("Greet"));
+        footer.setGreet(Resources.PRINTER.getString("Greet"));
         GregorianCalendar gc = new GregorianCalendar();
         gc.setTimeInMillis(receiptAdapter.getAdaptee().getClosureTime().getTimeInMillis());
         footer.setDatetime(new XMLGregorianCalendarImpl(gc));
-        footer.setReceiptIdTag(Resources.PRINTER.getStringISO88591("ReceipIDTag")+":"+receiptAdapter.getAdaptee().getId().toString());
+        footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag")+":"+receiptAdapter.getAdaptee().getId().toString());
         //TODO: get vendor info from resource file, version from git tag
         footer.setVendorInfo("© InspirationLogical, Receipt v4.3");
         return footer;
@@ -89,11 +88,11 @@ public class ReceiptToXML {
         Client client = adapter.getAdaptee().getClient();
         if(client != null) {
             CustomerInfo customer = factory.createCustomerInfo();
-            customer.setName(createTagValue(factory,Resources.PRINTER.getStringISO88591("CustomerName") ,client.getName()));
+            customer.setName(createTagValue(factory,Resources.PRINTER.getString("CustomerName") ,client.getName()));
             if(!client.getAddress().isEmpty())
-                customer.setAddress(createTagValue(factory,Resources.PRINTER.getStringISO88591("CustomerAddress") ,client.getAddress()));
+                customer.setAddress(createTagValue(factory,Resources.PRINTER.getString("CustomerAddress") ,client.getAddress()));
             if(!client.getTAXNumber().isEmpty())
-                customer.setTaxNumber(createTagValue(factory,Resources.PRINTER.getStringISO88591("CustomerTAXnumber") ,client.getTAXNumber()));
+                customer.setTaxNumber(createTagValue(factory,Resources.PRINTER.getString("CustomerTAXnumber") ,client.getTAXNumber()));
             body.setCustomer(customer);
         }
     }
@@ -101,7 +100,7 @@ public class ReceiptToXML {
     private static ReceiptBody createReceiptBody(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptBody body = factory.createReceiptBody();
         setCustomerInfo(receiptAdapter,body,factory);
-        body.setType(Resources.PRINTER.getStringISO88591("RECEIPTTYPE_" +receiptAdapter.getAdaptee().getType().toString()));
+        body.setType(Resources.PRINTER.getString("RECEIPTTYPE_" +receiptAdapter.getAdaptee().getType().toString()));
         body.setHeader(createReceiptBodyHeader(receiptAdapter,factory));
         List<ReceiptBodyEntry> records = receiptAdapter.getAdaptee().getRecords().stream().map((record) ->{
             ReceiptBodyEntry entry = factory.createReceiptBodyEntry();
@@ -118,10 +117,10 @@ public class ReceiptToXML {
 
     private static ReceiptBodyHeader createReceiptBodyHeader(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptBodyHeader header = factory.createReceiptBodyHeader();
-        header.setNameHeader(Resources.PRINTER.getStringISO88591("NameHeader"));
-        header.setQtyHeader(Resources.PRINTER.getStringISO88591("QtyHeader"));
-        header.setQtyPriceHeader(Resources.PRINTER.getStringISO88591("QtyPriceHeader"));
-        header.setTotalHeader(Resources.PRINTER.getStringISO88591("TotalHeader"));
+        header.setNameHeader(Resources.PRINTER.getString("NameHeader"));
+        header.setQtyHeader(Resources.PRINTER.getString("QtyHeader"));
+        header.setQtyPriceHeader(Resources.PRINTER.getString("QtyPriceHeader"));
+        header.setTotalHeader(Resources.PRINTER.getString("TotalHeader"));
         return header;
     }
     static private TagCurrencyValue createTagCurrencyValue(ObjectFactory f,String tag,String currency,Long value){
@@ -142,21 +141,21 @@ public class ReceiptToXML {
     private static ReceiptBodyFooter createReceiptBodyFooter(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptBodyFooter footer = factory.createReceiptBodyFooter();
         footer.setTotal(createTagCurrencyValue(factory,
-                Resources.PRINTER.getStringISO88591("TotalTag"),
-                Resources.PRINTER.getStringISO88591("TotalCurrency"),
+                Resources.PRINTER.getString("TotalTag"),
+                Resources.PRINTER.getString("TotalCurrency"),
                 receiptAdapter.getAdaptee().getRecords().stream()
                 .map(e -> e.getSalePrice() * e.getSoldQuantity())
                 .reduce(0.0,(x,y)-> x + y).longValue())
         );
         //FIXME: add currency in model.Receipt
         TagValuePair paymentMethod = factory.createTagValuePair();
-        paymentMethod.setTag(Resources.PRINTER.getStringISO88591("PaymentMethod"));
-        paymentMethod.setValue(Resources.PRINTER.getStringISO88591("PAYMENTMETHOD_"+receiptAdapter.getAdaptee().getPaymentMethod().toString()));
+        paymentMethod.setTag(Resources.PRINTER.getString("PaymentMethod"));
+        paymentMethod.setValue(Resources.PRINTER.getString("PAYMENTMETHOD_"+receiptAdapter.getAdaptee().getPaymentMethod().toString()));
         footer.setPaymentMethod(paymentMethod);
         if(receiptAdapter.getAdaptee().getPaymentMethod() == PaymentMethod.CASH) {
             footer.setTotalRounded(createTagCurrencyValue(factory,
-                    Resources.PRINTER.getStringISO88591("TotalRoundedTag"),
-                    Resources.PRINTER.getStringISO88591("TotalRoundedCurrency"),
+                    Resources.PRINTER.getString("TotalRoundedTag"),
+                    Resources.PRINTER.getString("TotalRoundedCurrency"),
                     footer.getTotal().getValue().longValue())
             );
         }

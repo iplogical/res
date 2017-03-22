@@ -8,23 +8,19 @@
 
 <VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" style="-fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #FFFFFF; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane>
-         <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="221.0" style="-fx-border-style: solid; -fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #e3e3e3;" text="Asztal Beállítása" textAlignment="CENTER">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
+      <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%ConfigureTableForm.Configure" textAlignment="CENTER">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
       <HBox alignment="CENTER_LEFT" spacing="5.0">
          <children>
-            <Label prefHeight="25.0" prefWidth="39.0" text="Név:">
+            <Label prefWidth="45.0" text="%ConfigureTableForm.Name">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="tableName" alignment="CENTER" prefHeight="37.0" prefWidth="177.0" promptText="Asztal neve">
+            <TextField fx:id="tableName" alignment="CENTER" prefWidth="155.0" promptText="%ConfigureTableForm.Name">
                <font>
                   <Font size="16.0" />
                </font>
@@ -33,7 +29,7 @@
       </HBox>
       <HBox spacing="5.0">
          <children>
-            <Label prefHeight="25.0" text="Vendégek:">
+            <Label prefWidth="100.0" text="%ConfigureTableForm.Guests">
                <font>
                   <Font size="16.0" />
                </font>
@@ -41,7 +37,7 @@
                   <Insets top="5.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="guestNumber" prefHeight="37.0" prefWidth="141.0" promptText="Vendégek száma">
+            <TextField fx:id="guestNumber" alignment="CENTER" prefWidth="100.0" promptText="%ConfigureTableForm.Guests">
                <font>
                   <Font size="16.0" />
                </font>
@@ -50,12 +46,12 @@
       </HBox>
       <HBox spacing="5.0">
          <children>
-            <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onConfirm" prefHeight="37.0" prefWidth="108.0" text="Rendben">
+            <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onConfirm" prefWidth="100.0" text="%Form.Confirm">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onCancel" prefHeight="37.0" prefWidth="108.0" text="Mégse">
+            <Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onCancel" prefWidth="100.0" text="%Form.Cancel">
                <font>
                   <Font size="16.0" />
                </font>

@@ -3,7 +3,6 @@ package com.inspirationlogical.receipt.waiter.builder;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.TableController;
-import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
 import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
 
@@ -27,26 +26,26 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
         ContextMenu contextMenu = super.build(viewState);
         if (tableViewState.getRestaurantViewState().isConfigurationEnabled()) {
             MenuItem editTable = new ContextMenuItemBuilder()
-                    .withLabel(Resources.UI.getString("contextMenu.editTable"))
+                    .withLabel(Resources.UI.getString("ContextMenu.editTable"))
                     .withClickHandlerControl(restaurantController::showEditTableForm)
                     .build();
             MenuItem deleteTable = new ContextMenuItemBuilder()
-                    .withLabel(Resources.UI.getString("contextMenu.deleteTable"))
+                    .withLabel(Resources.UI.getString("ContextMenu.deleteTable"))
                     .withClickHandlerControl(restaurantController::deleteTable)
                     .build();
             MenuItem splitTables = new ContextMenuItemBuilder()
-                    .withLabel(Resources.UI.getString("contextMenu.splitTables"))
+                    .withLabel(Resources.UI.getString("ContextMenu.splitTables"))
                     .build();
             contextMenu.getItems().addAll(editTable, deleteTable, splitTables);
         } else {
             MenuItem rename = new ContextMenuItemBuilder()
-                    .withLabel(Resources.UI.getString("contextMenu.configureTable"))
+                    .withLabel(Resources.UI.getString("ContextMenu.configureTable"))
                     .withClickHandlerControl(tableController::showConfigureTableForm)
                     .build();
             contextMenu.getItems().addAll(rename);
             if(!tableViewState.isOpen()) {
                 MenuItem openTable = new ContextMenuItemBuilder()
-                        .withLabel(Resources.UI.getString("contextMenu.openTable"))
+                        .withLabel(Resources.UI.getString("ContextMenu.openTable"))
                         .withClickHandlerControl(tableController::openTable)
                         .build();
                 contextMenu.getItems().addAll(openTable);

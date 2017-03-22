@@ -8,14 +8,19 @@
 
 <VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" style="-fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #FFFFFF; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
+      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%Form.Confirm" textAlignment="CENTER">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
       <HBox alignment="CENTER_LEFT" spacing="5.0">
          <children>
-            <Label prefWidth="100.0" text="Asztalszám:">
+            <Label prefWidth="100.0" text="%TableForm.Number">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="number" alignment="CENTER" prefWidth="100.0" promptText="Asztalszám">
+            <TextField fx:id="number" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Number">
                <font>
                   <Font size="16.0" />
                </font>
@@ -24,31 +29,31 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" spacing="5.0">
          <children>
-            <Label prefWidth="100.0" text="Ülőhelyek:">
+            <Label prefWidth="100.0" text="%TableForm.Capacity">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="capacity" alignment="CENTER" prefWidth="100.0" promptText="Ülőhelyek">
+            <TextField fx:id="capacity" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Capacity">
                <font>
                   <Font size="16.0" />
                </font>
             </TextField>
          </children>
       </HBox>
-      <CheckBox fx:id="virtual" mnemonicParsing="false" text="Virtuális asztal">
+      <CheckBox fx:id="virtual" mnemonicParsing="false" text="%TableForm.Virtual">
          <font>
             <Font size="16.0" />
          </font>
       </CheckBox>
       <HBox spacing="5.0">
          <children>
-            <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onConfirm" prefWidth="100.0" text="Rendben">
+            <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onConfirm" prefWidth="100.0" text="%Form.Confirm">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onCancel" prefWidth="100.0" text="Mégse">
+            <Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onCancel" prefWidth="100.0" text="%Form.Cancel">
                <font>
                   <Font size="16.0" />
                </font>
