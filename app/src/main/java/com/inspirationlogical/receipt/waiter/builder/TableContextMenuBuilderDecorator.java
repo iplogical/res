@@ -4,6 +4,7 @@ import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.TableController;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
+import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
 import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
 
 import javafx.scene.control.ContextMenu;
@@ -22,9 +23,9 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
 
     @Override
     public ContextMenu build(ViewState viewState) {
-        RestaurantViewState restaurantViewState = (RestaurantViewState) viewState;
+        TableViewState tableViewState = (TableViewState) viewState;
         ContextMenu contextMenu = super.build(viewState);
-        if (restaurantViewState.isConfigurationEnabled()) {
+        if (tableViewState.getRestaurantViewState().isConfigurationEnabled()) {
             MenuItem editTable = new ContextMenuItemBuilder()
                     .withLabel(Resources.UI.getString("contextMenu.editTable"))
                     .withClickHandlerControl(restaurantController::showEditTableForm)
@@ -43,6 +44,13 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
                     .withClickHandlerControl(tableController::showConfigureTableForm)
                     .build();
             contextMenu.getItems().addAll(rename);
+            if(!tableViewState.isOpen()) {
+                MenuItem openTable = new ContextMenuItemBuilder()
+                        .withLabel(Resources.UI.getString("contextMenu.openTable"))
+                        .withClickHandlerControl(tableController::openTable)
+                        .build();
+                contextMenu.getItems().addAll(openTable);
+            }
         }
         return contextMenu;
     }

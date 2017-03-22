@@ -251,13 +251,13 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void drawTable(TableView tableView) {
-        TableController tableController = new TableControllerImpl(restaurantServices, tableView, configuration, configureTableFormController);
+        TableController tableController = new TableControllerImpl(restaurantServices, tableView, restaurantViewState, configureTableFormController);
 
         tableControllers.add(tableController);
 
         loadView(TABLE_VIEW_PATH, tableController);
 
-        addPressAndHold(restaurantViewState, tableController.getRoot(),
+        addPressAndHold(tableController.getViewState(), tableController.getRoot(),
                 new TableContextMenuBuilderDecorator(this, tableController, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
 

@@ -5,18 +5,17 @@ import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.Toggle;
 import javafx.scene.input.MouseEvent;
 
 public class DragAndDropHandler {
 
-    public static void addDragAndDrop(Node view, Toggle enableControl) {
+    public static void addDragAndDrop(Node view, boolean enableControl) {
         final Wrapper<Point2D> deltaWrapper = new Wrapper<>();
 
         view.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (enableControl.isSelected()) {
+                if (enableControl) {
                     savePosition(mouseEvent, view, deltaWrapper);
                 }
             }
@@ -25,7 +24,7 @@ public class DragAndDropHandler {
         view.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (enableControl.isSelected()) {
+                if (enableControl) {
                     updatePosition(mouseEvent, view, deltaWrapper);
                 }
             }
