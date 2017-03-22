@@ -11,15 +11,20 @@ import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.Getter;
+
 
 public class Main extends Application {
 
     private static final String APP_TITLE = "Receipt";
-    private static final int APP_WIDTH = 1024;
-    private static final int APP_HEIGHT = 768;
+    public static final int APP_WIDTH = 1024;
+    public static final int APP_HEIGHT = 768;
+
+    private @Getter static Stage window;
 
     @Override
     public void start(Stage stage) {
+        window = stage;
         Parent root = (Parent) loadView(RESTAURANT_VIEW_PATH, getInjector().getInstance(RestaurantController.class));
         stage.setTitle(APP_TITLE);
         stage.setScene(new Scene(root, APP_WIDTH, APP_HEIGHT));

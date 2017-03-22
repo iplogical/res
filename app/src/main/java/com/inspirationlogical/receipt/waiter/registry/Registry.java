@@ -16,6 +16,7 @@ public class Registry extends AbstractModule {
     @Override
     protected void configure() {
         bind(RestaurantController.class).to(RestaurantControllerImpl.class);
+        bind(SaleViewController.class).to(SaleViewControllerImpl.class);
         bind(TableFormController.class).to(TableFormControllerImpl.class);
         bind(RestaurantServices.class).to(RestaurantServicesImpl.class);
         bind(RetailServices.class).to(RetailServicesImpl.class);

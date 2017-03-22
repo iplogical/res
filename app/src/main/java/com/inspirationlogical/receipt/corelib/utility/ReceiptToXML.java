@@ -25,7 +25,7 @@ import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl
  * Created by Ferenc on 2017. 03. 11..
  */
 public class ReceiptToXML {
-
+    // TODO: Change database encoding to UTF-8. Use UTF-8 everywhere.
     public static Receipt Convert(ReceiptAdapter receiptAdapter){
         return createReceipt(receiptAdapter, new ObjectFactory());
     }

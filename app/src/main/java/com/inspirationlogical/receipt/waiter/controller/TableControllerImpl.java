@@ -1,6 +1,11 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import static com.inspirationlogical.receipt.waiter.application.Main.APP_HEIGHT;
+import static com.inspirationlogical.receipt.waiter.application.Main.APP_WIDTH;
 import static com.inspirationlogical.receipt.waiter.controller.ConfigureTableFormControllerImpl.CONFIGURE_TABLE_FORM_VIEW_PATH;
+import static com.inspirationlogical.receipt.waiter.controller.RestaurantControllerImpl.RESTAURANT_VIEW_PATH;
+import static com.inspirationlogical.receipt.waiter.controller.SaleViewControllerImpl.SALE_VIEW_PATH;
+import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
 import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.addDragAndDrop;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculatePopupPosition;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showNode;
@@ -14,13 +19,17 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
+import com.inspirationlogical.receipt.waiter.application.Main;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
 import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -146,5 +155,15 @@ public class TableControllerImpl implements TableController {
         } else {
             vBox.setStyle("-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10;");
         }
+    }
+
+    @FXML
+    public void onTableClicked(MouseEvent event) {
+        if(!tableView.isOpen()) {
+            return;
+        }
+        Parent root = (Parent) loadView(SALE_VIEW_PATH, getInjector().getInstance(SaleViewController.class));
+        Main.getWindow().setScene(new Scene(root, APP_WIDTH, APP_HEIGHT));
+        Main.getWindow().setFullScreen(true);
     }
 }
