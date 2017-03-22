@@ -122,7 +122,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         restaurantViewState.setConfigurable(configuration.isSelected());
         if (!configuration.isSelected()) {
             tableControllers.forEach(this::saveTablePosition);
-            selectedTables.forEach(TableController::selectTable);
+            selectedTables.forEach(TableController::deselectTable);
         }
     }
 

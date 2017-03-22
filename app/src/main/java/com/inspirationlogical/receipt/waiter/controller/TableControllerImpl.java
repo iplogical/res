@@ -166,16 +166,20 @@ public class TableControllerImpl implements TableController {
     }
 
     @Override
-    public void selectTable() {
-        tableViewState.setSelected(!tableViewState.isSelected());
+    public void deselectTable() {
+        tableViewState.setSelected(false);
         setTableBorderColor();
     }
 
     @FXML
     public void onTableClicked(MouseEvent event) {
-        if(tableViewState.isConfigurable() && !isContextMenuOpen()) {
-            selectTable();
+        if (isContextMenuOpen()) {
+            return;
+        }
+        if(tableViewState.isConfigurable()) {
+            tableViewState.setSelected(!tableViewState.isSelected());
             restaurantController.selectTable(this, tableViewState.isSelected());
+            setTableBorderColor();
         } else {
             if(!tableView.isOpen()) {
                 return;

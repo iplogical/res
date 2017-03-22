@@ -23,5 +23,5 @@ public interface TableController extends Controller {
 
     void openTable(Control control);
 
-    void selectTable();
+    void deselectTable();
 }
