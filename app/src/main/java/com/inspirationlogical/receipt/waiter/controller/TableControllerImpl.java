@@ -170,7 +170,7 @@ public class TableControllerImpl implements TableController {
 
     @FXML
     public void onTableClicked(MouseEvent event) {
-        if(tableViewState.isConfigurable()) {
+        if(tableViewState.isConfigurable() && !isContextMenuOpen()) {
             tableViewState.setSelected(!tableViewState.isSelected());
             setTableBorderColor();
             restaurantController.selectTable(this, tableViewState.isSelected());
@@ -182,5 +182,9 @@ public class TableControllerImpl implements TableController {
             Main.getWindow().setScene(new Scene(root, APP_WIDTH, APP_HEIGHT));
             Main.getWindow().setFullScreen(true);
         }
+    }
+
+    private boolean isContextMenuOpen() {
+        return root.getContextMenu() != null && root.getContextMenu().isShowing();
     }
 }
