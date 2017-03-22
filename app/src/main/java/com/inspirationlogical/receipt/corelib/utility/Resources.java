@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.utility;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -32,8 +33,16 @@ public enum Resources {
 
     public String getString(String key) {
         try {
+            return new String(resourceBundle.getString(key).getBytes("ISO-8859-1"), "UTF-8");
+        } catch(MissingResourceException | UnsupportedEncodingException e){
+            return key;
+        }
+    }
+
+    public String getStringISO88591(String key) {
+        try {
             return resourceBundle.getString(key);
-        }catch(MissingResourceException e){
+        } catch(MissingResourceException e){
             return key;
         }
     }

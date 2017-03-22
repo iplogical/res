@@ -9,6 +9,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
+import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -66,6 +67,9 @@ public class RestaurantControllerTest {
     private RestaurantServices restaurantServices;
 
     @Mock
+    private RetailServices retailServices;
+
+    @Mock
     private RestaurantView restaurantView;
 
     @Mock
@@ -89,7 +93,7 @@ public class RestaurantControllerTest {
         mockStatic(ViewLoader.class);
         when(ViewLoader.loadView(TABLE_FORM_VIEW_PATH, tableFormController)).thenReturn(tableFormContent);
 
-        underTest = new RestaurantControllerImpl(restaurantServices, tableFormController, configureTableFormController);
+        underTest = new RestaurantControllerImpl(restaurantServices, retailServices, tableFormController, configureTableFormController);
         underTest.tablesTab = tablesTab;
         underTest.tablesLab = tablesLab;
         underTest.virtualTab = virtualTab;
