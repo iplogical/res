@@ -13,6 +13,8 @@ public class TableViewState implements ViewState {
 
     private boolean selected;
 
+    private boolean dragged;
+
     public TableViewState(RestaurantViewState restaurantViewState, TableView tableView) {
         this.restaurantViewState = restaurantViewState;
         this.tableView = tableView;
@@ -38,5 +40,13 @@ public class TableViewState implements ViewState {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public boolean isDragged() {
+        return dragged;
+    }
+
+    public void setDragged(boolean dragged) {
+        this.dragged = dragged;
     }
 }
