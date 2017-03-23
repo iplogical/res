@@ -20,4 +20,24 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
     public Long getId() {
         return adapter.getAdaptee().getId();
     }
+
+    @Override
+    public String getName() {
+        return adapter.getAdaptee().getName();
+    }
+
+    @Override
+    public double getSoldQuantity() {
+        return adapter.getAdaptee().getSoldQuantity();
+    }
+
+    @Override
+    public int getSalePrice() {
+        return adapter.getAdaptee().getSalePrice();
+    }
+
+    @Override
+    public int getTotalPrice() {
+        return (int)(adapter.getAdaptee().getSalePrice() * adapter.getAdaptee().getSoldQuantity());
+    }
 }

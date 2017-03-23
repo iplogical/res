@@ -170,16 +170,6 @@ public class RestaurantServicesTest {
     }
 
     @Test
-    public void testAddTable() {
-        //given
-        when(restaurantView.getAdapter()).thenReturn(restaurantAdapter);
-        //when
-        service.addTable(restaurantView, TableType.NORMAL, 5);
-        //then
-        verify(restaurantAdapter).addTable(TableType.NORMAL, 5);
-    }
-
-    @Test
     public void testAddTableBuilder() {
         //given
         when(restaurantView.getAdapter()).thenReturn(restaurantAdapter);

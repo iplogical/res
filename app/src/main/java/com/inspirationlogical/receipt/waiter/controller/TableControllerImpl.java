@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import static com.inspirationlogical.receipt.waiter.application.Main.APP_HEIGHT;
+import static com.inspirationlogical.receipt.waiter.application.Main.APP_WIDTH;
 import static com.inspirationlogical.receipt.waiter.controller.SaleViewControllerImpl.SALE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableSettingsFormControllerImpl.TABLE_SETTINGS_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
@@ -26,6 +28,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -189,6 +192,7 @@ public class TableControllerImpl implements TableController {
             tableViewState.setDragged(false);
             return;
         }
+
         if(tableViewState.isConfigurable()) {
             tableViewState.setSelected(!tableViewState.isSelected());
             restaurantController.selectTable(this, tableViewState.isSelected());
@@ -197,8 +201,9 @@ public class TableControllerImpl implements TableController {
             if(!tableView.isOpen()) {
                 return;
             }
-            Parent root = (Parent) loadView(SALE_VIEW_PATH, getInjector().getInstance(SaleViewController.class));
-            Main.getWindow().getScene().setRoot(root);
+            Parent root = (Parent) loadView(SALE_VIEW_PATH, new SaleViewControllerImpl(retailServices, restaurantServices, tableView));
+            Main.getWindow().setScene(new Scene(root, APP_WIDTH, APP_HEIGHT));
+            Main.getWindow().setFullScreen(true);
         }
     }
 

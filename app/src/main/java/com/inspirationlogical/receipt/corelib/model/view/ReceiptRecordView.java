@@ -6,7 +6,16 @@ package com.inspirationlogical.receipt.corelib.model.view;
 public interface ReceiptRecordView {
     Long getId();
 
+    String getName();
+
+    double getSoldQuantity();
+
+    int getSalePrice();
+
+    int getTotalPrice();
+
     double getPaidQuantity();
 
     void setPaidQuantity(double quantity);
+
 }
