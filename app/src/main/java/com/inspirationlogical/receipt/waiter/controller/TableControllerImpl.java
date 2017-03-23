@@ -201,7 +201,7 @@ public class TableControllerImpl implements TableController {
             if(!tableView.isOpen()) {
                 return;
             }
-            Parent root = (Parent) loadView(SALE_VIEW_PATH, new SaleViewControllerImpl(retailServices, restaurantServices, tableView));
+            Parent root = (Parent) loadView(SALE_VIEW_PATH, new SaleViewControllerImpl(retailServices, restaurantServices, restaurantController, tableView));
             Main.getWindow().setScene(new Scene(root, APP_WIDTH, APP_HEIGHT));
             Main.getWindow().setFullScreen(true);
         }

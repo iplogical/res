@@ -98,6 +98,7 @@ public class SaleViewControllerImpl implements SaleViewController {
 
     public SaleViewControllerImpl(RetailServices retailServices,
                                   RestaurantServices restaurantServices,
+                                  RestaurantController restaurantController,
                                   TableView tableView) {
         this.retailServices = retailServices;
         this.restaurantServices = restaurantServices;
