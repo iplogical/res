@@ -83,7 +83,6 @@ public class SaleViewControllerImpl implements SaleViewController {
 
     private RestaurantController restaurantController;
 
-
     private SaleViewState saleViewState;
 
     private RestaurantServices restaurantServices;
@@ -102,6 +101,7 @@ public class SaleViewControllerImpl implements SaleViewController {
                                   TableView tableView) {
         this.retailServices = retailServices;
         this.restaurantServices = restaurantServices;
+        this.restaurantController = restaurantController;
         this.tableView = tableView;
         receiptView = restaurantServices.getActiveReceipt(tableView);
         soldProducts = receiptView.getSoldProducts();
