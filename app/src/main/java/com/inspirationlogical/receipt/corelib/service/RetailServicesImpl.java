@@ -16,28 +16,26 @@ public class RetailServicesImpl extends AbstractServices implements RetailServic
 
     @Override
     public void openTable(TableView tableView) {
-        ((TableViewImpl)tableView).getAdapter().openTable();
+        getTableAdapter(tableView).openTable();
     }
 
     @Override
     public void sellProduct(TableView tableView, ProductView productView, int amount, PaymentParams paymentParams) {
-        ((TableViewImpl)tableView).getAdapter().getActiveReceipt()
-                .sellProduct(((ProductViewImpl)productView).getAdapter(), amount, paymentParams);
+        getTableAdapter(tableView).getActiveReceipt().sellProduct(getProductAdapter(productView), amount, paymentParams);
     }
 
     @Override
     public void sellAdHocProduct(TableView tableView, int amount, AdHocProductParams adHocProductParams, PaymentParams paymentParams) {
-        ((TableViewImpl)tableView).getAdapter().getActiveReceipt()
-                .sellAdHocProduct(amount, adHocProductParams, paymentParams);
+        getTableAdapter(tableView).getActiveReceipt().sellAdHocProduct(amount, adHocProductParams, paymentParams);
     }
 
     @Override
     public void payTable(TableView tableView, PaymentParams paymentParams) {
-        ((TableViewImpl)tableView).getAdapter().payTable(paymentParams);
+        getTableAdapter(tableView).payTable(paymentParams);
     }
 
     @Override
     public void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-        ((TableViewImpl)tableView).getAdapter().paySelective(records, paymentParams);
+        getTableAdapter(tableView).paySelective(records, paymentParams);
     }
 }

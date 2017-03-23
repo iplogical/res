@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.service;
 
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
@@ -27,6 +28,6 @@ public class CommonServicesImpl extends AbstractServices implements CommonServic
     @Override
     public List<ProductView> getProducts(ProductCategoryView category) {
 
-        return createViewsFromAdapters(((ProductCategoryViewImpl)category).getAdapter().getAllProducts());
+        return createViewsFromAdapters(getProductCategoryAdapter(category).getAllProducts());
     }
 }

@@ -17,6 +17,10 @@ public interface RestaurantServices {
 
     List<TableView> getTables(RestaurantView restaurant);
 
+    TableView addTable(RestaurantView restaurant, TableBuilder builder);
+
+    ReceiptView getActiveReceipt(TableView tableView);
+
     void setTableNumber(TableView tableView, int tableNumber);
 
     void setTableType(TableView tableView, TableType tableType);
@@ -36,13 +40,6 @@ public interface RestaurantServices {
     void moveTable(TableView tableView, Point2D position);
 
     void deleteTable(TableView tableView);
-
-    // TODO: remove this when not used by the UI.
-    TableView addTable(RestaurantView restaurant, TableType type, int tableNumber);
-
-    TableView addTable(RestaurantView restaurant, TableBuilder builder);
-
-    ReceiptView getActiveReceipt(TableView tableView);
 
     void mergeTables(TableView aggregate, List<TableView> consumed);
 }
