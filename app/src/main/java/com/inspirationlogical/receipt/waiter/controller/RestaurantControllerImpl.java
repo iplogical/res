@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -250,13 +249,15 @@ public class RestaurantControllerImpl implements RestaurantController {
     @Override
     public void mergeTables() {
         if (selectedTables.size() > 1) {
-            TableView aggregate = selectedTables.iterator().next().getView();
+            TableController firstSelected = selectedTables.iterator().next();
+            TableView aggregate = firstSelected.getView();
             List<TableView> consumed = new ArrayList<>();
+            selectedTables.remove(firstSelected);
             selectedTables.iterator().forEachRemaining(tableController -> consumed.add(tableController.getView()));
 
-            System.out.println("Merged tables "
-                    + consumed.stream().map(tableView -> tableView.getTableNumber()).collect(Collectors.toList())
-                    + " into " + aggregate.getTableNumber());
+            restaurantServices.mergeTables(aggregate, consumed);
+        } else {
+            ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("InsufficientSelection"));
         }
     }
 

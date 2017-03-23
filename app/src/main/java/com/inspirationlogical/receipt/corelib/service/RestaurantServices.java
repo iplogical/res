@@ -43,4 +43,6 @@ public interface RestaurantServices {
     TableView addTable(RestaurantView restaurant, TableBuilder builder);
 
     ReceiptView getActiveReceipt(TableView tableView);
+
+    void mergeTables(TableView aggregate, List<TableView> consumed);
 }

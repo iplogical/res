@@ -33,10 +33,7 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
                     .withLabel(Resources.UI.getString("ContextMenu.deleteTable"))
                     .withClickHandlerControl(restaurantController::deleteTable)
                     .build();
-            MenuItem splitTables = new ContextMenuItemBuilder()
-                    .withLabel(Resources.UI.getString("ContextMenu.splitTables"))
-                    .build();
-            contextMenu.getItems().addAll(editTable, deleteTable, splitTables);
+            contextMenu.getItems().addAll(editTable, deleteTable);
         } else {
             MenuItem rename = new ContextMenuItemBuilder()
                     .withLabel(Resources.UI.getString("ContextMenu.setTable"))

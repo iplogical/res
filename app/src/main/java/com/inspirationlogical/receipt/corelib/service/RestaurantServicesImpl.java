@@ -113,4 +113,9 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     public ReceiptView getActiveReceipt(TableView tableView) {
         return new ReceiptViewImpl(((TableViewImpl)tableView).getAdapter().getActiveReceipt());
     }
+
+    @Override
+    public void mergeTables(TableView aggregate, List<TableView> consumed) {
+        // todo: implement table merge logic (eattgom)
+    }
 }
