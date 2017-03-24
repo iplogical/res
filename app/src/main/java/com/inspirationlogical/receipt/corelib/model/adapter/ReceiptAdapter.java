@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
@@ -10,7 +9,6 @@ import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptAdapterList
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.service.AdHocProductParams;
-import com.inspirationlogical.receipt.corelib.service.Pair;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 
 import java.util.*;
@@ -44,17 +42,17 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         super(receipt);
     }
 
-    public void sellProduct(ProductAdapter productAdapter, int amount, PaymentParams paymentParams) {
+    public void sellProduct(ProductAdapter productAdapter, int amount, boolean takeAway) {
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(productAdapter.getAdaptee())
-                    .type(paymentParams.getReceiptRecordType())
+                    .type(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE)
                     .created(new GregorianCalendar())
                     .name(productAdapter.getAdaptee().getLongName())
                     .soldQuantity(amount)
                     .purchasePrice(productAdapter.getAdaptee().getPurchasePrice())
                     .salePrice(productAdapter.getAdaptee().getSalePrice())
-                    .VAT(VATAdapter.getVatByName(paymentParams.getReceiptRecordType(), VATStatus.VALID).getAdaptee().getVAT())
+                    .VAT(VATAdapter.getVatByName(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
                     // TODO: calculate discount based on the PriceModifiers.
                     //.discountPercent(paymentParams.getDiscountPercent())
                     .build();

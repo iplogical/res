@@ -56,7 +56,7 @@ public class ReceiptAdapterTest {
 
     @Test
     public void testSellProduct() {
-        receiptAdapter.sellProduct(productAdapter, 1, paymentParams);
+        receiptAdapter.sellProduct(productAdapter, 1, true);
         assertEquals(5, receiptAdapter.getSoldProducts().size());
     }
 

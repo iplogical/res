@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 
 import javax.persistence.EntityManager;
@@ -20,8 +19,8 @@ public class RetailServicesImpl extends AbstractServices implements RetailServic
     }
 
     @Override
-    public void sellProduct(TableView tableView, ProductView productView, int amount, PaymentParams paymentParams) {
-        getTableAdapter(tableView).getActiveReceipt().sellProduct(getProductAdapter(productView), amount, paymentParams);
+    public void sellProduct(TableView tableView, ProductView productView, int amount, boolean takeAway) {
+        getTableAdapter(tableView).getActiveReceipt().sellProduct(getProductAdapter(productView), amount, takeAway);
     }
 
     @Override

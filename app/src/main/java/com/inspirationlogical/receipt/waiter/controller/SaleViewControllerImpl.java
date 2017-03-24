@@ -164,8 +164,7 @@ public class SaleViewControllerImpl implements SaleViewController {
 
     @Override
     public void sellProduct(ProductView productView) {
-        ReceiptRecordType type = takeAway.isSelected() ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE;
-        retailServices.sellProduct(tableView, productView, 1, PaymentParams.builder().receiptRecordType(type).build());
+        retailServices.sellProduct(tableView, productView, 1, saleViewState.isTakeAway());
         updateSoldProductsTable();
     }
 

@@ -77,10 +77,10 @@ public class RetailServicesTest {
         when(productView.getAdapter()).thenReturn(productAdapter);
         when(tableAdapter.getActiveReceipt()).thenReturn(receiptAdapter);
         //when
-        service.sellProduct(tableView, productView, 1, paymentParams);
+        service.sellProduct(tableView, productView, 1, false);
         //then
         verify(tableAdapter).getActiveReceipt();
-        verify(receiptAdapter).sellProduct(productAdapter, 1, paymentParams);
+        verify(receiptAdapter).sellProduct(productAdapter, 1, false);
     }
 
     @Test
