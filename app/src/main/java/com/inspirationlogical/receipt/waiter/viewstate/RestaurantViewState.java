@@ -1,10 +1,5 @@
 package com.inspirationlogical.receipt.waiter.viewstate;
 
-import lombok.Data;
+public class RestaurantViewState extends AbstractViewState {
 
-public @Data class RestaurantViewState implements ViewState {
-
-    private boolean configurable;
-
-    private boolean fullScreen;
 }

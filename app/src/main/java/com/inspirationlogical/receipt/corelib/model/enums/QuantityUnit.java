@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.enums;
 
-public enum QunatityUnit {
+public enum QuantityUnit {
 
     LITER,
     KILOGRAM,

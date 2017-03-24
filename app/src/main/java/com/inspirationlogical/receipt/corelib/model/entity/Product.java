@@ -15,7 +15,7 @@ import com.inspirationlogical.receipt.corelib.model.annotations.ValidCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.EtalonQuantity;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
-import com.inspirationlogical.receipt.corelib.model.enums.QunatityUnit;
+import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
 
 import lombok.Builder;
 import lombok.Data;
@@ -73,7 +73,7 @@ public @Data class Product extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private QunatityUnit quantityUnit;
+    private QuantityUnit quantityUnit;
 
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -97,4 +97,15 @@ public @Data class Product extends AbstractEntity {
 
     @Tolerate
     Product(){}
+
+    @Override
+    public String toString() {
+        return "Product: name=" + longName +
+                ", type=" + type.toString() +
+                ", status=" + status.toString() +
+                ", salePrice=" + salePrice +
+                ", purchasePrice=" + purchasePrice +
+                ", VATLocal=" + VATLocal +
+                ", VATTakeAway=" + VATTakeAway;
+    }
 }

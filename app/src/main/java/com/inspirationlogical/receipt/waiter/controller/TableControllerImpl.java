@@ -28,7 +28,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -201,7 +200,9 @@ public class TableControllerImpl implements TableController {
             if(!tableView.isOpen()) {
                 return;
             }
-            Parent root = (Parent) loadView(SALE_VIEW_PATH, new SaleViewControllerImpl(retailServices, restaurantServices, restaurantController, tableView));
+            SaleViewController saleViewController = getInjector().getInstance(SaleViewController.class);
+            saleViewController.setTableView(tableView);
+            Parent root = (Parent) loadView(SALE_VIEW_PATH, saleViewController);
             Main.getWindow().getScene().setRoot(root);
             Main.getWindow().setFullScreen(true);
         }

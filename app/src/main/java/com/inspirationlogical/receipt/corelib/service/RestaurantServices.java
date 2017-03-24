@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.corelib.service;
 import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
@@ -20,6 +21,8 @@ public interface RestaurantServices {
     TableView addTable(RestaurantView restaurant, TableBuilder builder);
 
     ReceiptView getActiveReceipt(TableView tableView);
+
+    ProductCategoryView getRootProductCategory();
 
     void setTableNumber(TableView tableView, int tableNumber);
 

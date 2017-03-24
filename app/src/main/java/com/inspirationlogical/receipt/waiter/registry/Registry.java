@@ -4,6 +4,8 @@ import javax.persistence.EntityManager;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServicesImpl;
 import com.inspirationlogical.receipt.waiter.controller.*;
@@ -16,6 +18,8 @@ public class Registry extends AbstractModule {
     @Override
     protected void configure() {
         bind(RestaurantController.class).to(RestaurantControllerImpl.class);
+        bind(SaleViewController.class).to(SaleViewControllerImpl.class);
+        bind(SaleViewElementController.class).to(SaleViewElementControllerImpl.class);
         bind(TableFormController.class).to(TableFormControllerImpl.class);
         bind(RestaurantServices.class).to(RestaurantServicesImpl.class);
         bind(RetailServices.class).to(RetailServicesImpl.class);
@@ -33,5 +37,15 @@ public class Registry extends AbstractModule {
                                            RestaurantServices restaurantServices,
                                            RetailServices retailServices) {
         return new TableControllerImpl(restaurantController, tableSettingsFormController, restaurantServices, retailServices);
+    }
+
+    @Provides
+    SaleViewElementController<ProductView> providesSaleViewElementControllerOfProductView(SaleViewController saleViewController) {
+        return new SaleViewElementControllerImpl<>(saleViewController);
+    }
+
+    @Provides
+    SaleViewElementController<ProductCategoryView> providesSaleViewElementControllerOfProductCategoryView(SaleViewController saleViewController) {
+        return new SaleViewElementControllerImpl<>(saleViewController);
     }
 }

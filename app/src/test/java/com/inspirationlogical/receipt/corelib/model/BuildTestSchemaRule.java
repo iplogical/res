@@ -313,7 +313,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .shortName("product")
                 .salePrice(1000)
                 .status(ProductStatus.ACTIVE)
-                .quantityUnit(QunatityUnit.LITER)
+                .quantityUnit(QuantityUnit.LITER)
                 .etalonQuantity(EtalonQuantity.LITER)
                 .type(ProductType.SELLABLE)
                 .build();
@@ -325,7 +325,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .shortName("productTwo")
                 .salePrice(200)
                 .status(ProductStatus.ACTIVE)
-                .quantityUnit(QunatityUnit.BOTTLE)
+                .quantityUnit(QuantityUnit.BOTTLE)
                 .etalonQuantity(EtalonQuantity.LITER)
                 .type(ProductType.SELLABLE)
                 .build();
@@ -337,7 +337,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .shortName("productThree")
                 .salePrice(790)
                 .status(ProductStatus.ACTIVE)
-                .quantityUnit(QunatityUnit.PIECE)
+                .quantityUnit(QuantityUnit.PIECE)
                 .etalonQuantity(EtalonQuantity.KILOGRAM)
                 .type(ProductType.SELLABLE)
                 .build();
@@ -349,7 +349,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .shortName("productFour")
                 .salePrice(990)
                 .status(ProductStatus.ACTIVE)
-                .quantityUnit(QunatityUnit.PIECE)
+                .quantityUnit(QuantityUnit.PIECE)
                 .etalonQuantity(EtalonQuantity.KILOGRAM)
                 .type(ProductType.SELLABLE)
                 .build();
@@ -361,7 +361,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .shortName("productFive")
                 .salePrice(780)
                 .status(ProductStatus.ACTIVE)
-                .quantityUnit(QunatityUnit.PIECE)
+                .quantityUnit(QuantityUnit.PIECE)
                 .etalonQuantity(EtalonQuantity.KILOGRAM)
                 .type(ProductType.SELLABLE)
                 .build();
@@ -373,7 +373,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .shortName("productSix")
                 .salePrice(4990)
                 .status(ProductStatus.ACTIVE)
-                .quantityUnit(QunatityUnit.PIECE)
+                .quantityUnit(QuantityUnit.PIECE)
                 .etalonQuantity(EtalonQuantity.KILOGRAM)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
@@ -384,7 +384,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .longName("productAdHoc")
                 .shortName("productAdHoc")
                  .status(ProductStatus.ACTIVE)
-                .quantityUnit(QunatityUnit.PIECE)
+                .quantityUnit(QuantityUnit.PIECE)
                 .etalonQuantity(EtalonQuantity.KILOGRAM)
                 .type(ProductType.AD_HOC_PRODUCT)
                 .build();
@@ -508,21 +508,21 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildElementOne() {
         elementOne = Recipe.builder()
                 .quantityMultiplier(0.2)
-                .quantityUnit(QunatityUnit.LITER)
+                .quantityUnit(QuantityUnit.LITER)
                 .build();
     }
 
     private void buildElementTwo() {
         elementTwo = Recipe.builder()
                 .quantityMultiplier(0.05)
-                .quantityUnit(QunatityUnit.LITER)
+                .quantityUnit(QuantityUnit.LITER)
                 .build();
     }
 
     private void buildElementThree() {
         elementThree = Recipe.builder()
                 .quantityMultiplier(0.1)
-                .quantityUnit(QunatityUnit.LITER)
+                .quantityUnit(QuantityUnit.LITER)
                 .build();
     }
 

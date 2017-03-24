@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,12 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .filter(elem -> !elem.getProduct().getType().equals(ProductType.AD_HOC_PRODUCT))
                 .filter(elem -> elem.getProduct().getStatus().equals(ProductStatus.ACTIVE))
                 .map(elem -> new ProductAdapter(elem.getProduct()))
+                .collect(Collectors.toList());
+    }
+
+    public Collection<ProductCategoryAdapter> getChildrenCategories() {
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
+        return adaptee.getChildren().stream().map(elem -> new ProductCategoryAdapter(elem))
                 .collect(Collectors.toList());
     }
 }

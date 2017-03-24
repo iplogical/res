@@ -7,6 +7,7 @@ import javax.persistence.Table;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidCategory;
 import lombok.experimental.Tolerate;
+import org.apache.batik.css.engine.value.css2.SrcManager;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidParent;
@@ -64,4 +65,17 @@ public @Data class ProductCategory extends AbstractEntity {
 
     @Tolerate
     ProductCategory(){}
+
+    @Override
+    public String toString() {
+//        return "ProductCategory: name=" + name +
+//                ", type=" + type.toString() +
+//                ", parent=" + parent == null ? "no parent" : parent.getName() +
+//                ", product=" + product == null ? "no product" : product.getLongName();
+        return "ProductCategory: name=" + name +
+                ", type=" + type.toString() +
+                ", parent=" + (parent == null ? "no parent" : parent.getName()) +
+                ", product=" + (product == null ? "no product" : product.getLongName());
+
+    }
 }

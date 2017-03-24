@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.inspirationlogical.receipt.corelib.model.enums.QunatityUnit;
+import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
 
 import lombok.Builder;
 import lombok.Data;
@@ -35,7 +35,7 @@ public @Data class Recipe extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private QunatityUnit quantityUnit;
+    private QuantityUnit quantityUnit;
 
     private double quantityMultiplier;
 

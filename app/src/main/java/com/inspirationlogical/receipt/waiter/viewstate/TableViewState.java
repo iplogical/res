@@ -5,7 +5,7 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 /**
  * Created by Bálint on 2017.03.22..
  */
-public class TableViewState implements ViewState {
+public class TableViewState extends AbstractViewState {
 
     private RestaurantViewState restaurantViewState;
 

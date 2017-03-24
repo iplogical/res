@@ -7,7 +7,7 @@ import javafx.geometry.Point2D;
 /**
  * Created by Bálint on 2017.03.13..
  */
-public interface TableView {
+public interface TableView extends AbstractView {
 
     boolean isOpen();
 
