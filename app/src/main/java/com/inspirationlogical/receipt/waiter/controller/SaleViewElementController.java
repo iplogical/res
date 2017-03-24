@@ -12,6 +12,10 @@ public interface SaleViewElementController<T extends AbstractView> extends Contr
 
     void setView(T view);
 
+    T getView();
+
+    void select(boolean isSelected);
+
     @FXML
     void onElementClicked(MouseEvent event);
 }

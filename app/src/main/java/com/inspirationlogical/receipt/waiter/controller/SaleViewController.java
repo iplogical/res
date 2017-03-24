@@ -11,4 +11,6 @@ public interface SaleViewController extends Controller {
     void setTableView(TableView tableView);
 
     void sellProduct(ProductView productView);
+
+    void selectCategory(SaleViewElementController saleViewElementController);
 }

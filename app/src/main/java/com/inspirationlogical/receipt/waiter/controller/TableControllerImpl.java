@@ -20,6 +20,7 @@ import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.application.Main;
+import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 import com.inspirationlogical.receipt.waiter.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
 import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
@@ -126,7 +127,7 @@ public class TableControllerImpl implements TableController {
         number.setText(valueOf(tableView.getTableNumber()));
         guests.setText(valueOf(tableView.getGuestCount()));
         capacity.setText(valueOf(tableView.getTableCapacity()));
-        setTableBackgroundColor();
+        CSSUtilities.setBackgroundColor(tableViewState.isOpen(), vBox);
         showNode(root, tableView.getPosition());
     }
 
@@ -158,26 +159,10 @@ public class TableControllerImpl implements TableController {
         updateNode();
     }
 
-    private void setTableBackgroundColor() {
-        if(tableViewState.isOpen()) {
-            vBox.setStyle(vBox.getStyle().replaceFirst("(-fx-background-color: #[0-9a-fA-F]*;)", "-fx-background-color: #33ff33;"));
-        } else {
-            vBox.setStyle(vBox.getStyle().replaceFirst("(-fx-background-color: #[0-9a-fA-F]*;)", "-fx-background-color: #ffffff;"));
-        }
-    }
-
-    private void setTableBorderColor() {
-        if(tableViewState.isSelected()) {
-            vBox.setStyle(vBox.getStyle().replaceFirst("(-fx-border-color: #[0-9a-fA-F]*;)", "-fx-border-color: #00bfff;"));
-        } else {
-            vBox.setStyle(vBox.getStyle().replaceFirst("(-fx-border-color: #[0-9a-fA-F]*;)", "-fx-border-color: #000000;"));
-        }
-    }
-
     @Override
     public void deselectTable() {
         tableViewState.setSelected(false);
-        setTableBorderColor();
+        CSSUtilities.setBorderColor(tableViewState.isSelected(), vBox);
     }
 
     @FXML
@@ -195,7 +180,7 @@ public class TableControllerImpl implements TableController {
         if(tableViewState.isConfigurable()) {
             tableViewState.setSelected(!tableViewState.isSelected());
             restaurantController.selectTable(this, tableViewState.isSelected());
-            setTableBorderColor();
+            CSSUtilities.setBorderColor(tableViewState.isSelected(), vBox);
         } else {
             if(!tableView.isOpen()) {
                 return;

@@ -8,9 +8,7 @@ import java.util.ResourceBundle;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
-import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.application.Main;
 import com.inspirationlogical.receipt.waiter.viewstate.SaleViewState;
@@ -166,6 +164,17 @@ public class SaleViewControllerImpl implements SaleViewController {
     public void sellProduct(ProductView productView) {
         retailServices.sellProduct(tableView, productView, 1, saleViewState.isTakeAway());
         updateSoldProductsTable();
+    }
+
+    @Override
+    public void selectCategory(SaleViewElementController saleViewElementController) {
+        elementControllers.stream()
+                .filter(controller -> controller.getView().equals(selectedCategory))
+                .map(controller -> {controller.select(false);
+                                    return true;})
+                .collect(Collectors.toList());
+        selectedCategory = (ProductCategoryView)saleViewElementController.getView();
+        saleViewElementController.select(true);
     }
 
     private void getSoldProducts(RestaurantServices restaurantServices, TableView tableView) {

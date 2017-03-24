@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.net.URL;
@@ -24,6 +25,9 @@ public class SaleViewElementControllerImpl<T extends AbstractView> implements Sa
     Label root;
 
     @FXML
+    VBox vBox;
+
+    @FXML
     Label elementName;
 
     @FXML
@@ -31,7 +35,7 @@ public class SaleViewElementControllerImpl<T extends AbstractView> implements Sa
 
     protected SaleViewController saleViewController;
 
-    protected @Setter T view;
+    protected @Setter @Getter T view;
 
     protected SaleViewElementState saleViewElementState;
 
@@ -52,6 +56,11 @@ public class SaleViewElementControllerImpl<T extends AbstractView> implements Sa
     @Override
     public Node getRootNode() {
         return root;
+    }
+
+    @Override
+    public void select(boolean isSelected) {
+
     }
 
     @Override
