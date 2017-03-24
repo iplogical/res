@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.application.Main;
@@ -48,46 +49,46 @@ public class SaleViewControllerImpl implements SaleViewController {
     public static final String SALE_VIEW_PATH = "/view/fxml/SaleView.fxml";
 
     @FXML
-    BorderPane root;
+    private BorderPane root;
 
     @FXML
-    AnchorPane center;
+    private AnchorPane center;
 
     @FXML
-    VBox left;
+    private VBox left;
 
     @FXML
-    Label totalPrice;
+    private Label totalPrice;
 
     @FXML
-    GridPane categoriesGrid;
+    private GridPane categoriesGrid;
 
     @FXML
-    GridPane subCategoriesGrid;
+    private GridPane subCategoriesGrid;
 
     @FXML
-    GridPane productsGrid;
+    private GridPane productsGrid;
 
     @FXML
-    RadioButton takeAway;
+    private RadioButton takeAway;
 
     @FXML
-    javafx.scene.control.TableView<SoldProductsTableModel> soldProductsTable;
+    private javafx.scene.control.TableView<SoldProductsTableModel> soldProductsTable;
 
     @FXML
-    TableColumn productName;
+    private TableColumn productName;
 
     @FXML
-    TableColumn productQuantity;
+    private TableColumn productQuantity;
 
     @FXML
-    TableColumn productUnitPrice;
+    private TableColumn productUnitPrice;
 
     @FXML
-    TableColumn productTotalPrice;
+    private TableColumn productTotalPrice;
 
     @FXML
-    Button backToRestaurantView;
+    private Button backToRestaurantView;
 
     private RestaurantController restaurantController;
 
@@ -133,15 +134,36 @@ public class SaleViewControllerImpl implements SaleViewController {
         updateNode();
     }
 
-    private void updateNode() {
-        updateSoldProductsTable();
-        updateCategories();
+    private void initializeCategories(RestaurantServices restaurantServices) {
+        rootCategory = restaurantServices.getRootProductCategory();
+        selectedCategory = rootCategory.getChildrenCategories().get(0);
     }
 
-    private void updateCategories() {
+    private void initializeSaleViewState(RestaurantController restaurantController) {
+        saleViewState = new SaleViewState();
+        saleViewState.setFullScreen(restaurantController.getViewState().isFullScreen());
+    }
+
+    private void updateCategories(ProductCategoryView selectedCategory) {
+        if(!ProductCategoryType.isLeaf(selectedCategory.getType())) {
+            selectedLevelCategories = selectedCategory.getParent().getChildrenCategories();
+            selectedChildrenCategories = selectedCategory.getChildrenCategories();
+        }
+        visibleProducts = selectedCategory.getAllProducts();
+        productsGrid.getChildren().clear();
+        elementControllers = new ArrayList<>();
         drawListOfElements(selectedLevelCategories, categoriesGrid);
         drawListOfElements(selectedChildrenCategories, subCategoriesGrid);
         drawListOfElements(visibleProducts, productsGrid);
+        elementControllers.stream().filter(controller -> controller.getView().getName().equals(selectedCategory.getName()))
+                .map(controller -> {controller.select(true);
+                    return true;})
+                .collect(Collectors.toList());
+    }
+
+    private void updateNode() {
+        updateSoldProductsTable();
+        updateCategories(selectedCategory);
     }
 
     @FXML
@@ -168,31 +190,13 @@ public class SaleViewControllerImpl implements SaleViewController {
 
     @Override
     public void selectCategory(SaleViewElementController saleViewElementController) {
-        elementControllers.stream()
-                .filter(controller -> controller.getView().equals(selectedCategory))
-                .map(controller -> {controller.select(false);
-                                    return true;})
-                .collect(Collectors.toList());
         selectedCategory = (ProductCategoryView)saleViewElementController.getView();
-        saleViewElementController.select(true);
+        updateCategories(selectedCategory);
     }
 
     private void getSoldProducts(RestaurantServices restaurantServices, TableView tableView) {
         receiptView = restaurantServices.getActiveReceipt(tableView);
         soldProducts = receiptView.getSoldProducts();
-    }
-
-    private void initializeCategories(RestaurantServices restaurantServices) {
-        rootCategory = restaurantServices.getRootProductCategory();
-        selectedLevelCategories = rootCategory.getChildrenCategories();
-        selectedCategory = selectedLevelCategories.get(0);
-        selectedChildrenCategories = selectedCategory.getChildrenCategories();
-        visibleProducts = selectedCategory.getAllProducts();
-    }
-
-    private void initializeSaleViewState(RestaurantController restaurantController) {
-        saleViewState = new SaleViewState();
-        saleViewState.setFullScreen(restaurantController.getViewState().isFullScreen());
     }
 
     private void updateSoldProductsTable() {

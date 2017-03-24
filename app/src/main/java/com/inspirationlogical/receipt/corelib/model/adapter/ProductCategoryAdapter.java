@@ -57,4 +57,12 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         return adaptee.getChildren().stream().map(elem -> new ProductCategoryAdapter(elem))
                 .collect(Collectors.toList());
     }
+
+    public ProductCategoryAdapter getParent() {
+        return new ProductCategoryAdapter(adaptee.getParent());
+    }
+
+    public ProductCategoryType getType() {
+        return adaptee.getType();
+    }
 }

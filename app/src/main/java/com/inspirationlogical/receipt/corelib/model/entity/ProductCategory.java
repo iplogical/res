@@ -38,6 +38,7 @@ public @Data class ProductCategory extends AbstractEntity {
     public static final String GET_CATEGORY_BY_TYPE = "ProductCategory.GetCategoryByType";
 
     @NotEmpty
+    @Column(unique = true)
     private String name;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
