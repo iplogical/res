@@ -29,11 +29,11 @@ public class SaleViewElementControllerImpl<T extends AbstractView> implements Sa
     @FXML
     Label salePrice;
 
-    private SaleViewController saleViewController;
+    protected SaleViewController saleViewController;
 
-    private @Setter T view;
+    protected @Setter T view;
 
-    private SaleViewElementState saleViewElementState;
+    protected SaleViewElementState saleViewElementState;
 
     @Inject
     public SaleViewElementControllerImpl(SaleViewController saleViewController) {
@@ -49,13 +49,13 @@ public class SaleViewElementControllerImpl<T extends AbstractView> implements Sa
         elementName.setText(view.getName());
     }
 
-    @FXML
-    public void onElementClicked(MouseEvent event) {
-
-    }
-
-        @Override
+    @Override
     public Node getRootNode() {
         return root;
+    }
+
+    @Override
+    public void onElementClicked(MouseEvent event) {
+        System.out.println("Clicked Element");
     }
 }

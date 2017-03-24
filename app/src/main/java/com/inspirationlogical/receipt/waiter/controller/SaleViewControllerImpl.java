@@ -8,7 +8,9 @@ import java.util.ResourceBundle;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
+import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.application.Main;
 import com.inspirationlogical.receipt.waiter.viewstate.SaleViewState;
@@ -24,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -36,7 +39,6 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import static com.inspirationlogical.receipt.waiter.controller.SaleViewElementControllerImpl.SALE_VIEW_ELEMENT_PATH;
-import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 
 /**
@@ -67,6 +69,9 @@ public class SaleViewControllerImpl implements SaleViewController {
 
     @FXML
     GridPane productsGrid;
+
+    @FXML
+    RadioButton takeAway;
 
     @FXML
     javafx.scene.control.TableView<SoldProductsTableModel> soldProductsTable;
@@ -125,7 +130,6 @@ public class SaleViewControllerImpl implements SaleViewController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeSoldProducts(restaurantServices, tableView);
         initializeCategories(restaurantServices);
         initializeSaleViewState(restaurantController);
         updateNode();
@@ -148,12 +152,24 @@ public class SaleViewControllerImpl implements SaleViewController {
         Main.getWindow().getScene().setRoot(root);
     }
 
+    @FXML
+    public void onTakeAwayToggled(Event event) {
+        saleViewState.setTakeAway(takeAway.isSelected());
+    }
+
     @Override
     public Node getRootNode() {
         return root;
     }
 
-    private void initializeSoldProducts(RestaurantServices restaurantServices, TableView tableView) {
+    @Override
+    public void sellProduct(ProductView productView) {
+        ReceiptRecordType type = takeAway.isSelected() ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE;
+        retailServices.sellProduct(tableView, productView, 1, PaymentParams.builder().receiptRecordType(type).build());
+        updateSoldProductsTable();
+    }
+
+    private void getSoldProducts(RestaurantServices restaurantServices, TableView tableView) {
         receiptView = restaurantServices.getActiveReceipt(tableView);
         soldProducts = receiptView.getSoldProducts();
     }
@@ -172,6 +188,7 @@ public class SaleViewControllerImpl implements SaleViewController {
     }
 
     private void updateSoldProductsTable() {
+        getSoldProducts(restaurantServices, tableView);
         soldProductsTable.setEditable(true);
         productName.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productName"));
         productQuantity.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productQuantity"));
@@ -194,8 +211,17 @@ public class SaleViewControllerImpl implements SaleViewController {
     }
 
     private <T extends AbstractView> void drawElement(T elementView, GridPane grid, int index) {
-        SaleViewElementController<T> elementController =
-                getInjector().getInstance(SaleViewElementController.class);
+//        SaleViewElementController<T> elementController =
+//                getInjector().getInstance(SaleViewElementControllerImpl.class);
+//                getInjector().getInstance(SaleViewElementControllerImpl.class);
+
+        SaleViewElementController elementController = null;
+
+        if(elementView instanceof ProductView) {
+            elementController = new SaleViewProductControllerImpl(this);
+        } else if (elementView instanceof ProductCategoryView) {
+            elementController = new SaleViewCategoryControllerImpl(this);
+        }
         elementController.setView(elementView);
         elementControllers.add(elementController);
         Node root = loadView(SALE_VIEW_ELEMENT_PATH, elementController);

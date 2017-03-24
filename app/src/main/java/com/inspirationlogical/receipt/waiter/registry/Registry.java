@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.TypeLiteral;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
@@ -19,7 +20,11 @@ public class Registry extends AbstractModule {
     protected void configure() {
         bind(RestaurantController.class).to(RestaurantControllerImpl.class);
         bind(SaleViewController.class).to(SaleViewControllerImpl.class);
-        bind(SaleViewElementController.class).to(SaleViewElementControllerImpl.class);
+//        bind(SaleViewElementController.class).to(SaleViewElementControllerImpl.class);
+//        bind(new TypeLiteral<SaleViewElementControllerImpl<ProductView>>() {}).to(SaleViewProductControllerImpl.class);
+//        bind(new TypeLiteral<SaleViewElementControllerImpl<ProductCategoryView>>() {}).to(SaleViewCategoryControllerImpl.class);
+//        bind(SaleViewElementControllerImpl.class).to(SaleViewProductControllerImpl.class);
+//        bind(SaleViewElementControllerImpl.class).to(SaleViewCategoryControllerImpl.class);
         bind(TableFormController.class).to(TableFormControllerImpl.class);
         bind(RestaurantServices.class).to(RestaurantServicesImpl.class);
         bind(RetailServices.class).to(RetailServicesImpl.class);
@@ -39,13 +44,13 @@ public class Registry extends AbstractModule {
         return new TableControllerImpl(restaurantController, tableSettingsFormController, restaurantServices, retailServices);
     }
 
-    @Provides
-    SaleViewElementController<ProductView> providesSaleViewElementControllerOfProductView(SaleViewController saleViewController) {
-        return new SaleViewElementControllerImpl<>(saleViewController);
-    }
-
-    @Provides
-    SaleViewElementController<ProductCategoryView> providesSaleViewElementControllerOfProductCategoryView(SaleViewController saleViewController) {
-        return new SaleViewElementControllerImpl<>(saleViewController);
-    }
+//    @Provides
+//    SaleViewElementControllerImpl<ProductView> provideSaleViewElementControllerOfProductView(SaleViewController saleViewController) {
+//        return new SaleViewProductControllerImpl(saleViewController);
+//    }
+//
+//    @Provides
+//    SaleViewElementControllerImpl<ProductCategoryView> provideSaleViewElementControllerOfProductCategoryView(SaleViewController saleViewController) {
+//        return new SaleViewCategoryControllerImpl(saleViewController);
+//    }
 }
