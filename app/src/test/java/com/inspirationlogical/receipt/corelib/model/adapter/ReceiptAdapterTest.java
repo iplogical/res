@@ -158,4 +158,9 @@ public class ReceiptAdapterTest {
         assertEquals(4615, closedReceipts.get(1).getRecords().stream()
                         .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum());
     }
+
+    @Test
+    public void testGetTotalPrice() {
+        assertEquals(13100, receiptAdapter.getTotalPrice());
+    }
 }

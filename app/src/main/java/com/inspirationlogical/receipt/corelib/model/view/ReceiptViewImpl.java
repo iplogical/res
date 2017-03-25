@@ -18,4 +18,9 @@ public class ReceiptViewImpl extends AbstractModelViewImpl<ReceiptAdapter>
                 .map(record -> new ReceiptRecordViewImpl(record))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public long getTotalPrice() {
+        return adapter.getTotalPrice();
+    }
 }

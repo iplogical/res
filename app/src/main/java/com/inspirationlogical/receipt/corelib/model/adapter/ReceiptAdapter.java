@@ -155,6 +155,12 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         paidReceipt[0].close(paymentParams);
     }
 
+    public long getTotalPrice() {
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
+        return adaptee.getRecords().stream()
+                .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum();
+    }
+
     private double calculateDiscount(PaymentParams paymentParams) {
         if(paymentParams.getDiscountPercent() != 0) {
             return paymentParams.getDiscountPercent();

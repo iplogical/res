@@ -5,4 +5,6 @@ import java.util.Collection;
 public interface ReceiptView {
 
     Collection<ReceiptRecordView> getSoldProducts();
+
+    long getTotalPrice();
 }

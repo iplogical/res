@@ -56,6 +56,12 @@ public class SaleViewControllerImpl implements SaleViewController {
     private VBox left;
 
     @FXML
+    private Label tableName;
+
+    @FXML
+    private Label tableNumber;
+
+    @FXML
     private Label totalPrice;
 
     @FXML
@@ -127,9 +133,10 @@ public class SaleViewControllerImpl implements SaleViewController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeCategories(restaurantServices);
-        initializeSaleViewState(restaurantController);
+        initializeCategories();
+        initializeSaleViewState();
         updateNode();
+        initializeTableSummary();
     }
 
     @Override
@@ -169,14 +176,19 @@ public class SaleViewControllerImpl implements SaleViewController {
         saleViewState.setTakeAway(takeAway.isSelected());
     }
 
-    private void initializeCategories(RestaurantServices restaurantServices) {
+    private void initializeCategories() {
         rootCategory = restaurantServices.getRootProductCategory();
         selectedCategory = rootCategory.getChildrenCategories().get(0);
     }
 
-    private void initializeSaleViewState(RestaurantController restaurantController) {
+    private void initializeSaleViewState() {
         saleViewState = new SaleViewState();
         saleViewState.setFullScreen(restaurantController.getViewState().isFullScreen());
+    }
+
+    private void initializeTableSummary() {
+        tableName.setText(tableView.getName());
+        tableNumber.setText(String.valueOf(tableView.getTableNumber()));
     }
 
     private void updateNode() {
@@ -213,6 +225,7 @@ public class SaleViewControllerImpl implements SaleViewController {
     private void getSoldProducts(RestaurantServices restaurantServices, TableView tableView) {
         receiptView = restaurantServices.getActiveReceipt(tableView);
         soldProducts = receiptView.getSoldProducts();
+        totalPrice.setText(String.valueOf(receiptView.getTotalPrice()) + " Ft");
     }
 
     private void redrawCategories(ProductCategoryView selectedCategory) {
