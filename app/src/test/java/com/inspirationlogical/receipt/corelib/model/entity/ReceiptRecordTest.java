@@ -8,6 +8,7 @@ import org.junit.Test;
 import javax.persistence.RollbackException;
 import java.util.List;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_RECEIPT_RECORDS;
 import static org.junit.Assert.assertEquals;
 
 public class ReceiptRecordTest {
@@ -17,7 +18,7 @@ public class ReceiptRecordTest {
 
     @Test
     public void testReceiptRecordCreation() {
-        assertEquals(7, getReceiptRecords().size());
+        assertEquals(NUMBER_OF_RECEIPT_RECORDS, getReceiptRecords().size());
     }
 
     @Test(expected = RollbackException.class)

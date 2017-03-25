@@ -9,6 +9,7 @@ import org.junit.Test;
 import javax.persistence.RollbackException;
 import java.util.List;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_RECIPES;
 import static org.junit.Assert.assertEquals;
 
 public class RecipeTest {
@@ -18,7 +19,7 @@ public class RecipeTest {
 
     @Test
     public void testRecipeCreation() {
-        assertEquals(3, getRecipes().size());
+        assertEquals(NUMBER_OF_RECIPES, getRecipes().size());
     }
 
     @Test

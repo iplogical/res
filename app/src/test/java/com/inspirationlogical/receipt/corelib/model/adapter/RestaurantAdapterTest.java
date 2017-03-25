@@ -9,6 +9,7 @@ import javafx.geometry.Point2D;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_DISPLAYABLE_TABLES;
 import static org.junit.Assert.*;
 
 /**
@@ -22,14 +23,7 @@ public class RestaurantAdapterTest {
     @Test
     public void testRestaurantHasDisplayableTables() {
         RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant());
-        assertEquals(3, restaurantAdapter.getDisplayableTables().size());
-    }
-
-    @Test
-    public void testAddTable() {
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant());
-        restaurantAdapter.addTable(TableType.NORMAL, 4);
-        assertEquals(4, restaurantAdapter.getDisplayableTables().size());
+        assertEquals(NUMBER_OF_DISPLAYABLE_TABLES, restaurantAdapter.getDisplayableTables().size());
     }
 
     @Test
@@ -45,6 +39,6 @@ public class RestaurantAdapterTest {
                 .capacity(5)
                 .note("Big Chocklate Cake")
                 .visibility(true));
-        assertEquals(4, restaurantAdapter.getDisplayableTables().size());
+        assertEquals(NUMBER_OF_DISPLAYABLE_TABLES + 1, restaurantAdapter.getDisplayableTables().size());
     }
 }

@@ -9,6 +9,7 @@ import javax.persistence.RollbackException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_PRODUCT_CATEGORIES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -19,7 +20,7 @@ public class ProductCategoryTest {
 
     @Test
     public void testProductCategoryCreation() {
-        assertEquals(18, getAllCategories().size());
+        assertEquals(NUMBER_OF_PRODUCT_CATEGORIES, getAllCategories().size());
     }
 
     @Test

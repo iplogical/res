@@ -10,6 +10,7 @@ import javax.persistence.RollbackException;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_RECEIPTS;
 import static org.junit.Assert.assertEquals;
 
 public class ReceiptTest {
@@ -19,7 +20,7 @@ public class ReceiptTest {
 
     @Test
     public void testReceiptCreation() {
-        assertEquals(9, getReceipts().size());
+        assertEquals(NUMBER_OF_RECEIPTS, getReceipts().size());
     }
 
     @Test(expected = RollbackException.class)

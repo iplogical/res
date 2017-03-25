@@ -9,6 +9,8 @@ import org.junit.Test;
 import javax.persistence.RollbackException;
 import java.util.List;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_RESTAURANT;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_TABLES;
 import static org.junit.Assert.assertEquals;
 
 public class RestaurantTest {
@@ -18,12 +20,12 @@ public class RestaurantTest {
 
     @Test
     public void testRestaurantCreation() {
-        assertEquals(1, getRestaurants().size());
+        assertEquals(NUMBER_OF_RESTAURANT, getRestaurants().size());
     }
 
     @Test
     public void numberOfTables() {
-        assertEquals(8, getRestaurants().get(0).getTable().size());
+        assertEquals(NUMBER_OF_TABLES, getRestaurants().get(0).getTable().size());
     }
 
     @Test(expected = RollbackException.class)

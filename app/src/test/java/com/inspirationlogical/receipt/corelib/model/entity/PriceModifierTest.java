@@ -8,6 +8,7 @@ import org.junit.Test;
 import javax.persistence.RollbackException;
 import java.util.List;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_PRICE_MODIFIERS;
 import static org.junit.Assert.assertEquals;
 
 public class PriceModifierTest {
@@ -17,7 +18,7 @@ public class PriceModifierTest {
 
     @Test
     public void testPriceModifierCreation() {
-        assertEquals(3, getPriceModifiers().size());
+        assertEquals(NUMBER_OF_PRICE_MODIFIERS, getPriceModifiers().size());
     }
 
     @Test(expected = RollbackException.class)

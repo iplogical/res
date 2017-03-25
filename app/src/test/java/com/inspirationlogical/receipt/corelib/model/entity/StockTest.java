@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.List;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_STOCKS;
 import static org.junit.Assert.assertEquals;
 
 public class StockTest {
@@ -20,7 +21,7 @@ public class StockTest {
 
     @Test
     public void testStockCreation() {
-        assertEquals(3, getStocks().size());
+        assertEquals(NUMBER_OF_STOCKS, getStocks().size());
     }
 
     @Test

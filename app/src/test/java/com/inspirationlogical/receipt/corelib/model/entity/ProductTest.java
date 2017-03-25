@@ -10,6 +10,9 @@ import javax.persistence.RollbackException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_PRODUCTS;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_RECIPES;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_STOCKS;
 import static org.junit.Assert.assertEquals;
 
 public class ProductTest {
@@ -19,7 +22,7 @@ public class ProductTest {
 
     @Test
     public void testProductCreation() {
-        assertEquals(7, getProductList().size());
+        assertEquals(NUMBER_OF_PRODUCTS, getProductList().size());
     }
 
     @Test(expected = PersistenceException.class)
@@ -92,14 +95,14 @@ public class ProductTest {
     public void testNumberOfElements() {
         List<Product> products = getProductList().stream().filter(p -> p.getLongName() == "productFour").collect(Collectors.toList());
         assertEquals(1,products.size());
-        assertEquals(3, products.get(0).getRecipe().size());
+        assertEquals(NUMBER_OF_RECIPES, products.get(0).getRecipe().size());
     }
 
     @Test
     public void testNumberOfStocks() {
         List<Product> products = getProductList().stream().filter(p -> p.getLongName() == "productFour").collect(Collectors.toList());
         assertEquals(1,products.size());
-        assertEquals(3, products.get(0).getStock().size());
+        assertEquals(NUMBER_OF_STOCKS, products.get(0).getStock().size());
     }
 
     private List<Product> getProductList() {

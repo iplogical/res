@@ -30,7 +30,7 @@ public class ProductCategoryAdapterTest {
     }
 
     @Test
-    public void testPrductNamesUnderLeafOne() {
+    public void testProductNamesUnderLeafOne() {
         ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne());
         List<ProductAdapter> products = leafOne.getAllProducts();
         List<ProductAdapter> list_product_one =  products.stream().filter((elem) -> (elem.getAdaptee().getLongName().equals("product"))).collect(Collectors.toList());

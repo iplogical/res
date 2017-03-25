@@ -10,6 +10,8 @@ import javax.persistence.RollbackException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_RESERVATIONS;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_TABLES;
 import static org.junit.Assert.assertEquals;
 
 public class TableTest {
@@ -19,7 +21,7 @@ public class TableTest {
 
     @Test
     public void testTableCreation() {
-        assertEquals(8, getTables().size());
+        assertEquals(NUMBER_OF_TABLES, getTables().size());
     }
 
     @Test
@@ -28,7 +30,7 @@ public class TableTest {
                 .filter(table -> table.getNumber()==1)
                 .collect(Collectors.toList());
         assertEquals(1, tables.size());
-        assertEquals(2, tables.get(0).getReservation().size());
+        assertEquals(NUMBER_OF_RESERVATIONS, tables.get(0).getReservation().size());
     }
 
     @Test(expected = RollbackException.class)

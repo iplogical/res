@@ -29,6 +29,20 @@ import lombok.Getter;
 
 public class BuildTestSchemaRule implements TestRule {
 
+    public static final int NUMBER_OF_PRODUCTS = 7;
+    public static final int NUMBER_OF_PRODUCT_CATEGORIES = 18;
+    public static final int NUMBER_OF_PRICE_MODIFIERS = 3;
+    public static final int NUMBER_OF_RECIPES = 3;
+    public static final int NUMBER_OF_STOCKS = 3;
+    public static final int NUMBER_OF_RECEIPTS = 9;
+    public static final int NUMBER_OF_RECEIPT_RECORDS = 7;
+    public static final int NUMBER_OF_TABLES = 8;
+    public static final int NUMBER_OF_DISPLAYABLE_TABLES = 3;
+    public static final int NUMBER_OF_RESERVATIONS = 2;
+    public static final int NUMBER_OF_RESTAURANT = 1;
+    public static final int NUMBER_OF_VAT_SERIE = 1;
+    public static final int NUMBER_OF_VAT_RECORDS = 5;
+
     private @Getter EntityManager entityManager;
 
     private @Getter Product productOne;

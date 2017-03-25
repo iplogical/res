@@ -8,6 +8,8 @@ import org.junit.Test;
 import javax.persistence.RollbackException;
 import java.util.List;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_VAT_RECORDS;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_VAT_SERIE;
 import static org.junit.Assert.assertEquals;
 
 public class VATSerieTest {
@@ -17,12 +19,12 @@ public class VATSerieTest {
 
     @Test
     public void testVATSerieCreation() {
-        assertEquals(1, getVATSerie().size());
+        assertEquals(NUMBER_OF_VAT_SERIE, getVATSerie().size());
     }
 
     @Test
     public void testVatValueNumber() {
-        assertEquals(5, getVATSerie().get(0).getVat().size());
+        assertEquals(NUMBER_OF_VAT_RECORDS, getVATSerie().get(0).getVat().size());
     }
 
     @Test(expected = RollbackException.class)

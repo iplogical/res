@@ -8,6 +8,7 @@ import org.junit.Test;
 import javax.persistence.RollbackException;
 import java.util.List;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_VAT_RECORDS;
 import static org.junit.Assert.assertEquals;
 
 public class VATTest {
@@ -17,7 +18,7 @@ public class VATTest {
 
     @Test
     public void testVATCreation() {
-        assertEquals(5, getVATs().size());
+        assertEquals(NUMBER_OF_VAT_RECORDS, getVATs().size());
     }
 
     @Test(expected = RollbackException.class)
@@ -33,10 +34,6 @@ public class VATTest {
     @Test(expected = RollbackException.class)
     public void noStatus() {
         GuardedTransaction.Run(()->schema.getVatOne().setStatus(null));
-    }
-
-    private void assertListSize() {
-        assertEquals(5, getVATs().size());
     }
 
     private List<VAT> getVATs() {

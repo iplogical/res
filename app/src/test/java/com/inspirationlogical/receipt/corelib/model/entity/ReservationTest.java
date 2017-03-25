@@ -8,6 +8,7 @@ import org.junit.Test;
 import javax.persistence.RollbackException;
 import java.util.List;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_RESERVATIONS;
 import static org.junit.Assert.assertEquals;
 
 public class ReservationTest {
@@ -17,7 +18,7 @@ public class ReservationTest {
 
     @Test
     public void testReservationCreation() {
-        assertEquals(2, getReservations().size());
+        assertEquals(NUMBER_OF_RESERVATIONS, getReservations().size());
     }
 
     @Test(expected = RollbackException.class)

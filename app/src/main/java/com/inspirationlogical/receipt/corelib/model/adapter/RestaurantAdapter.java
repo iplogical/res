@@ -41,20 +41,6 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                 .collect(Collectors.toList());
     }
 
-    public TableAdapter addTable(TableType type, int tableNumber) {
-        final Table[] newTable = new Table[1];
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
-            newTable[0] = Table.builder()
-                    .type(type)
-                    .number(tableNumber)
-                    .visibility(true)
-                    .build();
-            adaptee.getTable().add(newTable[0]);
-            newTable[0].setOwner(adaptee);
-        });
-        return new TableAdapter(newTable[0]);
-    }
-
     public TableAdapter addTable(Table.TableBuilder builder) {
         final Table[] newTable = new Table[1];
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
