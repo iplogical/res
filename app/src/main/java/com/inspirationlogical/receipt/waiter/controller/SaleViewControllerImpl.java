@@ -2,9 +2,7 @@ package com.inspirationlogical.receipt.waiter.controller;
 
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -28,13 +26,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import lombok.Setter;
 
-import java.util.Collection;
 import java.util.stream.Collectors;
 
 import static com.inspirationlogical.receipt.waiter.controller.SaleViewElementControllerImpl.SALE_VIEW_ELEMENT_PATH;
@@ -134,49 +132,6 @@ public class SaleViewControllerImpl implements SaleViewController {
         updateNode();
     }
 
-    private void initializeCategories(RestaurantServices restaurantServices) {
-        rootCategory = restaurantServices.getRootProductCategory();
-        selectedCategory = rootCategory.getChildrenCategories().get(0);
-    }
-
-    private void initializeSaleViewState(RestaurantController restaurantController) {
-        saleViewState = new SaleViewState();
-        saleViewState.setFullScreen(restaurantController.getViewState().isFullScreen());
-    }
-
-    private void updateCategories(ProductCategoryView selectedCategory) {
-        if(!ProductCategoryType.isLeaf(selectedCategory.getType())) {
-            selectedLevelCategories = selectedCategory.getParent().getChildrenCategories();
-            selectedChildrenCategories = selectedCategory.getChildrenCategories();
-        }
-        visibleProducts = selectedCategory.getAllProducts();
-        productsGrid.getChildren().clear();
-        elementControllers = new ArrayList<>();
-        drawListOfElements(selectedLevelCategories, categoriesGrid);
-        drawListOfElements(selectedChildrenCategories, subCategoriesGrid);
-        drawListOfElements(visibleProducts, productsGrid);
-        elementControllers.stream().filter(controller -> controller.getView().getName().equals(selectedCategory.getName()))
-                .map(controller -> {controller.select(true);
-                    return true;})
-                .collect(Collectors.toList());
-    }
-
-    private void updateNode() {
-        updateSoldProductsTable();
-        updateCategories(selectedCategory);
-    }
-
-    @FXML
-    public void onBackToRestaurantView(Event event) {
-        Parent root = (Parent) restaurantController.getRootNode();
-        Main.getWindow().getScene().setRoot(root);
-    }
-
-    @FXML
-    public void onTakeAwayToggled(Event event) {
-        saleViewState.setTakeAway(takeAway.isSelected());
-    }
-
     @Override
     public Node getRootNode() {
         return root;
@@ -194,9 +149,39 @@ public class SaleViewControllerImpl implements SaleViewController {
         updateCategories(selectedCategory);
     }
 
-    private void getSoldProducts(RestaurantServices restaurantServices, TableView tableView) {
-        receiptView = restaurantServices.getActiveReceipt(tableView);
-        soldProducts = receiptView.getSoldProducts();
+    @Override
+    public void upWithCategories() {
+        if(ProductCategoryType.isRoot(selectedCategory.getParent().getType())) {
+            return;
+        }
+        selectedCategory = selectedCategory.getParent();
+        updateCategories(selectedCategory);
+    }
+
+    @FXML
+    public void onBackToRestaurantView(Event event) {
+        Parent root = (Parent) restaurantController.getRootNode();
+        Main.getWindow().getScene().setRoot(root);
+    }
+
+    @FXML
+    public void onTakeAwayToggled(Event event) {
+        saleViewState.setTakeAway(takeAway.isSelected());
+    }
+
+    private void initializeCategories(RestaurantServices restaurantServices) {
+        rootCategory = restaurantServices.getRootProductCategory();
+        selectedCategory = rootCategory.getChildrenCategories().get(0);
+    }
+
+    private void initializeSaleViewState(RestaurantController restaurantController) {
+        saleViewState = new SaleViewState();
+        saleViewState.setFullScreen(restaurantController.getViewState().isFullScreen());
+    }
+
+    private void updateNode() {
+        updateSoldProductsTable();
+        updateCategories(selectedCategory);
     }
 
     private void updateSoldProductsTable() {
@@ -216,7 +201,37 @@ public class SaleViewControllerImpl implements SaleViewController {
         soldProductsTable.setItems(soldProductList);
     }
 
+    private void updateCategories(ProductCategoryView selectedCategory) {
+        if(!ProductCategoryType.isLeaf(selectedCategory.getType())) {
+            selectedLevelCategories = selectedCategory.getParent().getChildrenCategories();
+            selectedChildrenCategories = selectedCategory.getChildrenCategories();
+        }
+        visibleProducts = selectedCategory.getAllProducts();
+        redrawCategories(selectedCategory);
+    }
+
+    private void getSoldProducts(RestaurantServices restaurantServices, TableView tableView) {
+        receiptView = restaurantServices.getActiveReceipt(tableView);
+        soldProducts = receiptView.getSoldProducts();
+    }
+
+    private void redrawCategories(ProductCategoryView selectedCategory) {
+        categoriesGrid.getChildren().clear();
+        subCategoriesGrid.getChildren().clear();
+        productsGrid.getChildren().clear();
+        elementControllers = new ArrayList<>();
+        drawListOfElements(selectedLevelCategories, categoriesGrid);
+        drawBackButton(categoriesGrid);
+        drawListOfElements(selectedChildrenCategories, subCategoriesGrid);
+        drawListOfElements(visibleProducts, productsGrid);
+        elementControllers.stream().filter(controller -> controller.getView().getName().equals(selectedCategory.getName()))
+                .map(controller -> {controller.select(true);
+                    return true;})
+                .collect(Collectors.toList());
+    }
+
     private <T extends AbstractView> void drawListOfElements(List<T> elements, GridPane grid) {
+        elements.sort(AbstractView.compareNames);
         for(int i = 0; i < elements.size(); i++) {
             drawElement(elements.get(i), grid, i);
         }
@@ -225,7 +240,7 @@ public class SaleViewControllerImpl implements SaleViewController {
     private <T extends AbstractView> void drawElement(T elementView, GridPane grid, int index) {
 //        SaleViewElementController<T> elementController =
 //                getInjector().getInstance(SaleViewElementControllerImpl.class);
-//                getInjector().getInstance(SaleViewElementControllerImpl.class);
+//                getInjector().getInstance(SaleViewElementController.class);
 
         SaleViewElementController elementController = null;
 
@@ -238,5 +253,25 @@ public class SaleViewControllerImpl implements SaleViewController {
         elementControllers.add(elementController);
         Node root = loadView(SALE_VIEW_ELEMENT_PATH, elementController);
         grid.add(elementController.getRootNode(), index % 4, index / 4);
+    }
+
+    private void drawBackButton(GridPane categoriesGrid) {
+        SaleViewElementController elementController = null;
+
+        elementController = new SaleViewProductControllerImpl(this) {
+
+            @Override
+            public void onElementClicked(MouseEvent event) {
+                saleViewController.upWithCategories();
+            }
+        };
+        elementController.setView(new ProductView() {
+            @Override
+            public String getName() {
+                return "Vissza";
+            }
+        });
+        loadView(SALE_VIEW_ELEMENT_PATH, elementController);
+        categoriesGrid.add(elementController.getRootNode(), 3, 3);
     }
 }

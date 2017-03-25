@@ -8,11 +8,15 @@ public enum ProductCategoryType {
     PSEUDO,
     PSEUDO_DELETED;
 
-    public static boolean isPseudo(ProductCategoryType type) {
-        return type.equals(PSEUDO) || type.equals(PSEUDO_DELETED);
+    public static boolean isRoot(ProductCategoryType type) {
+        return type.equals(ROOT);
     }
 
     public static boolean isLeaf(ProductCategoryType type) {
         return type.equals(LEAF);
+    }
+
+    public static boolean isPseudo(ProductCategoryType type) {
+        return type.equals(PSEUDO) || type.equals(PSEUDO_DELETED);
     }
 }

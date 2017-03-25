@@ -19,7 +19,7 @@ public class ProductCategoryTest {
 
     @Test
     public void testProductCategoryCreation() {
-        assertEquals(11, getAllCategories().size());
+        assertEquals(18, getAllCategories().size());
     }
 
     @Test
@@ -54,7 +54,7 @@ public class ProductCategoryTest {
     }
     
     @Test(expected = RollbackException.class)
-    public void testLeafCategotyProductNotNull() {
+    public void testLeafCategoryProductNotNull() {
         GuardedTransaction.Run(()->
             schema.getLeafTwo().setProduct(schema.getProductOne()));
     }
@@ -62,25 +62,25 @@ public class ProductCategoryTest {
     @Test(expected = RollbackException.class)
     public void rootHasParent() {
         GuardedTransaction.Run(()->
-            schema.getRoot().setParent(schema.getAggregate()));
+            schema.getRoot().setParent(schema.getAggregateOne()));
     }
  
     @Test(expected = RollbackException.class)
     public void aggregateHasNoParent() {
         GuardedTransaction.Run(()->
-            schema.getAggregate().setParent(null));
+            schema.getAggregateOne().setParent(null));
     }
 
     @Test(expected = RollbackException.class)
     public void aggregateHasLeafAsParent() {
         GuardedTransaction.Run(()->
-            schema.getAggregate().setParent(schema.getLeafOne()));
+            schema.getAggregateOne().setParent(schema.getLeafOne()));
     }
 
     @Test(expected = RollbackException.class)
     public void aggregateHasPseudoAsParent() {
         GuardedTransaction.Run(()->
-            schema.getAggregate().setParent(schema.getPseudoOne()));
+            schema.getAggregateOne().setParent(schema.getPseudoOne()));
     }
 
     @Test(expected = RollbackException.class)
@@ -118,7 +118,7 @@ public class ProductCategoryTest {
     public void pseudoHasAggregateAsParent() {
 
         GuardedTransaction.Run(()->
-            schema.getPseudoFour().setParent(schema.getAggregate()));
+            schema.getPseudoFour().setParent(schema.getAggregateOne()));
     }
 
     private List<ProductCategory> getAllCategories() {

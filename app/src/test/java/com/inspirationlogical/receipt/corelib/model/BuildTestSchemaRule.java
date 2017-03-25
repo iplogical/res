@@ -1,9 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
+import java.util.*;
 import javax.persistence.EntityManager;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
@@ -33,6 +30,7 @@ import lombok.Getter;
 public class BuildTestSchemaRule implements TestRule {
 
     private @Getter EntityManager entityManager;
+
     private @Getter Product productOne;
     private @Getter Product productTwo;
     private @Getter Product productThree;
@@ -42,9 +40,16 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Product productAdHoc;
 
     private @Getter ProductCategory root;
-    private @Getter ProductCategory aggregate;
+    private @Getter ProductCategory aggregateTopOne;
+    private @Getter ProductCategory aggregateTopTwo;
+    private @Getter ProductCategory aggregateOne;
+    private @Getter ProductCategory aggregateTwo;
+    private @Getter ProductCategory aggregateThree;
+    private @Getter ProductCategory aggregateFour;
     private @Getter ProductCategory leafOne;
     private @Getter ProductCategory leafTwo;
+    private @Getter ProductCategory leafThree;
+    private @Getter ProductCategory leafFour;
     private @Getter ProductCategory pseudoOne;
     private @Getter ProductCategory pseudoTwo;
     private @Getter ProductCategory pseudoThree;
@@ -89,9 +94,9 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Table tablePurchase;
     private @Getter Table tableInventory;
     private @Getter Table tableDisposal;
-    private @Getter
-    Table tableOther;
+    private @Getter Table tableOther;
     private @Getter Table tableOrphanage;
+
     private @Getter Reservation reservationOne;
     private @Getter Reservation reservationTwo;
 
@@ -152,7 +157,7 @@ public class BuildTestSchemaRule implements TestRule {
         entityManager.clear();
     }
 
-    public void buildTestSchema() {
+    private void buildTestSchema() {
         dropAll();
         buildObjects();
         setUpObjectRelationShips();
@@ -191,8 +196,7 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void persistObjects() {
-        GuardedTransaction.Run(() -> {
-            entityManager.persist(restaurant);});
+        GuardedTransaction.Run(() -> entityManager.persist(restaurant));
     }
 
     private void buildProducts() {
@@ -207,9 +211,16 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void buildProductCategories() {
         buildRoot();
-        buildAggregate();
+        buildAggregateTopOne();
+        buildAggregateTopTwo();
+        buildAggregateOne();
+        buildAggregateTwo();
+        buildAggregateThree();
+        buildAggregateFour();
         buildLeafOne();
         buildLeafTwo();
+        buildLeafThree();
+        buildLeafFour();
         buildPseudoOne();
         buildPseudoTwo();
         buildPseudoThree();
@@ -398,9 +409,45 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
-    private void buildAggregate() {
-        aggregate = ProductCategory.builder()
-                .name("aggregate")
+
+    private void buildAggregateTopOne() {
+        aggregateTopOne = ProductCategory.builder()
+                .name("aggregateTopOne")
+                .type(ProductCategoryType.AGGREGATE)
+                .build();
+    }
+
+    private void buildAggregateTopTwo() {
+        aggregateTopTwo = ProductCategory.builder()
+                .name("aggregateTopTwo")
+                .type(ProductCategoryType.AGGREGATE)
+                .build();
+    }
+
+    private void buildAggregateOne() {
+        aggregateOne = ProductCategory.builder()
+                .name("aggregateOne")
+                .type(ProductCategoryType.AGGREGATE)
+                .build();
+    }
+
+    private void buildAggregateTwo() {
+        aggregateTwo = ProductCategory.builder()
+                .name("aggregateTwo")
+                .type(ProductCategoryType.AGGREGATE)
+                .build();
+    }
+
+    private void buildAggregateThree() {
+        aggregateThree = ProductCategory.builder()
+                .name("aggregateThree")
+                .type(ProductCategoryType.AGGREGATE)
+                .build();
+    }
+
+    private void buildAggregateFour() {
+        aggregateFour = ProductCategory.builder()
+                .name("aggregateFour")
                 .type(ProductCategoryType.AGGREGATE)
                 .build();
     }
@@ -415,6 +462,20 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildLeafTwo() {
         leafTwo = ProductCategory.builder()
                 .name("leafTwo")
+                .type(ProductCategoryType.LEAF)
+                .build();
+    }
+
+    private void buildLeafThree() {
+        leafThree = ProductCategory.builder()
+                .name("leafThree")
+                .type(ProductCategoryType.LEAF)
+                .build();
+    }
+
+    private void buildLeafFour() {
+        leafFour = ProductCategory.builder()
+                .name("leafFour")
                 .type(ProductCategoryType.LEAF)
                 .build();
     }
@@ -475,7 +536,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(PriceModifierType.FUTURE_PRICE_MODIFICATION)
                 .status(PriceModifierStatus.PAST)
                 .period(PriceModifierRepeatPeriod.NO_REPETITION)
-                .startTime(new GregorianCalendar(2017, 1, 8, 16, 00))
+                .startTime(new GregorianCalendar(2017, 1, 8, 16, 0))
                 .endTime(new GregorianCalendar(2017, 1, 8, 20, 20))
                 .limitType(PriceModifierLimitType.NONE)
                 .build();
@@ -487,7 +548,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(PriceModifierType.SIMPLE_DISCOUNT)
                 .status(PriceModifierStatus.ACTUAL)
                 .period(PriceModifierRepeatPeriod.DAILY)
-                .startTime(new GregorianCalendar(2017, 2, 8, 16, 00))
+                .startTime(new GregorianCalendar(2017, 2, 8, 16, 0))
                 .endTime(new GregorianCalendar(2017, 3, 8, 20, 20))
                 .limitType(PriceModifierLimitType.EXACT)
                 .build();
@@ -499,7 +560,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(PriceModifierType.QUANTITY_DISCOUNT)
                 .status(PriceModifierStatus.FUTURE)
                 .period(PriceModifierRepeatPeriod.WEEKLY)
-                .startTime(new GregorianCalendar(2017, 3, 8, 16, 00))
+                .startTime(new GregorianCalendar(2017, 3, 8, 16, 0))
                 .endTime(new GregorianCalendar(2017, 5, 8, 20, 20))
                 .limitType(PriceModifierLimitType.EXACT)
                 .build();
@@ -853,7 +914,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildReservationOne() {
         reservationOne = Reservation.builder()
                 .tableNumber(2)
-                .startTime(new GregorianCalendar(2017, 2, 8, 16, 00))
+                .startTime(new GregorianCalendar(2017, 2, 8, 16, 0))
                 .endTime(new GregorianCalendar(2017, 2, 8, 20, 20))
                 .name("TestName1")
                 .note("TestNote1")
@@ -863,7 +924,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildReservationTwo() {
         reservationTwo = Reservation.builder()
                 .tableNumber(2)
-                .startTime(new GregorianCalendar(2017, 2, 12, 16, 00))
+                .startTime(new GregorianCalendar(2017, 2, 12, 16, 0))
                 .endTime(new GregorianCalendar(2017, 2, 12, 20, 20))
                 .name("TestName2")
                 .note("TestNote2")
@@ -872,27 +933,44 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void productCategories() {
         rootAndAggregates();
+        aggregatesAndAggregates();
         aggregatesAndLeafs();
         leafsAndPseudos();
     }
 
     private void rootAndAggregates() {
-        aggregate.setParent(root);
-        root.setChildren(new HashSet<ProductCategory>(
-                Arrays.asList(aggregate)));
+        root.setChildren(new HashSet<>(
+                Arrays.asList(aggregateTopOne, aggregateTopTwo)));
+        aggregateTopOne.setParent(root);
+        aggregateTopTwo.setParent(root);
+    }
+
+    private void aggregatesAndAggregates() {
+        aggregateTopOne.setChildren(new HashSet<>(
+                Arrays.asList(aggregateOne, aggregateTwo)));
+        aggregateTopTwo.setChildren(new HashSet<>(
+                Arrays.asList(aggregateThree, aggregateFour)));
+        aggregateOne.setParent(aggregateTopOne);
+        aggregateTwo.setParent(aggregateTopOne);
+        aggregateThree.setParent(aggregateTopTwo);
+        aggregateFour.setParent(aggregateTopTwo);
     }
 
     private void aggregatesAndLeafs() {
-        leafOne.setParent(aggregate);
-        leafTwo.setParent(aggregate);
-        aggregate.setChildren(new HashSet<ProductCategory>(
-                Arrays.asList(leafOne, leafTwo)));
+        leafOne.setParent(aggregateOne);
+        leafThree.setParent(aggregateOne);
+        leafTwo.setParent(aggregateTwo);
+        leafFour.setParent(aggregateTwo);
+        aggregateOne.setChildren(new HashSet<>(
+                Arrays.asList(leafOne, leafThree)));
+        aggregateTwo.setChildren(new HashSet<>(
+                Arrays.asList(leafTwo, leafFour)));
     }
     
     private void leafsAndPseudos() {
-        leafOne.setChildren(new HashSet<ProductCategory>(
+        leafOne.setChildren(new HashSet<>(
                 Arrays.asList(pseudoOne, pseudoTwo, pseudoFive, pseudoSix, pseudoAdHoc)));
-        leafTwo.setChildren(new HashSet<ProductCategory>(
+        leafTwo.setChildren(new HashSet<>(
                 Arrays.asList(pseudoThree, pseudoFour)));
         pseudoOne.setParent(leafOne);
         pseudoTwo.setParent(leafOne);
@@ -904,10 +982,10 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void categoriesAndPriceModifiers() {
-        pseudoOne.setPriceModifier(new HashSet<PriceModifier>(
+        pseudoOne.setPriceModifier(new HashSet<>(
                 Arrays.asList(priceModifierOne, priceModifierTwo)));
-        leafTwo.setPriceModifier(new HashSet<PriceModifier>(
-                Arrays.asList(priceModifierThree)));
+        leafTwo.setPriceModifier(new HashSet<>(
+                Collections.singletonList(priceModifierThree)));
         priceModifierOne.setOwner(pseudoOne);
         priceModifierTwo.setOwner(pseudoOne);
         priceModifierThree.setOwner(leafTwo);
@@ -937,7 +1015,7 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void productFourAndRecipes() {
-        productFour.setRecipe(new HashSet<Recipe>(
+        productFour.setRecipe(new HashSet<>(
                 Arrays.asList(elementOne, elementTwo, elementThree)));
         elementOne.setOwner(productFour);
         elementTwo.setOwner(productFour);
@@ -951,7 +1029,7 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void productFourAndStocks() {
-        productFour.setStock(new HashSet<Stock>(
+        productFour.setStock(new HashSet<>(
                 Arrays.asList(stockOne, stockTwo, stockThree)));
         stockOne.setOwner(productFour);
         stockTwo.setOwner(productFour);
@@ -964,20 +1042,20 @@ public class BuildTestSchemaRule implements TestRule {
      }
 
     private void tablesAndReservations() {
-        tableNormal.setReservation(new HashSet<Reservation>(
+        tableNormal.setReservation(new HashSet<>(
                 Arrays.asList(reservationOne, reservationTwo)));
         reservationOne.setOwner(tableNormal);
         reservationTwo.setOwner(tableNormal);
     }
 
     private void receiptsAndReceiptRecords() {
-        receiptSaleOne.setRecords(new HashSet<ReceiptRecord>(
+        receiptSaleOne.setRecords(new HashSet<>(
                 Arrays.asList(receiptRecordSaleOne, receiptRecordSaleTwo,
                         receiptRecordSaleFive, receiptRecordSaleSix)));
-        receiptSaleTwo.setRecords(new HashSet<ReceiptRecord>(
+        receiptSaleTwo.setRecords(new HashSet<>(
                 Arrays.asList(receiptRecordSaleThree, receiptRecordSaleFour)));
-        receiptOther.setRecords(new HashSet<ReceiptRecord>(
-                Arrays.asList(receiptRecordOther)));
+        receiptOther.setRecords(new HashSet<>(
+                Collections.singletonList(receiptRecordOther)));
         receiptRecordSaleOne.setOwner(receiptSaleOne);
         receiptRecordSaleTwo.setOwner(receiptSaleOne);
         receiptRecordSaleFive.setOwner(receiptSaleOne);
@@ -1010,7 +1088,7 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void vatSerieAndVatValues() {
-        vatSerie.setVat(new HashSet<VAT>(
+        vatSerie.setVat(new HashSet<>(
                 Arrays.asList(vatOne, vatTwo, vatThree, vatFour, vatFive)));
         vatOne.setSerie(vatSerie);
         vatTwo.setSerie(vatSerie);
@@ -1021,9 +1099,9 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void restaurantAndTables() {
         //FIXME: Add service for building special tables in production
-        restaurant.setTable(new HashSet<Table>(
+        restaurant.setTable(new HashSet<>(
                 Arrays.asList(tableNormal, tableNormalClosed, tableVirtual, tablePurchase,
-                        tableInventory, tableDisposal, tableOther,tableOrphanage)));
+                        tableInventory, tableDisposal, tableOther, tableOrphanage)));
         tableNormal.setOwner(restaurant);
         tableNormalClosed.setOwner(restaurant);
         tableVirtual.setOwner(restaurant);
@@ -1048,19 +1126,19 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void receiptsToTables() {
-        tableNormal.setReceipt(new HashSet<Receipt>(
+        tableNormal.setReceipt(new HashSet<>(
                 Arrays.asList(receiptSaleOne, receiptSaleTwo)));
-        tableNormalClosed.setReceipt(new HashSet<Receipt>(
-                Arrays.asList(receiptSaleClosedTable)));
-        tableVirtual.setReceipt(new HashSet<Receipt>(
+        tableNormalClosed.setReceipt(new HashSet<>(
+                Collections.singletonList(receiptSaleClosedTable)));
+        tableVirtual.setReceipt(new HashSet<>(
                 Arrays.asList(receiptSaleThree, receiptSaleFour)));
-        tablePurchase.setReceipt(new HashSet<Receipt>(
-                Arrays.asList(receiptPurchase)));
-        tableInventory.setReceipt(new HashSet<Receipt>(
-                Arrays.asList(receiptInventory)));
-        tableDisposal.setReceipt(new HashSet<Receipt>(
-                Arrays.asList(receiptDisposal)));
-        tableOther.setReceipt(new HashSet<Receipt>(
-                Arrays.asList(receiptOther)));
+        tablePurchase.setReceipt(new HashSet<>(
+                Collections.singletonList(receiptPurchase)));
+        tableInventory.setReceipt(new HashSet<>(
+                Collections.singletonList(receiptInventory)));
+        tableDisposal.setReceipt(new HashSet<>(
+                Collections.singletonList(receiptDisposal)));
+        tableOther.setReceipt(new HashSet<>(
+                Collections.singletonList(receiptOther)));
     }
 }

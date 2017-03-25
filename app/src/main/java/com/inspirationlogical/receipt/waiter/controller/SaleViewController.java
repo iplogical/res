@@ -13,4 +13,6 @@ public interface SaleViewController extends Controller {
     void sellProduct(ProductView productView);
 
     void selectCategory(SaleViewElementController saleViewElementController);
+
+    void upWithCategories();
 }
