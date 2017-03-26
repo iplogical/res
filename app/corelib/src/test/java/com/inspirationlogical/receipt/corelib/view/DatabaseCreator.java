@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.view;
+package com.inspirationlogical.receipt.corelib.view;
 
 import static org.junit.Assert.assertFalse;
 
