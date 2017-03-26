@@ -33,5 +33,7 @@ public class PressAndHoldHandler {
         control.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> holdTimer.stop());
 
         control.addEventHandler(MouseEvent.DRAG_DETECTED, event -> holdTimer.stop());
+
+        control.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> holdTimer.stop());
     }
 }
