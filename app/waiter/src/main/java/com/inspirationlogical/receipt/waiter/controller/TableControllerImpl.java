@@ -175,6 +175,10 @@ public class TableControllerImpl implements TableController {
             return;
         }
 
+        if (tableView.isVirtual() || !tableView.isOpen()) {
+            return;
+        }
+
         if(tableViewState.isConfigurable()) {
             tableViewState.setSelected(!tableViewState.isSelected());
             restaurantController.selectTable(this, tableViewState.isSelected());

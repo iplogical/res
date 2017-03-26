@@ -284,7 +284,6 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void selectTable(TableController tableController, boolean selected) {
-        // todo virtual or not open tables can't be selected
         if (selected) {
             selectedTables.add(tableController);
         } else {
