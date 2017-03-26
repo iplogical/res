@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -38,6 +39,15 @@
             <content>
               <AnchorPane fx:id="tablesTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                      <children>
+                        <BorderPane fx:id="layoutPane" layoutY="-115.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="747.0" prefWidth="1014.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-115.0">
+                           <center>
+                              <ImageView fx:id="layoutImage" preserveRatio="true" BorderPane.alignment="BOTTOM_CENTER">
+                                 <image>
+                                    <Image url="@../../images/game_up_layout.png" />
+                                 </image>
+                              </ImageView>
+                           </center>
+                        </BorderPane>
                         <Label fx:id="tablesLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <graphic>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" />

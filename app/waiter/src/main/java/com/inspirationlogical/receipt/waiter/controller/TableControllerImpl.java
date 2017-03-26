@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import static com.inspirationlogical.receipt.waiter.application.Main.APP_HEIGHT;
-import static com.inspirationlogical.receipt.waiter.application.Main.APP_WIDTH;
 import static com.inspirationlogical.receipt.waiter.controller.SaleViewControllerImpl.SALE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableSettingsFormControllerImpl.TABLE_SETTINGS_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
@@ -189,7 +187,7 @@ public class TableControllerImpl implements TableController {
             saleViewController.setTableView(tableView);
             Parent root = (Parent) loadView(SALE_VIEW_PATH, saleViewController);
             Main.getWindow().getScene().setRoot(root);
-            Main.getWindow().setFullScreen(true);
+            //Main.getWindow().setFullScreen(true);
         }
     }
 

@@ -11,7 +11,6 @@ import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import lombok.SneakyThrows;
 
 /**
  * Created by Bálint on 2017.03.13..
