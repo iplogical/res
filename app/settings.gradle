@@ -1,2 +1,2 @@
 rootProject.name = 'Receipt'
-include 'waiter', 'corelib'
+include 'waiter', 'corelib' ,'utils:sampleapp'

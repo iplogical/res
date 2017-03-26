@@ -17,6 +17,9 @@ app/.settings/*
 app/.project
 app/build/*
 app/bin/*
+app/utils/build/
+app/waiter/build/
+app/utils/sampleapp/build/
 
 # IntelliJ IDEA Files #
 app/.idea/*

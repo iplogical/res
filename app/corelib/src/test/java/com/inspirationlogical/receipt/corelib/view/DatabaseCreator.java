@@ -20,7 +20,7 @@ public class DatabaseCreator {
     public final EntityManagerFactoryRule factory = new EntityManagerFactoryRule(TestType.CREATE);
 
     @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule("ProductionPersistance");
+    public final BuildTestSchemaRule schema = new BuildTestSchemaRule("TestViewPersistence");
 
     @Test
     public void buildTestDatabase() {

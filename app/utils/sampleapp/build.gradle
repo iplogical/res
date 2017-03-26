@@ -1,0 +1,17 @@
+apply plugin: 'application'
+
+mainClassName = 'com.inspirationlogical.receipt.utils.sampleapp.SampleApp'
+
+run {
+    main = project.getProperty('mainClassName')
+}
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    compile project(':corelib')
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-parameters'
+    options.encoding = 'UTF-8'
+}
