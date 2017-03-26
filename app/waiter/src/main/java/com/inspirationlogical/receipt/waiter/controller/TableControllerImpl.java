@@ -187,7 +187,6 @@ public class TableControllerImpl implements TableController {
             saleViewController.setTableView(tableView);
             Parent root = (Parent) loadView(SALE_VIEW_PATH, saleViewController);
             Main.getWindow().getScene().setRoot(root);
-            //Main.getWindow().setFullScreen(true);
         }
     }
 

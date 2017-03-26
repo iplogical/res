@@ -266,9 +266,17 @@ public class RestaurantControllerImpl implements RestaurantController {
             TableView aggregate = firstSelected.getView();
             List<TableView> consumed = new ArrayList<>();
             selectedTables.remove(firstSelected);
-            selectedTables.iterator().forEachRemaining(tableController -> consumed.add(tableController.getView()));
+            selectedTables.iterator().forEachRemaining(tableController -> {
+                consumed.add(tableController.getView());
+            });
 
             restaurantServices.mergeTables(aggregate, consumed);
+            selectedTables.stream().forEach(tableController -> {
+                tablesTab.getChildren().remove(tableController.getRoot());
+                tableControllers.remove(tableController);
+            });
+            selectedTables.clear();
+            firstSelected.deselectTable();
         } else {
             ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("InsufficientSelection"));
         }
@@ -276,6 +284,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void selectTable(TableController tableController, boolean selected) {
+        // todo virtual or not open tables can't be selected
         if (selected) {
             selectedTables.add(tableController);
         } else {

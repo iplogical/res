@@ -33,13 +33,13 @@
             </ToggleButton>
         </items>
       </ToolBar>
-      <TabPane layoutX="5.0" layoutY="82.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+      <TabPane layoutX="5.0" layoutY="82.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
         <tabs>
           <Tab closable="false" text="%Restaurant.Tables">
             <content>
               <AnchorPane fx:id="tablesTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                      <children>
-                        <BorderPane fx:id="layoutPane" layoutY="-115.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="747.0" prefWidth="1014.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-115.0">
+                        <BorderPane fx:id="layoutPane" layoutY="-115.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="747.0" prefWidth="1014.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-110.0">
                            <center>
                               <ImageView fx:id="layoutImage" preserveRatio="true" BorderPane.alignment="BOTTOM_CENTER">
                                  <image>

@@ -11,6 +11,7 @@ public class ContextMenuItemBuilder {
 
     public ContextMenuItemBuilder() {
         menuItem = new MenuItem();
+        menuItem.setStyle("-fx-font-size: 16px");
     }
 
     public ContextMenuItemBuilder withLabel(String text) {
