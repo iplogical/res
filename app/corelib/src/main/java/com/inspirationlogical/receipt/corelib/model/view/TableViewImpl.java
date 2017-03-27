@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
 import javafx.geometry.Point2D;
@@ -63,5 +63,10 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     @Override
     public Point2D getPosition() {
         return new Point2D(adapter.getAdaptee().getCoordinateX(), adapter.getAdaptee().getCoordinateY());
+    }
+
+    @Override
+    public Orientation getOrientation() {
+        return adapter.getAdaptee().getOrientation();
     }
 }

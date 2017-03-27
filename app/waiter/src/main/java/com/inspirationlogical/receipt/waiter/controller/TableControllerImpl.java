@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.google.inject.Inject;
+import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
@@ -38,8 +39,8 @@ import javafx.stage.Popup;
 public class TableControllerImpl implements TableController {
 
     public static final String TABLE_VIEW_PATH = "/view/fxml/Table.fxml";
-    private static double TABLE_WIDTH = 100.0;
-    private static double TABLE_HEIGHT = 100.0;
+    private static double TABLE_SIZE_UNIT = 20.0;
+    private static double TABLE_SIZE_MIN = 4 * TABLE_SIZE_UNIT;
 
     @FXML
     AnchorPane tablesTab;
@@ -100,8 +101,26 @@ public class TableControllerImpl implements TableController {
     }
 
     private void initVisual() {
-        root.setMinWidth(TABLE_WIDTH);
-        root.setMinHeight(TABLE_HEIGHT);
+        vBox.setPrefWidth(TABLE_SIZE_UNIT * roundCapacity());
+        vBox.setPrefHeight(TABLE_SIZE_MIN);
+    }
+
+    private int roundCapacity() {
+        int capacity = tableView.getTableCapacity();
+        return capacity <= 4 ? 4 : ((capacity + 1) / 2) * 2;
+    }
+
+    private void rotateRoot() {
+        initVisual();
+        int width = (int) vBox.getPrefWidth();
+        int height = (int) vBox.getPrefHeight();
+        if (tableView.getOrientation() != Orientation.HORIZONTAL) {
+            vBox.setPrefWidth(height);
+            vBox.setPrefHeight(width);
+        } else {
+            vBox.setPrefWidth(width);
+            vBox.setPrefHeight(height);
+        }
     }
 
     @Override
@@ -126,6 +145,7 @@ public class TableControllerImpl implements TableController {
         guests.setText(valueOf(tableView.getGuestCount()));
         capacity.setText(valueOf(tableView.getTableCapacity()));
         CSSUtilities.setBackgroundColor(tableViewState.isOpen(), vBox);
+        rotateRoot();
         showNode(root, tableView.getPosition());
     }
 
@@ -146,7 +166,7 @@ public class TableControllerImpl implements TableController {
             return;
         }
         restaurantServices.setTableName(tableView, name);
-        restaurantServices.setTableGuestNumber(tableView, guestCount);
+        restaurantServices.setGuestCount(tableView, guestCount);
         tableSettingsForm.hide();
         updateNode();
     }
@@ -172,6 +192,7 @@ public class TableControllerImpl implements TableController {
     public void onTableClicked(MouseEvent event) {
         if (isContextMenuOpen() || tableViewState.isDragged()) {
             tableViewState.setDragged(false);
+            restaurantController.moveTable(this);
             return;
         }
 

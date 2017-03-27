@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidReceipts;
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidTables;
+import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
 import lombok.*;
@@ -58,6 +59,8 @@ public @Data class Table extends AbstractEntity {
     private int coordinateX;
 
     private int coordinateY;
+
+    private Orientation orientation;
 
     private int guestNumber;
 

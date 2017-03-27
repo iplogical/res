@@ -1,14 +1,19 @@
 package com.inspirationlogical.receipt.corelib.model;
 
-import java.util.*;
+import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
+
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
 import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
-import com.inspirationlogical.receipt.corelib.model.enums.*;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
+import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.entity.Address;
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
@@ -23,6 +28,22 @@ import com.inspirationlogical.receipt.corelib.model.entity.Stock;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.entity.VAT;
 import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
+import com.inspirationlogical.receipt.corelib.model.enums.EtalonQuantity;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierLimitType;
+import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
+import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
+import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.enums.VATName;
+import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
 import lombok.Getter;
@@ -861,6 +882,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .guestNumber(4)
                 .coordinateX(100)
                 .coordinateY(50)
+                .orientation(HORIZONTAL)
                 .build();
     }
 

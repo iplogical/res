@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
 import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations.and;
@@ -127,15 +128,8 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void onConfigToggle(Event event) {
         restaurantViewState.setConfigurable(configuration.isSelected());
         if (!configuration.isSelected()) {
-            tableControllers.forEach(this::saveTablePosition);
             selectedTables.forEach(TableController::deselectTable);
         }
-    }
-
-    private void saveTablePosition(TableController tableController) {
-        Node view = tableController.getRoot();
-        Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
-        restaurantServices.moveTable(tableController.getView(), position);
     }
 
     @Override
@@ -207,7 +201,8 @@ public class RestaurantControllerImpl implements RestaurantController {
                     .capacity(tableCapacity)
                     .visibility(true)
                     .coordinateX((int) position.getX())
-                    .coordinateY((int) position.getY()));
+                    .coordinateY((int) position.getY())
+                    .orientation(HORIZONTAL));
 
             tableForm.hide();
 
@@ -260,6 +255,26 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
+    public void rotateTable(Node node) {
+        TableController tableController = getTableController(node);
+        TableView tableView = tableController.getView();
+
+        restaurantServices.rotateTable(tableView);
+
+        tableController.updateNode();
+    }
+
+    @Override
+    public void moveTable(TableController tableController) {
+        Node view = tableController.getRoot();
+        Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
+
+        restaurantServices.moveTable(tableController.getView(), position);
+
+        tableController.updateNode();
+    }
+
+    @Override
     public void mergeTables() {
         if (selectedTables.size() > 1) {
             TableController firstSelected = selectedTables.iterator().next();
@@ -277,6 +292,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             });
             selectedTables.clear();
             firstSelected.deselectTable();
+            firstSelected.updateNode();
         } else {
             ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("InsufficientSelection"));
         }

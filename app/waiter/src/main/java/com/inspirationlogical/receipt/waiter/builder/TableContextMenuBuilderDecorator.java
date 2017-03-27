@@ -33,7 +33,11 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
                     .withLabel(Resources.UI.getString("ContextMenu.deleteTable"))
                     .withClickHandlerControl(restaurantController::deleteTable)
                     .build();
-            contextMenu.getItems().addAll(editTable, deleteTable);
+            MenuItem rotateTable = new ContextMenuItemBuilder()
+                    .withLabel(Resources.UI.getString("ContextMenu.rotateTable"))
+                    .withClickHandlerControl(restaurantController::rotateTable)
+                    .build();
+            contextMenu.getItems().addAll(editTable, deleteTable, rotateTable);
         } else {
             MenuItem rename = new ContextMenuItemBuilder()
                     .withLabel(Resources.UI.getString("ContextMenu.setTable"))

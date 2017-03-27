@@ -1,5 +1,8 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
+import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.VERTICAL;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,12 +11,12 @@ import javax.persistence.Query;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
+import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.service.Pair;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 
 import javafx.geometry.Point2D;
@@ -94,6 +97,17 @@ public class TableAdapter extends AbstractAdapter<Table>
         GuardedTransaction.Run(() -> {
             adaptee.setCoordinateX((int)position.getX());
             adaptee.setCoordinateY((int)position.getY());
+        });
+    }
+
+    public void rotateTable() {
+        GuardedTransaction.Run(() -> {
+            Orientation orientation = adaptee.getOrientation();
+            if (orientation == HORIZONTAL) {
+                adaptee.setOrientation(VERTICAL);
+            } else {
+                adaptee.setOrientation(HORIZONTAL);
+            }
         });
     }
 

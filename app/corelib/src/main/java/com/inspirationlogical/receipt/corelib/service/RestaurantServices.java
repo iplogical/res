@@ -30,7 +30,7 @@ public interface RestaurantServices {
 
     void setTableName(TableView tableView, String name);
 
-    void setTableGuestNumber(TableView tableView, int guestNumber);
+    void setGuestCount(TableView tableView, int guestNumber);
 
     void setTableCapacity(TableView tableView, int tableCapacity);
 
@@ -41,6 +41,8 @@ public interface RestaurantServices {
     void hideTable(TableView tableView);
 
     void moveTable(TableView tableView, Point2D position);
+
+    void rotateTable(TableView tableView);
 
     void deleteTable(TableView tableView);
 

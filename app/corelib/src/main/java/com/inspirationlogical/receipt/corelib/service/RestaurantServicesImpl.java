@@ -91,7 +91,7 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     }
 
     @Override
-    public void setTableGuestNumber(TableView tableView, int guestNumber) {
+    public void setGuestCount(TableView tableView, int guestNumber) {
         getTableAdapter(tableView).setGuestNumber(guestNumber);
     }
 
@@ -113,6 +113,11 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
     @Override
     public void moveTable(TableView tableView, Point2D position) {
         getTableAdapter(tableView).moveTable(position);
+    }
+
+    @Override
+    public void rotateTable(TableView tableView) {
+        getTableAdapter(tableView).rotateTable();
     }
 
     @Override
@@ -153,6 +158,12 @@ public class RestaurantServicesImpl extends AbstractServices implements Restaura
                 receipts.clear();
             });
         });
+
+        Integer consumedCapacity = consumed.stream().mapToInt(tableView -> tableView.getTableCapacity()).sum();
+        Integer consumedGuestCount = consumed.stream().mapToInt(tableView -> tableView.getGuestCount()).sum();
+
+        setTableCapacity(aggregate, aggregate.getTableCapacity() + consumedCapacity);
+        setGuestCount(aggregate, aggregate.getGuestCount() + consumedGuestCount);
 
         GuardedTransaction.Run(() -> {
             consumed.forEach(this::deleteTable);

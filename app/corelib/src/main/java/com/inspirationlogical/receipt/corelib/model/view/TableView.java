@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
+import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
 import javafx.geometry.Point2D;
@@ -28,4 +29,6 @@ public interface TableView extends AbstractView {
     String getNote();
 
     Point2D getPosition();
+
+    Orientation getOrientation();
 }
