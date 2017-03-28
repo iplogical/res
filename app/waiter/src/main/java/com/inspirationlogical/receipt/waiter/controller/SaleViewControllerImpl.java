@@ -53,15 +53,6 @@ public class SaleViewControllerImpl extends AbstractRetailControllerImpl
     private BorderPane root;
 
     @FXML
-    private Label tableName;
-
-    @FXML
-    private Label tableNumber;
-
-    @FXML
-    private Label totalPrice;
-
-    @FXML
     private GridPane categoriesGrid;
 
     @FXML
@@ -72,21 +63,6 @@ public class SaleViewControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     private RadioButton takeAway;
-
-    @FXML
-    private javafx.scene.control.TableView<SoldProductsTableModel> soldProductsTable;
-
-    @FXML
-    private TableColumn productName;
-
-    @FXML
-    private TableColumn productQuantity;
-
-    @FXML
-    private TableColumn productUnitPrice;
-
-    @FXML
-    private TableColumn productTotalPrice;
 
     @FXML
     private Button backToRestaurantView;
@@ -149,12 +125,6 @@ public class SaleViewControllerImpl extends AbstractRetailControllerImpl
     }
 
     @FXML
-    public void onBackToRestaurantView(Event event) {
-        Parent root = (Parent) restaurantController.getRootNode();
-        Main.getWindow().getScene().setRoot(root);
-    }
-
-    @FXML
     public void onToPaymentView(Event event) {
         PaymentViewController paymentViewController = getInjector().getInstance(PaymentViewController.class);
         paymentViewController.setSaleViewController(this);
@@ -178,31 +148,9 @@ public class SaleViewControllerImpl extends AbstractRetailControllerImpl
         saleViewState.setFullScreen(restaurantController.getViewState().isFullScreen());
     }
 
-    private void initializeTableSummary() {
-        tableName.setText(tableView.getName());
-        tableNumber.setText(String.valueOf(tableView.getTableNumber()));
-    }
-
     private void updateNode() {
         updateSoldProductsTable();
         updateCategories(selectedCategory);
-    }
-
-    private void updateSoldProductsTable() {
-        getSoldProducts(restaurantServices, tableView);
-        soldProductsTable.setEditable(true);
-        productName.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productName"));
-        productQuantity.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productQuantity"));
-        productUnitPrice.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productUnitPrice"));
-        productTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productTotalPrice"));
-        ObservableList<SoldProductsTableModel> soldProductList = FXCollections.observableArrayList();
-        soldProductList.addAll(soldProducts.stream()
-                .map(receiptRecordView -> new SoldProductsTableModel(receiptRecordView.getName(),
-                        String.valueOf(receiptRecordView.getSoldQuantity()),
-                        String.valueOf(receiptRecordView.getSalePrice()),
-                        String.valueOf(receiptRecordView.getTotalPrice())))
-                .collect(Collectors.toList()));
-        soldProductsTable.setItems(soldProductList);
     }
 
     private void updateCategories(ProductCategoryView selectedCategory) {
@@ -212,12 +160,6 @@ public class SaleViewControllerImpl extends AbstractRetailControllerImpl
         }
         visibleProducts = selectedCategory.getAllProducts();
         redrawCategories(selectedCategory);
-    }
-
-    private void getSoldProducts(RestaurantServices restaurantServices, TableView tableView) {
-        receiptView = restaurantServices.getActiveReceipt(tableView);
-        soldProducts = receiptView.getSoldProducts();
-        totalPrice.setText(String.valueOf(receiptView.getTotalPrice()) + " Ft");
     }
 
     private void redrawCategories(ProductCategoryView selectedCategory) {

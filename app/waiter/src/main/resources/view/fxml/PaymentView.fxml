@@ -38,7 +38,7 @@
                                     </AnchorPane>
                                     <AnchorPane>
                                        <children>
-                                          <Label fx:id="saleTotalPrice" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <Label fx:id="totalPrice" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <font>
                                                 <Font size="36.0" />
                                              </font>
@@ -49,10 +49,10 @@
                               </VBox>
                               <TableView fx:id="soldProductsTable" prefHeight="640.0" prefWidth="458.0">
                                 <columns>
-                                  <TableColumn fx:id="saleProductName" prefWidth="231.0" text="%SaleView.ProductName" />
-                                  <TableColumn fx:id="saleProductQuantity" minWidth="0.0" prefWidth="76.0" text="%SaleView.ProductQuantity" />
-                                    <TableColumn fx:id="saleProductUnitPrice" prefWidth="69.0" text="%SaleView.ProductUnitPrice" />
-                                    <TableColumn fx:id="saleProductTotalPrice" prefWidth="81.0" text="%SaleView.ProductTotalPrice" />
+                                  <TableColumn fx:id="productName" prefWidth="231.0" text="%SaleView.ProductName" />
+                                  <TableColumn fx:id="productQuantity" minWidth="0.0" prefWidth="76.0" text="%SaleView.ProductQuantity" />
+                                    <TableColumn fx:id="productUnitPrice" prefWidth="69.0" text="%SaleView.ProductUnitPrice" />
+                                    <TableColumn fx:id="productTotalPrice" prefWidth="81.0" text="%SaleView.ProductTotalPrice" />
                                 </columns>
                               </TableView>
                            </children>

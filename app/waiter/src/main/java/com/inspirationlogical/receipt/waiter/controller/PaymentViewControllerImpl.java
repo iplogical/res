@@ -9,6 +9,9 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import lombok.Setter;
 
@@ -25,6 +28,23 @@ public class PaymentViewControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     private BorderPane root;
+
+    @FXML
+    RadioButton paymentMethodCash;
+    @FXML
+    RadioButton paymentMethodCreditCard;
+    @FXML
+    RadioButton paymentMethodCoupon;
+
+    @FXML
+    ToggleButton selectivePayment;
+    @FXML
+    ToggleButton partialPayment;
+    @FXML
+    ToggleButton automaticGameFee;
+
+    @FXML
+    Button manualGameFee;
 
     private RetailServices retailServices;
 
@@ -46,12 +66,11 @@ public class PaymentViewControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        updateNode();
+        initializeTableSummary();
     }
 
-    @FXML
-    public void onBackToRestaurantView(Event event) {
-        Parent root = (Parent) restaurantController.getRootNode();
-        Main.getWindow().getScene().setRoot(root);
+    private void updateNode() {
+        updateSoldProductsTable();
     }
 }
