@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 /**
  * Created by Bálint on 2017.03.23..
  */
-public interface SaleViewElementController<T extends AbstractView> extends Controller {
+public interface SaleElementController<T extends AbstractView> extends Controller {
 
     void setView(T view);
 

@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import static com.inspirationlogical.receipt.waiter.controller.SaleViewControllerImpl.SALE_VIEW_PATH;
+import static com.inspirationlogical.receipt.waiter.controller.SaleControllerImpl.SALE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableSettingsFormControllerImpl.TABLE_SETTINGS_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
 import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.addDragAndDrop;
@@ -220,9 +220,9 @@ public class TableControllerImpl implements TableController {
             if(!tableView.isOpen()) {
                 return;
             }
-            SaleViewController saleViewController = getInjector().getInstance(SaleViewController.class);
-            saleViewController.setTableView(tableView);
-            Parent root = (Parent) loadView(SALE_VIEW_PATH, saleViewController);
+            SaleController saleController = getInjector().getInstance(SaleController.class);
+            saleController.setTableView(tableView);
+            Parent root = (Parent) loadView(SALE_VIEW_PATH, saleController);
             Main.getWindow().getScene().setRoot(root);
         }
     }

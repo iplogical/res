@@ -2,20 +2,19 @@ package com.inspirationlogical.receipt.waiter.controller;
 
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 import javafx.scene.input.MouseEvent;
 
 /**
  * Created by Bálint on 2017.03.24..
  */
-public class SaleViewCategoryControllerImpl extends SaleViewElementControllerImpl<ProductCategoryView> {
+public class SaleCategoryControllerImpl extends SaleElementControllerImpl<ProductCategoryView> {
 
     private boolean isSelected;
 
     @Inject
-    public SaleViewCategoryControllerImpl(SaleViewController saleViewController) {
-        super(saleViewController);
+    public SaleCategoryControllerImpl(SaleController saleController) {
+        super(saleController);
     }
 
     @Override
@@ -29,7 +28,7 @@ public class SaleViewCategoryControllerImpl extends SaleViewElementControllerImp
         if(isSelected) {
             return;
         } else {
-            saleViewController.selectCategory(this);
+            saleController.selectCategory(this);
         }
 
 

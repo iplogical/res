@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Bálint on 2017.03.23..
  */
-public class SaleViewElementControllerImpl<T extends AbstractView> implements SaleViewElementController<T> {
+public class SaleElementControllerImpl<T extends AbstractView> implements SaleElementController<T> {
 
     public static final String SALE_VIEW_ELEMENT_PATH = "/view/fxml/SaleViewElement.fxml";
 
@@ -33,15 +33,15 @@ public class SaleViewElementControllerImpl<T extends AbstractView> implements Sa
     @FXML
     Label salePrice;
 
-    protected SaleViewController saleViewController;
+    protected SaleController saleController;
 
     protected @Setter @Getter T view;
 
     protected SaleViewElementState saleViewElementState;
 
     @Inject
-    public SaleViewElementControllerImpl(SaleViewController saleViewController) {
-        this.saleViewController = saleViewController;
+    public SaleElementControllerImpl(SaleController saleController) {
+        this.saleController = saleController;
     }
 
     @Override

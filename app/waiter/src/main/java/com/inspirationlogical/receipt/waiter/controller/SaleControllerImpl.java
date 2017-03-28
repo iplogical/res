@@ -13,8 +13,6 @@ import com.inspirationlogical.receipt.waiter.application.Main;
 import com.inspirationlogical.receipt.waiter.viewstate.SaleViewState;
 
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -22,21 +20,15 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import lombok.Setter;
 
 import java.util.stream.Collectors;
 
-import static com.inspirationlogical.receipt.waiter.controller.PaymentViewControllerImpl.PAYMENT_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.controller.SaleViewElementControllerImpl.SALE_VIEW_ELEMENT_PATH;
+import static com.inspirationlogical.receipt.waiter.controller.PaymentControllerImpl.PAYMENT_VIEW_PATH;
+import static com.inspirationlogical.receipt.waiter.controller.SaleElementControllerImpl.SALE_VIEW_ELEMENT_PATH;
 import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 
@@ -44,8 +36,8 @@ import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
  * Created by Bálint on 2017.03.22..
  */
 @Singleton
-public class SaleViewControllerImpl extends AbstractRetailControllerImpl
-        implements SaleViewController {
+public class SaleControllerImpl extends AbstractRetailControllerImpl
+        implements SaleController {
 
     public static final String SALE_VIEW_PATH = "/view/fxml/SaleView.fxml";
 
@@ -77,12 +69,12 @@ public class SaleViewControllerImpl extends AbstractRetailControllerImpl
 
     private List<ProductView> visibleProducts;
 
-    private List<SaleViewElementController> elementControllers;
+    private List<SaleElementController> elementControllers;
 
     @Inject
-    public SaleViewControllerImpl(RetailServices retailServices,
-                                  RestaurantServices restaurantServices,
-                                  RestaurantController restaurantController) {
+    public SaleControllerImpl(RetailServices retailServices,
+                              RestaurantServices restaurantServices,
+                              RestaurantController restaurantController) {
         super(restaurantServices, retailServices, restaurantController);
         this.elementControllers = new ArrayList<>();
     }
@@ -108,8 +100,8 @@ public class SaleViewControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    public void selectCategory(SaleViewElementController saleViewElementController) {
-        selectedCategory = (ProductCategoryView)saleViewElementController.getView();
+    public void selectCategory(SaleElementController saleElementController) {
+        selectedCategory = (ProductCategoryView) saleElementController.getView();
         updateCategories(selectedCategory);
     }
 
@@ -124,10 +116,9 @@ public class SaleViewControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onToPaymentView(Event event) {
-        PaymentViewController paymentViewController = getInjector().getInstance(PaymentViewController.class);
-        paymentViewController.setSaleViewController(this);
-        paymentViewController.setTableView(tableView);
-        Parent root = (Parent) loadView(PAYMENT_VIEW_PATH, paymentViewController);
+        PaymentController paymentController = getInjector().getInstance(PaymentController.class);
+        paymentController.setTableView(tableView);
+        Parent root = (Parent) loadView(PAYMENT_VIEW_PATH, paymentController);
         Main.getWindow().getScene().setRoot(root);
     }
 
@@ -183,16 +174,16 @@ public class SaleViewControllerImpl extends AbstractRetailControllerImpl
     }
 
     private <T extends AbstractView> void drawElement(T elementView, GridPane grid, int index) {
-//        SaleViewElementController<T> elementController =
-//                getInjector().getInstance(SaleViewElementControllerImpl.class);
-//                getInjector().getInstance(SaleViewElementController.class);
+//        SaleElementController<T> elementController =
+//                getInjector().getInstance(SaleElementControllerImpl.class);
+//                getInjector().getInstance(SaleElementController.class);
 
-        SaleViewElementController elementController = null;
+        SaleElementController elementController = null;
 
         if(elementView instanceof ProductView) {
-            elementController = new SaleViewProductControllerImpl(this);
+            elementController = new SaleProductControllerImpl(this);
         } else if (elementView instanceof ProductCategoryView) {
-            elementController = new SaleViewCategoryControllerImpl(this);
+            elementController = new SaleCategoryControllerImpl(this);
         }
         elementController.setView(elementView);
         elementControllers.add(elementController);
@@ -201,13 +192,13 @@ public class SaleViewControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void drawBackButton(GridPane categoriesGrid) {
-        SaleViewElementController elementController = null;
+        SaleElementController elementController = null;
 
-        elementController = new SaleViewProductControllerImpl(this) {
+        elementController = new SaleProductControllerImpl(this) {
 
             @Override
             public void onElementClicked(MouseEvent event) {
-                saleViewController.upWithCategories();
+                saleController.upWithCategories();
             }
         };
         elementController.setView(new ProductView() {

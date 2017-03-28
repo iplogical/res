@@ -4,9 +4,6 @@ import javax.persistence.EntityManager;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.TypeLiteral;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServicesImpl;
 import com.inspirationlogical.receipt.waiter.controller.*;
@@ -19,8 +16,8 @@ public class Registry extends AbstractModule {
     @Override
     protected void configure() {
         bind(RestaurantController.class).to(RestaurantControllerImpl.class);
-        bind(SaleViewController.class).to(SaleViewControllerImpl.class);
-        bind(PaymentViewController.class).to(PaymentViewControllerImpl.class);
+        bind(SaleController.class).to(SaleControllerImpl.class);
+        bind(PaymentController.class).to(PaymentControllerImpl.class);
         bind(TableFormController.class).to(TableFormControllerImpl.class);
         bind(RestaurantServices.class).to(RestaurantServicesImpl.class);
         bind(RetailServices.class).to(RetailServicesImpl.class);
@@ -41,21 +38,21 @@ public class Registry extends AbstractModule {
     }
 
 
-    //TODO: Try to get different implementation of the SaleViewElementController based on the type of the input param.
-    // SaleViewElementControllerImpl::drawElement;
-//        bind(SaleViewElementController.class).to(SaleViewElementControllerImpl.class);
-//        bind(new TypeLiteral<SaleViewElementControllerImpl<ProductView>>() {}).to(SaleViewProductControllerImpl.class);
-//        bind(new TypeLiteral<SaleViewElementControllerImpl<ProductCategoryView>>() {}).to(SaleViewCategoryControllerImpl.class);
-//        bind(SaleViewElementControllerImpl.class).to(SaleViewProductControllerImpl.class);
-//        bind(SaleViewElementControllerImpl.class).to(SaleViewCategoryControllerImpl.class);
+    //TODO: Try to get different implementation of the SaleElementController based on the type of the input param.
+    // SaleElementControllerImpl::drawElement;
+//        bind(SaleElementController.class).to(SaleElementControllerImpl.class);
+//        bind(new TypeLiteral<SaleElementControllerImpl<ProductView>>() {}).to(SaleProductControllerImpl.class);
+//        bind(new TypeLiteral<SaleElementControllerImpl<ProductCategoryView>>() {}).to(SaleCategoryControllerImpl.class);
+//        bind(SaleElementControllerImpl.class).to(SaleProductControllerImpl.class);
+//        bind(SaleElementControllerImpl.class).to(SaleCategoryControllerImpl.class);
 
 //    @Provides
-//    SaleViewElementControllerImpl<ProductView> provideSaleViewElementControllerOfProductView(SaleViewController saleViewController) {
-//        return new SaleViewProductControllerImpl(saleViewController);
+//    SaleElementControllerImpl<ProductView> provideSaleViewElementControllerOfProductView(SaleViewController saleViewController) {
+//        return new SaleProductControllerImpl(saleViewController);
 //    }
 //
 //    @Provides
-//    SaleViewElementControllerImpl<ProductCategoryView> provideSaleViewElementControllerOfProductCategoryView(SaleViewController saleViewController) {
-//        return new SaleViewCategoryControllerImpl(saleViewController);
+//    SaleElementControllerImpl<ProductCategoryView> provideSaleViewElementControllerOfProductCategoryView(SaleViewController saleViewController) {
+//        return new SaleCategoryControllerImpl(saleViewController);
 //    }
 }
