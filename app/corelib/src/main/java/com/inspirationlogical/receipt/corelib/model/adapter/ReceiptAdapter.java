@@ -43,11 +43,21 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public void sellProduct(ProductAdapter productAdapter, int amount, boolean takeAway) {
+
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.SECOND, -5);
+            List<ReceiptRecord> records = GuardedTransaction.RunNamedQuery(ReceiptRecord.GET_RECEIPTS_RECORDS_BY_TIMESTAMP,
+                    query -> query.setParameter("created", calendar));
+            if(records.size() > 0) {
+                records.get(0).setSoldQuantity(records.get(0).getSoldQuantity() + 1);
+                records.get(0).setCreated(Calendar.getInstance());
+                return;
+            }
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(productAdapter.getAdaptee())
                     .type(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE)
-                    .created(new GregorianCalendar())
+                    .created(Calendar.getInstance())
                     .name(productAdapter.getAdaptee().getLongName())
                     .soldQuantity(amount)
                     .purchasePrice(productAdapter.getAdaptee().getPurchasePrice())
