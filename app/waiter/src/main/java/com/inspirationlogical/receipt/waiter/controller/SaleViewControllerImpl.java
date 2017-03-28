@@ -172,6 +172,12 @@ public class SaleViewControllerImpl implements SaleViewController {
     }
 
     @FXML
+    public void onToPaymentView(Event event) {
+        Parent root = (Parent) restaurantController.getRootNode();
+        Main.getWindow().getScene().setRoot(root);
+    }
+
+    @FXML
     public void onTakeAwayToggled(Event event) {
         saleViewState.setTakeAway(takeAway.isSelected());
     }

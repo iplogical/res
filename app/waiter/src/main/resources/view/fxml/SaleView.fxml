@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.media.*?>
-<?import javafx.scene.control.*?>
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
@@ -50,10 +49,10 @@
                               </VBox>
                               <TableView fx:id="soldProductsTable" prefHeight="640.0" prefWidth="458.0">
                                 <columns>
-                                  <TableColumn fx:id="productName" prefWidth="231.0" text="Megnevezés" />
-                                  <TableColumn fx:id="productQuantity" minWidth="0.0" prefWidth="76.0" text="Mennyiség" />
-                                    <TableColumn fx:id="productUnitPrice" prefWidth="69.0" text="Egységár" />
-                                    <TableColumn fx:id="productTotalPrice" prefWidth="81.0" text="Összesen" />
+                                  <TableColumn fx:id="productName" prefWidth="231.0" text="%SaleView.ProductName" />
+                                  <TableColumn fx:id="productQuantity" minWidth="0.0" prefWidth="76.0" text="%SaleView.ProductQuantity" />
+                                    <TableColumn fx:id="productUnitPrice" prefWidth="69.0" text="%SaleView.ProductUnitPrice" />
+                                    <TableColumn fx:id="productTotalPrice" prefWidth="81.0" text="%SaleView.ProductTotalPrice" />
                                 </columns>
                               </TableView>
                            </children>
@@ -148,6 +147,8 @@
             <RadioButton fx:id="takeAway" mnemonicParsing="false" onAction="#onTakeAwayToggled" text="%SaleView.TakeAway" />
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="300.0" />
             <Button fx:id="backToRestaurantView" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%SaleView.Back" />
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Button fx:id="toPaymentView" mnemonicParsing="false" onAction="#onToPaymentView" text="%SaleView.ToPaymentView" />
          </children>
       </VBox>
    </right>

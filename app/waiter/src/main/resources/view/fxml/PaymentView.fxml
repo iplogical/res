@@ -1,30 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <AnchorPane fx:id="centrer" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="centrer" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <SplitPane dividerPositions="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <VBox>
+                                 <children>
+                                    <AnchorPane>
+                                       <children>
+                                          <Label fx:id="tableName" alignment="CENTER" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <font>
+                                                <Font name="System Bold" size="16.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane>
+                                       <children>
+                                          <Label fx:id="tableNumber" alignment="CENTER" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane>
+                                       <children>
+                                          <Label fx:id="saleTotalPrice" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <font>
+                                                <Font size="36.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </VBox>
+                              <TableView fx:id="soldProductsTable" prefHeight="640.0" prefWidth="458.0">
+                                <columns>
+                                  <TableColumn fx:id="saleProductName" prefWidth="231.0" text="%SaleView.ProductName" />
+                                  <TableColumn fx:id="saleProductQuantity" minWidth="0.0" prefWidth="76.0" text="SaleView.ProductQuantity" />
+                                    <TableColumn fx:id="saleProductUnitPrice" prefWidth="69.0" text="SaleView.ProductUnitPrice" />
+                                    <TableColumn fx:id="saleProductTotalPrice" prefWidth="81.0" text="SaleView.ProductTotalPrice" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <VBox>
+                                 <children>
+                                    <AnchorPane>
+                                       <children>
+                                          <Label fx:id="payTotalPrice" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <font>
+                                                <Font name="System Bold" size="16.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane>
+                                       <children>
+                                          <Label AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane>
+                                       <children>
+                                          <Label AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <font>
+                                                <Font size="36.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </VBox>
+                              <TableView fx:id="payProductsTable" prefHeight="669.0" prefWidth="453.0">
+                                <columns>
+                                  <TableColumn fx:id="payProductName" prefWidth="231.0" text="%SaleView.ProductName" />
+                                  <TableColumn fx:id="payProductQuantity" prefWidth="76.0" text="%SaleView.ProductQuantity" />
+                                    <TableColumn fx:id="payProductUnitPrice" prefWidth="69.0" text="%SaleView.ProductUnitPrice" />
+                                    <TableColumn fx:id="payProductTotalPrice" prefWidth="81.0" text="%SaleView.ProductTotalPrice" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+         </children></AnchorPane>
    </center>
    <right>
       <VBox fx:id="left" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <RadioButton fx:id="cash" mnemonicParsing="false" selected="true" text="Készpénz">
+            <RadioButton fx:id="paymentMethodCash" mnemonicParsing="false" onAction="#onTakeAwayToggled" text="%PaymentView.Cash">
                <toggleGroup>
-                  <ToggleGroup fx:id="paymentMethod" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton fx:id="creditCard" mnemonicParsing="false" text="Bankkártya" toggleGroup="$paymentMethod" />
-            <RadioButton fx:id="Coupon" mnemonicParsing="false" text="Kupon" toggleGroup="$paymentMethod" />
-            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="300.0" />
+                  <ToggleGroup fx:id="PaymentMethod" />
+               </toggleGroup></RadioButton>
+            <RadioButton fx:id="paymentMethodCreditCard" mnemonicParsing="false" text="%PaymentView.CreditCard" toggleGroup="$PaymentMethod" />
+            <RadioButton fx:id="paymentMethodCoupon" mnemonicParsing="false" text="%PaymentView.Coupon" toggleGroup="$PaymentMethod" />
+            <Separator prefHeight="10.0" prefWidth="100.0" />
+            <ToggleButton fx:id="selectivePayment" mnemonicParsing="false" text="%PaymentView.SelectivePayment" />
+            <Separator prefHeight="10.0" prefWidth="200.0" />
+            <ToggleButton fx:id="partialPayment" mnemonicParsing="false" text="%PaymentView.PartialPayment" />
+            <Separator prefHeight="10.0" prefWidth="200.0" />
+            <ToggleButton fx:id="automaticGameFee" mnemonicParsing="false" text="%PaymentView.AutomaticGameFee" />
+            <Separator prefHeight="10.0" prefWidth="200.0" />
+            <Button fx:id="manualGameFee" mnemonicParsing="false" text="%PaymentView.ManualGameFee" />
+            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="250.0" />
             <Button fx:id="backToRestaurantView" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%PaymentView.Back" />
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Button fx:id="pay" mnemonicParsing="false" text="%PaymentView.Pay" />
          </children>
       </VBox>
    </right>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
    <top>
       <AnchorPane BorderPane.alignment="CENTER">
          <children>
@@ -39,7 +151,4 @@
          </BorderPane.margin>
       </AnchorPane>
    </top>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
 </BorderPane>
