@@ -44,18 +44,13 @@ import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
  * Created by Bálint on 2017.03.22..
  */
 @Singleton
-public class SaleViewControllerImpl implements SaleViewController {
+public class SaleViewControllerImpl extends AbstractRetailControllerImpl
+        implements SaleViewController {
 
     public static final String SALE_VIEW_PATH = "/view/fxml/SaleView.fxml";
 
     @FXML
     private BorderPane root;
-
-    @FXML
-    private AnchorPane center;
-
-    @FXML
-    private VBox left;
 
     @FXML
     private Label tableName;
@@ -96,19 +91,7 @@ public class SaleViewControllerImpl implements SaleViewController {
     @FXML
     private Button backToRestaurantView;
 
-    private RestaurantController restaurantController;
-
     private SaleViewState saleViewState;
-
-    private RestaurantServices restaurantServices;
-
-    private RetailServices retailServices;
-
-    private @Setter TableView tableView;
-
-    private ReceiptView receiptView;
-
-    private Collection<ReceiptRecordView> soldProducts;
 
     private ProductCategoryView rootCategory;
 
@@ -126,9 +109,7 @@ public class SaleViewControllerImpl implements SaleViewController {
     public SaleViewControllerImpl(RetailServices retailServices,
                                   RestaurantServices restaurantServices,
                                   RestaurantController restaurantController) {
-        this.retailServices = retailServices;
-        this.restaurantServices = restaurantServices;
-        this.restaurantController = restaurantController;
+        super(restaurantServices, retailServices, restaurantController);
         this.elementControllers = new ArrayList<>();
     }
 
@@ -144,11 +125,6 @@ public class SaleViewControllerImpl implements SaleViewController {
     @Override
     public Node getRootNode() {
         return root;
-    }
-
-    @Override
-    public RestaurantController getRestaurantController() {
-        return restaurantController;
     }
 
     @Override
@@ -182,6 +158,7 @@ public class SaleViewControllerImpl implements SaleViewController {
     public void onToPaymentView(Event event) {
         PaymentViewController paymentViewController = getInjector().getInstance(PaymentViewController.class);
         paymentViewController.setSaleViewController(this);
+        paymentViewController.setTableView(tableView);
         Parent root = (Parent) loadView(PAYMENT_VIEW_PATH, paymentViewController);
         Main.getWindow().getScene().setRoot(root);
     }

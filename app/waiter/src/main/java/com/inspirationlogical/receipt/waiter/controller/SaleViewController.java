@@ -6,11 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 /**
  * Created by Bálint on 2017.03.22..
  */
-public interface SaleViewController extends Controller {
-
-    RestaurantController getRestaurantController();
-
-    void setTableView(TableView tableView);
+public interface SaleViewController extends AbstractRetailViewController {
 
     void sellProduct(ProductView productView);
 
