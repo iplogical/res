@@ -19,5 +19,3 @@ public class FormatterService {
         return PrintingInjector.getInjector().getInstance(FormatterService.class);
     }
 }
-
-

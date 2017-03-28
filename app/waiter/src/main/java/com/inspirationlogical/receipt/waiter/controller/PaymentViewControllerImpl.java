@@ -103,6 +103,7 @@ public class PaymentViewControllerImpl extends AbstractRetailControllerImpl
                     .discountAbsolute(paymentViewState.getDiscountAbsolute())
                     .build();
             retailServices.payTable(tableView, paymentParams);
+            updateNode();
         }
     }
 

@@ -308,6 +308,11 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
+    public void updateTables() {
+        tableControllers.forEach(tableController -> tableController.updateNode());
+    }
+
+    @Override
     public RestaurantViewState getViewState() {
         return restaurantViewState;
     }

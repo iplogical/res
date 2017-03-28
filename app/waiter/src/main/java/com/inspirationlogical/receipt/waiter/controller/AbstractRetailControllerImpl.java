@@ -64,6 +64,7 @@ public class AbstractRetailControllerImpl {
 
     @FXML
     public void onBackToRestaurantView(Event event) {
+        restaurantController.updateTables();
         Parent root = (Parent) restaurantController.getRootNode();
         Main.getWindow().getScene().setRoot(root);
     }
