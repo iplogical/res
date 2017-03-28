@@ -122,11 +122,11 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                     .collect(Collectors.toList());
             List<ReceiptRecord> paidRecords = adaptee.getRecords().stream()
                     .filter(record -> recordsToPay.containsKey(record.getId()))
-                    .filter(record -> recordsToPay.get(record.getId()).getPaidQuantity() == record.getSoldQuantity())
+                    .filter(record -> recordsToPay.get(record.getId()).getSoldQuantity() == record.getSoldQuantity())
                     .collect(Collectors.toList());
             List<ReceiptRecord> partiallyNotPaidRecords = adaptee.getRecords().stream()
                     .filter(record -> recordsToPay.containsKey(record.getId()))
-                    .filter(record -> recordsToPay.get(record.getId()).getPaidQuantity() != record.getSoldQuantity())
+                    .filter(record -> recordsToPay.get(record.getId()).getSoldQuantity() != record.getSoldQuantity())
                     .filter(record -> { paidRecords.add(ReceiptRecord.builder()
                             .product(record.getProduct())
                             .type(record.getType())
@@ -151,6 +151,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             paidReceipt[0].getAdaptee().setStatus(ReceiptStatus.PENDING);
             paidReceipt[0].getAdaptee().setOwner(tableAdapter.getAdaptee());
             tableAdapter.getAdaptee().getReceipt().add(paidReceipt[0].getAdaptee());
+            GuardedTransaction.Persist(paidReceipt[0].adaptee);
         });
         paidReceipt[0].close(paymentParams);
     }

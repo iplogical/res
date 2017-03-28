@@ -67,7 +67,11 @@ public class GuardedTransaction {
     }
 
     public static void RunWithRefresh(AbstractEntity e, Functor f) {
-        Run(f,()->{manager.refresh(e);}, () -> {});
+        Run(f,()->manager.refresh(e), () -> {});
+    }
+
+    public static void Persist(AbstractEntity e) {
+        Run(() -> manager.persist(e), () -> {}, () -> {});
     }
 
     public static void RunWithDelete(AbstractEntity e, Functor f) {

@@ -2,21 +2,25 @@ package com.inspirationlogical.receipt.waiter.controller;
 
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.viewstate.PaymentViewState;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import lombok.Setter;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /**
  * Created by Bálint on 2017.03.28..
@@ -46,7 +50,22 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     Button manualGameFee;
 
+    @FXML
+    protected javafx.scene.control.TableView<SoldProductsTableModel> payProductsTable;
+    @FXML
+    protected TableColumn payProductName;
+    @FXML
+    protected TableColumn payProductQuantity;
+    @FXML
+    protected TableColumn payProductUnitPrice;
+    @FXML
+    protected TableColumn payProductTotalPrice;
+
     private PaymentViewState paymentViewState;
+
+    private List<ReceiptRecordView> payProducts;
+
+    private ObservableList<SoldProductsTableModel> payProductList;
 
     @Inject
     public PaymentControllerImpl(RetailServices retailServices,
@@ -54,6 +73,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
                                  RestaurantController restaurantController) {
         super(restaurantServices, retailServices, restaurantController);
         paymentViewState = new PaymentViewState();
+        payProductList = FXCollections.observableArrayList();
+        payProducts = new ArrayList<>();
     }
 
     @Override
@@ -64,8 +85,41 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setInitialPaymentMethod();
+        initializeSoldProductsTable();
+        initializePayProductsTable();
         updateNode();
         initializeTableSummary();
+        initializeSoldProductsTableRowHandler();
+    }
+
+    private void initializeSoldProductsTableRowHandler() {
+        soldProductsTable.setRowFactory(tv -> {
+            TableRow<SoldProductsTableModel> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(event.getClickCount() == 2 && (! row.isEmpty())) {
+                    if(!paymentViewState.isSelectivePayment()) {
+                        return;
+                    }
+                    removeRowFromTable(row.getItem());
+                }
+            });
+            return row;
+        });
+    }
+
+    private void removeRowFromTable(final SoldProductsTableModel row) {
+        soldProductList.remove(row);
+        soldProductsTable.setItems(soldProductList);
+        List<ReceiptRecordView> matching = soldProducts.stream()
+                .filter(receiptRecordView -> receiptRecordView.getName().equals(row.getProductName()) &&
+                            String.valueOf(receiptRecordView.getSoldQuantity()).equals(row.getProductQuantity()) &&
+                            String.valueOf(receiptRecordView.getSalePrice()).equals(row.getProductUnitPrice()) &&
+                            String.valueOf(receiptRecordView.getTotalPrice()).equals(row.getProductTotalPrice()))
+                .collect(Collectors.toList());
+        payProducts.add(matching.get(0));
+        soldProducts.remove(matching.get(0));
+        payProductList.add(row);
+        payProductsTable.setItems(payProductList);
     }
 
     @FXML
@@ -90,15 +144,23 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onPay(Event event) {
-        if(!paymentViewState.isSelectivePayment()) {
-            PaymentParams paymentParams = PaymentParams.builder()
-                    .paymentMethod(paymentViewState.getPaymentMethod())
-                    .discountPercent(paymentViewState.getDiscountPercent())
-                    .discountAbsolute(paymentViewState.getDiscountAbsolute())
-                    .build();
-            retailServices.payTable(tableView, paymentParams);
+        if(paymentViewState.isSelectivePayment()) {
+            retailServices.paySelective(tableView, payProducts, getPaymentParams());
+            payProducts = new ArrayList<>();
+            updatePayProductsTable(convertReceiptRecordViewsToModel(payProducts));
+            updateNode();
+        } else {
+            retailServices.payTable(tableView, getPaymentParams());
             updateNode();
         }
+    }
+
+    private PaymentParams getPaymentParams() {
+        return PaymentParams.builder()
+                        .paymentMethod(paymentViewState.getPaymentMethod())
+                        .discountPercent(paymentViewState.getDiscountPercent())
+                        .discountAbsolute(paymentViewState.getDiscountAbsolute())
+                        .build();
     }
 
     private void setInitialPaymentMethod() {
@@ -106,11 +168,12 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void updateNode() {
-        initializePaymentViewState();
-        updateSoldProductsTable();
+        updatePaymentViewState();
+        soldProducts = getSoldProducts(restaurantServices, tableView);
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProducts));
     }
 
-    private void initializePaymentViewState() {
+    private void updatePaymentViewState() {
         setPaymentMethod();
         setSelectivePayment();
         setPartialPayment();
@@ -141,5 +204,19 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         } else if(paymentMethodCoupon.isSelected()) {
             return PaymentMethod.COUPON;
         } else return null;
+    }
+
+    protected void initializePayProductsTable() {
+        payProductsTable.setEditable(true);
+        payProductName.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productName"));
+        payProductQuantity.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productQuantity"));
+        payProductUnitPrice.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productUnitPrice"));
+        payProductTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productTotalPrice"));
+    }
+
+    protected void updatePayProductsTable(List<SoldProductsTableModel> payProducts) {
+        payProductList = FXCollections.observableArrayList();
+        payProductList.addAll(payProducts);
+        payProductsTable.setItems(payProductList);
     }
 }

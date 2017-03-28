@@ -83,6 +83,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeCategories();
+        initializeSoldProductsTable();
         initializeSaleViewState();
         updateNode();
         initializeTableSummary();
@@ -96,7 +97,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void sellProduct(ProductView productView) {
         retailServices.sellProduct(tableView, productView, 1, saleViewState.isTakeAway());
-        updateSoldProductsTable();
+        soldProducts = getSoldProducts(restaurantServices, tableView);
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProducts));
     }
 
     @Override
@@ -138,7 +140,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void updateNode() {
-        updateSoldProductsTable();
+        soldProducts = getSoldProducts(restaurantServices, tableView);
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProducts));
         updateCategories(selectedCategory);
     }
 

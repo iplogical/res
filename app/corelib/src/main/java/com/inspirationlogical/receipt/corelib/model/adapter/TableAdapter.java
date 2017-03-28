@@ -138,8 +138,8 @@ public class TableAdapter extends AbstractAdapter<Table>
             if (!isTableOpen()) {
                 throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
             }
-            getActiveReceipt().paySelective(this, records, paymentParams);
         });
+        getActiveReceipt().paySelective(this, records, paymentParams);
     }
 
     public void deleteTable() {

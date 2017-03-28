@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
@@ -57,12 +58,15 @@ public class AbstractRetailControllerImpl {
 
     protected Collection<ReceiptRecordView> soldProducts;
 
+    protected ObservableList<SoldProductsTableModel> soldProductList;
+
     public AbstractRetailControllerImpl(RestaurantServices restaurantServices,
                                         RetailServices retailServices,
                                         RestaurantController restaurantController) {
         this.restaurantServices = restaurantServices;
         this.retailServices = retailServices;
         this.restaurantController = restaurantController;
+        soldProductList = FXCollections.observableArrayList();
     }
 
     @FXML
@@ -78,27 +82,32 @@ public class AbstractRetailControllerImpl {
         note.setText(tableView.getNote());
     }
 
-    protected void getSoldProducts(RestaurantServices restaurantServices, TableView tableView) {
-        receiptView = restaurantServices.getActiveReceipt(tableView);
-        soldProducts = receiptView.getSoldProducts();
-        totalPrice.setText(String.valueOf(receiptView.getTotalPrice()) + " Ft");
-    }
-
-    protected void updateSoldProductsTable() {
-        getSoldProducts(restaurantServices, tableView);
+    protected void initializeSoldProductsTable() {
         soldProductsTable.setEditable(true);
         productName.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productName"));
         productQuantity.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productQuantity"));
         productUnitPrice.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productUnitPrice"));
         productTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productTotalPrice"));
-        ObservableList<SoldProductsTableModel> soldProductList = FXCollections.observableArrayList();
-        soldProductList.addAll(soldProducts.stream()
+    }
+
+    protected Collection<ReceiptRecordView> getSoldProducts(RestaurantServices restaurantServices, TableView tableView) {
+        receiptView = restaurantServices.getActiveReceipt(tableView);
+        totalPrice.setText(String.valueOf(receiptView.getTotalPrice()) + " Ft");
+        return receiptView.getSoldProducts();
+    }
+
+    protected List<SoldProductsTableModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
+        return soldProducts.stream()
                 .map(receiptRecordView -> new SoldProductsTableModel(receiptRecordView.getName(),
                         String.valueOf(receiptRecordView.getSoldQuantity()),
                         String.valueOf(receiptRecordView.getSalePrice()),
                         String.valueOf(receiptRecordView.getTotalPrice())))
-                .collect(Collectors.toList()));
-        soldProductsTable.setItems(soldProductList);
+                .collect(Collectors.toList());
     }
 
+    protected void updateSoldProductsTable(List<SoldProductsTableModel> soldProducts) {
+        soldProductList = FXCollections.observableArrayList();
+        soldProductList.addAll(soldProducts);
+        soldProductsTable.setItems(soldProductList);
+    }
 }
