@@ -1,11 +1,9 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import com.inspirationlogical.receipt.corelib.model.view.TableView;
-
 /**
  * Created by Bálint on 2017.03.28..
  */
-public interface PaymentViewController extends AbstractRetailViewController {
+public interface PaymentViewController extends AbstractRetailController {
 
     void setSaleViewController(SaleViewController saleViewController);
 }

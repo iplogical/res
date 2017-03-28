@@ -113,18 +113,18 @@
    <right>
       <VBox fx:id="left" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <RadioButton fx:id="paymentMethodCash" mnemonicParsing="false" text="%PaymentView.Cash">
+            <RadioButton fx:id="paymentMethodCash" mnemonicParsing="false" onAction="#onPaymentMethodToggleAction" text="%PaymentView.Cash">
                <toggleGroup>
-                  <ToggleGroup fx:id="PaymentMethod" />
+                  <ToggleGroup fx:id="paymentMethodToggleGroup" />
                </toggleGroup></RadioButton>
-            <RadioButton fx:id="paymentMethodCreditCard" mnemonicParsing="false" text="%PaymentView.CreditCard" toggleGroup="$PaymentMethod" />
-            <RadioButton fx:id="paymentMethodCoupon" mnemonicParsing="false" text="%PaymentView.Coupon" toggleGroup="$PaymentMethod" />
+            <RadioButton fx:id="paymentMethodCreditCard" mnemonicParsing="false" onAction="#onPaymentMethodToggleAction" text="%PaymentView.CreditCard" toggleGroup="$paymentMethodToggleGroup" />
+            <RadioButton fx:id="paymentMethodCoupon" mnemonicParsing="false" onAction="#onPaymentMethodToggleAction" text="%PaymentView.Coupon" toggleGroup="$paymentMethodToggleGroup" />
             <Separator prefHeight="10.0" prefWidth="100.0" />
-            <ToggleButton fx:id="selectivePayment" mnemonicParsing="false" text="%PaymentView.SelectivePayment" />
+            <ToggleButton fx:id="selectivePayment" mnemonicParsing="false" onAction="#onSelectivePaymentToggleAction" text="%PaymentView.SelectivePayment" />
             <Separator prefHeight="10.0" prefWidth="200.0" />
-            <ToggleButton fx:id="partialPayment" mnemonicParsing="false" text="%PaymentView.PartialPayment" />
+            <ToggleButton fx:id="partialPayment" mnemonicParsing="false" onAction="#onPartialPaymentToggleAction" text="%PaymentView.PartialPayment" />
             <Separator prefHeight="10.0" prefWidth="200.0" />
-            <ToggleButton fx:id="automaticGameFee" mnemonicParsing="false" text="%PaymentView.AutomaticGameFee" />
+            <ToggleButton fx:id="automaticGameFee" mnemonicParsing="false" onAction="#onAutomaticGameFeeToggleAction" text="%PaymentView.AutomaticGameFee" />
             <Separator prefHeight="10.0" prefWidth="200.0" />
             <Button fx:id="manualGameFee" mnemonicParsing="false" text="%PaymentView.ManualGameFee" />
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="250.0" />

@@ -54,10 +54,8 @@ public class SaleViewControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     private GridPane categoriesGrid;
-
     @FXML
     private GridPane subCategoriesGrid;
-
     @FXML
     private GridPane productsGrid;
 
