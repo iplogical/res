@@ -6,6 +6,7 @@ import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.
 import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.addDragAndDrop;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculatePopupPosition;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showNode;
+import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showPopup;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -166,8 +167,9 @@ public class TableControllerImpl implements TableController {
         tableSettingsForm.getContent().add(loadView(TABLE_SETTINGS_FORM_VIEW_PATH, tableSettingsFormController));
         tableSettingsFormController.loadTableSettings(this);
 
-        Point2D point = calculatePopupPosition(control, (Pane)root.getParent());
-        tableSettingsForm.show(root, point.getX(), point.getY());
+        Point2D position = calculatePopupPosition(control, (Pane)root.getParent());
+
+        showPopup(tableSettingsForm, tableSettingsFormController, root, position);
     }
 
     @Override

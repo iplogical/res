@@ -12,6 +12,7 @@ import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculatePo
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculateTablePosition;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.moveNode;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.removeNode;
+import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showPopup;
 import static com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler.addPressAndHold;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 
@@ -132,6 +133,16 @@ public class RestaurantControllerImpl implements RestaurantController {
         }
     }
 
+    @FXML
+    public void onTablesSelected(Event event) {
+        restaurantViewState.setVirtual(false);
+    }
+
+    @FXML
+    public void onVirtualSelected(Event event) {
+        restaurantViewState.setVirtual(true);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initContextMenu(tablesLab);
@@ -172,7 +183,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         initTableForm();
         tableFormController.loadTable(null);
 
-        tableForm.show(tablesTab, position.getX(), position.getY());
+        showPopup(tableForm, tableFormController, tablesTab, position);
     }
 
     @Override
@@ -184,7 +195,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
         Point2D position = calculatePopupPosition(control, tablesTab);
 
-        tableForm.show(tablesTab, position.getX(), position.getY());
+        showPopup(tableForm, tableFormController, tablesTab, position);
     }
 
     @Override

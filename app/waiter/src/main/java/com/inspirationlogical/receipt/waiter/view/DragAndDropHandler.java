@@ -50,14 +50,14 @@ public class DragAndDropHandler {
         });
     }
 
-    private static void updatePosition(MouseEvent mouseEvent, Node view, Wrapper<Point2D> deltaWrapper) {
-        view.setLayoutX(mouseEvent.getSceneX() + deltaWrapper.getContent().getX());
-        view.setLayoutY(mouseEvent.getSceneY() + deltaWrapper.getContent().getY());
+    private static void updatePosition(MouseEvent mouseEvent, Node node, Wrapper<Point2D> deltaWrapper) {
+        node.setLayoutX(mouseEvent.getSceneX() + deltaWrapper.getContent().getX());
+        node.setLayoutY(mouseEvent.getSceneY() + deltaWrapper.getContent().getY());
     }
 
-    private static void savePosition(MouseEvent mouseEvent, Node view, Wrapper<Point2D> deltaWrapper) {
-        Point2D delta = new Point2D(view.getLayoutX() - mouseEvent.getSceneX(),
-                view.getLayoutY() - mouseEvent.getSceneY());
+    private static void savePosition(MouseEvent mouseEvent, Node node, Wrapper<Point2D> deltaWrapper) {
+        Point2D delta = new Point2D(node.getLayoutX() - mouseEvent.getSceneX(),
+                node.getLayoutY() - mouseEvent.getSceneY());
         deltaWrapper.setContent(delta);
     }
 

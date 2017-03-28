@@ -30,6 +30,10 @@ public class TableViewState extends AbstractViewState {
         return restaurantViewState.isFullScreen();
     }
 
+    public boolean isVirtual() {
+        return tableView.isVirtual();
+    }
+
     public boolean isOpen() {
         return tableView.isOpen();
     }

@@ -35,7 +35,7 @@
       </ToolBar>
       <TabPane layoutX="5.0" layoutY="82.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
         <tabs>
-          <Tab closable="false" style="-fx-font-size: 16;" text="%Restaurant.Tables">
+          <Tab closable="false" onSelectionChanged="#onTablesSelected" style="-fx-font-size: 16;" text="%Restaurant.Tables">
             <content>
               <AnchorPane fx:id="tablesTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                      <children>
@@ -56,7 +56,7 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab closable="false" style="-fx-font-size: 16;" text="%Restaurant.Virtual">
+          <Tab closable="false" onSelectionChanged="#onVirtualSelected" style="-fx-font-size: 16;" text="%Restaurant.Virtual">
             <content>
               <AnchorPane fx:id="virtualTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                      <children>

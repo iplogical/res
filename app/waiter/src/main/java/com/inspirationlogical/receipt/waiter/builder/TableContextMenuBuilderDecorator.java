@@ -26,32 +26,35 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
         ContextMenu contextMenu = super.build(viewState);
         if (tableViewState.isConfigurable()) {
             MenuItem rotateTable = new ContextMenuItemBuilder()
-                    .withLabel(Resources.UI.getString("ContextMenu.rotateTable"))
+                    .withLabel(Resources.UI.getString("ContextMenu.RotateTable"))
                     .withClickHandlerControl(restaurantController::rotateTable)
                     .build();
-            MenuItem mergeTables = new ContextMenuItemBuilder()
-                    .withLabel(Resources.UI.getString("ContextMenu.MergeTable"))
-                    .withClickHandler(restaurantController::mergeTables)
-                    .build();
             MenuItem deleteTable = new ContextMenuItemBuilder()
-                    .withLabel(Resources.UI.getString("ContextMenu.deleteTable"))
+                    .withLabel(Resources.UI.getString("ContextMenu.DeleteTable"))
                     .withClickHandlerControl(restaurantController::deleteTable)
                     .build();
-            contextMenu.getItems().addAll(rotateTable, mergeTables, deleteTable);
+            contextMenu.getItems().addAll(rotateTable, deleteTable);
+            if (!tableViewState.isVirtual()) {
+                MenuItem mergeTables = new ContextMenuItemBuilder()
+                        .withLabel(Resources.UI.getString("ContextMenu.MergeTable"))
+                        .withClickHandler(restaurantController::mergeTables)
+                        .build();
+                contextMenu.getItems().addAll(mergeTables);
+            }
         } else {
             if(!tableViewState.isOpen()) {
                 MenuItem openTable = new ContextMenuItemBuilder()
-                        .withLabel(Resources.UI.getString("ContextMenu.openTable"))
+                        .withLabel(Resources.UI.getString("ContextMenu.OpenTable"))
                         .withClickHandlerControl(tableController::openTable)
                         .build();
                 contextMenu.getItems().addAll(openTable);
             }
             MenuItem setTable = new ContextMenuItemBuilder()
-                    .withLabel(Resources.UI.getString("ContextMenu.setTable"))
+                    .withLabel(Resources.UI.getString("ContextMenu.SetTable"))
                     .withClickHandlerControl(tableController::showTableSettingsForm)
                     .build();
             MenuItem editTable = new ContextMenuItemBuilder()
-                    .withLabel(Resources.UI.getString("ContextMenu.editTable"))
+                    .withLabel(Resources.UI.getString("ContextMenu.EditTable"))
                     .withClickHandlerControl(restaurantController::showEditTableForm)
                     .build();
             contextMenu.getItems().addAll(setTable, editTable);

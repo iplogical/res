@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.waiter.view;
 
+import com.inspirationlogical.receipt.waiter.controller.Controller;
+
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
@@ -50,5 +52,11 @@ public class NodeUtility {
         double posY = source.getY() - owner.getScene().getWindow().getY() - LAYOUT_OFFSET_Y;
 
         return new Point2D(posX, posY);
+    }
+
+    public static void showPopup(Popup popup, Controller controller, Node parent, Point2D position) {
+        controller.getRootNode().setLayoutX(position.getX());
+        controller.getRootNode().setLayoutY(position.getY());
+        popup.show(parent, 0, 0);
     }
 }
