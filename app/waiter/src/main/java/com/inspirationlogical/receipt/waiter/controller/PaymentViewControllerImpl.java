@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.waiter.controller;
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
+import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.application.Main;
@@ -91,6 +92,18 @@ public class PaymentViewControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onAutomaticGameFeeToggleAction(Event event) {
         setAutomaticGameFee();
+    }
+
+    @FXML
+    public void onPay(Event event) {
+        if(!paymentViewState.isSelectivePayment()) {
+            PaymentParams paymentParams = PaymentParams.builder()
+                    .paymentMethod(paymentViewState.getPaymentMethod())
+                    .discountPercent(paymentViewState.getDiscountPercent())
+                    .discountAbsolute(paymentViewState.getDiscountAbsolute())
+                    .build();
+            retailServices.payTable(tableView, paymentParams);
+        }
     }
 
     private void setInitialPaymentMethod() {
