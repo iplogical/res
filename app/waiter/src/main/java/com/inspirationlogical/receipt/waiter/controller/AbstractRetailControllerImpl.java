@@ -1,11 +1,15 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.application.Main;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -15,9 +19,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Setter;
-
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 /**
  * Created by Bálint on 2017.03.28..
@@ -30,6 +31,8 @@ public class AbstractRetailControllerImpl {
     protected Label tableNumber;
     @FXML
     protected Label totalPrice;
+    @FXML
+    protected Label note;
 
     @FXML
     protected javafx.scene.control.TableView<SoldProductsTableModel> soldProductsTable;
@@ -72,6 +75,7 @@ public class AbstractRetailControllerImpl {
     protected void initializeTableSummary() {
         tableName.setText(tableView.getName());
         tableNumber.setText(String.valueOf(tableView.getTableNumber()));
+        note.setText(tableView.getNote());
     }
 
     protected void getSoldProducts(RestaurantServices restaurantServices, TableView tableView) {

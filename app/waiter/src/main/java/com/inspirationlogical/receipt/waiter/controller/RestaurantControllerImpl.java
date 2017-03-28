@@ -3,8 +3,6 @@ package com.inspirationlogical.receipt.waiter.controller;
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
-import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations.and;
-import static com.inspirationlogical.receipt.corelib.utility.PredicateOperations.not;
 import static com.inspirationlogical.receipt.waiter.controller.TableControllerImpl.TABLE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
@@ -59,10 +57,8 @@ import javafx.util.Duration;
 public class RestaurantControllerImpl implements RestaurantController {
 
     public static final String RESTAURANT_VIEW_PATH = "/view/fxml/Restaurant.fxml";
-    private static final int HOLD_DURATION_MILLIS = 500;
-    private static Predicate<TableView> NORMAL_TABLE = not(TableView::isVirtual);
+    private static final int HOLD_DURATION_MILLIS = 300;
     private static Predicate<TableView> VISIBLE_TABLE = TableView::isVisible;
-    private static Predicate<TableView> NORMAL_VISIBLE_TABLE = and(NORMAL_TABLE, VISIBLE_TABLE);
 
     @FXML
     AnchorPane root;

@@ -9,7 +9,6 @@ import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showNode;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showPopup;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 import static java.lang.String.valueOf;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.net.URL;
@@ -33,6 +32,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -44,7 +44,6 @@ public class TableControllerImpl implements TableController {
     public static final String TABLE_VIEW_PATH = "/view/fxml/Table.fxml";
     private static double TABLE_SIZE_UNIT = 20.0;
     private static double TABLE_SIZE_MIN = 4 * TABLE_SIZE_UNIT;
-    private static String noteSign = "✉";
 
     @FXML
     AnchorPane tablesTab;
@@ -68,7 +67,7 @@ public class TableControllerImpl implements TableController {
     Label capacity;
 
     @FXML
-    Label note;
+    ImageView note;
 
     private Popup tableSettingsForm;
 
@@ -152,9 +151,9 @@ public class TableControllerImpl implements TableController {
         guests.setText(valueOf(tableView.getGuestCount()));
         capacity.setText(valueOf(tableView.getTableCapacity()));
         if(isEmpty(tableView.getNote())) {
-            note.setText(EMPTY);
+            note.setVisible(false);
         } else {
-            note.setText(noteSign);
+            note.setVisible(true);
         }
         CSSUtilities.setBackgroundColor(tableViewState.isOpen(), vBox);
         rotateRoot();
