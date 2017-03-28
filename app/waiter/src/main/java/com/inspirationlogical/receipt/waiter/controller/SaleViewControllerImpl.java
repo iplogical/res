@@ -35,7 +35,9 @@ import lombok.Setter;
 
 import java.util.stream.Collectors;
 
+import static com.inspirationlogical.receipt.waiter.controller.PaymentViewControllerImpl.PAYMENT_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.SaleViewElementControllerImpl.SALE_VIEW_ELEMENT_PATH;
+import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 
 /**
@@ -145,6 +147,11 @@ public class SaleViewControllerImpl implements SaleViewController {
     }
 
     @Override
+    public RestaurantController getRestaurantController() {
+        return restaurantController;
+    }
+
+    @Override
     public void sellProduct(ProductView productView) {
         retailServices.sellProduct(tableView, productView, 1, saleViewState.isTakeAway());
         updateSoldProductsTable();
@@ -173,7 +180,9 @@ public class SaleViewControllerImpl implements SaleViewController {
 
     @FXML
     public void onToPaymentView(Event event) {
-        Parent root = (Parent) restaurantController.getRootNode();
+        PaymentViewController paymentViewController = getInjector().getInstance(PaymentViewController.class);
+        paymentViewController.setSaleViewController(this);
+        Parent root = (Parent) loadView(PAYMENT_VIEW_PATH, paymentViewController);
         Main.getWindow().getScene().setRoot(root);
     }
 

@@ -50,9 +50,9 @@
                               <TableView fx:id="soldProductsTable" prefHeight="640.0" prefWidth="458.0">
                                 <columns>
                                   <TableColumn fx:id="saleProductName" prefWidth="231.0" text="%SaleView.ProductName" />
-                                  <TableColumn fx:id="saleProductQuantity" minWidth="0.0" prefWidth="76.0" text="SaleView.ProductQuantity" />
-                                    <TableColumn fx:id="saleProductUnitPrice" prefWidth="69.0" text="SaleView.ProductUnitPrice" />
-                                    <TableColumn fx:id="saleProductTotalPrice" prefWidth="81.0" text="SaleView.ProductTotalPrice" />
+                                  <TableColumn fx:id="saleProductQuantity" minWidth="0.0" prefWidth="76.0" text="%SaleView.ProductQuantity" />
+                                    <TableColumn fx:id="saleProductUnitPrice" prefWidth="69.0" text="%SaleView.ProductUnitPrice" />
+                                    <TableColumn fx:id="saleProductTotalPrice" prefWidth="81.0" text="%SaleView.ProductTotalPrice" />
                                 </columns>
                               </TableView>
                            </children>
@@ -113,7 +113,7 @@
    <right>
       <VBox fx:id="left" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <RadioButton fx:id="paymentMethodCash" mnemonicParsing="false" onAction="#onTakeAwayToggled" text="%PaymentView.Cash">
+            <RadioButton fx:id="paymentMethodCash" mnemonicParsing="false" text="%PaymentView.Cash">
                <toggleGroup>
                   <ToggleGroup fx:id="PaymentMethod" />
                </toggleGroup></RadioButton>

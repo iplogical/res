@@ -8,6 +8,8 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
  */
 public interface SaleViewController extends Controller {
 
+    RestaurantController getRestaurantController();
+
     void setTableView(TableView tableView);
 
     void sellProduct(ProductView productView);

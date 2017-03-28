@@ -20,11 +20,7 @@ public class Registry extends AbstractModule {
     protected void configure() {
         bind(RestaurantController.class).to(RestaurantControllerImpl.class);
         bind(SaleViewController.class).to(SaleViewControllerImpl.class);
-//        bind(SaleViewElementController.class).to(SaleViewElementControllerImpl.class);
-//        bind(new TypeLiteral<SaleViewElementControllerImpl<ProductView>>() {}).to(SaleViewProductControllerImpl.class);
-//        bind(new TypeLiteral<SaleViewElementControllerImpl<ProductCategoryView>>() {}).to(SaleViewCategoryControllerImpl.class);
-//        bind(SaleViewElementControllerImpl.class).to(SaleViewProductControllerImpl.class);
-//        bind(SaleViewElementControllerImpl.class).to(SaleViewCategoryControllerImpl.class);
+        bind(PaymentViewController.class).to(PaymentViewControllerImpl.class);
         bind(TableFormController.class).to(TableFormControllerImpl.class);
         bind(RestaurantServices.class).to(RestaurantServicesImpl.class);
         bind(RetailServices.class).to(RetailServicesImpl.class);
@@ -43,6 +39,15 @@ public class Registry extends AbstractModule {
                                            RetailServices retailServices) {
         return new TableControllerImpl(restaurantController, tableSettingsFormController, restaurantServices, retailServices);
     }
+
+
+    //TODO: Try to get different implementation of the SaleViewElementController based on the type of the input param.
+    // SaleViewElementControllerImpl::drawElement;
+//        bind(SaleViewElementController.class).to(SaleViewElementControllerImpl.class);
+//        bind(new TypeLiteral<SaleViewElementControllerImpl<ProductView>>() {}).to(SaleViewProductControllerImpl.class);
+//        bind(new TypeLiteral<SaleViewElementControllerImpl<ProductCategoryView>>() {}).to(SaleViewCategoryControllerImpl.class);
+//        bind(SaleViewElementControllerImpl.class).to(SaleViewProductControllerImpl.class);
+//        bind(SaleViewElementControllerImpl.class).to(SaleViewCategoryControllerImpl.class);
 
 //    @Provides
 //    SaleViewElementControllerImpl<ProductView> provideSaleViewElementControllerOfProductView(SaleViewController saleViewController) {
