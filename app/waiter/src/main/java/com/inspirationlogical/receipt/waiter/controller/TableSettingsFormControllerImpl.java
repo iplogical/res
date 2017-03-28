@@ -11,6 +11,7 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
@@ -34,6 +35,9 @@ public class TableSettingsFormControllerImpl implements TableSettingsFormControl
     @FXML
     private TextField guestNumber;
 
+    @FXML
+    private TextArea note;
+
     private TableController tableController;
 
     @Override
@@ -48,11 +52,12 @@ public class TableSettingsFormControllerImpl implements TableSettingsFormControl
         TableView tableView = tableController.getView();
         tableName.setText(tableView.getName());
         guestNumber.setText(String.valueOf(tableView.getGuestCount()));
+        note.setText(tableView.getNote());
     }
 
     @FXML
     public void onConfirm(MouseEvent event) {
-        tableController.setTable(tableName.getText(), Integer.valueOf(guestNumber.getText()));
+        tableController.setTable(tableName.getText(), Integer.valueOf(guestNumber.getText()), note.getText());
     }
 
     @FXML

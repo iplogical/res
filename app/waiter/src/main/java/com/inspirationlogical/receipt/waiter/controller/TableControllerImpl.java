@@ -8,6 +8,8 @@ import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculatePo
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showNode;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 import static java.lang.String.valueOf;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -41,6 +43,7 @@ public class TableControllerImpl implements TableController {
     public static final String TABLE_VIEW_PATH = "/view/fxml/Table.fxml";
     private static double TABLE_SIZE_UNIT = 20.0;
     private static double TABLE_SIZE_MIN = 4 * TABLE_SIZE_UNIT;
+    private static String noteSign = "✉";
 
     @FXML
     AnchorPane tablesTab;
@@ -62,6 +65,9 @@ public class TableControllerImpl implements TableController {
 
     @FXML
     Label capacity;
+
+    @FXML
+    Label note;
 
     private Popup tableSettingsForm;
 
@@ -144,6 +150,11 @@ public class TableControllerImpl implements TableController {
         number.setText(valueOf(tableView.getTableNumber()));
         guests.setText(valueOf(tableView.getGuestCount()));
         capacity.setText(valueOf(tableView.getTableCapacity()));
+        if(isEmpty(tableView.getNote())) {
+            note.setText(EMPTY);
+        } else {
+            note.setText(noteSign);
+        }
         CSSUtilities.setBackgroundColor(tableViewState.isOpen(), vBox);
         rotateRoot();
         showNode(root, tableView.getPosition());
@@ -160,13 +171,14 @@ public class TableControllerImpl implements TableController {
     }
 
     @Override
-    public void setTable(String name, int guestCount) {
+    public void setTable(String name, int guestCount, String note) {
         if (guestCount > tableView.getTableCapacity()) {
             ErrorMessage.showErrorMessage(root.getParent(), Resources.UI.getString("GuestCountTooHigh"));
             return;
         }
         restaurantServices.setTableName(tableView, name);
         restaurantServices.setGuestCount(tableView, guestCount);
+        restaurantServices.addTableNote(tableView, note);
         tableSettingsForm.hide();
         updateNode();
     }

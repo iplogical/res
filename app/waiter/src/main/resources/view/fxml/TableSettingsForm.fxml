@@ -44,6 +44,11 @@
             </TextField>
          </children>
       </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <TextArea fx:id="note" maxWidth="1.7976931348623157E308" prefHeight="100.0" promptText="%TableSettingsForm.Note" wrapText="true" />
+         </children>
+      </HBox>
       <HBox spacing="5.0">
          <children>
             <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onConfirm" prefWidth="100.0" text="%Form.Confirm">
