@@ -97,8 +97,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void sellProduct(ProductView productView) {
         retailServices.sellProduct(tableView, productView, 1, saleViewState.isTakeAway());
-        soldProducts = getSoldProducts(restaurantServices, tableView);
-        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProducts));
+        soldProductsView = getSoldProducts(restaurantServices, tableView);
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
     }
 
     @Override
@@ -140,8 +140,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void updateNode() {
-        soldProducts = getSoldProducts(restaurantServices, tableView);
-        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProducts));
+        soldProductsView = getSoldProducts(restaurantServices, tableView);
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
         updateCategories(selectedCategory);
     }
 

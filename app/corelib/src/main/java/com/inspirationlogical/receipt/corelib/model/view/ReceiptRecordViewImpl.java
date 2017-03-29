@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,5 +40,25 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
     @Override
     public int getTotalPrice() {
         return (int)(adapter.getAdaptee().getSalePrice() * adapter.getAdaptee().getSoldQuantity());
+    }
+
+    @Override
+    public double getDiscountPercent() {
+        return adapter.getAdaptee().getDiscountPercent();
+    }
+
+    @Override
+    public double getVat() {
+        return adapter.getAdaptee().getVAT();
+    }
+
+    @Override
+    public void increaseSoldQuantity() {
+        GuardedTransaction.Run(() -> adapter.getAdaptee().setSoldQuantity(adapter.getAdaptee().getSoldQuantity() + 1));
+    }
+
+    @Override
+    public void decreaseSoldQuantity() {
+        GuardedTransaction.Run(() -> adapter.getAdaptee().setSoldQuantity(adapter.getAdaptee().getSoldQuantity() - 1));
     }
 }

@@ -14,8 +14,15 @@ public interface ReceiptRecordView extends AbstractView {
 
     int getTotalPrice();
 
+    double getDiscountPercent();
+
+    double getVat();
+
     double getPaidQuantity();
 
     void setPaidQuantity(double quantity);
 
+    void increaseSoldQuantity();
+
+    void decreaseSoldQuantity();
 }

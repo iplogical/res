@@ -37,4 +37,10 @@ public class RetailServicesImpl extends AbstractServices implements RetailServic
     public void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
         getTableAdapter(tableView).paySelective(records, paymentParams);
     }
+
+    @Override
+    public ReceiptRecordView getReceiptRecordView(TableView tableView, ReceiptRecordView receiptRecordView) {
+        //TODO: Write test!
+        return new ReceiptRecordViewImpl(getTableAdapter(tableView).getActiveReceipt().getReceiptRecordAdapter(getReceiptRecordAdapter(receiptRecordView)));
+    }
 }

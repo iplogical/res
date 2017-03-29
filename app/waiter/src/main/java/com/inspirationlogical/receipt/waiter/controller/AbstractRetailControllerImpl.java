@@ -56,9 +56,9 @@ public class AbstractRetailControllerImpl {
 
     protected ReceiptView receiptView;
 
-    protected Collection<ReceiptRecordView> soldProducts;
+    protected Collection<ReceiptRecordView> soldProductsView;
 
-    protected ObservableList<SoldProductsTableModel> soldProductList;
+    protected ObservableList<SoldProductsTableModel> soldProductsModel;
 
     public AbstractRetailControllerImpl(RestaurantServices restaurantServices,
                                         RetailServices retailServices,
@@ -66,7 +66,7 @@ public class AbstractRetailControllerImpl {
         this.restaurantServices = restaurantServices;
         this.retailServices = retailServices;
         this.restaurantController = restaurantController;
-        soldProductList = FXCollections.observableArrayList();
+        soldProductsModel = FXCollections.observableArrayList();
     }
 
     @FXML
@@ -92,7 +92,6 @@ public class AbstractRetailControllerImpl {
 
     protected Collection<ReceiptRecordView> getSoldProducts(RestaurantServices restaurantServices, TableView tableView) {
         receiptView = restaurantServices.getActiveReceipt(tableView);
-        totalPrice.setText(String.valueOf(receiptView.getTotalPrice()) + " Ft");
         return receiptView.getSoldProducts();
     }
 
@@ -101,13 +100,21 @@ public class AbstractRetailControllerImpl {
                 .map(receiptRecordView -> new SoldProductsTableModel(receiptRecordView.getName(),
                         String.valueOf(receiptRecordView.getSoldQuantity()),
                         String.valueOf(receiptRecordView.getSalePrice()),
-                        String.valueOf(receiptRecordView.getTotalPrice())))
+                        String.valueOf(receiptRecordView.getTotalPrice()),
+                        String.valueOf(receiptRecordView.getId()),
+                        String.valueOf(receiptRecordView.getDiscountPercent()),
+                        String.valueOf(receiptRecordView.getVat())))
                 .collect(Collectors.toList());
     }
 
     protected void updateSoldProductsTable(List<SoldProductsTableModel> soldProducts) {
-        soldProductList = FXCollections.observableArrayList();
-        soldProductList.addAll(soldProducts);
-        soldProductsTable.setItems(soldProductList);
+        soldProductsModel = FXCollections.observableArrayList();
+        soldProductsModel.addAll(soldProducts);
+        soldProductsTable.setItems(soldProductsModel);
+        updateSoldTotalPrice();
+    }
+
+    protected void updateSoldTotalPrice() {
+        totalPrice.setText(SoldProductsTableModel.getTotalPrice(soldProductsModel) + " Ft");
     }
 }

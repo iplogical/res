@@ -78,7 +78,7 @@
                                  <children>
                                     <AnchorPane>
                                        <children>
-                                          <Label fx:id="payTotalPrice" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <Label AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <font>
                                                 <Font name="System Bold" size="16.0" />
                                              </font>
@@ -96,7 +96,7 @@
                                     </AnchorPane>
                                     <AnchorPane>
                                        <children>
-                                          <Label AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <Label fx:id="payTotalPrice" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <font>
                                                 <Font size="36.0" />
                                              </font>
@@ -131,9 +131,14 @@
             <RadioButton fx:id="paymentMethodCreditCard" mnemonicParsing="false" onAction="#onPaymentMethodToggleAction" text="%PaymentView.CreditCard" toggleGroup="$paymentMethodToggleGroup" />
             <RadioButton fx:id="paymentMethodCoupon" mnemonicParsing="false" onAction="#onPaymentMethodToggleAction" text="%PaymentView.Coupon" toggleGroup="$paymentMethodToggleGroup" />
             <Separator prefHeight="10.0" prefWidth="100.0" />
-            <ToggleButton fx:id="selectivePayment" mnemonicParsing="false" onAction="#onSelectivePaymentToggleAction" text="%PaymentView.SelectivePayment" />
+            <ToggleButton fx:id="selectivePayment" mnemonicParsing="false" onAction="#onSelectivePaymentToggleAction" text="%PaymentView.SelectivePayment">
+               <toggleGroup>
+                  <ToggleGroup fx:id="selectivePaymentToggleGroup" />
+               </toggleGroup></ToggleButton>
+            <Separator prefWidth="200.0" />
+            <ToggleButton fx:id="singlePayment" mnemonicParsing="false" onAction="#onSinglePaymentToggleAction" text="%PaymentView.SinglePayment" toggleGroup="$selectivePaymentToggleGroup" />
             <Separator prefHeight="10.0" prefWidth="200.0" />
-            <ToggleButton fx:id="partialPayment" mnemonicParsing="false" onAction="#onPartialPaymentToggleAction" text="%PaymentView.PartialPayment" />
+            <ToggleButton fx:id="partialPayment" mnemonicParsing="false" onAction="#onPartialPaymentToggleAction" text="%PaymentView.PartialPayment" toggleGroup="$selectivePaymentToggleGroup" />
             <Separator prefHeight="10.0" prefWidth="200.0" />
             <ToggleButton fx:id="automaticGameFee" mnemonicParsing="false" onAction="#onAutomaticGameFeeToggleAction" text="%PaymentView.AutomaticGameFee" />
             <Separator prefHeight="10.0" prefWidth="200.0" />

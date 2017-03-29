@@ -136,24 +136,6 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                     .filter(record -> recordsToPay.containsKey(record.getId()))
                     .filter(record -> recordsToPay.get(record.getId()).getSoldQuantity() == record.getSoldQuantity())
                     .collect(Collectors.toList());
-            List<ReceiptRecord> partiallyNotPaidRecords = adaptee.getRecords().stream()
-                    .filter(record -> recordsToPay.containsKey(record.getId()))
-                    .filter(record -> recordsToPay.get(record.getId()).getSoldQuantity() != record.getSoldQuantity())
-                    .filter(record -> { paidRecords.add(ReceiptRecord.builder()
-                            .product(record.getProduct())
-                            .type(record.getType())
-                            .created(Calendar.getInstance())
-                            .name(record.getName())
-                            .soldQuantity(recordsToPay.get(record.getId()).getPaidQuantity())
-                            .purchasePrice(record.getPurchasePrice())
-                            .salePrice(record.getSalePrice())
-                            .VAT(record.getVAT())
-                            .discountPercent(record.getDiscountPercent())
-                            .build());
-                        record.setSoldQuantity(record.getSoldQuantity() - recordsToPay.get(record.getId()).getPaidQuantity());
-                        return true;})
-                    .collect(Collectors.toList());
-            notPaidRecords.addAll(partiallyNotPaidRecords);
             notPaidRecords.forEach(record -> record.setOwner(adaptee));
             adaptee.setRecords(notPaidRecords);
 
@@ -166,6 +148,26 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             GuardedTransaction.Persist(paidReceipt[0].adaptee);
         });
         paidReceipt[0].close(paymentParams);
+    }
+
+    public ReceiptRecordAdapter getReceiptRecordAdapter(ReceiptRecordAdapter record) {
+        final ReceiptRecord[] receiptRecord = new ReceiptRecord[1];
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            receiptRecord[0] = ReceiptRecord.builder()
+                    .owner(this.getAdaptee())
+                    .product(record.getAdaptee().getProduct())
+                    .type(record.getAdaptee().getType())
+                    .created(Calendar.getInstance())
+                    .name(record.getAdaptee().getName())
+                    .soldQuantity(1)
+                    .purchasePrice(record.getAdaptee().getPurchasePrice())
+                    .salePrice(record.getAdaptee().getSalePrice())
+                    .VAT(record.getAdaptee().getVAT())
+                    .discountPercent(record.getAdaptee().getDiscountPercent())
+                    .build();
+            this.getAdaptee().getRecords().add(receiptRecord[0]);
+        });
+        return new ReceiptRecordAdapter(receiptRecord[0]);
     }
 
     public long getTotalPrice() {

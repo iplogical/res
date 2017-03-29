@@ -17,4 +17,6 @@ public interface RetailServices {
     void payTable(TableView tableView, PaymentParams paymentParams);
 
     void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams);
+
+    ReceiptRecordView getReceiptRecordView(TableView tableView, ReceiptRecordView receiptRecordView);
 }
