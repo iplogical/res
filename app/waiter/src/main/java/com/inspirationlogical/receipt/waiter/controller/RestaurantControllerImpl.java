@@ -87,15 +87,11 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private TableFormController tableFormController;
 
-    private TableSettingsFormController tableSettingsFormController;
-
     private Set<TableController> tableControllers;
 
     private Set<TableController> selectedTables;
 
     private RestaurantServices restaurantServices;
-
-    private RetailServices retailServices;
 
     private RestaurantView restaurantView;
 
@@ -104,12 +100,9 @@ public class RestaurantControllerImpl implements RestaurantController {
     @Inject
     public RestaurantControllerImpl(RestaurantServices restaurantServices,
                                     RetailServices retailServices,
-                                    TableFormController tableFormController,
-                                    TableSettingsFormController tableSettingsFormController) {
+                                    TableFormController tableFormController) {
         this.restaurantServices = restaurantServices;
-        this.retailServices = retailServices;
         this.tableFormController = tableFormController;
-        this.tableSettingsFormController = tableSettingsFormController;
         restaurantViewState = new RestaurantViewState();
         restaurantViewState.setFullScreen(true);
     }
