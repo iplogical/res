@@ -1,29 +1,26 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.VERTICAL;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.service.PaymentParams;
-import javafx.geometry.Point2D;
+import java.util.ArrayList;
+import javax.persistence.RollbackException;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.powermock.modules.junit4.PowerMockRunner;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 
-import javax.persistence.RollbackException;
-import java.util.ArrayList;
-import java.util.Collection;
+import javafx.geometry.Point2D;
 
 public class TableAdapterTest {
 
@@ -122,6 +119,13 @@ public class TableAdapterTest {
                 tableAdapter.getAdaptee().getNumber()).getAdaptee().getCoordinateX());
         assertEquals(70, TableAdapter.getTableByNumber(schema.getEntityManager(),
                 tableAdapter.getAdaptee().getNumber()).getAdaptee().getCoordinateY());
+    }
+
+    @Test
+    public void testRotateTable() {
+        tableAdapter.rotateTable();
+        assertEquals(TableAdapter.getTableByNumber(schema.getEntityManager(),
+                tableAdapter.getAdaptee().getNumber()).getAdaptee().getOrientation(), VERTICAL);
     }
 
     @Test(expected = IllegalTableStateException.class)
