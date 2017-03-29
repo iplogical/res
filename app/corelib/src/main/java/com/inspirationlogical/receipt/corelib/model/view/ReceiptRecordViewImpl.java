@@ -1,17 +1,18 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.math.BigDecimal;
 
 /**
  * Created by Bálint on 2017.03.15..
  */
 public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAdapter>
     implements ReceiptRecordView {
-
-    private @Setter @Getter double paidQuantity;
 
     public ReceiptRecordViewImpl(ReceiptRecordAdapter adapter) {
         super(adapter);
@@ -53,12 +54,22 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
     }
 
     @Override
-    public void increaseSoldQuantity() {
-        GuardedTransaction.Run(() -> adapter.getAdaptee().setSoldQuantity(adapter.getAdaptee().getSoldQuantity() + 1));
+    public void increaseSoldQuantity(double amount) {
+        GuardedTransaction.Run(() -> adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() + amount)));
     }
 
     @Override
-    public void decreaseSoldQuantity() {
-        GuardedTransaction.Run(() -> adapter.getAdaptee().setSoldQuantity(adapter.getAdaptee().getSoldQuantity() - 1));
+    public void decreaseSoldQuantity(double amount) {
+        GuardedTransaction.Run(() -> adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() - amount)));
+    }
+
+    @Override
+    public boolean isPartiallyPayable() {
+        return adapter.getAdaptee().getProduct().getType().equals(ProductType.PARTIALLY_PAYABLE);
+    }
+
+    private static double roundToTwoDecimals(double number) {
+        double rounded = Math.round(number * 100);
+        return rounded / 100;
     }
 }

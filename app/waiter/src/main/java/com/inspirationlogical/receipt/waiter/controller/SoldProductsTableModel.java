@@ -61,19 +61,20 @@ public @Data class SoldProductsTableModel {
         return false;
     }
 
-    void decreaseProductQuantity() {
+    boolean decreaseProductQuantity(double amount) {
         double quantity = Double.valueOf(productQuantity);
-        if(quantity <= 1.0) {
-            return;
+        if(quantity <= amount) {
+            return true;
         }
-        productQuantity = String.valueOf(quantity - 1);
+        productQuantity = String.valueOf(roundToTwoDecimals(quantity - amount));
         int totalPrice = (int)(Integer.valueOf(productUnitPrice) * Double.valueOf(productQuantity));
         productTotalPrice = String.valueOf(totalPrice);
+        return false;
     }
 
-    void increaseProductQuantity() {
+    void increaseProductQuantity(double amount) {
         double quantity = Double.valueOf(productQuantity);
-        productQuantity = String.valueOf(quantity + 1);
+        productQuantity = String.valueOf(roundToTwoDecimals(quantity + amount));
         int totalPrice = (int)(Integer.valueOf(productUnitPrice) * Double.valueOf(productQuantity));
         productTotalPrice = String.valueOf(totalPrice);
     }
@@ -96,5 +97,10 @@ public @Data class SoldProductsTableModel {
             totalPrice += Integer.valueOf(model.getProductTotalPrice());
         }
         return totalPrice;
+    }
+
+    private static double roundToTwoDecimals(double number) {
+        double rounded = Math.round(number * 100);
+        return rounded / 100;
     }
 }

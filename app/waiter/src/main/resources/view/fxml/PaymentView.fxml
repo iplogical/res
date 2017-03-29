@@ -140,12 +140,14 @@
             <Separator prefHeight="10.0" prefWidth="200.0" />
             <ToggleButton fx:id="partialPayment" mnemonicParsing="false" onAction="#onPartialPaymentToggleAction" text="%PaymentView.PartialPayment" toggleGroup="$selectivePaymentToggleGroup" />
             <Separator prefHeight="10.0" prefWidth="200.0" />
+            <TextField fx:id="partialPaymentValue" promptText="%PaymentView.PartialPaymentPrompt" />
+            <Separator prefWidth="200.0" />
             <ToggleButton fx:id="automaticGameFee" mnemonicParsing="false" onAction="#onAutomaticGameFeeToggleAction" text="%PaymentView.AutomaticGameFee" />
             <Separator prefHeight="10.0" prefWidth="200.0" />
             <Button fx:id="manualGameFee" mnemonicParsing="false" text="%PaymentView.ManualGameFee" />
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="250.0" />
             <Button fx:id="backToRestaurantView" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%PaymentView.Back" />
-            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Separator orientation="VERTICAL" prefHeight="106.0" prefWidth="2.0" />
             <Button fx:id="pay" mnemonicParsing="false" onAction="#onPay" text="%PaymentView.Pay" />
          </children>
       </VBox>

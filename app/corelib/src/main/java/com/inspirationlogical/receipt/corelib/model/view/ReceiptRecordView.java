@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Bálint on 2017.03.15..
  */
@@ -18,11 +20,9 @@ public interface ReceiptRecordView extends AbstractView {
 
     double getVat();
 
-    double getPaidQuantity();
+    void increaseSoldQuantity(double amount);
 
-    void setPaidQuantity(double quantity);
+    void decreaseSoldQuantity(double amount);
 
-    void increaseSoldQuantity();
-
-    void decreaseSoldQuantity();
+    boolean isPartiallyPayable();
 }

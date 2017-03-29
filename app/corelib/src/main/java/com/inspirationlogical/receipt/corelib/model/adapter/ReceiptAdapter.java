@@ -134,7 +134,6 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                     .collect(Collectors.toList());
             List<ReceiptRecord> paidRecords = adaptee.getRecords().stream()
                     .filter(record -> recordsToPay.containsKey(record.getId()))
-                    .filter(record -> recordsToPay.get(record.getId()).getSoldQuantity() == record.getSoldQuantity())
                     .collect(Collectors.toList());
             notPaidRecords.forEach(record -> record.setOwner(adaptee));
             adaptee.setRecords(notPaidRecords);
@@ -150,7 +149,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         paidReceipt[0].close(paymentParams);
     }
 
-    public ReceiptRecordAdapter getReceiptRecordAdapter(ReceiptRecordAdapter record) {
+    public ReceiptRecordAdapter cloneReceiptRecordAdapter(ReceiptRecordAdapter record, double amount) {
         final ReceiptRecord[] receiptRecord = new ReceiptRecord[1];
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
             receiptRecord[0] = ReceiptRecord.builder()
@@ -159,7 +158,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                     .type(record.getAdaptee().getType())
                     .created(Calendar.getInstance())
                     .name(record.getAdaptee().getName())
-                    .soldQuantity(1)
+                    .soldQuantity(amount)
                     .purchasePrice(record.getAdaptee().getPurchasePrice())
                     .salePrice(record.getAdaptee().getSalePrice())
                     .VAT(record.getAdaptee().getVAT())

@@ -39,8 +39,8 @@ public class RetailServicesImpl extends AbstractServices implements RetailServic
     }
 
     @Override
-    public ReceiptRecordView getReceiptRecordView(TableView tableView, ReceiptRecordView receiptRecordView) {
+    public ReceiptRecordView cloneReceiptRecordView(TableView tableView, ReceiptRecordView receiptRecordView, double amount) {
         //TODO: Write test!
-        return new ReceiptRecordViewImpl(getTableAdapter(tableView).getActiveReceipt().getReceiptRecordAdapter(getReceiptRecordAdapter(receiptRecordView)));
+        return new ReceiptRecordViewImpl(getTableAdapter(tableView).getActiveReceipt().cloneReceiptRecordAdapter(getReceiptRecordAdapter(receiptRecordView), amount));
     }
 }
