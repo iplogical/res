@@ -48,7 +48,9 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.SECOND, -5);
             List<ReceiptRecord> records = GuardedTransaction.RunNamedQuery(ReceiptRecord.GET_RECEIPTS_RECORDS_BY_TIMESTAMP,
-                    query -> query.setParameter("created", calendar));
+                    query -> {query.setParameter("created", calendar);
+                              query.setParameter("name", productAdapter.getAdaptee().getLongName());
+                              return query;});
             if(records.size() > 0) {
                 records.get(0).setSoldQuantity(records.get(0).getSoldQuantity() + 1);
                 records.get(0).setCreated(Calendar.getInstance());

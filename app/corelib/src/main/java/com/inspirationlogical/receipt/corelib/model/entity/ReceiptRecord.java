@@ -27,7 +27,7 @@ import lombok.ToString;
     @NamedQuery(name = ReceiptRecord.GET_TEST_RECEIPTS_RECORDS,
             query="FROM ReceiptRecord r"),
     @NamedQuery(name = ReceiptRecord.GET_RECEIPTS_RECORDS_BY_TIMESTAMP,
-            query="FROM ReceiptRecord r WHERE r.created >:created")
+            query="FROM ReceiptRecord r WHERE r.created >:created AND r.name=:name")
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECEIPT_RECORD_ID"))
 @ValidProduct
