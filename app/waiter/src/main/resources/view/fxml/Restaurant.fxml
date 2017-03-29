@@ -36,37 +36,53 @@
       <TabPane layoutX="5.0" layoutY="82.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
         <tabs>
           <Tab closable="false" onSelectionChanged="#onTablesSelected" style="-fx-font-size: 16;" text="%Restaurant.Tables">
-            <content>
-              <AnchorPane fx:id="tablesTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <content>
+                  <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
                      <children>
-                        <BorderPane fx:id="layoutPane" layoutY="-115.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="747.0" prefWidth="1014.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-110.0">
-                           <center>
-                              <ImageView fx:id="layoutImage" preserveRatio="true" BorderPane.alignment="BOTTOM_CENTER">
-                                 <image>
-                                    <Image url="@../../images/game_up_layout.png" />
-                                 </image>
-                              </ImageView>
-                           </center>
-                        </BorderPane>
-                        <Label fx:id="tablesLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <graphic>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                           </graphic>
-                        </Label>
-                     </children></AnchorPane>
-            </content>
+                        <StackPane alignment="TOP_CENTER">
+                           <children>
+                          <AnchorPane fx:id="tablesTab" maxHeight="660.0" maxWidth="1014.0">
+                                 <children>
+                                    <ImageView fx:id="layoutImage" fitWidth="1014.0" preserveRatio="true" AnchorPane.topAnchor="-110.0">
+                                       <image>
+                                          <Image url="@../../images/game_up_layout.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="tablesLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <graphic>
+                                          <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <Pane maxHeight="5.0" prefHeight="5.0" style="-fx-background-color: #efefef;" />
+                           </children>
+                        </StackPane>
+                     </children>
+                  </VBox>
+               </content>
           </Tab>
           <Tab closable="false" onSelectionChanged="#onVirtualSelected" style="-fx-font-size: 16;" text="%Restaurant.Virtual">
-            <content>
-              <AnchorPane fx:id="virtualTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <content>
+                  <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
                      <children>
-                        <Label fx:id="virtualLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <graphic>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                           </graphic>
-                        </Label>
-                     </children></AnchorPane>
-            </content>
+                        <StackPane alignment="TOP_CENTER">
+                           <children>
+                              <AnchorPane fx:id="virtualTab" maxHeight="660.0" maxWidth="1014.0">
+                                 <children>
+                                    <Label fx:id="virtualLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <graphic>
+                                          <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <Pane maxHeight="5.0" prefHeight="5.0" style="-fx-background-color: #efefef;" />
+                           </children>
+                        </StackPane>
+                     </children>
+                  </VBox>
+               </content>
           </Tab>
         </tabs>
       </TabPane>

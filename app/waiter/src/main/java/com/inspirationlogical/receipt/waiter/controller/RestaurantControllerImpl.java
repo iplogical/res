@@ -47,7 +47,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
@@ -83,12 +82,6 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     Label virtualLab;
-
-    @FXML
-    Pane layoutPane;
-
-    @FXML
-    ImageView layoutImage;
 
     private Popup tableForm;
 
@@ -145,12 +138,6 @@ public class RestaurantControllerImpl implements RestaurantController {
         initContextMenu(virtualLab);
         initRestaurant();
         initTables();
-        initBackground();
-    }
-
-    private void initBackground() {
-        layoutImage.fitWidthProperty().bind(layoutPane.widthProperty());
-        layoutImage.setPreserveRatio(true);
     }
 
     private void initRestaurant() {
