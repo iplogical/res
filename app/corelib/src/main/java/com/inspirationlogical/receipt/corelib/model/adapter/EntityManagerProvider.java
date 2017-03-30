@@ -21,8 +21,11 @@ public class EntityManagerProvider {
         return em;
     }
     public static void closeEntityManager() {
-        em.close();
-        emf.close();
-
+        if (em != null) {
+            em.close();
+        }
+        if (emf != null) {
+            emf.close();
+        }
     }
 }
