@@ -8,10 +8,11 @@ import lombok.Data;
  */
 
 @Builder
-public @Data
-class AdHocProductParams {
+public @Data class AdHocProductParams {
 
     private String name;
+
+    private int quantity;
 
     private int purchasePrice;
 

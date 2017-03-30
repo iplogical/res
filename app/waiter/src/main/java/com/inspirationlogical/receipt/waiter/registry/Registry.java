@@ -22,6 +22,7 @@ public class Registry extends AbstractModule {
         bind(RestaurantServices.class).to(RestaurantServicesImpl.class);
         bind(RetailServices.class).to(RetailServicesImpl.class);
         bind(TableSettingsFormController.class).to(TableSettingsFormControllerImpl.class);
+        bind(AdHocProductFormController.class).to(AdHocProductFormControllerImpl.class);
     }
 
     @Provides

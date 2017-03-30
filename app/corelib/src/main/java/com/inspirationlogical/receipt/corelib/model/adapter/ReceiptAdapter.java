@@ -73,18 +73,18 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         });
     }
 
-    public void sellAdHocProduct(int amount, AdHocProductParams adHocProductParams, PaymentParams paymentParams) {
+    public void sellAdHocProduct(AdHocProductParams adHocProductParams, boolean takeAway) {
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
             ProductAdapter adHocProduct = ProductAdapter.getAdHocProduct(EntityManagerProvider.getEntityManager());
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(adHocProduct.getAdaptee())
-                    .type(paymentParams.getReceiptRecordType())
+                    .type(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE)
                     .created(new GregorianCalendar())
                     .name(adHocProductParams.getName())
-                    .soldQuantity(amount)
+                    .soldQuantity(adHocProductParams.getQuantity())
                     .purchasePrice(adHocProductParams.getPurchasePrice())
                     .salePrice(adHocProductParams.getSalePrice())
-                    .VAT(VATAdapter.getVatByName(paymentParams.getReceiptRecordType(), VATStatus.VALID).getAdaptee().getVAT())
+                    .VAT(VATAdapter.getVatByName(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
                     .discountPercent(0)
                     .build();
             record.setOwner(adaptee);

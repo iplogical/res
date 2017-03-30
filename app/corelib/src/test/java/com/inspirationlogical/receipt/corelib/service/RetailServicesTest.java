@@ -3,7 +3,6 @@ package com.inspirationlogical.receipt.corelib.service;
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
-import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
@@ -90,7 +89,7 @@ public class RetailServicesTest {
         when(productView.getAdapter()).thenReturn(productAdapter);
         when(tableAdapter.getActiveReceipt()).thenReturn(receiptAdapter);
         //when
-        service.sellAdHocProduct(tableView, 1, adHocParams, paymentParams);
+        service.sellAdHocProduct(tableView, adHocParams, paymentParams);
         //then
         verify(tableAdapter).getActiveReceipt();
         verify(receiptAdapter).sellAdHocProduct(1, adHocParams, paymentParams);

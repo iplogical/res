@@ -24,8 +24,8 @@ public class RetailServicesImpl extends AbstractServices implements RetailServic
     }
 
     @Override
-    public void sellAdHocProduct(TableView tableView, int amount, AdHocProductParams adHocProductParams, PaymentParams paymentParams) {
-        getTableAdapter(tableView).getActiveReceipt().sellAdHocProduct(amount, adHocProductParams, paymentParams);
+    public void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean takeAway) {
+        getTableAdapter(tableView).getActiveReceipt().sellAdHocProduct(adHocProductParams, takeAway);
     }
 
     @Override

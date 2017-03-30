@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" style="-fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #FFFFFF; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%AdHocProductForm.Title" textAlignment="CENTER">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <HBox alignment="CENTER_LEFT" spacing="5.0">
+         <children>
+            <Label prefWidth="45.0" text="%AdHocProductForm.Name">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="productName" alignment="CENTER" prefWidth="155.0" promptText="%AdHocProductForm.NamePrompt">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextField>
+         </children>
+      </HBox>
+      <HBox spacing="5.0">
+         <children>
+            <Label prefWidth="100.0" text="%AdHocProductForm.Quantity">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="productQuantity" alignment="CENTER" prefWidth="100.0" promptText="%AdHocProductForm.QuantityPrompt">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextField>
+         </children>
+      </HBox>
+      <HBox spacing="5.0">
+         <children>
+            <Label prefWidth="100.0" text="%AdHocProductForm.SalePrice">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="productSalePrice" alignment="CENTER" prefWidth="100.0" promptText="%AdHocProductForm.SalePricePrompt">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextField>
+         </children>
+      </HBox>
+      <HBox spacing="5.0">
+         <children>
+            <Label prefWidth="100.0" text="%AdHocProductForm.PurchasePrice">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="productPurchasePrice" alignment="CENTER" prefWidth="100.0" promptText="%AdHocProductForm.PurchasePricePrompt">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextField>
+         </children>
+      </HBox>
+      <HBox spacing="5.0">
+         <children>
+            <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onConfirm" prefWidth="100.0" text="%Form.Confirm">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onCancel" prefWidth="100.0" text="%Form.Cancel">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</VBox>

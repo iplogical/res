@@ -59,9 +59,6 @@ public class RestaurantControllerTest {
     @Mock
     private TableFormController tableFormController;
 
-    @Mock
-    private TableSettingsFormController tableSettingsFormController;
-
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private RestaurantServices restaurantServices;
 
@@ -92,7 +89,7 @@ public class RestaurantControllerTest {
         mockStatic(ViewLoader.class);
         when(ViewLoader.loadView(TABLE_FORM_VIEW_PATH, tableFormController)).thenReturn(tableFormContent);
 
-        underTest = new RestaurantControllerImpl(restaurantServices, retailServices, tableFormController, tableSettingsFormController);
+        underTest = new RestaurantControllerImpl(restaurantServices, retailServices, tableFormController);
         underTest.tablesTab = tablesTab;
         underTest.tablesLab = tablesLab;
         underTest.virtualTab = virtualTab;

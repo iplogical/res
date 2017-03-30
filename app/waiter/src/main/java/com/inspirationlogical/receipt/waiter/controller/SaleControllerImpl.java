@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
+import com.inspirationlogical.receipt.corelib.service.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.application.Main;
 import com.inspirationlogical.receipt.waiter.viewstate.SaleViewState;
@@ -16,6 +17,7 @@ import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -24,12 +26,19 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.*;
+import javafx.stage.Popup;
 
+import javax.swing.*;
 import java.util.stream.Collectors;
 
+import static com.inspirationlogical.receipt.waiter.controller.AdHocProductFormControllerImpl.AD_HOC_PRODUCT_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.PaymentControllerImpl.PAYMENT_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.SaleElementControllerImpl.SALE_VIEW_ELEMENT_PATH;
 import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
+import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculatePopupPosition;
+import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showPopup;
 import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 
 /**
@@ -55,7 +64,14 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private RadioButton takeAway;
 
     @FXML
+    private Button sellAdHocProduct;
+
+    @FXML
     private Button backToRestaurantView;
+
+    private Popup adHocProductForm;
+
+    private AdHocProductFormController adHocProductFormController;
 
     private SaleViewState saleViewState;
 
@@ -74,8 +90,10 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @Inject
     public SaleControllerImpl(RetailServices retailServices,
                               RestaurantServices restaurantServices,
-                              RestaurantController restaurantController) {
+                              RestaurantController restaurantController,
+                              AdHocProductFormController adHocProductFormController) {
         super(restaurantServices, retailServices, restaurantController);
+        this.adHocProductFormController = adHocProductFormController;
         this.elementControllers = new ArrayList<>();
     }
 
@@ -99,6 +117,14 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         retailServices.sellProduct(tableView, productView, 1, saleViewState.isTakeAway());
         soldProductsView = getSoldProducts(restaurantServices, tableView);
         updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+    }
+
+    @Override
+    public void sellAdHocProduct(AdHocProductParams adHocProductParams) {
+        retailServices.sellAdHocProduct(tableView, adHocProductParams, saleViewState.isTakeAway());
+        soldProductsView = getSoldProducts(restaurantServices, tableView);
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+        adHocProductForm.hide();
     }
 
     @Override
@@ -127,6 +153,15 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onTakeAwayToggled(Event event) {
         saleViewState.setTakeAway(takeAway.isSelected());
+    }
+
+    @FXML
+    public void onSellAdHocProduct(Event event) {
+        adHocProductForm = new Popup();
+        adHocProductForm.getContent().add(loadView(AD_HOC_PRODUCT_FORM_VIEW_PATH, adHocProductFormController));
+        adHocProductFormController.loadAdHocProductForm(this);
+
+        adHocProductForm.show(root, 520, 200);
     }
 
     private void initializeCategories() {

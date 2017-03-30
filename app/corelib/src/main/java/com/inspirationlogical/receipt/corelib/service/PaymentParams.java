@@ -10,8 +10,6 @@ public @Data class PaymentParams {
 
     private PaymentMethod paymentMethod;
 
-    private ReceiptRecordType receiptRecordType;
-
     private int userCode;
 
     private int discountAbsolute;
