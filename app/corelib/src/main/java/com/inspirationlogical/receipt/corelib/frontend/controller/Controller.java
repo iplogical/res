@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.controller;
+package com.inspirationlogical.receipt.corelib.frontend.controller;
 
 import javafx.fxml.Initializable;
 import javafx.scene.Node;

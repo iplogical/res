@@ -1,19 +1,28 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
 
+import static com.inspirationlogical.receipt.waiter.controller.PaymentControllerImpl.PAYMENT_VIEW_PATH;
+import static com.inspirationlogical.receipt.waiter.controller.SaleElementControllerImpl.SALE_VIEW_ELEMENT_PATH;
+
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
-import com.inspirationlogical.receipt.corelib.model.view.*;
+import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
 import com.inspirationlogical.receipt.corelib.service.AdHocProductParams;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.application.Main;
+import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.viewstate.SaleViewState;
-
-import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -21,7 +30,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-
 import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -31,16 +39,9 @@ import javafx.stage.*;
 import javafx.stage.Popup;
 
 import javax.swing.*;
-import java.util.stream.Collectors;
-
 import static com.inspirationlogical.receipt.waiter.controller.AdHocProductFormControllerImpl.AD_HOC_PRODUCT_FORM_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.controller.PaymentControllerImpl.PAYMENT_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.controller.SaleElementControllerImpl.SALE_VIEW_ELEMENT_PATH;
-import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculatePopupPosition;
 import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showPopup;
-import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
-
 /**
  * Created by Bálint on 2017.03.22..
  */
@@ -55,8 +56,10 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     private GridPane categoriesGrid;
+
     @FXML
     private GridPane subCategoriesGrid;
+
     @FXML
     private GridPane productsGrid;
 
@@ -68,6 +71,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     private Button backToRestaurantView;
+
+    @Inject
+    private ViewLoader viewLoader;
 
     private Popup adHocProductForm;
 
@@ -144,9 +150,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onToPaymentView(Event event) {
-        PaymentController paymentController = getInjector().getInstance(PaymentController.class);
+        PaymentController paymentController = WaiterRegistry.getInstance(PaymentController.class);
         paymentController.setTableView(tableView);
-        Parent root = (Parent) loadView(PAYMENT_VIEW_PATH, paymentController);
+        Parent root = (Parent) viewLoader.loadView(PAYMENT_VIEW_PATH, paymentController);
         Main.getWindow().getScene().setRoot(root);
     }
 
@@ -225,7 +231,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         }
         elementController.setView(elementView);
         elementControllers.add(elementController);
-        Node root = loadView(SALE_VIEW_ELEMENT_PATH, elementController);
+        Node root = viewLoader.loadView(SALE_VIEW_ELEMENT_PATH, elementController);
         grid.add(elementController.getRootNode(), index % 4, index / 4);
     }
 
@@ -245,7 +251,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                 return "Vissza";
             }
         });
-        loadView(SALE_VIEW_ELEMENT_PATH, elementController);
+        viewLoader.loadView(SALE_VIEW_ELEMENT_PATH, elementController);
         categoriesGrid.add(elementController.getRootNode(), 3, 3);
     }
 }

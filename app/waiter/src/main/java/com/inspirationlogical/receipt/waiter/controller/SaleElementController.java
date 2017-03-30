@@ -1,8 +1,8 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
 import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 
 /**

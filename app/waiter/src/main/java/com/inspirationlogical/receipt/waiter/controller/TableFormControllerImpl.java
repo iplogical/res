@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
 import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.hideNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
 
 import java.net.URL;
 import java.util.ResourceBundle;

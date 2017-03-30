@@ -1,13 +1,11 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculatePopupPosition;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
 import static com.inspirationlogical.receipt.waiter.controller.SaleControllerImpl.SALE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableSettingsFormControllerImpl.TABLE_SETTINGS_FORM_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
 import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculatePopupPosition;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showNode;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showPopup;
-import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
@@ -15,12 +13,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.google.inject.Inject;
+import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.application.Main;
+import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 import com.inspirationlogical.receipt.waiter.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
@@ -68,6 +68,9 @@ public class TableControllerImpl implements TableController {
 
     @FXML
     ImageView note;
+
+    @Inject
+    private ViewLoader viewLoader;
 
     private Popup tableSettingsForm;
 
@@ -163,7 +166,7 @@ public class TableControllerImpl implements TableController {
     @Override
     public void showTableSettingsForm(Control control) {
         tableSettingsForm = new Popup();
-        tableSettingsForm.getContent().add(loadView(TABLE_SETTINGS_FORM_VIEW_PATH, tableSettingsFormController));
+        tableSettingsForm.getContent().add(viewLoader.loadView(TABLE_SETTINGS_FORM_VIEW_PATH, tableSettingsFormController));
         tableSettingsFormController.loadTableSettings(this);
 
         Point2D position = calculatePopupPosition(control, (Pane)root.getParent());
@@ -221,9 +224,9 @@ public class TableControllerImpl implements TableController {
             if(!tableView.isOpen()) {
                 return;
             }
-            SaleController saleController = getInjector().getInstance(SaleController.class);
+            SaleController saleController = WaiterRegistry.getInstance(SaleController.class);
             saleController.setTableView(tableView);
-            Parent root = (Parent) loadView(SALE_VIEW_PATH, saleController);
+            Parent root = (Parent) viewLoader.loadView(SALE_VIEW_PATH, saleController);
             Main.getWindow().getScene().setRoot(root);
         }
     }

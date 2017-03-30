@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.view;
+package com.inspirationlogical.receipt.corelib.frontend;
 
 import static org.junit.Assert.assertFalse;
 
@@ -6,7 +6,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
-import com.inspirationlogical.receipt.corelib.model.EntityManagerFactoryHolder;
 import com.inspirationlogical.receipt.corelib.model.EntityManagerFactoryRule;
 import com.inspirationlogical.receipt.corelib.model.TestType;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;

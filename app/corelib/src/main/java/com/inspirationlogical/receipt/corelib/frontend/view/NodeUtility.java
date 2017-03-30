@@ -1,6 +1,6 @@
-package com.inspirationlogical.receipt.waiter.view;
+package com.inspirationlogical.receipt.corelib.frontend.view;
 
-import com.inspirationlogical.receipt.waiter.controller.Controller;
+import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Node;

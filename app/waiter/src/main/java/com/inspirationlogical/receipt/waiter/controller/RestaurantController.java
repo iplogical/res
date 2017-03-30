@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 
 import javafx.geometry.Point2D;

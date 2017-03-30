@@ -1,18 +1,16 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculatePopupPosition;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculateTablePosition;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.moveNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.removeNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
 import static com.inspirationlogical.receipt.waiter.controller.TableControllerImpl.TABLE_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.registry.FXMLLoaderProvider.getInjector;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculatePopupPosition;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculateTablePosition;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.moveNode;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.removeNode;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showPopup;
 import static com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler.addPressAndHold;
-import static com.inspirationlogical.receipt.waiter.view.ViewLoader.loadView;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,6 +24,7 @@ import java.util.function.Predicate;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
+import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
@@ -36,6 +35,7 @@ import com.inspirationlogical.receipt.waiter.builder.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.builder.RestaurantContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.builder.TableContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.exception.ViewNotFoundException;
+import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 
@@ -82,6 +82,9 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     Label virtualLab;
+
+    @Inject
+    private ViewLoader viewLoader;
 
     private Popup tableForm;
 
@@ -151,7 +154,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private void initTableForm() {
         tableForm = new Popup();
-        tableForm.getContent().add(loadView(TABLE_FORM_VIEW_PATH, tableFormController));
+        tableForm.getContent().add(viewLoader.loadView(TABLE_FORM_VIEW_PATH, tableFormController));
     }
 
     @Override
@@ -329,12 +332,12 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void drawTable(TableView tableView) {
-        TableController tableController = getInjector().getInstance(TableController.class);
+        TableController tableController = WaiterRegistry.getInstance(TableController.class);
         tableController.setView(tableView);
 
         tableControllers.add(tableController);
 
-        loadView(TABLE_VIEW_PATH, tableController);
+        viewLoader.loadView(TABLE_VIEW_PATH, tableController);
 
         addPressAndHold(tableController.getViewState(), tableController.getRoot(),
                 new TableContextMenuBuilderDecorator(this, tableController, new BaseContextMenuBuilder()),

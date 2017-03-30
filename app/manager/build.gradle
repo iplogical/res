@@ -37,13 +37,13 @@ dependencies {
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:4.12',
-    'org.powermock:powermock-core:1.6.5',
-    'org.powermock:powermock-module-junit4:1.6.5',
-    'org.powermock:powermock-api-mockito:1.6.5'
+            'org.powermock:powermock-core:1.6.5',
+            'org.powermock:powermock-module-junit4:1.6.5',
+            'org.powermock:powermock-api-mockito:1.6.5'
 
 }
 
-tasks.withType(JavaCompile) { 
- options.compilerArgs << '-parameters'
- options.encoding = 'UTF-8'
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-parameters'
+    options.encoding = 'UTF-8'
 }
