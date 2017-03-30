@@ -17,9 +17,9 @@ public @Data class PaymentViewState {
 
     private boolean automaticGameFee;
 
-    private int discountPercent;
+    private boolean discountAbsolute;
 
-    private int discountAbsolute;
+    private boolean discountPercent;
 
     public boolean isFullPayment() {
         return !(selectivePayment || singlePayment || partialPayment);

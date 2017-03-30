@@ -44,6 +44,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     ToggleButton singlePayment;
     @FXML
     ToggleButton partialPayment;
+    // TODO: input validation
     @FXML
     TextField partialPaymentValue;
 
@@ -52,6 +53,16 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     Button manualGameFee;
+
+    @FXML
+    ToggleButton discountAbsolute;
+    @FXML
+    TextField discountAbsoluteValue;
+
+    @FXML
+    ToggleButton discountPercent;
+    @FXML
+    TextField discountPercentValue;
 
     @FXML
     Label payTotalPrice;
@@ -121,6 +132,17 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onAutomaticGameFeeToggleAction(Event event) {
         setAutomaticGameFee();
+    }
+
+    @FXML
+    public void onDiscountAbsoluteToggleAction(Event event) {
+        setDiscountAbsolute();
+    }
+
+
+    @FXML
+    public void onDiscountPercentToggleAction(Event event) {
+        setDiscountPercent();
     }
 
     @FXML
@@ -260,8 +282,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private PaymentParams getPaymentParams() {
         return PaymentParams.builder()
                         .paymentMethod(paymentViewState.getPaymentMethod())
-                        .discountPercent(paymentViewState.getDiscountPercent())
-                        .discountAbsolute(paymentViewState.getDiscountAbsolute())
+                        .discountAbsolute(paymentViewState.isDiscountAbsolute() ? Integer.valueOf(discountAbsoluteValue.getText()) : 0)
+                        .discountPercent(paymentViewState.isDiscountPercent() ? Double.valueOf(discountPercentValue.getText()) : 0)
                         .build();
     }
 
@@ -317,6 +339,16 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         paymentViewState.setSelectivePayment(!partialPayment.isSelected());
         paymentViewState.setSinglePayment(!partialPayment.isSelected());
         paymentViewState.setPartialPayment(partialPayment.isSelected());
+    }
+
+    private void setDiscountAbsolute() {
+        paymentViewState.setDiscountAbsolute(discountAbsolute.isSelected());
+        paymentViewState.setDiscountPercent(!discountAbsolute.isSelected());
+    }
+
+    private void setDiscountPercent() {
+        paymentViewState.setDiscountAbsolute(!discountPercent.isSelected());
+        paymentViewState.setDiscountPercent(discountPercent.isSelected());
     }
 
     private void setAutomaticGameFee() {
