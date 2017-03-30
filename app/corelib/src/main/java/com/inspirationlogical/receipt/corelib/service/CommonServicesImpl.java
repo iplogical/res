@@ -1,16 +1,14 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.ProductView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
-
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+
+import com.google.inject.Inject;
+import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
 
 public class CommonServicesImpl extends AbstractServices implements CommonServices {
 

@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.viewstate;
 
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+
 import lombok.Data;
 
 /**

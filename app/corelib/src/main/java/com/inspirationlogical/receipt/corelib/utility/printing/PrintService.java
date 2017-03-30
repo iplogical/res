@@ -1,14 +1,8 @@
 package com.inspirationlogical.receipt.corelib.utility.printing;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.inspirationlogical.receipt.corelib.exception.PrinterClassNotFoundException;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
-import lombok.NoArgsConstructor;
-
 import java.io.InputStream;
+
+import com.google.inject.Inject;
 
 /**
  * Created by Ferenc on 2017. 03. 18..

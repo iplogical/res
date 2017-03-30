@@ -1,9 +1,9 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import java.util.List;
+
 import com.inspirationlogical.receipt.corelib.exception.VATSerieNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
-
-import java.util.List;
 
 /**
  * Created by Bálint on 2017.03.15..

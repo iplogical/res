@@ -1,10 +1,10 @@
 package com.inspirationlogical.receipt.corelib.service;
 
+import java.util.Collection;
+
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
-
-import java.util.Collection;
 
 public interface RetailServices {
 

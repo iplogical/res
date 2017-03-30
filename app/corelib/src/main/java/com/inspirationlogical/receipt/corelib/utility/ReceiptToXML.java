@@ -12,10 +12,20 @@ import java.util.stream.Collectors;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import com.inspirationlogical.receipt.corelib.jaxb.*;
+import com.inspirationlogical.receipt.corelib.jaxb.CustomerInfo;
+import com.inspirationlogical.receipt.corelib.jaxb.ObjectFactory;
+import com.inspirationlogical.receipt.corelib.jaxb.Receipt;
+import com.inspirationlogical.receipt.corelib.jaxb.ReceiptBody;
+import com.inspirationlogical.receipt.corelib.jaxb.ReceiptBodyEntry;
+import com.inspirationlogical.receipt.corelib.jaxb.ReceiptBodyFooter;
+import com.inspirationlogical.receipt.corelib.jaxb.ReceiptBodyHeader;
+import com.inspirationlogical.receipt.corelib.jaxb.ReceiptFooter;
+import com.inspirationlogical.receipt.corelib.jaxb.ReceiptHeader;
+import com.inspirationlogical.receipt.corelib.jaxb.TagCurrencyValue;
+import com.inspirationlogical.receipt.corelib.jaxb.TagValuePair;
+import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 

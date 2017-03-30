@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 
 import com.inspirationlogical.receipt.corelib.model.entity.AbstractEntity;

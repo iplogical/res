@@ -1,8 +1,12 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
 import com.inspirationlogical.receipt.waiter.viewstate.SaleViewElementState;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -10,9 +14,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /**
  * Created by Bálint on 2017.03.23..

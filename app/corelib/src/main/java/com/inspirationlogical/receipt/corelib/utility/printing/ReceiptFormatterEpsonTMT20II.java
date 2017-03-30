@@ -1,13 +1,27 @@
 package com.inspirationlogical.receipt.corelib.utility.printing;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.nio.file.Paths;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Paths;
+
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
+import org.apache.fop.apps.FOUserAgent;
+import org.apache.fop.apps.Fop;
+import org.apache.fop.apps.FopFactory;
+import org.apache.fop.apps.FopFactoryBuilder;
+import org.apache.fop.apps.MimeConstants;
+import org.xml.sax.SAXException;
 
 import com.google.common.io.Files;
 import com.inspirationlogical.receipt.corelib.exception.FOPCfgXMLFormatException;
@@ -15,12 +29,6 @@ import com.inspirationlogical.receipt.corelib.exception.FOPCfgXMLNotFoundExcepti
 import com.inspirationlogical.receipt.corelib.exception.FOPConfigurationErrorException;
 import com.inspirationlogical.receipt.corelib.exception.ReceiptXSLTNotFoundException;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
-import org.apache.fop.apps.*;
-import org.apache.xml.utils.URI;
-import org.xml.sax.SAXException;
 
 /**
  * Created by Ferenc on 2017. 03. 11..

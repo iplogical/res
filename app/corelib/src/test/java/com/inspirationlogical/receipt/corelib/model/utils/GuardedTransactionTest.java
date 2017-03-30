@@ -1,12 +1,12 @@
 package com.inspirationlogical.receipt.corelib.model.utils;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
 
 /**
  * Created by Ferenc on 2017. 03. 11..

@@ -1,14 +1,14 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
 import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.hideNode;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.google.inject.Singleton;
-
 import com.inspirationlogical.receipt.corelib.service.AdHocProductParams;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;

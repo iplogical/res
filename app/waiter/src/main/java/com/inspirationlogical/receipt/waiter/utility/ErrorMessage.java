@@ -1,9 +1,11 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
+import org.controlsfx.control.Notifications;
+
 import com.inspirationlogical.receipt.corelib.utility.Resources;
+
 import javafx.geometry.Pos;
 import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
 
 /**
  * Created by Bálint on 2017.03.21..

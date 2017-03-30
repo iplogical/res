@@ -3,10 +3,6 @@ package com.inspirationlogical.receipt.corelib.model.view;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.math.BigDecimal;
 
 /**
  * Created by Bálint on 2017.03.15..

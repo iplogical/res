@@ -3,10 +3,11 @@ package com.inspirationlogical.receipt.corelib.model.listeners;
 /**
  * Created by Ferenc on 2017. 03. 10..
  */
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 
 public class ReceiptAdapterListeners {
 

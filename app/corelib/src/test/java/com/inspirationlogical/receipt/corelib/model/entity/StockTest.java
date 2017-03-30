@@ -1,16 +1,17 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_STOCKS;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.RollbackException;
+
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.RollbackException;
-import java.util.List;
-
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_STOCKS;
-import static org.junit.Assert.assertEquals;
+import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
 public class StockTest {
 

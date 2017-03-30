@@ -1,9 +1,9 @@
 package com.inspirationlogical.receipt.corelib.utility.printing;
 
-import com.google.inject.Inject;
-
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import com.google.inject.Inject;
 
 /**
  * Created by Ferenc on 2017. 03. 18..

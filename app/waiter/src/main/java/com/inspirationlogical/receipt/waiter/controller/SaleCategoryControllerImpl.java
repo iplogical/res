@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.waiter.controller;
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
+
 import javafx.scene.input.MouseEvent;
 
 /**

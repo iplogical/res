@@ -1,13 +1,13 @@
 package com.inspirationlogical.receipt.corelib.model.listeners;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
-import com.inspirationlogical.receipt.corelib.utility.*;
+import com.inspirationlogical.receipt.corelib.utility.ReceiptToXML;
 import com.inspirationlogical.receipt.corelib.utility.printing.FilePrinter;
 import com.inspirationlogical.receipt.corelib.utility.printing.FormatterService;
 import com.inspirationlogical.receipt.corelib.utility.printing.PrintService;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 
 /**
  * Created by Ferenc on 2017. 03. 10..

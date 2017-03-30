@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.utility;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 

@@ -1,13 +1,11 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import lombok.Builder;
-import lombok.Data;
-
 import java.util.Comparator;
+
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
+
+import javafx.collections.ObservableList;
+import lombok.Data;
 
 /**
  * Created by Bálint on 2017.03.22..

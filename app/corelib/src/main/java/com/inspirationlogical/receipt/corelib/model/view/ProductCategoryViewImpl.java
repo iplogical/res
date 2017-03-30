@@ -1,10 +1,10 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 
 public class ProductCategoryViewImpl extends AbstractModelViewImpl<ProductCategoryAdapter>
         implements ProductCategoryView {

@@ -1,13 +1,14 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static junit.framework.TestCase.assertEquals;
+
+import org.junit.Rule;
+import org.junit.Test;
+
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
-import org.junit.Rule;
-import org.junit.Test;
-
-import static junit.framework.TestCase.assertEquals;
 
 /**
  * Created by Bálint on 2017.03.17..

@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
 
+import static com.inspirationlogical.receipt.waiter.controller.AdHocProductFormControllerImpl.AD_HOC_PRODUCT_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.PaymentControllerImpl.PAYMENT_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.controller.SaleElementControllerImpl.SALE_VIEW_ELEMENT_PATH;
 
@@ -15,9 +16,9 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
-import com.inspirationlogical.receipt.corelib.service.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.service.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
@@ -26,7 +27,6 @@ import com.inspirationlogical.receipt.waiter.viewstate.SaleViewState;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -34,14 +34,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.*;
 import javafx.stage.Popup;
 
-import javax.swing.*;
-import static com.inspirationlogical.receipt.waiter.controller.AdHocProductFormControllerImpl.AD_HOC_PRODUCT_FORM_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.calculatePopupPosition;
-import static com.inspirationlogical.receipt.waiter.view.NodeUtility.showPopup;
 /**
  * Created by Bálint on 2017.03.22..
  */
@@ -164,7 +158,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onSellAdHocProduct(Event event) {
         adHocProductForm = new Popup();
-        adHocProductForm.getContent().add(loadView(AD_HOC_PRODUCT_FORM_VIEW_PATH, adHocProductFormController));
+        adHocProductForm.getContent().add(viewLoader.loadView(AD_HOC_PRODUCT_FORM_VIEW_PATH, adHocProductFormController));
         adHocProductFormController.loadAdHocProductForm(this);
 
         adHocProductForm.show(root, 520, 200);

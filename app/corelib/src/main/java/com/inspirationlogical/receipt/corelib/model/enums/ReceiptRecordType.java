@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.enums;
 
-import lombok.NonNull;
-
 public enum ReceiptRecordType {
 
     HERE,

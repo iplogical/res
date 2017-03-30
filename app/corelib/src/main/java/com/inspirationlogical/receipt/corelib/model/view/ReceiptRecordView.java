@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import java.math.BigDecimal;
-
 /**
  * Created by Bálint on 2017.03.15..
  */

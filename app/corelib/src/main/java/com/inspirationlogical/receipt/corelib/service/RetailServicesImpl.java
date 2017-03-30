@@ -1,10 +1,13 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.model.view.*;
-
-import javax.persistence.EntityManager;
 import java.util.Collection;
+import javax.persistence.EntityManager;
+
+import com.google.inject.Inject;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 public class RetailServicesImpl extends AbstractServices implements RetailServices {
 

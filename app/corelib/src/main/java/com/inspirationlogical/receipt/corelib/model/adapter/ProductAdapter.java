@@ -1,13 +1,11 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import com.inspirationlogical.receipt.corelib.exception.AdHocProductNotFoundException;
-import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
-
-import javax.persistence.EntityManager;
 import java.util.List;
+import javax.persistence.EntityManager;
+
+import com.inspirationlogical.receipt.corelib.exception.AdHocProductNotFoundException;
+import com.inspirationlogical.receipt.corelib.model.entity.Product;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 
 public class ProductAdapter extends AbstractAdapter<Product> {
 

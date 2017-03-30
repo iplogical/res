@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<xsl:stylesheet version="3.0"   xmlns:fo="http://www.w3.org/1999/XSL/Format"
-                                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                                xmlns:pdf="http://xmlgraphics.apache.org/fop/extensions/pdf">
+<xsl:stylesheet version="3.0" xmlns:fo="http://www.w3.org/1999/XSL/Format"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+>
 
 <xsl:output method="xml" version="1.0" indent="yes" />
 
