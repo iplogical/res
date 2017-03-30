@@ -180,7 +180,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     @Override
     public void createTable(int tableNumber, int tableCapacity, boolean isVirtual) {
         TableType tableType = isVirtual ? VIRTUAL : NORMAL;
-        Point2D position = calculateTablePosition(tableForm, tablesTab);
+        Point2D position = calculateTablePosition(tableFormController.getRootNode(), tablesTab);
         TableView tableView;
 
         try{

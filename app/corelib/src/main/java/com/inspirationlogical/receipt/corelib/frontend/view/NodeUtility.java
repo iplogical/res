@@ -47,9 +47,9 @@ public class NodeUtility {
         return new Point2D(posX, posY);
     }
 
-    public static Point2D calculateTablePosition(Popup source, Pane owner) {
-        double posX = source.getX() - owner.getScene().getWindow().getX();
-        double posY = source.getY() - owner.getScene().getWindow().getY() - LAYOUT_OFFSET_Y;
+    public static Point2D calculateTablePosition(Node source, Pane owner) {
+        double posX = source.getLayoutX() - owner.getScene().getWindow().getX();
+        double posY = source.getLayoutY() - owner.getScene().getWindow().getY() - LAYOUT_OFFSET_Y;
 
         return new Point2D(posX, posY);
     }
