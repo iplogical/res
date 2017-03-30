@@ -42,7 +42,6 @@ public class ReceiptAdapterTest {
         receiptAdapter = new ReceiptAdapter(schema.getReceiptSaleOne());
         productAdapter = new ProductAdapter(schema.getProductOne());
         paymentParams = PaymentParams.builder()
-                .receiptRecordType(ReceiptRecordType.HERE)
                 .paymentMethod(PaymentMethod.CASH)
                 .discountAbsolute(0)
                 .discountPercent(0D)
@@ -64,10 +63,11 @@ public class ReceiptAdapterTest {
     public void testAdHocSellProduct() {
         AdHocProductParams productParams = AdHocProductParams.builder()
                 .name("Hot Milk")
+                .quantity(1)
                 .purchasePrice(200)
                 .salePrice(400)
                 .build();
-        receiptAdapter.sellAdHocProduct(1, productParams, paymentParams);
+        receiptAdapter.sellAdHocProduct(productParams, true);
         assertEquals(5, receiptAdapter.getSoldProducts().size());
     }
 

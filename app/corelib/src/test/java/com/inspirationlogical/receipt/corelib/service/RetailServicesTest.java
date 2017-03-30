@@ -88,10 +88,10 @@ public class RetailServicesTest {
         when(productView.getAdapter()).thenReturn(productAdapter);
         when(tableAdapter.getActiveReceipt()).thenReturn(receiptAdapter);
         //when
-        service.sellAdHocProduct(tableView, adHocParams, paymentParams);
+        service.sellAdHocProduct(tableView, adHocParams, true);
         //then
         verify(tableAdapter).getActiveReceipt();
-        verify(receiptAdapter).sellAdHocProduct(1, adHocParams, paymentParams);
+        verify(receiptAdapter).sellAdHocProduct(adHocParams, true);
     }
 
     @Test
