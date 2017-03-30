@@ -15,20 +15,18 @@ import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.viewstate.PaymentViewState;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+
+import static com.inspirationlogical.receipt.waiter.viewstate.PaymentViewState.PaymentType.*;
 
 public class PaymentControllerImpl extends AbstractRetailControllerImpl
         implements PaymentController {
@@ -44,6 +42,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     RadioButton paymentMethodCreditCard;
     @FXML
     RadioButton paymentMethodCoupon;
+    @FXML
+    ToggleGroup paymentMethodToggleGroup;
 
     @FXML
     ToggleButton selectivePayment;
@@ -51,6 +51,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     ToggleButton singlePayment;
     @FXML
     ToggleButton partialPayment;
+    @FXML
+    ToggleGroup paymentTypeToggleGroup;
     // TODO: input validation
     @FXML
     TextField partialPaymentValue;
@@ -70,6 +72,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     ToggleButton discountPercent;
     @FXML
     TextField discountPercentValue;
+
+    @FXML
+    ToggleGroup discountTypeToggleGroup;
 
     @FXML
     Label payTotalPrice;
@@ -108,48 +113,19 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setInitialPaymentMethod();
+        initializeToggleGroups();
         initializeSoldProductsTable();
         initializePayProductsTable();
-        updateNode();
+        setAutomaticGameFee();
+        getSoldProductsAndUpdateTable();
         initializeTableSummary();
         initializeSoldProductsTableRowHandler();
     }
 
-    @FXML
-    public void onPaymentMethodToggleAction(Event event) {
-        setPaymentMethod();
-    }
-
-    @FXML
-    public void onSelectivePaymentToggleAction(Event event) {
-        setSelectivePayment();
-    }
-
-    @FXML
-    public void onSinglePaymentToggleAction(Event event) {
-        setSinglePayment();
-    }
-
-    @FXML
-    public void onPartialPaymentToggleAction(Event event) {
-        setPartialPayment();
-    }
 
     @FXML
     public void onAutomaticGameFeeToggleAction(Event event) {
         setAutomaticGameFee();
-    }
-
-    @FXML
-    public void onDiscountAbsoluteToggleAction(Event event) {
-        setDiscountAbsolute();
-    }
-
-
-    @FXML
-    public void onDiscountPercentToggleAction(Event event) {
-        setDiscountPercent();
     }
 
     @FXML
@@ -163,14 +139,14 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private void handleFullPayment() {
         retailServices.payTable(tableView, getPaymentParams());
-        updateNode();
+        getSoldProductsAndUpdateTable();
     }
 
     private void handleSelectivePayment() {
         retailServices.paySelective(tableView, paidProductsView, getPaymentParams());
         paidProductsView = new ArrayList<>();
         updatePayProductsTable(convertReceiptRecordViewsToModel(paidProductsView));
-        updateNode();
+        getSoldProductsAndUpdateTable();
     }
 
     private void initializeSoldProductsTableRowHandler() {
@@ -294,22 +270,56 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
                         .build();
     }
 
-    private void setInitialPaymentMethod() {
+    private void initializeToggleGroups() {
+        initializePaymentMethodToggles();
+        initializePaymentTypeToggles();
+        initializeDiscountToggles();
+    }
+
+    private void initializePaymentMethodToggles() {
+        paymentMethodCash.setUserData(PaymentMethod.CASH);
+        paymentMethodCreditCard.setUserData(PaymentMethod.CREDIT_CARD);
+        paymentMethodCoupon.setUserData(PaymentMethod.COUPON);
         paymentMethodCash.setSelected(true);
+        paymentViewState.setPaymentMethod(PaymentMethod.CASH);
+        paymentMethodToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                paymentViewState.setPaymentMethod((PaymentMethod)paymentMethodToggleGroup.getSelectedToggle().getUserData());
+            }
+        });
     }
 
-    private void updateNode() {
-        updatePaymentViewState();
-        soldProductsView = getSoldProducts(restaurantServices, tableView);
-        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+    private void initializePaymentTypeToggles() {
+        selectivePayment.setUserData(SELECTIVE);
+        singlePayment.setUserData(SINGLE);
+        partialPayment.setUserData(PARTIAL);
+        paymentViewState.setPaymentType(FULL);
+        paymentTypeToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if(paymentTypeToggleGroup.getSelectedToggle() == null) {
+                    paymentViewState.setPaymentType(FULL);
+                    return;
+                }
+                paymentViewState.setPaymentType((PaymentViewState.PaymentType)paymentTypeToggleGroup.getSelectedToggle().getUserData());
+            }
+        });
     }
 
-    private void updatePaymentViewState() {
-        setPaymentMethod();
-        setSelectivePayment();
-        setSinglePayment();
-        setPartialPayment();
-        setAutomaticGameFee();
+    private void initializeDiscountToggles() {
+        discountAbsolute.setUserData(PaymentViewState.DiscountType.ABSOLUTE);
+        discountPercent.setUserData(PaymentViewState.DiscountType.PERCENT);
+        paymentViewState.setDiscountType(PaymentViewState.DiscountType.NONE);
+        discountTypeToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if(discountTypeToggleGroup.getSelectedToggle() == null) {
+                    paymentViewState.setDiscountType(PaymentViewState.DiscountType.NONE);
+                }
+                paymentViewState.setDiscountType((PaymentViewState.DiscountType)discountTypeToggleGroup.getSelectedToggle().getUserData());
+            }
+        });
     }
 
     private void initializePayProductsTable() {
@@ -320,55 +330,18 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         payProductTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productTotalPrice"));
     }
 
+    private void getSoldProductsAndUpdateTable() {
+        soldProductsView = getSoldProducts(restaurantServices, tableView);
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+    }
+
     private void updatePayProductsTable(List<SoldProductsTableModel> payProducts) {
         paidProductsModel = FXCollections.observableArrayList();
         paidProductsModel.addAll(payProducts);
         payProductsTable.setItems(paidProductsModel);
     }
 
-    private void setPaymentMethod() {
-        paymentViewState.setPaymentMethod(getPaymentMethod());
-    }
-
-    private void setSelectivePayment() {
-        paymentViewState.setSelectivePayment(selectivePayment.isSelected());
-        paymentViewState.setSinglePayment(!selectivePayment.isSelected());
-        paymentViewState.setPartialPayment(!selectivePayment.isSelected());
-    }
-
-    private void setSinglePayment() {
-        paymentViewState.setSelectivePayment(!singlePayment.isSelected());
-        paymentViewState.setSinglePayment(singlePayment.isSelected());
-        paymentViewState.setPartialPayment(!singlePayment.isSelected());
-    }
-
-    private void setPartialPayment() {
-        paymentViewState.setSelectivePayment(!partialPayment.isSelected());
-        paymentViewState.setSinglePayment(!partialPayment.isSelected());
-        paymentViewState.setPartialPayment(partialPayment.isSelected());
-    }
-
-    private void setDiscountAbsolute() {
-        paymentViewState.setDiscountAbsolute(discountAbsolute.isSelected());
-        paymentViewState.setDiscountPercent(!discountAbsolute.isSelected());
-    }
-
-    private void setDiscountPercent() {
-        paymentViewState.setDiscountAbsolute(!discountPercent.isSelected());
-        paymentViewState.setDiscountPercent(discountPercent.isSelected());
-    }
-
     private void setAutomaticGameFee() {
         paymentViewState.setAutomaticGameFee(automaticGameFee.isSelected());
-    }
-
-    private PaymentMethod getPaymentMethod() {
-        if(paymentMethodCash.isSelected()) {
-            return PaymentMethod.CASH;
-        } else if(paymentMethodCreditCard.isSelected()) {
-            return PaymentMethod.CREDIT_CARD;
-        } else if(paymentMethodCoupon.isSelected()) {
-            return PaymentMethod.COUPON;
-        } else return null;
     }
 }

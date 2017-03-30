@@ -90,6 +90,7 @@ public class AbstractRetailControllerImpl {
         productTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productTotalPrice"));
     }
 
+
     protected Collection<ReceiptRecordView> getSoldProducts(RestaurantServices restaurantServices, TableView tableView) {
         receiptView = restaurantServices.getActiveReceipt(tableView);
         return receiptView.getSoldProducts();
