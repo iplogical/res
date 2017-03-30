@@ -2,10 +2,7 @@ package com.inspirationlogical.receipt.waiter.registry;
 
 import com.google.inject.Guice;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.registry.Registry;
-import com.inspirationlogical.receipt.corelib.frontend.view.FXMLLoaderProvider;
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServicesImpl;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
@@ -45,31 +42,6 @@ public class WaiterRegistry extends Registry {
         bind(TableSettingsFormController.class).to(TableSettingsFormControllerImpl.class);
         bind(AdHocProductFormController.class).to(AdHocProductFormControllerImpl.class);
     }
-
-    @Provides
-    @Singleton
-    FXMLLoaderProvider provideLoaderProvider() {
-        return new FXMLLoaderProvider(this);
-    }
-
-    @Provides
-    @Singleton
-    ViewLoader provideViewLoader(FXMLLoaderProvider fxmlLoaderProvider) {
-        return new ViewLoader(fxmlLoaderProvider);
-    }
-
-//    @Provides
-//    @Singleton
-//    RestaurantController provideRestaurantController(RestaurantServices restaurantServices,
-//                                                     RetailServices retailServices,
-//                                                     TableFormController tableFormController) {
-//        RestaurantController restaurantController = new RestaurantControllerImpl(restaurantServices, retailServices,
-//                tableFormController);
-//
-//        injector.injectMembers(restaurantController);
-//
-//        return restaurantController;
-//    }
 
     @Provides
     TableController provideTableController(RestaurantController restaurantController,

@@ -1,6 +1,11 @@
-package com.inspirationlogical.receipt.manager.application;
+package com.inspirationlogical.receipt.waiter.application;
 
+import static com.inspirationlogical.receipt.waiter.controller.RestaurantControllerImpl.RESTAURANT_VIEW_PATH;
+
+import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
+import com.inspirationlogical.receipt.waiter.controller.RestaurantController;
+import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -9,7 +14,7 @@ import javafx.stage.Stage;
 import lombok.Getter;
 
 
-public class Main extends Application {
+public class WaiterApp extends Application {
 
     private static final String APP_TITLE = "Receipt";
     public static final int APP_WIDTH = 1024;
@@ -19,8 +24,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+        ViewLoader viewLoader = WaiterRegistry.getInstance(ViewLoader.class);
         window = stage;
-        Parent root = null;
+        Parent root = (Parent) viewLoader.loadView(RESTAURANT_VIEW_PATH, WaiterRegistry.getInstance(RestaurantController.class));
         stage.setTitle(APP_TITLE);
         stage.setScene(new Scene(root, APP_WIDTH, APP_HEIGHT));
         stage.setFullScreen(true);

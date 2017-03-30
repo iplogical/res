@@ -20,7 +20,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
-import com.inspirationlogical.receipt.waiter.application.Main;
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.viewstate.SaleViewState;
 
@@ -153,7 +153,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         PaymentController paymentController = WaiterRegistry.getInstance(PaymentController.class);
         paymentController.setTableView(tableView);
         Parent root = (Parent) viewLoader.loadView(PAYMENT_VIEW_PATH, paymentController);
-        Main.getWindow().getScene().setRoot(root);
+        WaiterApp.getWindow().getScene().setRoot(root);
     }
 
     @FXML

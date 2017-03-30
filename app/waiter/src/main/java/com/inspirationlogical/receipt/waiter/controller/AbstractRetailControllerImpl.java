@@ -9,7 +9,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
-import com.inspirationlogical.receipt.waiter.application.Main;
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -73,7 +73,7 @@ public class AbstractRetailControllerImpl {
     public void onBackToRestaurantView(Event event) {
         restaurantController.updateTables();
         Parent root = (Parent) restaurantController.getRootNode();
-        Main.getWindow().getScene().setRoot(root);
+        WaiterApp.getWindow().getScene().setRoot(root);
     }
 
     protected void initializeTableSummary() {
