@@ -26,7 +26,7 @@ public class ProductCategoryAdapterTest {
     public void testLeafNumberOfProductsUnderLeafOne() {
         ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne());
         List<ProductAdapter> products = leafOne.getAllProducts();
-        assertEquals(5, products.size());
+        assertEquals(4, products.size());
     }
 
     @Test
