@@ -98,7 +98,25 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             record.setOwner(adaptee);
             adaptee.getRecords().add(record);
         });
+    }
 
+    public void sellGameFee(int quantity) {
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            ProductAdapter gameFeeProduct = ProductAdapter.getGameFeeProduct(EntityManagerProvider.getEntityManager());
+            ReceiptRecord record = ReceiptRecord.builder()
+                    .product(gameFeeProduct.getAdaptee())
+                    .type(ReceiptRecordType.HERE)
+                    .created(new GregorianCalendar())
+                    .name(gameFeeProduct.getAdaptee().getLongName())
+                    .soldQuantity(quantity)
+                    .purchasePrice(gameFeeProduct.getAdaptee().getPurchasePrice())
+                    .salePrice(gameFeeProduct.getAdaptee().getSalePrice())
+                    .VAT(VATAdapter.getVatByName(ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
+                    .discountPercent(0)
+                    .build();
+            record.setOwner(adaptee);
+            adaptee.getRecords().add(record);
+        });
     }
 
     public Collection<ReceiptRecordAdapter> getSoldProducts() {

@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import javax.persistence.EntityManager;
 
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -50,8 +51,8 @@ import lombok.Getter;
 
 public class BuildTestSchemaRule implements TestRule {
 
-    public static final int NUMBER_OF_PRODUCTS = 7;
-    public static final int NUMBER_OF_PRODUCT_CATEGORIES = 18;
+    public static final int NUMBER_OF_PRODUCTS = 8;
+    public static final int NUMBER_OF_PRODUCT_CATEGORIES = 19;
     public static final int NUMBER_OF_PRICE_MODIFIERS = 3;
     public static final int NUMBER_OF_RECIPES = 3;
     public static final int NUMBER_OF_STOCKS = 3;
@@ -73,6 +74,7 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Product productFive;
     private @Getter Product productSix;
     private @Getter Product productAdHoc;
+    private @Getter Product productGameFee;
 
     private @Getter ProductCategory root;
     private @Getter ProductCategory aggregateTopOne;
@@ -92,6 +94,7 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter ProductCategory pseudoFive;
     private @Getter ProductCategory pseudoSix;
     private @Getter ProductCategory pseudoAdHoc;
+    private @Getter ProductCategory pseudoGameFee;
 
     private @Getter PriceModifier priceModifierOne;
     private @Getter PriceModifier priceModifierTwo;
@@ -242,6 +245,7 @@ public class BuildTestSchemaRule implements TestRule {
         buildProductFive();
         buildProductSix();
         buildProductAdHoc();
+        buildProductGameFee();
     }
 
     private void buildProductCategories() {
@@ -263,6 +267,7 @@ public class BuildTestSchemaRule implements TestRule {
         buildPseudoFive();
         buildPseudoSix();
         buildPseudoAdHoc();
+        buildPseudoGameFee();
     }
 
     private void buildPriceModifiers() {
@@ -436,6 +441,17 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
+    private void buildProductGameFee() {
+        productGameFee = Product.builder()
+                .longName("Játékdíj")
+                .shortName("Játékdíj")
+                .salePrice(300)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.PIECE)
+                .etalonQuantity(EtalonQuantity.KILOGRAM)
+                .type(ProductType.GAME_FEE_PRODUCT)
+                .build();
+    }
 
     private void buildRoot() {
         root = ProductCategory.builder()
@@ -561,6 +577,13 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildPseudoAdHoc() {
         pseudoAdHoc = ProductCategory.builder()
                 .name("pseudoAdHoc")
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoGameFee() {
+        pseudoGameFee = ProductCategory.builder()
+                .name("pseudoGameFee")
                 .type(ProductCategoryType.PSEUDO)
                 .build();
     }
@@ -1005,7 +1028,7 @@ public class BuildTestSchemaRule implements TestRule {
     
     private void leafsAndPseudos() {
         leafOne.setChildren(new HashSet<>(
-                Arrays.asList(pseudoOne, pseudoTwo, pseudoFive, pseudoSix, pseudoAdHoc)));
+                Arrays.asList(pseudoOne, pseudoTwo, pseudoFive, pseudoSix, pseudoAdHoc, pseudoGameFee)));
         leafTwo.setChildren(new HashSet<>(
                 Arrays.asList(pseudoThree, pseudoFour)));
         pseudoOne.setParent(leafOne);
@@ -1013,6 +1036,7 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoFive.setParent(leafOne);
         pseudoSix.setParent(leafOne);
         pseudoAdHoc.setParent(leafOne);
+        pseudoGameFee.setParent(leafOne);
         pseudoThree.setParent(leafTwo);
         pseudoFour.setParent(leafTwo);
     }
@@ -1048,6 +1072,9 @@ public class BuildTestSchemaRule implements TestRule {
 
         pseudoAdHoc.setProduct(productAdHoc);
         productAdHoc.setCategory(pseudoAdHoc);
+
+        pseudoGameFee.setProduct(productGameFee);
+        productGameFee.setCategory(pseudoGameFee);
     }
 
     private void productFourAndRecipes() {

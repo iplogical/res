@@ -32,6 +32,11 @@ public class RetailServicesImpl extends AbstractServices implements RetailServic
     }
 
     @Override
+    public void sellGameFee(TableView tableView, int quantity) {
+        getTableAdapter(tableView).getActiveReceipt().sellGameFee(quantity);
+    }
+
+    @Override
     public void payTable(TableView tableView, PaymentParams paymentParams) {
         getTableAdapter(tableView).payTable(paymentParams);
     }

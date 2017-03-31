@@ -161,7 +161,7 @@
             <Separator prefHeight="40.0" prefWidth="200.0" />
             <ToggleButton fx:id="automaticGameFee" mnemonicParsing="false" onAction="#onAutomaticGameFeeToggleAction" text="%PaymentView.AutomaticGameFee" />
             <Separator prefHeight="10.0" prefWidth="200.0" />
-            <Button fx:id="manualGameFee" mnemonicParsing="false" text="%PaymentView.ManualGameFee" />
+            <Button fx:id="manualGameFee" mnemonicParsing="false" onAction="#onManualGameFee" text="%PaymentView.ManualGameFee" />
             <Separator prefHeight="40.0" prefWidth="200.0" />
             <ToggleButton fx:id="discountAbsolute" mnemonicParsing="false" text="%PaymentView.DiscountAbsolute">
                <toggleGroup>

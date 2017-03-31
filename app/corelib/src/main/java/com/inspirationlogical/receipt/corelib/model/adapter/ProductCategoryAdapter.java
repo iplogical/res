@@ -45,6 +45,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         return childCategories.stream()
                 .filter(elem -> elem.getType().equals(ProductCategoryType.PSEUDO))
                 .filter(elem -> !elem.getProduct().getType().equals(ProductType.AD_HOC_PRODUCT))
+                .filter(elem -> !elem.getProduct().getType().equals(ProductType.GAME_FEE_PRODUCT))
                 .filter(elem -> elem.getProduct().getStatus().equals(ProductStatus.ACTIVE))
                 .map(elem -> new ProductAdapter(elem.getProduct()))
                 .collect(Collectors.toList());
