@@ -8,11 +8,13 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.viewstate.PaymentViewState;
 
 import javafx.beans.value.ChangeListener;
@@ -22,12 +24,14 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 
 import static com.inspirationlogical.receipt.waiter.viewstate.PaymentViewState.PaymentType.*;
 
+@Singleton
 public class PaymentControllerImpl extends AbstractRetailControllerImpl
         implements PaymentController {
 
@@ -90,6 +94,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     protected TableColumn payProductTotalPrice;
 
+    private SaleController saleController;
+
     private PaymentViewState paymentViewState;
 
     private List<ReceiptRecordView> paidProductsView;
@@ -99,8 +105,10 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @Inject
     public PaymentControllerImpl(RetailServices retailServices,
                                  RestaurantServices restaurantServices,
-                                 RestaurantController restaurantController) {
+                                 RestaurantController restaurantController,
+                                 SaleController saleController) {
         super(restaurantServices, retailServices, restaurantController);
+        this.saleController = saleController;
         paymentViewState = new PaymentViewState();
         paidProductsModel = FXCollections.observableArrayList();
         paidProductsView = new ArrayList<>();
@@ -122,6 +130,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         initializeSoldProductsTableRowHandler();
     }
 
+    @FXML
+    public void onBackToSaleView(Event event) {
+        Parent root = (Parent) saleController.getRootNode();
+        WaiterApp.getWindow().getScene().setRoot(root);
+    }
 
     @FXML
     public void onAutomaticGameFeeToggleAction(Event event) {

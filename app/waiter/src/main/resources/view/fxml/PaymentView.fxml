@@ -175,7 +175,9 @@
             <Separator prefWidth="200.0" />
             <TextField fx:id="discountPercentValue" promptText="%PaymentView.DiscountPercentPrompt" />
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="100.0" prefWidth="10.0" />
-            <Button fx:id="backToRestaurantView" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%PaymentView.Back" />
+            <Button fx:id="backToSaleView" mnemonicParsing="false" onAction="#onBackToSaleView" text="%PaymentView.BackToSaleView" />
+            <Separator prefWidth="200.0" />
+            <Button fx:id="backToRestaurantView" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%PaymentView.BackToRestaurantView" />
             <Separator orientation="VERTICAL" prefHeight="100.0" prefWidth="2.0" />
             <Button fx:id="pay" mnemonicParsing="false" onAction="#onPay" text="%PaymentView.Pay" />
          </children>
