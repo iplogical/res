@@ -72,7 +72,7 @@
                                           <Image url="@../../images/sticky_note.png" />
                                        </image>
                                     </ImageView>
-                                    <Label fx:id="note" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="110.0" prefWidth="135.0" style="-fx-line-spacing: -2;" wrapText="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                                    <Label fx:id="note" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="95.0" prefWidth="135.0" style="-fx-line-spacing: -2;" wrapText="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
                                  </children>
                               </AnchorPane>
                               <TableView fx:id="soldProductsTable" prefHeight="640.0" prefWidth="458.0">

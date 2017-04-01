@@ -78,8 +78,12 @@ public class AbstractRetailControllerImpl {
 
     protected void initializeTableSummary() {
         tableName.setText(tableView.getName());
-        tableNumber.setText(String.valueOf(tableView.getTableNumber()));
+        tableNumber.setText(String.valueOf(tableView.getTableNumber()) + getGuestPerCapacity());
         note.setText(tableView.getNote());
+    }
+
+    protected String getGuestPerCapacity() {
+        return " (" + String.valueOf(tableView.getGuestCount()) + "/" + String.valueOf(tableView.getTableCapacity()) + ")";
     }
 
     protected void initializeSoldProductsTable() {
