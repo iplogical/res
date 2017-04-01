@@ -1,10 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
@@ -147,6 +144,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         retailServices.sellGameFee(tableView, 1);
         soldProductsView = getSoldProducts(restaurantServices, tableView);
         removeRowFromTable(convertReceiptRecordViewsToModel(soldProductsView.stream()
+                .sorted(Comparator.comparing(ReceiptRecordView::getId).reversed())
                 .filter(receiptRecordView -> receiptRecordView.getName().equals(Resources.CONFIG.getString("Product.GameFeeName")))
                 .limit(1)
                 .collect(Collectors.toList())).get(0));
