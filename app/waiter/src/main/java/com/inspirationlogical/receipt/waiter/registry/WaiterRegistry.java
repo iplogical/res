@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.waiter.registry;
 
-import com.google.inject.Guice;
 import com.google.inject.Provides;
 import com.inspirationlogical.receipt.corelib.frontend.registry.Registry;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
@@ -25,10 +24,7 @@ import com.inspirationlogical.receipt.waiter.controller.TableSettingsFormControl
 public class WaiterRegistry extends Registry {
 
     public static <T> T getInstance(Class<T> clazz) {
-        if (injector == null) {
-            injector = Guice.createInjector(new WaiterRegistry());
-        }
-        return injector.getInstance(clazz);
+        return getInjector(WaiterRegistry.class).getInstance(clazz);
     }
 
     @Override
