@@ -43,7 +43,7 @@ import javafx.stage.Popup;
 public class SaleControllerImpl extends AbstractRetailControllerImpl
         implements SaleController {
 
-    public static final String SALE_VIEW_PATH = "/view/fxml/SaleView.fxml";
+    public static final String SALE_VIEW_PATH = "/view/fxml/Sale.fxml";
 
     @FXML
     private BorderPane root;
@@ -239,7 +239,32 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                 saleController.upWithCategories();
             }
         };
-        elementController.setView(new ProductView() {
+        elementController.setView(new ProductCategoryView() {
+            @Override
+            public String getCategoryName() {
+                return null;
+            }
+
+            @Override
+            public ProductCategoryView getParent() {
+                return null;
+            }
+
+            @Override
+            public List<ProductCategoryView> getChildrenCategories() {
+                return null;
+            }
+
+            @Override
+            public List<ProductView> getAllProducts() {
+                return null;
+            }
+
+            @Override
+            public ProductCategoryType getType() {
+                return null;
+            }
+
             @Override
             public String getName() {
                 return "Vissza";

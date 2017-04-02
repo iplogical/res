@@ -10,6 +10,7 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
 import com.inspirationlogical.receipt.corelib.service.RetailServices;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
+import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,7 +37,7 @@ public class AbstractRetailControllerImpl {
     protected Label note;
 
     @FXML
-    protected javafx.scene.control.TableView<SoldProductsTableModel> soldProductsTable;
+    protected javafx.scene.control.TableView<SoldProductViewModel> soldProductsTable;
     @FXML
     protected TableColumn productName;
     @FXML
@@ -58,7 +59,7 @@ public class AbstractRetailControllerImpl {
 
     protected Collection<ReceiptRecordView> soldProductsView;
 
-    protected ObservableList<SoldProductsTableModel> soldProductsModel;
+    protected ObservableList<SoldProductViewModel> soldProductsModel;
 
     public AbstractRetailControllerImpl(RestaurantServices restaurantServices,
                                         RetailServices retailServices,
@@ -88,10 +89,10 @@ public class AbstractRetailControllerImpl {
 
     protected void initializeSoldProductsTable() {
         soldProductsTable.setEditable(true);
-        productName.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productName"));
-        productQuantity.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productQuantity"));
-        productUnitPrice.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productUnitPrice"));
-        productTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductsTableModel, String>("productTotalPrice"));
+        productName.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productName"));
+        productQuantity.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productQuantity"));
+        productUnitPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productUnitPrice"));
+        productTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productTotalPrice"));
     }
 
 
@@ -100,19 +101,11 @@ public class AbstractRetailControllerImpl {
         return receiptView.getSoldProducts();
     }
 
-    protected List<SoldProductsTableModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
-        return soldProducts.stream()
-                .map(receiptRecordView -> new SoldProductsTableModel(receiptRecordView.getName(),
-                        String.valueOf(receiptRecordView.getSoldQuantity()),
-                        String.valueOf(receiptRecordView.getSalePrice()),
-                        String.valueOf(receiptRecordView.getTotalPrice()),
-                        String.valueOf(receiptRecordView.getId()),
-                        String.valueOf(receiptRecordView.getDiscountPercent()),
-                        String.valueOf(receiptRecordView.getVat())))
-                .collect(Collectors.toList());
+    protected List<SoldProductViewModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
+        return soldProducts.stream().map(SoldProductViewModel::new).collect(Collectors.toList());
     }
 
-    protected void updateSoldProductsTable(List<SoldProductsTableModel> soldProducts) {
+    protected void updateSoldProductsTable(List<SoldProductViewModel> soldProducts) {
         soldProductsModel = FXCollections.observableArrayList();
         soldProductsModel.addAll(soldProducts);
         soldProductsTable.setItems(soldProductsModel);
@@ -120,6 +113,6 @@ public class AbstractRetailControllerImpl {
     }
 
     protected void updateSoldTotalPrice() {
-        totalPrice.setText(SoldProductsTableModel.getTotalPrice(soldProductsModel) + " Ft");
+        totalPrice.setText(SoldProductViewModel.getTotalPrice(soldProductsModel) + " Ft");
     }
 }

@@ -20,7 +20,7 @@ import lombok.Setter;
  */
 public class SaleElementControllerImpl<T extends AbstractView> implements SaleElementController<T> {
 
-    public static final String SALE_VIEW_ELEMENT_PATH = "/view/fxml/SaleViewElement.fxml";
+    public static final String SALE_VIEW_ELEMENT_PATH = "/view/fxml/SaleElement.fxml";
 
     @FXML
     Label root;
