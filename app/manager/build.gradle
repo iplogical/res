@@ -10,7 +10,7 @@
 // Apply the java plugin to add support for Java
 apply plugin: 'application'
 
-mainClassName = 'com.inspirationlogical.receipt.waiter.application.Main'
+mainClassName = 'com.inspirationlogical.receipt.waiter.application.ManagerApp'
 
 run {
     main = project.getProperty('mainClassName')
