@@ -1,11 +1,16 @@
 package com.inspirationlogical.receipt.manager.viewmodel;
 
+import static java.lang.String.valueOf;
+
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 
 import lombok.Data;
 
 @Data
 public class ProductViewModel {
+
+    private static String PERCENT = " %";
+
     private String type;
     private String status;
     private String shortName;
@@ -21,6 +26,18 @@ public class ProductViewModel {
     private String storeWindow;
 
     public ProductViewModel(ProductView productView) {
-        this.type = productView.getType().name();
+        type = productView.getType().name();
+        status = productView.getStatus().name();
+        shortName = productView.getShortName();
+        longName = productView.getLongName();
+        rapidCode = valueOf(productView.getRapidCode());
+        quantityUnit = valueOf(productView.getQuantityUnit());
+        quantityMultiplier = valueOf(productView.getQuantityMultiplier());
+        purchasePrice = valueOf(productView.getPurchasePrice());
+        salePrice = valueOf(productView.getSalePrice());
+        VATLocal = valueOf(productView.getVATLocal()) + PERCENT;
+        VATTakeAway = valueOf(productView.getVATTakeAway()) + PERCENT;
+        minimumStore = valueOf(productView.getMinimumStore());
+        storeWindow = valueOf(productView.getStoreWindow());
     }
 }

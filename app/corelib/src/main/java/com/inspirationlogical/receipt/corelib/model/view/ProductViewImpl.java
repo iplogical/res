@@ -20,66 +20,71 @@ public class ProductViewImpl extends AbstractModelViewImpl<ProductAdapter>
 
     @Override
     public ProductType getType() {
-        return null;
+        return adapter.getAdaptee().getType();
     }
 
     @Override
     public ProductStatus getStatus() {
-        return null;
+        return adapter.getAdaptee().getStatus();
     }
 
     @Override
     public String getShortName() {
-        return null;
+        return adapter.getAdaptee().getShortName();
     }
 
     @Override
     public String getLongName() {
-        return null;
+        return adapter.getAdaptee().getLongName();
     }
 
     @Override
     public int getRapidCode() {
-        return 0;
+        return adapter.getAdaptee().getRapidCode();
     }
 
     @Override
     public QuantityUnit getQuantityUnit() {
-        return null;
+        return adapter.getAdaptee().getQuantityUnit();
     }
 
     @Override
     public EtalonQuantity getEtalonQuantity() {
-        return null;
+        return adapter.getAdaptee().getEtalonQuantity();
     }
 
     @Override
     public double getQuantityMultiplier() {
-        return 0;
+        return adapter.getAdaptee().getQuantityMultiplier();
     }
 
     @Override
     public int getPurchasePrice() {
-        return 0;
+        return adapter.getAdaptee().getPurchasePrice();
     }
 
     @Override
     public int getSalePrice() {
-        return 0;
+        return adapter.getAdaptee().getSalePrice();
+    }
+
+    @Override
+    public double getVATLocal() {
+        return adapter.getAdaptee().getVATLocal();
     }
 
     @Override
     public double getVATTakeAway() {
-        return 0;
+        return adapter.getAdaptee().getVATTakeAway();
     }
 
     @Override
     public int getMinimumStore() {
-        return 0;
+        return adapter.getAdaptee().getMinimumStore();
     }
 
     @Override
     public int getStoreWindow() {
-        return 0;
+        return adapter.getAdaptee().getStoreWindow();
     }
 }
