@@ -12,6 +12,7 @@ public class ManagerRegistry extends Registry {
 
     @Override
     protected void configure() {
+        super.configure();
         bind(GoodsController.class).to(GoodsControllerImpl.class);
     }
 }
