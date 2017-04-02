@@ -14,5 +14,9 @@ public interface ProductCategoryView extends AbstractView {
 
     List<ProductView> getAllProducts();
 
+    List<ProductView> getAllActiveProducts();
+
+    List<ProductView> getAllNormalProducts();
+
     ProductCategoryType getType();
 }

@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.corelib.model.view;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 
@@ -33,9 +34,17 @@ public class ProductCategoryViewImpl extends AbstractModelViewImpl<ProductCatego
 
     @Override
     public List<ProductView> getAllProducts() {
-        return adapter.getAllProducts().stream()
-                .map(productAdapter -> new ProductViewImpl(productAdapter))
-                .collect(Collectors.toList());
+        return mapProducts(adapter.getAllProducts());
+    }
+
+    @Override
+    public List<ProductView> getAllActiveProducts() {
+        return mapProducts(adapter.getAllActiveProducts());
+    }
+
+    @Override
+    public List<ProductView> getAllNormalProducts() {
+        return mapProducts(adapter.getAllNormalProducts());
     }
 
     @Override
@@ -46,5 +55,11 @@ public class ProductCategoryViewImpl extends AbstractModelViewImpl<ProductCatego
     @Override
     public String getName() {
         return adapter.getAdaptee().getName();
+    }
+
+    private List<ProductView> mapProducts(List<ProductAdapter> productAdapters) {
+        return productAdapters.stream()
+                .map(productAdapter -> new ProductViewImpl(productAdapter))
+                .collect(Collectors.toList());
     }
 }

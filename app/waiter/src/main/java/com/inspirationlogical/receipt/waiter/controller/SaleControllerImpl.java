@@ -185,7 +185,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
             selectedLevelCategories = selectedCategory.getParent().getChildrenCategories();
             selectedChildrenCategories = selectedCategory.getChildrenCategories();
         }
-        visibleProducts = selectedCategory.getAllProducts();
+        visibleProducts = selectedCategory.getAllNormalProducts();
         redrawCategories(selectedCategory);
     }
 
@@ -257,6 +257,16 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
             @Override
             public List<ProductView> getAllProducts() {
+                return null;
+            }
+
+            @Override
+            public List<ProductView> getAllActiveProducts() {
+                return null;
+            }
+
+            @Override
+            public List<ProductView> getAllNormalProducts() {
                 return null;
             }
 

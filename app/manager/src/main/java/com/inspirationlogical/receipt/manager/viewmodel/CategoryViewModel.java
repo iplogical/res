@@ -11,8 +11,8 @@ public class CategoryViewModel {
 
     public CategoryViewModel(ProductCategoryView productCategoryView) {
         this.name = productCategoryView.getName();
-        if (productCategoryView.getType() == PSEUDO && !productCategoryView.getAllProducts().isEmpty()) {
-            productViewModel = new ProductViewModel(productCategoryView.getAllProducts().get(0));
+        if (productCategoryView.getType() == PSEUDO && !productCategoryView.getAllActiveProducts().isEmpty()) {
+            productViewModel = new ProductViewModel(productCategoryView.getAllActiveProducts().get(0));
         } else {
             productViewModel = null;
         }

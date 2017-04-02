@@ -111,11 +111,7 @@ public class GoodsControllerImpl implements GoodsController {
         rootCategory = restaurantServices.getRootProductCategory();
         TreeItem<CategoryViewModel> rootItem = new TreeItem<>(new CategoryViewModel(rootCategory));
         goodsTable.setRoot(rootItem);
-        try {
-            updateCategory(rootCategory, rootItem);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        updateCategory(rootCategory, rootItem);
     }
 
     private void updateCategory(ProductCategoryView productCategoryView, TreeItem<CategoryViewModel> treeItem) {
@@ -123,7 +119,6 @@ public class GoodsControllerImpl implements GoodsController {
         productCategoryView.getChildrenCategories().forEach(child -> {
             TreeItem<CategoryViewModel> childItem = new TreeItem<>(new CategoryViewModel(child));
             treeItem.getChildren().add(childItem);
-            System.out.println(child.getName());
             updateCategory(child, childItem);
         });
     }
