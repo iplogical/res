@@ -15,6 +15,7 @@ import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.service.AdHocProductParams;
+import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
@@ -66,6 +67,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private Popup adHocProductForm;
 
+    private CommonService commonService;
+
     private AdHocProductFormController adHocProductFormController;
 
     private SaleViewState saleViewState;
@@ -85,9 +88,11 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @Inject
     public SaleControllerImpl(RetailService retailService,
                               RestaurantService restaurantService,
+                              CommonService commonService,
                               RestaurantController restaurantController,
                               AdHocProductFormController adHocProductFormController) {
         super(restaurantService, retailService, restaurantController);
+        this.commonService = commonService;
         this.adHocProductFormController = adHocProductFormController;
         this.elementControllers = new ArrayList<>();
     }
@@ -164,7 +169,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void initializeCategories() {
-        rootCategory = restaurantService.getRootProductCategory();
+        rootCategory = commonService.getRootProductCategory();
         selectedCategory = rootCategory.getChildrenCategories().get(0);
     }
 

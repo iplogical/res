@@ -9,7 +9,7 @@ public class CategoryViewModel extends ProductViewModel {
 
     public CategoryViewModel(ProductCategoryView productCategoryView) {
         super(hasProduct(productCategoryView) ? productCategoryView.getAllActiveProducts().get(0) : null);
-        name = productCategoryView.getName();
+        name = hasProduct(productCategoryView) ? null : productCategoryView.getName();
     }
 
     public String getName() {

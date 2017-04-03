@@ -39,7 +39,7 @@ public class StockTest {
 
     private List<Stock> getStocks() {
         @SuppressWarnings("unchecked")
-        List<Stock> entries = schema.getEntityManager().createNamedQuery(Stock.GET_TEST_STOCKS).getResultList();
+        List<Stock> entries = schema.getEntityManager().createNamedQuery(Stock.STOCK_GET_ITEMS).getResultList();
         return entries;
     }
 }

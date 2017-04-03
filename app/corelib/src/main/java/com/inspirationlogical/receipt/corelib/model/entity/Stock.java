@@ -25,13 +25,12 @@ import lombok.experimental.Tolerate;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "STOCK")
 @NamedQueries({
-    @NamedQuery(name = Stock.GET_TEST_STOCKS,
-            query="FROM Stock s")
+    @NamedQuery(name = Stock.STOCK_GET_ITEMS, query="FROM Stock s")
 })
 @AttributeOverride(name = "id", column = @Column(name = "STOCK_ID"))
 public @Data class Stock extends AbstractEntity {
 
-    public static final String GET_TEST_STOCKS = "Stock.GetTestStocks";
+    public static final String STOCK_GET_ITEMS = "Stock.GetStockItems";
 
     @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(name = "PRODUCT_ID",foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))

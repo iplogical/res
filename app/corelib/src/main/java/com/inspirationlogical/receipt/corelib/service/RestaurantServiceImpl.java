@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
@@ -18,8 +17,6 @@ import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
@@ -63,11 +60,6 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     @Override
     public ReceiptView getActiveReceipt(TableView tableView) {
         return new ReceiptViewImpl(getTableAdapter(tableView).getActiveReceipt());
-    }
-
-    @Override
-    public ProductCategoryView getRootProductCategory() {
-        return new ProductCategoryViewImpl(ProductCategoryAdapter.getRootCategory(manager));
     }
 
     @Override

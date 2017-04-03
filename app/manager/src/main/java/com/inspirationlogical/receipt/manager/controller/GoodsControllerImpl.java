@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.manager.application.ManagerApp;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 
@@ -80,14 +80,14 @@ public class GoodsControllerImpl implements GoodsController {
 
     private StockController stockController;
 
-    private RestaurantService restaurantService;
+    private CommonService commonService;
 
     private ProductCategoryView rootCategory;
 
     @Inject
-    public GoodsControllerImpl(StockController stockController, RestaurantService restaurantService) {
+    public GoodsControllerImpl(StockController stockController, CommonService commonService) {
         this.stockController = stockController;
-        this.restaurantService = restaurantService;
+        this.commonService = commonService;
     }
 
     @FXML
@@ -98,7 +98,7 @@ public class GoodsControllerImpl implements GoodsController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initColumns();
-        initRootCategory();
+        initCategories();
     }
 
     private CategoryViewModel getViewModel(CellDataFeatures<CategoryViewModel, String> cellDataFeatures) {
@@ -127,8 +127,8 @@ public class GoodsControllerImpl implements GoodsController {
         initColumn(productStockWindow, CategoryViewModel::getStockWindow);
     }
 
-    private void initRootCategory() {
-        rootCategory = restaurantService.getRootProductCategory();
+    private void initCategories() {
+        rootCategory = commonService.getRootProductCategory();
         TreeItem<CategoryViewModel> rootItem = new TreeItem<>(new CategoryViewModel(rootCategory));
         goodsTable.setRoot(rootItem);
         updateCategory(rootCategory, rootItem);

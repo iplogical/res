@@ -7,6 +7,7 @@ import java.util.function.Function;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
+import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.manager.application.ManagerApp;
 import com.inspirationlogical.receipt.manager.viewmodel.StockViewModel;
 
@@ -47,6 +48,12 @@ public class StockControllerImpl implements StockController {
     @FXML
     TableColumn<StockViewModel, String> productQuantityMultiplier;
     @FXML
+    Button createItem;
+    @FXML
+    Button modifyItem;
+    @FXML
+    Button deleteItem;
+    @FXML
     Button showGoods;
 
     @Inject
@@ -54,9 +61,12 @@ public class StockControllerImpl implements StockController {
 
     private GoodsController goodsController;
 
+    private CommonService commonService;
+
     @Inject
-    public StockControllerImpl(GoodsController goodsController) {
+    public StockControllerImpl(GoodsController goodsController, CommonService commonService) {
         this.goodsController = goodsController;
+        this.commonService = commonService;
     }
 
     @FXML
@@ -67,6 +77,7 @@ public class StockControllerImpl implements StockController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initColumns();
+        initStockItems();
     }
 
     private StockViewModel getViewModel(TableColumn.CellDataFeatures<StockViewModel, String> cellDataFeatures) {
@@ -88,6 +99,14 @@ public class StockControllerImpl implements StockController {
         initColumn(productStatus, StockViewModel::getStatus);
         initColumn(productQuantityUnit, StockViewModel::getQuantityUnit);
         initColumn(productQuantityMultiplier, StockViewModel::getQuantityMultiplier);
+    }
+
+    private void initStockItems() {
+        updateStockItems();
+    }
+
+    private void updateStockItems() {
+        commonService.getStockItems().forEach(stockView -> stockTable.getItems().add(new StockViewModel(stockView)));
     }
 
     @Override
