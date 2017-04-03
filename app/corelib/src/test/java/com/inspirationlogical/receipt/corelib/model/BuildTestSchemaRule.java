@@ -648,7 +648,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildStockOne() {
         stockOne = Stock.builder()
                 //.owner(productOne)
-                .startingStock(50)
+                .initialQuantity(50)
                 .soldQuantity(20)
                 .date(now())
                 .build();
@@ -657,7 +657,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildStockTwo() {
         stockTwo = Stock.builder()
                 //.owner(productTwo)
-                .startingStock(60)
+                .initialQuantity(60)
                 .soldQuantity(30)
                 .date(now())
                 .build();
@@ -666,7 +666,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void BuildStockThree() {
         stockThree = Stock.builder()
                 //.owner(productThree)
-                .startingStock(70)
+                .initialQuantity(70)
                 .soldQuantity(40)
                 .date(now())
                 .build();

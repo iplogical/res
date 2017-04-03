@@ -12,8 +12,15 @@
          <children>
             <TableView fx:id="stockTable" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn fx:id="productLongName" prefWidth="100.0" text="%Common.ProductLongName" />
+                <TableColumn fx:id="stockAvailableQuantity" prefWidth="100.0" text="%Stock.StockAvailableQuantity" />
+                  <TableColumn fx:id="stockSoldQuantity" prefWidth="100.0" text="%Stock.StockSoldQuantity" />
+                  <TableColumn fx:id="stockInitialQuantity" prefWidth="100.0" text="%Stock.StockInitialQuantity" />
+                  <TableColumn fx:id="stockDate" prefWidth="100.0" text="%Stock.StockDate" />
+                  <TableColumn fx:id="productType" prefWidth="100.0" text="%Common.ProductType" />
+                  <TableColumn fx:id="productStatus" prefWidth="100.0" text="%Common.ProductStatus" />
+                  <TableColumn fx:id="productQuantityUnit" prefWidth="100.0" text="%Common.ProductQuantityUnit" />
+                  <TableColumn fx:id="productQuantityMultiplier" prefWidth="100.0" text="%Common.ProductQuantityMultiplier" />
               </columns>
             </TableView>
          </children></AnchorPane>

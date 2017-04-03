@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.manager.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -9,10 +10,12 @@ import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.manager.application.ManagerApp;
 import com.inspirationlogical.receipt.manager.viewmodel.StockViewModel;
 
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 
@@ -25,6 +28,24 @@ public class StockControllerImpl implements StockController {
     private BorderPane root;
     @FXML
     TableView<StockViewModel> stockTable;
+    @FXML
+    TableColumn<StockViewModel, String> productLongName;
+    @FXML
+    TableColumn<StockViewModel, String> stockAvailableQuantity;
+    @FXML
+    TableColumn<StockViewModel, String> stockSoldQuantity;
+    @FXML
+    TableColumn<StockViewModel, String> stockInitialQuantity;
+    @FXML
+    TableColumn<StockViewModel, String> stockDate;
+    @FXML
+    TableColumn<StockViewModel, String> productType;
+    @FXML
+    TableColumn<StockViewModel, String> productStatus;
+    @FXML
+    TableColumn<StockViewModel, String> productQuantityUnit;
+    @FXML
+    TableColumn<StockViewModel, String> productQuantityMultiplier;
     @FXML
     Button showGoods;
 
@@ -45,7 +66,28 @@ public class StockControllerImpl implements StockController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initColumns();
+    }
 
+    private StockViewModel getViewModel(TableColumn.CellDataFeatures<StockViewModel, String> cellDataFeatures) {
+        return cellDataFeatures.getValue();
+    }
+
+    private void initColumn(TableColumn<StockViewModel, String> tableColumn, Function<StockViewModel, String> method) {
+        tableColumn.setCellValueFactory((TableColumn.CellDataFeatures<StockViewModel, String> category) ->
+                new ReadOnlyStringWrapper(method.apply(getViewModel(category))));
+    }
+
+    private void initColumns() {
+        initColumn(productLongName, StockViewModel::getLongName);
+        initColumn(stockAvailableQuantity, StockViewModel::getAvailableQuantity);
+        initColumn(stockSoldQuantity, StockViewModel::getSoldQuantity);
+        initColumn(stockInitialQuantity, StockViewModel::getInitialQuantity);
+        initColumn(stockDate, StockViewModel::getDate);
+        initColumn(productType, StockViewModel::getType);
+        initColumn(productStatus, StockViewModel::getStatus);
+        initColumn(productQuantityUnit, StockViewModel::getQuantityUnit);
+        initColumn(productQuantityMultiplier, StockViewModel::getQuantityMultiplier);
     }
 
     @Override

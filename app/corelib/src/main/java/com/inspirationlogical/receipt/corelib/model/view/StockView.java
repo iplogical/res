@@ -8,7 +8,7 @@ public interface StockView {
 
     double getSoldQuantity();
 
-    double getStartingStock();
+    double getInitialQuantity();
 
     LocalDateTime getDate();
 }

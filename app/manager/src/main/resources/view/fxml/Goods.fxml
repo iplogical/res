@@ -20,19 +20,19 @@
             <TreeTableView fx:id="goodsTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columns>
                 <TreeTableColumn fx:id="categoryName" prefWidth="200.0" text="%Goods.CategoryName" />
-                <TreeTableColumn fx:id="productLongName" prefWidth="100.0" text="%Goods.ProductLongName" />
-                  <TreeTableColumn fx:id="productShortName" prefWidth="100.0" text="%Goods.ProductShortName" />
-                  <TreeTableColumn fx:id="productRapidCode" prefWidth="100.0" text="%Goods.ProductRapidCode" />
-                  <TreeTableColumn fx:id="productType" prefWidth="100.0" text="%Goods.ProductType" />
-                  <TreeTableColumn fx:id="productStatus" prefWidth="100.0" text="%Goods.ProductStatus" />
-                  <TreeTableColumn fx:id="productQuantityUnit" prefWidth="100.0" text="%Goods.ProductQuantityUnit" />
-                  <TreeTableColumn fx:id="productQuantityMultiplier" prefWidth="100.0" text="%Goods.ProductQuantityMultiplier" />
-                  <TreeTableColumn fx:id="productPurchasePrice" prefWidth="100.0" text="%Goods.ProductPurchasePrice" />
-                  <TreeTableColumn fx:id="productSalePrice" prefWidth="100.0" text="%Goods.ProductSalePrice" />
-                  <TreeTableColumn fx:id="productVATLocal" prefWidth="100.0" text="%Goods.ProductVATLocal" />
-                  <TreeTableColumn fx:id="productVATTakeAway" prefWidth="100.0" text="%Goods.ProductVATTakeAway" />
-                  <TreeTableColumn fx:id="productMinimumStock" prefWidth="100.0" text="%Goods.ProductMinimumStock" />
-                  <TreeTableColumn fx:id="productStockWindow" prefWidth="100.0" text="%Goods.ProductStockWindow" />
+                <TreeTableColumn fx:id="productLongName" prefWidth="100.0" text="%Common.ProductLongName" />
+                  <TreeTableColumn fx:id="productShortName" prefWidth="100.0" text="%Common.ProductShortName" />
+                  <TreeTableColumn fx:id="productRapidCode" prefWidth="100.0" text="%Common.ProductRapidCode" />
+                  <TreeTableColumn fx:id="productType" prefWidth="100.0" text="%Common.ProductType" />
+                  <TreeTableColumn fx:id="productStatus" prefWidth="100.0" text="%Common.ProductStatus" />
+                  <TreeTableColumn fx:id="productQuantityUnit" prefWidth="100.0" text="%Common.ProductQuantityUnit" />
+                  <TreeTableColumn fx:id="productQuantityMultiplier" prefWidth="100.0" text="%Common.ProductQuantityMultiplier" />
+                  <TreeTableColumn fx:id="productPurchasePrice" prefWidth="100.0" text="%Common.ProductPurchasePrice" />
+                  <TreeTableColumn fx:id="productSalePrice" prefWidth="100.0" text="%Common.ProductSalePrice" />
+                  <TreeTableColumn fx:id="productVATLocal" prefWidth="100.0" text="%Common.ProductVATLocal" />
+                  <TreeTableColumn fx:id="productVATTakeAway" prefWidth="100.0" text="%Common.ProductVATTakeAway" />
+                  <TreeTableColumn fx:id="productMinimumStock" prefWidth="100.0" text="%Common.ProductMinimumStock" />
+                  <TreeTableColumn fx:id="productStockWindow" prefWidth="100.0" text="%Common.ProductStockWindow" />
               </columns>
             </TreeTableView>
          </children>

@@ -8,14 +8,16 @@ import lombok.Data;
 
 @Data
 public class StockViewModel extends ProductViewModel {
+    private String availableQuantity;
     private String soldQuantity;
-    private String startingStock;
+    private String initialQuantity;
     private String date;
 
     public StockViewModel(StockView stockView) {
         super(stockView.getProduct());
+        availableQuantity = valueOf(stockView.getInitialQuantity() - stockView.getSoldQuantity());
         soldQuantity = valueOf(stockView.getSoldQuantity());
-        startingStock = valueOf(stockView.getStartingStock());
+        initialQuantity = valueOf(stockView.getInitialQuantity());
         date = stockView.getDate().toString();
     }
 }

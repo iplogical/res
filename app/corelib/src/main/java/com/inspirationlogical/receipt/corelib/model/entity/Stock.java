@@ -40,7 +40,7 @@ public @Data class Stock extends AbstractEntity {
 
     private double soldQuantity;
 
-    private double startingStock;
+    private double initialQuantity;
 
     private LocalDateTime date;
 

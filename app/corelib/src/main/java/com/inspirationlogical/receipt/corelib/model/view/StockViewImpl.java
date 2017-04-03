@@ -23,8 +23,8 @@ public class StockViewImpl extends AbstractModelViewImpl<StockAdapter>
     }
 
     @Override
-    public double getStartingStock() {
-        return adapter.getAdaptee().getStartingStock();
+    public double getInitialQuantity() {
+        return adapter.getAdaptee().getInitialQuantity();
     }
 
     @Override
