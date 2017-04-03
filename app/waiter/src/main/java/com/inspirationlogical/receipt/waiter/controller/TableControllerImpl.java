@@ -16,8 +16,8 @@ import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
-import com.inspirationlogical.receipt.corelib.service.RetailServices;
+import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
@@ -78,9 +78,9 @@ public class TableControllerImpl implements TableController {
 
     private TableSettingsFormController tableSettingsFormController;
 
-    private RestaurantServices restaurantServices;
+    private RestaurantService restaurantService;
 
-    private RetailServices retailServices;
+    private RetailService retailService;
 
     private TableView tableView;
 
@@ -89,12 +89,12 @@ public class TableControllerImpl implements TableController {
     @Inject
     public TableControllerImpl(RestaurantController restaurantController,
                                TableSettingsFormController tableSettingsFormController,
-                               RestaurantServices restaurantServices,
-                               RetailServices retailServices) {
+                               RestaurantService restaurantService,
+                               RetailService retailService) {
         this.restaurantController = restaurantController;
         this.tableSettingsFormController = tableSettingsFormController;
-        this.restaurantServices = restaurantServices;
-        this.retailServices = retailServices;
+        this.restaurantService = restaurantService;
+        this.retailService = retailService;
     }
 
     public void setView(TableView tableView) {
@@ -180,16 +180,16 @@ public class TableControllerImpl implements TableController {
             ErrorMessage.showErrorMessage(root.getParent(), Resources.UI.getString("GuestCountTooHigh"));
             return;
         }
-        restaurantServices.setTableName(tableView, name);
-        restaurantServices.setGuestCount(tableView, guestCount);
-        restaurantServices.addTableNote(tableView, note);
+        restaurantService.setTableName(tableView, name);
+        restaurantService.setGuestCount(tableView, guestCount);
+        restaurantService.addTableNote(tableView, note);
         tableSettingsForm.hide();
         updateNode();
     }
 
     @Override
     public void openTable(Control control) {
-        retailServices.openTable(tableView);
+        retailService.openTable(tableView);
         updateNode();
     }
 

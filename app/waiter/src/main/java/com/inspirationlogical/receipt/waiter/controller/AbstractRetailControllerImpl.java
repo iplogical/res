@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
-import com.inspirationlogical.receipt.corelib.service.RetailServices;
+import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 
@@ -47,9 +47,9 @@ public class AbstractRetailControllerImpl {
     @FXML
     protected TableColumn productTotalPrice;
 
-    protected RestaurantServices restaurantServices;
+    protected RestaurantService restaurantService;
 
-    protected RetailServices retailServices;
+    protected RetailService retailService;
 
     protected RestaurantController restaurantController;
 
@@ -61,11 +61,11 @@ public class AbstractRetailControllerImpl {
 
     protected ObservableList<SoldProductViewModel> soldProductsModel;
 
-    public AbstractRetailControllerImpl(RestaurantServices restaurantServices,
-                                        RetailServices retailServices,
+    public AbstractRetailControllerImpl(RestaurantService restaurantService,
+                                        RetailService retailService,
                                         RestaurantController restaurantController) {
-        this.restaurantServices = restaurantServices;
-        this.retailServices = retailServices;
+        this.restaurantService = restaurantService;
+        this.retailService = retailService;
         this.restaurantController = restaurantController;
         soldProductsModel = FXCollections.observableArrayList();
     }
@@ -96,8 +96,8 @@ public class AbstractRetailControllerImpl {
     }
 
 
-    protected Collection<ReceiptRecordView> getSoldProducts(RestaurantServices restaurantServices, TableView tableView) {
-        receiptView = restaurantServices.getActiveReceipt(tableView);
+    protected Collection<ReceiptRecordView> getSoldProducts(RestaurantService restaurantService, TableView tableView) {
+        receiptView = restaurantService.getActiveReceipt(tableView);
         return receiptView.getSoldProducts();
     }
 

@@ -31,8 +31,8 @@ import javafx.geometry.Point2D;
  */
 @PrepareForTest(RestaurantAdapter.class)
 @RunWith(PowerMockRunner.class)
-public class RestaurantServicesTest {
-    private RestaurantServices service;
+public class RestaurantServiceTest {
+    private RestaurantService service;
 
     @Mock
     private EntityManager manager;
@@ -57,7 +57,7 @@ public class RestaurantServicesTest {
 
     @Before
     public void createService() {
-        service = new RestaurantServicesImpl(manager);
+        service = new RestaurantServiceImpl(manager);
     }
 
     @Test

@@ -31,10 +31,10 @@ import javafx.geometry.Point2D;
 
 ;
 
-public class RestaurantServicesImpl extends AbstractServices implements RestaurantServices {
+public class RestaurantServiceImpl extends AbstractService implements RestaurantService {
 
     @Inject
-    public RestaurantServicesImpl(EntityManager manager) {
+    public RestaurantServiceImpl(EntityManager manager) {
         super(manager);
     }
 

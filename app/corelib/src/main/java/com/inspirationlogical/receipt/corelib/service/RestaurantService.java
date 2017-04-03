@@ -11,7 +11,7 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import javafx.geometry.Point2D;
 
-public interface RestaurantServices {
+public interface RestaurantService {
     TableBuilder tableBuilder();
 
     RestaurantView getActiveRestaurant();

@@ -79,12 +79,12 @@ public class ProductViewImpl extends AbstractModelViewImpl<ProductAdapter>
     }
 
     @Override
-    public int getMinimumStore() {
-        return adapter.getAdaptee().getMinimumStore();
+    public int getMinimumStock() {
+        return adapter.getAdaptee().getMinimumStock();
     }
 
     @Override
-    public int getStoreWindow() {
-        return adapter.getAdaptee().getStoreWindow();
+    public int getStockWindow() {
+        return adapter.getAdaptee().getStockWindow();
     }
 }

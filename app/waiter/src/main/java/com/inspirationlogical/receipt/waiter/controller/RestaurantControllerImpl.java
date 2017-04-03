@@ -28,8 +28,8 @@ import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
-import com.inspirationlogical.receipt.corelib.service.RetailServices;
+import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.builder.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.builder.RestaurantContextMenuBuilderDecorator;
@@ -94,17 +94,17 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private Set<TableController> selectedTables;
 
-    private RestaurantServices restaurantServices;
+    private RestaurantService restaurantService;
 
     private RestaurantView restaurantView;
 
     private RestaurantViewState restaurantViewState;
 
     @Inject
-    public RestaurantControllerImpl(RestaurantServices restaurantServices,
-                                    RetailServices retailServices,
+    public RestaurantControllerImpl(RestaurantService restaurantService,
+                                    RetailService retailService,
                                     TableFormController tableFormController) {
-        this.restaurantServices = restaurantServices;
+        this.restaurantService = restaurantService;
         this.tableFormController = tableFormController;
         restaurantViewState = new RestaurantViewState();
         restaurantViewState.setFullScreen(true);
@@ -137,13 +137,13 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void initRestaurant() {
-        restaurantView = restaurantServices.getActiveRestaurant();
+        restaurantView = restaurantService.getActiveRestaurant();
     }
 
     private void initTables() {
         tableControllers = new HashSet<>();
         selectedTables = new LinkedHashSet<>();
-        restaurantServices.getTables(restaurantView).stream().filter(VISIBLE_TABLE).forEach(this::drawTable);
+        restaurantService.getTables(restaurantView).stream().filter(VISIBLE_TABLE).forEach(this::drawTable);
     }
 
     private void initContextMenu(Control control) {
@@ -184,7 +184,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         TableView tableView;
 
         try{
-            tableView = restaurantServices.addTable(restaurantView, restaurantServices
+            tableView = restaurantService.addTable(restaurantView, restaurantService
                     .tableBuilder()
                     .type(tableType)
                     .number(tableNumber)
@@ -215,9 +215,9 @@ public class RestaurantControllerImpl implements RestaurantController {
         }
 
         try{
-            restaurantServices.setTableNumber(tableView, tableNumber);
-            restaurantServices.setTableType(tableView, isVirtual ? VIRTUAL : NORMAL);
-            restaurantServices.setTableCapacity(tableView, tableCapacity);
+            restaurantService.setTableNumber(tableView, tableNumber);
+            restaurantService.setTableType(tableView, isVirtual ? VIRTUAL : NORMAL);
+            restaurantService.setTableCapacity(tableView, tableCapacity);
 
             tableForm.hide();
 
@@ -237,7 +237,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
 
-        restaurantServices.deleteTable(tableView);
+        restaurantService.deleteTable(tableView);
 
         removeNode((Pane) node.getParent(), node);
 
@@ -249,7 +249,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
 
-        restaurantServices.rotateTable(tableView);
+        restaurantService.rotateTable(tableView);
 
         tableController.updateNode();
     }
@@ -259,7 +259,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         Node view = tableController.getRoot();
         Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
 
-        restaurantServices.moveTable(tableController.getView(), position);
+        restaurantService.moveTable(tableController.getView(), position);
 
         tableController.updateNode();
     }
@@ -275,7 +275,7 @@ public class RestaurantControllerImpl implements RestaurantController {
                 consumed.add(tableController.getView());
             });
 
-            restaurantServices.mergeTables(aggregate, consumed);
+            restaurantService.mergeTables(aggregate, consumed);
             selectedTables.stream().forEach(tableController -> {
                 tablesTab.getChildren().remove(tableController.getRoot());
                 tableControllers.remove(tableController);

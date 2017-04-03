@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 public class CategoryViewModel {
     private String name;
     private ProductViewModel productViewModel;
+    private StockViewModel stockViewModel;
 
     public CategoryViewModel(ProductCategoryView productCategoryView) {
         this.name = productCategoryView.getName();
@@ -70,11 +71,11 @@ public class CategoryViewModel {
         return hasProduct() ? productViewModel.getVATTakeAway() : EMPTY;
     }
 
-    public String getMinimumStore() {
-        return hasProduct() ? productViewModel.getMinimumStore() : EMPTY;
+    public String getMinimumStock() {
+        return hasProduct() ? productViewModel.getMinimumStock() : EMPTY;
     }
 
-    public String getStoreWindow() {
-        return hasProduct() ? productViewModel.getStoreWindow() : EMPTY;
+    public String getStockWindow() {
+        return hasProduct() ? productViewModel.getStockWindow() : EMPTY;
     }
 }

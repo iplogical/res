@@ -22,8 +22,8 @@ public class ProductViewModel {
     private String salePrice;
     private String VATLocal;
     private String VATTakeAway;
-    private String minimumStore;
-    private String storeWindow;
+    private String minimumStock;
+    private String stockWindow;
 
     public ProductViewModel(ProductView productView) {
         type = productView.getType().name();
@@ -37,7 +37,7 @@ public class ProductViewModel {
         salePrice = valueOf(productView.getSalePrice());
         VATLocal = valueOf(productView.getVATLocal()) + PERCENT;
         VATTakeAway = valueOf(productView.getVATTakeAway()) + PERCENT;
-        minimumStore = valueOf(productView.getMinimumStore());
-        storeWindow = valueOf(productView.getStoreWindow());
+        minimumStock = valueOf(productView.getMinimumStock());
+        stockWindow = valueOf(productView.getStockWindow());
     }
 }

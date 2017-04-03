@@ -10,10 +10,10 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
 
-public class CommonServicesImpl extends AbstractServices implements CommonServices {
+public class CommonServiceImpl extends AbstractService implements CommonService {
 
     @Inject
-    public CommonServicesImpl(EntityManager manager) {
+    public CommonServiceImpl(EntityManager manager) {
         super(manager);
     }
 

@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,8 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
@@ -40,12 +38,11 @@ public @Data class Stock extends AbstractEntity {
     @NotNull
     private Product owner;
 
-    double soldQuantity;
+    private double soldQuantity;
 
-    double startingStock;
+    private double startingStock;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar date;
+    private LocalDateTime date;
 
     @Tolerate
     Stock(){}

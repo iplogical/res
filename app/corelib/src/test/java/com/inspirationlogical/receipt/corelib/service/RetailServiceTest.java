@@ -23,8 +23,8 @@ import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
  * Created by Bálint on 2017.03.15..
  */
 @RunWith(PowerMockRunner.class)
-public class RetailServicesTest {
-    private RetailServices service;
+public class RetailServiceTest {
+    private RetailService service;
 
     @Mock
     private EntityManager manager;
@@ -55,7 +55,7 @@ public class RetailServicesTest {
 
     @Before
     public void createService() {
-        service = new RetailServicesImpl(manager);
+        service = new RetailServiceImpl(manager);
     }
 
     @Test

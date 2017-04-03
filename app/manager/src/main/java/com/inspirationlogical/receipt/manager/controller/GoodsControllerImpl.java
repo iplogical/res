@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
+import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -61,18 +61,18 @@ public class GoodsControllerImpl implements GoodsController {
     TreeTableColumn<CategoryViewModel, String> productVATTakeAway;
 
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productMinimumStore;
+    TreeTableColumn<CategoryViewModel, String> productMinimumStock;
 
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productStoreWindow;
+    TreeTableColumn<CategoryViewModel, String> productStockWindow;
 
-    private RestaurantServices restaurantServices;
+    private RestaurantService restaurantService;
 
     private ProductCategoryView rootCategory;
 
     @Inject
-    public GoodsControllerImpl(RestaurantServices restaurantServices) {
-        this.restaurantServices = restaurantServices;
+    public GoodsControllerImpl(RestaurantService restaurantService) {
+        this.restaurantService = restaurantService;
     }
 
     @Override
@@ -103,12 +103,12 @@ public class GoodsControllerImpl implements GoodsController {
         initColumn(productSalePrice, CategoryViewModel::getSalePrice);
         initColumn(productVATLocal, CategoryViewModel::getVATLocal);
         initColumn(productVATTakeAway, CategoryViewModel::getVATTakeAway);
-        initColumn(productMinimumStore, CategoryViewModel::getMinimumStore);
-        initColumn(productStoreWindow, CategoryViewModel::getStoreWindow);
+        initColumn(productMinimumStock, CategoryViewModel::getMinimumStock);
+        initColumn(productStockWindow, CategoryViewModel::getStockWindow);
     }
 
     private void initRoot() {
-        rootCategory = restaurantServices.getRootProductCategory();
+        rootCategory = restaurantService.getRootProductCategory();
         TreeItem<CategoryViewModel> rootItem = new TreeItem<>(new CategoryViewModel(rootCategory));
         goodsTable.setRoot(rootItem);
         updateCategory(rootCategory, rootItem);

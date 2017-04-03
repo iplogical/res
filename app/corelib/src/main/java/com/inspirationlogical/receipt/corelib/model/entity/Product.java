@@ -101,9 +101,9 @@ public @Data class Product extends AbstractEntity {
     @Max(100)
     private double VATTakeAway;
 
-    private int minimumStore;
+    private int minimumStock;
 
-    private int storeWindow;
+    private int stockWindow;
 
     @Tolerate
     Product(){}

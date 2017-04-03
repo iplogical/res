@@ -18,8 +18,8 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
-import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
-import com.inspirationlogical.receipt.corelib.service.RetailServices;
+import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
@@ -117,11 +117,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private ObservableList<SoldProductViewModel> paidProductsModel;
 
     @Inject
-    public PaymentControllerImpl(RetailServices retailServices,
-                                 RestaurantServices restaurantServices,
+    public PaymentControllerImpl(RetailService retailService,
+                                 RestaurantService restaurantService,
                                  RestaurantController restaurantController,
                                  SaleController saleController) {
-        super(restaurantServices, retailServices, restaurantController);
+        super(restaurantService, retailService, restaurantController);
         this.saleController = saleController;
         paymentViewState = new PaymentViewState();
         paidProductsModel = FXCollections.observableArrayList();
@@ -157,8 +157,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onManualGameFee(Event event) {
-        retailServices.sellGameFee(tableView, 1);
-        soldProductsView = getSoldProducts(restaurantServices, tableView);
+        retailService.sellGameFee(tableView, 1);
+        soldProductsView = getSoldProducts(restaurantService, tableView);
         removeRowFromTable(convertReceiptRecordViewsToModel(soldProductsView.stream()
                 .sorted(Comparator.comparing(ReceiptRecordView::getId).reversed())
                 .filter(receiptRecordView -> receiptRecordView.getName().equals(Resources.CONFIG.getString("Product.GameFeeName")))
@@ -177,12 +177,12 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private void handleFullPayment() {
         handleAutomaticGameFee();
-        retailServices.payTable(tableView, getPaymentParams());
+        retailService.payTable(tableView, getPaymentParams());
         getSoldProductsAndUpdateTable();
     }
 
     private void handleSelectivePayment() {
-        retailServices.paySelective(tableView, paidProductsView, getPaymentParams());
+        retailService.paySelective(tableView, paidProductsView, getPaymentParams());
         paidProductsView = new ArrayList<>();
         updatePayProductsTable(convertReceiptRecordViewsToModel(paidProductsView));
         getSoldProductsAndUpdateTable();
@@ -195,7 +195,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             int price = (int)receiptView.getTotalPrice();
             int requiredGameFee = (guestCount * 2000 - price) / 2000;
             if(requiredGameFee > 0) {
-                retailServices.sellGameFee(tableView, requiredGameFee);
+                retailService.sellGameFee(tableView, requiredGameFee);
             }
         }
     }
@@ -249,7 +249,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
         List<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentView(paidProductsView, row);
         if(equivalentReceiptRecordView.size() == 0) {
-            ReceiptRecordView newRecord = retailServices.cloneReceiptRecordView(tableView, matchingReceiptRecordView.get(0), amount);
+            ReceiptRecordView newRecord = retailService.cloneReceiptRecordView(tableView, matchingReceiptRecordView.get(0), amount);
             paidProductsView.add(newRecord);
             createNewRow(row, newRecord, amount);
         } else {
@@ -382,7 +382,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void getSoldProductsAndUpdateTable() {
-        soldProductsView = getSoldProducts(restaurantServices, tableView);
+        soldProductsView = getSoldProducts(restaurantService, tableView);
         updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
     }
 

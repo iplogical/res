@@ -18,11 +18,11 @@ import com.inspirationlogical.receipt.corelib.model.view.RestaurantViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 
-public abstract class AbstractServices {
+public abstract class AbstractService {
 
     protected EntityManager manager;
 
-    protected AbstractServices(EntityManager manager) {
+    protected AbstractService(EntityManager manager) {
         this.manager = manager;
     }
 

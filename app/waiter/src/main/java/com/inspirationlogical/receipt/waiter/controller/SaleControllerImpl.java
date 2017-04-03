@@ -19,8 +19,8 @@ import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.service.AdHocProductParams;
-import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
-import com.inspirationlogical.receipt.corelib.service.RetailServices;
+import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.viewstate.SaleViewState;
@@ -88,11 +88,11 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private List<SaleElementController> elementControllers;
 
     @Inject
-    public SaleControllerImpl(RetailServices retailServices,
-                              RestaurantServices restaurantServices,
+    public SaleControllerImpl(RetailService retailService,
+                              RestaurantService restaurantService,
                               RestaurantController restaurantController,
                               AdHocProductFormController adHocProductFormController) {
-        super(restaurantServices, retailServices, restaurantController);
+        super(restaurantService, retailService, restaurantController);
         this.adHocProductFormController = adHocProductFormController;
         this.elementControllers = new ArrayList<>();
     }
@@ -114,15 +114,15 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void sellProduct(ProductView productView) {
-        retailServices.sellProduct(tableView, productView, 1, saleViewState.isTakeAway());
-        soldProductsView = getSoldProducts(restaurantServices, tableView);
+        retailService.sellProduct(tableView, productView, 1, saleViewState.isTakeAway());
+        soldProductsView = getSoldProducts(restaurantService, tableView);
         updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
     }
 
     @Override
     public void sellAdHocProduct(AdHocProductParams adHocProductParams) {
-        retailServices.sellAdHocProduct(tableView, adHocProductParams, saleViewState.isTakeAway());
-        soldProductsView = getSoldProducts(restaurantServices, tableView);
+        retailService.sellAdHocProduct(tableView, adHocProductParams, saleViewState.isTakeAway());
+        soldProductsView = getSoldProducts(restaurantService, tableView);
         updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
         adHocProductForm.hide();
     }
@@ -165,7 +165,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void initializeCategories() {
-        rootCategory = restaurantServices.getRootProductCategory();
+        rootCategory = restaurantService.getRootProductCategory();
         selectedCategory = rootCategory.getChildrenCategories().get(0);
     }
 
@@ -175,7 +175,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void updateNode() {
-        soldProductsView = getSoldProducts(restaurantServices, tableView);
+        soldProductsView = getSoldProducts(restaurantService, tableView);
         updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
         updateCategories(selectedCategory);
     }

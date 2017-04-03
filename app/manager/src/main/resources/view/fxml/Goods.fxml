@@ -31,8 +31,8 @@
                   <TreeTableColumn fx:id="productSalePrice" prefWidth="100.0" text="%Goods.ProductSalePrice" />
                   <TreeTableColumn fx:id="productVATLocal" prefWidth="100.0" text="%Goods.ProductVATLocal" />
                   <TreeTableColumn fx:id="productVATTakeAway" prefWidth="100.0" text="%Goods.ProductVATTakeAway" />
-                  <TreeTableColumn fx:id="productMinimumStore" prefWidth="100.0" text="%Goods.ProductMinimumStore" />
-                  <TreeTableColumn fx:id="productStoreWindow" prefWidth="100.0" text="%Goods.ProductStoreWindow" />
+                  <TreeTableColumn fx:id="productMinimumStock" prefWidth="100.0" text="%Goods.ProductMinimumStock" />
+                  <TreeTableColumn fx:id="productStockWindow" prefWidth="100.0" text="%Goods.ProductStockWindow" />
               </columns>
             </TreeTableView>
          </children>

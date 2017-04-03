@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model;
 
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
+import static java.time.LocalDateTime.now;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -9,7 +10,6 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.corelib.utility.Resources;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -434,7 +434,7 @@ public class BuildTestSchemaRule implements TestRule {
         productAdHoc = Product.builder()
                 .longName("productAdHoc")
                 .shortName("productAdHoc")
-                 .status(ProductStatus.ACTIVE)
+                .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.PIECE)
                 .etalonQuantity(EtalonQuantity.KILOGRAM)
                 .type(ProductType.AD_HOC_PRODUCT)
@@ -647,22 +647,28 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void buildStockOne() {
         stockOne = Stock.builder()
+                //.owner(productOne)
                 .startingStock(50)
                 .soldQuantity(20)
+                .date(now())
                 .build();
     }
 
     private void buildStockTwo() {
         stockTwo = Stock.builder()
+                //.owner(productTwo)
                 .startingStock(60)
                 .soldQuantity(30)
+                .date(now())
                 .build();
     }
 
     private void BuildStockThree() {
         stockThree = Stock.builder()
+                //.owner(productThree)
                 .startingStock(70)
                 .soldQuantity(40)
+                .date(now())
                 .build();
     }
 

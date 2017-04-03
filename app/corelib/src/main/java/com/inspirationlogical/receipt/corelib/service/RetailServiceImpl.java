@@ -9,10 +9,10 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
-public class RetailServicesImpl extends AbstractServices implements RetailServices {
+public class RetailServiceImpl extends AbstractService implements RetailService {
 
     @Inject
-    public RetailServicesImpl(EntityManager manager) {
+    public RetailServiceImpl(EntityManager manager) {
         super(manager);
     }
 

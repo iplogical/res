@@ -2,9 +2,9 @@ package com.inspirationlogical.receipt.waiter.registry;
 
 import com.google.inject.Provides;
 import com.inspirationlogical.receipt.corelib.frontend.registry.Registry;
-import com.inspirationlogical.receipt.corelib.service.RestaurantServices;
-import com.inspirationlogical.receipt.corelib.service.RetailServices;
-import com.inspirationlogical.receipt.corelib.service.RetailServicesImpl;
+import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.corelib.service.RetailService;
+import com.inspirationlogical.receipt.corelib.service.RetailServiceImpl;
 import com.inspirationlogical.receipt.waiter.controller.AdHocProductFormController;
 import com.inspirationlogical.receipt.waiter.controller.AdHocProductFormControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.PaymentController;
@@ -33,7 +33,7 @@ public class WaiterRegistry extends Registry {
         bind(SaleController.class).to(SaleControllerImpl.class);
         bind(PaymentController.class).to(PaymentControllerImpl.class);
         bind(TableFormController.class).to(TableFormControllerImpl.class);
-        bind(RetailServices.class).to(RetailServicesImpl.class);
+        bind(RetailService.class).to(RetailServiceImpl.class);
         bind(TableSettingsFormController.class).to(TableSettingsFormControllerImpl.class);
         bind(AdHocProductFormController.class).to(AdHocProductFormControllerImpl.class);
     }
@@ -41,11 +41,11 @@ public class WaiterRegistry extends Registry {
     @Provides
     TableController provideTableController(RestaurantController restaurantController,
                                            TableSettingsFormController tableSettingsFormController,
-                                           RestaurantServices restaurantServices,
-                                           RetailServices retailServices) {
+                                           RestaurantService restaurantService,
+                                           RetailService retailService) {
 
         TableController tableController = new TableControllerImpl(restaurantController, tableSettingsFormController,
-                restaurantServices, retailServices);
+                restaurantService, retailService);
 
         injector.injectMembers(tableController);
 

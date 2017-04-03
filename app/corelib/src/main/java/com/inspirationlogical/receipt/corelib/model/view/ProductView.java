@@ -31,7 +31,7 @@ public interface ProductView extends AbstractView {
 
     double getVATTakeAway();
 
-    int getMinimumStore();
+    int getMinimumStock();
 
-    int getStoreWindow();
+    int getStockWindow();
 }

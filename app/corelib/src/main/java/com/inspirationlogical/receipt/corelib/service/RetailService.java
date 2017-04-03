@@ -6,7 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
-public interface RetailServices {
+public interface RetailService {
 
     void openTable(TableView tableView);
 
