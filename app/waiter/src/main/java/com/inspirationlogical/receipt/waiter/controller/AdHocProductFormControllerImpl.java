@@ -73,6 +73,11 @@ public class AdHocProductFormControllerImpl implements AdHocProductFormControlle
     }
 
     @Override
+    public String getViewPath() {
+        return AD_HOC_PRODUCT_FORM_VIEW_PATH;
+    }
+
+    @Override
     public Node getRootNode() {
         return root;
     }

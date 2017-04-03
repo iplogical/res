@@ -4,6 +4,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 
 public interface Controller extends Initializable{
-
+    String getViewPath();
     Node getRootNode();
 }

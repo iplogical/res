@@ -8,8 +8,6 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.s
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
-import static com.inspirationlogical.receipt.waiter.controller.TableControllerImpl.TABLE_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl.TABLE_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler.addPressAndHold;
 
 import java.net.URL;
@@ -154,7 +152,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private void initTableForm() {
         tableForm = new Popup();
-        tableForm.getContent().add(viewLoader.loadView(TABLE_FORM_VIEW_PATH, tableFormController));
+        tableForm.getContent().add(viewLoader.loadView(tableFormController));
     }
 
     @Override
@@ -337,13 +335,18 @@ public class RestaurantControllerImpl implements RestaurantController {
 
         tableControllers.add(tableController);
 
-        viewLoader.loadView(TABLE_VIEW_PATH, tableController);
+        viewLoader.loadView(tableController);
 
         addPressAndHold(tableController.getViewState(), tableController.getRoot(),
                 new TableContextMenuBuilderDecorator(this, tableController, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
 
         addNodeToPane(tableController.getRoot(), tableView.isVirtual());
+    }
+
+    @Override
+    public String getViewPath() {
+        return RESTAURANT_VIEW_PATH;
     }
 
     @Override

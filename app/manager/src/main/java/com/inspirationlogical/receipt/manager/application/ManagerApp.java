@@ -1,11 +1,10 @@
 package com.inspirationlogical.receipt.manager.application;
 
-import static com.inspirationlogical.receipt.manager.controller.GoodsControllerImpl.GOODS_VIEW_PATH;
+import static com.inspirationlogical.receipt.manager.registry.ManagerRegistry.getInstance;
 
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
 import com.inspirationlogical.receipt.manager.controller.GoodsController;
-import com.inspirationlogical.receipt.manager.registry.ManagerRegistry;
 
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -24,9 +23,9 @@ public class ManagerApp extends Application {
 
     @Override
     public void start(Stage stage) {
-        ViewLoader viewLoader = ManagerRegistry.getInstance(ViewLoader.class);
+        ViewLoader viewLoader = getInstance(ViewLoader.class);
         window = stage;
-        Parent root = (Parent) viewLoader.loadView(GOODS_VIEW_PATH, ManagerRegistry.getInstance(GoodsController.class));
+        Parent root = (Parent) viewLoader.loadView(getInstance(GoodsController.class));
         stage.setTitle(APP_TITLE);
         stage.setScene(new Scene(root, APP_WIDTH, APP_HEIGHT));
         stage.setFullScreen(true);

@@ -106,6 +106,11 @@ public class TableFormControllerImpl implements TableFormController {
     }
 
     @Override
+    public String getViewPath() {
+        return TABLE_FORM_VIEW_PATH;
+    }
+
+    @Override
     public Node getRootNode() {
         return root;
     }

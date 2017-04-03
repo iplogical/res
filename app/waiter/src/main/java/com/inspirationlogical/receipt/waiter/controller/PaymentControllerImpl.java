@@ -129,6 +129,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
+    public String getViewPath() {
+        return PAYMENT_VIEW_PATH;
+    }
+
+    @Override
     public Node getRootNode() {
         return root;
     }

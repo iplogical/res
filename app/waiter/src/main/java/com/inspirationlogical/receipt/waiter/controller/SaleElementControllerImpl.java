@@ -55,6 +55,11 @@ public class SaleElementControllerImpl<T extends AbstractView> implements SaleEl
     }
 
     @Override
+    public String getViewPath() {
+        return SALE_VIEW_ELEMENT_PATH;
+    }
+
+    @Override
     public Node getRootNode() {
         return root;
     }

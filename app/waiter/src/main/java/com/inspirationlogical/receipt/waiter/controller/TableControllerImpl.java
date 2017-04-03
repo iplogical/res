@@ -3,8 +3,6 @@ package com.inspirationlogical.receipt.waiter.controller;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculatePopupPosition;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
-import static com.inspirationlogical.receipt.waiter.controller.SaleControllerImpl.SALE_VIEW_PATH;
-import static com.inspirationlogical.receipt.waiter.controller.TableSettingsFormControllerImpl.TABLE_SETTINGS_FORM_VIEW_PATH;
 import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.addDragAndDrop;
 import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -29,7 +27,6 @@ import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -166,7 +163,7 @@ public class TableControllerImpl implements TableController {
     @Override
     public void showTableSettingsForm(Control control) {
         tableSettingsForm = new Popup();
-        tableSettingsForm.getContent().add(viewLoader.loadView(TABLE_SETTINGS_FORM_VIEW_PATH, tableSettingsFormController));
+        tableSettingsForm.getContent().add(viewLoader.loadView(tableSettingsFormController));
         tableSettingsFormController.loadTableSettings(this);
 
         Point2D position = calculatePopupPosition(control, (Pane)root.getParent());
@@ -226,13 +223,17 @@ public class TableControllerImpl implements TableController {
             }
             SaleController saleController = WaiterRegistry.getInstance(SaleController.class);
             saleController.setTableView(tableView);
-            Parent root = (Parent) viewLoader.loadView(SALE_VIEW_PATH, saleController);
-            WaiterApp.getWindow().getScene().setRoot(root);
+            viewLoader.loadViewIntoScene(WaiterApp.getWindow(), saleController);
         }
     }
 
     private boolean isContextMenuOpen() {
         return root.getContextMenu() != null && root.getContextMenu().isShowing();
+    }
+
+    @Override
+    public String getViewPath() {
+        return TABLE_VIEW_PATH;
     }
 
     @Override

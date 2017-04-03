@@ -66,6 +66,11 @@ public class TableSettingsFormControllerImpl implements TableSettingsFormControl
     }
 
     @Override
+    public String getViewPath() {
+        return TABLE_SETTINGS_FORM_VIEW_PATH;
+    }
+
+    @Override
     public Node getRootNode() {
         return root;
     }

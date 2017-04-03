@@ -20,26 +20,28 @@ public class ViewLoader {
         this.fxmlLoaderProvider = fxmlLoaderProvider;
     }
 
-    public Node loadView(String viewPath, Controller controller) {
-        FXMLLoader loader = fxmlLoaderProvider.getLoader(viewPath);
-        loader.setController(controller);
-        loader.setResources(Resources.UI.getBundle());
-        Node view = null;
+    public Node loadView(Controller controller) {
+        Parent root = (Parent) controller.getRootNode();
 
-        try {
-            view = loader.load();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        if (root == null) {
+            FXMLLoader loader = fxmlLoaderProvider.getLoader(controller.getViewPath());
+            loader.setController(controller);
+            loader.setResources(Resources.UI.getBundle());
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
-        return view;
+        return root;
     }
 
-    public void loadView(Window window, String viewPath, Controller controller) {
-        Parent root = (Parent) controller.getRootNode();
-        if (root == null) {
-            root = (Parent) loadView(viewPath, controller);
-        }
+    public Node loadViewIntoScene(Window window, Controller controller) {
+        Parent root = (Parent) loadView(controller);
+
         window.getScene().setRoot(root);
+
+        return root;
     }
 }

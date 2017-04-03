@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.manager.controller;
 
-import static com.inspirationlogical.receipt.manager.controller.GoodsControllerImpl.GOODS_VIEW_PATH;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -42,12 +40,17 @@ public class StockControllerImpl implements StockController {
 
     @FXML
     public void onShowGoods(Event event) {
-        viewLoader.loadView(ManagerApp.getWindow(), GOODS_VIEW_PATH, goodsController);
+        viewLoader.loadViewIntoScene(ManagerApp.getWindow(), goodsController);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+    }
+
+    @Override
+    public String getViewPath() {
+        return STOCK_VIEW_PATH;
     }
 
     @Override
