@@ -55,4 +55,63 @@
          </BorderPane.margin>
       </AnchorPane>
    </top>
+   <right>
+      <VBox alignment="TOP_CENTER" prefWidth="100.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="%Goods.Category" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="createCategory" mnemonicParsing="false" prefWidth="100.0" text="%Common.Add" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="modifyCategory" mnemonicParsing="false" prefWidth="100.0" text="%Common.Modify" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="deleteCategory" mnemonicParsing="false" prefWidth="100.0" text="%Common.Delete" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Separator prefWidth="200.0" />
+            <Label text="%Goods.Product" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="createProduct" mnemonicParsing="false" prefWidth="100.0" text="%Common.Add" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="modifyProduct" mnemonicParsing="false" prefWidth="100.0" text="%Common.Modify" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="deleteProduct" mnemonicParsing="false" prefWidth="100.0" text="%Common.Delete" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Separator prefWidth="200.0" />
+            <Button fx:id="showStock" mnemonicParsing="false" onAction="#onShowStock" prefWidth="100.0" text="%Goods.StockView" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets left="5.0" />
+         </BorderPane.margin>
+      </VBox>
+   </right>
 </BorderPane>

@@ -1,78 +1,97 @@
 package com.inspirationlogical.receipt.manager.controller;
 
+import static com.inspirationlogical.receipt.manager.controller.StockControllerImpl.STOCK_VIEW_PATH;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Function;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.manager.application.ManagerApp;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.TreeTableView;
 
+@Singleton
 public class GoodsControllerImpl implements GoodsController {
 
     public static final String GOODS_VIEW_PATH = "/view/fxml/Goods.fxml";
 
     @FXML
     TreeTableView<CategoryViewModel> goodsTable;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> categoryName;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> productLongName;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> productShortName;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> productRapidCode;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> productType;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> productStatus;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> productQuantityUnit;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> productQuantityMultiplier;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> productPurchasePrice;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> productSalePrice;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> productVATLocal;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> productVATTakeAway;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> productMinimumStock;
-
     @FXML
     TreeTableColumn<CategoryViewModel, String> productStockWindow;
+    @FXML
+    Button createCategory;
+    @FXML
+    Button modifyCategory;
+    @FXML
+    Button deleteCategory;
+    @FXML
+    Button createProduct;
+    @FXML
+    Button modifyProduct;
+    @FXML
+    Button deleteProduct;
+    @FXML
+    Button showStock;
+
+    @Inject
+    private ViewLoader viewLoader;
+
+    private StockController stockController;
 
     private RestaurantService restaurantService;
 
     private ProductCategoryView rootCategory;
 
     @Inject
-    public GoodsControllerImpl(RestaurantService restaurantService) {
+    public GoodsControllerImpl(StockController stockController, RestaurantService restaurantService) {
+        this.stockController = stockController;
         this.restaurantService = restaurantService;
+    }
+
+    @FXML
+    public void onShowStock(Event event) {
+        viewLoader.loadView(ManagerApp.getWindow(), STOCK_VIEW_PATH, stockController);
     }
 
     @Override
