@@ -23,12 +23,15 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.TreeTableView;
+import javafx.scene.layout.BorderPane;
 
 @Singleton
 public class GoodsControllerImpl implements GoodsController {
 
     public static final String GOODS_VIEW_PATH = "/view/fxml/Goods.fxml";
 
+    @FXML
+    private BorderPane root;
     @FXML
     TreeTableView<CategoryViewModel> goodsTable;
     @FXML
@@ -97,7 +100,7 @@ public class GoodsControllerImpl implements GoodsController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initColumns();
-        initRoot();
+        initRootCategory();
     }
 
     private CategoryViewModel getViewModel(CellDataFeatures<CategoryViewModel, String> cellDataFeatures) {
@@ -126,7 +129,7 @@ public class GoodsControllerImpl implements GoodsController {
         initColumn(productStockWindow, CategoryViewModel::getStockWindow);
     }
 
-    private void initRoot() {
+    private void initRootCategory() {
         rootCategory = restaurantService.getRootProductCategory();
         TreeItem<CategoryViewModel> rootItem = new TreeItem<>(new CategoryViewModel(rootCategory));
         goodsTable.setRoot(rootItem);
@@ -144,6 +147,6 @@ public class GoodsControllerImpl implements GoodsController {
 
     @Override
     public Node getRootNode() {
-        return null;
+        return root;
     }
 }

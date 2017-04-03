@@ -16,12 +16,15 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.BorderPane;
 
 @Singleton
 public class StockControllerImpl implements StockController {
 
     public static final String STOCK_VIEW_PATH = "/view/fxml/Stock.fxml";
 
+    @FXML
+    private BorderPane root;
     @FXML
     TableView<StockViewModel> stockTable;
     @FXML
@@ -49,6 +52,6 @@ public class StockControllerImpl implements StockController {
 
     @Override
     public Node getRootNode() {
-        return null;
+        return root;
     }
 }
