@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.manager.viewmodel;
 
 import static java.lang.String.valueOf;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 
@@ -26,18 +27,18 @@ public class ProductViewModel {
     private String stockWindow;
 
     public ProductViewModel(ProductView productView) {
-        type = productView.getType().name();
-        status = productView.getStatus().name();
-        shortName = productView.getShortName();
-        longName = productView.getLongName();
-        rapidCode = valueOf(productView.getRapidCode());
-        quantityUnit = valueOf(productView.getQuantityUnit());
-        quantityMultiplier = valueOf(productView.getQuantityMultiplier());
-        purchasePrice = valueOf(productView.getPurchasePrice());
-        salePrice = valueOf(productView.getSalePrice());
-        VATLocal = valueOf(productView.getVATLocal()) + PERCENT;
-        VATTakeAway = valueOf(productView.getVATTakeAway()) + PERCENT;
-        minimumStock = valueOf(productView.getMinimumStock());
-        stockWindow = valueOf(productView.getStockWindow());
+        type = productView != null ? productView.getType().name() : EMPTY;
+        status = productView != null ? productView.getStatus().name() : EMPTY;
+        shortName = productView != null ? productView.getShortName() : EMPTY;
+        longName = productView != null ? productView.getLongName() : EMPTY;
+        rapidCode = productView != null ? valueOf(productView.getRapidCode()) : EMPTY;
+        quantityUnit = productView != null ? valueOf(productView.getQuantityUnit()) : EMPTY;
+        quantityMultiplier = productView != null ? valueOf(productView.getQuantityMultiplier()) : EMPTY;
+        purchasePrice = productView != null ? valueOf(productView.getPurchasePrice()) : EMPTY;
+        salePrice = productView != null ? valueOf(productView.getSalePrice()) : EMPTY;
+        VATLocal = productView != null ? valueOf(productView.getVATLocal()) + PERCENT : EMPTY;
+        VATTakeAway = productView != null ? valueOf(productView.getVATTakeAway()) + PERCENT : EMPTY;
+        minimumStock = productView != null ? valueOf(productView.getMinimumStock()) : EMPTY;
+        stockWindow = productView != null ? valueOf(productView.getStockWindow()) : EMPTY;
     }
 }

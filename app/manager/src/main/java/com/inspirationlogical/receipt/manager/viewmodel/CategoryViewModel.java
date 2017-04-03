@@ -1,81 +1,22 @@
 package com.inspirationlogical.receipt.manager.viewmodel;
 
 import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType.PSEUDO;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 
-public class CategoryViewModel {
+public class CategoryViewModel extends ProductViewModel {
     private String name;
-    private ProductViewModel productViewModel;
-    private StockViewModel stockViewModel;
 
     public CategoryViewModel(ProductCategoryView productCategoryView) {
-        this.name = productCategoryView.getName();
-        if (productCategoryView.getType() == PSEUDO && !productCategoryView.getAllActiveProducts().isEmpty()) {
-            productViewModel = new ProductViewModel(productCategoryView.getAllActiveProducts().get(0));
-        } else {
-            productViewModel = null;
-        }
-    }
-
-    public boolean hasProduct() {
-        return productViewModel != null;
+        super(hasProduct(productCategoryView) ? productCategoryView.getAllActiveProducts().get(0) : null);
+        name = productCategoryView.getName();
     }
 
     public String getName() {
-        return !hasProduct() ? name : EMPTY;
+        return name;
     }
 
-    public String getType() {
-        return hasProduct() ? productViewModel.getType() : EMPTY;
-    }
-
-    public String getStatus() {
-        return hasProduct() ? productViewModel.getStatus() : EMPTY;
-    }
-
-    public String getShortName() {
-        return hasProduct() ? productViewModel.getShortName() : EMPTY;
-    }
-
-    public String getLongName() {
-        return hasProduct() ? productViewModel.getLongName() : EMPTY;
-    }
-
-    public String getRapidCode() {
-        return hasProduct() ? productViewModel.getRapidCode() : EMPTY;
-    }
-
-    public String getQuantityUnit() {
-        return hasProduct() ? productViewModel.getQuantityUnit() : EMPTY;
-    }
-
-    public String getQuantityMultiplier() {
-        return hasProduct() ? productViewModel.getQuantityMultiplier() : EMPTY;
-    }
-
-    public String getPurchasePrice() {
-        return hasProduct() ? productViewModel.getPurchasePrice() : EMPTY;
-    }
-
-    public String getSalePrice() {
-        return hasProduct() ? productViewModel.getSalePrice() : EMPTY;
-    }
-
-    public String getVATLocal() {
-        return hasProduct() ? productViewModel.getVATLocal() : EMPTY;
-    }
-
-    public String getVATTakeAway() {
-        return hasProduct() ? productViewModel.getVATTakeAway() : EMPTY;
-    }
-
-    public String getMinimumStock() {
-        return hasProduct() ? productViewModel.getMinimumStock() : EMPTY;
-    }
-
-    public String getStockWindow() {
-        return hasProduct() ? productViewModel.getStockWindow() : EMPTY;
+    private static boolean hasProduct(ProductCategoryView productCategoryView) {
+        return productCategoryView.getType() == PSEUDO && !productCategoryView.getAllActiveProducts().isEmpty();
     }
 }
