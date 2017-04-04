@@ -17,7 +17,6 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
-import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 import com.inspirationlogical.receipt.waiter.utility.ErrorMessage;
@@ -224,7 +223,7 @@ public class TableControllerImpl implements TableController {
             SaleController saleController = WaiterRegistry.getInstance(SaleController.class);
             saleController.setTableView(tableView);
             saleController.updateNode();
-            viewLoader.loadViewIntoScene(WaiterApp.getWindow(), saleController);
+            viewLoader.loadViewIntoScene(saleController);
         }
     }
 

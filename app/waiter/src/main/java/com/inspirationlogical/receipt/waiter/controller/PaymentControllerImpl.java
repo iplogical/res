@@ -15,13 +15,13 @@ import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
-import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import com.inspirationlogical.receipt.waiter.viewstate.PaymentViewState;
 
@@ -32,7 +32,6 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -108,6 +107,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     protected TableColumn payProductTotalPrice;
 
+    @Inject
+    private ViewLoader viewLoader;
+
     private SaleController saleController;
 
     private PaymentViewState paymentViewState;
@@ -161,17 +163,15 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onBackToSaleView(Event event) {
         discardPaidRecords();
-        Parent root = (Parent) saleController.getRootNode();
         saleController.updateNode();
-        WaiterApp.getWindow().getScene().setRoot(root);
+        viewLoader.loadViewIntoScene(saleController);
     }
 
     @Override
     public void onBackToRestaurantView(Event event) {
         discardPaidRecords();
         restaurantController.updateTables();
-        Parent root = (Parent) restaurantController.getRootNode();
-        WaiterApp.getWindow().getScene().setRoot(root);
+        viewLoader.loadViewIntoScene(restaurantController);
     }
 
     @FXML

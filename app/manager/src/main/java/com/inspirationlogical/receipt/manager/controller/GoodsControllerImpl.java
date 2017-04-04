@@ -9,7 +9,6 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
-import com.inspirationlogical.receipt.manager.application.ManagerApp;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -92,7 +91,7 @@ public class GoodsControllerImpl implements GoodsController {
 
     @FXML
     public void onShowStock(Event event) {
-        viewLoader.loadViewIntoScene(ManagerApp.getWindow(), stockController);
+        viewLoader.loadViewIntoScene(stockController);
     }
 
     @Override

@@ -3,13 +3,13 @@ package com.inspirationlogical.receipt.corelib.frontend.view;
 import java.io.IOException;
 
 import com.google.inject.Inject;
+import com.inspirationlogical.receipt.corelib.frontend.application.MainStage;
 import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.stage.Window;
 
 public class ViewLoader {
 
@@ -37,10 +37,10 @@ public class ViewLoader {
         return root;
     }
 
-    public Node loadViewIntoScene(Window window, Controller controller) {
+    public Node loadViewIntoScene(Controller controller) {
         Parent root = (Parent) loadView(controller);
 
-        window.getScene().setRoot(root);
+        MainStage.getProvider().getStage().getScene().setRoot(root);
 
         return root;
     }

@@ -4,19 +4,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.inject.Inject;
+import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
-import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -47,6 +47,9 @@ public class AbstractRetailControllerImpl {
     @FXML
     protected TableColumn productTotalPrice;
 
+    @Inject
+    private ViewLoader viewLoader;
+
     protected RestaurantService restaurantService;
 
     protected RetailService retailService;
@@ -75,8 +78,7 @@ public class AbstractRetailControllerImpl {
     @FXML
     public void onBackToRestaurantView(Event event) {
         restaurantController.updateTables();
-        Parent root = (Parent) restaurantController.getRootNode();
-        WaiterApp.getWindow().getScene().setRoot(root);
+        viewLoader.loadViewIntoScene(restaurantController);
     }
 
     protected void updateTableSummary() {

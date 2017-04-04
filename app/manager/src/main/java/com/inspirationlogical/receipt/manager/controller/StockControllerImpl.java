@@ -8,7 +8,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
-import com.inspirationlogical.receipt.manager.application.ManagerApp;
 import com.inspirationlogical.receipt.manager.viewmodel.StockViewModel;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -71,7 +70,7 @@ public class StockControllerImpl implements StockController {
 
     @FXML
     public void onShowGoods(Event event) {
-        viewLoader.loadViewIntoScene(ManagerApp.getWindow(), goodsController);
+        viewLoader.loadViewIntoScene(goodsController);
     }
 
     @Override
