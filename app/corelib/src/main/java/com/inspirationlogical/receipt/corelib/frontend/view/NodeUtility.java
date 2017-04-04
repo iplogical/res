@@ -41,8 +41,8 @@ public class NodeUtility {
     }
 
     public static Point2D calculatePopupPosition(Control source, Pane owner) {
-        double posX = source.getLayoutX() + owner.getScene().getWindow().getX();
-        double posY = source.getLayoutY() + owner.getScene().getWindow().getY() + LAYOUT_OFFSET_Y;
+        double posX = source.getLayoutX() + owner.getLayoutX();
+        double posY = source.getLayoutY() + owner.getLayoutY() + LAYOUT_OFFSET_Y;
 
         return new Point2D(posX, posY);
     }
@@ -58,5 +58,6 @@ public class NodeUtility {
         controller.getRootNode().setLayoutX(position.getX());
         controller.getRootNode().setLayoutY(position.getY());
         popup.show(parent, 0, 0);
+        popup.getContent().forEach(node -> node.setVisible(true));
     }
 }

@@ -21,7 +21,7 @@ public class RestaurantContextMenuBuilderDecorator extends ContextMenuBuilderDec
     public ContextMenu build(ViewState viewState) {
         RestaurantViewState restaurantViewState = (RestaurantViewState) viewState;
         ContextMenu contextMenu = super.build(viewState);
-        if (restaurantViewState.isConfigurable()) {
+        if (restaurantViewState.getConfigurable().getValue()) {
             MenuItem addTable = new ContextMenuItemBuilder()
                     .withLabel(Resources.UI.getString("ContextMenu.AddTable"))
                     .withClickHandlerPoint2D(restaurantController::showCreateTableForm)

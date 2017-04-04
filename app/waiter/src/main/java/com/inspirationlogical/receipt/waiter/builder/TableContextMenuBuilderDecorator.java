@@ -24,7 +24,11 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
     public ContextMenu build(ViewState viewState) {
         TableViewState tableViewState = (TableViewState) viewState;
         ContextMenu contextMenu = super.build(viewState);
-        if (tableViewState.isConfigurable()) {
+        if (tableViewState.getRestaurantViewState().getConfigurable().getValue()) {
+            MenuItem editTable = new ContextMenuItemBuilder()
+                    .withLabel(Resources.UI.getString("ContextMenu.EditTable"))
+                    .withClickHandlerControl(restaurantController::showEditTableForm)
+                    .build();
             MenuItem rotateTable = new ContextMenuItemBuilder()
                     .withLabel(Resources.UI.getString("ContextMenu.RotateTable"))
                     .withClickHandlerControl(restaurantController::rotateTable)
@@ -33,7 +37,7 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
                     .withLabel(Resources.UI.getString("ContextMenu.DeleteTable"))
                     .withClickHandlerControl(restaurantController::deleteTable)
                     .build();
-            contextMenu.getItems().addAll(rotateTable, deleteTable);
+            contextMenu.getItems().addAll(editTable, rotateTable, deleteTable);
             if (!tableViewState.isVirtual()) {
                 MenuItem mergeTables = new ContextMenuItemBuilder()
                         .withLabel(Resources.UI.getString("ContextMenu.MergeTable"))
@@ -53,13 +57,7 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
                     .withLabel(Resources.UI.getString("ContextMenu.SetTable"))
                     .withClickHandlerControl(tableController::showTableSettingsForm)
                     .build();
-            MenuItem editTable = new ContextMenuItemBuilder()
-                    .withLabel(Resources.UI.getString("ContextMenu.EditTable"))
-                    .withClickHandlerControl(restaurantController::showEditTableForm)
-                    .build();
-            contextMenu.getItems().addAll(setTable, editTable);
-
-
+            contextMenu.getItems().addAll(setTable);
         }
         return contextMenu;
     }

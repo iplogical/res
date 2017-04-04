@@ -37,13 +37,16 @@ import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 
+import javafx.beans.binding.Bindings;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -68,6 +71,18 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     ToggleButton configuration;
+
+    @FXML
+    ToggleButton motion;
+
+    @FXML
+    CheckBox snapToGrid;
+
+    @FXML
+    Slider setGridSize;
+
+    @FXML
+    Label getGridSize;
 
     @FXML
     AnchorPane tablesTab;
@@ -105,12 +120,10 @@ public class RestaurantControllerImpl implements RestaurantController {
         this.restaurantService = restaurantService;
         this.tableFormController = tableFormController;
         restaurantViewState = new RestaurantViewState();
-        restaurantViewState.setFullScreen(true);
     }
 
     @FXML
-    public void onConfigToggle(Event event) {
-        restaurantViewState.setConfigurable(configuration.isSelected());
+    public void onConfigurationToggle(Event event) {
         if (!configuration.isSelected()) {
             selectedTables.forEach(TableController::deselectTable);
         }
@@ -130,8 +143,21 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void initialize(URL location, ResourceBundle resources) {
         initContextMenu(tablesLab);
         initContextMenu(virtualLab);
+        initControls();
         initRestaurant();
         initTables();
+    }
+
+    private void initControls() {
+        restaurantViewState.setConfigurable(configuration.selectedProperty());
+        restaurantViewState.getMotionViewState().setMovableProperty(motion.selectedProperty());
+        restaurantViewState.getMotionViewState().setSnapToGridProperty(snapToGrid.selectedProperty());
+        restaurantViewState.getMotionViewState().setGridSizeProperty(setGridSize.valueProperty());
+        snapToGrid.disableProperty().bind(motion.selectedProperty().not());
+        setGridSize.disableProperty().bind(motion.selectedProperty().not());
+        getGridSize.disableProperty().bind(motion.selectedProperty().not());
+        getGridSize.textProperty().bind(Bindings.format("%.0f px", setGridSize.valueProperty()));
+        setGridSize.setValue(10);
     }
 
     private void initRestaurant() {

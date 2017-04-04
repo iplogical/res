@@ -186,7 +186,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private void initializeSaleViewState() {
         saleViewState = new SaleViewState();
-        saleViewState.setFullScreen(restaurantController.getViewState().isFullScreen());
     }
 
     private void updateCategories(ProductCategoryView selectedCategory) {

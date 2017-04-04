@@ -2,7 +2,7 @@ package com.inspirationlogical.receipt.waiter.viewstate;
 
 import lombok.Data;
 
-public @Data class SaleViewState extends AbstractViewState {
+public @Data class SaleViewState {
 
     private boolean takeAway;
 }

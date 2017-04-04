@@ -2,10 +2,13 @@ package com.inspirationlogical.receipt.waiter.viewstate;
 
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
+import lombok.Data;
+
 /**
  * Created by Bálint on 2017.03.22..
  */
-public class TableViewState extends AbstractViewState {
+@Data
+public class TableViewState implements ViewState {
 
     private RestaurantViewState restaurantViewState;
 
@@ -20,37 +23,11 @@ public class TableViewState extends AbstractViewState {
         this.tableView = tableView;
     }
 
-    @Override
-    public boolean isConfigurable() {
-        return restaurantViewState.isConfigurable();
-    }
-
-    @Override
-    public boolean isFullScreen() {
-        return restaurantViewState.isFullScreen();
-    }
-
     public boolean isVirtual() {
         return tableView.isVirtual();
     }
 
     public boolean isOpen() {
         return tableView.isOpen();
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
-    public boolean isDragged() {
-        return dragged;
-    }
-
-    public void setDragged(boolean dragged) {
-        this.dragged = dragged;
     }
 }

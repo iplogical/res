@@ -100,7 +100,7 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(root, tableViewState);
+        addDragAndDrop(root, tableViewState.getRestaurantViewState().getMotionViewState());
         initVisual();
         updateNode();
     }
@@ -212,7 +212,7 @@ public class TableControllerImpl implements TableController {
             return;
         }
 
-        if(tableViewState.isConfigurable()) {
+        if(tableViewState.getRestaurantViewState().getConfigurable().getValue()) {
             tableViewState.setSelected(!tableViewState.isSelected());
             restaurantController.selectTable(this, tableViewState.isSelected());
             CSSUtilities.setBorderColor(tableViewState.isSelected(), vBox);
