@@ -6,9 +6,11 @@ public interface StockView {
 
     ProductView getProduct();
 
+    double getInitialQuantity();
+
     double getSoldQuantity();
 
-    double getInitialQuantity();
+    double getPurchasedQuantity();
 
     LocalDateTime getDate();
 }

@@ -33,9 +33,11 @@ public class StockControllerImpl implements StockController {
     @FXML
     TableColumn<StockViewModel, String> stockAvailableQuantity;
     @FXML
+    TableColumn<StockViewModel, String> stockInitialQuantity;
+    @FXML
     TableColumn<StockViewModel, String> stockSoldQuantity;
     @FXML
-    TableColumn<StockViewModel, String> stockInitialQuantity;
+    TableColumn<StockViewModel, String> stockPurchasedQuantity;
     @FXML
     TableColumn<StockViewModel, String> stockDate;
     @FXML
@@ -91,8 +93,9 @@ public class StockControllerImpl implements StockController {
     private void initColumns() {
         initColumn(productLongName, StockViewModel::getLongName);
         initColumn(stockAvailableQuantity, StockViewModel::getAvailableQuantity);
-        initColumn(stockSoldQuantity, StockViewModel::getSoldQuantity);
         initColumn(stockInitialQuantity, StockViewModel::getInitialQuantity);
+        initColumn(stockSoldQuantity, StockViewModel::getSoldQuantity);
+        initColumn(stockPurchasedQuantity, StockViewModel::getPurchasedQuantity);
         initColumn(stockDate, StockViewModel::getDate);
         initColumn(productType, StockViewModel::getType);
         initColumn(productStatus, StockViewModel::getStatus);
