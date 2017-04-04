@@ -79,7 +79,7 @@ public class AbstractRetailControllerImpl {
         WaiterApp.getWindow().getScene().setRoot(root);
     }
 
-    protected void initializeTableSummary() {
+    protected void updateTableSummary() {
         tableName.setText(tableView.getName());
         tableNumber.setText(String.valueOf(tableView.getTableNumber()) + getGuestPerCapacity());
         note.setText(tableView.getNote());

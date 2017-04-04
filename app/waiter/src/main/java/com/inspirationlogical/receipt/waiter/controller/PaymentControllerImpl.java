@@ -145,8 +145,17 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         initializePayProductsTable();
         setAutomaticGameFee();
         getSoldProductsAndUpdateTable();
-        initializeTableSummary();
+        updateTableSummary();
         initializeSoldProductsTableRowHandler();
+    }
+
+    @Override
+    public void updateNode() {
+        if(!soldProductsTableInitialized) {
+            return;
+        }
+        getSoldProductsAndUpdateTable();
+        updateTableSummary();
     }
 
     @FXML

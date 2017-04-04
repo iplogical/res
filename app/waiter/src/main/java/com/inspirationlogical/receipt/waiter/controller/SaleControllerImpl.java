@@ -105,7 +105,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         initializeSoldProductsTable();
         initializeSaleViewState();
         updateNode();
-        initializeTableSummary();
+        updateTableSummary();
     }
 
     @Override
@@ -162,6 +162,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     public void onToPaymentView(Event event) {
         PaymentController paymentController = WaiterRegistry.getInstance(PaymentController.class);
         paymentController.setTableView(tableView);
+        paymentController.updateNode();
         viewLoader.loadViewIntoScene(WaiterApp.getWindow(), paymentController);
     }
 

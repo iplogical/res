@@ -5,4 +5,5 @@ package com.inspirationlogical.receipt.waiter.controller;
  */
 public interface PaymentController extends AbstractRetailController {
 
+    void updateNode();
 }
