@@ -199,7 +199,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private void handleSelectivePayment() {
         retailService.paySelective(tableView, paidProductsView, getPaymentParams());
         paidProductsView = new ArrayList<>();
-        updatePayProductsTable(convertReceiptRecordViewsToModel(paidProductsView));
+        paidProductsModel = convertReceiptRecordViewsToModel(paidProductsView);
+        updatePayProductsTable();
         getSoldProductsAndUpdateTable();
     }
 
@@ -399,12 +400,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private void getSoldProductsAndUpdateTable() {
         soldProductsView = getSoldProducts(restaurantService, tableView);
         updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
-    }
-
-    private void updatePayProductsTable(List<SoldProductViewModel> payProducts) {
-        paidProductsModel = FXCollections.observableArrayList();
-        paidProductsModel.addAll(payProducts);
-        payProductsTable.setItems(paidProductsModel);
     }
 
     private void setAutomaticGameFee() {

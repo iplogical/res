@@ -104,8 +104,9 @@ public class AbstractRetailControllerImpl {
         return receiptView.getSoldProducts();
     }
 
-    protected List<SoldProductViewModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
-        return soldProducts.stream().map(SoldProductViewModel::new).collect(Collectors.toList());
+    protected ObservableList<SoldProductViewModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
+        List<SoldProductViewModel> list = soldProducts.stream().map(SoldProductViewModel::new).collect(Collectors.toList());
+        return FXCollections.observableArrayList(list);
     }
 
     protected void updateSoldProductsTable(List<SoldProductViewModel> soldProducts) {
