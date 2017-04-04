@@ -24,6 +24,9 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
     public ContextMenu build(ViewState viewState) {
         TableViewState tableViewState = (TableViewState) viewState;
         ContextMenu contextMenu = super.build(viewState);
+        if (tableViewState.getRestaurantViewState().getMotionViewState().getMovableProperty().getValue()) {
+            return contextMenu;
+        }
         if (tableViewState.getRestaurantViewState().getConfigurable().getValue()) {
             MenuItem editTable = new ContextMenuItemBuilder()
                     .withLabel(Resources.UI.getString("ContextMenu.EditTable"))

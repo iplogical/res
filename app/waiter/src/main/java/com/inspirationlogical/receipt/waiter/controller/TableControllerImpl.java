@@ -196,14 +196,8 @@ public class TableControllerImpl implements TableController {
     }
 
     @FXML
-    public void onTableDragged(MouseEvent event) {
-        tableViewState.setDragged(true);
-    }
-
-    @FXML
     public void onTableClicked(MouseEvent event) {
-        if (isContextMenuOpen() || tableViewState.isDragged()) {
-            tableViewState.setDragged(false);
+        if (isContextMenuOpen() || tableViewState.getRestaurantViewState().getMotionViewState().getMovableProperty().getValue()) {
             restaurantController.moveTable(this);
             return;
         }
