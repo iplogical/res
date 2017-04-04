@@ -31,7 +31,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public static ReceiptAdapter receiptAdapterFactory(ReceiptType type) {
-        return new ReceiptAdapter(Receipt.builder()
+        ReceiptAdapter newReceipt = new ReceiptAdapter(Receipt.builder()
                                         .type(type)
                                         .status(ReceiptStatus.OPEN)
                                         .paymentMethod(PaymentMethod.CASH)
@@ -39,6 +39,8 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                                         .VATSerie(VATSerieAdapter.vatSerieAdapterFactory().getAdaptee())
                                         .client(getDefaultClient())
                                         .build());
+        ReceiptAdapterListeners.getAllListeners().forEach((l) -> {l.onOpen(newReceipt);});
+        return newReceipt;
     }
 
     private static Client getDefaultClient() {

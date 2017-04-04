@@ -62,13 +62,15 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         return getAllActiveProducts().stream()
                 .filter(productAdapter -> !productAdapter.getAdaptee().getType().equals(ProductType.AD_HOC_PRODUCT))
                 .filter(productAdapter -> !productAdapter.getAdaptee().getType().equals(ProductType.GAME_FEE_PRODUCT))
+                .filter(productAdapter -> !productAdapter.getAdaptee().getType().equals(ProductType.STORABLE))
                 .collect(Collectors.toList());
     }
 
-
     public Collection<ProductCategoryAdapter> getChildrenCategories() {
         GuardedTransaction.RunWithRefresh(adaptee, () -> {});
-        return adaptee.getChildren().stream().map(elem -> new ProductCategoryAdapter(elem))
+        return adaptee.getChildren().stream()
+                .map(elem -> new ProductCategoryAdapter(elem))
+                .filter(productCategoryAdapter -> !productCategoryAdapter.getAllNormalProducts().isEmpty())
                 .collect(toList());
     }
 

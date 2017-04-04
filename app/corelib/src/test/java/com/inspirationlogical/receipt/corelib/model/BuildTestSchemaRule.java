@@ -51,8 +51,8 @@ import lombok.Getter;
 
 public class BuildTestSchemaRule implements TestRule {
 
-    public static final int NUMBER_OF_PRODUCTS = 8;
-    public static final int NUMBER_OF_PRODUCT_CATEGORIES = 19;
+    public static final int NUMBER_OF_PRODUCTS = 11;
+    public static final int NUMBER_OF_PRODUCT_CATEGORIES = 24;
     public static final int NUMBER_OF_PRICE_MODIFIERS = 4;
     public static final int NUMBER_OF_RECIPES = 3;
     public static final int NUMBER_OF_STOCKS = 3;
@@ -76,6 +76,10 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Product productAdHoc;
     private @Getter Product productGameFee;
 
+    private @Getter Product productRecipeElementOne;
+    private @Getter Product productRecipeElementTwo;
+    private @Getter Product productRecipeElementThree;
+
     private @Getter ProductCategory root;
     private @Getter ProductCategory aggregateTopOne;
     private @Getter ProductCategory aggregateTopTwo;
@@ -83,10 +87,12 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter ProductCategory aggregateTwo;
     private @Getter ProductCategory aggregateThree;
     private @Getter ProductCategory aggregateFour;
+    private @Getter ProductCategory aggregateRecipeElements;
     private @Getter ProductCategory leafOne;
     private @Getter ProductCategory leafTwo;
     private @Getter ProductCategory leafThree;
     private @Getter ProductCategory leafFour;
+    private @Getter ProductCategory leafRecipeElements;
     private @Getter ProductCategory pseudoOne;
     private @Getter ProductCategory pseudoTwo;
     private @Getter ProductCategory pseudoThree;
@@ -95,6 +101,10 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter ProductCategory pseudoSix;
     private @Getter ProductCategory pseudoAdHoc;
     private @Getter ProductCategory pseudoGameFee;
+
+    private @Getter ProductCategory pseudoRecipeElementOne;
+    private @Getter ProductCategory pseudoRecipeElementTwo;
+    private @Getter ProductCategory pseudoRecipeElementThree;
 
     private @Getter PriceModifier priceModifierOne;
     private @Getter PriceModifier priceModifierTwo;
@@ -247,6 +257,9 @@ public class BuildTestSchemaRule implements TestRule {
         buildProductSix();
         buildProductAdHoc();
         buildProductGameFee();
+        buildProductRecipeElementOne();
+        buildProductRecipeElementTwo();
+        buildProductRecipeElementThree();
     }
 
     private void buildProductCategories() {
@@ -257,10 +270,12 @@ public class BuildTestSchemaRule implements TestRule {
         buildAggregateTwo();
         buildAggregateThree();
         buildAggregateFour();
+        buildAggregateRecipeElements();
         buildLeafOne();
         buildLeafTwo();
         buildLeafThree();
         buildLeafFour();
+        buildLeafRecipeElements();
         buildPseudoOne();
         buildPseudoTwo();
         buildPseudoThree();
@@ -269,6 +284,9 @@ public class BuildTestSchemaRule implements TestRule {
         buildPseudoSix();
         buildPseudoAdHoc();
         buildPseudoGameFee();
+        buildPseudoRecipeElementOne();
+        buildPseudoRecipeElementTwo();
+        buildPseudoRecipeElementThree();
     }
 
     private void buildPriceModifiers() {
@@ -456,6 +474,45 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
+    private void buildProductRecipeElementOne() {
+        productRecipeElementOne = Product.builder()
+                .longName("productRecipeElementOne")
+                .shortName("recipeElementOne")
+                .salePrice(0)
+                .purchasePrice(100)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.PIECE)
+                .etalonQuantity(EtalonQuantity.KILOGRAM)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildProductRecipeElementTwo() {
+        productRecipeElementTwo = Product.builder()
+                .longName("productRecipeElementTwo")
+                .shortName("recipeElementTwo")
+                .salePrice(0)
+                .purchasePrice(100)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.PIECE)
+                .etalonQuantity(EtalonQuantity.KILOGRAM)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildProductRecipeElementThree() {
+        productRecipeElementThree = Product.builder()
+                .longName("productRecipeElementThree")
+                .shortName("recipeElementThree")
+                .salePrice(0)
+                .purchasePrice(100)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.PIECE)
+                .etalonQuantity(EtalonQuantity.KILOGRAM)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
     private void buildRoot() {
         root = ProductCategory.builder()
                 .name("root")
@@ -506,6 +563,13 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
+    private void buildAggregateRecipeElements() {
+        aggregateRecipeElements = ProductCategory.builder()
+                .name("aggregateRecipeElements")
+                .type(ProductCategoryType.AGGREGATE)
+                .build();
+    }
+
     private void buildLeafOne() {
         leafOne = ProductCategory.builder()
                 .name("leafOne")
@@ -530,6 +594,13 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildLeafFour() {
         leafFour = ProductCategory.builder()
                 .name("leafFour")
+                .type(ProductCategoryType.LEAF)
+                .build();
+    }
+
+    private void buildLeafRecipeElements() {
+        leafRecipeElements = ProductCategory.builder()
+                .name("leafRecipeElements")
                 .type(ProductCategoryType.LEAF)
                 .build();
     }
@@ -587,6 +658,27 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildPseudoGameFee() {
         pseudoGameFee = ProductCategory.builder()
                 .name("pseudoGameFee")
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoRecipeElementOne() {
+        pseudoRecipeElementOne = ProductCategory.builder()
+                .name("pseudoRecipeElementOne")
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoRecipeElementTwo() {
+        pseudoRecipeElementTwo = ProductCategory.builder()
+                .name("pseudoRecipeElementTwo")
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoRecipeElementThree() {
+        pseudoRecipeElementThree = ProductCategory.builder()
+                .name("pseudoRecipeElementThree")
                 .type(ProductCategoryType.PSEUDO)
                 .build();
     }
@@ -667,7 +759,6 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void buildStockOne() {
         stockOne = Stock.builder()
-                //.owner(productOne)
                 .initialQuantity(50)
                 .soldQuantity(20)
                 .date(now())
@@ -676,7 +767,6 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void buildStockTwo() {
         stockTwo = Stock.builder()
-                //.owner(productTwo)
                 .initialQuantity(60)
                 .soldQuantity(30)
                 .date(now())
@@ -685,7 +775,6 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void BuildStockThree() {
         stockThree = Stock.builder()
-                //.owner(productThree)
                 .initialQuantity(70)
                 .soldQuantity(40)
                 .date(now())
@@ -1025,9 +1114,10 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void rootAndAggregates() {
         root.setChildren(new HashSet<>(
-                Arrays.asList(aggregateTopOne, aggregateTopTwo)));
+                Arrays.asList(aggregateTopOne, aggregateTopTwo, aggregateRecipeElements)));
         aggregateTopOne.setParent(root);
         aggregateTopTwo.setParent(root);
+        aggregateRecipeElements.setParent(root);
     }
 
     private void aggregatesAndAggregates() {
@@ -1046,10 +1136,14 @@ public class BuildTestSchemaRule implements TestRule {
         leafThree.setParent(aggregateOne);
         leafTwo.setParent(aggregateTwo);
         leafFour.setParent(aggregateTwo);
+        leafRecipeElements.setParent(aggregateRecipeElements);
         aggregateOne.setChildren(new HashSet<>(
                 Arrays.asList(leafOne, leafThree)));
         aggregateTwo.setChildren(new HashSet<>(
                 Arrays.asList(leafTwo, leafFour)));
+        aggregateRecipeElements.setChildren(new HashSet<>(
+                Arrays.asList(leafRecipeElements)));
+
     }
     
     private void leafsAndPseudos() {
@@ -1057,6 +1151,8 @@ public class BuildTestSchemaRule implements TestRule {
                 Arrays.asList(pseudoOne, pseudoTwo, pseudoFive, pseudoSix, pseudoAdHoc, pseudoGameFee)));
         leafTwo.setChildren(new HashSet<>(
                 Arrays.asList(pseudoThree, pseudoFour)));
+        leafRecipeElements.setChildren(new HashSet<>(
+                Arrays.asList(pseudoRecipeElementOne, pseudoRecipeElementTwo, pseudoRecipeElementThree)));
         pseudoOne.setParent(leafOne);
         pseudoTwo.setParent(leafOne);
         pseudoFive.setParent(leafOne);
@@ -1065,6 +1161,9 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoGameFee.setParent(leafOne);
         pseudoThree.setParent(leafTwo);
         pseudoFour.setParent(leafTwo);
+        pseudoRecipeElementOne.setParent(leafRecipeElements);
+        pseudoRecipeElementTwo.setParent(leafRecipeElements);
+        pseudoRecipeElementThree.setParent(leafRecipeElements);
     }
 
     private void categoriesAndPriceModifiers() {
@@ -1104,6 +1203,16 @@ public class BuildTestSchemaRule implements TestRule {
 
         pseudoGameFee.setProduct(productGameFee);
         productGameFee.setCategory(pseudoGameFee);
+
+        pseudoRecipeElementOne.setProduct(productRecipeElementOne);
+        productRecipeElementOne.setCategory(pseudoRecipeElementOne);
+
+        pseudoRecipeElementTwo.setProduct(productRecipeElementTwo);
+        productRecipeElementTwo.setCategory(pseudoRecipeElementTwo);
+
+        pseudoRecipeElementThree.setProduct(productRecipeElementThree);
+        productRecipeElementThree.setCategory(pseudoRecipeElementThree);
+
     }
 
     private void productFourAndRecipes() {
@@ -1115,9 +1224,9 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void recipesAndProducts() {
-        elementOne.setElement(productOne);
-        elementTwo.setElement(productTwo);
-        elementThree.setElement(productThree);
+        elementOne.setElement(productRecipeElementOne);
+        elementTwo.setElement(productRecipeElementTwo);
+        elementThree.setElement(productRecipeElementThree);
     }
 
     private void productFourAndStocks() {
