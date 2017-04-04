@@ -85,6 +85,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private List<SaleElementController> elementControllers;
 
+
     @Inject
     public SaleControllerImpl(RetailService retailService,
                               RestaurantService restaurantService,
@@ -147,6 +148,16 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         updateCategories(selectedCategory);
     }
 
+    @Override
+    public void updateNode() {
+        if(!soldProductsTableInitialized) {
+            return;
+        }
+        soldProductsView = getSoldProducts(restaurantService, tableView);
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+        updateCategories(selectedCategory);
+    }
+
     @FXML
     public void onToPaymentView(Event event) {
         PaymentController paymentController = WaiterRegistry.getInstance(PaymentController.class);
@@ -176,12 +187,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private void initializeSaleViewState() {
         saleViewState = new SaleViewState();
         saleViewState.setFullScreen(restaurantController.getViewState().isFullScreen());
-    }
-
-    private void updateNode() {
-        soldProductsView = getSoldProducts(restaurantService, tableView);
-        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
-        updateCategories(selectedCategory);
     }
 
     private void updateCategories(ProductCategoryView selectedCategory) {

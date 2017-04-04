@@ -152,6 +152,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onBackToSaleView(Event event) {
         Parent root = (Parent) saleController.getRootNode();
+        saleController.updateNode();
         WaiterApp.getWindow().getScene().setRoot(root);
     }
 

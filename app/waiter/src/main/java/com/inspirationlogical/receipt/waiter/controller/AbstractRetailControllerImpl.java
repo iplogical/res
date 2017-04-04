@@ -61,6 +61,8 @@ public class AbstractRetailControllerImpl {
 
     protected ObservableList<SoldProductViewModel> soldProductsModel;
 
+    protected boolean soldProductsTableInitialized = false;
+
     public AbstractRetailControllerImpl(RestaurantService restaurantService,
                                         RetailService retailService,
                                         RestaurantController restaurantController) {
@@ -93,6 +95,7 @@ public class AbstractRetailControllerImpl {
         productQuantity.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productQuantity"));
         productUnitPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productUnitPrice"));
         productTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productTotalPrice"));
+        soldProductsTableInitialized = true;
     }
 
 
