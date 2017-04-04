@@ -35,4 +35,8 @@ public class ProductAdapter extends AbstractAdapter<Product> {
         super(adaptee);
     }
 
+
+    public ProductCategoryAdapter getCategoryAdapter() {
+        return new ProductCategoryAdapter(adaptee.getCategory());
+    }
 }

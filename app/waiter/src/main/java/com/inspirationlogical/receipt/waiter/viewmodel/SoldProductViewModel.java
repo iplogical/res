@@ -13,26 +13,7 @@ import lombok.Data;
  * Created by Bálint on 2017.03.22..
  */
 public @Data class SoldProductViewModel {
-    public SoldProductViewModel(ReceiptRecordView receiptRecordView) {
-        this.productName = receiptRecordView.getName();
-        this.productQuantity = valueOf(receiptRecordView.getSoldQuantity());
-        this.productUnitPrice = valueOf(receiptRecordView.getSalePrice());
-        this.productTotalPrice = valueOf(receiptRecordView.getTotalPrice());
-        this.productId = valueOf(receiptRecordView.getId());
-        this.productDiscount = valueOf(receiptRecordView.getDiscountPercent());
-        this.productVat = valueOf(receiptRecordView.getVat());
-    }
 
-    public SoldProductViewModel(SoldProductViewModel other) {
-        this.productName = other.productName;
-        this.productQuantity = other.productQuantity;
-        this.productUnitPrice = other.productUnitPrice;
-        this.productTotalPrice = other.productTotalPrice;
-        this.productId = other.productId;
-        this.productDiscount = other.productDiscount;
-        this.productVat = other.productVat;
-    }
-    
     private String productName;
 
     private String productQuantity;
@@ -46,6 +27,28 @@ public @Data class SoldProductViewModel {
     private String productDiscount;
 
     private String productVat;
+
+    public SoldProductViewModel(ReceiptRecordView receiptRecordView) {
+        this.productName = receiptRecordView.getName();
+        this.productQuantity = valueOf(receiptRecordView.getSoldQuantity());
+        this.productUnitPrice = valueOf(receiptRecordView.getSalePrice());
+        this.productTotalPrice = valueOf(receiptRecordView.getTotalPrice());
+        this.productId = valueOf(receiptRecordView.getId());
+        this.productDiscount = valueOf(receiptRecordView.getDiscountPercent());
+        this.productVat = valueOf(receiptRecordView.getVat());
+        markDiscountedProduct();
+    }
+
+    public SoldProductViewModel(SoldProductViewModel other) {
+        this.productName = other.productName;
+        this.productQuantity = other.productQuantity;
+        this.productUnitPrice = other.productUnitPrice;
+        this.productTotalPrice = other.productTotalPrice;
+        this.productId = other.productId;
+        this.productDiscount = other.productDiscount;
+        this.productVat = other.productVat;
+        markDiscountedProduct();
+    }
 
     public boolean isSingleProduct() {
         double quantity = Double.valueOf(productQuantity);
@@ -96,5 +99,11 @@ public @Data class SoldProductViewModel {
     private static double roundToTwoDecimals(double number) {
         double rounded = Math.round(number * 100);
         return rounded / 100;
+    }
+
+    private void markDiscountedProduct() {
+        if(!this.productDiscount.equals(valueOf(0D))) {
+            this.productName = this.productName + " *";
+        }
     }
 }

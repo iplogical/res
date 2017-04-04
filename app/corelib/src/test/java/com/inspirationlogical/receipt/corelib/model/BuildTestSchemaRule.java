@@ -53,7 +53,7 @@ public class BuildTestSchemaRule implements TestRule {
 
     public static final int NUMBER_OF_PRODUCTS = 8;
     public static final int NUMBER_OF_PRODUCT_CATEGORIES = 19;
-    public static final int NUMBER_OF_PRICE_MODIFIERS = 3;
+    public static final int NUMBER_OF_PRICE_MODIFIERS = 4;
     public static final int NUMBER_OF_RECIPES = 3;
     public static final int NUMBER_OF_STOCKS = 3;
     public static final int NUMBER_OF_RECEIPTS = 9;
@@ -99,6 +99,7 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter PriceModifier priceModifierOne;
     private @Getter PriceModifier priceModifierTwo;
     private @Getter PriceModifier priceModifierThree;
+    private @Getter PriceModifier priceModifierFour;
 
     private @Getter Recipe elementOne;
     private @Getter Recipe elementTwo;
@@ -274,6 +275,8 @@ public class BuildTestSchemaRule implements TestRule {
         buildPriceModifierOne();
         buildPriceModifierTwo();
         buildPriceModifierThree();
+        buildPriceModifierFour();
+
     }
 
     private void buildRecipes() {
@@ -609,6 +612,8 @@ public class BuildTestSchemaRule implements TestRule {
                 .startTime(new GregorianCalendar(2017, 2, 8, 16, 0))
                 .endTime(new GregorianCalendar(2017, 3, 8, 20, 20))
                 .limitType(PriceModifierLimitType.EXACT)
+                .discountPercent(33.333)
+                .quantityLimit(3)
                 .build();
     }
 
@@ -621,6 +626,21 @@ public class BuildTestSchemaRule implements TestRule {
                 .startTime(new GregorianCalendar(2017, 3, 8, 16, 0))
                 .endTime(new GregorianCalendar(2017, 5, 8, 20, 20))
                 .limitType(PriceModifierLimitType.EXACT)
+                .build();
+    }
+
+
+    private void buildPriceModifierFour() {
+        priceModifierFour = PriceModifier.builder()
+                .name("TestPriceModifier4")
+                .type(PriceModifierType.QUANTITY_DISCOUNT)
+                .status(PriceModifierStatus.ACTUAL)
+                .period(PriceModifierRepeatPeriod.WEEKLY)
+                .startTime(new GregorianCalendar(2017, 3, 8, 16, 0))
+                .endTime(new GregorianCalendar(2017, 5, 8, 20, 20))
+                .limitType(PriceModifierLimitType.EXACT)
+                .discountPercent(33.333)
+                .quantityLimit(3)
                 .build();
     }
 
@@ -1052,9 +1072,12 @@ public class BuildTestSchemaRule implements TestRule {
                 Arrays.asList(priceModifierOne, priceModifierTwo)));
         leafTwo.setPriceModifier(new HashSet<>(
                 Collections.singletonList(priceModifierThree)));
+        pseudoTwo.setPriceModifier(new HashSet<>(
+                Collections.singletonList(priceModifierFour)));
         priceModifierOne.setOwner(pseudoOne);
         priceModifierTwo.setOwner(pseudoOne);
         priceModifierThree.setOwner(leafTwo);
+        priceModifierFour.setOwner(pseudoTwo);
     }
 
     private void productsAndCategories() {

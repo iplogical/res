@@ -7,11 +7,15 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
+import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
+import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+
+import static java.util.stream.Collectors.toList;
 
 public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 {
@@ -45,7 +49,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         return childCategories.stream()
                 .filter(elem -> elem.getType().equals(ProductCategoryType.PSEUDO))
                 .map(elem -> new ProductAdapter(elem.getProduct()))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public List<ProductAdapter> getAllActiveProducts() {
@@ -65,7 +69,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     public Collection<ProductCategoryAdapter> getChildrenCategories() {
         GuardedTransaction.RunWithRefresh(adaptee, () -> {});
         return adaptee.getChildren().stream().map(elem -> new ProductCategoryAdapter(elem))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public ProductCategoryAdapter getParent() {
@@ -74,5 +78,24 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 
     public ProductCategoryType getType() {
         return adaptee.getType();
+    }
+
+    public double getDiscount(ReceiptRecordAdapter receiptRecordAdapter) {
+        // TODO: PriceModifierStatus should be calculated or the start and end date should be used in the filter.
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
+        ProductCategory category = adaptee;
+        List<PriceModifierAdapter> priceModifiers = new ArrayList<>();
+        do {
+            List<PriceModifierAdapter> loopPriceModifiers = category.getPriceModifier().stream()
+                    .filter(priceModifier -> priceModifier.getOwner().equals(adaptee))
+                    .filter(priceModifier -> priceModifier.getStatus().equals(PriceModifierStatus.ACTUAL))
+                    .map(priceModifier -> new PriceModifierAdapter(priceModifier))
+                    .collect(toList());
+            category = category.getParent();
+            priceModifiers.addAll(loopPriceModifiers);
+        } while(!category.getType().equals(ProductCategoryType.ROOT));
+
+        return priceModifiers.stream().map(pm -> pm.getDiscountPercent(receiptRecordAdapter))
+                .max(Double::compareTo).orElse(0D);
     }
 }

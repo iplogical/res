@@ -62,6 +62,8 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             if(records.size() > 0) {
                 records.get(0).setSoldQuantity(records.get(0).getSoldQuantity() + 1);
                 records.get(0).setCreated(Calendar.getInstance());
+                records.get(0).setDiscountPercent(productAdapter.getCategoryAdapter().getDiscount(new ReceiptRecordAdapter(records.get(0))));
+                applyDiscountOnRecordSalePrice(records.get(0));
                 return;
             }
             ReceiptRecord record = ReceiptRecord.builder()
@@ -73,12 +75,18 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                     .purchasePrice(productAdapter.getAdaptee().getPurchasePrice())
                     .salePrice(productAdapter.getAdaptee().getSalePrice())
                     .VAT(VATAdapter.getVatByName(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
-                    // TODO: calculate discount based on the PriceModifiers.
-                    //.discountPercent(paymentParams.getDiscountPercent())
                     .build();
+            // TODO: calculate discount based on the PriceModifiers.
+            record.setDiscountPercent(productAdapter.getCategoryAdapter().getDiscount(new ReceiptRecordAdapter(record)));
+            applyDiscountOnRecordSalePrice(record);
             record.setOwner(adaptee);
             adaptee.getRecords().add(record);
         });
+    }
+
+    private void applyDiscountOnRecordSalePrice(ReceiptRecord receiptRecord) {
+        receiptRecord.setSalePrice(receiptRecord.getProduct().getSalePrice());
+        receiptRecord.setSalePrice((int)Math.round(receiptRecord.getSalePrice() * getDiscountMultiplier(receiptRecord.getDiscountPercent())));
     }
 
     public void sellAdHocProduct(AdHocProductParams adHocProductParams, boolean takeAway) {
@@ -226,7 +234,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     private static double calculateSaleGrossPrice(ReceiptRecord record) {
-        return record.getSalePrice() * record.getSoldQuantity() * getDiscountMultiplier(record.getDiscountPercent());
+        return record.getSalePrice() * record.getSoldQuantity();
     }
 
     private static double calculateSaleNetPrice(ReceiptRecord record) {

@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -13,8 +15,18 @@ import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 
 public class ProductCategoryAdapterTest {
 
+    ReceiptRecordAdapter receiptRecordAdapter;
+    ProductCategoryAdapter pseudoTwo, pseudoFour;
+
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
+
+    @Before
+    public void setUp() {
+        receiptRecordAdapter = new ReceiptRecordAdapter(schema.getReceiptRecordSaleTwo());
+        pseudoTwo = new ProductCategoryAdapter(schema.getPseudoTwo());
+        pseudoFour = new ProductCategoryAdapter(schema.getPseudoFour());
+    }
 
     @Test
     public void testGetRootCategory() {
@@ -26,7 +38,7 @@ public class ProductCategoryAdapterTest {
     public void testLeafNumberOfProductsUnderLeafOne() {
         ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne());
         List<ProductAdapter> products = leafOne.getAllProducts();
-        assertEquals(4, products.size());
+        assertEquals(6, products.size());
     }
 
     @Test
@@ -46,4 +58,20 @@ public class ProductCategoryAdapterTest {
 
     }
 
+    @Test
+    public void testGetDiscountNoPriceModifier() {
+        assertEquals(0, pseudoFour.getDiscount(receiptRecordAdapter), 0.01);
+    }
+
+
+    @Test
+    public void testGetDiscountQuantityBelow() {
+        assertEquals(0, pseudoTwo.getDiscount(receiptRecordAdapter), 0.01);
+    }
+
+    @Test
+    public void testGetDiscountQuantityEnough() {
+        receiptRecordAdapter.getAdaptee().setSoldQuantity(3);
+        assertEquals(33.333, pseudoTwo.getDiscount(receiptRecordAdapter), 0.01);
+    }
 }

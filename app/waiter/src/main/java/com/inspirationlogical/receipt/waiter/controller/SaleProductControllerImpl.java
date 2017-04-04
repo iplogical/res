@@ -17,7 +17,6 @@ public class SaleProductControllerImpl extends SaleElementControllerImpl<Product
 
     @Override
     public void onElementClicked(MouseEvent event) {
-        // TODO: Implement selling multiple products.
         saleController.sellProduct(view);
     }
 }
