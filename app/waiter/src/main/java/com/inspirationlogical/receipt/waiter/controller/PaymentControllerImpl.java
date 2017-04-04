@@ -160,8 +160,17 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onBackToSaleView(Event event) {
+        discardPaidRecords();
         Parent root = (Parent) saleController.getRootNode();
         saleController.updateNode();
+        WaiterApp.getWindow().getScene().setRoot(root);
+    }
+
+    @Override
+    public void onBackToRestaurantView(Event event) {
+        discardPaidRecords();
+        restaurantController.updateTables();
+        Parent root = (Parent) restaurantController.getRootNode();
         WaiterApp.getWindow().getScene().setRoot(root);
     }
 
@@ -400,6 +409,12 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private void getSoldProductsAndUpdateTable() {
         soldProductsView = getSoldProducts(restaurantService, tableView);
         updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+    }
+
+    private void discardPaidRecords() {
+        paidProductsModel = FXCollections.observableArrayList();
+        paidProductsView = new ArrayList<>();
+        updatePayProductsTable();
     }
 
     private void setAutomaticGameFee() {
