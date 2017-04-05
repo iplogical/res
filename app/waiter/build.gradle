@@ -7,13 +7,12 @@
  * user guide available at https://docs.gradle.org/2.13/userguide/tutorial_java_projects.html
  */
 
-// Apply the java plugin to add support for Java
+apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = 'com.inspirationlogical.receipt.waiter.application.WaiterApp'
-
-run {
-    main = project.getProperty('mainClassName')
+task waiter(type: JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    main = "com.inspirationlogical.receipt.waiter.application.WaiterApp"
 }
 
 // In this section you declare the dependencies for your production and test code

@@ -12,6 +12,20 @@ plugins {
     id 'org.unbroken-dome.xjc' version '0.1.1'
 }
 
+test {
+    exclude 'com/inspirationlogical/receipt/corelib/frontend'
+}
+
+configurations {
+    initdbCompile.extendsFrom testCompile
+    initdbRuntime.extendsFrom testRuntime
+}
+
+task initdb(type: Test, description: 'Creates the test database (run with --rerun-tasks)', group: 'Verification') {
+    testClassesDir = new File('build/classes/test/com/inspirationlogical/receipt/corelib/frontend')
+    classpath = sourceSets.test.runtimeClasspath
+}
+
 // In this section you declare the dependencies for your production and test code
 dependencies {
     // The production code uses the SLF4J logging API at compile time
