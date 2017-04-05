@@ -170,8 +170,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void onBackToRestaurantView(Event event) {
         discardPaidRecords();
-        restaurantController.updateTables();
-        viewLoader.loadViewIntoScene(restaurantController);
+        backToRestaurantView();
     }
 
     @FXML
@@ -203,6 +202,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         handleAutomaticGameFee();
         retailService.payTable(tableView, getPaymentParams());
         getSoldProductsAndUpdateTable();
+        backToRestaurantView();
     }
 
     private void handleSelectivePayment() {
@@ -415,6 +415,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         paidProductsModel = FXCollections.observableArrayList();
         paidProductsView = new ArrayList<>();
         updatePayProductsTable();
+    }
+
+    private void backToRestaurantView() {
+        restaurantController.updateTables();
+        viewLoader.loadViewIntoScene(restaurantController);
     }
 
     private void setAutomaticGameFee() {
