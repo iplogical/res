@@ -96,6 +96,27 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     Label virtualLab;
 
+    @FXML
+    Label openTableNumber;
+
+    @FXML
+    Label totalTableNumber;
+
+    @FXML
+    Label totalGuests;
+
+    @FXML
+    Label totalCapacity;
+
+    @FXML
+    Label paidConsumption;
+
+    @FXML
+    Label totalConsumption;
+
+    @FXML
+    Label totalIncome;
+
     @Inject
     private ViewLoader viewLoader;
 
@@ -146,6 +167,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         initControls();
         initRestaurant();
         initTables();
+        updateRestaurantSummary();
     }
 
     private void initControls() {
@@ -323,7 +345,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void updateTables() {
-        tableControllers.forEach(tableController -> tableController.updateNode());
+        tableControllers.forEach(TableController::updateNode);
     }
 
     @Override
@@ -378,5 +400,22 @@ public class RestaurantControllerImpl implements RestaurantController {
     @Override
     public Node getRootNode() {
         return root;
+    }
+
+    private void updateRestaurantSummary() {
+        totalTableNumber.setText(String.valueOf(tableControllers.stream()
+                        .filter(tableController -> !tableController.getView().isVirtual())
+                        .count()));
+        openTableNumber.setText(String.valueOf(tableControllers.stream()
+                        .filter(tableController -> !tableController.getView().isVirtual())
+                        .filter(tableController -> tableController.getView().isOpen())
+                        .count()));
+        totalGuests.setText(String.valueOf(tableControllers.stream()
+                        .filter(tableController -> !tableController.getView().isVirtual())
+                        .mapToInt(controller -> controller.getView().getGuestCount()).sum()));
+        totalCapacity.setText(String.valueOf(tableControllers.stream()
+                        .filter(tableController -> !tableController.getView().isVirtual())
+                        .mapToInt(controller -> controller.getView().getTableCapacity()).sum()));
+
     }
 }

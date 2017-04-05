@@ -28,41 +28,109 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <ToolBar layoutX="121.0" layoutY="30.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
-        <items>
-          <Button fx:id="consumption" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Consumption" textAlignment="CENTER">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="reservation" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Reservation" textAlignment="CENTER">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-            <ToggleButton fx:id="configuration" mnemonicParsing="false" onAction="#onConfigurationToggle" prefWidth="150.0" text="%Restaurant.Configuration" textAlignment="CENTER">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </ToggleButton>
-            <ToggleButton fx:id="motion" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Motion" textAlignment="CENTER">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </ToggleButton>
-            <CheckBox fx:id="snapToGrid" mnemonicParsing="false" text="%Restaurant.SnapToGrid">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </CheckBox>
-            <Slider fx:id="setGridSize" max="50.0" min="1.0" prefWidth="180.0" value="10.0" />
-            <Label fx:id="getGridSize" alignment="CENTER_RIGHT" text="10 px">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-        </items>
-      </ToolBar>
+      <VBox layoutX="5.0" layoutY="35.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ToolBar layoutX="121.0" layoutY="30.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+              <items>
+                <Button fx:id="consumption" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Consumption" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="reservation" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Reservation" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <ToggleButton fx:id="configuration" mnemonicParsing="false" onAction="#onConfigurationToggle" prefWidth="150.0" text="%Restaurant.Configuration" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </ToggleButton>
+                  <ToggleButton fx:id="motion" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Motion" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </ToggleButton>
+                  <CheckBox fx:id="snapToGrid" mnemonicParsing="false" text="%Restaurant.SnapToGrid">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </CheckBox>
+                  <Slider fx:id="setGridSize" max="50.0" min="1.0" prefWidth="180.0" value="10.0" />
+                  <Label fx:id="getGridSize" alignment="CENTER_RIGHT" text="10 px">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+              </items>
+            </ToolBar>
+            <HBox prefHeight="30.0" prefWidth="1014.0">
+               <children>
+                  <HBox>
+                     <children>
+                        <ImageView fitHeight="29.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="openTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="/">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="totalTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="30.0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="28.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="totalGuests" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="/">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="totalCapacity" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="25.0" prefWidth="480.0">
+                     <children>
+                        <ImageView fitHeight="29.0" fitWidth="127.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="paidConsumption" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="currentConsumption" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="totalIncome" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
       <TabPane layoutX="5.0" layoutY="82.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
         <tabs>
           <Tab closable="false" onSelectionChanged="#onTablesSelected" style="-fx-font-size: 16;" text="%Restaurant.Tables">
