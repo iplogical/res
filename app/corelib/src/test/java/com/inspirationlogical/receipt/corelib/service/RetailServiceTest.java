@@ -75,10 +75,10 @@ public class RetailServiceTest {
         when(productView.getAdapter()).thenReturn(productAdapter);
         when(tableAdapter.getActiveReceipt()).thenReturn(receiptAdapter);
         //when
-        service.sellProduct(tableView, productView, 1, false);
+        service.sellProduct(tableView, productView, 1, false, false);
         //then
         verify(tableAdapter).getActiveReceipt();
-        verify(receiptAdapter).sellProduct(productAdapter, 1, false);
+        verify(receiptAdapter).sellProduct(productAdapter, 1, false, false);
     }
 
     @Test

@@ -22,8 +22,8 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     }
 
     @Override
-    public void sellProduct(TableView tableView, ProductView productView, int amount, boolean takeAway) {
-        getTableAdapter(tableView).getActiveReceipt().sellProduct(getProductAdapter(productView), amount, takeAway);
+    public void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {
+        getTableAdapter(tableView).getActiveReceipt().sellProduct(getProductAdapter(productView), amount, isTakeAway, isGift);
     }
 
     @Override

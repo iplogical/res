@@ -26,6 +26,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -57,6 +58,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     private Button sellAdHocProduct;
+
+    @FXML
+    private ToggleButton giftProduct;
 
     @FXML
     private Button backToRestaurantView;
@@ -119,7 +123,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void sellProduct(ProductView productView) {
-        retailService.sellProduct(tableView, productView, 1, saleViewState.isTakeAway());
+        retailService.sellProduct(tableView, productView, 1, saleViewState.isTakeAway(), saleViewState.isGift());
         soldProductsView = getSoldProducts(restaurantService, tableView);
         updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
     }
@@ -179,6 +183,11 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         adHocProductForm.show(root, 520, 200);
     }
 
+    @FXML
+    public void onGiftProduct(Event event) {
+        setGiftProduct();
+    }
+
     private void initializeCategories() {
         rootCategory = commonService.getRootProductCategory();
         selectedCategory = rootCategory.getChildrenCategories().get(0);
@@ -220,9 +229,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     private <T extends AbstractView> void drawElement(T elementView, GridPane grid, int index) {
-//        SaleElementController<T> elementController =
-//                getInjector().getInstance(SaleElementControllerImpl.class);
-//                getInjector().getInstance(SaleElementController.class);
 
         SaleElementController elementController = null;
 
@@ -290,5 +296,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         });
         viewLoader.loadView(elementController);
         categoriesGrid.add(elementController.getRootNode(), 3, 3);
+    }
+
+    private void setGiftProduct() {
+        saleViewState.setGift(giftProduct.isSelected());
     }
 }

@@ -175,6 +175,8 @@
             <RadioButton fx:id="takeAway" mnemonicParsing="false" onAction="#onTakeAwayToggled" text="%SaleView.TakeAway" />
             <Separator prefWidth="200.0" />
             <Button fx:id="sellAdHocProduct" mnemonicParsing="false" onAction="#onSellAdHocProduct" text="%SaleView.SellAdHocProduct" />
+            <Separator prefWidth="200.0" />
+            <ToggleButton fx:id="giftProduct" mnemonicParsing="false" onAction="#onGiftProduct" text="%SaleView.GiftProduct" />
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="300.0" />
             <Button fx:id="backToRestaurantView" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%SaleView.Back" />
             <Separator orientation="VERTICAL" prefHeight="200.0" />

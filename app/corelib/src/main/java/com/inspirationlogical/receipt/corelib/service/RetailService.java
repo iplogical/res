@@ -10,9 +10,9 @@ public interface RetailService {
 
     void openTable(TableView tableView);
 
-    void sellProduct(TableView tableView, ProductView productView, int amount, boolean takeAway);
+    void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift);
 
-    void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean takeAway);
+    void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean isTakeAway);
 
     void sellGameFee(TableView tableView, int quantity);
 

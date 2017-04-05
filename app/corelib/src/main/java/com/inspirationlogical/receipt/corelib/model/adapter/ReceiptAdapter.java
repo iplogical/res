@@ -52,7 +52,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         super(receipt);
     }
 
-    public void sellProduct(ProductAdapter productAdapter, int amount, boolean takeAway) {
+    public void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift) {
 
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
             Calendar calendar = Calendar.getInstance();
@@ -70,16 +70,15 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             }
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(productAdapter.getAdaptee())
-                    .type(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE)
+                    .type(isTakeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE)
                     .created(Calendar.getInstance())
                     .name(productAdapter.getAdaptee().getLongName())
                     .soldQuantity(amount)
                     .purchasePrice(productAdapter.getAdaptee().getPurchasePrice())
                     .salePrice(productAdapter.getAdaptee().getSalePrice())
-                    .VAT(VATAdapter.getVatByName(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
+                    .VAT(VATAdapter.getVatByName(isTakeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
                     .build();
-            // TODO: calculate discount based on the PriceModifiers.
-            record.setDiscountPercent(productAdapter.getCategoryAdapter().getDiscount(new ReceiptRecordAdapter(record)));
+            record.setDiscountPercent(isGift ? 100 : productAdapter.getCategoryAdapter().getDiscount(new ReceiptRecordAdapter(record)));
             applyDiscountOnRecordSalePrice(record);
             record.setOwner(adaptee);
             adaptee.getRecords().add(record);
