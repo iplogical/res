@@ -136,6 +136,12 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                 .collect(Collectors.toList());
     }
 
+    public Collection<ReceiptRecordAdapter> getSoldProductsNoRefresh() {
+        return adaptee.getRecords().stream()
+                .map(receiptRecord -> new ReceiptRecordAdapter(receiptRecord))
+                .collect(Collectors.toList());
+    }
+
     public void close(PaymentParams paymentParams){
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
             if(adaptee.getStatus() == ReceiptStatus.CLOSED) {
