@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.VERTICAL;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
@@ -160,6 +162,23 @@ public class TableAdapter extends AbstractAdapter<Table>
         });
     }
 
+    public int getPaidConsumptionOfTheDay() {
+        /// TODO: Replace this with the time of the previous closure.
+        Calendar previousClosure = Calendar.getInstance();
+        previousClosure.add(Calendar.HOUR, -1 * previousClosure.get(Calendar.HOUR));
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
+        Collection<ReceiptAdapter> adapters = adaptee.getReceipt()
+                .stream()
+                .filter(elem -> elem.getStatus().equals(ReceiptStatus.CLOSED))
+                .filter(elem -> elem.getClosureTime().after(previousClosure))
+                .map(elem -> new ReceiptAdapter(elem))
+                .collect(Collectors.toList());
+        if(adapters.size() == 0) {
+            return 0;
+        }
+        return adapters.stream().mapToInt(ReceiptAdapter::getTotalPrice).sum();
+    }
+
     private void bindReceiptToTable(ReceiptAdapter receiptAdapter) {
         receiptAdapter.getAdaptee().setOwner(adaptee);
         adaptee.getReceipt().add(receiptAdapter.getAdaptee());
@@ -168,4 +187,5 @@ public class TableAdapter extends AbstractAdapter<Table>
     protected boolean isTableOpen() {
         return this.getActiveReceipt() != null;
     }
+
 }

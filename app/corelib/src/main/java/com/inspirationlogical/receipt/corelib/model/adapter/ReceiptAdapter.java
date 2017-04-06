@@ -210,7 +210,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         return new ReceiptRecordAdapter(receiptRecord[0]);
     }
 
-    public long getTotalPrice() {
+    public int getTotalPrice() {
         GuardedTransaction.RunWithRefresh(adaptee, () -> {});
         return adaptee.getRecords().stream()
                 .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum();

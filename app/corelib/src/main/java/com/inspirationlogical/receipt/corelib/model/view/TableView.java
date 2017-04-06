@@ -24,6 +24,10 @@ public interface TableView extends AbstractView {
 
     int getTableCapacity();
 
+    int getTotalPrice();
+
+    int getPaidConsumptionOfTheDay();
+
     String getName();
 
     String getNote();

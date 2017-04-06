@@ -77,7 +77,7 @@ public class AbstractRetailControllerImpl {
 
     @FXML
     public void onBackToRestaurantView(Event event) {
-        restaurantController.updateTables();
+        restaurantController.updateRestaurant();
         viewLoader.loadViewIntoScene(restaurantController);
     }
 

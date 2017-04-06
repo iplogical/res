@@ -418,7 +418,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void backToRestaurantView() {
-        restaurantController.updateTables();
+        restaurantController.updateRestaurant();
         viewLoader.loadViewIntoScene(restaurantController);
     }
 

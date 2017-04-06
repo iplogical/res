@@ -180,7 +180,7 @@ public class TableControllerImpl implements TableController {
         restaurantService.setGuestCount(tableView, guestCount);
         restaurantService.addTableNote(tableView, note);
         tableSettingsForm.hide();
-        updateNode();
+        restaurantController.updateRestaurant();
     }
 
     @Override

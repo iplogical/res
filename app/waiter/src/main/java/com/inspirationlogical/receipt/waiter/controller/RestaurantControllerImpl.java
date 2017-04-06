@@ -109,10 +109,10 @@ public class RestaurantControllerImpl implements RestaurantController {
     Label totalCapacity;
 
     @FXML
-    Label paidConsumption;
+    Label currentConsumption;
 
     @FXML
-    Label totalConsumption;
+    Label paidConsumption;
 
     @FXML
     Label totalIncome;
@@ -243,6 +243,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             tableForm.hide();
 
             drawTable(tableView);
+            updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("TableAlreadyUsed") + tableNumber);
             initRestaurant();
@@ -270,6 +271,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             Node node = tableController.getRoot();
             addNodeToPane(node, isVirtual);
             tableController.updateNode();
+            updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("TableAlreadyUsed") + tableNumber);
             initRestaurant();
@@ -344,8 +346,9 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
-    public void updateTables() {
+    public void updateRestaurant() {
         tableControllers.forEach(TableController::updateNode);
+        updateRestaurantSummary();
     }
 
     @Override
@@ -416,6 +419,11 @@ public class RestaurantControllerImpl implements RestaurantController {
         totalCapacity.setText(String.valueOf(tableControllers.stream()
                         .filter(tableController -> !tableController.getView().isVirtual())
                         .mapToInt(controller -> controller.getView().getTableCapacity()).sum()));
-
+        currentConsumption.setText(String.valueOf(tableControllers.stream()
+                .filter(tableController -> tableController.getView().isOpen())
+                .mapToInt(tableController -> tableController.getView().getTotalPrice()).sum()));
+        paidConsumption.setText(String.valueOf(tableControllers.stream()
+                .mapToInt(tableController -> tableController.getView().getPaidConsumptionOfTheDay()).sum()));
+        totalIncome.setText(String.valueOf(Integer.valueOf(currentConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
     }
 }

@@ -51,6 +51,20 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     }
 
     @Override
+    public int getTotalPrice() {
+        if(adapter == null ) {
+            return 0;
+        }
+        return adapter.getActiveReceipt().getTotalPrice();
+    }
+
+    @Override
+    public int getPaidConsumptionOfTheDay() {
+        return adapter.getPaidConsumptionOfTheDay();
+    }
+
+
+    @Override
     public String getName() {
         return adapter.getAdaptee().getName();
     }
