@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,8 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -43,11 +41,9 @@ public @Data class Reservation extends AbstractEntity {
     private int tableNumber;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar startTime;
+    private LocalDateTime startTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar endTime;
+    private LocalDateTime endTime;
 
     @NotEmpty
     private String name;

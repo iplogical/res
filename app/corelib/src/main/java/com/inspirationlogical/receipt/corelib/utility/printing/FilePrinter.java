@@ -1,10 +1,11 @@
 package com.inspirationlogical.receipt.corelib.utility.printing;
 
+import static java.time.LocalDateTime.now;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.apache.commons.io.IOUtils;
@@ -25,7 +26,7 @@ public class FilePrinter implements Printer {
         File out = null;
         FileOutputStream outStream = null;
         try {
-            String filename = "receipt_" + LocalDateTime.now()
+            String filename = "receipt_" + now()
                     .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS")) + ".pdf";
             String path = Resources.CONFIG.getString("ReceiptOutDir") + File.separator + filename;
             new File(Resources.CONFIG.getString("ReceiptOutDir") ).mkdirs();

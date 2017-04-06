@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -18,8 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidOwner;
@@ -80,11 +78,9 @@ public @Data class Receipt extends AbstractEntity {
     private PaymentMethod paymentMethod;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar openTime;
+    private LocalDateTime openTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar closureTime;
+    private LocalDateTime closureTime;
 
     private int userCode;
 

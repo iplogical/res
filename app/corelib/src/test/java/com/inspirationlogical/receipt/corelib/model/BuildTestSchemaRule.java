@@ -3,12 +3,9 @@ package com.inspirationlogical.receipt.corelib.model;
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static java.time.LocalDateTime.now;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
 import javax.persistence.EntityManager;
 
@@ -688,8 +685,8 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("TestPriceModifier1")
                 .type(PriceModifierType.FUTURE_PRICE_MODIFICATION)
                 .period(PriceModifierRepeatPeriod.NO_REPETITION)
-                .startTime(new GregorianCalendar(2017, 1, 8, 16, 0))
-                .endTime(new GregorianCalendar(2017, 1, 8, 20, 20))
+                .startTime(LocalDateTime.of(2017, 1, 8, 16, 0))
+                .endTime(LocalDateTime.of(2017, 1, 8, 20, 20))
                 .build();
     }
 
@@ -698,8 +695,8 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("TestPriceModifier2")
                 .type(PriceModifierType.SIMPLE_DISCOUNT)
                 .period(PriceModifierRepeatPeriod.DAILY)
-                .startTime(new GregorianCalendar(2017, 2, 8, 16, 0))
-                .endTime(new GregorianCalendar(2020, 3, 8, 20, 20))
+                .startTime(LocalDateTime.of(2017, 2, 8, 16, 0))
+                .endTime(LocalDateTime.of(2020, 3, 8, 20, 20))
                 .discountPercent(33.333)
                 .quantityLimit(3)
                 .build();
@@ -710,8 +707,8 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("TestPriceModifier3")
                 .type(PriceModifierType.QUANTITY_DISCOUNT)
                 .period(PriceModifierRepeatPeriod.WEEKLY)
-                .startTime(new GregorianCalendar(2017, 2, 8, 16, 0))
-                .endTime(new GregorianCalendar(2017, 5, 8, 20, 20))
+                .startTime(LocalDateTime.of(2017, 2, 8, 16, 0))
+                .endTime(LocalDateTime.of(2017, 5, 8, 20, 20))
                 .build();
     }
 
@@ -721,8 +718,8 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("TestPriceModifier4")
                 .type(PriceModifierType.QUANTITY_DISCOUNT)
                 .period(PriceModifierRepeatPeriod.WEEKLY)
-                .startTime(new GregorianCalendar(2017, 2, 8, 16, 0))
-                .endTime(new GregorianCalendar(2020, 5, 8, 20, 20))
+                .startTime(LocalDateTime.of(2017, 2, 8, 16, 0))
+                .endTime(LocalDateTime.of(2020, 5, 8, 20, 20))
                 .discountPercent(33.333)
                 .quantityLimit(3)
                 .build();
@@ -778,7 +775,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
-                .openTime(new GregorianCalendar())
+                .openTime(LocalDateTime.now())
                 .discountPercent(10)
                 .client(buildDefaultClient())
                 .build();
@@ -789,8 +786,8 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.CLOSED)
                 .paymentMethod(PaymentMethod.CREDIT_CARD)
-                .openTime(new GregorianCalendar())
-                .closureTime(new GregorianCalendar())
+                .openTime(LocalDateTime.now())
+                .closureTime(LocalDateTime.now())
                 .client(buildDefaultClient())
                 .build();
     }
@@ -801,7 +798,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
-                .openTime(new GregorianCalendar())
+                .openTime(LocalDateTime.now())
                 .client(buildDefaultClient())
                 .build();
     }
@@ -811,8 +808,8 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.CLOSED)
                 .paymentMethod(PaymentMethod.CASH)
-                .openTime(new GregorianCalendar())
-                .closureTime(new GregorianCalendar())
+                .openTime(LocalDateTime.now())
+                .closureTime(LocalDateTime.now())
                 .discountPercent(20)
                 .client(buildDefaultClient())
                 .build();
@@ -824,8 +821,8 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.CLOSED)
                 .paymentMethod(PaymentMethod.CASH)
-                .openTime(new GregorianCalendar())
-                .closureTime(new GregorianCalendar())
+                .openTime(LocalDateTime.now())
+                .closureTime(LocalDateTime.now())
                 .discountPercent(0)
                 .client(buildDefaultClient())
                 .build();
@@ -836,7 +833,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(ReceiptType.PURCHASE)
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
-                .openTime(new GregorianCalendar())
+                .openTime(LocalDateTime.now())
                 .client(buildDefaultClient())
                 .build();
     }
@@ -845,8 +842,8 @@ public class BuildTestSchemaRule implements TestRule {
         receiptInventory = Receipt.builder()
                 .type(ReceiptType.INVENTORY)
                 .status(ReceiptStatus.CLOSED)
-                .openTime(new GregorianCalendar())
-                .closureTime(new GregorianCalendar())
+                .openTime(LocalDateTime.now())
+                .closureTime(LocalDateTime.now())
                 .client(buildDefaultClient())
                 .build();
     }
@@ -855,8 +852,8 @@ public class BuildTestSchemaRule implements TestRule {
         receiptDisposal = Receipt.builder()
                 .type(ReceiptType.DISPOSAL)
                 .status(ReceiptStatus.CLOSED)
-                .openTime(new GregorianCalendar())
-                .closureTime(new GregorianCalendar())
+                .openTime(LocalDateTime.now())
+                .closureTime(LocalDateTime.now())
                 .client(buildDefaultClient())
                 .build();
     }
@@ -866,8 +863,8 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(ReceiptType.OTHER)
                 .status(ReceiptStatus.CLOSED)
                 .paymentMethod(PaymentMethod.CASH)
-                .openTime(new GregorianCalendar())
-                .closureTime(new GregorianCalendar())
+                .openTime(LocalDateTime.now())
+                .closureTime(LocalDateTime.now())
                 .client(buildDefaultClient())
                 .build();
     }
@@ -888,7 +885,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .salePrice(440)
                 .purchasePrice(250)
                 .soldQuantity(1D)
-                .created(Calendar.getInstance())
+                .created(now())
                 .build();
     }
 
@@ -900,7 +897,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .soldQuantity(2D)
                 .salePrice(560)
                 .purchasePrice(300)
-                .created(Calendar.getInstance())
+                .created(now())
                 .build();
     }
 
@@ -909,7 +906,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("C")
                 .soldQuantity(1D)
                 .type(ReceiptRecordType.HERE)
-                .created(Calendar.getInstance())
+                .created(now())
                 .build();
     }
 
@@ -918,7 +915,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("D")
                 .soldQuantity(0.5)
                 .type(ReceiptRecordType.HERE)
-                .created(Calendar.getInstance())
+                .created(now())
                 .build();
     }
 
@@ -931,7 +928,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .salePrice(780)
                 .purchasePrice(350)
                 .soldQuantity(2D)
-                .created(Calendar.getInstance())
+                .created(now())
                 .build();
     }
 
@@ -943,7 +940,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .salePrice(4990)
                 .purchasePrice(2500)
                 .soldQuantity(2D)
-                .created(Calendar.getInstance())
+                .created(now())
                 .build();
     }
 
@@ -952,7 +949,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("E")
                 .soldQuantity(1)
                 .type(ReceiptRecordType.HERE)
-                .created(Calendar.getInstance())
+                .created(now())
                 .build();
     }
 
@@ -1080,8 +1077,8 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildReservationOne() {
         reservationOne = Reservation.builder()
                 .tableNumber(2)
-                .startTime(new GregorianCalendar(2017, 2, 8, 16, 0))
-                .endTime(new GregorianCalendar(2017, 2, 8, 20, 20))
+                .startTime(LocalDateTime.of(2017, 2, 8, 16, 0))
+                .endTime(LocalDateTime.of(2017, 2, 8, 20, 20))
                 .name("TestName1")
                 .note("TestNote1")
                 .build();
@@ -1090,8 +1087,8 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildReservationTwo() {
         reservationTwo = Reservation.builder()
                 .tableNumber(2)
-                .startTime(new GregorianCalendar(2017, 2, 12, 16, 0))
-                .endTime(new GregorianCalendar(2017, 2, 12, 20, 20))
+                .startTime(LocalDateTime.of(2017, 2, 12, 16, 0))
+                .endTime(LocalDateTime.of(2017, 2, 12, 20, 20))
                 .name("TestName2")
                 .note("TestNote2")
                 .build();

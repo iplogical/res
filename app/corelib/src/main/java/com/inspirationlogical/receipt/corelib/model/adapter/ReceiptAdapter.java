@@ -1,8 +1,9 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import java.util.Calendar;
+import static java.time.LocalDateTime.now;
+
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -35,7 +36,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                                         .type(type)
                                         .status(ReceiptStatus.OPEN)
                                         .paymentMethod(PaymentMethod.CASH)
-                                        .openTime(new GregorianCalendar())
+                                        .openTime(now())
                                         .VATSerie(VATSerieAdapter.vatSerieAdapterFactory().getAdaptee())
                                         .client(getDefaultClient())
                                         .build());
@@ -55,15 +56,15 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift) {
 
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.SECOND, -5);
+            LocalDateTime dateTime = now();
+            dateTime.plusSeconds(-5);
             List<ReceiptRecord> records = GuardedTransaction.RunNamedQuery(ReceiptRecord.GET_RECEIPTS_RECORDS_BY_TIMESTAMP,
-                    query -> {query.setParameter("created", calendar);
+                    query -> {query.setParameter("created", dateTime);
                               query.setParameter("name", productAdapter.getAdaptee().getLongName());
                               return query;});
             if(records.size() > 0) {
                 records.get(0).setSoldQuantity(records.get(0).getSoldQuantity() + 1);
-                records.get(0).setCreated(Calendar.getInstance());
+                records.get(0).setCreated(now());
                 records.get(0).setDiscountPercent(productAdapter.getCategoryAdapter().getDiscount(new ReceiptRecordAdapter(records.get(0))));
                 applyDiscountOnRecordSalePrice(records.get(0));
                 return;
@@ -71,7 +72,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(productAdapter.getAdaptee())
                     .type(isTakeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE)
-                    .created(Calendar.getInstance())
+                    .created(now())
                     .name(productAdapter.getAdaptee().getLongName())
                     .soldQuantity(amount)
                     .purchasePrice(productAdapter.getAdaptee().getPurchasePrice())
@@ -96,7 +97,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(adHocProduct.getAdaptee())
                     .type(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE)
-                    .created(new GregorianCalendar())
+                    .created(now())
                     .name(adHocProductParams.getName())
                     .soldQuantity(adHocProductParams.getQuantity())
                     .purchasePrice(adHocProductParams.getPurchasePrice())
@@ -115,7 +116,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(gameFeeProduct.getAdaptee())
                     .type(ReceiptRecordType.HERE)
-                    .created(new GregorianCalendar())
+                    .created(now())
                     .name(gameFeeProduct.getAdaptee().getLongName())
                     .soldQuantity(quantity)
                     .purchasePrice(gameFeeProduct.getAdaptee().getPurchasePrice())
@@ -147,7 +148,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                 throw new IllegalReceiptStateException("Close operation is illegal for a CLOSED receipt");
             }
             adaptee.setStatus(ReceiptStatus.CLOSED);
-            adaptee.setClosureTime(Calendar.getInstance());
+            adaptee.setClosureTime(now());
             adaptee.setSumPurchaseGrossPrice((int)adaptee.getRecords().stream()
                     .mapToDouble(ReceiptAdapter::calculatePurchaseGrossPrice).sum());
             adaptee.setSumPurchaseNetPrice((int)adaptee.getRecords().stream()
@@ -197,7 +198,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                     .owner(this.getAdaptee())
                     .product(record.getAdaptee().getProduct())
                     .type(record.getAdaptee().getType())
-                    .created(Calendar.getInstance())
+                    .created(now())
                     .name(record.getAdaptee().getName())
                     .soldQuantity(amount)
                     .purchasePrice(record.getAdaptee().getPurchasePrice())

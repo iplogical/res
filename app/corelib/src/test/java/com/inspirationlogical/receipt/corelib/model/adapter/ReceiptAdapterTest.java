@@ -2,10 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
+import java.time.LocalDateTime;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -13,13 +10,9 @@ import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
 import com.inspirationlogical.receipt.corelib.service.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 
@@ -130,7 +123,7 @@ public class ReceiptAdapterTest {
         GuardedTransaction.RunWithRefresh(receiptAdapter.getAdaptee(),
                 () -> {
             schema.getReceiptSaleOne().setStatus(ReceiptStatus.CLOSED);
-                    schema.getReceiptSaleOne().setClosureTime(Calendar.getInstance());
+                    schema.getReceiptSaleOne().setClosureTime(LocalDateTime.now());
         });
         receiptAdapter.close(paymentParams);
         assertEquals(850, receiptAdapter.getAdaptee().getSumPurchaseGrossPrice());

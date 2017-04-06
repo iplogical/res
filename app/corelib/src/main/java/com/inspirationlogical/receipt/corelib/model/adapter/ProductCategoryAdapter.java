@@ -1,7 +1,9 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static java.time.LocalDateTime.now;
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,8 +15,6 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-
-import static java.util.stream.Collectors.toList;
 
 public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 {
@@ -95,8 +95,8 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         do {
             List<PriceModifierAdapter> loopPriceModifiers = category.getPriceModifier().stream()
                     .filter(priceModifier -> priceModifier.getOwner().equals(adaptee))
-                    .filter(priceModifier -> priceModifier.getStartTime().before(Calendar.getInstance()))
-                    .filter(priceModifier -> priceModifier.getEndTime().after(Calendar.getInstance()))
+                    .filter(priceModifier -> priceModifier.getStartTime().isBefore(now()))
+                    .filter(priceModifier -> priceModifier.getEndTime().isAfter(now()))
                     .map(priceModifier -> new PriceModifierAdapter(priceModifier))
                     .collect(toList());
             category = category.getParent();

@@ -3,7 +3,7 @@ package com.inspirationlogical.receipt.corelib.model.entity;
 import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_RECEIPTS;
 import static org.junit.Assert.assertEquals;
 
-import java.util.GregorianCalendar;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.RollbackException;
 
@@ -106,7 +106,7 @@ public class ReceiptTest {
     @Test(expected = RollbackException.class)
     public void openReceiptWithClosureTime() {
             GuardedTransaction.Run(()->
-                    schema.getReceiptSaleOne().setClosureTime(new GregorianCalendar()));
+                    schema.getReceiptSaleOne().setClosureTime(LocalDateTime.now()));
     }
 
     @Test(expected = RollbackException.class)

@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.file.Paths;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -68,8 +69,7 @@ public class ReceiptToXML {
         //TODO: get active note from Entity and set only if present
         footer.setNote("Árvíztűrő tükörfúrógép!");
         footer.setGreet(Resources.PRINTER.getString("Greet"));
-        GregorianCalendar gc = new GregorianCalendar();
-        gc.setTimeInMillis(receiptAdapter.getAdaptee().getClosureTime().getTimeInMillis());
+        GregorianCalendar gc = GregorianCalendar.from(receiptAdapter.getAdaptee().getClosureTime().atZone(ZoneId.systemDefault()));
         footer.setDatetime(new XMLGregorianCalendarImpl(gc));
         footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag")+":"+receiptAdapter.getAdaptee().getId().toString());
         //TODO: get vendor info from resource file, version from git tag

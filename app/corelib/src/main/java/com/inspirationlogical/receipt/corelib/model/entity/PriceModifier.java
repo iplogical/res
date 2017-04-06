@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,8 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -60,12 +58,10 @@ public @Data class PriceModifier extends AbstractEntity {
     private int periodMultiplier;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar startTime;
+    private LocalDateTime startTime;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar endTime;
+    private LocalDateTime endTime;
 
     private int quantityLimit;
 

@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,8 +16,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
@@ -78,8 +76,7 @@ public @Data class ReceiptRecord extends AbstractEntity {
     private double discountPercent;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar created;
+    private LocalDateTime created;
 
     @Tolerate
     ReceiptRecord(){}
