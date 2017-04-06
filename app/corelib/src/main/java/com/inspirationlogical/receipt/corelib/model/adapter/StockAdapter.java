@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import java.util.Comparator;
 import java.util.List;
-import javax.persistence.EntityManager;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Stock;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
@@ -17,10 +16,9 @@ public class StockAdapter extends AbstractAdapter<Stock> {
         super(adaptee);
     }
 
-    public static List<StockAdapter> getItems(EntityManager manager) {
-        return ((List<Stock>) manager.createNamedQuery(Stock.STOCK_GET_ITEMS).getResultList())
-                .stream()
-                .map(stock -> new StockAdapter(stock))
+    public static List<StockAdapter> getItems() {
+        return ProductCategoryAdapter.getRootCategory(EntityManagerProvider.getEntityManager()).getAllStorableProducts().stream()
+                .map(productAdapter -> getLatestItemByProduct(productAdapter))
                 .collect(toList());
     }
 

@@ -52,6 +52,6 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public List<StockView> getStockItems() {
-        return createStockViews(StockAdapter.getItems(manager));
+        return createStockViews(StockAdapter.getItems());
     }
 }
