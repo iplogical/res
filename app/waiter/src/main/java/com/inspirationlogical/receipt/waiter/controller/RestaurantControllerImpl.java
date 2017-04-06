@@ -406,6 +406,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void updateRestaurantSummary() {
+        // TODO: Icons for the ImageViews.
         totalTableNumber.setText(String.valueOf(tableControllers.stream()
                         .filter(tableController -> !tableController.getView().isVirtual())
                         .count()));

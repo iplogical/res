@@ -41,12 +41,6 @@ public class PriceModifierTest {
     }
 
     @Test(expected = RollbackException.class)
-    public void noStatus() {
-        GuardedTransaction.Run(()->
-                schema.getPriceModifierOne().setStatus(null));
-    }
-
-    @Test(expected = RollbackException.class)
     public void noRepeatPeriod() {
         GuardedTransaction.Run(()->
                 schema.getPriceModifierOne().setPeriod(null));
@@ -62,12 +56,6 @@ public class PriceModifierTest {
     public void noEndTime() {
         GuardedTransaction.Run(()->
                 schema.getPriceModifierOne().setEndTime(null));
-    }
-
-    @Test(expected = RollbackException.class)
-    public void noLimitType() {
-        GuardedTransaction.Run(()->
-                schema.getPriceModifierOne().setLimitType(null));
     }
 
     private List<PriceModifier> getPriceModifiers() {

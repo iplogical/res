@@ -1,15 +1,14 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
-import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
@@ -83,14 +82,15 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     }
 
     public double getDiscount(ReceiptRecordAdapter receiptRecordAdapter) {
-        // TODO: PriceModifierStatus should be calculated or the start and end date should be used in the filter.
+        // TODO: Implement filter for DAILY and WEEKLY repeating PriceModifiers.
         GuardedTransaction.RunWithRefresh(adaptee, () -> {});
         ProductCategory category = adaptee;
         List<PriceModifierAdapter> priceModifiers = new ArrayList<>();
         do {
             List<PriceModifierAdapter> loopPriceModifiers = category.getPriceModifier().stream()
                     .filter(priceModifier -> priceModifier.getOwner().equals(adaptee))
-                    .filter(priceModifier -> priceModifier.getStatus().equals(PriceModifierStatus.ACTUAL))
+                    .filter(priceModifier -> priceModifier.getStartTime().before(Calendar.getInstance()))
+                    .filter(priceModifier -> priceModifier.getEndTime().after(Calendar.getInstance()))
                     .map(priceModifier -> new PriceModifierAdapter(priceModifier))
                     .collect(toList());
             category = category.getParent();

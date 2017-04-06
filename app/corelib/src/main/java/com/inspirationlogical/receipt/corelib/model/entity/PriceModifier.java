@@ -19,9 +19,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierLimitType;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
 
 import lombok.Builder;
@@ -57,10 +55,6 @@ public @Data class PriceModifier extends AbstractEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private PriceModifierStatus status;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
     private PriceModifierRepeatPeriod period;
 
     private int periodMultiplier;
@@ -76,10 +70,6 @@ public @Data class PriceModifier extends AbstractEntity {
     private int quantityLimit;
 
     private int valueLimit;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private PriceModifierLimitType limitType;
 
     private double discountPercent;
 

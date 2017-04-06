@@ -31,9 +31,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.VAT;
 import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
 import com.inspirationlogical.receipt.corelib.model.enums.EtalonQuantity;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierLimitType;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
@@ -687,11 +685,9 @@ public class BuildTestSchemaRule implements TestRule {
         priceModifierOne = PriceModifier.builder()
                 .name("TestPriceModifier1")
                 .type(PriceModifierType.FUTURE_PRICE_MODIFICATION)
-                .status(PriceModifierStatus.PAST)
                 .period(PriceModifierRepeatPeriod.NO_REPETITION)
                 .startTime(new GregorianCalendar(2017, 1, 8, 16, 0))
                 .endTime(new GregorianCalendar(2017, 1, 8, 20, 20))
-                .limitType(PriceModifierLimitType.NONE)
                 .build();
     }
 
@@ -699,11 +695,9 @@ public class BuildTestSchemaRule implements TestRule {
         priceModifierTwo = PriceModifier.builder()
                 .name("TestPriceModifier2")
                 .type(PriceModifierType.SIMPLE_DISCOUNT)
-                .status(PriceModifierStatus.ACTUAL)
                 .period(PriceModifierRepeatPeriod.DAILY)
                 .startTime(new GregorianCalendar(2017, 2, 8, 16, 0))
-                .endTime(new GregorianCalendar(2017, 3, 8, 20, 20))
-                .limitType(PriceModifierLimitType.EXACT)
+                .endTime(new GregorianCalendar(2020, 3, 8, 20, 20))
                 .discountPercent(33.333)
                 .quantityLimit(3)
                 .build();
@@ -713,11 +707,9 @@ public class BuildTestSchemaRule implements TestRule {
         priceModifierThree = PriceModifier.builder()
                 .name("TestPriceModifier3")
                 .type(PriceModifierType.QUANTITY_DISCOUNT)
-                .status(PriceModifierStatus.FUTURE)
                 .period(PriceModifierRepeatPeriod.WEEKLY)
-                .startTime(new GregorianCalendar(2017, 3, 8, 16, 0))
+                .startTime(new GregorianCalendar(2017, 2, 8, 16, 0))
                 .endTime(new GregorianCalendar(2017, 5, 8, 20, 20))
-                .limitType(PriceModifierLimitType.EXACT)
                 .build();
     }
 
@@ -726,11 +718,9 @@ public class BuildTestSchemaRule implements TestRule {
         priceModifierFour = PriceModifier.builder()
                 .name("TestPriceModifier4")
                 .type(PriceModifierType.QUANTITY_DISCOUNT)
-                .status(PriceModifierStatus.ACTUAL)
                 .period(PriceModifierRepeatPeriod.WEEKLY)
-                .startTime(new GregorianCalendar(2017, 3, 8, 16, 0))
-                .endTime(new GregorianCalendar(2017, 5, 8, 20, 20))
-                .limitType(PriceModifierLimitType.EXACT)
+                .startTime(new GregorianCalendar(2017, 2, 8, 16, 0))
+                .endTime(new GregorianCalendar(2020, 5, 8, 20, 20))
                 .discountPercent(33.333)
                 .quantityLimit(3)
                 .build();
