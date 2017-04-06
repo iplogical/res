@@ -31,20 +31,33 @@ public class StockAdapter extends AbstractAdapter<Stock> {
         return stockList.stream()
                 .map(stock -> new StockAdapter(stock))
                 .max(Comparator.comparing(stockAdapter -> stockAdapter.getAdaptee().getDate()))
-                .orElseGet(() -> createStockEntry(productAdapter));
+                .orElseGet(() -> createStockEntry(productAdapter, 50));
     }
 
-    private static StockAdapter createStockEntry(ProductAdapter productAdapter) {
+    public static void closeLatestStockEntries() {
+        ProductCategoryAdapter.getRootCategory(EntityManagerProvider.getEntityManager()).getAllStorableProducts().forEach(productAdapter ->
+                {
+                    StockAdapter stock = getLatestItemByProduct(productAdapter);
+                    createStockEntry(productAdapter, getInitialQuantity(stock));
+                }
+        );
+    }
+
+    private static StockAdapter createStockEntry(ProductAdapter productAdapter, double initialQuantity) {
         GuardedTransaction.RunWithRefresh(productAdapter.getAdaptee(), () -> {});
             Stock stock = Stock.builder()
                     .owner(productAdapter.getAdaptee())
-                    .initialQuantity(50)
+                    .initialQuantity(initialQuantity)
                     .soldQuantity(0)
                     .purchasedQuantity(0)
                     .date(now())
                     .build();
         GuardedTransaction.Persist(stock);
         return new StockAdapter(stock);
+    }
+
+    private static double getInitialQuantity(StockAdapter stock) {
+        return stock.getAdaptee().getInitialQuantity() - stock.getAdaptee().getSoldQuantity() + stock.getAdaptee().getPurchasedQuantity();
     }
 
     public void updateStockAdapter(double quantity, ReceiptType type) {
@@ -70,5 +83,4 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     private void increaseStock(double quantity) {
         adaptee.setPurchasedQuantity(adaptee.getPurchasedQuantity() + quantity);
     }
-
 }

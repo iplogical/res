@@ -20,12 +20,12 @@ public class StockAdapterTest {
 
     @Before
     public void setUp() {
-        productAdapter = new ProductAdapter(schema.getProductOne());
+        productAdapter = new ProductAdapter(schema.getProductFour());
         stock = StockAdapter.getLatestItemByProduct(productAdapter);
     }
     @Test
     public void testGetLatestItemByProduct() {
-        assertEquals(50, stock.getAdaptee().getInitialQuantity(), 0.01);
+        assertEquals(20, stock.getAdaptee().getInitialQuantity(), 0.01);
     }
 
     @Test
@@ -63,5 +63,12 @@ public class StockAdapterTest {
         stock.updateStockAdapter(5, ReceiptType.OTHER);
         assertEquals(0, stock.getAdaptee().getSoldQuantity(), 0.01);
         assertEquals(0, stock.getAdaptee().getPurchasedQuantity(), 0.01);
+    }
+
+    @Test
+    public void testCloseLatestStockEntries() {
+        StockAdapter.closeLatestStockEntries();
+        stock = StockAdapter.getLatestItemByProduct(productAdapter);
+        assertEquals(-20, stock.getAdaptee().getInitialQuantity(), 0.01);
     }
 }

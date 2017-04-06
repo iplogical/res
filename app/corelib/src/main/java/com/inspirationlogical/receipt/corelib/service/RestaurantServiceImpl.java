@@ -6,10 +6,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.*;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
@@ -165,5 +162,10 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
                 query -> query.setParameter("number", aggregate.getTableNumber()));
 
         aggregateTableAdapter.setAdaptee(tables.get(0));
+    }
+
+    @Override
+    public void closeDay() {
+        StockAdapter.closeLatestStockEntries();
     }
 }

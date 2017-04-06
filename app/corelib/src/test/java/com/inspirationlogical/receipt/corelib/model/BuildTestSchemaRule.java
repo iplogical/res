@@ -3,6 +3,8 @@ package com.inspirationlogical.receipt.corelib.model;
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static java.time.LocalDateTime.now;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
@@ -749,25 +751,25 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void buildStockOne() {
         stockOne = Stock.builder()
-                .initialQuantity(50)
+                .initialQuantity(60)
                 .soldQuantity(20)
-                .date(now())
+                .date(LocalDateTime.of(2017, 2, 6, 20, 0))
                 .build();
     }
 
     private void buildStockTwo() {
         stockTwo = Stock.builder()
-                .initialQuantity(60)
+                .initialQuantity(40)
                 .soldQuantity(30)
-                .date(now())
+                .date(LocalDateTime.of(2017, 2, 7, 20, 0))
                 .build();
     }
 
     private void BuildStockThree() {
         stockThree = Stock.builder()
-                .initialQuantity(70)
+                .initialQuantity(20)
                 .soldQuantity(40)
-                .date(now())
+                .date(LocalDateTime.of(2017, 2, 8, 20, 0))
                 .build();
     }
 

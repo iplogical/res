@@ -34,6 +34,7 @@ import com.inspirationlogical.receipt.waiter.builder.RestaurantContextMenuBuilde
 import com.inspirationlogical.receipt.waiter.builder.TableContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.exception.ViewNotFoundException;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
+import com.inspirationlogical.receipt.waiter.utility.ConfirmMessage;
 import com.inspirationlogical.receipt.waiter.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 
@@ -42,12 +43,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
@@ -148,6 +144,11 @@ public class RestaurantControllerImpl implements RestaurantController {
         if (!configuration.isSelected()) {
             selectedTables.forEach(TableController::deselectTable);
         }
+    }
+
+    @FXML
+    public void onDailyClosure(Event event) {
+        ConfirmMessage.showConfirmDialog(Resources.UI.getString("Restaurant.DailyClosureConfirm"), () -> restaurantService.closeDay());
     }
 
     @FXML

@@ -165,6 +165,7 @@
                   <CheckBox fx:id="snapToGrid" mnemonicParsing="false" text="%Restaurant.SnapToGrid" />
                   <Slider fx:id="setGridSize" max="50.0" min="1.0" prefWidth="180.0" value="10.0" />
                   <Label fx:id="getGridSize" alignment="CENTER_RIGHT" text="10 px" />
+                  <Button fx:id="dailyClosure" mnemonicParsing="false" onAction="#onDailyClosure" text="%Restaurant.DailyClosure" />
                </children>
             </VBox>
          </right>

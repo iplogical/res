@@ -65,6 +65,12 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .collect(Collectors.toList());
     }
 
+    public List<ProductAdapter> getAllStorableProducts() {
+        return getAllActiveProducts().stream()
+                .filter(productAdapter -> !productAdapter.getAdaptee().getRecipe().equals(null))
+                .collect(Collectors.toList());
+    }
+
     public Collection<ProductCategoryAdapter> getChildrenCategories() {
         GuardedTransaction.RunWithRefresh(adaptee, () -> {});
         return adaptee.getChildren().stream()

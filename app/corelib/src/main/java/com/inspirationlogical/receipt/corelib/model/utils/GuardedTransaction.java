@@ -15,11 +15,6 @@ public class GuardedTransaction {
 
     private static EntityManager manager = EntityManagerProvider.getEntityManager();
 
-    @FunctionalInterface
-    public interface Functor{
-        void doIt();
-    }
-
     /**
      * A Guarded transaction will execute the functor inside a transaction
      * If the current manager's transaction is already in progress it will just execute the functor
