@@ -178,8 +178,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         restaurantViewState.getMotionViewState().setGridSizeProperty(setGridSize.valueProperty());
         snapToGrid.disableProperty().bind(motion.selectedProperty().not());
         setGridSize.disableProperty().bind(motion.selectedProperty().not());
-        getGridSize.disableProperty().bind(motion.selectedProperty().not());
-        getGridSize.textProperty().bind(Bindings.format("%.0f px", setGridSize.valueProperty()));
+        getGridSize.textProperty().bind(Bindings.format("%.0f", setGridSize.valueProperty()));
         setGridSize.setValue(10);
     }
 

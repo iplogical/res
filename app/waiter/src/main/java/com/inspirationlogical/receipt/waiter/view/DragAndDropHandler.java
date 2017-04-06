@@ -73,6 +73,7 @@ public class DragAndDropHandler {
     }
 
     private static long snapToGrid(double value, int gridSize) {
+        if (gridSize == 0) gridSize++;
         return Math.round(value / gridSize) * gridSize;
     }
 }

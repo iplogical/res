@@ -21,7 +21,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane layoutX="-261.0" layoutY="-133.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -102,7 +101,7 @@
                                        <children>
                                       <AnchorPane fx:id="tablesTab" maxHeight="660.0" maxWidth="1014.0">
                                              <children>
-                                                <ImageView fx:id="layoutImage" fitWidth="1014.0" preserveRatio="true" AnchorPane.topAnchor="-110.0">
+                                                <ImageView fx:id="layoutImage" fitWidth="1014.0" preserveRatio="true" AnchorPane.leftAnchor="-50.0" AnchorPane.topAnchor="-85.0">
                                                    <image>
                                                       <Image url="@../../images/game_up_layout.png" />
                                                    </image>
@@ -153,20 +152,83 @@
                <font>
                   <Font size="16.0" />
                </font>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </Label>
          </top>
          <right>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" spacing="5.0" BorderPane.alignment="CENTER">
                <children>
-                <Button fx:id="consumption" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Consumption" textAlignment="CENTER" />
-                  <Button fx:id="reservation" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Reservation" textAlignment="CENTER" />
-                  <ToggleButton fx:id="configuration" mnemonicParsing="false" onAction="#onConfigurationToggle" prefWidth="150.0" text="%Restaurant.Configuration" textAlignment="CENTER" />
-                  <ToggleButton fx:id="motion" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Motion" textAlignment="CENTER" />
-                  <CheckBox fx:id="snapToGrid" mnemonicParsing="false" text="%Restaurant.SnapToGrid" />
-                  <Slider fx:id="setGridSize" max="50.0" min="1.0" prefWidth="180.0" value="10.0" />
-                  <Label fx:id="getGridSize" alignment="CENTER_RIGHT" text="10 px" />
-                  <Button fx:id="dailyClosure" mnemonicParsing="false" onAction="#onDailyClosure" text="%Restaurant.DailyClosure" />
+                  <Button fx:id="reservation" mnemonicParsing="false" prefWidth="100.0" style="-fx-line-spacing: -5;" text="%Restaurant.Reservation" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Button>
+                <Button fx:id="consumption" mnemonicParsing="false" prefWidth="100.0" style="-fx-line-spacing: -5;" text="%Restaurant.Consumption" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Button>
+                  <Button fx:id="dailyClosure" mnemonicParsing="false" onAction="#onDailyClosure" prefWidth="100.0" style="-fx-line-spacing: -5;" text="%Restaurant.DailyClosure" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Button>
+                  <Separator />
+                  <ToggleButton fx:id="configuration" mnemonicParsing="false" onAction="#onConfigurationToggle" prefWidth="100.0" style="-fx-line-spacing: -5;" text="%Restaurant.Configuration" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font></ToggleButton>
+                  <ToggleButton fx:id="motion" mnemonicParsing="false" prefWidth="100.0" style="-fx-line-spacing: -5;" text="%Restaurant.Motion" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font></ToggleButton>
+                  <CheckBox fx:id="snapToGrid" alignment="CENTER" mnemonicParsing="false" prefWidth="100.0" selected="true" style="-fx-line-spacing: -5;" text="%Restaurant.SnapToGrid" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="-5.0" />
+                     </VBox.margin></CheckBox>
+                  <Label fx:id="getGridSize1" alignment="CENTER" prefWidth="100.0" text="%Restaurant.GridSize" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="-5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox alignment="CENTER" prefWidth="100.0">
+                     <children>
+                        <Label fx:id="getGridSize" alignment="CENTER_RIGHT" text="10" textAlignment="CENTER">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="getGridSize11" text="%Restaurant.GridUnit" textAlignment="CENTER">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="-10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Slider fx:id="setGridSize" blockIncrement="5.0" max="50.0" minorTickCount="5" prefWidth="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></Slider>
+                  <Separator>
+                     <VBox.margin>
+                        <Insets top="-5.0" />
+                     </VBox.margin>
+                  </Separator>
                </children>
+               <padding>
+                  <Insets left="5.0" top="5.0" />
+               </padding>
             </VBox>
          </right>
       </BorderPane>
