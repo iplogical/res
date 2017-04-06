@@ -1,5 +1,8 @@
 package com.inspirationlogical.receipt.manager.application;
 
+import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.APP_HEIGHT;
+import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.APP_TITLE;
+import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.APP_WIDTH;
 import static com.inspirationlogical.receipt.manager.registry.ManagerRegistry.getInstance;
 
 import com.inspirationlogical.receipt.corelib.frontend.application.MainStage;
@@ -16,16 +19,12 @@ import javafx.stage.Stage;
 
 public class ManagerApp extends Application implements StageProvider {
 
-    private static final String APP_TITLE = "Receipt";
-    public static final int APP_WIDTH = 1024;
-    public static final int APP_HEIGHT = 768;
-
-    private static Stage stage;
+    private Stage stage;
 
     @Override
     public void start(Stage stage) {
         MainStage.setProvider(this);
-        ManagerApp.stage = stage;
+        this.stage = stage;
         ViewLoader viewLoader = getInstance(ViewLoader.class);
         Parent root = (Parent) viewLoader.loadView(getInstance(GoodsController.class));
         stage.setTitle(APP_TITLE);
@@ -45,7 +44,7 @@ public class ManagerApp extends Application implements StageProvider {
 
     @Override
     public Stage getStage() {
-        return ManagerApp.stage;
+        return stage;
     }
 }
 

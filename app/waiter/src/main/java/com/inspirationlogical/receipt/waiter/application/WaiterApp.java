@@ -1,5 +1,8 @@
 package com.inspirationlogical.receipt.waiter.application;
 
+import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.APP_HEIGHT;
+import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.APP_TITLE;
+import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.APP_WIDTH;
 import static com.inspirationlogical.receipt.waiter.registry.WaiterRegistry.getInstance;
 
 import com.inspirationlogical.receipt.corelib.frontend.application.MainStage;
@@ -15,10 +18,6 @@ import javafx.stage.Stage;
 
 
 public class WaiterApp extends Application implements StageProvider {
-
-    private static final String APP_TITLE = "Receipt";
-    public static final int APP_WIDTH = 1024;
-    public static final int APP_HEIGHT = 768;
 
     private Stage stage;
 
