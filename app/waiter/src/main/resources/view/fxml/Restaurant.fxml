@@ -21,169 +21,154 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%Restaurant.Title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <VBox layoutX="5.0" layoutY="35.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <ToolBar layoutX="121.0" layoutY="30.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
-              <items>
-                <Button fx:id="consumption" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Consumption" textAlignment="CENTER">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="reservation" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Reservation" textAlignment="CENTER">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Button>
-                  <ToggleButton fx:id="configuration" mnemonicParsing="false" onAction="#onConfigurationToggle" prefWidth="150.0" text="%Restaurant.Configuration" textAlignment="CENTER">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </ToggleButton>
-                  <ToggleButton fx:id="motion" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Motion" textAlignment="CENTER">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </ToggleButton>
-                  <CheckBox fx:id="snapToGrid" mnemonicParsing="false" text="%Restaurant.SnapToGrid">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </CheckBox>
-                  <Slider fx:id="setGridSize" max="50.0" min="1.0" prefWidth="180.0" value="10.0" />
-                  <Label fx:id="getGridSize" alignment="CENTER_RIGHT" text="10 px">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-              </items>
-            </ToolBar>
-            <HBox prefHeight="30.0" prefWidth="1014.0">
+      <BorderPane layoutX="-261.0" layoutY="-133.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <VBox BorderPane.alignment="CENTER">
                <children>
-                  <HBox>
+                  <HBox prefHeight="30.0" prefWidth="1014.0">
                      <children>
-                        <ImageView fitHeight="29.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="openTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="/">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="totalTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="30.0">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
+                        <HBox>
+                           <children>
+                              <ImageView fitHeight="29.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true" />
+                              <Label fx:id="openTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" contentDisplay="CENTER" text="/">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="totalTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="30.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fitHeight="28.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true" />
+                              <Label fx:id="totalGuests" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" contentDisplay="CENTER" text="/">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="totalCapacity" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="25.0" prefWidth="480.0">
+                           <children>
+                              <ImageView fitHeight="29.0" fitWidth="127.0" pickOnBounds="true" preserveRatio="true" />
+                              <Label fx:id="currentConsumption" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="paidConsumption" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="totalIncome" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
                      </children>
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <ImageView fitHeight="28.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="totalGuests" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="/">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="totalCapacity" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="25.0" prefWidth="480.0">
-                     <children>
-                        <ImageView fitHeight="29.0" fitWidth="127.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="paidConsumption" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="currentConsumption" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="totalIncome" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
+                  <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab closable="false" onSelectionChanged="#onTablesSelected" style="-fx-font-size: 16;" text="%Restaurant.Tables">
+                           <content>
+                              <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
+                                 <children>
+                                    <StackPane alignment="TOP_CENTER">
+                                       <children>
+                                      <AnchorPane fx:id="tablesTab" maxHeight="660.0" maxWidth="1014.0">
+                                             <children>
+                                                <ImageView fx:id="layoutImage" fitWidth="1014.0" preserveRatio="true" AnchorPane.topAnchor="-110.0">
+                                                   <image>
+                                                      <Image url="@../../images/game_up_layout.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Label fx:id="tablesLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <graphic>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                                                   </graphic>
+                                                </Label>
+                                             </children>
+                                          </AnchorPane>
+                                          <Pane maxHeight="5.0" prefHeight="5.0" style="-fx-background-color: #efefef;" />
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </VBox>
+                           </content>
+                      </Tab>
+                      <Tab closable="false" onSelectionChanged="#onVirtualSelected" style="-fx-font-size: 16;" text="%Restaurant.Virtual">
+                           <content>
+                              <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
+                                 <children>
+                                    <StackPane alignment="TOP_CENTER">
+                                       <children>
+                                          <AnchorPane fx:id="virtualTab" maxHeight="660.0" maxWidth="1014.0">
+                                             <children>
+                                                <Label fx:id="virtualLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <graphic>
+                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                                                   </graphic>
+                                                </Label>
+                                             </children>
+                                          </AnchorPane>
+                                          <Pane maxHeight="5.0" prefHeight="5.0" style="-fx-background-color: #efefef;" />
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </VBox>
+                           </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
                </children>
-            </HBox>
-         </children>
-      </VBox>
-      <TabPane layoutX="5.0" layoutY="82.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
-        <tabs>
-          <Tab closable="false" onSelectionChanged="#onTablesSelected" style="-fx-font-size: 16;" text="%Restaurant.Tables">
-               <content>
-                  <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
-                     <children>
-                        <StackPane alignment="TOP_CENTER">
-                           <children>
-                          <AnchorPane fx:id="tablesTab" maxHeight="660.0" maxWidth="1014.0">
-                                 <children>
-                                    <ImageView fx:id="layoutImage" fitWidth="1014.0" preserveRatio="true" AnchorPane.topAnchor="-110.0">
-                                       <image>
-                                          <Image url="@../../images/game_up_layout.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="tablesLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <graphic>
-                                          <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                       </graphic>
-                                    </Label>
-                                 </children>
-                              </AnchorPane>
-                              <Pane maxHeight="5.0" prefHeight="5.0" style="-fx-background-color: #efefef;" />
-                           </children>
-                        </StackPane>
-                     </children>
-                  </VBox>
-               </content>
-          </Tab>
-          <Tab closable="false" onSelectionChanged="#onVirtualSelected" style="-fx-font-size: 16;" text="%Restaurant.Virtual">
-               <content>
-                  <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
-                     <children>
-                        <StackPane alignment="TOP_CENTER">
-                           <children>
-                              <AnchorPane fx:id="virtualTab" maxHeight="660.0" maxWidth="1014.0">
-                                 <children>
-                                    <Label fx:id="virtualLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <graphic>
-                                          <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                       </graphic>
-                                    </Label>
-                                 </children>
-                              </AnchorPane>
-                              <Pane maxHeight="5.0" prefHeight="5.0" style="-fx-background-color: #efefef;" />
-                           </children>
-                        </StackPane>
-                     </children>
-                  </VBox>
-               </content>
-          </Tab>
-        </tabs>
-      </TabPane>
+            </VBox>
+         </center>
+         <top>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%Restaurant.Title" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </top>
+         <right>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                <Button fx:id="consumption" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Consumption" textAlignment="CENTER" />
+                  <Button fx:id="reservation" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Reservation" textAlignment="CENTER" />
+                  <ToggleButton fx:id="configuration" mnemonicParsing="false" onAction="#onConfigurationToggle" prefWidth="150.0" text="%Restaurant.Configuration" textAlignment="CENTER" />
+                  <ToggleButton fx:id="motion" mnemonicParsing="false" prefWidth="150.0" text="%Restaurant.Motion" textAlignment="CENTER" />
+                  <CheckBox fx:id="snapToGrid" mnemonicParsing="false" text="%Restaurant.SnapToGrid" />
+                  <Slider fx:id="setGridSize" max="50.0" min="1.0" prefWidth="180.0" value="10.0" />
+                  <Label fx:id="getGridSize" alignment="CENTER_RIGHT" text="10 px" />
+               </children>
+            </VBox>
+         </right>
+      </BorderPane>
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
