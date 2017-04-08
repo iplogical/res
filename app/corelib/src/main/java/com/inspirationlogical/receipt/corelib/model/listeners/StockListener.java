@@ -20,34 +20,6 @@ public class StockListener implements ReceiptAdapter.Listener {
 
     @Override
     public void onClose(ReceiptAdapter receipt) {
-        // TODO: test this.
-        receipt.getSoldProductsNoRefresh().forEach(
-            receiptRecordAdapter -> {
-                if(receiptRecordAdapter.isComplexProduct()) {
-                    updateStockForRecipeElements(receipt.getAdaptee().getType(), receiptRecordAdapter);
-                } else {
-                    updateStockForProduct(receiptRecordAdapter.getProductAdapter(),
-                            receiptRecordAdapter.getAdaptee().getSoldQuantity(),
-                            receipt.getAdaptee().getType());
-                }
-            }
-        );
-    }
-
-    private void updateStockForProduct(ProductAdapter productAdapter, double soldQuantity, ReceiptType type) {
-        StockAdapter stockAdapter =
-                StockAdapter.getLatestItemByProduct(productAdapter);
-        stockAdapter.updateStockAdapter(soldQuantity, type);
-    }
-
-    private void updateStockForRecipeElements(ReceiptType type, ReceiptRecordAdapter receiptRecordAdapter) {
-        receiptRecordAdapter.getAdaptee().getProduct().getRecipe().forEach(recipe -> {
-            updateStockForProduct(new ProductAdapter(recipe.getElement()), roundToTwoDecimals(receiptRecordAdapter.getAdaptee().getSoldQuantity() * recipe.getQuantityMultiplier()), type);
-        });
-    }
-
-    private static double roundToTwoDecimals(double number) {
-        double rounded = Math.round(number * 100);
-        return rounded / 100;
+        receipt.getSoldProductsNoRefresh().forEach(receiptRecordAdapter -> StockAdapter.updateStock(receiptRecordAdapter, receipt.getAdaptee().getType()));
     }
 }

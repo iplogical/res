@@ -53,7 +53,7 @@ public @Data class ReceiptRecord extends AbstractEntity {
     @JoinColumn(name = "RECEIPT_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Receipt owner;
 
-    @OneToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @OneToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(name = "PRODUCT_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Product product;
 

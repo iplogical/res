@@ -38,11 +38,6 @@ public class RecipeTest {
         GuardedTransaction.Run(()->schema.getElementThree().setElement(null));
     }
 
-    @Test(expected = RollbackException.class)
-    public void recipeWithoutQuantityUnit() {
-        GuardedTransaction.Run(()->schema.getElementThree().setQuantityUnit(null));
-    }
-
     private List<Recipe> getRecipes() {
         @SuppressWarnings("unchecked")
         List<Recipe> entries = schema.getEntityManager().createNamedQuery(Recipe.GET_TEST_RECIPES).getResultList();

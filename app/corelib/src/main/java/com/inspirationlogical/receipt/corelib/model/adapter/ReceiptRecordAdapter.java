@@ -11,10 +11,6 @@ public class ReceiptRecordAdapter extends AbstractAdapter<ReceiptRecord> {
         super(adaptee);
     }
 
-    public ProductAdapter getProductAdapter() {
-        return new ProductAdapter(adaptee.getProduct());
-    }
-
     public boolean isComplexProduct() {
         return !adaptee.getProduct().getRecipe().isEmpty();
     }

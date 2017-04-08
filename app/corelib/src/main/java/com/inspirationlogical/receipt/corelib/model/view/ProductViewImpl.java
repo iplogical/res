@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
-import com.inspirationlogical.receipt.corelib.model.enums.EtalonQuantity;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
@@ -46,11 +45,6 @@ public class ProductViewImpl extends AbstractModelViewImpl<ProductAdapter>
     @Override
     public QuantityUnit getQuantityUnit() {
         return adapter.getAdaptee().getQuantityUnit();
-    }
-
-    @Override
-    public EtalonQuantity getEtalonQuantity() {
-        return adapter.getAdaptee().getEtalonQuantity();
     }
 
     @Override

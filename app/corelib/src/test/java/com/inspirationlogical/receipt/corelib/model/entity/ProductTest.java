@@ -59,12 +59,6 @@ public class ProductTest {
     }
 
     @Test(expected = RollbackException.class)
-    public void testEtalonQuantityNull() {
-        GuardedTransaction.Run(()->
-                schema.getProductOne().setEtalonQuantity(null));
-    }
-
-    @Test(expected = RollbackException.class)
     public void testProductTypeNull() {
         GuardedTransaction.Run(()->
                 schema.getProductOne().setType(null));

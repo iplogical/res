@@ -22,7 +22,21 @@ public class StockAdapter extends AbstractAdapter<Stock> {
                 .collect(toList());
     }
 
-    // TODO: Implement daily closure to create the stock entries of the next day.
+    // TODO: add test
+    public static void updateStock(ReceiptRecordAdapter receiptRecordAdapter, ReceiptType receiptType) {
+        if(receiptRecordAdapter.isComplexProduct()) {
+            receiptRecordAdapter.getAdaptee().getProduct().getRecipe().forEach(recipe -> {
+                StockAdapter.getLatestItemByProduct(new ProductAdapter(recipe.getElement()))
+                        .updateStockAdapter(roundToTwoDecimals(recipe.getQuantityMultiplier() *
+                                receiptRecordAdapter.getAdaptee().getSoldQuantity()), receiptType);
+            });
+        } else {
+            StockAdapter.getLatestItemByProduct(new ProductAdapter(receiptRecordAdapter.getAdaptee().getProduct()))
+                    .updateStockAdapter(roundToTwoDecimals(receiptRecordAdapter.getAdaptee().getProduct().getQuantityMultiplier() *
+                            receiptRecordAdapter.getAdaptee().getSoldQuantity()), receiptType);
+        }
+    }
+
     public static StockAdapter getLatestItemByProduct(ProductAdapter productAdapter) {
         List<Stock> stockList = GuardedTransaction.RunNamedQuery(Stock.STOCK_GET_ITEM_BY_PRODUCT,
                 query -> query.setParameter("product", productAdapter.getAdaptee()));
@@ -34,10 +48,10 @@ public class StockAdapter extends AbstractAdapter<Stock> {
 
     public static void closeLatestStockEntries() {
         ProductCategoryAdapter.getRootCategory(EntityManagerProvider.getEntityManager()).getAllStorableProducts().forEach(productAdapter ->
-                {
-                    StockAdapter stock = getLatestItemByProduct(productAdapter);
-                    createStockEntry(productAdapter, getInitialQuantity(stock));
-                }
+            {
+                StockAdapter stock = getLatestItemByProduct(productAdapter);
+                createStockEntry(productAdapter, getInitialQuantity(stock));
+            }
         );
     }
 
@@ -75,10 +89,15 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     private void decreaseStock(double quantity) {
-        adaptee.setSoldQuantity(adaptee.getSoldQuantity() + quantity);
+        GuardedTransaction.Run(() -> adaptee.setSoldQuantity(adaptee.getSoldQuantity() + quantity / adaptee.getOwner().getStorageMultiplier()));
     }
 
     private void increaseStock(double quantity) {
-        adaptee.setPurchasedQuantity(adaptee.getPurchasedQuantity() + quantity);
+        GuardedTransaction.Run(() -> adaptee.setPurchasedQuantity(adaptee.getPurchasedQuantity() + quantity / adaptee.getOwner().getStorageMultiplier()));
+    }
+
+    private static double roundToTwoDecimals(double number) {
+        double rounded = Math.round(number * 100);
+        return rounded / 100;
     }
 }

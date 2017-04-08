@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.enums.EtalonQuantity;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
@@ -18,8 +17,6 @@ public interface ProductView extends AbstractView {
     int getRapidCode();
 
     QuantityUnit getQuantityUnit();
-
-    EtalonQuantity getEtalonQuantity();
 
     double getQuantityMultiplier();
 

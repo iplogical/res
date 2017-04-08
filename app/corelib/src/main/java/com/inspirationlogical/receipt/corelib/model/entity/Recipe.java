@@ -44,10 +44,6 @@ public @Data class Recipe extends AbstractEntity {
     @NotNull
     private Product element;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private QuantityUnit quantityUnit;
-
     private double quantityMultiplier;
 
     @Tolerate

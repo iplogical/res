@@ -21,7 +21,6 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidCategory;
-import com.inspirationlogical.receipt.corelib.model.enums.EtalonQuantity;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
@@ -85,11 +84,9 @@ public @Data class Product extends AbstractEntity {
     @NotNull
     private QuantityUnit quantityUnit;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private EtalonQuantity etalonQuantity;
-
     private double quantityMultiplier;
+
+    private double storageMultiplier;
 
     private int purchasePrice;
 
