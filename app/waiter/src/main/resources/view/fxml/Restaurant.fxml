@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets>
+      <URL value="@../css/Common.css" />
+   </stylesheets>
    <children>
       <BorderPane layoutX="-261.0" layoutY="-133.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -93,7 +102,7 @@
                   </HBox>
                   <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                      <Tab closable="false" onSelectionChanged="#onTablesSelected" style="-fx-font-size: 16;" text="%Restaurant.Tables">
+                      <Tab closable="false" onSelectionChanged="#onTablesSelected" text="%Restaurant.Tables">
                            <content>
                               <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
                                  <children>
@@ -101,7 +110,7 @@
                                        <children>
                                       <AnchorPane fx:id="tablesTab" maxHeight="660.0" maxWidth="1014.0">
                                              <children>
-                                                <ImageView fx:id="layoutImage" fitWidth="1014.0" preserveRatio="true" AnchorPane.leftAnchor="-50.0" AnchorPane.topAnchor="-85.0">
+                                                <ImageView fx:id="layoutImage" fitWidth="1034.0" preserveRatio="true" AnchorPane.leftAnchor="-70.0" AnchorPane.topAnchor="-114.0">
                                                    <image>
                                                       <Image url="@../../images/game_up_layout.png" />
                                                    </image>
@@ -120,7 +129,7 @@
                               </VBox>
                            </content>
                       </Tab>
-                      <Tab closable="false" onSelectionChanged="#onVirtualSelected" style="-fx-font-size: 16;" text="%Restaurant.Virtual">
+                      <Tab closable="false" onSelectionChanged="#onVirtualSelected" text="%Restaurant.Virtual">
                            <content>
                               <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
                                  <children>
@@ -158,37 +167,37 @@
             </Label>
          </top>
          <right>
-            <VBox alignment="TOP_CENTER" spacing="5.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="reservation" mnemonicParsing="false" prefWidth="100.0" style="-fx-line-spacing: -5;" text="%Restaurant.Reservation" textAlignment="CENTER">
+                  <Button fx:id="reservation" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%Restaurant.Reservation" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font></Button>
-                <Button fx:id="consumption" mnemonicParsing="false" prefWidth="100.0" style="-fx-line-spacing: -5;" text="%Restaurant.Consumption" textAlignment="CENTER">
+                <Button fx:id="consumption" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%Restaurant.Consumption" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font></Button>
-                  <Button fx:id="dailyClosure" mnemonicParsing="false" onAction="#onDailyClosure" prefWidth="100.0" style="-fx-line-spacing: -5;" text="%Restaurant.DailyClosure" textAlignment="CENTER">
+                  <Button fx:id="dailyClosure" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDailyClosure" text="%Restaurant.DailyClosure" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font></Button>
-                  <Separator />
-                  <ToggleButton fx:id="configuration" mnemonicParsing="false" onAction="#onConfigurationToggle" prefWidth="100.0" style="-fx-line-spacing: -5;" text="%Restaurant.Configuration" textAlignment="CENTER">
+                  <Separator maxWidth="1.7976931348623157E308" />
+                  <ToggleButton fx:id="configuration" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onConfigurationToggle" text="%Restaurant.Configuration" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font></ToggleButton>
-                  <ToggleButton fx:id="motion" mnemonicParsing="false" prefWidth="100.0" style="-fx-line-spacing: -5;" text="%Restaurant.Motion" textAlignment="CENTER">
+                  <ToggleButton fx:id="motion" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%Restaurant.Motion" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font></ToggleButton>
-                  <CheckBox fx:id="snapToGrid" alignment="CENTER" mnemonicParsing="false" prefWidth="100.0" selected="true" style="-fx-line-spacing: -5;" text="%Restaurant.SnapToGrid" textAlignment="CENTER">
+                  <CheckBox fx:id="snapToGrid" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" selected="true" text="%Restaurant.SnapToGrid" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="-5.0" />
                      </VBox.margin></CheckBox>
-                  <Label fx:id="getGridSize1" alignment="CENTER" prefWidth="100.0" text="%Restaurant.GridSize" textAlignment="CENTER">
+                  <Label fx:id="getGridSize1" alignment="CENTER" maxWidth="1.7976931348623157E308" text="%Restaurant.GridSize" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -196,7 +205,7 @@
                         <Insets top="-5.0" />
                      </VBox.margin>
                   </Label>
-                  <HBox alignment="CENTER" prefWidth="100.0">
+                  <HBox alignment="CENTER" maxWidth="1.7976931348623157E308">
                      <children>
                         <Label fx:id="getGridSize" alignment="CENTER_RIGHT" text="10" textAlignment="CENTER">
                            <font>
@@ -216,11 +225,11 @@
                         <Insets top="-10.0" />
                      </VBox.margin>
                   </HBox>
-                  <Slider fx:id="setGridSize" blockIncrement="5.0" majorTickUnit="5.0" max="50.0" minorTickCount="0" prefWidth="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0">
+                  <Slider fx:id="setGridSize" blockIncrement="5.0" majorTickUnit="5.0" max="50.0" maxWidth="1.7976931348623157E308" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin></Slider>
-                  <Separator>
+                  <Separator maxWidth="1.7976931348623157E308">
                      <VBox.margin>
                         <Insets top="-5.0" />
                      </VBox.margin>

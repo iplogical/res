@@ -1,0 +1,8 @@
+.tableName {
+    -fx-font-size: 12;
+}
+
+.tableNumber {
+    -fx-font-size: 32;
+    -fx-font-weight: bold;
+}
