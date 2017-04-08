@@ -4,7 +4,6 @@ import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 
@@ -40,9 +39,9 @@ public class NodeUtility {
         }
     }
 
-    public static Point2D calculatePopupPosition(Control source, Pane owner) {
-        double posX = source.getLayoutX() + owner.getLayoutX();
-        double posY = source.getLayoutY() + owner.getLayoutY() + LAYOUT_OFFSET_Y;
+    public static Point2D calculatePopupPosition(Node source, Pane owner) {
+        double posX = source.getLayoutX() + owner.getScene().getWindow().getX();
+        double posY = source.getLayoutY() + owner.getScene().getWindow().getY();
 
         return new Point2D(posX, posY);
     }

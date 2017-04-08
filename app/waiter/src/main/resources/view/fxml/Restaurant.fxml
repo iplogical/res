@@ -34,14 +34,14 @@
    <children>
       <BorderPane layoutX="-261.0" layoutY="-133.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <VBox BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
                <children>
                   <HBox prefHeight="30.0" prefWidth="1014.0">
                      <children>
                         <HBox>
                            <children>
                               <ImageView fitHeight="29.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true" />
-                              <Label fx:id="openTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0">
+                              <Label fx:id="openTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -51,7 +51,7 @@
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="totalTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="30.0">
+                              <Label fx:id="totalTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="30.0" text="0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -61,7 +61,7 @@
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <ImageView fitHeight="28.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true" />
-                              <Label fx:id="totalGuests" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0">
+                              <Label fx:id="totalGuests" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -71,7 +71,7 @@
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="totalCapacity" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0">
+                              <Label fx:id="totalCapacity" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -81,17 +81,17 @@
                         <HBox prefHeight="25.0" prefWidth="480.0">
                            <children>
                               <ImageView fitHeight="29.0" fitWidth="127.0" pickOnBounds="true" preserveRatio="true" />
-                              <Label fx:id="currentConsumption" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0">
+                              <Label fx:id="currentConsumption" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="paidConsumption" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0">
+                              <Label fx:id="paidConsumption" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="totalIncome" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0">
+                              <Label fx:id="totalIncome" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -104,25 +104,25 @@
                     <tabs>
                       <Tab closable="false" onSelectionChanged="#onTablesSelected" text="%Restaurant.Tables">
                            <content>
-                              <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
+                              <VBox alignment="TOP_CENTER" fillWidth="false">
                                  <children>
                                     <StackPane alignment="TOP_CENTER">
                                        <children>
-                                      <AnchorPane fx:id="tablesTab" maxHeight="660.0" maxWidth="1014.0">
+                                      <AnchorPane fx:id="tablesTab" StackPane.alignment="CENTER">
                                              <children>
                                                 <ImageView fx:id="layoutImage" fitWidth="1034.0" preserveRatio="true" AnchorPane.leftAnchor="-70.0" AnchorPane.topAnchor="-114.0">
                                                    <image>
                                                       <Image url="@../../images/game_up_layout.png" />
                                                    </image>
                                                 </ImageView>
+                                                <Pane maxHeight="5.0" maxWidth="1.7976931348623157E308" prefHeight="5.0" style="-fx-background-color: #f3f3f3;" AnchorPane.leftAnchor="-70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                 <Label fx:id="tablesLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <graphic>
-                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                                                      <AnchorPane />
                                                    </graphic>
                                                 </Label>
                                              </children>
                                           </AnchorPane>
-                                          <Pane maxHeight="5.0" prefHeight="5.0" style="-fx-background-color: #efefef;" />
                                        </children>
                                     </StackPane>
                                  </children>
@@ -135,11 +135,11 @@
                                  <children>
                                     <StackPane alignment="TOP_CENTER">
                                        <children>
-                                          <AnchorPane fx:id="virtualTab" maxHeight="660.0" maxWidth="1014.0">
+                                          <AnchorPane fx:id="virtualTab">
                                              <children>
                                                 <Label fx:id="virtualLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <graphic>
-                                                      <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                                                      <AnchorPane />
                                                    </graphic>
                                                 </Label>
                                              </children>
