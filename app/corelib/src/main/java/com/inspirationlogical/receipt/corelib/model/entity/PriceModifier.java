@@ -56,9 +56,9 @@ public @Data class PriceModifier extends AbstractEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private PriceModifierRepeatPeriod period;
+    private PriceModifierRepeatPeriod repeatPeriod;
 
-    private int periodMultiplier;
+    private int repeatPeriodMultiplier;
 
     @NotNull
     private LocalDateTime startTime;

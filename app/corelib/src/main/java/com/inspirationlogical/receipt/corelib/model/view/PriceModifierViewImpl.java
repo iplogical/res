@@ -53,11 +53,11 @@ public class PriceModifierViewImpl extends AbstractModelViewImpl<PriceModifierAd
 
     @Override
     public String getRepeatPeriod() {
-        return adapter.getAdaptee().getPeriod().toString();
+        return adapter.getAdaptee().getRepeatPeriod().toString();
     }
 
     @Override
     public String getPeriodMultiplier() {
-        return String.valueOf(adapter.getAdaptee().getPeriodMultiplier());
+        return String.valueOf(adapter.getAdaptee().getRepeatPeriodMultiplier());
     }
 }

@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Popup;
 
 import javax.inject.Singleton;
 import java.net.URL;
@@ -66,9 +67,16 @@ public class PriceModifierControllerImpl implements PriceModifierController {
 
     private CommonService commonService;
 
+    private Popup priceModifierForm;
+
+    private PriceModifierFormController priceModifierFormController;
+
     @Inject
-    public PriceModifierControllerImpl(GoodsController goodsController, CommonService commonService) {
+    public PriceModifierControllerImpl(GoodsController goodsController,
+                                       PriceModifierFormController priceModifierFormController,
+                                       CommonService commonService) {
         this.goodsController = goodsController;
+        this.priceModifierFormController = priceModifierFormController;
         this.commonService = commonService;
     }
 
@@ -103,6 +111,22 @@ public class PriceModifierControllerImpl implements PriceModifierController {
     @FXML
     public void onShowGoods(Event event) {
         viewLoader.loadViewIntoScene(goodsController);
+    }
+
+    @FXML
+    public void onCreateItem(Event event) {
+        priceModifierForm = new Popup();
+        priceModifierForm.getContent().add(viewLoader.loadView(priceModifierFormController));
+        priceModifierFormController.loadPriceModifierForm(this);
+        priceModifierForm.show(root, 520, 200);
+    }
+
+    @FXML
+    public void onModifyItem(Event event) {
+    }
+
+    @FXML
+    public void onDeleteItem(Event event) {
     }
 
     private PriceModifierViewModel getViewModel(TableColumn.CellDataFeatures<PriceModifierViewModel, String> cellDataFeatures) {

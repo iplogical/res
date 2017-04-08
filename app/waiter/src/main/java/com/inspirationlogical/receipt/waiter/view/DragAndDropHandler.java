@@ -1,8 +1,8 @@
 package com.inspirationlogical.receipt.waiter.view;
 
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
-import com.inspirationlogical.receipt.waiter.viewstate.MotionViewState;
 
+import com.inspirationlogical.receipt.corelib.utility.view.MotionViewState;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;

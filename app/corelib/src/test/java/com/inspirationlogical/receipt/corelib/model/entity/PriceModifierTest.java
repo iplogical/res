@@ -43,7 +43,7 @@ public class PriceModifierTest {
     @Test(expected = RollbackException.class)
     public void noRepeatPeriod() {
         GuardedTransaction.Run(()->
-                schema.getPriceModifierOne().setPeriod(null));
+                schema.getPriceModifierOne().setRepeatPeriod(null));
     }
 
     @Test(expected = RollbackException.class)

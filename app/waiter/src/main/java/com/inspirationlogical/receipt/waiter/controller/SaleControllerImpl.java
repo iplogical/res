@@ -179,7 +179,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         adHocProductForm = new Popup();
         adHocProductForm.getContent().add(viewLoader.loadView(adHocProductFormController));
         adHocProductFormController.loadAdHocProductForm(this);
-
         adHocProductForm.show(root, 520, 200);
     }
 
