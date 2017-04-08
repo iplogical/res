@@ -105,6 +105,11 @@
                   <Font size="16.0" />
                </font>
             </Button>
+            <Button fx:id="showPriceModifiers" mnemonicParsing="false" onAction="#onShowPriceModifiers" prefWidth="100.0" text="%Goods.PriceModifierView">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
          </children>
          <padding>
             <Insets left="5.0" top="5.0" />

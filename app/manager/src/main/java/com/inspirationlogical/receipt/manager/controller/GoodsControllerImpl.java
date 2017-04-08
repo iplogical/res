@@ -73,19 +73,26 @@ public class GoodsControllerImpl implements GoodsController {
     Button deleteProduct;
     @FXML
     Button showStock;
+    @FXML
+    Button showPriceModifier;
 
     @Inject
     private ViewLoader viewLoader;
 
     private StockController stockController;
 
+    private PriceModifierController priceModifierController;
+
     private CommonService commonService;
 
     private ProductCategoryView rootCategory;
 
     @Inject
-    public GoodsControllerImpl(StockController stockController, CommonService commonService) {
+    public GoodsControllerImpl(StockController stockController,
+                               PriceModifierController priceModifierController,
+                               CommonService commonService) {
         this.stockController = stockController;
+        this.priceModifierController = priceModifierController;
         this.commonService = commonService;
     }
 
@@ -94,6 +101,10 @@ public class GoodsControllerImpl implements GoodsController {
         viewLoader.loadViewIntoScene(stockController);
     }
 
+    @FXML
+    public void onShowPriceModifiers(Event event) {
+        viewLoader.loadViewIntoScene(priceModifierController);
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initColumns();

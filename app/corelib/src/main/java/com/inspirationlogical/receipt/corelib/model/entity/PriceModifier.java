@@ -31,12 +31,15 @@ import lombok.experimental.Tolerate;
 @Table(name = "PRICE_MODIFIER")
 @NamedQueries({
     @NamedQuery(name = PriceModifier.GET_TEST_PRICE_MODIFIERS,
+            query="FROM PriceModifier pm"),
+    @NamedQuery(name = PriceModifier.GET_PRICE_MODIFIERS,
             query="FROM PriceModifier pm")
 })
 @AttributeOverride(name = "id", column = @Column(name = "PRICE_MODIFIER_ID"))
 public @Data class PriceModifier extends AbstractEntity {
 
     public static final String GET_TEST_PRICE_MODIFIERS = "PriceModifier.GetTestPriceModifiers";
+    public static final String GET_PRICE_MODIFIERS = "PriceModifier.GetPriceModifiers";
     public static final String DROP_ALL = "PriceModifier.DropAll";
 
     @NotNull
@@ -64,8 +67,6 @@ public @Data class PriceModifier extends AbstractEntity {
     private LocalDateTime endTime;
 
     private int quantityLimit;
-
-    private int valueLimit;
 
     private double discountPercent;
 

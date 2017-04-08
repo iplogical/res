@@ -27,6 +27,11 @@ public class PriceModifierAdapterTest {
     }
 
     @Test
+    public void testGetPriceModifiers() {
+        assertEquals(4, PriceModifierAdapter.getPriceModifiers().size());
+    }
+
+    @Test
     public void testGetSimpleDiscount() {
         assertEquals(33.333, simpleDiscount.getDiscountPercent(receiptRecordAdapter), 0.01);
     }

@@ -5,15 +5,11 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
+import com.inspirationlogical.receipt.corelib.model.adapter.PriceModifierAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.ProductView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.StockView;
-import com.inspirationlogical.receipt.corelib.model.view.StockViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.*;
 
 public class CommonServiceImpl extends AbstractService implements CommonService {
 
@@ -40,6 +36,12 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
                 .collect(Collectors.toList());
     }
 
+    public static List<PriceModifierView> createPriceModifierViews(List<PriceModifierAdapter> adapters) {
+        return adapters.stream()
+                .map(priceModifierAdapter -> new PriceModifierViewImpl(priceModifierAdapter))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public ProductCategoryView getRootProductCategory() {
         return new ProductCategoryViewImpl(ProductCategoryAdapter.getRootCategory(manager));
@@ -53,5 +55,10 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     @Override
     public List<StockView> getStockItems() {
         return createStockViews(StockAdapter.getItems());
+    }
+
+    @Override
+    public List<PriceModifierView> getPriceModifiers() {
+        return createPriceModifierViews(PriceModifierAdapter.getPriceModifiers());
     }
 }

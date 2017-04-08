@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="priceModifierTable" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn fx:id="ownerLongName" prefWidth="100.0" text="%PriceModifier.OwnerLongName" />
+                <TableColumn fx:id="priceModifierName" prefWidth="100.0" text="%PriceModifier.Name" />
+                  <TableColumn fx:id="priceModifierType" prefWidth="100.0" text="%PriceModifier.Type" />
+                  <TableColumn fx:id="priceModifierQuantityLimit" prefWidth="100.0" text="%PriceModifier.QuantityLimit" />
+                  <TableColumn fx:id="priceModifierDiscountPercent" prefWidth="100.0" text="%PriceModifier.DiscountPercent" />
+                  <TableColumn fx:id="priceModifierStartTime" prefWidth="100.0" text="%PriceModifier.StartTime" />
+                  <TableColumn fx:id="priceModifierEndTime" prefWidth="100.0" text="%PriceModifier.EndTime" />
+                  <TableColumn fx:id="priceModifierRepeatPeriod" prefWidth="100.0" text="%PriceModifier.RepeatPeriod" />
+                  <TableColumn fx:id="priceModifierPeriodMultiplier" prefWidth="100.0" text="%PriceModifier.PeriodMultiplier" />
+              </columns>
+            </TableView>
+         </children></AnchorPane>
+   </center>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+   <right>
+      <VBox alignment="TOP_CENTER" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="%Stock.Item" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="createItem" mnemonicParsing="false" prefWidth="100.0" text="%Common.Add" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="modifyItem" mnemonicParsing="false" prefWidth="100.0" text="%Common.Modify" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="deleteItem" mnemonicParsing="false" prefWidth="100.0" text="%Common.Delete" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Separator />
+            <Button fx:id="showGoods" mnemonicParsing="false" onAction="#onShowGoods" prefWidth="100.0" text="%Stock.GoodsView" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets left="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </right>
+   <top>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%PriceModifier.Title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" />
+         </BorderPane.margin>
+      </AnchorPane>
+   </top>
+</BorderPane>

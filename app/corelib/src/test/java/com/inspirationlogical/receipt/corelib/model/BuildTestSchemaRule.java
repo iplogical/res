@@ -689,7 +689,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildPriceModifierOne() {
         priceModifierOne = PriceModifier.builder()
                 .name("TestPriceModifier1")
-                .type(PriceModifierType.FUTURE_PRICE_MODIFICATION)
+                .type(PriceModifierType.SIMPLE_DISCOUNT)
                 .period(PriceModifierRepeatPeriod.NO_REPETITION)
                 .startTime(LocalDateTime.of(2017, 1, 8, 16, 0))
                 .endTime(LocalDateTime.of(2017, 1, 8, 20, 20))

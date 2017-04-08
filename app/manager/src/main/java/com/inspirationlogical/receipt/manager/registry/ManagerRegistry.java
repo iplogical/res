@@ -1,10 +1,7 @@
 package com.inspirationlogical.receipt.manager.registry;
 
 import com.inspirationlogical.receipt.corelib.frontend.registry.Registry;
-import com.inspirationlogical.receipt.manager.controller.GoodsController;
-import com.inspirationlogical.receipt.manager.controller.GoodsControllerImpl;
-import com.inspirationlogical.receipt.manager.controller.StockController;
-import com.inspirationlogical.receipt.manager.controller.StockControllerImpl;
+import com.inspirationlogical.receipt.manager.controller.*;
 
 public class ManagerRegistry extends Registry {
 
@@ -17,5 +14,6 @@ public class ManagerRegistry extends Registry {
         super.configure();
         bind(GoodsController.class).to(GoodsControllerImpl.class);
         bind(StockController.class).to(StockControllerImpl.class);
+        bind(PriceModifierController.class).to(PriceModifierControllerImpl.class);
     }
 }

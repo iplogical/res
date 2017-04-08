@@ -33,7 +33,6 @@ public class ViewLoader {
                 System.out.println(e.getMessage());
             }
         }
-
         return root;
     }
 
