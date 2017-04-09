@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Stock;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
@@ -39,7 +40,7 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     public static void closeLatestStockEntries() {
-        List<ProductAdapter> storableProducts =
+        Set<ProductAdapter> storableProducts =
         ProductCategoryAdapter.getRootCategory(EntityManagerProvider.getEntityManager()).getAllStorableProducts();
         storableProducts.forEach(productAdapter ->
             {

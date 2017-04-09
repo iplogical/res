@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import javax.persistence.EntityManager;
 
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
+import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
@@ -63,13 +65,11 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .collect(Collectors.toList());
     }
 
-    public List<ProductAdapter> getAllStorableProducts() {
-        // TODO: Implement this correctly.
-        return getAllActiveProducts();
-//        Set<ProductAdapter> storeableProducts = new HashSet<>();
-//        getAllActiveProducts().stream()
-//                .map(productAdapter -> productAdapter.getAdaptee().getRecipe().forEach(recipe -> {recipe.setQuantityMultiplier(5);}))
-//                .collect(Collectors.toSet());
+    public Set<ProductAdapter> getAllStorableProducts() {
+         return getAllActiveProducts().stream()
+                .flatMap(productAdapter -> productAdapter.getAdaptee().getRecipe().stream())
+                .map(recipe -> new ProductAdapter(recipe.getElement()))
+                .collect(toSet());
     }
 
     public Collection<ProductCategoryAdapter> getChildrenCategories() {
