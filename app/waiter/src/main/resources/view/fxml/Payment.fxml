@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -25,6 +27,9 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets>
+      <URL value="@../css/Common.css" />
+   </stylesheets>
    <center>
       <AnchorPane fx:id="centrer" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -77,10 +82,10 @@
                               </AnchorPane>
                               <TableView fx:id="soldProductsTable" prefHeight="640.0" prefWidth="458.0">
                                 <columns>
-                                  <TableColumn fx:id="productName" prefWidth="231.0" text="%SaleView.ProductName" />
-                                  <TableColumn fx:id="productQuantity" minWidth="0.0" prefWidth="76.0" text="%SaleView.ProductQuantity" />
-                                    <TableColumn fx:id="productUnitPrice" prefWidth="69.0" text="%SaleView.ProductUnitPrice" />
-                                    <TableColumn fx:id="productTotalPrice" prefWidth="81.0" text="%SaleView.ProductTotalPrice" />
+                                  <TableColumn fx:id="productName" prefWidth="180.0" text="%SaleView.ProductName" />
+                                  <TableColumn fx:id="productQuantity" minWidth="0.0" prefWidth="100.0" text="%SaleView.ProductQuantity" />
+                                    <TableColumn fx:id="productUnitPrice" text="%SaleView.ProductUnitPrice" />
+                                    <TableColumn fx:id="productTotalPrice" text="%SaleView.ProductTotalPrice" />
                                 </columns>
                               </TableView>
                            </children>
@@ -120,14 +125,15 @@
                                           </Label>
                                        </children>
                                     </AnchorPane>
+                                    <Pane prefHeight="87.0" />
                                  </children>
                               </VBox>
                               <TableView fx:id="payProductsTable" prefHeight="669.0" prefWidth="453.0">
                                 <columns>
-                                  <TableColumn fx:id="payProductName" prefWidth="231.0" text="%SaleView.ProductName" />
-                                  <TableColumn fx:id="payProductQuantity" prefWidth="76.0" text="%SaleView.ProductQuantity" />
-                                    <TableColumn fx:id="payProductUnitPrice" prefWidth="69.0" text="%SaleView.ProductUnitPrice" />
-                                    <TableColumn fx:id="payProductTotalPrice" prefWidth="81.0" text="%SaleView.ProductTotalPrice" />
+                                  <TableColumn fx:id="payProductName" prefWidth="180.0" text="%SaleView.ProductName" />
+                                  <TableColumn fx:id="payProductQuantity" prefWidth="100.0" text="%SaleView.ProductQuantity" />
+                                    <TableColumn fx:id="payProductUnitPrice" text="%SaleView.ProductUnitPrice" />
+                                    <TableColumn fx:id="payProductTotalPrice" text="%SaleView.ProductTotalPrice" />
                                 </columns>
                               </TableView>
                            </children>
@@ -139,48 +145,43 @@
          </children></AnchorPane>
    </center>
    <right>
-      <VBox fx:id="left" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="left" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <RadioButton fx:id="paymentMethodCash" mnemonicParsing="false" text="%PaymentView.Cash">
-               <toggleGroup>
-                  <ToggleGroup fx:id="paymentMethodToggleGroup" />
-               </toggleGroup></RadioButton>
-            <RadioButton fx:id="paymentMethodCreditCard" mnemonicParsing="false" text="%PaymentView.CreditCard" toggleGroup="$paymentMethodToggleGroup" />
-            <RadioButton fx:id="paymentMethodCoupon" mnemonicParsing="false" text="%PaymentView.Coupon" toggleGroup="$paymentMethodToggleGroup" />
-            <Separator prefHeight="10.0" prefWidth="100.0" />
-            <ToggleButton fx:id="selectivePayment" mnemonicParsing="false" text="%PaymentView.SelectivePayment">
+            <VBox>
+               <children>
+                  <RadioButton fx:id="paymentMethodCash" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.Cash" textAlignment="CENTER">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="paymentMethodToggleGroup" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="paymentMethodCreditCard" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.CreditCard" textAlignment="CENTER" toggleGroup="$paymentMethodToggleGroup" />
+                  <RadioButton fx:id="paymentMethodCoupon" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.Coupon" textAlignment="CENTER" toggleGroup="$paymentMethodToggleGroup" />
+               </children>
+            </VBox>
+            <ToggleButton fx:id="selectivePayment" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.SelectivePayment" textAlignment="CENTER">
                <toggleGroup>
                   <ToggleGroup fx:id="paymentTypeToggleGroup" />
                </toggleGroup></ToggleButton>
-            <Separator prefWidth="200.0" />
-            <ToggleButton fx:id="singlePayment" mnemonicParsing="false" text="%PaymentView.SinglePayment" toggleGroup="$paymentTypeToggleGroup" />
-            <Separator prefHeight="10.0" prefWidth="200.0" />
-            <ToggleButton fx:id="partialPayment" mnemonicParsing="false" text="%PaymentView.PartialPayment" toggleGroup="$paymentTypeToggleGroup" />
-            <Separator prefHeight="10.0" prefWidth="200.0" />
-            <TextField fx:id="partialPaymentValue" promptText="%PaymentView.PartialPaymentPrompt" />
-            <Separator prefHeight="40.0" prefWidth="200.0" />
-            <ToggleButton fx:id="automaticGameFee" mnemonicParsing="false" onAction="#onAutomaticGameFeeToggleAction" text="%PaymentView.AutomaticGameFee" />
-            <Separator prefHeight="10.0" prefWidth="200.0" />
-            <Button fx:id="manualGameFee" mnemonicParsing="false" onAction="#onManualGameFee" text="%PaymentView.ManualGameFee" />
-            <Separator prefHeight="40.0" prefWidth="200.0" />
-            <ToggleButton fx:id="discountAbsolute" mnemonicParsing="false" text="%PaymentView.DiscountAbsolute">
+            <ToggleButton fx:id="singlePayment" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.SinglePayment" textAlignment="CENTER" toggleGroup="$paymentTypeToggleGroup" />
+            <ToggleButton fx:id="partialPayment" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.PartialPayment" textAlignment="CENTER" toggleGroup="$paymentTypeToggleGroup" />
+            <TextField fx:id="partialPaymentValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.PartialPaymentPrompt" />
+            <ToggleButton fx:id="automaticGameFee" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAutomaticGameFeeToggleAction" text="%PaymentView.AutomaticGameFee" textAlignment="CENTER" />
+            <Button fx:id="manualGameFee" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onManualGameFee" text="%PaymentView.ManualGameFee" textAlignment="CENTER" />
+            <ToggleButton fx:id="discountAbsolute" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.DiscountAbsolute" textAlignment="CENTER">
                <toggleGroup>
                   <ToggleGroup fx:id="discountTypeToggleGroup" />
                </toggleGroup>
             </ToggleButton>
-            <Separator prefWidth="200.0" />
-            <TextField fx:id="discountAbsoluteValue" promptText="%PaymentView.DiscountAbsolutePrompt" />
-            <Separator prefWidth="200.0" />
-            <ToggleButton fx:id="discountPercent" mnemonicParsing="false" text="%PaymentView.DiscountPercent" toggleGroup="$discountTypeToggleGroup" />
-            <Separator prefWidth="200.0" />
-            <TextField fx:id="discountPercentValue" promptText="%PaymentView.DiscountPercentPrompt" />
-            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="50.0" prefWidth="10.0" />
-            <Button fx:id="backToSaleView" mnemonicParsing="false" onAction="#onBackToSaleView" text="%PaymentView.BackToSaleView" />
-            <Separator prefWidth="200.0" />
-            <Button fx:id="backToRestaurantView" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%PaymentView.BackToRestaurantView" />
-            <Separator orientation="VERTICAL" prefHeight="50.0" prefWidth="2.0" />
-            <Button fx:id="pay" mnemonicParsing="false" onAction="#onPay" text="%PaymentView.Pay" />
+            <TextField fx:id="discountAbsoluteValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.DiscountAbsolutePrompt" />
+            <ToggleButton fx:id="discountPercent" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.DiscountPercent" textAlignment="CENTER" toggleGroup="$discountTypeToggleGroup" />
+            <TextField fx:id="discountPercentValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.DiscountPercentPrompt" />
+            <Button fx:id="backToSaleView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToSaleView" text="%PaymentView.BackToSaleView" textAlignment="CENTER" />
+            <Button fx:id="backToRestaurantView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%PaymentView.BackToRestaurantView" textAlignment="CENTER" />
+            <Button fx:id="pay" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPay" text="%PaymentView.Pay" textAlignment="CENTER" />
          </children>
+         <padding>
+            <Insets left="5.0" top="5.0" />
+         </padding>
       </VBox>
    </right>
    <padding>

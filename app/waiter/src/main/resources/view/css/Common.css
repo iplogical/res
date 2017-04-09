@@ -6,7 +6,7 @@
 .text {
     -fx-font-family: "SourceSansPro";
 }
-.button, .toggle-button, .check-box, .label, .tab-pane {
+.button, .toggle-button, .check-box, .radio-button, .label, .tab-pane {
     -fx-font-size: 16;
     -fx-line-spacing: -5;
 }

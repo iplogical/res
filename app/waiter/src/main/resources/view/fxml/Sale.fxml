@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -24,8 +26,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <center>
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" stylesheets="@../css/Common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@../css/Common.css" />
+    </stylesheets>
+    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <SplitPane dividerPositions="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -170,18 +175,22 @@
          </children></AnchorPane>
    </center>
    <right>
-      <VBox fx:id="left" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="left" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
             <RadioButton fx:id="takeAway" mnemonicParsing="false" onAction="#onTakeAwayToggled" text="%SaleView.TakeAway" />
+            <Button fx:id="sellAdHocProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSellAdHocProduct" text="%SaleView.SellAdHocProduct" textAlignment="CENTER" />
+            <ToggleButton fx:id="giftProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGiftProduct" text="%SaleView.GiftProduct" textAlignment="CENTER" />
             <Separator prefWidth="200.0" />
-            <Button fx:id="sellAdHocProduct" mnemonicParsing="false" onAction="#onSellAdHocProduct" text="%SaleView.SellAdHocProduct" />
+            <Button fx:id="toPaymentView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onToPaymentView" text="%SaleView.ToPaymentView" textAlignment="CENTER" />
             <Separator prefWidth="200.0" />
-            <ToggleButton fx:id="giftProduct" mnemonicParsing="false" onAction="#onGiftProduct" text="%SaleView.GiftProduct" />
-            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="300.0" />
-            <Button fx:id="backToRestaurantView" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%SaleView.Back" />
-            <Separator orientation="VERTICAL" prefHeight="200.0" />
-            <Button fx:id="toPaymentView" mnemonicParsing="false" onAction="#onToPaymentView" text="%SaleView.ToPaymentView" />
+            <Button fx:id="backToRestaurantView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%SaleView.Back" textAlignment="CENTER" />
          </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets left="5.0" top="5.0" />
+         </padding>
       </VBox>
    </right>
    <padding>
