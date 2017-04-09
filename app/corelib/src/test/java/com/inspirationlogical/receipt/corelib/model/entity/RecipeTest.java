@@ -5,6 +5,7 @@ import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.N
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.RollbackException;
 
 import org.junit.Rule;
@@ -25,17 +26,19 @@ public class RecipeTest {
 
     @Test
     public void testRecipeOwner() {
-        assertEquals("productFour", getRecipes().get(0).getOwner().getLongName());
+        assertEquals("productTwo", getRecipes().stream()
+                .filter(recipe -> recipe.getOwner().getLongName().equals("productTwo"))
+                .collect(Collectors.toList()).get(0).getElement().getLongName());
     }
 
     @Test(expected = RollbackException.class)
     public void recipeWithoutOwner() {
-        GuardedTransaction.Run(()->schema.getElementThree().setOwner(null));
+        GuardedTransaction.Run(()->schema.getProductFourPartThree().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void recipeWithoutElement() {
-        GuardedTransaction.Run(()->schema.getElementThree().setElement(null));
+        GuardedTransaction.Run(()->schema.getProductFourPartThree().setElement(null));
     }
 
     private List<Recipe> getRecipes() {

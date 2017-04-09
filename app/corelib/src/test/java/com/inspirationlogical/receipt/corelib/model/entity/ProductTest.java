@@ -86,16 +86,24 @@ public class ProductTest {
         });
     }
 
+    @Test(expected = RollbackException.class)
+    public void testProductRecipeNull() {
+        GuardedTransaction.Run(()->
+                schema.getProductOne().setRecipe(null));
+    }
+
     @Test
     public void testNumberOfElements() {
-        List<Product> products = getProductList().stream().filter(p -> p.getLongName() == "productFour").collect(Collectors.toList());
+        List<Product> products = getProductList().stream().filter(p -> p.getLongName().equals("productFour"))
+                .collect(Collectors.toList());
         assertEquals(1,products.size());
-        assertEquals(NUMBER_OF_RECIPES, products.get(0).getRecipe().size());
+        assertEquals(3, products.get(0).getRecipe().size());
     }
 
     @Test
     public void testNumberOfStocks() {
-        List<Product> products = getProductList().stream().filter(p -> p.getLongName() == "productFour").collect(Collectors.toList());
+        List<Product> products = getProductList().stream().filter(p -> p.getLongName().equals("productFour"))
+                .collect(Collectors.toList());
         assertEquals(1,products.size());
         assertEquals(NUMBER_OF_STOCKS, products.get(0).getStock().size());
     }

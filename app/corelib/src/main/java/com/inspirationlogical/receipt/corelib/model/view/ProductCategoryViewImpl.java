@@ -44,7 +44,7 @@ public class ProductCategoryViewImpl extends AbstractModelViewImpl<ProductCatego
 
     @Override
     public List<ProductView> getAllNormalProducts() {
-        return mapProducts(adapter.getAllNormalProducts());
+        return mapProducts(adapter.getAllSellableProducts());
     }
 
     @Override

@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
+import com.inspirationlogical.receipt.corelib.model.annotations.ValidRecipe;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -44,6 +45,7 @@ import lombok.experimental.Tolerate;
 })
 @AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
 @ValidCategory
+@ValidRecipe
 public @Data class Product extends AbstractEntity {
 
     public static final String GET_TEST_PRODUCTS = "Product.GetTestProducts";
@@ -83,8 +85,6 @@ public @Data class Product extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @NotNull
     private QuantityUnit quantityUnit;
-
-    private double quantityMultiplier;
 
     private double storageMultiplier;
 

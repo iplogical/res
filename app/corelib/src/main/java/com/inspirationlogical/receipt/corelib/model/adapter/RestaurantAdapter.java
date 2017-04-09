@@ -45,7 +45,6 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     }
 
     public TableAdapter addTable(Table.TableBuilder builder) {
-        // todo exception should be originated form data access layer is table number is already in use
         final Table[] newTable = new Table[1];
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
             newTable[0] = builder.build();

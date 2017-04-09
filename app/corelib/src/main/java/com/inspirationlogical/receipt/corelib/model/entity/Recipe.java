@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.inspirationlogical.receipt.corelib.model.annotations.ValidRecipe;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
 
 import lombok.Builder;
@@ -31,6 +32,7 @@ import lombok.experimental.Tolerate;
             query="FROM Recipe r")
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECIPE_ID"))
+@ValidRecipe
 public @Data class Recipe extends AbstractEntity {
 
     public static final String GET_TEST_RECIPES = "Recipe.GetTestRecipes";

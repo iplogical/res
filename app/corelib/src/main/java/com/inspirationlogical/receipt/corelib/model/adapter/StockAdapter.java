@@ -22,19 +22,11 @@ public class StockAdapter extends AbstractAdapter<Stock> {
                 .collect(toList());
     }
 
-    // TODO: add test
     public static void updateStock(ReceiptRecordAdapter receiptRecordAdapter, ReceiptType receiptType) {
-        if(receiptRecordAdapter.isComplexProduct()) {
-            receiptRecordAdapter.getAdaptee().getProduct().getRecipe().forEach(recipe -> {
+        receiptRecordAdapter.getAdaptee().getProduct().getRecipe().forEach(recipe ->
                 StockAdapter.getLatestItemByProduct(new ProductAdapter(recipe.getElement()))
-                        .updateStockAdapter(roundToTwoDecimals(recipe.getQuantityMultiplier() *
-                                receiptRecordAdapter.getAdaptee().getSoldQuantity()), receiptType);
-            });
-        } else {
-            StockAdapter.getLatestItemByProduct(new ProductAdapter(receiptRecordAdapter.getAdaptee().getProduct()))
-                    .updateStockAdapter(roundToTwoDecimals(receiptRecordAdapter.getAdaptee().getProduct().getQuantityMultiplier() *
-                            receiptRecordAdapter.getAdaptee().getSoldQuantity()), receiptType);
-        }
+                .updateStockAdapter(roundToTwoDecimals(recipe.getQuantityMultiplier() *
+                        receiptRecordAdapter.getAdaptee().getSoldQuantity()), receiptType));
     }
 
     public static StockAdapter getLatestItemByProduct(ProductAdapter productAdapter) {
@@ -47,7 +39,9 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     public static void closeLatestStockEntries() {
-        ProductCategoryAdapter.getRootCategory(EntityManagerProvider.getEntityManager()).getAllStorableProducts().forEach(productAdapter ->
+        List<ProductAdapter> storableProducts =
+        ProductCategoryAdapter.getRootCategory(EntityManagerProvider.getEntityManager()).getAllStorableProducts();
+        storableProducts.forEach(productAdapter ->
             {
                 StockAdapter stock = getLatestItemByProduct(productAdapter);
                 createStockEntry(productAdapter, getInitialQuantity(stock));

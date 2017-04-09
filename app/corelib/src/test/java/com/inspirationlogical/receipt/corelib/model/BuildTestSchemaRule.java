@@ -14,33 +14,8 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
-import com.inspirationlogical.receipt.corelib.model.entity.Address;
-import com.inspirationlogical.receipt.corelib.model.entity.Client;
-import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
-import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
-import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
-import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
-import com.inspirationlogical.receipt.corelib.model.entity.Stock;
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
-import com.inspirationlogical.receipt.corelib.model.entity.VAT;
-import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
-import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.enums.VATName;
-import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
+import com.inspirationlogical.receipt.corelib.model.entity.*;
+import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
 import lombok.Getter;
@@ -50,7 +25,7 @@ public class BuildTestSchemaRule implements TestRule {
     public static final int NUMBER_OF_PRODUCTS = 11;
     public static final int NUMBER_OF_PRODUCT_CATEGORIES = 24;
     public static final int NUMBER_OF_PRICE_MODIFIERS = 4;
-    public static final int NUMBER_OF_RECIPES = 3;
+    public static final int NUMBER_OF_RECIPES = 8;
     public static final int NUMBER_OF_STOCKS = 3;
     public static final int NUMBER_OF_RECEIPTS = 9;
     public static final int NUMBER_OF_RECEIPT_RECORDS = 7;
@@ -107,9 +82,14 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter PriceModifier priceModifierThree;
     private @Getter PriceModifier priceModifierFour;
 
-    private @Getter Recipe elementOne;
-    private @Getter Recipe elementTwo;
-    private @Getter Recipe elementThree;
+    private @Getter Recipe productOnePartOne;
+    private @Getter Recipe productTwoPartOne;
+    private @Getter Recipe productThreePartOne;
+    private @Getter Recipe productFourPartOne;
+    private @Getter Recipe productFourPartTwo;
+    private @Getter Recipe productFourPartThree;
+    private @Getter Recipe productFivePartOne;
+    private @Getter Recipe productSixPartOne;
 
     private @Getter Stock stockOne;
     private @Getter Stock stockTwo;
@@ -228,7 +208,7 @@ public class BuildTestSchemaRule implements TestRule {
         productCategories();
         categoriesAndPriceModifiers();
         productsAndCategories();
-        productFourAndRecipes();
+        productsAndRecipes();
         recipesAndProducts();
         productFourAndStocks();
         tablesAndReceipts();
@@ -294,9 +274,14 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void buildRecipes() {
-        buildElementOne();
-        buildElementTwo();
-        buildElementThree();
+        buildProductOneElementOne();
+        buildProductTwoElementOne();
+        buildProductThreeElementOne();
+        buildProductFourElementOne();
+        buildProductFourElementTwo();
+        buildProductFourElementThree();
+        buildProductFiveElementOne();
+        buildProductSixElementOne();
     }
 
     private void buildStocks() {
@@ -382,7 +367,6 @@ public class BuildTestSchemaRule implements TestRule {
                 .salePrice(1000)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .quantityMultiplier(5)
                 .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
@@ -395,7 +379,6 @@ public class BuildTestSchemaRule implements TestRule {
                 .salePrice(200)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.LITER)
-                .quantityMultiplier(0.5)
                 .storageMultiplier(50)
                 .type(ProductType.SELLABLE)
                 .build();
@@ -408,8 +391,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .salePrice(790)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.GRAM)
-                .quantityMultiplier(50)
-                .storageMultiplier(1200)
+                .storageMultiplier(1000)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -421,7 +403,6 @@ public class BuildTestSchemaRule implements TestRule {
                 .salePrice(990)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.GRAM)
-                .quantityMultiplier(40)
                 .storageMultiplier(2000)
                 .type(ProductType.SELLABLE)
                 .build();
@@ -434,7 +415,6 @@ public class BuildTestSchemaRule implements TestRule {
                 .salePrice(780)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.LITER)
-                .quantityMultiplier(0.2)
                 .storageMultiplier(2)
                 .type(ProductType.SELLABLE)
                 .build();
@@ -447,7 +427,6 @@ public class BuildTestSchemaRule implements TestRule {
                 .salePrice(4990)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .quantityMultiplier(5)
                 .storageMultiplier(100)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
@@ -482,7 +461,6 @@ public class BuildTestSchemaRule implements TestRule {
                 .purchasePrice(100)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.KILOGRAM)
-                .quantityMultiplier(0.1)
                 .storageMultiplier(10)
                 .type(ProductType.STORABLE)
                 .build();
@@ -496,7 +474,6 @@ public class BuildTestSchemaRule implements TestRule {
                 .purchasePrice(100)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.GRAM)
-                .quantityMultiplier(10)
                 .storageMultiplier(5000)
                 .type(ProductType.STORABLE)
                 .build();
@@ -510,7 +487,6 @@ public class BuildTestSchemaRule implements TestRule {
                 .purchasePrice(100)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.KILOGRAM)
-                .quantityMultiplier(0.05)
                 .storageMultiplier(2)
                 .type(ProductType.STORABLE)
                 .build();
@@ -731,21 +707,51 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
-    private void buildElementOne() {
-        elementOne = Recipe.builder()
+    private void buildProductOneElementOne() {
+        productOnePartOne = Recipe.builder()
+                .quantityMultiplier(4)
+                .build();
+    }
+
+    private void buildProductTwoElementOne() {
+        productTwoPartOne = Recipe.builder()
+                .quantityMultiplier(0.5)
+                .build();
+    }
+
+    private void buildProductThreeElementOne() {
+        productThreePartOne = Recipe.builder()
+                .quantityMultiplier(30)
+                .build();
+    }
+
+    private void buildProductFourElementOne() {
+        productFourPartOne = Recipe.builder()
                 .quantityMultiplier(0.2)
                 .build();
     }
 
-    private void buildElementTwo() {
-        elementTwo = Recipe.builder()
+    private void buildProductFourElementTwo() {
+        productFourPartTwo = Recipe.builder()
                 .quantityMultiplier(0.05)
                 .build();
     }
 
-    private void buildElementThree() {
-        elementThree = Recipe.builder()
+    private void buildProductFourElementThree() {
+        productFourPartThree = Recipe.builder()
                 .quantityMultiplier(0.1)
+                .build();
+    }
+
+    private void buildProductFiveElementOne() {
+        productFivePartOne = Recipe.builder()
+                .quantityMultiplier(0.2)
+                .build();
+    }
+
+    private void buildProductSixElementOne() {
+        productSixPartOne = Recipe.builder()
+                .quantityMultiplier(2)
                 .build();
     }
 
@@ -767,8 +773,9 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void BuildStockThree() {
         stockThree = Stock.builder()
-                .initialQuantity(20)
-                .soldQuantity(40)
+                .initialQuantity(10)
+                .soldQuantity(2)
+                .purchasedQuantity(2)
                 .date(LocalDateTime.of(2017, 2, 8, 20, 0))
                 .build();
     }
@@ -1207,26 +1214,46 @@ public class BuildTestSchemaRule implements TestRule {
 
     }
 
-    private void productFourAndRecipes() {
+    private void productsAndRecipes() {
+        productOne.setRecipe(new HashSet<>(
+                Collections.singletonList(productOnePartOne)));
+        productTwo.setRecipe(new HashSet<>(
+                Collections.singletonList(productTwoPartOne)));
+        productThree.setRecipe(new HashSet<>(
+                Collections.singletonList(productThreePartOne)));
         productFour.setRecipe(new HashSet<>(
-                Arrays.asList(elementOne, elementTwo, elementThree)));
-        elementOne.setOwner(productFour);
-        elementTwo.setOwner(productFour);
-        elementThree.setOwner(productFour);
+                Arrays.asList(productFourPartOne, productFourPartTwo, productFourPartThree)));
+        productFive.setRecipe(new HashSet<>(
+                Collections.singletonList(productFivePartOne)));
+        productSix.setRecipe(new HashSet<>(
+                Collections.singletonList(productSixPartOne)));
+        productOnePartOne.setOwner(productOne);
+        productTwoPartOne.setOwner(productTwo);
+        productThreePartOne.setOwner(productThree);
+        productFourPartOne.setOwner(productFour);
+        productFourPartTwo.setOwner(productFour);
+        productFourPartThree.setOwner(productFour);
+        productFivePartOne.setOwner(productFive);
+        productSixPartOne.setOwner(productSix);
     }
 
     private void recipesAndProducts() {
-        elementOne.setElement(productRecipeElementOne);
-        elementTwo.setElement(productRecipeElementTwo);
-        elementThree.setElement(productRecipeElementThree);
+        productOnePartOne.setElement(productOne);
+        productTwoPartOne.setElement(productTwo);
+        productThreePartOne.setElement(productThree);
+        productFourPartOne.setElement(productRecipeElementOne);
+        productFourPartTwo.setElement(productRecipeElementTwo);
+        productFourPartThree.setElement(productRecipeElementThree);
+        productFivePartOne.setElement(productFive);
+        productSixPartOne.setElement(productSix);
     }
 
     private void productFourAndStocks() {
-        productFour.setStock(new HashSet<>(
+        productRecipeElementOne.setStock(new HashSet<>(
                 Arrays.asList(stockOne, stockTwo, stockThree)));
-        stockOne.setOwner(productFour);
-        stockTwo.setOwner(productFour);
-        stockThree.setOwner(productFour);
+        stockOne.setOwner(productRecipeElementOne);
+        stockTwo.setOwner(productRecipeElementOne);
+        stockThree.setOwner(productRecipeElementOne);
     }
 
     private void tablesAndReceipts() {

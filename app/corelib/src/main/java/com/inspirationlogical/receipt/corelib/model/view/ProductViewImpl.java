@@ -48,11 +48,6 @@ public class ProductViewImpl extends AbstractModelViewImpl<ProductAdapter>
     }
 
     @Override
-    public double getQuantityMultiplier() {
-        return adapter.getAdaptee().getQuantityMultiplier();
-    }
-
-    @Override
     public int getPurchasePrice() {
         return adapter.getAdaptee().getPurchasePrice();
     }

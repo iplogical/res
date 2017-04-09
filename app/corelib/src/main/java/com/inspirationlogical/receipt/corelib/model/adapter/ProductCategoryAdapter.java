@@ -3,9 +3,7 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
@@ -57,7 +55,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .collect(Collectors.toList());
     }
 
-    public List<ProductAdapter> getAllNormalProducts() {
+    public List<ProductAdapter> getAllSellableProducts() {
         return getAllActiveProducts().stream()
                 .filter(productAdapter -> !productAdapter.getAdaptee().getType().equals(ProductType.AD_HOC_PRODUCT))
                 .filter(productAdapter -> !productAdapter.getAdaptee().getType().equals(ProductType.GAME_FEE_PRODUCT))
@@ -66,16 +64,19 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     }
 
     public List<ProductAdapter> getAllStorableProducts() {
-        return getAllActiveProducts().stream()
-                .filter(productAdapter -> !productAdapter.getAdaptee().getRecipe().equals(null))
-                .collect(Collectors.toList());
+        // TODO: Implement this correctly.
+        return getAllActiveProducts();
+//        Set<ProductAdapter> storeableProducts = new HashSet<>();
+//        getAllActiveProducts().stream()
+//                .map(productAdapter -> productAdapter.getAdaptee().getRecipe().forEach(recipe -> {recipe.setQuantityMultiplier(5);}))
+//                .collect(Collectors.toSet());
     }
 
     public Collection<ProductCategoryAdapter> getChildrenCategories() {
         GuardedTransaction.RunWithRefresh(adaptee, () -> {});
         return adaptee.getChildren().stream()
                 .map(elem -> new ProductCategoryAdapter(elem))
-                .filter(productCategoryAdapter -> !productCategoryAdapter.getAllNormalProducts().isEmpty())
+                .filter(productCategoryAdapter -> !productCategoryAdapter.getAllSellableProducts().isEmpty())
                 .collect(toList());
     }
 

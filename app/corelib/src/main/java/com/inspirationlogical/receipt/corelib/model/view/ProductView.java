@@ -18,8 +18,6 @@ public interface ProductView extends AbstractView {
 
     QuantityUnit getQuantityUnit();
 
-    double getQuantityMultiplier();
-
     int getPurchasePrice();
 
     int getSalePrice();
