@@ -247,8 +247,10 @@ public class RestaurantControllerImpl implements RestaurantController {
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("TableAlreadyUsed") + tableNumber);
             initRestaurant();
+            initTables();
         } catch (Exception e) {
             initRestaurant();
+            initTables();
         }
     }
 
