@@ -33,7 +33,7 @@ public class ProductViewModel {
         longName = productView != null ? productView.getLongName() : EMPTY;
         rapidCode = productView != null ? valueOf(productView.getRapidCode()) : EMPTY;
         quantityUnit = productView != null ? valueOf(productView.getQuantityUnit()) : EMPTY;
-        quantityMultiplier = productView != null ? valueOf(productView.getQuantityMultiplier()) : EMPTY;
+        quantityMultiplier = productView != null ? "0" : EMPTY;
         purchasePrice = productView != null ? valueOf(productView.getPurchasePrice()) : EMPTY;
         salePrice = productView != null ? valueOf(productView.getSalePrice()) : EMPTY;
         VATLocal = productView != null ? valueOf(productView.getVATLocal()) + PERCENT : EMPTY;

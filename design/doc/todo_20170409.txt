@@ -1,0 +1,60 @@
+﻿Asztal számozás: pl 7-9 FUTURE
+
+fogyasztás átmozgatása 1ik asztalról másikra FUTURE
+
+lépcsők a bejáratnál FUTURE
+
+kapacitás asztalok
+1 7 120*80
+2 2 80*80
+3 5 80*80
+4 6 120*120
+5 8 160*80
+6 4 80*80
+7 2 80*40
+8 4 80*80
+9 4 80*80
+10 3 80*80
+11 7 120*80
+12 5 80*80
+13 8 120*80
+
+virtuális asztal számozása a tényleges asztalt jelenti ahol ül FUTURE
+
+asztal törlése	PRIORITY 1 [Attila]
+
+kapacitás vs vendégszám ellenőrzés törlése PRIORITY 1 [Attila]
+
+asztalok összetolása: nem nyitott asztalt is lehessen PRIORITY 2 [Attila]
+
+asztalhoz virtuális asztal rendelése (kis ikon az asztalon (+virtuálisok száma), ha tartozik hozzá nyitott virtuális) PRIORITY 2
+
+bug: asztal osztódik PRIORITY 1
+
+bug: virtuális tab-on létrehozni asztalt (virtuális checkbox helyett a tab figyelése) PRIORITY 1 [Attila]
+
+kontext menu sebessége a kis gépen PRIORITY 1 [Attila]
+
+törzsvendégek, alkalmazottak és lézengők tab PRIORITY 2 [Attila]
+
+kupon készpénzként jelenik meg a nyugtán PRIORITY 1 [Fec]
+
+kerekítés a nyugtán PRIORITY 1 [Fec]
+
+Kedvezmény feltüntetése a nyugtán PRIORITY 1 [Fec]
+
+napi fogyasztáshoz időintervallum FUTURE
+
+Foglalás esetén óra ikon jobb középen eladás nézetben pedig az időpontok PRIORITY 2
+
+termékek rendezése gyakoriság alapján (kell egy gyakoriság érték) PRIORITY 2 [Bálint]
+
+rövid név nics kitöltve: megegyezik a hosszú névvel PRIORITY 2 
+
+étterem összesitőben nem látszik a kupon PRIORITY [Bálint]
+
+nyugta fizetési mód módositás manager terminálból FUTURE
+
+asztal tört részének fizetése FUTURE
+
+csillag hozzáadása a nyugtán a termék névhez kedvezmény esetén PRIORITY [Fec]

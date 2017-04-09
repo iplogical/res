@@ -109,12 +109,15 @@ public class ReceiptAdapterTest {
     @Test
     public void testCloseWithDiscountForProduct() {
         GuardedTransaction.RunWithRefresh(receiptAdapter.getAdaptee(),
-                () -> schema.getReceiptRecordSaleTwo().setDiscountPercent(20));
+                () -> {
+            schema.getReceiptRecordSaleTwo().setDiscountPercent(20);
+            schema.getReceiptRecordSaleTwo().setSalePrice(240);
+        });
         receiptAdapter.close(paymentParams);
         assertEquals(6550, receiptAdapter.getAdaptee().getSumPurchaseGrossPrice());
         assertEquals(5157, receiptAdapter.getAdaptee().getSumPurchaseNetPrice());
-        assertEquals(12876, receiptAdapter.getAdaptee().getSumSaleGrossPrice());
-        assertEquals(10138, receiptAdapter.getAdaptee().getSumSaleNetPrice());
+        assertEquals(12460, receiptAdapter.getAdaptee().getSumSaleGrossPrice());
+        assertEquals(9811, receiptAdapter.getAdaptee().getSumSaleNetPrice());
         assertEquals(0, receiptAdapter.getAdaptee().getDiscountPercent(), 0.0001);
     }
 
