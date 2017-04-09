@@ -1,6 +1,8 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
 
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ import com.inspirationlogical.receipt.waiter.viewstate.SaleViewState;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
@@ -179,7 +182,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         adHocProductForm = new Popup();
         adHocProductForm.getContent().add(viewLoader.loadView(adHocProductFormController));
         adHocProductFormController.loadAdHocProductForm(this);
-        adHocProductForm.show(root, 520, 200);
+        showPopup(adHocProductForm, adHocProductFormController, root, new Point2D(520, 200));
     }
 
     @FXML
