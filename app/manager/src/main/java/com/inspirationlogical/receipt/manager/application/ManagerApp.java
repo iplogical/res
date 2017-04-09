@@ -23,8 +23,8 @@ public class ManagerApp extends Application implements StageProvider {
 
     @Override
     public void start(Stage stage) {
-        MainStage.setProvider(this);
         this.stage = stage;
+        MainStage.setProvider(this);
         ViewLoader viewLoader = getInstance(ViewLoader.class);
         Parent root = (Parent) viewLoader.loadView(getInstance(GoodsController.class));
         stage.setTitle(APP_TITLE);

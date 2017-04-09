@@ -1,7 +1,9 @@
 package com.inspirationlogical.receipt.corelib.frontend.application;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import lombok.Getter;
-import lombok.Setter;
 
 public class MainStage {
 
@@ -10,6 +12,16 @@ public class MainStage {
     public static final int APP_HEIGHT = 768;
 
     @Getter
-    @Setter
     private static StageProvider provider;
+
+    public static void setProvider(StageProvider provider) {
+        MainStage.provider = provider;
+
+        Stage stage = MainStage.provider.getStage();
+        stage.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.F11) {
+                stage.setFullScreen(!stage.isFullScreen());
+            }
+        });
+    }
 }
