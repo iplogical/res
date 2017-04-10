@@ -9,7 +9,7 @@ public enum ProductType {
     PARTIALLY_PAYABLE;
 
     public static boolean needReceipt(ProductType type) {
-        return type.equals(SELLABLE) || type.equals(PARTIALLY_PAYABLE);
+        return type.equals(SELLABLE) || type.equals(PARTIALLY_PAYABLE) || type.equals(STORABLE);
     }
 
     public static boolean doNotNeedReceipt(ProductType type) {

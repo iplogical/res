@@ -103,7 +103,7 @@ public class ProductCategoryAdapterTest {
 
     @Test
     public void testGetAggregateCategories() {
-        assertEquals(7, ProductCategoryAdapter.getAggregateCategories().size());
+        assertEquals(7, ProductCategoryAdapter.getAggregateCategories(ProductCategoryType.AGGREGATE).size());
     }
 
     @Test

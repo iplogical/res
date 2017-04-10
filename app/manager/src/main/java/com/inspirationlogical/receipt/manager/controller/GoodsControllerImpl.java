@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
+import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
@@ -214,6 +215,13 @@ public class GoodsControllerImpl implements GoodsController {
     @Override
     public Node getRootNode() {
         return root;
+    }
+
+    @Override
+    public void addProduct(ProductCategoryView parent, Product.ProductBuilder builder) {
+        commonService.addProduct(parent, builder);
+        initCategories();
+        productForm.hide();
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -64,18 +65,7 @@ public class ProductCategoryFormControllerImpl implements ProductCategoryFormCon
         parentCategories = FXCollections.observableArrayList(commonService.getAggregateCategories());
         categoryTypes = FXCollections.observableArrayList(Arrays.asList(ProductCategoryType.AGGREGATE, ProductCategoryType.LEAF));
         parent.setItems(parentCategories);
-        parent.setConverter(new StringConverter<ProductCategoryView>() {
-            @Override
-            public String toString(ProductCategoryView object) {
-                return object.getCategoryName();
-            }
-
-            @Override
-            public ProductCategoryView fromString(String string) {
-                return parentCategories.stream().filter(productCategoryView -> productCategoryView.getCategoryName().equals(string))
-                        .collect(toList()).get(0);
-            }
-        });
+        parent.setConverter(new CategoryStringConverter(parentCategories));
         type.setItems(categoryTypes);
     }
 

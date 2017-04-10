@@ -9,7 +9,10 @@ import java.util.stream.Collectors;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
+import com.inspirationlogical.receipt.corelib.model.entity.Product;
+import com.inspirationlogical.receipt.corelib.model.entity.Product.ProductBuilder;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
+import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
@@ -33,9 +36,9 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         return new ProductCategoryAdapter(rootCategoryList.get(0));
     }
 
-    public static List<ProductCategoryAdapter> getAggregateCategories() {
+    public static List<ProductCategoryAdapter> getAggregateCategories(ProductCategoryType type) {
         List<ProductCategory> aggregates = GuardedTransaction.RunNamedQuery(ProductCategory.GET_CATEGORY_BY_TYPE,
-                query -> {query.setParameter("type", ProductCategoryType.AGGREGATE);
+                query -> {query.setParameter("type", type);
                     return query;});
         return aggregates.stream().map(ProductCategoryAdapter::new)
                 .collect(toList());
@@ -146,5 +149,26 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
             adaptee.getChildren().add(newCategory[0]);
         });
         return new ProductCategoryAdapter(newCategory[0]);
+    }
+
+    public ProductAdapter addProduct(ProductBuilder builder) {
+        final Product[] newProduct = new Product[1];
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            newProduct[0] = builder.build();
+            ProductCategory pseudo = ProductCategory.builder()
+                    .name(newProduct[0].getLongName() + "pseudo")
+                    .type(ProductCategoryType.PSEUDO)
+                    .parent(adaptee)
+                    .product(newProduct[0])
+                    .build();
+            adaptee.getChildren().add(pseudo);
+            newProduct[0].setCategory(pseudo);
+            newProduct[0].setRecipe(new ArrayList<>(Collections.singletonList(Recipe.builder()
+                    .element(newProduct[0])
+                    .quantityMultiplier(1)
+                    .owner(newProduct[0])
+                    .build())));
+        });
+        return new ProductAdapter(newProduct[0]);
     }
 }

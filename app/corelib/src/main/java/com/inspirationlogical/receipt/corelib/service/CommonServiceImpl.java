@@ -9,6 +9,7 @@ import com.inspirationlogical.receipt.corelib.model.adapter.PriceModifierAdapter
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 
@@ -44,6 +45,16 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
+    public Product.ProductBuilder productBuilder() {
+        return Product.builder();
+    }
+
+    @Override
+    public ProductView addProduct(ProductCategoryView parent, Product.ProductBuilder builder) {
+        return new ProductViewImpl(getProductCategoryAdapter(parent).addProduct(builder));
+    }
+
+    @Override
     public ProductCategoryView addProductCategory(ProductCategoryView parent, String name, ProductCategoryType type) {
         return new ProductCategoryViewImpl(getProductCategoryAdapter(parent).addChildCategory(name, type));
     }
@@ -55,7 +66,13 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public List<ProductCategoryView> getAggregateCategories() {
-        return ProductCategoryAdapter.getAggregateCategories().stream().map(ProductCategoryViewImpl::new)
+        return ProductCategoryAdapter.getAggregateCategories(ProductCategoryType.AGGREGATE).stream().map(ProductCategoryViewImpl::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductCategoryView> getLeafCategories() {
+        return ProductCategoryAdapter.getAggregateCategories(ProductCategoryType.LEAF).stream().map(ProductCategoryViewImpl::new)
                 .collect(Collectors.toList());
     }
 
