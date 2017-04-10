@@ -33,3 +33,8 @@ hs_err_pid*
 
 #default receipt out dir
 app/receipts/
+
+#duplicated resources
+app/src/main/resources/*
+app/waiter/src/main/resources/*
+app/corelib/src/main/resources/properties/ui_hu.properties
