@@ -1,10 +1,11 @@
-﻿Asztal számozás: pl 7-9 FUTURE
+﻿Asztal számozás összetolás esetén: pl 7-9 FUTURE
 
-fogyasztás átmozgatása 1ik asztalról másikra FUTURE
+Fogyasztás átmozgatása egyik asztalról másikra FUTURE
 
-lépcsők a bejáratnál FUTURE
+Lépcsők a bejáratnál FUTURE
 
-kapacitás asztalok
+Asztalok
+asztalszám kapacitás méret
 1 7 120*80
 2 2 80*80
 3 5 80*80
@@ -19,42 +20,42 @@ kapacitás asztalok
 12 5 80*80
 13 8 120*80
 
-virtuális asztal számozása a tényleges asztalt jelenti ahol ül FUTURE
+Virtuális asztal számozása a tényleges asztalt jelenti ahol ül FUTURE
 
-asztal törlése	PRIORITY 1 [Attila]
+Bug: asztal törlése PRIORITY 1 [Attila]
 
-kapacitás vs vendégszám ellenőrzés törlése PRIORITY 1 [Attila]
+[DONE] Kapacitás vs vendégszám ellenőrzés törlése PRIORITY 1 [Attila]
 
-asztalok összetolása: nem nyitott asztalt is lehessen PRIORITY 2 [Attila]
+Asztalok összetolása: nem nyitott asztalt is lehessen PRIORITY 2 [Attila]
 
-asztalhoz virtuális asztal rendelése (kis ikon az asztalon (+virtuálisok száma), ha tartozik hozzá nyitott virtuális) PRIORITY 2
+Asztalhoz virtuális asztal rendelése (kis ikon az asztalon (+virtuálisok száma), ha tartozik hozzá nyitott virtuális) PRIORITY 2
 
-bug: asztal osztódik PRIORITY 1
+[DONE] Bug: asztal osztódik PRIORITY 1
 
-bug: virtuális tab-on létrehozni asztalt (virtuális checkbox helyett a tab figyelése) PRIORITY 1 [Attila]
+Bug: virtuális tab-on létrehozni asztalt (virtuális checkbox helyett a tab figyelése) PRIORITY 1 [Attila]
 
-kontext menu sebessége a kis gépen PRIORITY 1 [Attila]
+Kontext menu sebessége a kis gépen PRIORITY 1 [Attila]
 
-törzsvendégek, alkalmazottak és lézengők tab PRIORITY 2 [Attila]
+Törzsvendégek, alkalmazottak és lézengők tab PRIORITY 2 [Attila]
 
-kupon készpénzként jelenik meg a nyugtán PRIORITY 1 [Fec]
+Kupon készpénzként jelenik meg a nyugtán PRIORITY 1 [Fec]
 
-kerekítés a nyugtán PRIORITY 1 [Fec]
+Kerekítés a nyugtán PRIORITY 1 [Fec]
 
 Kedvezmény feltüntetése a nyugtán PRIORITY 1 [Fec]
 
-napi fogyasztáshoz időintervallum FUTURE
+Napi fogyasztáshoz időintervallum FUTURE
 
 Foglalás esetén óra ikon jobb középen eladás nézetben pedig az időpontok PRIORITY 2
 
-termékek rendezése gyakoriság alapján (kell egy gyakoriság érték) PRIORITY 2 [Bálint]
+Termékek rendezése gyakoriság alapján (kell egy gyakoriság érték) PRIORITY 2 [Bálint]
 
-rövid név nics kitöltve: megegyezik a hosszú névvel PRIORITY 2 
+Rövid név nics kitöltve: megegyezik a hosszú névvel PRIORITY 2 
 
-étterem összesitőben nem látszik a kupon PRIORITY [Bálint]
+Étterem összesítőben nem látszik a kupon PRIORITY [Bálint]
 
-nyugta fizetési mód módositás manager terminálból FUTURE
+Nyugta fizetési mód módosítás manager terminálból FUTURE
 
-asztal tört részének fizetése FUTURE
+Asztal tört részének fizetése FUTURE
 
-csillag hozzáadása a nyugtán a termék névhez kedvezmény esetén PRIORITY [Fec]
+Csillag hozzáadása a nyugtán a termék névhez kedvezmény esetén PRIORITY [Fec]
