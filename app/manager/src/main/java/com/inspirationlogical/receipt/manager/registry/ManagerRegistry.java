@@ -17,5 +17,6 @@ public class ManagerRegistry extends Registry {
         bind(PriceModifierController.class).to(PriceModifierControllerImpl.class);
         bind(PriceModifierFormController.class).to(PriceModifierFormControllerImpl.class);
         bind(ProductFormController.class).to(ProductFormControllerImpl.class);
+        bind(ProductCategoryFormController.class).to(ProductCategoryFormControllerImpl.class);
     }
 }

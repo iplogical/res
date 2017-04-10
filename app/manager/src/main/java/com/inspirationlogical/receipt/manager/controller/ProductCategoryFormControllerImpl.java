@@ -1,21 +1,15 @@
 package com.inspirationlogical.receipt.manager.controller;
 
-import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-import javax.inject.Singleton;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -24,41 +18,24 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.h
 /**
  * Created by régiDAGi on 2017. 04. 10..
  */
-@Singleton
-public class ProductFormControllerImpl implements ProductFormController {
+public class ProductCategoryFormControllerImpl implements ProductCategoryFormController {
 
     @FXML
     VBox root;
     @FXML
-    TextField longName;
+    TextField name;
     @FXML
-    TextField shortName;
+    ChoiceBox<ProductCategoryType> type;
     @FXML
-    ChoiceBox<ProductType> type;
-    @FXML
-    ChoiceBox<ProductCategoryView> category;
-    @FXML
-    ChoiceBox<ProductStatus> status;
-    @FXML
-    TextField rapidCode;
-    @FXML
-    ChoiceBox<ProductStatus> quantityUnit;
-    @FXML
-    TextField salePrice;
-    @FXML
-    TextField purchasePrice;
-    @FXML
-    TextField minimumStock;
-    @FXML
-    TextField stockWindow;
+    ChoiceBox<ProductCategoryView> parent;
 
-    public static String PRODUCT_FORM_VIEW_PATH =  "/view/fxml/ProductForm.fxml";
+    public static String PRODUCT_CATEGORY_FORM_VIEW_PATH =  "/view/fxml/ProductCategoryForm.fxml";
 
     private GoodsController goodsController;
 
     @Override
     public String getViewPath() {
-        return PRODUCT_FORM_VIEW_PATH;
+        return PRODUCT_CATEGORY_FORM_VIEW_PATH;
     }
 
     @Override
@@ -72,7 +49,7 @@ public class ProductFormControllerImpl implements ProductFormController {
     }
 
     @Override
-    public void loadProductForm(GoodsController goodsController) {
+    public void loadProductCategoryForm(GoodsController goodsController) {
         this.goodsController = goodsController;
     }
 
@@ -84,5 +61,4 @@ public class ProductFormControllerImpl implements ProductFormController {
     public void onCancel(Event event) {
         hideNode(root);
     }
-
 }

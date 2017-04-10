@@ -93,7 +93,9 @@ public class GoodsControllerImpl implements GoodsController {
 
     private ProductFormController productFormController;
 
-    private Popup productCategory;
+    private Popup productCategoryForm;
+
+    private ProductCategoryFormController productCategoryFormController;
 
     private ProductCategoryView rootCategory;
 
@@ -101,10 +103,12 @@ public class GoodsControllerImpl implements GoodsController {
     public GoodsControllerImpl(StockController stockController,
                                PriceModifierController priceModifierController,
                                ProductFormController productFormController,
+                               ProductCategoryFormController productCategoryFormController,
                                CommonService commonService) {
         this.stockController = stockController;
         this.priceModifierController = priceModifierController;
         this.productFormController = productFormController;
+        this.productCategoryFormController = productCategoryFormController;
         this.commonService = commonService;
     }
 
@@ -136,6 +140,10 @@ public class GoodsControllerImpl implements GoodsController {
 
     @FXML
     public void onCreateCategory(Event event) {
+        productCategoryForm = new Popup();
+        productCategoryForm.getContent().add(viewLoader.loadView(productCategoryFormController));
+        productCategoryFormController.loadProductCategoryForm(this);
+        showPopup(productCategoryForm, productCategoryFormController, root, new Point2D(520, 200));
     }
 
     @FXML
