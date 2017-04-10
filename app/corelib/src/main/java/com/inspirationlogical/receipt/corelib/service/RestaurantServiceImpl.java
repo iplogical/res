@@ -20,7 +20,6 @@ import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 
 import javafx.geometry.Point2D;
 
-;
 
 public class RestaurantServiceImpl extends AbstractService implements RestaurantService {
 

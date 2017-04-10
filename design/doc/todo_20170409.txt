@@ -59,3 +59,5 @@ Nyugta fizetési mód módosítás manager terminálból FUTURE
 Asztal tört részének fizetése FUTURE
 
 Csillag hozzáadása a nyugtán a termék névhez kedvezmény esetén PRIORITY [Fec]
+
+telefonszám szerepeljen a nyugtán PRIORITY [Fec]

@@ -102,7 +102,7 @@ public class ProductTest {
 
     @Test
     public void testNumberOfStocks() {
-        List<Product> products = getProductList().stream().filter(p -> p.getLongName().equals("productFour"))
+        List<Product> products = getProductList().stream().filter(p -> p.getLongName().equals("productRecipeElementOne"))
                 .collect(Collectors.toList());
         assertEquals(1,products.size());
         assertEquals(NUMBER_OF_STOCKS, products.get(0).getStock().size());

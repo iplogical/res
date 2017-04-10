@@ -18,7 +18,7 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     public static List<StockAdapter> getItems() {
-        return ProductCategoryAdapter.getRootCategory(EntityManagerProvider.getEntityManager()).getAllStorableProducts().stream()
+        return ProductCategoryAdapter.getRootCategory().getAllStorableProducts().stream()
                 .map(productAdapter -> getLatestItemByProduct(productAdapter))
                 .collect(toList());
     }
@@ -41,7 +41,7 @@ public class StockAdapter extends AbstractAdapter<Stock> {
 
     public static void closeLatestStockEntries() {
         Set<ProductAdapter> storableProducts =
-        ProductCategoryAdapter.getRootCategory(EntityManagerProvider.getEntityManager()).getAllStorableProducts();
+        ProductCategoryAdapter.getRootCategory().getAllStorableProducts();
         storableProducts.forEach(productAdapter ->
             {
                 StockAdapter stock = getLatestItemByProduct(productAdapter);

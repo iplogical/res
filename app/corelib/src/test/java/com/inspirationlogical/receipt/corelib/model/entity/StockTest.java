@@ -27,7 +27,7 @@ public class StockTest {
 
     @Test
     public void stockOwner() {
-        assertEquals("productFour", getStocks().get(0).getOwner().getLongName());
+        assertEquals("productRecipeElementOne", getStocks().get(0).getOwner().getLongName());
     }
 
     @Test(expected = RollbackException.class)

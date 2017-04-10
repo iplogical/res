@@ -9,6 +9,7 @@ import com.inspirationlogical.receipt.corelib.model.adapter.PriceModifierAdapter
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 
 public class CommonServiceImpl extends AbstractService implements CommonService {
@@ -43,8 +44,19 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
+    public ProductCategoryView addProductCategory(ProductCategoryView parent, String name, ProductCategoryType type) {
+        return new ProductCategoryViewImpl(getProductCategoryAdapter(parent).addChildCategory(name, type));
+    }
+
+    @Override
     public ProductCategoryView getRootProductCategory() {
-        return new ProductCategoryViewImpl(ProductCategoryAdapter.getRootCategory(manager));
+        return new ProductCategoryViewImpl(ProductCategoryAdapter.getRootCategory());
+    }
+
+    @Override
+    public List<ProductCategoryView> getAggregateCategories() {
+        return ProductCategoryAdapter.getAggregateCategories().stream().map(ProductCategoryViewImpl::new)
+                .collect(Collectors.toList());
     }
 
     @Override

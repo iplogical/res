@@ -29,6 +29,7 @@ import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.builder.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.builder.RestaurantContextMenuBuilderDecorator;
@@ -36,7 +37,6 @@ import com.inspirationlogical.receipt.waiter.builder.TableContextMenuBuilderDeco
 import com.inspirationlogical.receipt.waiter.exception.ViewNotFoundException;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.ConfirmMessage;
-import com.inspirationlogical.receipt.waiter.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 
 import javafx.beans.binding.Bindings;

@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.utility;
+package com.inspirationlogical.receipt.corelib.utility;
 
 import org.controlsfx.control.Notifications;
 
@@ -14,7 +14,7 @@ public class ErrorMessage {
 
     public static void showErrorMessage(Object owner, String text) {
         Notifications.create()
-                .title(Resources.UI.getString("ErrorMessage"))
+                .title(Resources.CONFIG.getString("ErrorMessage"))
                 .text(text)
                 .position(Pos.CENTER)
                 .hideAfter(Duration.seconds(5))

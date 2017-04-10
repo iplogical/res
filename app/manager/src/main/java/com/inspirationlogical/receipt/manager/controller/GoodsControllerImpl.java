@@ -6,9 +6,13 @@ import java.util.function.Function;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -210,5 +214,23 @@ public class GoodsControllerImpl implements GoodsController {
     @Override
     public Node getRootNode() {
         return root;
+    }
+
+    @Override
+    public void addProductCategory(ProductCategoryView parent, String name, ProductCategoryType type) {
+        try {
+            commonService.addProductCategory(parent, name, type);
+            initCategories();
+            productCategoryForm.hide();
+        } catch (IllegalProductCategoryStateException e) {
+            ErrorMessage.showErrorMessage(root, e.getMessage());
+            initColumns();
+            initCategories();
+            productCategoryForm.hide();
+        } catch (Exception e) {
+            initColumns();
+            initCategories();
+            productCategoryForm.hide();
+        }
     }
 }

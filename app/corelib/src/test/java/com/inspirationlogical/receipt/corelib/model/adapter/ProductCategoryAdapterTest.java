@@ -6,9 +6,8 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
+import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,7 +18,7 @@ import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 public class ProductCategoryAdapterTest {
 
     ReceiptRecordAdapter receiptRecordAdapter;
-    ProductCategoryAdapter pseudoTwo, pseudoFour, root;
+    ProductCategoryAdapter aggregateOne, pseudoTwo, pseudoFour, root;
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
@@ -27,6 +26,7 @@ public class ProductCategoryAdapterTest {
     @Before
     public void setUp() {
         receiptRecordAdapter = new ReceiptRecordAdapter(schema.getReceiptRecordSaleTwo());
+        aggregateOne = new ProductCategoryAdapter(schema.getAggregateOne());
         pseudoTwo = new ProductCategoryAdapter(schema.getPseudoTwo());
         pseudoFour = new ProductCategoryAdapter(schema.getPseudoFour());
         root = new ProductCategoryAdapter(schema.getRoot());
@@ -34,7 +34,7 @@ public class ProductCategoryAdapterTest {
 
     @Test
     public void testGetRootCategory() {
-        ProductCategoryAdapter rootCategory = ProductCategoryAdapter.getRootCategory(schema.getEntityManager());
+        ProductCategoryAdapter rootCategory = ProductCategoryAdapter.getRootCategory();
         assertEquals(ProductCategoryType.ROOT, rootCategory.getAdaptee().getType());
     }
 
@@ -99,5 +99,36 @@ public class ProductCategoryAdapterTest {
         assertEquals(8, products.size());
         assertEquals(0, products.stream().filter(productAdapter ->
                 productAdapter.getAdaptee().getLongName().equals("productFour")).collect(toList()).size());
+    }
+
+    @Test
+    public void testGetAggregateCategories() {
+        assertEquals(7, ProductCategoryAdapter.getAggregateCategories().size());
+    }
+
+    @Test
+    public void testGetAllCategories() {
+        assertEquals(13, ProductCategoryAdapter.getRootCategory().getAllProductCategories().size());
+    }
+
+    @Test
+    public void testAddChildCategory() {
+        aggregateOne.addChildCategory("newChild", ProductCategoryType.LEAF);
+        assertEquals(3, aggregateOne.getChildrenCategories().size());
+        assertEquals(1, aggregateOne.getChildrenCategories().stream()
+        .filter(productCategoryAdapter -> productCategoryAdapter.getAdaptee().getName().equals("newChild"))
+        .collect(toList()).size());
+    }
+
+    @Test(expected = IllegalProductCategoryStateException.class)
+    public void testAddChildCategoryAlreadyExist() {
+        aggregateOne.addChildCategory("leafOne", ProductCategoryType.LEAF);
+        assertEquals(3, aggregateOne.getChildrenCategories().size());
+    }
+
+    @Test(expected = IllegalProductCategoryStateException.class)
+    public void testAddChildCategoryAlreadyHasLeaf() {
+        aggregateOne.addChildCategory("newChild", ProductCategoryType.AGGREGATE);
+        assertEquals(3, aggregateOne.getChildrenCategories().size());
     }
 }

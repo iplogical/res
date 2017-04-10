@@ -6,15 +6,15 @@ import static java.util.stream.Collectors.toSet;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
 
+import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
-import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 
 public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 {
@@ -23,14 +23,22 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         super(adaptee);
     }
 
-    public static ProductCategoryAdapter getRootCategory(EntityManager manager) {
-        List<ProductCategory> rootCategoryList = manager.createNamedQuery(ProductCategory.GET_CATEGORY_BY_TYPE)
-                .setParameter("type", ProductCategoryType.ROOT)
-                .getResultList();
+    public static ProductCategoryAdapter getRootCategory() {
+        List<ProductCategory> rootCategoryList = GuardedTransaction.RunNamedQuery(ProductCategory.GET_CATEGORY_BY_TYPE,
+                query -> {query.setParameter("type", ProductCategoryType.ROOT);
+                    return query;});
         if(rootCategoryList.isEmpty()) {
             throw new RootCategoryNotFoundException();
         }
         return new ProductCategoryAdapter(rootCategoryList.get(0));
+    }
+
+    public static List<ProductCategoryAdapter> getAggregateCategories() {
+        List<ProductCategory> aggregates = GuardedTransaction.RunNamedQuery(ProductCategory.GET_CATEGORY_BY_TYPE,
+                query -> {query.setParameter("type", ProductCategoryType.AGGREGATE);
+                    return query;});
+        return aggregates.stream().map(ProductCategoryAdapter::new)
+                .collect(toList());
     }
 
     public static void traverseChildren(ProductCategory current, List<ProductCategory> traversal) {
@@ -48,6 +56,16 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         return childCategories.stream()
                 .filter(elem -> elem.getType().equals(ProductCategoryType.PSEUDO))
                 .map(elem -> new ProductAdapter(elem.getProduct()))
+                .collect(toList());
+    }
+
+    public List<ProductCategoryAdapter> getAllProductCategories() {
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
+        List<ProductCategory> childCategories = new ArrayList<>();
+        traverseChildren(this.adaptee, childCategories);
+        return childCategories.stream()
+                .filter(elem -> !elem.getType().equals(ProductCategoryType.PSEUDO))
+                .map(elem -> new ProductCategoryAdapter(elem))
                 .collect(toList());
     }
 
@@ -76,7 +94,6 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         GuardedTransaction.RunWithRefresh(adaptee, () -> {});
         return adaptee.getChildren().stream()
                 .map(elem -> new ProductCategoryAdapter(elem))
-                .filter(productCategoryAdapter -> !productCategoryAdapter.getAllSellableProducts().isEmpty())
                 .collect(toList());
     }
 
@@ -106,5 +123,28 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 
         return priceModifiers.stream().map(pm -> pm.getDiscountPercent(receiptRecordAdapter))
                 .max(Double::compareTo).orElse(0D);
+    }
+
+    public ProductCategoryAdapter addChildCategory(String name, ProductCategoryType type) {
+        final ProductCategory[] newCategory = new ProductCategory[1];
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            newCategory[0] = ProductCategory.builder()
+                    .name(name)
+                    .type(type)
+                    .parent(adaptee)
+                    .build();
+            getRootCategory().getAllProductCategories().stream()
+                    .filter(productCategoryAdapter -> productCategoryAdapter.getAdaptee().getName().equals(name))
+                    .map(category -> {throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed") + name);})
+                    .collect(Collectors.toList());
+            if(type.equals(ProductCategoryType.AGGREGATE)) {
+                adaptee.getChildren().stream()
+                        .filter(productCategory -> productCategory.getType().equals(ProductCategoryType.LEAF))
+                        .map(productCategory -> {throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryAlreadyHasLeaf"));})
+                        .collect(Collectors.toList());
+            }
+            adaptee.getChildren().add(newCategory[0]);
+        });
+        return new ProductCategoryAdapter(newCategory[0]);
     }
 }
