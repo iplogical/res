@@ -36,7 +36,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
 
     public List<TableAdapter> getDisplayableTables() {
         GuardedTransaction.RunWithRefresh(adaptee, () -> {});
-        Collection<Table> tables = adaptee.getTable();
+        Collection<Table> tables = adaptee.getTables();
         return tables.stream()
                 .filter(table -> table.getType().equals(TableType.NORMAL) ||
                         table.getType().equals(TableType.VIRTUAL))
@@ -45,17 +45,21 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     }
 
     public TableAdapter addTable(Table.TableBuilder builder) {
-        final Table[] newTable = new Table[1];
+        Table newTable = builder.build();
+        checkTableNumberCollision(newTable.getNumber());
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
-            newTable[0] = builder.build();
-            adaptee.getTable().stream()
-                    .filter(table -> table.getNumber() == newTable[0].getNumber())
-                    .map(table -> {throw new IllegalTableStateException("The table number " + newTable[0].getNumber() + " is already in use");})
-                    .collect(Collectors.toList());
-            adaptee.getTable().add(newTable[0]);
-            newTable[0].setOwner(adaptee);
+            adaptee.getTables().add(newTable);
+            newTable.setOwner(adaptee);
         });
-        return new TableAdapter(newTable[0]);
+        return new TableAdapter(newTable);
+    }
+
+    public void checkTableNumberCollision(int tableNumber) {
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+            if (adaptee.getTables().stream().anyMatch(t -> t.getNumber() == tableNumber)) {
+                throw new IllegalTableStateException("The table number " + tableNumber + " is already in use");
+            }
+        });
     }
 
     public void mergeTables(TableAdapter aggregate, List<TableAdapter> consumed) {
@@ -94,7 +98,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         Integer consumedGuestCount = consumed.stream().mapToInt(adapter -> adapter.getAdaptee().getGuestNumber()).sum();
 
         aggregate.setCapacity(aggregate.getAdaptee().getCapacity() + consumedCapacity);
-        aggregate.setGuestNumber(aggregate.getAdaptee().getGuestNumber() + consumedCapacity);
+        aggregate.setGuestNumber(aggregate.getAdaptee().getGuestNumber() + consumedGuestCount);
 
         GuardedTransaction.Run(() -> {
             consumed.forEach(TableAdapter::deleteTable);

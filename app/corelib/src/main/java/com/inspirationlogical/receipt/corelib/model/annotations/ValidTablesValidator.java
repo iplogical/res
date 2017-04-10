@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.annotations;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -37,10 +38,10 @@ public class ValidTablesValidator extends AbstractValidator
     }
 
     public boolean isValid(Restaurant value, ConstraintValidatorContext context) {
-        List<Map.Entry<TableType, Long>> entries = value.getTable().stream()
+        List<Map.Entry<TableType, Long>> entries = new ArrayList<>(value.getTables().stream()
                 .filter(table -> TableType.isSpecial(table.getType()))
-                .collect(Collectors.groupingBy(t -> t.getType(), Collectors.counting()))
-            .entrySet().stream().collect(Collectors.toList());
+                .collect(Collectors.groupingBy(Table::getType, Collectors.counting()))
+                .entrySet());
         entries.sort(TableType.getComparator());
         Iterator<Map.Entry<TableType, Long>> current = entries.iterator(), expected = TableType.specialTypes().iterator();
         while(expected.hasNext()) {

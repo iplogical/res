@@ -38,7 +38,7 @@ public @Data class Restaurant extends AbstractEntity {
     public static final String GET_ACTIVE_RESTAURANT = "Restaurant.GetActiveRestaurant";
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
-    private Collection<Table> table;
+    private Collection<Table> tables;
 
     @NotNull
     private String restaurantName;
@@ -99,7 +99,7 @@ public @Data class Restaurant extends AbstractEntity {
         result = result * 31 + companyTaxPayerId.hashCode();
         result = result * 31 + restaurantAddress.hashCode();
         result = result * 31 + companyAddress.hashCode();
-        for(Table t : table) {
+        for(Table t : tables) {
             result = result * 31 + t.hashCode();
         }
         return result;

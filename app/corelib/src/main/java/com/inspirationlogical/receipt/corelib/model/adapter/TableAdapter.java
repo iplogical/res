@@ -187,5 +187,4 @@ public class TableAdapter extends AbstractAdapter<Table>
     protected boolean isTableOpen() {
         return this.getActiveReceipt() != null;
     }
-
 }

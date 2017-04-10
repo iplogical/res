@@ -1319,7 +1319,7 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void restaurantAndTables() {
         //FIXME: Add service for building special tables in production
-        restaurant.setTable(new HashSet<>(
+        restaurant.setTables(new HashSet<>(
                 Arrays.asList(tableNormal, tableNormalClosed, tableVirtual, tablePurchase,
                         tableInventory, tableDisposal, tableOther, tableOrphanage)));
         tableNormal.setOwner(restaurant);

@@ -21,7 +21,7 @@ public interface RestaurantService {
 
     ReceiptView getActiveReceipt(TableView tableView);
 
-    void setTableNumber(TableView tableView, int tableNumber);
+    void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant);
 
     void setTableType(TableView tableView, TableType tableType);
 

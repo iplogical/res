@@ -26,7 +26,7 @@ public class RestaurantTest {
 
     @Test
     public void numberOfTables() {
-        assertEquals(NUMBER_OF_TABLES, getRestaurants().get(0).getTable().size());
+        assertEquals(NUMBER_OF_TABLES, getRestaurants().get(0).getTables().size());
     }
 
     @Test(expected = RollbackException.class)

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -43,7 +44,12 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
@@ -53,7 +59,8 @@ import javafx.util.Duration;
 public class RestaurantControllerImpl implements RestaurantController {
 
     public static final String RESTAURANT_VIEW_PATH = "/view/fxml/Restaurant.fxml";
-    private static final int HOLD_DURATION_MILLIS = 300;
+    private static final int HOLD_DURATION_MILLIS = 200;
+    private static final int INITIAL_GRID_SIZE = 10;
     private static Predicate<TableView> VISIBLE_TABLE = TableView::isVisible;
 
     @FXML
@@ -137,6 +144,8 @@ public class RestaurantControllerImpl implements RestaurantController {
         this.restaurantService = restaurantService;
         this.tableFormController = tableFormController;
         restaurantViewState = new RestaurantViewState();
+        tableControllers = new HashSet<>();
+        selectedTables = new LinkedHashSet<>();
     }
 
     @FXML
@@ -167,7 +176,6 @@ public class RestaurantControllerImpl implements RestaurantController {
         initContextMenu(virtualLab);
         initControls();
         initRestaurant();
-        initTables();
         updateRestaurantSummary();
     }
 
@@ -179,16 +187,17 @@ public class RestaurantControllerImpl implements RestaurantController {
         snapToGrid.disableProperty().bind(motion.selectedProperty().not());
         setGridSize.disableProperty().bind(motion.selectedProperty().not());
         getGridSize.textProperty().bind(Bindings.format("%.0f", setGridSize.valueProperty()));
-        setGridSize.setValue(10);
+        setGridSize.setValue(INITIAL_GRID_SIZE);
     }
 
     private void initRestaurant() {
         restaurantView = restaurantService.getActiveRestaurant();
+        initTables();
     }
 
     private void initTables() {
-        tableControllers = new HashSet<>();
-        selectedTables = new LinkedHashSet<>();
+        tablesTab.getChildren().removeAll(tableControllers.stream().map(TableController::getRoot).collect(Collectors.toList()));
+        tableControllers.clear();
         restaurantService.getTables(restaurantView).stream().filter(VISIBLE_TABLE).forEach(this::drawTable);
     }
 
@@ -229,7 +238,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         Point2D position = calculateTablePosition(tableFormController.getRootNode(), tablesTab);
         TableView tableView;
 
-        try{
+        try {
             tableView = restaurantService.addTable(restaurantView, restaurantService
                     .tableBuilder()
                     .type(tableType)
@@ -247,10 +256,8 @@ public class RestaurantControllerImpl implements RestaurantController {
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("TableAlreadyUsed") + tableNumber);
             initRestaurant();
-            initTables();
         } catch (Exception e) {
             initRestaurant();
-            initTables();
         }
     }
 
@@ -258,13 +265,8 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void editTable(TableController tableController, Integer tableNumber, Integer tableCapacity, boolean isVirtual) {
         TableView tableView = tableController.getView();
 
-        if (tableCapacity < tableView.getGuestCount()) {
-            ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("CapacityTooLow"));
-            return;
-        }
-
-        try{
-            restaurantService.setTableNumber(tableView, tableNumber);
+        try {
+            restaurantService.setTableNumber(tableView, tableNumber, restaurantView);
             restaurantService.setTableType(tableView, isVirtual ? VIRTUAL : NORMAL);
             restaurantService.setTableCapacity(tableView, tableCapacity);
 
@@ -287,11 +289,14 @@ public class RestaurantControllerImpl implements RestaurantController {
         TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
 
-        restaurantService.deleteTable(tableView);
-
-        removeNode((Pane) node.getParent(), node);
-
-        tableControllers.remove(tableController);
+        try {
+            restaurantService.deleteTable(tableView);
+            removeNode((Pane) node.getParent(), node);
+            tableControllers.remove(tableController);
+        } catch (IllegalTableStateException e) {
+            ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("TableIsOpen") + tableView.getTableNumber());
+            initRestaurant();
+        }
     }
 
     @Override
@@ -326,7 +331,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             });
 
             restaurantService.mergeTables(aggregate, consumed);
-            selectedTables.stream().forEach(tableController -> {
+            selectedTables.forEach(tableController -> {
                 tablesTab.getChildren().remove(tableController.getRoot());
                 tableControllers.remove(tableController);
             });

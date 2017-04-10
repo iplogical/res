@@ -16,10 +16,8 @@ import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
-import com.inspirationlogical.receipt.waiter.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
 import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
 
@@ -172,10 +170,6 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void setTable(String name, int guestCount, String note) {
-        if (guestCount > tableView.getTableCapacity()) {
-            ErrorMessage.showErrorMessage(root.getParent(), Resources.UI.getString("GuestCountTooHigh"));
-            return;
-        }
         restaurantService.setTableName(tableView, name);
         restaurantService.setGuestCount(tableView, guestCount);
         restaurantService.addTableNote(tableView, note);
