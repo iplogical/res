@@ -47,10 +47,6 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
     ChoiceBox<PriceModifierRepeatPeriod> repeatPeriod;
     @FXML
     TextField repeatPeriodMultiplier;
-    @FXML
-    Button confirm;
-    @FXML
-    Button cancel;
 
     private PriceModifierController priceModifierController;
 

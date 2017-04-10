@@ -63,17 +63,17 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button fx:id="createCategory" mnemonicParsing="false" prefWidth="100.0" text="%Common.Add" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="createCategory" mnemonicParsing="false" onAction="#onCreateCategory" prefWidth="100.0" text="%Common.Add" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="modifyCategory" mnemonicParsing="false" prefWidth="100.0" text="%Common.Modify" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="modifyCategory" mnemonicParsing="false" onAction="#onModifyCategory" prefWidth="100.0" text="%Common.Modify" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="deleteCategory" mnemonicParsing="false" prefWidth="100.0" text="%Common.Delete" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="deleteCategory" mnemonicParsing="false" onAction="#onDeleteCategory" prefWidth="100.0" text="%Common.Delete" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
@@ -84,17 +84,17 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button fx:id="createProduct" mnemonicParsing="false" prefWidth="100.0" text="%Common.Add" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="createProduct" mnemonicParsing="false" onAction="#onCreateProduct" prefWidth="100.0" text="%Common.Add" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="modifyProduct" mnemonicParsing="false" prefWidth="100.0" text="%Common.Modify" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="modifyProduct" mnemonicParsing="false" onAction="#onModifyProduct" prefWidth="100.0" text="%Common.Modify" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="deleteProduct" mnemonicParsing="false" prefWidth="100.0" text="%Common.Delete" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="deleteProduct" mnemonicParsing="false" onAction="#onDeleteProduct" prefWidth="100.0" text="%Common.Delete" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>

@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.manager.viewmodel.StockViewModel;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -19,6 +20,8 @@ import javax.inject.Singleton;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Function;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
 
 /**
  * Created by régiDAGi on 2017. 04. 08..
@@ -118,7 +121,7 @@ public class PriceModifierControllerImpl implements PriceModifierController {
         priceModifierForm = new Popup();
         priceModifierForm.getContent().add(viewLoader.loadView(priceModifierFormController));
         priceModifierFormController.loadPriceModifierForm(this);
-        priceModifierForm.show(root, 520, 200);
+        showPopup(priceModifierForm, priceModifierFormController, root, new Point2D(520, 200));
     }
 
     @FXML

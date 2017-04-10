@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="525.0" spacing="5.0" style="-fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #FFFFFF; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%ProductForm.Title">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <HBox prefWidth="200.0" spacing="5.0">
+         <children>
+            <Label prefWidth="100.0" text="%ProductForm.LongName">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="longName" prefWidth="150.0" promptText="%ProductForm.LongNamePrompt" />
+            <Label prefWidth="100.0" text="%ProductForm.ShortName">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="shortName" prefWidth="150.0" promptText="%ProductForm.ShortNamePrompt" />
+         </children>
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="5.0">
+         <children>
+            <Label prefWidth="100.0" text="%ProductForm.Type">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="type" prefWidth="150.0" />
+            <Label prefWidth="100.0" text="%ProductForm.Category">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="category" prefWidth="150.0" />
+         </children>
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="5.0">
+         <children>
+            <Label prefWidth="100.0" text="%ProductForm.Status">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="status" prefWidth="150.0" />
+            <Label prefWidth="100.0" text="%ProductForm.RapidCode">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="rapidCode" prefWidth="150.0" promptText="%ProductForm.RapidCodePrompt" />
+         </children>
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="5.0">
+         <children>
+            <Label prefWidth="100.0" text="%ProductForm.QuantityUnit">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="quantityUnit" prefWidth="150.0" />
+            <Label prefWidth="100.0" text="%ProductForm.StorageMultiplier">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="storageMultiplier" prefWidth="150.0" promptText="%ProductForm.StorageMultiplierPrompt" />
+         </children>
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="5.0">
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
+         <children>
+            <Label prefWidth="100.0" text="%ProductForm.SalePrice">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="salePrice" prefWidth="150.0" promptText="%ProductForm.SalePricePrompt" />
+            <Label prefWidth="100.0" text="%ProductForm.PurchasePrice">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="purchasePrice" prefWidth="150.0" promptText="%ProductForm.PurchasePricePrompt" />
+         </children>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="5.0">
+         <children>
+            <Label prefWidth="100.0" text="%ProductForm.MinimumStock">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="minimumStock" prefWidth="150.0" promptText="%ProductForm.MinimumStockPrompt" />
+            <Label prefWidth="100.0" text="%ProductForm.StockWindow">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="stockWindow" prefWidth="150.0" promptText="%ProductForm.StockWindowPrompt" />
+         </children>
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="BOTTOM_RIGHT" prefWidth="200.0" spacing="5.0">
+         <children>
+            <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onConfirm" prefWidth="100.0" text="%Form.Confirm">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCancel" prefWidth="100.0" text="%Form.Cancel">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>

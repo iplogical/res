@@ -14,6 +14,7 @@ import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
@@ -21,6 +22,9 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Popup;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
 
 @Singleton
 public class GoodsControllerImpl implements GoodsController {
@@ -85,14 +89,22 @@ public class GoodsControllerImpl implements GoodsController {
 
     private CommonService commonService;
 
+    private Popup productForm;
+
+    private ProductFormController productFormController;
+
+    private Popup productCategory;
+
     private ProductCategoryView rootCategory;
 
     @Inject
     public GoodsControllerImpl(StockController stockController,
                                PriceModifierController priceModifierController,
+                               ProductFormController productFormController,
                                CommonService commonService) {
         this.stockController = stockController;
         this.priceModifierController = priceModifierController;
+        this.productFormController = productFormController;
         this.commonService = commonService;
     }
 
@@ -105,6 +117,35 @@ public class GoodsControllerImpl implements GoodsController {
     public void onShowPriceModifiers(Event event) {
         viewLoader.loadViewIntoScene(priceModifierController);
     }
+
+    @FXML
+    public void onCreateProduct(Event event) {
+        productForm = new Popup();
+        productForm.getContent().add(viewLoader.loadView(productFormController));
+        productFormController.loadProductForm(this);
+        showPopup(productForm, productFormController, root, new Point2D(520, 200));
+    }
+
+    @FXML
+    public void onModifyProduct(Event event) {
+    }
+
+    @FXML
+    public void onDeleteProduct(Event event) {
+    }
+
+    @FXML
+    public void onCreateCategory(Event event) {
+    }
+
+    @FXML
+    public void onModifyCategory(Event event) {
+    }
+
+    @FXML
+    public void onDeleteCategory(Event event) {
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initColumns();
