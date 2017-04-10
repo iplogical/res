@@ -56,8 +56,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift) {
 
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
-            LocalDateTime dateTime = now();
-            dateTime.plusSeconds(-5);
+            LocalDateTime dateTime = now().minusSeconds(5);
             List<ReceiptRecord> records = GuardedTransaction.RunNamedQuery(ReceiptRecord.GET_RECEIPTS_RECORDS_BY_TIMESTAMP,
                     query -> {query.setParameter("created", dateTime);
                               query.setParameter("name", productAdapter.getAdaptee().getLongName());
