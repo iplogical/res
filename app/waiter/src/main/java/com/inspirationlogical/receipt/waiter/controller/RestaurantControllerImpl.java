@@ -196,7 +196,12 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void initTables() {
-        tablesTab.getChildren().removeAll(tableControllers.stream().map(TableController::getRoot).collect(Collectors.toList()));
+        tablesTab.getChildren().removeAll(tableControllers.stream()
+                .filter(tableController -> !tableController.getView().isVirtual())
+                .map(TableController::getRoot).collect(Collectors.toList()));
+        virtualTab.getChildren().removeAll(tableControllers.stream()
+                .filter(tableController -> tableController.getView().isVirtual())
+                .map(TableController::getRoot).collect(Collectors.toList()));
         tableControllers.clear();
         restaurantService.getTables(restaurantView).stream().filter(VISIBLE_TABLE).forEach(this::drawTable);
     }
@@ -266,7 +271,9 @@ public class RestaurantControllerImpl implements RestaurantController {
         TableView tableView = tableController.getView();
 
         try {
-            restaurantService.setTableNumber(tableView, tableNumber, restaurantView);
+            if (tableView.getTableNumber() != tableNumber) {
+                restaurantService.setTableNumber(tableView, tableNumber, restaurantView);
+            }
             restaurantService.setTableType(tableView, isVirtual ? VIRTUAL : NORMAL);
             restaurantService.setTableCapacity(tableView, tableCapacity);
 
