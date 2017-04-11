@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
+import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Product.ProductBuilder;
@@ -155,6 +156,14 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         final Product[] newProduct = new Product[1];
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
             newProduct[0] = builder.build();
+            getRootCategory().getAllProducts().stream()
+                    .filter(productAdapter -> productAdapter.getAdaptee().getLongName().equals(newProduct[0].getLongName()))
+                    .map(category -> {throw new IllegalProductStateException(Resources.CONFIG.getString("ProductNameAlreadyUsed") + newProduct[0].getLongName());})
+                    .collect(Collectors.toList());
+            getRootCategory().getAllProducts().stream()
+                    .filter(productAdapter -> productAdapter.getAdaptee().getLongName().equals(newProduct[0].getShortName()))
+                    .map(category -> {throw new IllegalProductStateException(Resources.CONFIG.getString("ProductNameAlreadyUsed") + newProduct[0].getShortName());})
+                    .collect(Collectors.toList());
             ProductCategory pseudo = ProductCategory.builder()
                     .name(newProduct[0].getLongName() + "pseudo")
                     .type(ProductCategoryType.PSEUDO)

@@ -8,7 +8,12 @@ import java.util.List;
 import java.util.Set;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
+import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
+import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
+import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,7 +23,8 @@ import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 public class ProductCategoryAdapterTest {
 
     ReceiptRecordAdapter receiptRecordAdapter;
-    ProductCategoryAdapter aggregateOne, pseudoTwo, pseudoFour, root;
+    ProductCategoryAdapter root, aggregateOne, leafOne, pseudoTwo, pseudoFour;
+    Product.ProductBuilder builder;
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
@@ -26,10 +32,24 @@ public class ProductCategoryAdapterTest {
     @Before
     public void setUp() {
         receiptRecordAdapter = new ReceiptRecordAdapter(schema.getReceiptRecordSaleTwo());
+        root = new ProductCategoryAdapter(schema.getRoot());
         aggregateOne = new ProductCategoryAdapter(schema.getAggregateOne());
+        leafOne = new ProductCategoryAdapter(schema.getLeafOne());
         pseudoTwo = new ProductCategoryAdapter(schema.getPseudoTwo());
         pseudoFour = new ProductCategoryAdapter(schema.getPseudoFour());
-        root = new ProductCategoryAdapter(schema.getRoot());
+        builder = Product.builder()
+                .longName("newProduct")
+                .shortName("newProduct")
+                .type(ProductType.SELLABLE)
+                .status(ProductStatus.ACTIVE)
+                .rapidCode(1010)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(Double.valueOf(100))
+                .purchasePrice(440)
+                .salePrice(220)
+                .minimumStock(14)
+                .stockWindow(60);
+
     }
 
     @Test
@@ -130,5 +150,21 @@ public class ProductCategoryAdapterTest {
     public void testAddChildCategoryAlreadyHasLeaf() {
         aggregateOne.addChildCategory("newChild", ProductCategoryType.AGGREGATE);
         assertEquals(3, aggregateOne.getChildrenCategories().size());
+    }
+
+    @Test
+    public void testAddProduct() {
+        leafOne.addProduct(builder);
+        assertEquals(7, leafOne.getAllProducts().size());
+        assertEquals(1, leafOne.getAllProducts().stream()
+                .filter(productAdapter -> productAdapter.getAdaptee().getLongName().equals("newProduct"))
+                .collect(toList()).size());
+    }
+
+    @Test(expected = IllegalProductStateException.class)
+    public void testAddProductNameAlreadyExists() {
+        builder.longName("productSix");
+        leafOne.addProduct(builder);
+        assertEquals(7, leafOne.getAllProducts().size());
     }
 }

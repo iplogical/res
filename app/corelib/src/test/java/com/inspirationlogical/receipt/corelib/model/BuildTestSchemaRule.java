@@ -90,6 +90,9 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Recipe productFourPartThree;
     private @Getter Recipe productFivePartOne;
     private @Getter Recipe productSixPartOne;
+    private @Getter Recipe productRecipeElementOnePartOne;
+    private @Getter Recipe productRecipeElementTwoPartOne;
+    private @Getter Recipe productRecipeElementThreePartOne;
 
     private @Getter Stock stockOne;
     private @Getter Stock stockTwo;
@@ -274,14 +277,17 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void buildRecipes() {
-        buildProductOneElementOne();
-        buildProductTwoElementOne();
-        buildProductThreeElementOne();
-        buildProductFourElementOne();
-        buildProductFourElementTwo();
-        buildProductFourElementThree();
-        buildProductFiveElementOne();
-        buildProductSixElementOne();
+        buildProductOnePartOne();
+        buildProductTwoPartOne();
+        buildProductThreePartOne();
+        buildProductFourPartOne();
+        buildProductFourPartTwo();
+        buildProductFourPartThree();
+        buildProductFivePartOne();
+        buildProductSixPartOne();
+        buildProductRecipeElementOnePartOne();
+        buildProductRecipeElementOnePartTwo();
+        buildProductRecipeElementOnePartThree();
     }
 
     private void buildStocks() {
@@ -707,51 +713,70 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
-    private void buildProductOneElementOne() {
+    private void buildProductOnePartOne() {
         productOnePartOne = Recipe.builder()
                 .quantityMultiplier(4)
                 .build();
     }
 
-    private void buildProductTwoElementOne() {
+    private void buildProductTwoPartOne() {
         productTwoPartOne = Recipe.builder()
                 .quantityMultiplier(0.5)
                 .build();
     }
 
-    private void buildProductThreeElementOne() {
+    private void buildProductThreePartOne() {
         productThreePartOne = Recipe.builder()
                 .quantityMultiplier(30)
                 .build();
     }
 
-    private void buildProductFourElementOne() {
+    private void buildProductFourPartOne() {
         productFourPartOne = Recipe.builder()
                 .quantityMultiplier(0.2)
                 .build();
     }
 
-    private void buildProductFourElementTwo() {
+    private void buildProductFourPartTwo() {
         productFourPartTwo = Recipe.builder()
                 .quantityMultiplier(0.05)
                 .build();
     }
 
-    private void buildProductFourElementThree() {
+    private void buildProductFourPartThree() {
         productFourPartThree = Recipe.builder()
                 .quantityMultiplier(0.1)
                 .build();
     }
 
-    private void buildProductFiveElementOne() {
+    private void buildProductFivePartOne() {
         productFivePartOne = Recipe.builder()
                 .quantityMultiplier(0.2)
                 .build();
     }
 
-    private void buildProductSixElementOne() {
+    private void buildProductSixPartOne() {
         productSixPartOne = Recipe.builder()
                 .quantityMultiplier(2)
+                .build();
+    }
+
+
+    private void buildProductRecipeElementOnePartOne() {
+        productRecipeElementOnePartOne = Recipe.builder()
+                .quantityMultiplier(0.01)
+                .build();
+    }
+
+    private void buildProductRecipeElementOnePartTwo() {
+        productRecipeElementTwoPartOne = Recipe.builder()
+                .quantityMultiplier(20)
+                .build();
+    }
+
+    private void buildProductRecipeElementOnePartThree() {
+        productRecipeElementThreePartOne = Recipe.builder()
+                .quantityMultiplier(0.02)
                 .build();
     }
 
@@ -1227,6 +1252,12 @@ public class BuildTestSchemaRule implements TestRule {
                 Collections.singletonList(productFivePartOne)));
         productSix.setRecipe(new HashSet<>(
                 Collections.singletonList(productSixPartOne)));
+        productRecipeElementOne.setRecipe(new HashSet<>(
+                Collections.singletonList(productRecipeElementOnePartOne)));
+        productRecipeElementTwo.setRecipe(new HashSet<>(
+                Collections.singletonList(productRecipeElementTwoPartOne)));
+        productRecipeElementThree.setRecipe(new HashSet<>(
+                Collections.singletonList(productRecipeElementThreePartOne)));
         productOnePartOne.setOwner(productOne);
         productTwoPartOne.setOwner(productTwo);
         productThreePartOne.setOwner(productThree);
@@ -1235,6 +1266,9 @@ public class BuildTestSchemaRule implements TestRule {
         productFourPartThree.setOwner(productFour);
         productFivePartOne.setOwner(productFive);
         productSixPartOne.setOwner(productSix);
+        productRecipeElementOnePartOne.setOwner(productRecipeElementOne);
+        productRecipeElementTwoPartOne.setOwner(productRecipeElementTwo);
+        productRecipeElementThreePartOne.setOwner(productRecipeElementThree);
     }
 
     private void recipesAndProducts() {
@@ -1246,6 +1280,9 @@ public class BuildTestSchemaRule implements TestRule {
         productFourPartThree.setElement(productRecipeElementThree);
         productFivePartOne.setElement(productFive);
         productSixPartOne.setElement(productSix);
+        productRecipeElementOnePartOne.setElement(productRecipeElementOne);
+        productRecipeElementTwoPartOne.setElement(productRecipeElementTwo);
+        productRecipeElementThreePartOne.setElement(productRecipeElementThree);
     }
 
     private void productFourAndStocks() {
