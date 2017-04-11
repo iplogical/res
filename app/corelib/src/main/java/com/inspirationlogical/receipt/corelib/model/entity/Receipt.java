@@ -42,6 +42,8 @@ import lombok.experimental.Tolerate;
             query="FROM Receipt r"),
     @NamedQuery(name = Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
             query="SELECT r FROM Receipt r WHERE r.status=:status AND r.owner.number=:number"),
+    @NamedQuery(name = Receipt.GET_RECEIPT_BY_CLOSURE_TIME,
+            query="SELECT r FROM Receipt r WHERE r.closureTime>:closureTime"),
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECEIPT_ID"))
 @ValidOwner
@@ -52,6 +54,7 @@ public @Data class Receipt extends AbstractEntity {
 
     public static final String GET_TEST_RECEIPTS = "Receipt.GetTestReceipts";
     public static final String GET_RECEIPT_BY_STATUS_AND_OWNER = "Receipt.GetActiveReceipt";
+    public static final String GET_RECEIPT_BY_CLOSURE_TIME = "Receipt.GetReceiptByClosureTime";
 
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)

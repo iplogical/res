@@ -39,7 +39,9 @@ import lombok.experimental.Tolerate;
     @NamedQuery(name = ProductCategory.GET_ALL_CATEGORIES,
             query="FROM ProductCategory pc"),
     @NamedQuery(name = ProductCategory.GET_CATEGORY_BY_TYPE,
-            query="SELECT pc FROM ProductCategory pc WHERE pc.type=:type")
+            query="SELECT pc FROM ProductCategory pc WHERE pc.type=:type"),
+    @NamedQuery(name = ProductCategory.GET_CHILDREN_CATEGORIES,
+            query="SELECT pc FROM ProductCategory pc WHERE pc.parent.id=:parent_id")
 })
 @AttributeOverride(name = "id", column = @Column(name = "CATEGORY_ID"))
 @ValidProduct
@@ -49,6 +51,7 @@ public @Data class ProductCategory extends AbstractEntity {
 
     public static final String GET_ALL_CATEGORIES = "ProductCategory.GetTestCategories";
     public static final String GET_CATEGORY_BY_TYPE = "ProductCategory.GetCategoryByType";
+    public static final String GET_CHILDREN_CATEGORIES = "ProductCategory.GetChildrenCategories";
 
     @NotEmpty
     @Column(unique = true)

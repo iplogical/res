@@ -158,18 +158,22 @@ public class TableAdapter extends AbstractAdapter<Table>
     public int getPaidConsumptionOfTheDay() {
         /// TODO: Replace this with the time of the previous closure.
         LocalDateTime previousClosure = now();
-        previousClosure.plusHours(-1 * previousClosure.getHour());
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
-        Collection<ReceiptAdapter> adapters = adaptee.getReceipt()
-                .stream()
-                .filter(elem -> elem.getStatus().equals(ReceiptStatus.CLOSED))
-                .filter(elem -> elem.getClosureTime().isAfter(previousClosure))
-                .map(elem -> new ReceiptAdapter(elem))
-                .collect(Collectors.toList());
-        if(adapters.size() == 0) {
+        previousClosure = previousClosure.plusHours(-1 * previousClosure.getHour());
+        LocalDateTime finalPreviousClosure = previousClosure;
+        List<Receipt> closedReceipts = getReceiptsByClosureTime(finalPreviousClosure);
+        if(closedReceipts.size() == 0) {
             return 0;
         }
-        return adapters.stream().mapToInt(ReceiptAdapter::getTotalPrice).sum();
+        return closedReceipts.stream()
+                .map(ReceiptAdapter::new)
+                .mapToInt(ReceiptAdapter::getTotalPrice).sum();
+    }
+
+    private List<Receipt> getReceiptsByClosureTime(LocalDateTime finalPreviousClosure) {
+        return GuardedTransaction.RunNamedQuery(Receipt.GET_RECEIPT_BY_CLOSURE_TIME,
+                query -> { query.setParameter("closureTime", finalPreviousClosure);
+                return query;
+            });
     }
 
     private void bindReceiptToTable(ReceiptAdapter receiptAdapter) {

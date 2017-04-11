@@ -130,9 +130,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public Collection<ReceiptRecordAdapter> getSoldProducts() {
-        List<ReceiptRecord> records = GuardedTransaction.RunNamedQuery(ReceiptRecord.GET_RECEIPT_RECORDS_BY_RECEIPT,
-                query -> {query.setParameter("owner_id", adaptee.getId());
-                    return query;});
+        List<ReceiptRecord> records = getReceiptRecords();
         return records.stream().map(receiptRecord -> new ReceiptRecordAdapter(receiptRecord)).collect(toList());
     }
 
@@ -212,9 +210,14 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public int getTotalPrice() {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
-        return adaptee.getRecords().stream()
+        return getReceiptRecords().stream()
                 .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum();
+    }
+
+    private List<ReceiptRecord> getReceiptRecords() {
+        return GuardedTransaction.RunNamedQuery(ReceiptRecord.GET_RECEIPT_RECORDS_BY_RECEIPT,
+                query -> {query.setParameter("owner_id", adaptee.getId());
+                    return query;});
     }
 
     private double calculateDiscount(PaymentParams paymentParams) {

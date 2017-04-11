@@ -77,7 +77,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     public List<ProductAdapter> getAllActiveProducts() {
         return getAllProducts().stream()
                 .filter(productAdapter -> productAdapter.getAdaptee().getStatus().equals(ProductStatus.ACTIVE))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public List<ProductAdapter> getAllSellableProducts() {
@@ -85,7 +85,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .filter(productAdapter -> !productAdapter.getAdaptee().getType().equals(ProductType.AD_HOC_PRODUCT))
                 .filter(productAdapter -> !productAdapter.getAdaptee().getType().equals(ProductType.GAME_FEE_PRODUCT))
                 .filter(productAdapter -> !productAdapter.getAdaptee().getType().equals(ProductType.STORABLE))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public Set<ProductAdapter> getAllStorableProducts() {
@@ -95,11 +95,11 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .collect(toSet());
     }
 
-    public Collection<ProductCategoryAdapter> getChildrenCategories() {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
-        return adaptee.getChildren().stream()
-                .map(elem -> new ProductCategoryAdapter(elem))
-                .collect(toList());
+    public List<ProductCategoryAdapter> getChildrenCategories() {
+        List<ProductCategory> children = GuardedTransaction.RunNamedQuery(ProductCategory.GET_CHILDREN_CATEGORIES,
+                query -> {query.setParameter("parent_id", adaptee.getId());
+                    return query;});
+        return children.stream().map(ProductCategoryAdapter::new).collect(toList());
     }
 
     public ProductCategoryAdapter getParent() {
