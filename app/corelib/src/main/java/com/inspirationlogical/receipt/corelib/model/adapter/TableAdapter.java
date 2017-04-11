@@ -5,6 +5,7 @@ import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.VER
 import static java.time.LocalDateTime.now;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,8 +24,7 @@ import com.inspirationlogical.receipt.corelib.service.PaymentParams;
 import javafx.geometry.Point2D;
 import lombok.NonNull;
 
-public class TableAdapter extends AbstractAdapter<Table>
-{
+public class TableAdapter extends AbstractAdapter<Table> {
 
     public TableAdapter(@NonNull Table adaptee) {
         super(adaptee);
@@ -33,7 +33,7 @@ public class TableAdapter extends AbstractAdapter<Table>
     public static TableAdapter getTableByNumber(EntityManager manager, int number) {
         @SuppressWarnings("unchecked")
         List<Table> table = getTablesByNumber(manager, number);
-        if(table.isEmpty()) {
+        if (table.isEmpty()) {
             return null;
         }
         return new TableAdapter(table.get(0));
@@ -48,13 +48,15 @@ public class TableAdapter extends AbstractAdapter<Table>
     public ReceiptAdapter getActiveReceipt() {
 
         List<Receipt> adapters = GuardedTransaction.RunNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
-                query -> {query.setParameter("status", ReceiptStatus.OPEN);
-                        query.setParameter("number", adaptee.getNumber());
-                    return query;});
+                query -> {
+                    query.setParameter("status", ReceiptStatus.OPEN);
+                    query.setParameter("number", adaptee.getNumber());
+                    return query;
+                });
 
-        if(adapters.size() == 0) {
+        if (adapters.size() == 0) {
             return null;
-        } else if(adapters.size() > 1) {
+        } else if (adapters.size() > 1) {
             throw new RuntimeException();
         }
         return new ReceiptAdapter(adapters.get(0));
@@ -94,8 +96,8 @@ public class TableAdapter extends AbstractAdapter<Table>
 
     public void moveTable(Point2D position) {
         GuardedTransaction.Run(() -> {
-            adaptee.setCoordinateX((int)position.getX());
-            adaptee.setCoordinateY((int)position.getY());
+            adaptee.setCoordinateX((int) position.getX());
+            adaptee.setCoordinateY((int) position.getY());
         });
     }
 
@@ -112,7 +114,7 @@ public class TableAdapter extends AbstractAdapter<Table>
 
     public void openTable() {
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
-            if(isTableOpen()) {
+            if (isTableOpen()) {
                 throw new IllegalTableStateException("Open table for an open table. Table number: " + adaptee.getNumber());
             }
             ReceiptAdapter receiptAdapter = ReceiptAdapter.receiptAdapterFactory(ReceiptType.SALE);
@@ -122,7 +124,7 @@ public class TableAdapter extends AbstractAdapter<Table>
 
     public void payTable(PaymentParams paymentParams) {
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
-            if(!isTableOpen()) {
+            if (!isTableOpen()) {
                 throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
             }
             getActiveReceipt().close(paymentParams);
@@ -142,17 +144,23 @@ public class TableAdapter extends AbstractAdapter<Table>
     }
 
     public void deleteTable() {
-        if(isTableOpen()) {
+        if (isTableOpen()) {
             throw new IllegalTableStateException("Delete table for an open table. Table number: " + adaptee.getNumber());
         }
-        GuardedTransaction.RunWithRefresh(adaptee,() -> {
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {
             List<Table> orpahnageList = GuardedTransaction.RunNamedQuery(Table.GET_TABLE_ORPHANAGE);
             Table orpahnage = orpahnageList.get(0);
+            if(orpahnage.getReceipt() == null)
+                orpahnage.setReceipt(new ArrayList<>());
             orpahnage.getReceipt().addAll(adaptee.getReceipt().stream()
-                    .map(receipt -> {receipt.setOwner(orpahnage);return receipt;}).collect(Collectors.toList()));
+                    .map(receipt -> {
+                        receipt.setOwner(orpahnage);
+                        return receipt;
+                    }).collect(Collectors.toList()));
             adaptee.getReceipt().clear();
         });
-        GuardedTransaction.RunWithDelete(adaptee, () -> {});
+        GuardedTransaction.RunWithDelete(adaptee, () -> {
+        });
     }
 
     public int getPaidConsumptionOfTheDay() {
@@ -161,7 +169,7 @@ public class TableAdapter extends AbstractAdapter<Table>
         previousClosure = previousClosure.plusHours(-1 * previousClosure.getHour());
         LocalDateTime finalPreviousClosure = previousClosure;
         List<Receipt> closedReceipts = getReceiptsByClosureTime(finalPreviousClosure);
-        if(closedReceipts.size() == 0) {
+        if (closedReceipts.size() == 0) {
             return 0;
         }
         return closedReceipts.stream()
@@ -171,9 +179,10 @@ public class TableAdapter extends AbstractAdapter<Table>
 
     private List<Receipt> getReceiptsByClosureTime(LocalDateTime finalPreviousClosure) {
         return GuardedTransaction.RunNamedQuery(Receipt.GET_RECEIPT_BY_CLOSURE_TIME,
-                query -> { query.setParameter("closureTime", finalPreviousClosure);
-                return query;
-            });
+                query -> {
+                    query.setParameter("closureTime", finalPreviousClosure);
+                    return query;
+                });
     }
 
     private void bindReceiptToTable(ReceiptAdapter receiptAdapter) {

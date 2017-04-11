@@ -25,7 +25,7 @@ public class BuildTestSchemaRule implements TestRule {
     public static final int NUMBER_OF_PRODUCTS = 11;
     public static final int NUMBER_OF_PRODUCT_CATEGORIES = 24;
     public static final int NUMBER_OF_PRICE_MODIFIERS = 4;
-    public static final int NUMBER_OF_RECIPES = 8;
+    public static final int NUMBER_OF_RECIPES = 11;
     public static final int NUMBER_OF_STOCKS = 3;
     public static final int NUMBER_OF_RECEIPTS = 9;
     public static final int NUMBER_OF_RECEIPT_RECORDS = 7;
