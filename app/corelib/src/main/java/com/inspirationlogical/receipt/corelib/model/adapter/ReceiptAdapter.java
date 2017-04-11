@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import static java.time.LocalDateTime.now;
+import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -55,9 +56,9 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
 
     public void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift) {
 
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.Run(() -> {
             LocalDateTime dateTime = now().minusSeconds(5);
-            List<ReceiptRecord> records = GuardedTransaction.RunNamedQuery(ReceiptRecord.GET_RECEIPTS_RECORDS_BY_TIMESTAMP,
+            List<ReceiptRecord> records = GuardedTransaction.RunNamedQuery(ReceiptRecord.GET_RECEIPT_RECORDS_BY_TIMESTAMP,
                     query -> {query.setParameter("created", dateTime);
                               query.setParameter("name", productAdapter.getAdaptee().getLongName());
                               return query;});
@@ -129,16 +130,16 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public Collection<ReceiptRecordAdapter> getSoldProducts() {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
-        return adaptee.getRecords().stream()
-                .map(receiptRecord -> new ReceiptRecordAdapter(receiptRecord))
-                .collect(Collectors.toList());
+        List<ReceiptRecord> records = GuardedTransaction.RunNamedQuery(ReceiptRecord.GET_RECEIPT_RECORDS_BY_RECEIPT,
+                query -> {query.setParameter("owner_id", adaptee.getId());
+                    return query;});
+        return records.stream().map(receiptRecord -> new ReceiptRecordAdapter(receiptRecord)).collect(toList());
     }
 
     public Collection<ReceiptRecordAdapter> getSoldProductsNoRefresh() {
         return adaptee.getRecords().stream()
                 .map(receiptRecord -> new ReceiptRecordAdapter(receiptRecord))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public void close(PaymentParams paymentParams){
@@ -172,10 +173,10 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                     .collect(Collectors.toMap(ReceiptRecordView::getId, Function.identity()));
             List<ReceiptRecord> notPaidRecords = adaptee.getRecords().stream()
                     .filter(record -> !recordsToPay.containsKey(record.getId()))
-                    .collect(Collectors.toList());
+                    .collect(toList());
             List<ReceiptRecord> paidRecords = adaptee.getRecords().stream()
                     .filter(record -> recordsToPay.containsKey(record.getId()))
-                    .collect(Collectors.toList());
+                    .collect(toList());
             notPaidRecords.forEach(record -> record.setOwner(adaptee));
             adaptee.setRecords(notPaidRecords);
 

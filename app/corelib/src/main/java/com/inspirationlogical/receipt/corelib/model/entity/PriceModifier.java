@@ -33,13 +33,16 @@ import lombok.experimental.Tolerate;
     @NamedQuery(name = PriceModifier.GET_TEST_PRICE_MODIFIERS,
             query="FROM PriceModifier pm"),
     @NamedQuery(name = PriceModifier.GET_PRICE_MODIFIERS,
-            query="FROM PriceModifier pm")
+            query="FROM PriceModifier pm"),
+    @NamedQuery(name = PriceModifier.GET_PRICE_MODIFIERS_BY_PRODUCT_AND_DATES,
+            query="FROM PriceModifier pm WHERE pm.owner.id =:owner_id AND pm.startTime <:time AND pm.endTime >:time")
 })
 @AttributeOverride(name = "id", column = @Column(name = "PRICE_MODIFIER_ID"))
 public @Data class PriceModifier extends AbstractEntity {
 
     public static final String GET_TEST_PRICE_MODIFIERS = "PriceModifier.GetTestPriceModifiers";
     public static final String GET_PRICE_MODIFIERS = "PriceModifier.GetPriceModifiers";
+    public static final String GET_PRICE_MODIFIERS_BY_PRODUCT_AND_DATES = "PriceModifier.GetPriceModifiersByProductsAndDates";
     public static final String DROP_ALL = "PriceModifier.DropAll";
 
     @NotNull

@@ -36,17 +36,20 @@ import lombok.experimental.Tolerate;
 @ToString(exclude = {"owner", "product"})
 @Table(name = "RECEIPT_RECORD")
 @NamedQueries({
-    @NamedQuery(name = ReceiptRecord.GET_TEST_RECEIPTS_RECORDS,
+    @NamedQuery(name = ReceiptRecord.GET_TEST_RECEIPT_RECORDS,
             query="FROM ReceiptRecord r"),
-    @NamedQuery(name = ReceiptRecord.GET_RECEIPTS_RECORDS_BY_TIMESTAMP,
-            query="FROM ReceiptRecord r WHERE r.created >:created AND r.name=:name")
+    @NamedQuery(name = ReceiptRecord.GET_RECEIPT_RECORDS_BY_TIMESTAMP,
+            query="FROM ReceiptRecord r WHERE r.created >:created AND r.name=:name"),
+    @NamedQuery(name = ReceiptRecord.GET_RECEIPT_RECORDS_BY_RECEIPT,
+            query="FROM ReceiptRecord r WHERE r.owner.id =:owner_id")
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECEIPT_RECORD_ID"))
 @ValidProduct
 public @Data class ReceiptRecord extends AbstractEntity {
 
-    public static final String GET_TEST_RECEIPTS_RECORDS = "ReceiptRecord.GetTestReceiptsRecords";
-    public static final String GET_RECEIPTS_RECORDS_BY_TIMESTAMP = "ReceiptRecord.GetReceiptsRecordByTimeStamp";
+    public static final String GET_TEST_RECEIPT_RECORDS = "ReceiptRecord.GetTestReceiptsRecords";
+    public static final String GET_RECEIPT_RECORDS_BY_TIMESTAMP = "ReceiptRecord.GetReceiptsRecordByTimeStamp";
+    public static final String GET_RECEIPT_RECORDS_BY_RECEIPT = "ReceiptRecord.GetReceiptsRecordByReceipt";
 
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})

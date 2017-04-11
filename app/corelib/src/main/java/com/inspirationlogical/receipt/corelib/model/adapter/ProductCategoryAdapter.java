@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
+import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Product.ProductBuilder;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
@@ -111,21 +112,22 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 
     public double getDiscount(ReceiptRecordAdapter receiptRecordAdapter) {
         // TODO: Implement filter for DAILY and WEEKLY repeating PriceModifiers.
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
         ProductCategory category = adaptee;
-        List<PriceModifierAdapter> priceModifiers = new ArrayList<>();
+        List<PriceModifier> priceModifiers = new ArrayList<>();
         do {
-            List<PriceModifierAdapter> loopPriceModifiers = category.getPriceModifier().stream()
-                    .filter(priceModifier -> priceModifier.getOwner().equals(adaptee))
-                    .filter(priceModifier -> priceModifier.getStartTime().isBefore(now()))
-                    .filter(priceModifier -> priceModifier.getEndTime().isAfter(now()))
-                    .map(priceModifier -> new PriceModifierAdapter(priceModifier))
-                    .collect(toList());
+            ProductCategory finalCategory = category;
+            List<PriceModifier> loopModifiers = GuardedTransaction.RunNamedQuery(PriceModifier.GET_PRICE_MODIFIERS_BY_PRODUCT_AND_DATES,
+                    query -> {
+                        query.setParameter("owner_id", finalCategory.getId());
+                        query.setParameter("time", now());
+                        return query;});
             category = category.getParent();
-            priceModifiers.addAll(loopPriceModifiers);
+            priceModifiers.addAll(loopModifiers);
         } while(!category.getType().equals(ProductCategoryType.ROOT));
 
-        return priceModifiers.stream().map(pm -> pm.getDiscountPercent(receiptRecordAdapter))
+        return priceModifiers.stream()
+                .map(pm -> new PriceModifierAdapter(pm))
+                .map(pm -> pm.getDiscountPercent(receiptRecordAdapter))
                 .max(Double::compareTo).orElse(0D);
     }
 

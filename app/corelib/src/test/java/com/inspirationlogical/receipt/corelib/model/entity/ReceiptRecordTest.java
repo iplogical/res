@@ -60,7 +60,7 @@ public class ReceiptRecordTest {
 
     private List<ReceiptRecord> getReceiptRecords() {
         @SuppressWarnings("unchecked")
-        List<ReceiptRecord> entries = schema.getEntityManager().createNamedQuery(ReceiptRecord.GET_TEST_RECEIPTS_RECORDS).getResultList();
+        List<ReceiptRecord> entries = schema.getEntityManager().createNamedQuery(ReceiptRecord.GET_TEST_RECEIPT_RECORDS).getResultList();
         return entries;
     }
 }

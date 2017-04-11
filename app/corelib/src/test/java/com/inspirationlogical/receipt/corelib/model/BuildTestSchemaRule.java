@@ -675,6 +675,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .repeatPeriod(PriceModifierRepeatPeriod.NO_REPETITION)
                 .startTime(LocalDateTime.of(2017, 1, 8, 16, 0))
                 .endTime(LocalDateTime.of(2017, 1, 8, 20, 20))
+                .discountPercent(33.333)
                 .build();
     }
 
@@ -686,7 +687,6 @@ public class BuildTestSchemaRule implements TestRule {
                 .startTime(LocalDateTime.of(2017, 2, 8, 16, 0))
                 .endTime(LocalDateTime.of(2020, 3, 8, 20, 20))
                 .discountPercent(33.333)
-                .quantityLimit(3)
                 .build();
     }
 
@@ -697,6 +697,8 @@ public class BuildTestSchemaRule implements TestRule {
                 .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
                 .startTime(LocalDateTime.of(2017, 2, 8, 16, 0))
                 .endTime(LocalDateTime.of(2017, 5, 8, 20, 20))
+                .discountPercent(33.333)
+                .quantityLimit(3)
                 .build();
     }
 

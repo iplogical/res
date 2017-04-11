@@ -12,11 +12,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
+import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
-import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.service.PaymentParams;
@@ -47,18 +46,18 @@ public class TableAdapter extends AbstractAdapter<Table>
     }
 
     public ReceiptAdapter getActiveReceipt() {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
-        List<ReceiptAdapter> adapters = adaptee.getReceipt()
-                .stream()
-                .filter(elem -> elem.getStatus().equals(ReceiptStatus.OPEN))
-                .map(ReceiptAdapter::new)
-                .collect(Collectors.toList());
+
+        List<Receipt> adapters = GuardedTransaction.RunNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
+                query -> {query.setParameter("status", ReceiptStatus.OPEN);
+                        query.setParameter("number", adaptee.getNumber());
+                    return query;});
+
         if(adapters.size() == 0) {
             return null;
         } else if(adapters.size() > 1) {
             throw new RuntimeException();
         }
-        return adapters.get(0);
+        return new ReceiptAdapter(adapters.get(0));
     }
 
     public void setTableName(String name) {
