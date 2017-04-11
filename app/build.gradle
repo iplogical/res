@@ -15,6 +15,10 @@ subprojects {
 		mavenCentral()
 	}
 
+	test {
+		systemProperty 'file.encoding', 'UTF-8'
+	}
+
 	buildDir = new File(rootProject.projectDir, "gradleBuild")
 
 	installDist {

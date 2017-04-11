@@ -46,6 +46,7 @@ public class ReceiptToXML {
             JAXBContext context = JAXBContext.newInstance("com.inspirationlogical.receipt.corelib.jaxb");
             Marshaller jaxbMarshaller = context.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            jaxbMarshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             jaxbMarshaller.marshal(r, baos);
             return new ByteArrayInputStream(baos.toByteArray(),0,baos.size());
@@ -81,7 +82,7 @@ public class ReceiptToXML {
         ReceiptHeader header = factory.createReceiptHeader();
         Restaurant restaurant = receiptAdapter.getAdaptee().getOwner().getOwner();
         //FIXME: add owner and restaurant ZIP,Street addr,city, taxation ID in DataModel
-        header.setRestaurantLogoPath(Paths.get(Resources.CONFIG.getString("ReceiptLogoPath")).toUri().toString());
+        header.setRestaurantLogoPath(Resources.CONFIG.getString("ReceiptLogoPath"));
         header.setRestaurantName(restaurant.getRestaurantName());
         header.setRestaurantAddress(
                 String.join(",", Arrays.asList(restaurant.getRestaurantAddress().getZIPCode(),
