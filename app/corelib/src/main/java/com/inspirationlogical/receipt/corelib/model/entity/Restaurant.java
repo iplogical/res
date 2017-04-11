@@ -37,7 +37,7 @@ public @Data class Restaurant extends AbstractEntity {
     public static final String GET_TEST_RESTAURANTS = "Restaurant.GetTestRestaurants";
     public static final String GET_ACTIVE_RESTAURANT = "Restaurant.GetActiveRestaurant";
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST}, orphanRemoval = true)
     private Collection<Table> tables;
 
     @NotNull

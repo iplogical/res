@@ -80,13 +80,13 @@ public @Data class Table extends AbstractEntity {
 
     private String note;
 
-    private boolean visibility;
+    private boolean visible;
 
     @Tolerate
     Table(){}
 
     @Override
     public String toString() {
-        return "Table: type=" + type + ", number=" + number + ", name=" + name + ", visibility=" + visibility;
+        return "Table: type=" + type + ", number=" + number + ", name=" + name + ", visibility=" + visible;
     }
 }

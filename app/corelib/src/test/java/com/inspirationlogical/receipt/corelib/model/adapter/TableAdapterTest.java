@@ -102,14 +102,14 @@ public class TableAdapterTest {
     public void testDisplayTable() {
         tableAdapter.displayTable();
         assertTrue(TableAdapter.getTableByNumber(schema.getEntityManager(),
-                        tableAdapter.getAdaptee().getNumber()).getAdaptee().isVisibility());
+                        tableAdapter.getAdaptee().getNumber()).getAdaptee().isVisible());
     }
 
     @Test
     public void testHideTable() {
         tableAdapter.hideTable();
         assertFalse(TableAdapter.getTableByNumber(schema.getEntityManager(),
-                tableAdapter.getAdaptee().getNumber()).getAdaptee().isVisibility());
+                tableAdapter.getAdaptee().getNumber()).getAdaptee().isVisible());
     }
 
     @Test

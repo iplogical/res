@@ -36,7 +36,7 @@ public class RestaurantAdapterTest {
                 .guestNumber(5)
                 .capacity(5)
                 .note("Big Chocklate Cake")
-                .visibility(true));
+                .visible(true));
         assertEquals(NUMBER_OF_DISPLAYABLE_TABLES + 1, restaurantAdapter.getDisplayableTables().size());
     }
 }

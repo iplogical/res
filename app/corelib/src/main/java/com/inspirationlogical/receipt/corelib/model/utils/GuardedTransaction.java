@@ -71,9 +71,7 @@ public class GuardedTransaction {
 
     public static void RunWithDelete(AbstractEntity e, Functor f) {
         Run(f,()->{manager.refresh(e);}, ()->{
-            manager.clear();
-            AbstractEntity entity = manager.find(e.getClass(), e.getId());
-            manager.remove(entity);
+            manager.remove(e);
         });
     }
 

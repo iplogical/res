@@ -47,13 +47,11 @@ public class TableAdapter extends AbstractAdapter<Table>
     }
 
     public ReceiptAdapter getActiveReceipt() {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
-
-        });
+        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
         List<ReceiptAdapter> adapters = adaptee.getReceipt()
                 .stream()
                 .filter(elem -> elem.getStatus().equals(ReceiptStatus.OPEN))
-                .map(elem -> new ReceiptAdapter(elem))
+                .map(ReceiptAdapter::new)
                 .collect(Collectors.toList());
         if(adapters.size() == 0) {
             return null;
@@ -88,11 +86,11 @@ public class TableAdapter extends AbstractAdapter<Table>
     }
 
     public void displayTable() {
-        GuardedTransaction.Run(() -> adaptee.setVisibility(true));
+        GuardedTransaction.Run(() -> adaptee.setVisible(true));
     }
 
     public void hideTable() {
-        GuardedTransaction.Run(() -> adaptee.setVisibility(false));
+        GuardedTransaction.Run(() -> adaptee.setVisible(false));
     }
 
     public void moveTable(Point2D position) {
@@ -145,21 +143,17 @@ public class TableAdapter extends AbstractAdapter<Table>
     }
 
     public void deleteTable() {
+        if(isTableOpen()) {
+            throw new IllegalTableStateException("Delete table for an open table. Table number: " + adaptee.getNumber());
+        }
         GuardedTransaction.RunWithRefresh(adaptee,() -> {
-            if(isTableOpen()) {
-                throw new IllegalTableStateException("Delete table for an open table. Table number: " + adaptee.getNumber());
-            }
             List<Table> orpahnageList = GuardedTransaction.RunNamedQuery(Table.GET_TABLE_ORPHANAGE);
             Table orpahnage = orpahnageList.get(0);
             orpahnage.getReceipt().addAll(adaptee.getReceipt().stream()
                     .map(receipt -> {receipt.setOwner(orpahnage);return receipt;}).collect(Collectors.toList()));
             adaptee.getReceipt().clear();
         });
-        GuardedTransaction.RunWithDelete(adaptee, () -> {
-            if(isTableOpen()) {
-                throw new IllegalTableStateException("Delete table for an open table. Table number: " + adaptee.getNumber());
-            }
-        });
+        GuardedTransaction.RunWithDelete(adaptee, () -> {});
     }
 
     public int getPaidConsumptionOfTheDay() {

@@ -249,7 +249,7 @@ public class RestaurantControllerImpl implements RestaurantController {
                     .type(tableType)
                     .number(tableNumber)
                     .capacity(tableCapacity)
-                    .visibility(true)
+                    .visible(true)
                     .coordinateX((int) position.getX())
                     .coordinateY((int) position.getY())
                     .orientation(HORIZONTAL));

@@ -52,7 +52,7 @@
                <children>
                   <HBox alignment="BOTTOM_RIGHT">
                      <children>
-                        <ImageView fx:id="note" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="note" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../images/sticky_note.png" />
                            </image>

@@ -22,7 +22,7 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
 
     @Override
     public boolean isVisible() {
-        return adapter.getAdaptee().isVisibility();
+        return adapter.getAdaptee().isVisible();
     }
 
     @Override
