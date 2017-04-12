@@ -115,12 +115,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         ProductCategory category = adaptee;
         List<PriceModifier> priceModifiers = new ArrayList<>();
         do {
-            ProductCategory finalCategory = category;
-            List<PriceModifier> loopModifiers = GuardedTransaction.RunNamedQuery(PriceModifier.GET_PRICE_MODIFIERS_BY_PRODUCT_AND_DATES,
-                    query -> {
-                        query.setParameter("owner_id", finalCategory.getId());
-                        query.setParameter("time", now());
-                        return query;});
+            List<PriceModifier> loopModifiers = getPriceModifiersByProductAndDates(category);
             category = category.getParent();
             priceModifiers.addAll(loopModifiers);
         } while(!category.getType().equals(ProductCategoryType.ROOT));
@@ -154,6 +149,13 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         return new ProductCategoryAdapter(newCategory[0]);
     }
 
+    public ProductCategoryAdapter updateChildCategory(String newName, String originalName, ProductCategoryType type) {
+        ProductCategory originalCategory = getProductCategoryByName(originalName).get(0);
+        originalCategory.setName(newName);
+        GuardedTransaction.Persist(originalCategory);
+        return new ProductCategoryAdapter(originalCategory);
+    }
+
     public ProductAdapter addProduct(ProductBuilder builder) {
         final Product[] newProduct = new Product[1];
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
@@ -181,5 +183,20 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                     .build())));
         });
         return new ProductAdapter(newProduct[0]);
+    }
+
+    private List<PriceModifier> getPriceModifiersByProductAndDates(ProductCategory category) {
+        return GuardedTransaction.RunNamedQuery(PriceModifier.GET_PRICE_MODIFIERS_BY_PRODUCT_AND_DATES,
+                query -> {
+                    query.setParameter("owner_id", category.getId());
+                    query.setParameter("time", now());
+                    return query;});
+    }
+
+    private List<ProductCategory> getProductCategoryByName(String name) {
+        return GuardedTransaction.RunNamedQuery(ProductCategory.GET_CATEGORY_BY_NAME,
+                query -> {
+                    query.setParameter("name", name);
+                    return query;});
     }
 }

@@ -10,11 +10,10 @@ import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategorySt
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.corelib.service.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -118,6 +117,63 @@ public class GoodsControllerImpl implements GoodsController {
         this.commonService = commonService;
     }
 
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initColumns();
+        initCategories();
+    }
+
+    @Override
+    public String getViewPath() {
+        return GOODS_VIEW_PATH;
+    }
+
+    @Override
+    public Node getRootNode() {
+        return root;
+    }
+
+    @Override
+    public void addProduct(ProductCategoryView parent, Product.ProductBuilder builder) {
+        try {
+            commonService.addProduct(parent, builder);
+            initCategories();
+            productForm.hide();
+        } catch (IllegalProductStateException e ) {
+            ErrorMessage.showErrorMessage(root, e.getMessage());
+            initColumns();
+            initCategories();
+            productForm.hide();
+        } catch (Exception e) {
+            initColumns();
+            initCategories();
+            productCategoryForm.hide();
+        }
+    }
+
+    @Override
+    public void addProductCategory(ProductCategoryParams params) {
+        try {
+            if(params.getOriginalName().equals("")) {
+                commonService.addProductCategory(params);
+            } else {
+                commonService.updateProductCategory(params);
+            }
+            initCategories();
+            productCategoryForm.hide();
+        } catch (IllegalProductCategoryStateException e) {
+            ErrorMessage.showErrorMessage(root, e.getMessage());
+            initColumns();
+            initCategories();
+            productCategoryForm.hide();
+        } catch (Exception e) {
+            initColumns();
+            initCategories();
+            productCategoryForm.hide();
+        }
+    }
+
     @FXML
     public void onShowStock(Event event) {
         viewLoader.loadViewIntoScene(stockController);
@@ -152,8 +208,9 @@ public class GoodsControllerImpl implements GoodsController {
 
     @FXML
     public void onModifyCategory(Event event) {
-        initProductCategoryForm();
+        if(goodsTable.getSelectionModel().getSelectedItem() == null) return;
         CategoryViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
+        initProductCategoryForm();
         if(selected.getName().equals("root")) return;
         productCategoryFormController.setCategory(goodsTable.getSelectionModel().getSelectedItem().getValue());
         showPopup(productCategoryForm, productCategoryFormController, root, new Point2D(520, 200));
@@ -161,12 +218,6 @@ public class GoodsControllerImpl implements GoodsController {
 
     @FXML
     public void onDeleteCategory(Event event) {
-    }
-    
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        initColumns();
-        initCategories();
     }
 
     private CategoryViewModel getViewModel(CellDataFeatures<CategoryViewModel, String> cellDataFeatures) {
@@ -210,52 +261,6 @@ public class GoodsControllerImpl implements GoodsController {
             treeItem.getChildren().add(childItem);
             updateCategory(child, childItem);
         });
-    }
-
-    @Override
-    public String getViewPath() {
-        return GOODS_VIEW_PATH;
-    }
-
-    @Override
-    public Node getRootNode() {
-        return root;
-    }
-
-    @Override
-    public void addProduct(ProductCategoryView parent, Product.ProductBuilder builder) {
-        try {
-            commonService.addProduct(parent, builder);
-            initCategories();
-            productForm.hide();
-        } catch (IllegalProductStateException e ) {
-            ErrorMessage.showErrorMessage(root, e.getMessage());
-            initColumns();
-            initCategories();
-            productForm.hide();
-        } catch (Exception e) {
-            initColumns();
-            initCategories();
-            productCategoryForm.hide();
-        }
-    }
-
-    @Override
-    public void addProductCategory(ProductCategoryView parent, String name, ProductCategoryType type) {
-        try {
-            commonService.addProductCategory(parent, name, type);
-            initCategories();
-            productCategoryForm.hide();
-        } catch (IllegalProductCategoryStateException e) {
-            ErrorMessage.showErrorMessage(root, e.getMessage());
-            initColumns();
-            initCategories();
-            productCategoryForm.hide();
-        } catch (Exception e) {
-            initColumns();
-            initCategories();
-            productCategoryForm.hide();
-        }
     }
 
     private void initProductCategoryForm() {

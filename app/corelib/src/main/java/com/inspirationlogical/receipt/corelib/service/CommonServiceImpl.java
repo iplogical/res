@@ -55,8 +55,15 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
-    public ProductCategoryView addProductCategory(ProductCategoryView parent, String name, ProductCategoryType type) {
-        return new ProductCategoryViewImpl(getProductCategoryAdapter(parent).addChildCategory(name, type));
+    public ProductCategoryView addProductCategory(ProductCategoryParams params) {
+        return new ProductCategoryViewImpl(getProductCategoryAdapter(params.getParent())
+                .addChildCategory(params.getName(), params.getType()));
+    }
+
+    @Override
+    public ProductCategoryView updateProductCategory(ProductCategoryParams params) {
+        return new ProductCategoryViewImpl(getProductCategoryAdapter(params.getParent())
+                .updateChildCategory(params.getName(), params.getOriginalName(), params.getType()));
     }
 
     @Override

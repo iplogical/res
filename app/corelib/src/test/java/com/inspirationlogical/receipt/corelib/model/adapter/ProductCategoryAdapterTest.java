@@ -153,6 +153,15 @@ public class ProductCategoryAdapterTest {
     }
 
     @Test
+    public void testUpdateChildCategory() {
+        aggregateOne.updateChildCategory("newChild", "leafOne", ProductCategoryType.LEAF);
+        assertEquals(2, aggregateOne.getChildrenCategories().size());
+        assertEquals(1, aggregateOne.getChildrenCategories().stream()
+                .filter(productCategoryAdapter -> productCategoryAdapter.getAdaptee().getName().equals("newChild"))
+                .collect(toList()).size());
+    }
+
+    @Test
     public void testAddProduct() {
         leafOne.addProduct(builder);
         assertEquals(7, leafOne.getAllProducts().size());

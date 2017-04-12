@@ -1,9 +1,9 @@
 package com.inspirationlogical.receipt.manager.controller;
 
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.corelib.service.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
@@ -16,7 +16,6 @@ import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.util.StringConverter;
 
 import javax.inject.Inject;
 import java.net.URL;
@@ -24,7 +23,6 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Created by régiDAGi on 2017. 04. 10..
@@ -57,6 +55,8 @@ public class ProductCategoryFormControllerImpl implements ProductCategoryFormCon
 
     private CategoryViewModel categoryViewModel;
 
+    private String originalCategoryName;
+
     @Override
     public String getViewPath() {
         return PRODUCT_CATEGORY_FORM_VIEW_PATH;
@@ -87,6 +87,11 @@ public class ProductCategoryFormControllerImpl implements ProductCategoryFormCon
         parentCategories = FXCollections.observableArrayList(commonService.getAggregateCategories());
         parentCategories.add(rootCategory);
         parent.setItems(parentCategories);
+        parent.setDisable(false);
+        type.setValue(null);
+        type.setDisable(false);
+        name.setText("");
+        originalCategoryName = "";
     }
 
     @Override
@@ -95,10 +100,13 @@ public class ProductCategoryFormControllerImpl implements ProductCategoryFormCon
         if(categoryViewModel != null) {
             CategoryStringConverter converterAll = new CategoryStringConverter(allCategories);
             CategoryStringConverter converterParent = new CategoryStringConverter(parentCategories);
-            name.setText(categoryViewModel.getName());
+            originalCategoryName = categoryViewModel.getName();
+            name.setText(originalCategoryName);
             type.setValue(converterAll.fromString(categoryViewModel.getName()).getType());
+            type.setDisable(true);
             String parentName = converterAll.fromString(categoryViewModel.getName()).getParent().getName();
             parent.setValue(converterParent.fromString(parentName));
+            parent.setDisable(true);
         }
     }
 
@@ -114,7 +122,13 @@ public class ProductCategoryFormControllerImpl implements ProductCategoryFormCon
             ErrorMessage.showErrorMessage(root, Resources.UI.getString("ProductCategoryNameEmpty"));
             return;
         }
-        goodsController.addProductCategory(parent.getValue(), name.getText(), type.getValue());
+        goodsController.addProductCategory(
+                ProductCategoryParams.builder()
+                .parent(parent.getValue())
+                .name(name.getText())
+                .originalName(originalCategoryName)
+                .type(type.getValue())
+                .build());
     }
 
     @FXML

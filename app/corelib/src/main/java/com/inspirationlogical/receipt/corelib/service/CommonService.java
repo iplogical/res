@@ -3,7 +3,6 @@ package com.inspirationlogical.receipt.corelib.service;
 import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Product.ProductBuilder;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.PriceModifierView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
@@ -14,7 +13,9 @@ public interface CommonService {
 
     ProductView addProduct(ProductCategoryView parent, ProductBuilder builder);
 
-    ProductCategoryView addProductCategory(ProductCategoryView parent, String name, ProductCategoryType type);
+    ProductCategoryView addProductCategory(ProductCategoryParams params);
+
+    ProductCategoryView updateProductCategory(ProductCategoryParams params);
 
     ProductCategoryView getRootProductCategory();
 
