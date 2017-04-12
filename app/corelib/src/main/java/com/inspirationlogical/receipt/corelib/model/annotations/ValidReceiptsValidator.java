@@ -47,10 +47,10 @@ public class ValidReceiptsValidator extends AbstractValidator
     }
 
     public boolean isValid(Table value, ConstraintValidatorContext context) {
-        if(value.getReceipt() == null) {
+        if(value.getReceipts() == null) {
             return true;
         }
-        List<Receipt> open =  value.getReceipt().stream()
+        List<Receipt> open =  value.getReceipts().stream()
                 .filter(receipt -> receipt.getStatus().equals(ReceiptStatus.OPEN))
                 .collect(Collectors.toList());
         if(open.size() > 1) {

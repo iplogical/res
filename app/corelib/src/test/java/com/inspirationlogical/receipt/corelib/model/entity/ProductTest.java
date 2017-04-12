@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_PRODUCTS;
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_RECIPES;
 import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_STOCKS;
 import static org.junit.Assert.assertEquals;
 
@@ -89,7 +88,7 @@ public class ProductTest {
     @Test(expected = RollbackException.class)
     public void testProductRecipeNull() {
         GuardedTransaction.Run(()->
-                schema.getProductOne().setRecipe(null));
+                schema.getProductOne().setRecipes(null));
     }
 
     @Test
@@ -97,7 +96,7 @@ public class ProductTest {
         List<Product> products = getProductList().stream().filter(p -> p.getLongName().equals("productFour"))
                 .collect(Collectors.toList());
         assertEquals(1,products.size());
-        assertEquals(3, products.get(0).getRecipe().size());
+        assertEquals(3, products.get(0).getRecipes().size());
     }
 
     @Test
@@ -105,7 +104,7 @@ public class ProductTest {
         List<Product> products = getProductList().stream().filter(p -> p.getLongName().equals("productRecipeElementOne"))
                 .collect(Collectors.toList());
         assertEquals(1,products.size());
-        assertEquals(NUMBER_OF_STOCKS, products.get(0).getStock().size());
+        assertEquals(NUMBER_OF_STOCKS, products.get(0).getStocks().size());
     }
 
     private List<Product> getProductList() {

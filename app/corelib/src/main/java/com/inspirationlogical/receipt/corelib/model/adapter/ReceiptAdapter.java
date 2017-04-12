@@ -186,7 +186,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             paidRecords.forEach(record -> record.setOwner(paidReceipt[0].getAdaptee()));
             paidReceipt[0].getAdaptee().setStatus(ReceiptStatus.PENDING);
             paidReceipt[0].getAdaptee().setOwner(tableAdapter.getAdaptee());
-            tableAdapter.getAdaptee().getReceipt().add(paidReceipt[0].getAdaptee());
+            tableAdapter.getAdaptee().getReceipts().add(paidReceipt[0].getAdaptee());
             GuardedTransaction.Persist(paidReceipt[0].adaptee);
         });
         paidReceipt[0].close(paymentParams);

@@ -1,5 +1,8 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static java.time.LocalDateTime.now;
+import static java.util.stream.Collectors.toList;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -7,9 +10,6 @@ import java.util.Set;
 import com.inspirationlogical.receipt.corelib.model.entity.Stock;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-
-import static java.time.LocalDateTime.now;
-import static java.util.stream.Collectors.toList;
 
 public class StockAdapter extends AbstractAdapter<Stock> {
 
@@ -24,8 +24,8 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     public static void updateStock(ReceiptRecordAdapter receiptRecordAdapter, ReceiptType receiptType) {
-        receiptRecordAdapter.getAdaptee().getProduct().getRecipe().forEach(recipe ->
-                StockAdapter.getLatestItemByProduct(new ProductAdapter(recipe.getElement()))
+        receiptRecordAdapter.getAdaptee().getProduct().getRecipes().forEach(recipe ->
+                StockAdapter.getLatestItemByProduct(new ProductAdapter(recipe.getComponent()))
                 .updateStockAdapter(roundToTwoDecimals(recipe.getQuantityMultiplier() *
                         receiptRecordAdapter.getAdaptee().getSoldQuantity()), receiptType));
     }

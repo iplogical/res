@@ -8,20 +8,20 @@
 
 <VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="525.0" spacing="5.0" style="-fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #FFFFFF; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%ProductCategoryForm.Title">
+      <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%CategoryForm.Title">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
       <HBox prefWidth="200.0" spacing="5.0">
          <children>
-            <Label prefWidth="100.0" text="%ProductCategoryForm.Name">
+            <Label prefWidth="100.0" text="%CategoryForm.Name">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="name" prefWidth="150.0" promptText="%ProductCategoryForm.NamePrompt" />
-            <Label prefWidth="100.0" text="%ProductCategoryForm.Type">
+            <TextField fx:id="name" prefWidth="150.0" promptText="%CategoryForm.NamePrompt" />
+            <Label prefWidth="100.0" text="%CategoryForm.Type">
                <font>
                   <Font size="16.0" />
                </font>
@@ -34,7 +34,7 @@
       </HBox>
       <HBox prefWidth="200.0" spacing="5.0">
          <children>
-            <Label prefWidth="100.0" text="%ProductCategoryForm.ParentCategory">
+            <Label prefWidth="100.0" text="%CategoryForm.ParentCategory">
                <font>
                   <Font size="16.0" />
                </font>

@@ -53,10 +53,10 @@ public @Data class Table extends AbstractEntity {
     private Restaurant owner;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
-    private Collection<Receipt> receipt;
+    private Collection<Receipt> receipts;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
-    private Collection<Reservation> reservation;
+    private Collection<Reservation> reservations;
 
     @NotNull(message = "TableType must not be NULL")
     @Enumerated(EnumType.STRING)

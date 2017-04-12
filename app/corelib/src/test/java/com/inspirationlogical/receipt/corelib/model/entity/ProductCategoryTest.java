@@ -34,7 +34,7 @@ public class ProductCategoryTest {
         List<ProductCategory> categories = getAllCategories()
                 .stream().filter(cat -> cat.getName() == "pseudoOne").collect(Collectors.toList());
         assertEquals(1,categories.size());
-        assertEquals(2, categories.get(0).getPriceModifier().size());
+        assertEquals(2, categories.get(0).getPriceModifiers().size());
     }
 
     @Test

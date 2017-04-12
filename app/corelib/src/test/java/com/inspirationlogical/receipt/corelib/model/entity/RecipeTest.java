@@ -28,7 +28,7 @@ public class RecipeTest {
     public void testRecipeOwner() {
         assertEquals("productTwo", getRecipes().stream()
                 .filter(recipe -> recipe.getOwner().getLongName().equals("productTwo"))
-                .collect(Collectors.toList()).get(0).getElement().getLongName());
+                .collect(Collectors.toList()).get(0).getComponent().getLongName());
     }
 
     @Test(expected = RollbackException.class)
@@ -38,7 +38,7 @@ public class RecipeTest {
 
     @Test(expected = RollbackException.class)
     public void recipeWithoutElement() {
-        GuardedTransaction.Run(()->schema.getProductFourPartThree().setElement(null));
+        GuardedTransaction.Run(()->schema.getProductFourPartThree().setComponent(null));
     }
 
     private List<Recipe> getRecipes() {

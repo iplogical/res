@@ -70,7 +70,7 @@ public class ReceiptTest {
     public void moveVirtualReceiptToNormalTableTooManyOpen() {
         GuardedTransaction.Run(()-> {
             schema.getReceiptSaleThree().setOwner(schema.getTableNormal());
-            schema.getTableNormal().getReceipt().add(schema.getReceiptSaleThree());});
+            schema.getTableNormal().getReceipts().add(schema.getReceiptSaleThree());});
     }
 
     @Test(expected = RollbackException.class)

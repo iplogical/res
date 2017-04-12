@@ -44,7 +44,7 @@ public @Data class Recipe extends AbstractEntity {
 
     @OneToOne
     @NotNull
-    private Product element;
+    private Product component;
 
     private double quantityMultiplier;
 

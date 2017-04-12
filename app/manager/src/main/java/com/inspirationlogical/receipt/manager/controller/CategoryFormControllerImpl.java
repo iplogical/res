@@ -27,7 +27,7 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.h
 /**
  * Created by régiDAGi on 2017. 04. 10..
  */
-public class ProductCategoryFormControllerImpl implements ProductCategoryFormController {
+public class CategoryFormControllerImpl implements CategoryFormController {
 
     @FXML
     VBox root;
@@ -38,7 +38,7 @@ public class ProductCategoryFormControllerImpl implements ProductCategoryFormCon
     @FXML
     ChoiceBox<ProductCategoryView> parent;
 
-    public static String PRODUCT_CATEGORY_FORM_VIEW_PATH =  "/view/fxml/ProductCategoryForm.fxml";
+    public static String PRODUCT_CATEGORY_FORM_VIEW_PATH = "/view/fxml/CategoryForm.fxml";
 
     private GoodsController goodsController;
 

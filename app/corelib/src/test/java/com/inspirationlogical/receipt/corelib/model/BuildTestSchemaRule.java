@@ -1193,11 +1193,11 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void categoriesAndPriceModifiers() {
-        pseudoOne.setPriceModifier(new HashSet<>(
+        pseudoOne.setPriceModifiers(new HashSet<>(
                 Arrays.asList(priceModifierOne, priceModifierTwo)));
-        leafTwo.setPriceModifier(new HashSet<>(
+        leafTwo.setPriceModifiers(new HashSet<>(
                 Collections.singletonList(priceModifierThree)));
-        pseudoTwo.setPriceModifier(new HashSet<>(
+        pseudoTwo.setPriceModifiers(new HashSet<>(
                 Collections.singletonList(priceModifierFour)));
         priceModifierOne.setOwner(pseudoOne);
         priceModifierTwo.setOwner(pseudoOne);
@@ -1242,23 +1242,23 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void productsAndRecipes() {
-        productOne.setRecipe(new HashSet<>(
+        productOne.setRecipes(new HashSet<>(
                 Collections.singletonList(productOnePartOne)));
-        productTwo.setRecipe(new HashSet<>(
+        productTwo.setRecipes(new HashSet<>(
                 Collections.singletonList(productTwoPartOne)));
-        productThree.setRecipe(new HashSet<>(
+        productThree.setRecipes(new HashSet<>(
                 Collections.singletonList(productThreePartOne)));
-        productFour.setRecipe(new HashSet<>(
+        productFour.setRecipes(new HashSet<>(
                 Arrays.asList(productFourPartOne, productFourPartTwo, productFourPartThree)));
-        productFive.setRecipe(new HashSet<>(
+        productFive.setRecipes(new HashSet<>(
                 Collections.singletonList(productFivePartOne)));
-        productSix.setRecipe(new HashSet<>(
+        productSix.setRecipes(new HashSet<>(
                 Collections.singletonList(productSixPartOne)));
-        productRecipeElementOne.setRecipe(new HashSet<>(
+        productRecipeElementOne.setRecipes(new HashSet<>(
                 Collections.singletonList(productRecipeElementOnePartOne)));
-        productRecipeElementTwo.setRecipe(new HashSet<>(
+        productRecipeElementTwo.setRecipes(new HashSet<>(
                 Collections.singletonList(productRecipeElementTwoPartOne)));
-        productRecipeElementThree.setRecipe(new HashSet<>(
+        productRecipeElementThree.setRecipes(new HashSet<>(
                 Collections.singletonList(productRecipeElementThreePartOne)));
         productOnePartOne.setOwner(productOne);
         productTwoPartOne.setOwner(productTwo);
@@ -1274,21 +1274,21 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void recipesAndProducts() {
-        productOnePartOne.setElement(productOne);
-        productTwoPartOne.setElement(productTwo);
-        productThreePartOne.setElement(productThree);
-        productFourPartOne.setElement(productRecipeElementOne);
-        productFourPartTwo.setElement(productRecipeElementTwo);
-        productFourPartThree.setElement(productRecipeElementThree);
-        productFivePartOne.setElement(productFive);
-        productSixPartOne.setElement(productSix);
-        productRecipeElementOnePartOne.setElement(productRecipeElementOne);
-        productRecipeElementTwoPartOne.setElement(productRecipeElementTwo);
-        productRecipeElementThreePartOne.setElement(productRecipeElementThree);
+        productOnePartOne.setComponent(productOne);
+        productTwoPartOne.setComponent(productTwo);
+        productThreePartOne.setComponent(productThree);
+        productFourPartOne.setComponent(productRecipeElementOne);
+        productFourPartTwo.setComponent(productRecipeElementTwo);
+        productFourPartThree.setComponent(productRecipeElementThree);
+        productFivePartOne.setComponent(productFive);
+        productSixPartOne.setComponent(productSix);
+        productRecipeElementOnePartOne.setComponent(productRecipeElementOne);
+        productRecipeElementTwoPartOne.setComponent(productRecipeElementTwo);
+        productRecipeElementThreePartOne.setComponent(productRecipeElementThree);
     }
 
     private void productFourAndStocks() {
-        productRecipeElementOne.setStock(new HashSet<>(
+        productRecipeElementOne.setStocks(new HashSet<>(
                 Arrays.asList(stockOne, stockTwo, stockThree)));
         stockOne.setOwner(productRecipeElementOne);
         stockTwo.setOwner(productRecipeElementOne);
@@ -1301,7 +1301,7 @@ public class BuildTestSchemaRule implements TestRule {
      }
 
     private void tablesAndReservations() {
-        tableNormal.setReservation(new HashSet<>(
+        tableNormal.setReservations(new HashSet<>(
                 Arrays.asList(reservationOne, reservationTwo)));
         reservationOne.setOwner(tableNormal);
         reservationTwo.setOwner(tableNormal);
@@ -1385,19 +1385,19 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void receiptsToTables() {
-        tableNormal.setReceipt(new HashSet<>(
+        tableNormal.setReceipts(new HashSet<>(
                 Arrays.asList(receiptSaleOne, receiptSaleTwo)));
-        tableNormalClosed.setReceipt(new HashSet<>(
+        tableNormalClosed.setReceipts(new HashSet<>(
                 Collections.singletonList(receiptSaleClosedTable)));
-        tableVirtual.setReceipt(new HashSet<>(
+        tableVirtual.setReceipts(new HashSet<>(
                 Arrays.asList(receiptSaleThree, receiptSaleFour)));
-        tablePurchase.setReceipt(new HashSet<>(
+        tablePurchase.setReceipts(new HashSet<>(
                 Collections.singletonList(receiptPurchase)));
-        tableInventory.setReceipt(new HashSet<>(
+        tableInventory.setReceipts(new HashSet<>(
                 Collections.singletonList(receiptInventory)));
-        tableDisposal.setReceipt(new HashSet<>(
+        tableDisposal.setReceipts(new HashSet<>(
                 Collections.singletonList(receiptDisposal)));
-        tableOther.setReceipt(new HashSet<>(
+        tableOther.setReceipts(new HashSet<>(
                 Collections.singletonList(receiptOther)));
     }
 }

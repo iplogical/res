@@ -56,56 +56,77 @@
       </AnchorPane>
    </top>
    <right>
-      <VBox alignment="TOP_CENTER" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="%Goods.Category" textAlignment="CENTER">
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%Goods.Category" textAlignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button fx:id="createCategory" mnemonicParsing="false" onAction="#onCreateCategory" prefWidth="100.0" text="%Common.Add" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="createCategory" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateCategory" text="%Common.Add" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="modifyCategory" mnemonicParsing="false" onAction="#onModifyCategory" prefWidth="100.0" text="%Common.Modify" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="modifyCategory" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onModifyCategory" text="%Common.Modify" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="deleteCategory" mnemonicParsing="false" onAction="#onDeleteCategory" prefWidth="100.0" text="%Common.Delete" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="deleteCategory" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDeleteCategory" text="%Common.Delete" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
             <Separator />
-            <Label text="%Goods.Product" textAlignment="CENTER">
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%Goods.Product" textAlignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button fx:id="createProduct" mnemonicParsing="false" onAction="#onCreateProduct" prefWidth="100.0" text="%Common.Add" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="createProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateProduct" text="%Common.Add" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="modifyProduct" mnemonicParsing="false" onAction="#onModifyProduct" prefWidth="100.0" text="%Common.Modify" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="modifyProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onModifyProduct" text="%Common.Modify" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="deleteProduct" mnemonicParsing="false" onAction="#onDeleteProduct" prefWidth="100.0" text="%Common.Delete" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="deleteProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDeleteProduct" text="%Common.Delete" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
             <Separator />
-            <Button fx:id="showStock" mnemonicParsing="false" onAction="#onShowStock" prefWidth="100.0" text="%Goods.StockView" textAlignment="CENTER">
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%Goods.Recipe" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="createRecipe" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateRecipe" text="%Common.Add" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="showPriceModifiers" mnemonicParsing="false" onAction="#onShowPriceModifiers" prefWidth="100.0" text="%Goods.PriceModifierView">
+            <Button fx:id="modifyRecipe" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onModifyRecipe" text="%Common.Modify" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="deleteRecipe" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDeleteRecipe" text="%Common.Delete" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Separator />
+            <Button fx:id="showStock" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onShowStock" text="%Goods.StockView" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="showPriceModifiers" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onShowPriceModifiers" text="%Goods.PriceModifierView">
                <font>
                   <Font size="16.0" />
                </font>

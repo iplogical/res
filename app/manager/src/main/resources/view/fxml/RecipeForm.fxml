@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="root" style="-fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #FFFFFF; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%RecipeForm.Title">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <HBox spacing="5.0">
+         <children>
+            <TableView prefHeight="200.0">
+              <columns>
+                <TableColumn fx:id="componentName" prefWidth="150.0" text="%RecipeForm.Component" />
+                <TableColumn fx:id="componentQuantity" prefWidth="100.0" text="%RecipeForm.Quantity" />
+                  <TableColumn fx:id="componentUnit" prefWidth="100.0" text="%RecipeForm.Unit" />
+              </columns>
+            </TableView>
+            <VBox spacing="5.0">
+               <children>
+                  <HBox spacing="5.0">
+                     <children>
+                        <Label prefWidth="100.0" text="%RecipeForm.Owner">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <ChoiceBox fx:id="owner" prefWidth="150.0" />
+                     </children>
+                  </HBox>
+                  <Separator prefWidth="200.0" />
+                  <HBox spacing="5.0">
+                     <children>
+                        <Label prefWidth="100.0" text="%RecipeForm.Component">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <ChoiceBox fx:id="component" prefWidth="150.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <Label prefWidth="100.0" text="%RecipeForm.Quantity">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="quantity" prefWidth="45.0" />
+                        <TextField fx:id="unit" disable="true" prefWidth="100.0" promptText="%RecipeForm.Unit" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="BOTTOM_RIGHT" spacing="5.0">
+                     <children>
+                        <Button fx:id="add" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onConfirm" prefWidth="100.0" text="%RecipeForm.AddComponent" textAlignment="CENTER">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="remove" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCancel" prefWidth="100.0" text="%RecipeForm.RemoveComponent" textAlignment="CENTER">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <Separator prefWidth="200.0" />
+                  <HBox alignment="BOTTOM_RIGHT" spacing="5.0">
+                     <children>
+                        <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onConfirm" prefWidth="100.0" text="%Form.Confirm">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCancel" prefWidth="100.0" text="%Form.Cancel">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>

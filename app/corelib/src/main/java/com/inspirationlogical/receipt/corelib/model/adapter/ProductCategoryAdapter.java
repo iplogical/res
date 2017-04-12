@@ -90,8 +90,8 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 
     public Set<ProductAdapter> getAllStorableProducts() {
          return getAllActiveProducts().stream()
-                .flatMap(productAdapter -> productAdapter.getAdaptee().getRecipe().stream())
-                .map(recipe -> new ProductAdapter(recipe.getElement()))
+                .flatMap(productAdapter -> productAdapter.getAdaptee().getRecipes().stream())
+                .map(recipe -> new ProductAdapter(recipe.getComponent()))
                 .collect(toSet());
     }
 
@@ -176,8 +176,8 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                     .build();
             adaptee.getChildren().add(pseudo);
             newProduct[0].setCategory(pseudo);
-            newProduct[0].setRecipe(new ArrayList<>(Collections.singletonList(Recipe.builder()
-                    .element(newProduct[0])
+            newProduct[0].setRecipes(new ArrayList<>(Collections.singletonList(Recipe.builder()
+                    .component(newProduct[0])
                     .quantityMultiplier(1)
                     .owner(newProduct[0])
                     .build())));

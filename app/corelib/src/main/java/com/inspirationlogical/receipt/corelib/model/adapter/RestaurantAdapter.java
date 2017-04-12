@@ -93,10 +93,10 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
 
         GuardedTransaction.Run(() -> {
             consumed.forEach(adapter -> {
-                Collection<Receipt> receipts = adapter.getAdaptee().getReceipt();
+                Collection<Receipt> receipts = adapter.getAdaptee().getReceipts();
                 if (receipts != null) {
                     receipts.forEach(receipt -> receipt.setOwner(aggregate.getAdaptee()));
-                    aggregate.getAdaptee().getReceipt().addAll(receipts);
+                    aggregate.getAdaptee().getReceipts().addAll(receipts);
                     receipts.clear();
                 }
             });

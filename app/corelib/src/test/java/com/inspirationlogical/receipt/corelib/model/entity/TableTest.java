@@ -31,7 +31,7 @@ public class TableTest {
                 .filter(table -> table.getNumber()==1)
                 .collect(Collectors.toList());
         assertEquals(1, tables.size());
-        assertEquals(NUMBER_OF_RESERVATIONS, tables.get(0).getReservation().size());
+        assertEquals(NUMBER_OF_RESERVATIONS, tables.get(0).getReservations().size());
     }
 
     @Test(expected = RollbackException.class)

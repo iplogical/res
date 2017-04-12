@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.manager.controller;
 
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Function;
@@ -28,8 +30,6 @@ import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Popup;
-
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
 
 @Singleton
 public class GoodsControllerImpl implements GoodsController {
@@ -98,9 +98,13 @@ public class GoodsControllerImpl implements GoodsController {
 
     private ProductFormController productFormController;
 
-    private Popup productCategoryForm;
+    private Popup categoryForm;
 
-    private ProductCategoryFormController productCategoryFormController;
+    private CategoryFormController categoryFormController;
+
+    private Popup recipeForm;
+
+    private RecipeFormController recipeFormController;
 
     private ProductCategoryView rootCategory;
 
@@ -108,12 +112,14 @@ public class GoodsControllerImpl implements GoodsController {
     public GoodsControllerImpl(StockController stockController,
                                PriceModifierController priceModifierController,
                                ProductFormController productFormController,
-                               ProductCategoryFormController productCategoryFormController,
+                               CategoryFormController categoryFormController,
+                               RecipeFormController recipeFormController,
                                CommonService commonService) {
         this.stockController = stockController;
         this.priceModifierController = priceModifierController;
         this.productFormController = productFormController;
-        this.productCategoryFormController = productCategoryFormController;
+        this.categoryFormController = categoryFormController;
+        this.recipeFormController = recipeFormController;
         this.commonService = commonService;
     }
 
@@ -148,7 +154,7 @@ public class GoodsControllerImpl implements GoodsController {
         } catch (Exception e) {
             initColumns();
             initCategories();
-            productCategoryForm.hide();
+            categoryForm.hide();
         }
     }
 
@@ -161,16 +167,16 @@ public class GoodsControllerImpl implements GoodsController {
                 commonService.updateProductCategory(params);
             }
             initCategories();
-            productCategoryForm.hide();
+            categoryForm.hide();
         } catch (IllegalProductCategoryStateException e) {
             ErrorMessage.showErrorMessage(root, e.getMessage());
             initColumns();
             initCategories();
-            productCategoryForm.hide();
+            categoryForm.hide();
         } catch (Exception e) {
             initColumns();
             initCategories();
-            productCategoryForm.hide();
+            categoryForm.hide();
         }
     }
 
@@ -203,7 +209,7 @@ public class GoodsControllerImpl implements GoodsController {
     @FXML
     public void onCreateCategory(Event event) {
         initProductCategoryForm();
-        showPopup(productCategoryForm, productCategoryFormController, root, new Point2D(520, 200));
+        showPopup(categoryForm, categoryFormController, root, new Point2D(520, 200));
     }
 
     @FXML
@@ -212,12 +218,28 @@ public class GoodsControllerImpl implements GoodsController {
         CategoryViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
         initProductCategoryForm();
         if(selected.getName().equals("root")) return;
-        productCategoryFormController.setCategory(goodsTable.getSelectionModel().getSelectedItem().getValue());
-        showPopup(productCategoryForm, productCategoryFormController, root, new Point2D(520, 200));
+        categoryFormController.setCategory(goodsTable.getSelectionModel().getSelectedItem().getValue());
+        showPopup(categoryForm, categoryFormController, root, new Point2D(520, 200));
     }
 
     @FXML
     public void onDeleteCategory(Event event) {
+    }
+
+    @FXML
+    public void onCreateRecipe(Event event) {
+        recipeForm = new Popup();
+        recipeForm.getContent().add(viewLoader.loadView(recipeFormController));
+        recipeFormController.loadRecipeForm(this);
+        showPopup(recipeForm, recipeFormController, root, new Point2D(520, 200));
+    }
+
+    @FXML
+    public void onModifyRecipe(Event event) {
+    }
+
+    @FXML
+    public void onDeleteRecipe(Event event) {
     }
 
     private CategoryViewModel getViewModel(CellDataFeatures<CategoryViewModel, String> cellDataFeatures) {
@@ -257,15 +279,21 @@ public class GoodsControllerImpl implements GoodsController {
     private void updateCategory(ProductCategoryView productCategoryView, TreeItem<CategoryViewModel> treeItem) {
         treeItem.setExpanded(true);
         productCategoryView.getChildrenCategories().forEach(child -> {
-            TreeItem<CategoryViewModel> childItem = new TreeItem<>(new CategoryViewModel(child));
+            CategoryViewModel categoryViewModel = new CategoryViewModel(child);
+            TreeItem<CategoryViewModel> childItem = new TreeItem<>(categoryViewModel);
             treeItem.getChildren().add(childItem);
+            updateProduct(categoryViewModel);
             updateCategory(child, childItem);
         });
     }
 
+    private void updateProduct(CategoryViewModel categoryViewModel) {
+
+    }
+
     private void initProductCategoryForm() {
-        productCategoryForm = new Popup();
-        productCategoryForm.getContent().add(viewLoader.loadView(productCategoryFormController));
-        productCategoryFormController.loadProductCategoryForm(this);
+        categoryForm = new Popup();
+        categoryForm.getContent().add(viewLoader.loadView(categoryFormController));
+        categoryFormController.loadProductCategoryForm(this);
     }
 }

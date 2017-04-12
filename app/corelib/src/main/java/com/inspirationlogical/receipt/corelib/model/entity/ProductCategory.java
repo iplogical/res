@@ -74,7 +74,7 @@ public @Data class ProductCategory extends AbstractEntity {
     private Collection<ProductCategory> children;
 
     @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
-    private Collection<PriceModifier> priceModifier;
+    private Collection<PriceModifier> priceModifiers;
 
     @OneToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))

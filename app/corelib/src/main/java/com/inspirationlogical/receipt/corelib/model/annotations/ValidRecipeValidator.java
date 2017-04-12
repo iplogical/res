@@ -36,7 +36,7 @@ public class ValidRecipeValidator extends AbstractValidator
         if(ProductType.doNotNeedReceipt(value.getType())) {
             return true;
         }
-        if(value.getRecipe() == null) {
+        if(value.getRecipes() == null) {
             addConstraintViolation( context, "The recipe shall not be null.");
             return false;
         }

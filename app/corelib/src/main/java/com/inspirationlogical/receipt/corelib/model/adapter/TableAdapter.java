@@ -13,7 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
-import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
@@ -150,14 +149,14 @@ public class TableAdapter extends AbstractAdapter<Table> {
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
             List<Table> orpahnageList = GuardedTransaction.RunNamedQuery(Table.GET_TABLE_ORPHANAGE);
             Table orpahnage = orpahnageList.get(0);
-            if(orpahnage.getReceipt() == null)
-                orpahnage.setReceipt(new ArrayList<>());
-            orpahnage.getReceipt().addAll(adaptee.getReceipt().stream()
+            if(orpahnage.getReceipts() == null)
+                orpahnage.setReceipts(new ArrayList<>());
+            orpahnage.getReceipts().addAll(adaptee.getReceipts().stream()
                     .map(receipt -> {
                         receipt.setOwner(orpahnage);
                         return receipt;
                     }).collect(Collectors.toList()));
-            adaptee.getReceipt().clear();
+            adaptee.getReceipts().clear();
         });
         GuardedTransaction.RunWithDelete(adaptee, () -> {
         });
@@ -187,7 +186,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
 
     private void bindReceiptToTable(ReceiptAdapter receiptAdapter) {
         receiptAdapter.getAdaptee().setOwner(adaptee);
-        adaptee.getReceipt().add(receiptAdapter.getAdaptee());
+        adaptee.getReceipts().add(receiptAdapter.getAdaptee());
     }
 
     protected boolean isTableOpen() {
