@@ -1,20 +1,33 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
+import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.RecipeAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 
-public class RecipeViewImpl implements RecipeView {
-    @Override
-    public Product getOwner() {
-        return null;
+public class RecipeViewImpl extends AbstractModelViewImpl<RecipeAdapter> implements RecipeView {
+
+    public RecipeViewImpl(RecipeAdapter adapter) {
+        super(adapter);
     }
 
     @Override
-    public Product getComponent() {
-        return null;
+    public ProductView getOwner() {
+        return new ProductViewImpl(new ProductAdapter(adapter.getAdaptee().getOwner()));
+    }
+
+    @Override
+    public ProductView getComponent() {
+        return new ProductViewImpl(new ProductAdapter(adapter.getAdaptee().getComponent()));
     }
 
     @Override
     public double getQuantity() {
-        return 0;
+        return adapter.getAdaptee().getQuantityMultiplier();
+    }
+
+    @Override
+    public boolean isTrivial() {
+        Recipe recipe = adapter.getAdaptee();
+        return recipe.getOwner().equals(recipe.getComponent());
     }
 }

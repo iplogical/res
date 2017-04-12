@@ -3,7 +3,12 @@ package com.inspirationlogical.receipt.manager.viewmodel;
 import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
 
 import lombok.Data;
 
@@ -12,33 +17,47 @@ public class ProductViewModel {
 
     private static String PERCENT = " %";
 
-    private String type;
-    private String status;
-    private String shortName;
-    private String longName;
-    private String rapidCode;
-    private String quantityUnit;
-    private String quantityMultiplier;
-    private String purchasePrice;
-    private String salePrice;
-    private String VATLocal;
-    private String VATTakeAway;
-    private String minimumStock;
-    private String stockWindow;
+    private String type = EMPTY;
+    private String status = EMPTY;
+    private String shortName = EMPTY;
+    private String longName = EMPTY;
+    private String rapidCode = EMPTY;
+    private String quantityUnit = EMPTY;
+    private String quantityMultiplier = EMPTY;
+    private String purchasePrice = EMPTY;
+    private String salePrice = EMPTY;
+    private String VATLocal = EMPTY;
+    private String VATTakeAway = EMPTY;
+    private String minimumStock = EMPTY;
+    private String stockWindow = EMPTY;
+
+    private List<RecipeView> recipes = new ArrayList<>();
 
     public ProductViewModel(ProductView productView) {
-        type = productView != null ? productView.getType().name() : EMPTY;
-        status = productView != null ? productView.getStatus().name() : EMPTY;
-        shortName = productView != null ? productView.getShortName() : EMPTY;
-        longName = productView != null ? productView.getLongName() : EMPTY;
-        rapidCode = productView != null ? valueOf(productView.getRapidCode()) : EMPTY;
-        quantityUnit = productView != null ? valueOf(productView.getQuantityUnit()) : EMPTY;
-        quantityMultiplier = productView != null ? "0" : EMPTY;
-        purchasePrice = productView != null ? valueOf(productView.getPurchasePrice()) : EMPTY;
-        salePrice = productView != null ? valueOf(productView.getSalePrice()) : EMPTY;
-        VATLocal = productView != null ? valueOf(productView.getVATLocal()) + PERCENT : EMPTY;
-        VATTakeAway = productView != null ? valueOf(productView.getVATTakeAway()) + PERCENT : EMPTY;
-        minimumStock = productView != null ? valueOf(productView.getMinimumStock()) : EMPTY;
-        stockWindow = productView != null ? valueOf(productView.getStockWindow()) : EMPTY;
+        if (productView != null) {
+            type = productView.getType().name();
+            status =  productView.getStatus().name();
+            shortName =  productView.getShortName();
+            longName =  productView.getLongName();
+            rapidCode =  valueOf(productView.getRapidCode());
+            quantityUnit =  valueOf(productView.getQuantityUnit());
+            purchasePrice =  valueOf(productView.getPurchasePrice());
+            salePrice =  valueOf(productView.getSalePrice());
+            VATLocal =  valueOf(productView.getVATLocal()) + PERCENT;
+            VATTakeAway =  valueOf(productView.getVATTakeAway()) + PERCENT;
+            minimumStock =  valueOf(productView.getMinimumStock());
+            stockWindow =  valueOf(productView.getStockWindow());
+
+            recipes = productView.getRecipes();
+
+            Optional<RecipeView> recipeView = productView.getRecipes()
+                    .stream()
+                    .filter(RecipeView::isTrivial).findFirst();
+
+            if (recipeView.isPresent()) {
+                quantityMultiplier = valueOf(recipeView.get().getQuantity());
+                recipes.clear();
+            }
+        }
     }
 }

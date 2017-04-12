@@ -1,6 +1,10 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.RecipeAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
@@ -75,5 +79,13 @@ public class ProductViewImpl extends AbstractModelViewImpl<ProductAdapter>
     @Override
     public int getStockWindow() {
         return adapter.getAdaptee().getStockWindow();
+    }
+
+    @Override
+    public List<RecipeView> getRecipes() {
+        return adapter.getAdaptee().getRecipes().stream()
+                .map(RecipeAdapter::new)
+                .map(RecipeViewImpl::new)
+                .collect(Collectors.toList());
     }
 }

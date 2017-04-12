@@ -1,12 +1,12 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
-
 public interface RecipeView {
 
-    Product getOwner();
+    ProductView getOwner();
 
-    Product getComponent();
+    ProductView getComponent();
 
     double getQuantity();
+
+    boolean isTrivial();
 }

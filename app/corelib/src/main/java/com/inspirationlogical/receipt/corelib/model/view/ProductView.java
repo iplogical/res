@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
+import java.util.List;
+
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
@@ -29,4 +31,6 @@ public interface ProductView extends AbstractView {
     int getMinimumStock();
 
     int getStockWindow();
+
+    List<RecipeView> getRecipes();
 }

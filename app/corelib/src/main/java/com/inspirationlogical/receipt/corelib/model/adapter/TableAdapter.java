@@ -31,11 +31,11 @@ public class TableAdapter extends AbstractAdapter<Table> {
 
     public static TableAdapter getTableByNumber(EntityManager manager, int number) {
         @SuppressWarnings("unchecked")
-        List<Table> table = getTablesByNumber(manager, number);
-        if (table.isEmpty()) {
+        List<Table> tables = getTablesByNumber(manager, number);
+        if (tables.isEmpty()) {
             return null;
         }
-        return new TableAdapter(table.get(0));
+        return new TableAdapter(tables.get(0));
     }
 
     private static List<Table> getTablesByNumber(EntityManager manager, int number) {

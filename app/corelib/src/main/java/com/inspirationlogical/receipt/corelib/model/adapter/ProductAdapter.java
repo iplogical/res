@@ -6,7 +6,6 @@ import javax.persistence.EntityManager;
 import com.inspirationlogical.receipt.corelib.exception.AdHocProductNotFoundException;
 import com.inspirationlogical.receipt.corelib.exception.GameFeeProductNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 

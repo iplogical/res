@@ -282,13 +282,16 @@ public class GoodsControllerImpl implements GoodsController {
             CategoryViewModel categoryViewModel = new CategoryViewModel(child);
             TreeItem<CategoryViewModel> childItem = new TreeItem<>(categoryViewModel);
             treeItem.getChildren().add(childItem);
-            updateProduct(categoryViewModel);
+            updateProduct(categoryViewModel, childItem);
             updateCategory(child, childItem);
         });
     }
 
-    private void updateProduct(CategoryViewModel categoryViewModel) {
-
+    private void updateProduct(CategoryViewModel categoryViewModel, TreeItem<CategoryViewModel> productItem) {
+        categoryViewModel.getRecipes().forEach(recipe -> {
+            TreeItem<CategoryViewModel> recipeItem = new TreeItem<>(new CategoryViewModel(recipe.getComponent()));
+            productItem.getChildren().add(recipeItem);
+        });
     }
 
     private void initProductCategoryForm() {
