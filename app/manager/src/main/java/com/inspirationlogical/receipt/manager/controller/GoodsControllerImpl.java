@@ -43,8 +43,6 @@ public class GoodsControllerImpl implements GoodsController {
     @FXML
     TreeTableColumn<CategoryViewModel, String> categoryName;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productLongName;
-    @FXML
     TreeTableColumn<CategoryViewModel, String> productShortName;
     @FXML
     TreeTableColumn<CategoryViewModel, String> productRapidCode;
@@ -253,7 +251,6 @@ public class GoodsControllerImpl implements GoodsController {
 
     private void initColumns() {
         initColumn(categoryName, CategoryViewModel::getName);
-        initColumn(productLongName, CategoryViewModel::getLongName);
         initColumn(productShortName, CategoryViewModel::getShortName);
         initColumn(productRapidCode, CategoryViewModel::getRapidCode);
         initColumn(productType, CategoryViewModel::getType);
