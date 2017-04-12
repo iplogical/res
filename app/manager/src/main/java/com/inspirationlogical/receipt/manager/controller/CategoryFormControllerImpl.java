@@ -1,5 +1,12 @@
 package com.inspirationlogical.receipt.manager.controller;
 
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
+
+import java.net.URL;
+import java.util.Arrays;
+import java.util.ResourceBundle;
+import javax.inject.Inject;
+
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
@@ -8,6 +15,7 @@ import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -16,13 +24,6 @@ import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-
-import javax.inject.Inject;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.ResourceBundle;
-
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
 
 /**
  * Created by régiDAGi on 2017. 04. 10..
@@ -113,13 +114,13 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     @FXML
     public void onConfirm(Event event) {
         if(type.getValue() == null) {
-            ErrorMessage.showErrorMessage(root, Resources.UI.getString("ProductCategoryTypeNull"));
+            ErrorMessage.showErrorMessage(root, Resources.MANAGER.getString("ProductCategoryTypeNull"));
             return;
         } else if(parent.getValue() == null) {
-            ErrorMessage.showErrorMessage(root, Resources.UI.getString("ProductCategoryParentNull"));
+            ErrorMessage.showErrorMessage(root, Resources.MANAGER.getString("ProductCategoryParentNull"));
             return;
         } else if(name.getText().equals("")) {
-            ErrorMessage.showErrorMessage(root, Resources.UI.getString("ProductCategoryNameEmpty"));
+            ErrorMessage.showErrorMessage(root, Resources.MANAGER.getString("ProductCategoryNameEmpty"));
             return;
         }
         goodsController.addProductCategory(

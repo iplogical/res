@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.application.MainStage;
 import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -26,7 +25,7 @@ public class ViewLoader {
         if (root == null) {
             FXMLLoader loader = fxmlLoaderProvider.getLoader(controller.getViewPath());
             loader.setController(controller);
-            loader.setResources(Resources.UI.getBundle());
+            loader.setResources(MainStage.getResourcesProvider().getResources().getBundle());
             try {
                 root = loader.load();
             } catch (IOException e) {
@@ -39,7 +38,7 @@ public class ViewLoader {
     public Node loadViewIntoScene(Controller controller) {
         Parent root = (Parent) loadView(controller);
 
-        MainStage.getProvider().getStage().getScene().setRoot(root);
+        MainStage.getStageProvider().getStage().getScene().setRoot(root);
 
         return root;
     }

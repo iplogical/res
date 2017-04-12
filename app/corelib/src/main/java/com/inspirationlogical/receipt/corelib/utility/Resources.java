@@ -11,7 +11,8 @@ class NoLocaleTag
 public enum Resources {
 
     PRINTER("printer"),
-    UI("ui"),
+    WAITER("waiter"),
+    MANAGER("manager"),
     CONFIG("appconfig", new NoLocaleTag());
 
     private final ResourceBundle resourceBundle;

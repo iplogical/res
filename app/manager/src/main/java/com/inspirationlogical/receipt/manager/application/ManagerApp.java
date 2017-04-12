@@ -6,9 +6,11 @@ import static com.inspirationlogical.receipt.corelib.frontend.application.MainSt
 import static com.inspirationlogical.receipt.manager.registry.ManagerRegistry.getInstance;
 
 import com.inspirationlogical.receipt.corelib.frontend.application.MainStage;
+import com.inspirationlogical.receipt.corelib.frontend.application.ResourcesProvider;
 import com.inspirationlogical.receipt.corelib.frontend.application.StageProvider;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.manager.controller.GoodsController;
 
 import javafx.application.Application;
@@ -17,14 +19,19 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-public class ManagerApp extends Application implements StageProvider {
+public class ManagerApp extends Application implements StageProvider, ResourcesProvider {
 
     private Stage stage;
+
+    private Resources resources;
 
     @Override
     public void start(Stage stage) {
         this.stage = stage;
-        MainStage.setProvider(this);
+        resources = Resources.MANAGER;
+
+        MainStage.setStageProvider(this);
+        MainStage.setResourcesProvider(this);
         ViewLoader viewLoader = getInstance(ViewLoader.class);
         Parent root = (Parent) viewLoader.loadView(getInstance(GoodsController.class));
         stage.setTitle(APP_TITLE);
@@ -45,6 +52,11 @@ public class ManagerApp extends Application implements StageProvider {
     @Override
     public Stage getStage() {
         return stage;
+    }
+
+    @Override
+    public Resources getResources() {
+        return resources;
     }
 }
 

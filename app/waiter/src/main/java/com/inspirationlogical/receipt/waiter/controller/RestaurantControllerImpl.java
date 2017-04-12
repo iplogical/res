@@ -157,7 +157,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     public void onDailyClosure(Event event) {
-        ConfirmMessage.showConfirmDialog(Resources.UI.getString("Restaurant.DailyClosureConfirm"), () -> restaurantService.closeDay());
+        ConfirmMessage.showConfirmDialog(Resources.WAITER.getString("Restaurant.DailyClosureConfirm"), () -> restaurantService.closeDay());
     }
 
     @FXML
@@ -259,7 +259,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(getActiveTab(),
-                    Resources.UI.getString("TableAlreadyUsed") + tableNumber);
+                    Resources.WAITER.getString("TableAlreadyUsed") + tableNumber);
             initRestaurant();
         } catch (Exception e) {
             initRestaurant();
@@ -285,7 +285,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(getActiveTab(),
-                    Resources.UI.getString("TableAlreadyUsed") + tableNumber);
+                    Resources.WAITER.getString("TableAlreadyUsed") + tableNumber);
             initRestaurant();
         } catch (Exception e) {
             initRestaurant();
@@ -303,7 +303,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             tableControllers.remove(tableController);
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(getActiveTab(),
-                    Resources.UI.getString("TableIsOpen") + tableView.getTableNumber());
+                    Resources.WAITER.getString("TableIsOpen") + tableView.getTableNumber());
             initRestaurant();
         }
     }
@@ -348,7 +348,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             firstSelected.deselectTable();
             firstSelected.updateNode();
         } else {
-            ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("InsufficientSelection"));
+            ErrorMessage.showErrorMessage(tablesLab, Resources.WAITER.getString("InsufficientSelection"));
         }
     }
 
