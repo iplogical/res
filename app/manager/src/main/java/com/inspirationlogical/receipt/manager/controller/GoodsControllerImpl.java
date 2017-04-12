@@ -146,14 +146,17 @@ public class GoodsControllerImpl implements GoodsController {
 
     @FXML
     public void onCreateCategory(Event event) {
-        productCategoryForm = new Popup();
-        productCategoryForm.getContent().add(viewLoader.loadView(productCategoryFormController));
-        productCategoryFormController.loadProductCategoryForm(this);
+        initProductCategoryForm();
         showPopup(productCategoryForm, productCategoryFormController, root, new Point2D(520, 200));
     }
 
     @FXML
     public void onModifyCategory(Event event) {
+        initProductCategoryForm();
+        CategoryViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
+        if(selected.getName().equals("root")) return;
+        productCategoryFormController.setCategory(goodsTable.getSelectionModel().getSelectedItem().getValue());
+        showPopup(productCategoryForm, productCategoryFormController, root, new Point2D(520, 200));
     }
 
     @FXML
@@ -196,6 +199,7 @@ public class GoodsControllerImpl implements GoodsController {
         rootCategory = commonService.getRootProductCategory();
         TreeItem<CategoryViewModel> rootItem = new TreeItem<>(new CategoryViewModel(rootCategory));
         goodsTable.setRoot(rootItem);
+
         updateCategory(rootCategory, rootItem);
     }
 
@@ -252,5 +256,11 @@ public class GoodsControllerImpl implements GoodsController {
             initCategories();
             productCategoryForm.hide();
         }
+    }
+
+    private void initProductCategoryForm() {
+        productCategoryForm = new Popup();
+        productCategoryForm.getContent().add(viewLoader.loadView(productCategoryFormController));
+        productCategoryFormController.loadProductCategoryForm(this);
     }
 }

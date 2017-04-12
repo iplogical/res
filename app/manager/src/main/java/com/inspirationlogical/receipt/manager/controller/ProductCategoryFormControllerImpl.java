@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
+import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -46,9 +47,15 @@ public class ProductCategoryFormControllerImpl implements ProductCategoryFormCon
     @Inject
     private CommonService commonService;
 
+    private ObservableList<ProductCategoryView> allCategories;
+
     private ObservableList<ProductCategoryView> parentCategories;
 
+    private ProductCategoryView rootCategory;
+
     private ObservableList<ProductCategoryType> categoryTypes;
+
+    private CategoryViewModel categoryViewModel;
 
     @Override
     public String getViewPath() {
@@ -62,10 +69,15 @@ public class ProductCategoryFormControllerImpl implements ProductCategoryFormCon
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        rootCategory = commonService.getRootProductCategory();
         parentCategories = FXCollections.observableArrayList(commonService.getAggregateCategories());
-        categoryTypes = FXCollections.observableArrayList(Arrays.asList(ProductCategoryType.AGGREGATE, ProductCategoryType.LEAF));
+        parentCategories.add(rootCategory);
+        allCategories = FXCollections.observableArrayList(commonService.getLeafCategories());
+        allCategories.add(rootCategory);
+        allCategories.addAll(parentCategories);
         parent.setItems(parentCategories);
         parent.setConverter(new CategoryStringConverter(parentCategories));
+        categoryTypes = FXCollections.observableArrayList(Arrays.asList(ProductCategoryType.AGGREGATE, ProductCategoryType.LEAF));
         type.setItems(categoryTypes);
     }
 
@@ -73,7 +85,21 @@ public class ProductCategoryFormControllerImpl implements ProductCategoryFormCon
     public void loadProductCategoryForm(GoodsController goodsController) {
         this.goodsController = goodsController;
         parentCategories = FXCollections.observableArrayList(commonService.getAggregateCategories());
+        parentCategories.add(rootCategory);
         parent.setItems(parentCategories);
+    }
+
+    @Override
+    public void setCategory(CategoryViewModel categoryViewModel) {
+        this.categoryViewModel = categoryViewModel;
+        if(categoryViewModel != null) {
+            CategoryStringConverter converterAll = new CategoryStringConverter(allCategories);
+            CategoryStringConverter converterParent = new CategoryStringConverter(parentCategories);
+            name.setText(categoryViewModel.getName());
+            type.setValue(converterAll.fromString(categoryViewModel.getName()).getType());
+            String parentName = converterAll.fromString(categoryViewModel.getName()).getParent().getName();
+            parent.setValue(converterParent.fromString(parentName));
+        }
     }
 
     @FXML

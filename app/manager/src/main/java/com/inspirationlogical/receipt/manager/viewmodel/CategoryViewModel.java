@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.manager.viewmodel;
 import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType.PSEUDO;
 
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
+import lombok.Getter;
 
 public class CategoryViewModel extends ProductViewModel {
     private String name;

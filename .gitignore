@@ -18,6 +18,7 @@ app/.settings/*
 app/.project
 app/bin/*
 app/**/build/*
+app/gradleBuild/*
 
 # IntelliJ IDEA Files #
 app/.idea/*
