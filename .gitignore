@@ -11,6 +11,7 @@
 # Gradle files #
 app/.gradle/*
 app/gradle/wrapper/*
+app/gradleBuild/
 
 # Eclipse Files #
 app/.settings/*
@@ -26,7 +27,7 @@ app/**/*.iml
 # Generated files #
 app/schema/*
 app/src/main/java/com/inspirationlogical/receipt/corelib/jaxb/*
-app/test.pdf
+app/manager/receipts/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
@@ -35,6 +36,5 @@ hs_err_pid*
 app/receipts/
 
 #duplicated resources
-app/src/main/resources/*
 app/waiter/src/main/resources/*
 app/corelib/src/main/resources/properties/ui_hu.properties
