@@ -95,7 +95,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public void sellAdHocProduct(AdHocProductParams adHocProductParams, boolean takeAway) {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.Run(() -> {
             ProductAdapter adHocProduct = ProductAdapter.getAdHocProduct(EntityManagerProvider.getEntityManager());
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(adHocProduct.getAdaptee())
@@ -114,7 +114,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public void sellGameFee(int quantity) {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.Run(() -> {
             ProductAdapter gameFeeProduct = ProductAdapter.getGameFeeProduct(EntityManagerProvider.getEntityManager());
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(gameFeeProduct.getAdaptee())
@@ -144,7 +144,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public void close(PaymentParams paymentParams){
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.Run(() -> {
             if(adaptee.getStatus() == ReceiptStatus.CLOSED) {
                 throw new IllegalReceiptStateException("Close operation is illegal for a CLOSED receipt");
             }
