@@ -15,7 +15,7 @@
       </Label>
       <HBox spacing="5.0">
          <children>
-            <TableView prefHeight="200.0">
+            <TableView prefHeight="180.0">
               <columns>
                 <TableColumn fx:id="componentName" prefWidth="150.0" text="%RecipeForm.Component" />
                 <TableColumn fx:id="componentQuantity" prefWidth="100.0" text="%RecipeForm.Quantity" />
@@ -58,12 +58,12 @@
                   </HBox>
                   <HBox alignment="BOTTOM_RIGHT" spacing="5.0">
                      <children>
-                        <Button fx:id="add" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onConfirm" prefWidth="100.0" text="%RecipeForm.AddComponent" textAlignment="CENTER">
+                        <Button fx:id="add" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="100.0" text="%RecipeForm.AddComponent" textAlignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="remove" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCancel" prefWidth="100.0" text="%RecipeForm.RemoveComponent" textAlignment="CENTER">
+                        <Button fx:id="remove" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefWidth="100.0" text="%RecipeForm.RemoveComponent" textAlignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
