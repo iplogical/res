@@ -10,8 +10,8 @@ import javafx.scene.control.Control;
 public interface RestaurantController extends Controller {
     void showCreateTableForm(Point2D position);
     void showEditTableForm(Control control);
-    void createTable(int tableNumber, int tableCapacity, boolean isVirtual);
-    void editTable(TableController tableController, Integer tableNumber, Integer tableCapacity, boolean isVirtual);
+    void createTable(int tableNumber, int tableCapacity);
+    void editTable(TableController tableController, Integer tableNumber, Integer tableCapacity);
     void deleteTable(Node node);
     void rotateTable(Node node);
     void moveTable(TableController tableController);

@@ -13,7 +13,6 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -37,9 +36,6 @@ public class TableFormControllerImpl implements TableFormController {
 
     @FXML
     TextField capacity;
-
-    @FXML
-    CheckBox virtual;
 
     @FXML
     Button confirm;
@@ -70,11 +66,10 @@ public class TableFormControllerImpl implements TableFormController {
         try {
             Integer tableNumber = Integer.valueOf(number.getText());
             Integer tableCapacity = Integer.valueOf(capacity.getText());
-            boolean isVirtual = virtual.isSelected();
             if (creation) {
-                restaurantController.createTable(tableNumber, tableCapacity, isVirtual);
+                restaurantController.createTable(tableNumber, tableCapacity);
             } else {
-                restaurantController.editTable(tableController, tableNumber, tableCapacity, isVirtual);
+                restaurantController.editTable(tableController, tableNumber, tableCapacity);
             }
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
@@ -95,13 +90,11 @@ public class TableFormControllerImpl implements TableFormController {
             TableView tableView = tableController.getView();
             number.setText(String.valueOf(tableView.getTableNumber()));
             capacity.setText(String.valueOf(tableView.getTableCapacity()));
-            virtual.setSelected(tableView.isVirtual());
         } else {
             creation = true;
             title.setText(resourceBundle.getString("TableForm.Create"));
             number.clear();
             capacity.clear();
-            virtual.setSelected(false);
         }
     }
 

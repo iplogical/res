@@ -174,6 +174,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void initialize(URL location, ResourceBundle resources) {
         initContextMenu(tablesLab);
         initContextMenu(virtualLab);
+        initTableForm();
         initControls();
         initRestaurant();
         updateRestaurantSummary();
@@ -219,28 +220,26 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void showCreateTableForm(Point2D position) {
-        initTableForm();
         tableFormController.loadTable(null);
 
-        showPopup(tableForm, tableFormController, tablesTab, position);
+        showPopup(tableForm, tableFormController, getActiveTab(), position);
     }
 
     @Override
     public void showEditTableForm(Control control) {
-        initTableForm();
         TableController tableController = getTableController(control);
 
         tableFormController.loadTable(tableController);
 
-        Point2D position = calculatePopupPosition(control, tablesTab);
+        Point2D position = calculatePopupPosition(control, getActiveTab());
 
-        showPopup(tableForm, tableFormController, tablesTab, position);
+        showPopup(tableForm, tableFormController, getActiveTab(), position);
     }
 
     @Override
-    public void createTable(int tableNumber, int tableCapacity, boolean isVirtual) {
-        TableType tableType = isVirtual ? VIRTUAL : NORMAL;
-        Point2D position = calculateTablePosition(tableFormController.getRootNode(), tablesTab);
+    public void createTable(int tableNumber, int tableCapacity) {
+        TableType tableType = restaurantViewState.isVirtual() ? VIRTUAL : NORMAL;
+        Point2D position = calculateTablePosition(tableFormController.getRootNode(), getActiveTab());
         TableView tableView;
 
         try {
@@ -259,7 +258,8 @@ public class RestaurantControllerImpl implements RestaurantController {
             drawTable(tableView);
             updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
-            ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("TableAlreadyUsed") + tableNumber);
+            ErrorMessage.showErrorMessage(getActiveTab(),
+                    Resources.UI.getString("TableAlreadyUsed") + tableNumber);
             initRestaurant();
         } catch (Exception e) {
             initRestaurant();
@@ -267,24 +267,25 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
-    public void editTable(TableController tableController, Integer tableNumber, Integer tableCapacity, boolean isVirtual) {
+    public void editTable(TableController tableController, Integer tableNumber, Integer tableCapacity) {
         TableView tableView = tableController.getView();
 
         try {
             if (tableView.getTableNumber() != tableNumber) {
                 restaurantService.setTableNumber(tableView, tableNumber, restaurantView);
             }
-            restaurantService.setTableType(tableView, isVirtual ? VIRTUAL : NORMAL);
+            restaurantService.setTableType(tableView, restaurantViewState.isVirtual() ? VIRTUAL : NORMAL);
             restaurantService.setTableCapacity(tableView, tableCapacity);
 
             tableForm.hide();
 
             Node node = tableController.getRoot();
-            addNodeToPane(node, isVirtual);
+            addNodeToPane(node, restaurantViewState.isVirtual());
             tableController.updateNode();
             updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
-            ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("TableAlreadyUsed") + tableNumber);
+            ErrorMessage.showErrorMessage(getActiveTab(),
+                    Resources.UI.getString("TableAlreadyUsed") + tableNumber);
             initRestaurant();
         } catch (Exception e) {
             initRestaurant();
@@ -301,7 +302,8 @@ public class RestaurantControllerImpl implements RestaurantController {
             removeNode((Pane) node.getParent(), node);
             tableControllers.remove(tableController);
         } catch (IllegalTableStateException e) {
-            ErrorMessage.showErrorMessage(tablesLab, Resources.UI.getString("TableIsOpen") + tableView.getTableNumber());
+            ErrorMessage.showErrorMessage(getActiveTab(),
+                    Resources.UI.getString("TableIsOpen") + tableView.getTableNumber());
             initRestaurant();
         }
     }
@@ -376,6 +378,10 @@ public class RestaurantControllerImpl implements RestaurantController {
         } else {
             toTablesPane(node);
         }
+    }
+
+    private Pane getActiveTab() {
+        return restaurantViewState.isVirtual() ? virtualTab : tablesTab;
     }
 
     private void toTablesPane(Node node) {

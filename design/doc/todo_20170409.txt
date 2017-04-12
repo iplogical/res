@@ -22,17 +22,17 @@ asztalszám kapacitás méret
 
 Virtuális asztal számozása a tényleges asztalt jelenti ahol ül FUTURE
 
-Bug: asztal törlése PRIORITY 1 [Attila]
+[DONE] Bug: asztal törlése PRIORITY 1 [Attila]
 
 [DONE] Kapacitás vs vendégszám ellenőrzés törlése PRIORITY 1 [Attila]
 
-Asztalok összetolása: nem nyitott asztalt is lehessen PRIORITY 2 [Attila]
+[DONE] Asztalok összetolása: nem nyitott asztalt is lehessen PRIORITY 2 [Attila]
 
 Asztalhoz virtuális asztal rendelése (kis ikon az asztalon (+virtuálisok száma), ha tartozik hozzá nyitott virtuális) PRIORITY 2
 
-[DONE] Bug: asztal osztódik PRIORITY 1
+[DONE] Bug: asztal osztódik PRIORITY 1 [Attila]
 
-Bug: virtuális tab-on létrehozni asztalt (virtuális checkbox helyett a tab figyelése) PRIORITY 1 [Attila]
+[DONE] Bug: virtuális tab-on létrehozni asztalt (virtuális checkbox helyett a tab figyelése) PRIORITY 1 [Attila]
 
 Kontext menu sebessége a kis gépen PRIORITY 1 [Attila]
 

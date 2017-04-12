@@ -196,7 +196,7 @@ public class TableControllerImpl implements TableController {
             return;
         }
 
-        if (tableView.isVirtual() || !tableView.isOpen()) {
+        if (tableView.isVirtual()) {
             return;
         }
 

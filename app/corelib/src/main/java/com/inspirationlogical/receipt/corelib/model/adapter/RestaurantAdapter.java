@@ -15,6 +15,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -63,34 +64,41 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     }
 
     public void mergeTables(TableAdapter aggregate, List<TableAdapter> consumed) {
-        // todo add validataion that aggregate and consumed ones are open
+        if (!aggregate.isTableOpen() && consumed.stream().anyMatch(TableAdapter::isTableOpen)) {
+            aggregate.openTable();
+        }
         // todo refactor this method into smaller ones
         GuardedTransaction.Run(() -> {
-            ReceiptAdapter activeReceiptAdapter = aggregate.getActiveReceipt();
             List<ReceiptRecord> consumedRecords = consumed.stream()
                     .map(TableAdapter::getActiveReceipt)
                     .filter(Objects::nonNull)
                     .map(receiptAdapter -> {
+                        Wrapper<ReceiptAdapter> receiptAdapterWrapper = new Wrapper<>();
+                        receiptAdapterWrapper.setContent(aggregate.getActiveReceipt());
                         Collection<ReceiptRecordAdapter> receiptRecordAdapters = receiptAdapter.getSoldProducts();
                         receiptAdapter.getAdaptee().setStatus(ReceiptStatus.CANCELED);
                         receiptAdapter.getAdaptee().getRecords().clear();
                         receiptRecordAdapters.forEach(receiptRecordAdapter -> receiptRecordAdapter
                                 .getAdaptee()
-                                .setOwner(activeReceiptAdapter.getAdaptee()));
+                                .setOwner(receiptAdapterWrapper.getContent().getAdaptee()));
                         return receiptRecordAdapters;
                     })
                     .flatMap(record -> record.stream().map(ReceiptRecordAdapter::getAdaptee))
                     .collect(Collectors.toList());
 
-            activeReceiptAdapter.getAdaptee().getRecords().addAll(consumedRecords);
+            if (aggregate.isTableOpen()) {
+                aggregate.getActiveReceipt().getAdaptee().getRecords().addAll(consumedRecords);
+            }
         });
 
         GuardedTransaction.Run(() -> {
             consumed.forEach(adapter -> {
                 Collection<Receipt> receipts = adapter.getAdaptee().getReceipt();
-                receipts.forEach(receipt -> receipt.setOwner(aggregate.getAdaptee()));
-                aggregate.getAdaptee().getReceipt().addAll(receipts);
-                receipts.clear();
+                if (receipts != null) {
+                    receipts.forEach(receipt -> receipt.setOwner(aggregate.getAdaptee()));
+                    aggregate.getAdaptee().getReceipt().addAll(receipts);
+                    receipts.clear();
+                }
             });
         });
 
@@ -100,9 +108,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         aggregate.setCapacity(aggregate.getAdaptee().getCapacity() + consumedCapacity);
         aggregate.setGuestNumber(aggregate.getAdaptee().getGuestNumber() + consumedGuestCount);
 
-        GuardedTransaction.Run(() -> {
-            consumed.forEach(TableAdapter::deleteTable);
-        });
+        consumed.forEach(TableAdapter::deleteTable);
 
         List<Table> tables = GuardedTransaction.RunNamedQuery(Table.GET_TABLE_BY_NUMBER,
                 query -> query.setParameter("number", aggregate.getAdaptee().getNumber()));

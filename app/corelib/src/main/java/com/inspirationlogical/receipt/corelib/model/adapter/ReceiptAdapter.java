@@ -4,6 +4,7 @@ import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                                         .openTime(now())
                                         .VATSerie(VATSerieAdapter.vatSerieAdapterFactory().getAdaptee())
                                         .client(getDefaultClient())
+                                        .records(new ArrayList<>())
                                         .build());
         ReceiptAdapterListeners.getAllListeners().forEach((l) -> {l.onOpen(newReceipt);});
         return newReceipt;
