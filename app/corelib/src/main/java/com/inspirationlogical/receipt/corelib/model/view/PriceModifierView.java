@@ -12,11 +12,17 @@ public interface PriceModifierView extends AbstractView {
 
     String getDiscountPercent();
 
-    String getStartTime();
+    String getStartDate();
 
-    String getEndTime();
+    String getEndDate();
 
     String getRepeatPeriod();
 
     String getPeriodMultiplier();
+
+    String getStartTime();
+
+    String getEndTime();
+
+    String getWeekOfDay();
 }

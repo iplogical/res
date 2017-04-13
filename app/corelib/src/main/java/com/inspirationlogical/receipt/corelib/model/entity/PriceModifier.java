@@ -1,6 +1,8 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,7 +37,7 @@ import lombok.experimental.Tolerate;
     @NamedQuery(name = PriceModifier.GET_PRICE_MODIFIERS,
             query="FROM PriceModifier pm"),
     @NamedQuery(name = PriceModifier.GET_PRICE_MODIFIERS_BY_PRODUCT_AND_DATES,
-            query="FROM PriceModifier pm WHERE pm.owner.id =:owner_id AND pm.startTime <:time AND pm.endTime >:time"),
+            query="FROM PriceModifier pm WHERE pm.owner.id =:owner_id AND pm.startDate <:time AND pm.endDate >:time"),
     @NamedQuery(name = PriceModifier.GET_PRICE_MODIFIERS_BY_NAME,
             query="FROM PriceModifier pm WHERE pm.name =:name")
 })
@@ -67,10 +69,16 @@ public @Data class PriceModifier extends AbstractEntity {
     private int repeatPeriodMultiplier;
 
     @NotNull
-    private LocalDateTime startTime;
+    private LocalDateTime startDate;
 
     @NotNull
-    private LocalDateTime endTime;
+    private LocalDateTime endDate;
+
+    private DayOfWeek dayOfWeek;
+
+    private LocalTime startTime;
+
+    private LocalTime endTime;
 
     private int quantityLimit;
 

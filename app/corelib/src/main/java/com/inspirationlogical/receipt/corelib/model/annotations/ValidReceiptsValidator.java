@@ -22,7 +22,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 //    }
 //
 //    @Override
-//    public final boolean isValid(Table value, ConstraintValidatorContext context) {
+//    public final boolean isValidNow(Table value, ConstraintValidatorContext context) {
 //        return  isValidTable(value,context);
 //    }
 //}

@@ -15,7 +15,7 @@ public class PriceModifierViewImpl extends AbstractModelViewImpl<PriceModifierAd
 
     @Override
     public String getName() {
-        return null;
+        return adapter.getAdaptee().getName();
     }
 
     @Override
@@ -42,13 +42,13 @@ public class PriceModifierViewImpl extends AbstractModelViewImpl<PriceModifierAd
     }
 
     @Override
-    public String getStartTime() {
-        return adapter.getAdaptee().getStartTime().toString();
+    public String getStartDate() {
+        return adapter.getAdaptee().getStartDate().toString();
     }
 
     @Override
-    public String getEndTime() {
-        return adapter.getAdaptee().getEndTime().toString();
+    public String getEndDate() {
+        return adapter.getAdaptee().getEndDate().toString();
     }
 
     @Override
@@ -59,5 +59,29 @@ public class PriceModifierViewImpl extends AbstractModelViewImpl<PriceModifierAd
     @Override
     public String getPeriodMultiplier() {
         return String.valueOf(adapter.getAdaptee().getRepeatPeriodMultiplier());
+    }
+
+    @Override
+    public String getStartTime() {
+        if(adapter.getAdaptee().getStartTime() == null) {
+            return "";
+        }
+        return adapter.getAdaptee().getStartTime().toString();
+    }
+
+    @Override
+    public String getEndTime() {
+        if(adapter.getAdaptee().getEndTime() == null) {
+            return "";
+        }
+        return adapter.getAdaptee().getEndTime().toString();
+    }
+
+    @Override
+    public String getWeekOfDay() {
+        if(adapter.getAdaptee().getDayOfWeek() == null) {
+            return "";
+        }
+        return adapter.getAdaptee().getDayOfWeek().toString();
     }
 }

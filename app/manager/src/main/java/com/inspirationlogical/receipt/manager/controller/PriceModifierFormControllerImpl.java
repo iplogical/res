@@ -25,7 +25,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.net.URL;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -64,6 +66,16 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
     ChoiceBox<PriceModifierRepeatPeriod> repeatPeriod;
     @FXML
     TextField repeatPeriodMultiplier;
+    @FXML
+    TextField startTimeHour;
+    @FXML
+    TextField startTimeMinute;
+    @FXML
+    TextField endTimeHour;
+    @FXML
+    TextField endTimeMinute;
+    @FXML
+    ChoiceBox<DayOfWeek> dayOfWeek;
 
     private PriceModifierController priceModifierController;
 
@@ -110,6 +122,7 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
         type.setItems(priceModifierTypes);
         priceModifierRepeatPeriods = FXCollections.observableArrayList(Arrays.asList(NO_REPETITION, DAILY, WEEKLY));
         repeatPeriod.setItems(priceModifierRepeatPeriods);
+        dayOfWeek.setItems(FXCollections.observableArrayList(Arrays.asList(DayOfWeek.values())));
     }
 
     @Override
@@ -125,10 +138,14 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
                 .type(type.getValue())
                 .quantityLimit(Integer.valueOf(quantityMultiplier.getText()))
                 .discountPercent(Double.valueOf(discountPercent.getText()))
-                .startTime(LocalDateTime.of(startDate.getValue(), LocalTime.of(0, 0)))
-                .endTime(LocalDateTime.of(startDate.getValue(), LocalTime.of(23, 59)))
+                .startDate(LocalDateTime.of(startDate.getValue(), LocalTime.of(0, 0)))
+                .endDate(LocalDateTime.of(endDate.getValue(), LocalTime.of(23, 59)))
                 .repeatPeriod(repeatPeriod.getValue())
-                .repeatPeriodMultiplier(Integer.valueOf(repeatPeriodMultiplier.getText()));
+                .repeatPeriodMultiplier(Integer.valueOf(repeatPeriodMultiplier.getText()))
+                .startTime(LocalTime.of(Integer.valueOf(startTimeHour.getText()), Integer.valueOf(startTimeMinute.getText())))
+                .endTime(LocalTime.of(Integer.valueOf(endTimeHour.getText()), Integer.valueOf(endTimeMinute.getText())))
+                .dayOfWeek(dayOfWeek.getValue());
+
         PriceModifierParams params = PriceModifierParams.builder()
                 .originalName(originalName)
                 .ownerName(isCategorySelected.getValue() ? ownerCategory.getValue().getCategoryName() : ownerProduct.getValue().getLongName())

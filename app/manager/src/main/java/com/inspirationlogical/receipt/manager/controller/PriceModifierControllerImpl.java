@@ -47,13 +47,20 @@ public class PriceModifierControllerImpl implements PriceModifierController {
     @FXML
     TableColumn<PriceModifierViewModel, String> priceModifierDiscountPercent;
     @FXML
-    TableColumn<PriceModifierViewModel, String> priceModifierStartTime;
+    TableColumn<PriceModifierViewModel, String> priceModifierStartDate;
     @FXML
-    TableColumn<PriceModifierViewModel, String> priceModifierEndTime;
+    TableColumn<PriceModifierViewModel, String> priceModifierEndDate;
     @FXML
     TableColumn<PriceModifierViewModel, String> priceModifierRepeatPeriod;
     @FXML
     TableColumn<PriceModifierViewModel, String> priceModifierPeriodMultiplier;
+    @FXML
+    TableColumn<PriceModifierViewModel, String> priceModifierStartTime;
+    @FXML
+    TableColumn<PriceModifierViewModel, String> priceModifierEndTime;
+    @FXML
+    TableColumn<PriceModifierViewModel, String> priceModifierDayOfWeek;
+
     @FXML
     Button createItem;
     @FXML
@@ -137,15 +144,18 @@ public class PriceModifierControllerImpl implements PriceModifierController {
     }
 
     private void initColumns() {
-        initColumn(ownerLongName, PriceModifierViewModel::getOwnerName);
         initColumn(priceModifierName, PriceModifierViewModel::getName);
+        initColumn(ownerLongName, PriceModifierViewModel::getOwnerName);
         initColumn(priceModifierType, PriceModifierViewModel::getType);
         initColumn(priceModifierQuantityLimit, PriceModifierViewModel::getQuantityLimit);
         initColumn(priceModifierDiscountPercent, PriceModifierViewModel::getDiscountPercent);
-        initColumn(priceModifierStartTime, PriceModifierViewModel::getStartTime);
-        initColumn(priceModifierEndTime, PriceModifierViewModel::getEndTime);
+        initColumn(priceModifierStartDate, PriceModifierViewModel::getStartDate);
+        initColumn(priceModifierEndDate, PriceModifierViewModel::getEndDate);
         initColumn(priceModifierRepeatPeriod, PriceModifierViewModel::getRepeatPeriod);
         initColumn(priceModifierPeriodMultiplier, PriceModifierViewModel::getPeriodMultiplier);
+        initColumn(priceModifierStartTime, PriceModifierViewModel::getStartTime);
+        initColumn(priceModifierEndTime, PriceModifierViewModel::getEndTime);
+        initColumn(priceModifierDayOfWeek, PriceModifierViewModel::getDayOfWeek);
     }
 
     private void updatePriceModifiers() {

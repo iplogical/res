@@ -92,13 +92,13 @@
             <Insets left="5.0" right="5.0" />
          </VBox.margin>
          <children>
-            <Label prefWidth="100.0" text="%PriceModifierForm.StartTime">
+            <Label prefWidth="100.0" text="%PriceModifierForm.StartDate">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
             <DatePicker fx:id="startDate" prefWidth="150.0" />
-            <Label prefWidth="100.0" text="%PriceModifierForm.EndTime">
+            <Label prefWidth="100.0" text="%PriceModifierForm.EndDate">
                <font>
                   <Font size="16.0" />
                </font>
@@ -124,6 +124,50 @@
          <VBox.margin>
             <Insets left="5.0" right="5.0" />
          </VBox.margin>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="5.0">
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
+         <children>
+            <Label prefWidth="100.0" text="%PriceModifierForm.DayOfTheWeek">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="dayOfWeek" prefWidth="150.0" />
+         </children>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="5.0">
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
+         <children>
+            <Label prefWidth="100.0" text="%PriceModifierForm.StartTime">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="startTimeHour" prefWidth="69.0" promptText="%PriceModifierForm.StartTimeHourPrompt" />
+            <Label text=":">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="startTimeMinute" prefWidth="68.0" promptText="%PriceModifierForm.StartTimeMinutePrompt" />
+            <Label prefWidth="100.0" text="%PriceModifierForm.EndTime">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="endTimeHour" prefWidth="69.0" promptText="%PriceModifierForm.StartTimeHourPrompt" />
+            <Label text=":">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="endTimeMinute" prefWidth="68.0" promptText="%PriceModifierForm.StartTimeMinutePrompt" />
+         </children>
       </HBox>
       <HBox alignment="BOTTOM_RIGHT" prefWidth="200.0" spacing="5.0">
          <children>

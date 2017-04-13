@@ -119,7 +119,6 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     }
 
     public double getDiscount(ReceiptRecordAdapter receiptRecordAdapter) {
-        // TODO: Implement filter for DAILY and WEEKLY repeating PriceModifiers.
         ProductCategory category = adaptee;
         List<PriceModifier> priceModifiers = new ArrayList<>();
         do {
@@ -129,7 +128,8 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         } while(!category.getType().equals(ProductCategoryType.ROOT));
 
         return priceModifiers.stream()
-                .map(pm -> new PriceModifierAdapter(pm))
+                .map(PriceModifierAdapter::new)
+                .filter(PriceModifierAdapter::isValidNow)
                 .map(pm -> pm.getDiscountPercent(receiptRecordAdapter))
                 .max(Double::compareTo).orElse(0D);
     }

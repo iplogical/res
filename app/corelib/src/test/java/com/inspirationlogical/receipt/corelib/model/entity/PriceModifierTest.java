@@ -49,13 +49,13 @@ public class PriceModifierTest {
     @Test(expected = RollbackException.class)
     public void noStartTime() {
         GuardedTransaction.Run(()->
-                schema.getPriceModifierOne().setStartTime(null));
+                schema.getPriceModifierOne().setStartDate(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noEndTime() {
         GuardedTransaction.Run(()->
-                schema.getPriceModifierOne().setEndTime(null));
+                schema.getPriceModifierOne().setEndDate(null));
     }
 
     private List<PriceModifier> getPriceModifiers() {

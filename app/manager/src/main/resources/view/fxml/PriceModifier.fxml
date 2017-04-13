@@ -12,15 +12,18 @@
          <children>
             <TableView fx:id="priceModifierTable" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columns>
-                <TableColumn fx:id="ownerLongName" prefWidth="100.0" text="%PriceModifier.OwnerLongName" />
                 <TableColumn fx:id="priceModifierName" prefWidth="100.0" text="%PriceModifier.Name" />
+                <TableColumn fx:id="ownerLongName" prefWidth="100.0" text="%PriceModifier.OwnerLongName" />
                   <TableColumn fx:id="priceModifierType" prefWidth="100.0" text="%PriceModifier.Type" />
                   <TableColumn fx:id="priceModifierQuantityLimit" prefWidth="100.0" text="%PriceModifier.QuantityLimit" />
                   <TableColumn fx:id="priceModifierDiscountPercent" prefWidth="100.0" text="%PriceModifier.DiscountPercent" />
-                  <TableColumn fx:id="priceModifierStartTime" prefWidth="100.0" text="%PriceModifier.StartTime" />
-                  <TableColumn fx:id="priceModifierEndTime" prefWidth="100.0" text="%PriceModifier.EndTime" />
+                  <TableColumn fx:id="priceModifierStartDate" prefWidth="100.0" text="%PriceModifier.StartDate" />
+                  <TableColumn fx:id="priceModifierEndDate" prefWidth="100.0" text="%PriceModifier.EndDate" />
                   <TableColumn fx:id="priceModifierRepeatPeriod" prefWidth="100.0" text="%PriceModifier.RepeatPeriod" />
                   <TableColumn fx:id="priceModifierPeriodMultiplier" prefWidth="100.0" text="%PriceModifier.PeriodMultiplier" />
+                  <TableColumn fx:id="priceModifierStartTime" prefWidth="75.0" text="%PriceModifier.StartTime" />
+                  <TableColumn fx:id="priceModifierEndTime" prefWidth="75.0" text="%PriceModifier.EndTime" />
+                  <TableColumn fx:id="priceModifierDayOfWeek" prefWidth="75.0" text="%PriceModifier.DayOfWeek" />
               </columns>
             </TableView>
          </children></AnchorPane>
