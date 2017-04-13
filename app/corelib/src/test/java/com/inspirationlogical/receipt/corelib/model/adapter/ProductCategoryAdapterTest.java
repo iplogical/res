@@ -123,7 +123,7 @@ public class ProductCategoryAdapterTest {
 
     @Test
     public void testGetAggregateCategories() {
-        assertEquals(7, ProductCategoryAdapter.getAggregateCategories(ProductCategoryType.AGGREGATE).size());
+        assertEquals(7, ProductCategoryAdapter.getCategoriesByType(ProductCategoryType.AGGREGATE).size());
     }
 
     @Test
@@ -175,5 +175,10 @@ public class ProductCategoryAdapterTest {
         builder.longName("productSix");
         leafOne.addProduct(builder);
         assertEquals(7, leafOne.getAllProducts().size());
+    }
+
+    @Test
+    public void testGetCategoryByName() {
+        assertEquals(1, ProductCategoryAdapter.getProductCategoryByName("leafOne").size());
     }
 }

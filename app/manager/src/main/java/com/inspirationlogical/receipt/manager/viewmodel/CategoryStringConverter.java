@@ -23,9 +23,7 @@ public class CategoryStringConverter extends StringConverter<ProductCategoryView
 
     @Override
     public ProductCategoryView fromString(String string) {
-
-        ProductCategoryView parent =  parentCategories.stream().filter(productCategoryView -> productCategoryView.getCategoryName().equals(string))
+        return parentCategories.stream().filter(productCategoryView -> productCategoryView.getCategoryName().equals(string))
                 .collect(toList()).get(0);
-        return parent;
     }
 }

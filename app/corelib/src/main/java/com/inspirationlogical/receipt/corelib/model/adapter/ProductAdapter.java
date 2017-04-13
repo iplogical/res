@@ -6,8 +6,11 @@ import javax.persistence.EntityManager;
 import com.inspirationlogical.receipt.corelib.exception.AdHocProductNotFoundException;
 import com.inspirationlogical.receipt.corelib.exception.GameFeeProductNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
+import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+
+import static java.util.stream.Collectors.toList;
 
 public class ProductAdapter extends AbstractAdapter<Product> {
 
@@ -28,6 +31,13 @@ public class ProductAdapter extends AbstractAdapter<Product> {
             throw new GameFeeProductNotFoundException();
         }
         return new ProductAdapter(gameFeeProductList.get(0));
+    }
+
+    public static List<Product> getProductByName(String name) {
+        return GuardedTransaction.RunNamedQuery(Product.GET_PRODUCT_BY_NAME,
+                query -> {
+                    query.setParameter("longName", name);
+                    return query;});
     }
 
     public ProductAdapter(Product adaptee) {

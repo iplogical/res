@@ -20,13 +20,31 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="name" promptText="%PriceModifierForm.NamePrompt" />
-            <Label prefWidth="100.0" text="%PriceModifierForm.OwnerName">
+            <TextField fx:id="name" prefWidth="150.0" promptText="%PriceModifierForm.NamePrompt" />
+            <Label prefWidth="100.0" text="%PriceModifierForm.OwnerProductName">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="owner" prefWidth="124.0" />
+            <ChoiceBox fx:id="ownerProduct" prefWidth="150.0" />
+         </children>
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="5.0">
+         <children>
+            <Label prefWidth="255.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label prefWidth="100.0" text="%PriceModifierForm.OwnerCategoryName">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="ownerCategory" prefWidth="124.0" />
             <CheckBox fx:id="isCategory" mnemonicParsing="false" prefWidth="100.0" text="%PriceModifierForm.IsCategory">
                <font>
                   <Font size="16.0" />

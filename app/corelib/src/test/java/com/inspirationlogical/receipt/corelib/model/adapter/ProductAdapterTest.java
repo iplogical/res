@@ -22,4 +22,8 @@ public class ProductAdapterTest {
         assertEquals(ProductType.AD_HOC_PRODUCT, adHocProduct.getAdaptee().getType());
     }
 
+    @Test
+    public void testGetProductByName() {
+        assertEquals(1, ProductAdapter.getProductByName("product").size());
+    }
 }

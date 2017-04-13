@@ -1,8 +1,10 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
+import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.service.PriceModifierParams;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +18,27 @@ public class PriceModifierAdapter extends AbstractAdapter<PriceModifier> {
 
     public  static List<PriceModifierAdapter> getPriceModifiers() {
         List<PriceModifier> priceModifiers = GuardedTransaction.RunNamedQuery(PriceModifier.GET_PRICE_MODIFIERS);
-        return priceModifiers.stream().map(priceModifier -> new PriceModifierAdapter(priceModifier)).collect(toList());
+        return priceModifiers.stream().map(PriceModifierAdapter::new).collect(toList());
+    }
+
+    public  static PriceModifierAdapter getPriceModifierByName(String name) {
+        List<PriceModifier> priceModifiers = GuardedTransaction.RunNamedQuery(PriceModifier.GET_PRICE_MODIFIERS_BY_NAME,
+                query -> {query.setParameter("name", name);
+                            return query;});
+        return priceModifiers.stream().map(PriceModifierAdapter::new).collect(toList()).get(0);
+    }
+
+    public static void addPriceModifier(PriceModifierParams params) {
+        ProductCategory owner;
+        if(params.isCategory()) {
+            owner = ProductCategoryAdapter.getProductCategoryByName(params.getOwnerName()).get(0);
+        } else {
+            owner = ProductAdapter.getProductByName(params.getOwnerName()).get(0).getCategory();
+        }
+        PriceModifier priceModifier = params.getBuilder().build();
+        priceModifier.setOwner(owner);
+        owner.getPriceModifiers().add(priceModifier);
+        GuardedTransaction.Persist(priceModifier);
     }
 
     public PriceModifierAdapter(PriceModifier adaptee) {

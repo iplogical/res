@@ -38,13 +38,21 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         return new ProductCategoryAdapter(rootCategoryList.get(0));
     }
 
-    public static List<ProductCategoryAdapter> getAggregateCategories(ProductCategoryType type) {
+
+    public static List<ProductCategoryAdapter> getCategoriesByType(ProductCategoryType type) {
         List<ProductCategory> aggregates = GuardedTransaction.RunNamedQuery(ProductCategory.GET_CATEGORY_BY_TYPE,
                 query -> {query.setParameter("type", type);
                     return query;});
         return aggregates.stream().map(ProductCategoryAdapter::new)
                 .collect(toList());
     }
+
+    public static List<ProductCategory> getProductCategoryByName(String name) {
+        return GuardedTransaction.RunNamedQuery(ProductCategory.GET_CATEGORY_BY_NAME,
+                query -> {
+                    query.setParameter("name", name);
+                    return query;});
+     }
 
     public static void traverseChildren(ProductCategory current, List<ProductCategory> traversal) {
         traversal.add(current);
@@ -190,13 +198,6 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 query -> {
                     query.setParameter("owner_id", category.getId());
                     query.setParameter("time", now());
-                    return query;});
-    }
-
-    private List<ProductCategory> getProductCategoryByName(String name) {
-        return GuardedTransaction.RunNamedQuery(ProductCategory.GET_CATEGORY_BY_NAME,
-                query -> {
-                    query.setParameter("name", name);
                     return query;});
     }
 }

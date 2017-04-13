@@ -2,11 +2,7 @@ package com.inspirationlogical.receipt.corelib.service;
 
 import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.*;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;

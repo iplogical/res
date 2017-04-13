@@ -3,8 +3,8 @@ package com.inspirationlogical.receipt.manager.controller;
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.corelib.service.PriceModifierParams;
 import com.inspirationlogical.receipt.manager.viewmodel.PriceModifierViewModel;
-import com.inspirationlogical.receipt.manager.viewmodel.StockViewModel;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -99,16 +99,11 @@ public class PriceModifierControllerImpl implements PriceModifierController {
         updatePriceModifiers();
     }
 
-    private void initColumns() {
-        initColumn(ownerLongName, PriceModifierViewModel::getOwnerName);
-        initColumn(priceModifierName, PriceModifierViewModel::getName);
-        initColumn(priceModifierType, PriceModifierViewModel::getType);
-        initColumn(priceModifierQuantityLimit, PriceModifierViewModel::getQuantityLimit);
-        initColumn(priceModifierDiscountPercent, PriceModifierViewModel::getDiscountPercent);
-        initColumn(priceModifierStartTime, PriceModifierViewModel::getStartTime);
-        initColumn(priceModifierEndTime, PriceModifierViewModel::getEndTime);
-        initColumn(priceModifierRepeatPeriod, PriceModifierViewModel::getRepeatPeriod);
-        initColumn(priceModifierPeriodMultiplier, PriceModifierViewModel::getPeriodMultiplier);
+    @Override
+    public void addPriceModifier(PriceModifierParams params) {
+        commonService.addPriceModifier(params);
+        updatePriceModifiers();
+        priceModifierForm.hide();
     }
 
     @FXML
@@ -141,7 +136,20 @@ public class PriceModifierControllerImpl implements PriceModifierController {
                 new ReadOnlyStringWrapper(method.apply(getViewModel(category))));
     }
 
+    private void initColumns() {
+        initColumn(ownerLongName, PriceModifierViewModel::getOwnerName);
+        initColumn(priceModifierName, PriceModifierViewModel::getName);
+        initColumn(priceModifierType, PriceModifierViewModel::getType);
+        initColumn(priceModifierQuantityLimit, PriceModifierViewModel::getQuantityLimit);
+        initColumn(priceModifierDiscountPercent, PriceModifierViewModel::getDiscountPercent);
+        initColumn(priceModifierStartTime, PriceModifierViewModel::getStartTime);
+        initColumn(priceModifierEndTime, PriceModifierViewModel::getEndTime);
+        initColumn(priceModifierRepeatPeriod, PriceModifierViewModel::getRepeatPeriod);
+        initColumn(priceModifierPeriodMultiplier, PriceModifierViewModel::getPeriodMultiplier);
+    }
+
     private void updatePriceModifiers() {
+        priceModifierTable.getItems().clear();
         commonService.getPriceModifiers().forEach(priceModifierView -> priceModifierTable.getItems().add(new PriceModifierViewModel(priceModifierView)));
     }
 }
