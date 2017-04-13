@@ -3,7 +3,9 @@ package com.inspirationlogical.receipt.corelib.model;
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static java.time.LocalDateTime.now;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -673,8 +675,8 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("TestPriceModifier1")
                 .type(PriceModifierType.SIMPLE_DISCOUNT)
                 .repeatPeriod(PriceModifierRepeatPeriod.NO_REPETITION)
-                .startTime(LocalDateTime.of(2017, 1, 8, 16, 0))
-                .endTime(LocalDateTime.of(2017, 1, 8, 20, 20))
+                .startDate(LocalDateTime.of(2017, 1, 8, 16, 0))
+                .endDate(LocalDateTime.of(2017, 1, 8, 20, 20))
                 .discountPercent(33.333)
                 .build();
     }
@@ -684,8 +686,10 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("TestPriceModifier2")
                 .type(PriceModifierType.SIMPLE_DISCOUNT)
                 .repeatPeriod(PriceModifierRepeatPeriod.DAILY)
-                .startTime(LocalDateTime.of(2017, 2, 8, 16, 0))
-                .endTime(LocalDateTime.of(2020, 3, 8, 20, 20))
+                .startTime(LocalTime.now().minusMinutes(5))
+                .endTime(LocalTime.now().plusMinutes(55))
+                .startDate(LocalDateTime.of(2017, 2, 8, 16, 0))
+                .endDate(LocalDateTime.of(2020, 3, 8, 20, 20))
                 .discountPercent(33.333)
                 .build();
     }
@@ -695,8 +699,8 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("TestPriceModifier3")
                 .type(PriceModifierType.QUANTITY_DISCOUNT)
                 .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
-                .startTime(LocalDateTime.of(2017, 2, 8, 16, 0))
-                .endTime(LocalDateTime.of(2017, 5, 8, 20, 20))
+                .startDate(LocalDateTime.of(2017, 2, 8, 16, 0))
+                .endDate(LocalDateTime.of(2017, 5, 8, 20, 20))
                 .discountPercent(33.333)
                 .quantityLimit(3)
                 .build();
@@ -708,8 +712,9 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("TestPriceModifier4")
                 .type(PriceModifierType.QUANTITY_DISCOUNT)
                 .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
-                .startTime(LocalDateTime.of(2017, 2, 8, 16, 0))
-                .endTime(LocalDateTime.of(2020, 5, 8, 20, 20))
+                .dayOfWeek(LocalDate.now().getDayOfWeek())
+                .startDate(LocalDateTime.of(2017, 2, 8, 16, 0))
+                .endDate(LocalDateTime.of(2020, 5, 8, 20, 20))
                 .discountPercent(33.333)
                 .quantityLimit(3)
                 .build();
