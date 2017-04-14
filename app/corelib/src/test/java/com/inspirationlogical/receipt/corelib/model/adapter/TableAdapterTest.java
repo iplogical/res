@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import javax.persistence.RollbackException;
 
+import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,7 +19,7 @@ import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateExcepti
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.service.PaymentParams;
+
 
 import javafx.geometry.Point2D;
 

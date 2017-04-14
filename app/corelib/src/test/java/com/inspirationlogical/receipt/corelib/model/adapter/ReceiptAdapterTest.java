@@ -13,8 +13,9 @@ import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.service.AdHocProductParams;
-import com.inspirationlogical.receipt.corelib.service.PaymentParams;
+import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
+
 
 /**
  * Created by Bálint on 2017.03.13..

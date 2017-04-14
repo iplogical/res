@@ -18,6 +18,8 @@ import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
+import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
+import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 
 /**
  * Created by Bálint on 2017.03.15..
