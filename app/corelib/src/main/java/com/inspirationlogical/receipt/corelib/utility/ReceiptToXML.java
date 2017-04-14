@@ -4,11 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -29,6 +29,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
+import jdk.nashorn.internal.objects.annotations.Function;
 
 
 /**
@@ -36,11 +37,11 @@ import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl
  */
 public class ReceiptToXML {
     // TODO: Change database encoding to UTF-8. Use UTF-8 everywhere.
-    public static Receipt Convert(ReceiptAdapter receiptAdapter){
+    public static Receipt Convert(ReceiptAdapter receiptAdapter) {
         return createReceipt(receiptAdapter, new ObjectFactory());
     }
 
-    public static InputStream ConvertToStream(ReceiptAdapter receiptAdapter){
+    public static InputStream ConvertToStream(ReceiptAdapter receiptAdapter) {
         Receipt r = createReceipt(receiptAdapter, new ObjectFactory());
         try {
             JAXBContext context = JAXBContext.newInstance("com.inspirationlogical.receipt.corelib.jaxb");
@@ -49,9 +50,9 @@ public class ReceiptToXML {
             jaxbMarshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             jaxbMarshaller.marshal(r, baos);
-            return new ByteArrayInputStream(baos.toByteArray(),0,baos.size());
-        }catch (Exception e){
-            throw  new RuntimeException(e);
+            return new ByteArrayInputStream(baos.toByteArray(), 0, baos.size());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -63,78 +64,84 @@ public class ReceiptToXML {
         return receipt;
     }
 
-    private static ReceiptFooter createFooter(ReceiptAdapter receiptAdapter,ObjectFactory factory) {
+    private static ReceiptFooter createFooter(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptFooter footer = factory.createReceiptFooter();
         //TODO: add disclaimer in restaurant???
         footer.setDisclaimer(Resources.PRINTER.getString("Disclaimer"));
 
-        if(receiptAdapter.getAdaptee().getOwner().getOwner().getReceiptNote() != null){
-            footer.setNote(receiptAdapter.getAdaptee().getOwner().getOwner().getReceiptNote());
-        }
+        setOptionalString(footer::setNote,receiptAdapter.getAdaptee().getOwner().getOwner().getReceiptNote());
         footer.setGreet(Resources.PRINTER.getString("Greet"));
         GregorianCalendar gc = GregorianCalendar.from(receiptAdapter.getAdaptee().getClosureTime().atZone(ZoneId.systemDefault()));
         footer.setDatetime(new XMLGregorianCalendarImpl(gc));
-        footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag")+":"+receiptAdapter.getAdaptee().getId().toString());
+        footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag") + ":" + receiptAdapter.getAdaptee().getId().toString());
         footer.setVendorInfo(Resources.PRINTER.getString("VendorInfo"));
         return footer;
     }
 
+    private static void setOptionalString(Consumer<String> c, String str) {
+        setOptionalStringWithTransformation(c, str, x -> x);
+    }
+
+    @FunctionalInterface
+    private interface Transformer<To, From> {
+        To transform(From from);
+    }
+
+    private static <T> void setOptionalStringWithTransformation(Consumer<T> c, String str, Transformer<T, String> t) {
+        if (str != null && !str.isEmpty()) {
+            c.accept(t.transform(str));
+        }
+    }
+
+
     private static ReceiptHeader createHeader(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptHeader header = factory.createReceiptHeader();
         Restaurant restaurant = receiptAdapter.getAdaptee().getOwner().getOwner();
-        //FIXME: add owner and restaurant ZIP,Street addr,city, taxation ID in DataModel
         header.setRestaurantLogoPath(Resources.CONFIG.getString("ReceiptLogoPath"));
         header.setRestaurantName(restaurant.getRestaurantName());
         header.setRestaurantAddress(
                 String.join(",", Arrays.asList(restaurant.getRestaurantAddress().getZIPCode(),
                         restaurant.getRestaurantAddress().getCity(),
                         restaurant.getRestaurantAddress().getStreet())));
-        if(restaurant.getSocialMediaInfo() != null && !restaurant.getSocialMediaInfo().isEmpty()) {
-            header.setRestaurantSocialMediaInfo(restaurant.getSocialMediaInfo());
-        }
-        if(restaurant.getWebSite() != null && !restaurant.getWebSite().isEmpty()) {
-            header.setRestaurantWebsite(restaurant.getWebSite());
-        }
-        return  header;
+        setOptionalString(header::setRestaurantSocialMediaInfo, restaurant.getSocialMediaInfo());
+        setOptionalString(header::setRestaurantWebsite, restaurant.getWebSite());
+        setOptionalString(header::setRestaurantPhoneNumber, restaurant.getPhoneNumber());
+        return header;
     }
 
-    private static void setCustomerInfo(ReceiptAdapter adapter,ReceiptBody body,ObjectFactory factory)
-    {
+    private static void setCustomerInfo(ReceiptAdapter adapter, ReceiptBody body, ObjectFactory factory) {
         Client client = adapter.getAdaptee().getClient();
-        if(client != null) {
+        if (client != null) {
             CustomerInfo customer = factory.createCustomerInfo();
-            if(client.getName() != null && !client.getName().isEmpty()) {
-                customer.setName(createTagValue(factory, Resources.PRINTER.getString("CustomerName"), client.getName()));
-            }
-            if(client.getAddress() != null && !client.getAddress().isEmpty()) {
-                customer.setAddress(createTagValue(factory, Resources.PRINTER.getString("CustomerAddress"), client.getAddress()));
-            }
-            if(client.getTAXNumber() != null && !client.getTAXNumber().isEmpty()) {
-                customer.setTaxNumber(createTagValue(factory, Resources.PRINTER.getString("CustomerTAXnumber"), client.getTAXNumber()));
-            }
+            setOptionalStringWithTransformation(customer::setName, client.getName()
+                    , x -> createTagValue(factory, Resources.PRINTER.getString("CustomerName"), x));
+            setOptionalStringWithTransformation(customer::setAddress, client.getAddress()
+                    , x -> createTagValue(factory, Resources.PRINTER.getString("CustomerAddress"), x));
+            setOptionalStringWithTransformation(customer::setTaxNumber, client.getTAXNumber()
+                    , x -> createTagValue(factory, Resources.PRINTER.getString("CustomerTAXnumber"), x));
             body.setCustomer(customer);
         }
     }
 
     private static ReceiptBody createReceiptBody(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptBody body = factory.createReceiptBody();
-        setCustomerInfo(receiptAdapter,body,factory);
-        body.setType(Resources.PRINTER.getString("RECEIPTTYPE_" +receiptAdapter.getAdaptee().getType().toString()));
-        body.setHeader(createReceiptBodyHeader(receiptAdapter,factory));
-        List<ReceiptBodyEntry> records = receiptAdapter.getAdaptee().getRecords().stream().map((record) ->{
+        setCustomerInfo(receiptAdapter, body, factory);
+        body.setType(Resources.PRINTER.getString("RECEIPTTYPE_" + receiptAdapter.getAdaptee().getType().toString().toUpperCase()));
+        body.setHeader(createReceiptBodyHeader(receiptAdapter, factory));
+        List<ReceiptBodyEntry> records = receiptAdapter.getAdaptee().getRecords().stream().map((record) -> {
             ReceiptBodyEntry entry = factory.createReceiptBodyEntry();
             String name = record.getName();
-            if(record.getDiscountPercent() > 0){
+            if (record.getDiscountPercent() > 0) {
                 name += " *";
             }
             entry.setName(name);
             entry.setQtyPrice(BigInteger.valueOf(record.getSalePrice()));
             entry.setQty(record.getSoldQuantity());
-            entry.setTotal(BigInteger.valueOf((int)(record.getSoldQuantity() * record.getSalePrice())));
+            entry.setTotal(BigInteger.valueOf((int) (record.getSoldQuantity() * record.getSalePrice())));
             return entry;
         }).collect(Collectors.toList());
         body.getEntry().addAll(records);
-        body.setFooter(createReceiptBodyFooter(receiptAdapter,factory));
+        body.setFooter(createReceiptBodyFooter(receiptAdapter, factory));
         return body;
     }
 
@@ -146,7 +153,8 @@ public class ReceiptToXML {
         header.setTotalHeader(Resources.PRINTER.getString("TotalHeader"));
         return header;
     }
-    static private TagCurrencyValue createTagCurrencyValue(ObjectFactory f,String tag,String currency,Long value){
+
+    static private TagCurrencyValue createTagCurrencyValue(ObjectFactory f, String tag, String currency, Long value) {
         TagCurrencyValue tcv = f.createTagCurrencyValue();
         tcv.setTag(tag);
         tcv.setCurrency(currency);
@@ -154,7 +162,7 @@ public class ReceiptToXML {
         return tcv;
     }
 
-    static private TagValuePair createTagValue(ObjectFactory f,String tag,String value){
+    static private TagValuePair createTagValue(ObjectFactory f, String tag, String value) {
         TagValuePair tv = f.createTagValuePair();
         tv.setTag(tag);
         tv.setValue(value);
@@ -167,15 +175,15 @@ public class ReceiptToXML {
                 Resources.PRINTER.getString("TotalTag"),
                 Resources.PRINTER.getString("TotalCurrency"),
                 receiptAdapter.getAdaptee().getRecords().stream()
-                .map(e -> e.getSalePrice() * e.getSoldQuantity())
-                .reduce(0.0,(x,y)-> x + y).longValue())
+                        .map(e -> e.getSalePrice() * e.getSoldQuantity())
+                        .reduce(0.0, (x, y) -> x + y).longValue())
         );
         //FIXME: add currency in model.Receipt
         TagValuePair paymentMethod = factory.createTagValuePair();
         paymentMethod.setTag(Resources.PRINTER.getString("PaymentMethod"));
-        paymentMethod.setValue(Resources.PRINTER.getString("PAYMENTMETHOD_"+receiptAdapter.getAdaptee().getPaymentMethod().toString()));
+        paymentMethod.setValue(Resources.PRINTER.getString("PAYMENTMETHOD_" + receiptAdapter.getAdaptee().getPaymentMethod().toString()));
         footer.setPaymentMethod(paymentMethod);
-        if(receiptAdapter.getAdaptee().getPaymentMethod() == PaymentMethod.CASH) {
+        if (receiptAdapter.getAdaptee().getPaymentMethod() == PaymentMethod.CASH) {
             footer.setTotalRounded(createTagCurrencyValue(factory,
                     Resources.PRINTER.getString("TotalRoundedTag"),
                     Resources.PRINTER.getString("TotalRoundedCurrency"),

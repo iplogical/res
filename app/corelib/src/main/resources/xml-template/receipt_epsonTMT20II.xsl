@@ -57,7 +57,7 @@
     </fo:table-row>
 </xsl:template>
 
-<xsl:template match="header/restaurant_social_media_info|header/restaurant_website|header/restaurant_address">
+<xsl:template match="header/restaurant_social_media_info|header/restaurant_website|header/restaurant_address|header/restaurant_phone_number">
     <fo:table-row>
         <fo:table-cell  number-columns-spanned="3">
             <fo:block font-size="10pt" padding-before="2pt">
@@ -146,7 +146,7 @@
     </fo:table-cell>
 </xsl:template>
 
-<xsl:template match="body/footer/total|body/footer/total_rounded">
+<xsl:template match="body/footer/total|body/footer/total_rounded|body/footer/discount|body/footer/discounted_total">
     <fo:table-row font-weight="bold">
     <fo:table-cell number-columns-spanned="2">
         <fo:block font-weight="bold"  padding-before="2pt">

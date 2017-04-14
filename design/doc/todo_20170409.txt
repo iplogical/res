@@ -41,5 +41,3 @@ Rövid név nics kitöltve: megegyezik a hosszú névvel PRIORITY 2
 Nyugta fizetési mód módosítás manager terminálból FUTURE
 
 Asztal tört részének fizetése FUTURE
-
-telefonszám szerepeljen a nyugtán PRIORITY [Fec]

@@ -358,6 +358,9 @@ public class BuildTestSchemaRule implements TestRule {
                 .companyAddress(buildDefaultAddress())
                 .restaurantAddress(buildDefaultAddress())
                 .receiptNote("Árvíztűrő tükörfúrógép")
+                .socialMediaInfo("facebook.com/gameuppub")
+                .webSite("http://www.gameup.hu")
+                .phoneNumber("+36 30/287-87-66")
                 .build();
      }
 
