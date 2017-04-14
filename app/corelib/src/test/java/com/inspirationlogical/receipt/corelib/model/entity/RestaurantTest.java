@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.corelib.model.entity;
 import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_RESTAURANT;
 import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_TABLES;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.List;
 import javax.persistence.RollbackException;
@@ -31,44 +32,62 @@ public class RestaurantTest {
 
     @Test(expected = RollbackException.class)
     public void restaurantNameIsNull() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.Run(() ->
                 schema.getRestaurant().setRestaurantName(null));
     }
 
     @Test(expected = RollbackException.class)
     public void companyNameIsNull() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.Run(() ->
                 schema.getRestaurant().setCompanyName(null));
     }
 
     @Test(expected = RollbackException.class)
     public void companyTaxPayerIdNull() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.Run(() ->
                 schema.getRestaurant().setCompanyTaxPayerId(null));
     }
 
     @Test(expected = RollbackException.class)
     public void restaurantAddressIsNull() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.Run(() ->
                 schema.getRestaurant().setRestaurantAddress(null));
     }
 
     @Test(expected = RollbackException.class)
     public void companyAddressIsNull() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.Run(() ->
                 schema.getRestaurant().setCompanyAddress(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noPurchaseTable() {
-        GuardedTransaction.Run(()->
-            schema.getTablePurchase().setType(TableType.NORMAL));
+        GuardedTransaction.Run(() ->
+                schema.getTablePurchase().setType(TableType.NORMAL));
     }
 
     @Test(expected = RollbackException.class)
     public void toManyDisposalTables() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.Run(() ->
                 schema.getTableNormal().setType(TableType.DISPOSAL));
+    }
+
+
+    @Test
+    public void equalityAndHashCode() {
+        Restaurant restaurant = getRestaurants().get(0);
+        assertEquals(restaurant, restaurant.toBuilder().build());
+        assertNotEquals(restaurant, restaurant.toBuilder().restaurantName("THIS_STRING_SHOULD_NOT_BE_USED_IN_THE_TEST_SHCEMA_RULE!!!!@#@#@").build());
+        assertNotEquals(restaurant, restaurant.toBuilder().companyName("THIS_STRING_SHOULD_NOT_BE_USED_IN_THE_TEST_SHCEMA_RULE!!!!@#@#@").build());
+        assertNotEquals(restaurant, restaurant.toBuilder().companyTaxPayerId("THIS_STRING_SHOULD_NOT_BE_USED_IN_THE_TEST_SHCEMA_RULE!!!!@#@#@").build());
+        assertNotEquals(restaurant, restaurant.toBuilder().restaurantAddress(restaurant.getRestaurantAddress().toBuilder().city(restaurant.getRestaurantAddress().getCity() + "LOLOLO").build()).build());
+        assertNotEquals(restaurant, restaurant.toBuilder().companyAddress(restaurant.getCompanyAddress().toBuilder().city(restaurant.getCompanyAddress().getCity() + "LOLO").build()).build());
+        assertNotEquals(restaurant, restaurant.toBuilder().phoneNumber("THIS_STRING_SHOULD_NOT_BE_USED_IN_THE_TEST_SHCEMA_RULE!!!!@#@#@").build());
+        assertNotEquals(restaurant, restaurant.toBuilder().webSite("THIS_STRING_SHOULD_NOT_BE_USED_IN_THE_TEST_SHCEMA_RULE!!!!@#@#@").build());
+        assertNotEquals(restaurant, restaurant.toBuilder().socialMediaInfo("THIS_STRING_SHOULD_NOT_BE_USED_IN_THE_TEST_SHCEMA_RULE!!!!@#@#@").build());
+        assertNotEquals(restaurant, restaurant.toBuilder().receiptNote("THIS_STRING_SHOULD_NOT_BE_USED_IN_THE_TEST_SHCEMA_RULE!!!!@#@#@").build());
+        assertNotEquals(restaurant, restaurant.toBuilder().receiptDisclaimer("THIS_STRING_SHOULD_NOT_BE_USED_IN_THE_TEST_SHCEMA_RULE!!!!@#@#@").build());
+
     }
 
     private List<Restaurant> getRestaurants() {

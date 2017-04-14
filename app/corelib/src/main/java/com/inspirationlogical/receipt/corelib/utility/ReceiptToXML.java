@@ -89,9 +89,12 @@ public class ReceiptToXML {
                 String.join(",", Arrays.asList(restaurant.getRestaurantAddress().getZIPCode(),
                         restaurant.getRestaurantAddress().getCity(),
                         restaurant.getRestaurantAddress().getStreet())));
-        //FIXME: add these to datamodel
-        header.setRestaurantSocialMediaInfo("facebook.com/gameuppub");
-        header.setRestaurantWebsite("www.gameup.hu");
+        if(restaurant.getSocialMediaInfo() != null && !restaurant.getSocialMediaInfo().isEmpty()) {
+            header.setRestaurantSocialMediaInfo(restaurant.getSocialMediaInfo());
+        }
+        if(restaurant.getWebSite() != null && !restaurant.getWebSite().isEmpty()) {
+            header.setRestaurantWebsite(restaurant.getWebSite());
+        }
         return  header;
     }
 
@@ -100,13 +103,13 @@ public class ReceiptToXML {
         Client client = adapter.getAdaptee().getClient();
         if(client != null) {
             CustomerInfo customer = factory.createCustomerInfo();
-            if(!client.getName().isEmpty()) {
+            if(client.getName() != null && !client.getName().isEmpty()) {
                 customer.setName(createTagValue(factory, Resources.PRINTER.getString("CustomerName"), client.getName()));
             }
-            if(!client.getAddress().isEmpty()) {
+            if(client.getAddress() != null && !client.getAddress().isEmpty()) {
                 customer.setAddress(createTagValue(factory, Resources.PRINTER.getString("CustomerAddress"), client.getAddress()));
             }
-            if(!client.getTAXNumber().isEmpty()) {
+            if(client.getTAXNumber() != null && !client.getTAXNumber().isEmpty()) {
                 customer.setTaxNumber(createTagValue(factory, Resources.PRINTER.getString("CustomerTAXnumber"), client.getTAXNumber()));
             }
             body.setCustomer(customer);

@@ -1,6 +1,9 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
@@ -16,98 +19,138 @@ import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidTables;
 
+import com.inspirationlogical.receipt.corelib.utility.Hash;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-@Builder
+@Builder(toBuilder = true)
 //@EqualsAndHashCode(callSuper = true)
 @javax.persistence.Table(name = "RESTAURANT")
 @NamedQueries({
-    @NamedQuery(name = Restaurant.GET_TEST_RESTAURANTS,
-            query="FROM Restaurant r"),
-    @NamedQuery(name = Restaurant.GET_ACTIVE_RESTAURANT,
-            query="FROM Restaurant r"),
+        @NamedQuery(name = Restaurant.GET_TEST_RESTAURANTS,
+                query = "FROM Restaurant r"),
+        @NamedQuery(name = Restaurant.GET_ACTIVE_RESTAURANT,
+                query = "FROM Restaurant r"),
 })
 @AttributeOverride(name = "id", column = @Column(name = "RESTAURANT_ID"))
 @ValidTables
-public @Data class Restaurant extends AbstractEntity {
+public
+@Data
+class Restaurant extends AbstractEntity {
 
     public static final String GET_TEST_RESTAURANTS = "Restaurant.GetTestRestaurants";
     public static final String GET_ACTIVE_RESTAURANT = "Restaurant.GetActiveRestaurant";
+    private static final Restaurant PROTOTYPE = new Restaurant();
 
+    public static RestaurantBuilder builder() {
+        return PROTOTYPE.toBuilder();
+    }
+
+    @NotNull
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST}, orphanRemoval = true)
-    private Collection<Table> tables;
+    private Collection<Table> tables = new HashSet<>();
 
+    @NotEmpty
     @NotNull
     private String restaurantName;
 
+    @NotEmpty
     @NotNull
     private String companyName;
 
+    @NotEmpty
     @NotNull
     private String companyTaxPayerId;
-
-    private String receiptNote;
-
-    private String phoneNumber;
-
-    private String receiptDisclaimer = Resources.PRINTER.getString("Disclaimer");
 
     @NotNull
     @Embedded
     @AttributeOverrides({
-        @AttributeOverride(name = "ZIPCode", column = @Column(name = "restaurantZIPCode", nullable = false)),
-        @AttributeOverride(name = "city", column = @Column(name = "restaurantCity", nullable = false)),
-        @AttributeOverride(name = "street", column = @Column(name = "restaurantStreet", nullable = false))
+            @AttributeOverride(name = "ZIPCode", column = @Column(name = "restaurantZIPCode", nullable = false)),
+            @AttributeOverride(name = "city", column = @Column(name = "restaurantCity", nullable = false)),
+            @AttributeOverride(name = "street", column = @Column(name = "restaurantStreet", nullable = false))
     })
     private Address restaurantAddress;
 
     @NotNull
     @Embedded
     @AttributeOverrides({
-        @AttributeOverride(name = "ZIPCode", column = @Column(name = "companyZIPCode", nullable = false)),
-        @AttributeOverride(name = "city", column = @Column(name = "companyCity", nullable = false)),
-        @AttributeOverride(name = "street", column = @Column(name = "companyStreet", nullable = false))
+            @AttributeOverride(name = "ZIPCode", column = @Column(name = "companyZIPCode", nullable = false)),
+            @AttributeOverride(name = "city", column = @Column(name = "companyCity", nullable = false)),
+            @AttributeOverride(name = "street", column = @Column(name = "companyStreet", nullable = false))
     })
     private Address companyAddress;
 
+    private String phoneNumber;
+
+    private String webSite;
+
+    private String socialMediaInfo;
+
+    private String receiptNote;
+
+    private String receiptDisclaimer = Resources.PRINTER.getString("Disclaimer");
+
+    // FIXME: logo is not used, should be removed
     @Lob
     private byte[] logo;
 
     @Tolerate
-    Restaurant(){}
+    Restaurant() {
+    }
 
     @Override
     public boolean equals(Object o) {
-        if(o == this) {
+        if (o == this) {
             return true;
         }
-        if(!(o instanceof Restaurant)) {
+        if (!(o instanceof Restaurant)) {
             return false;
         }
+
+
         Restaurant r = (Restaurant) o;
-        return r.restaurantName.equals(restaurantName) &&
-                r.companyName.equals(companyName) &&
-                r.companyTaxPayerId.equals(companyTaxPayerId) &&
-                r.restaurantAddress.equals(restaurantAddress) &&
-                r.companyAddress.equals(companyAddress) &&
-                r.restaurantName.equals(restaurantName) &&
-                r.hashCode() == hashCode();
+        if (r.hashCode() != hashCode() || tables.size() != r.tables.size()) return false;
+        else {
+            Set<Table> tableSetLHS = tables.stream().collect(Collectors.toSet());
+            Set<Table> tableSetRHS = r.tables.stream().collect(Collectors.toSet());
+            return tableSetLHS.equals(tableSetRHS) &&
+                    r.restaurantName.equals(restaurantName) &&
+                    r.companyName.equals(companyName) &&
+                    r.companyTaxPayerId.equals(companyTaxPayerId) &&
+                    r.restaurantAddress.equals(restaurantAddress) &&
+                    r.companyAddress.equals(companyAddress) &&
+                    (r.phoneNumber == null) == (phoneNumber == null) &&
+                    (r.phoneNumber == null || r.phoneNumber.equals(phoneNumber)) &&
+                    (r.webSite == null) == (webSite == null) &&
+                    (r.webSite == null || r.webSite.equals(webSite)) &&
+                    (r.socialMediaInfo == null) == (socialMediaInfo == null) &&
+                    (r.socialMediaInfo == null || r.socialMediaInfo.equals(socialMediaInfo)) &&
+                    (r.receiptNote == null) == (receiptNote == null) &&
+                    (r.receiptNote == null || r.receiptNote.equals(receiptNote)) &&
+                    (r.receiptDisclaimer == null) == (receiptDisclaimer == null) &&
+                    (r.receiptDisclaimer == null || r.receiptDisclaimer.equals(receiptDisclaimer));
+        }
     }
 
     @Override
     public int hashCode() {
-        int result = 17;
-        result = result * 31 + restaurantName.hashCode();
-        result = result * 31 + companyName.hashCode();
-        result = result * 31 + companyTaxPayerId.hashCode();
-        result = result * 31 + restaurantAddress.hashCode();
-        result = result * 31 + companyAddress.hashCode();
-        for(Table t : tables) {
-            result = result * 31 + t.hashCode();
+        int result = 0;
+        result = Hash.combine(result,restaurantName);
+        result = Hash.combine(result,companyName);
+        result = Hash.combine(result,companyTaxPayerId);
+        result = Hash.combine(result,restaurantAddress);
+        result = Hash.combine(result,companyAddress);
+        if (phoneNumber != null)        result = Hash.combine(result,phoneNumber);
+        if (webSite != null)            result = Hash.combine(result,webSite);
+        if (socialMediaInfo != null)    result = Hash.combine(result,socialMediaInfo);
+        if (receiptNote != null)        result = Hash.combine(result,receiptNote);
+        if (receiptDisclaimer != null)  result = Hash.combine(result,receiptDisclaimer);
+        for (Table t : tables) {
+            result = Hash.combine(result ,t);
         }
         return result;
     }
