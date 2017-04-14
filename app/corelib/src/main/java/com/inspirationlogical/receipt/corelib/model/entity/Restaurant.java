@@ -94,10 +94,6 @@ class Restaurant extends AbstractEntity {
 
     private String receiptDisclaimer = Resources.PRINTER.getString("Disclaimer");
 
-    // FIXME: logo is not used, should be removed
-    @Lob
-    private byte[] logo;
-
     @Tolerate
     Restaurant() {
     }
