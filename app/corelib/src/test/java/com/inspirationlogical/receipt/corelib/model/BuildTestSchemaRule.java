@@ -357,6 +357,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .companyTaxPayerId("1-42-6518879")
                 .companyAddress(buildDefaultAddress())
                 .restaurantAddress(buildDefaultAddress())
+                .receiptNote("Árvíztűrő tükörfúrógép")
                 .build();
      }
 

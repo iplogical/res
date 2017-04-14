@@ -49,6 +49,8 @@ public @Data class Restaurant extends AbstractEntity {
     @NotNull
     private String companyTaxPayerId;
 
+    private String receiptNote;
+
     @NotNull
     @Embedded
     @AttributeOverrides({

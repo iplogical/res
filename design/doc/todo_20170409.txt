@@ -38,8 +38,6 @@ Kontext menu sebessége a kis gépen PRIORITY 1 [Attila]
 
 Törzsvendégek, alkalmazottak és lézengők tab PRIORITY 2 [Attila]
 
-Kupon készpénzként jelenik meg a nyugtán PRIORITY 1 [Fec]
-
 Kerekítés a nyugtán PRIORITY 1 [Fec]
 
 Kedvezmény feltüntetése a nyugtán PRIORITY 1 [Fec]

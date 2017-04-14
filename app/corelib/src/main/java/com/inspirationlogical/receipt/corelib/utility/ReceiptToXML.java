@@ -67,14 +67,15 @@ public class ReceiptToXML {
         ReceiptFooter footer = factory.createReceiptFooter();
         //TODO: add disclaimer in restaurant???
         footer.setDisclaimer(Resources.PRINTER.getString("Disclaimer"));
-        //TODO: get active note from Entity and set only if present
-        footer.setNote("Árvíztűrő tükörfúrógép!");
+
+        if(receiptAdapter.getAdaptee().getOwner().getOwner().getReceiptNote() != null){
+            footer.setNote(receiptAdapter.getAdaptee().getOwner().getOwner().getReceiptNote());
+        }
         footer.setGreet(Resources.PRINTER.getString("Greet"));
         GregorianCalendar gc = GregorianCalendar.from(receiptAdapter.getAdaptee().getClosureTime().atZone(ZoneId.systemDefault()));
         footer.setDatetime(new XMLGregorianCalendarImpl(gc));
         footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag")+":"+receiptAdapter.getAdaptee().getId().toString());
-        //TODO: get vendor info from resource file, version from git tag
-        footer.setVendorInfo("© InspirationLogical, Receipt v4.3");
+        footer.setVendorInfo(Resources.PRINTER.getString("VendorInfo"));
         return footer;
     }
 
@@ -99,11 +100,15 @@ public class ReceiptToXML {
         Client client = adapter.getAdaptee().getClient();
         if(client != null) {
             CustomerInfo customer = factory.createCustomerInfo();
-            customer.setName(createTagValue(factory,Resources.PRINTER.getString("CustomerName") ,client.getName()));
-            if(!client.getAddress().isEmpty())
-                customer.setAddress(createTagValue(factory,Resources.PRINTER.getString("CustomerAddress") ,client.getAddress()));
-            if(!client.getTAXNumber().isEmpty())
-                customer.setTaxNumber(createTagValue(factory,Resources.PRINTER.getString("CustomerTAXnumber") ,client.getTAXNumber()));
+            if(!client.getName().isEmpty()) {
+                customer.setName(createTagValue(factory, Resources.PRINTER.getString("CustomerName"), client.getName()));
+            }
+            if(!client.getAddress().isEmpty()) {
+                customer.setAddress(createTagValue(factory, Resources.PRINTER.getString("CustomerAddress"), client.getAddress()));
+            }
+            if(!client.getTAXNumber().isEmpty()) {
+                customer.setTaxNumber(createTagValue(factory, Resources.PRINTER.getString("CustomerTAXnumber"), client.getTAXNumber()));
+            }
             body.setCustomer(customer);
         }
     }
