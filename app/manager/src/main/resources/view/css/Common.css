@@ -1,0 +1,34 @@
+@font-face {
+    font-family: 'SourceSansPro';
+    src: url('../otf/SourceSansPro-Regular.otf');
+}
+
+.text {
+    -fx-font-family: "SourceSansPro";
+}
+.button, .toggle-button, .check-box, .radio-button, .label, .tab-pane, .text-field {
+    -fx-font-size: 14;
+    -fx-line-spacing: -5;
+}
+
+.button {
+   -fx-border-width: 2px;
+   -fx-background-radius: 10;
+}
+
+.toggle-button {
+    -fx-border-width: 2px;
+    -fx-background-radius: 10;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #98FB98;
+    -fx-border-color: #00bfff;
+    -fx-border-radius: 10;
+}
+
+.radio-button:selected {
+    -fx-border-color: #00bfff;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10;
+}
