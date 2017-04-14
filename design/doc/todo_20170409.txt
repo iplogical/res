@@ -38,8 +38,6 @@ Kontext menu sebessége a kis gépen PRIORITY 1 [Attila]
 
 Törzsvendégek, alkalmazottak és lézengők tab PRIORITY 2 [Attila]
 
-Kerekítés a nyugtán PRIORITY 1 [Fec]
-
 Kedvezmény feltüntetése a nyugtán PRIORITY 1 [Fec]
 
 Napi fogyasztáshoz időintervallum FUTURE
@@ -55,7 +53,5 @@ Rövid név nics kitöltve: megegyezik a hosszú névvel PRIORITY 2
 Nyugta fizetési mód módosítás manager terminálból FUTURE
 
 Asztal tört részének fizetése FUTURE
-
-Csillag hozzáadása a nyugtán a termék névhez kedvezmény esetén PRIORITY [Fec]
 
 telefonszám szerepeljen a nyugtán PRIORITY [Fec]

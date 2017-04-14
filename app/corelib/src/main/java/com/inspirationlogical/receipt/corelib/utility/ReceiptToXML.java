@@ -120,7 +120,11 @@ public class ReceiptToXML {
         body.setHeader(createReceiptBodyHeader(receiptAdapter,factory));
         List<ReceiptBodyEntry> records = receiptAdapter.getAdaptee().getRecords().stream().map((record) ->{
             ReceiptBodyEntry entry = factory.createReceiptBodyEntry();
-            entry.setName(record.getName());
+            String name = record.getName();
+            if(record.getDiscountPercent() > 0){
+                name += " *";
+            }
+            entry.setName(name);
             entry.setQtyPrice(BigInteger.valueOf(record.getSalePrice()));
             entry.setQty(record.getSoldQuantity());
             entry.setTotal(BigInteger.valueOf((int)(record.getSoldQuantity() * record.getSalePrice())));
