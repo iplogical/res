@@ -5,6 +5,8 @@ import java.util.Collection;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
+import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
+import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 
 public interface RetailService {
 

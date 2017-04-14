@@ -8,6 +8,9 @@ import com.inspirationlogical.receipt.corelib.model.view.PriceModifierView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.StockView;
+import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
+import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
+import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 public interface CommonService {
     ProductBuilder productBuilder();
@@ -19,6 +22,8 @@ public interface CommonService {
     ProductCategoryView addProductCategory(ProductCategoryParams params);
 
     ProductCategoryView updateProductCategory(ProductCategoryParams params);
+
+    void updateStock(List<StockParams> params);
 
     void addPriceModifier(PriceModifierParams params);
 

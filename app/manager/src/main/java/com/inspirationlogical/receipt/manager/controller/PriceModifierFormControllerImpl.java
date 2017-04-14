@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.manager.controller;
 
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
-import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier.PriceModifierBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
 import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.*;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
@@ -11,7 +10,7 @@ import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierTy
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
-import com.inspirationlogical.receipt.corelib.service.PriceModifierParams;
+import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStringConverter;
 import javafx.beans.property.BooleanProperty;
@@ -25,7 +24,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import javax.inject.Inject;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;

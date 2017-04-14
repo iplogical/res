@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.service;
+package com.inspirationlogical.receipt.corelib.params;
 
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;

@@ -13,6 +13,9 @@ import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
+import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
+import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
+import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 public class CommonServiceImpl extends AbstractService implements CommonService {
 
@@ -64,6 +67,11 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     public ProductCategoryView updateProductCategory(ProductCategoryParams params) {
         return new ProductCategoryViewImpl(getProductCategoryAdapter(params.getParent())
                 .updateChildCategory(params.getName(), params.getOriginalName(), params.getType()));
+    }
+
+    @Override
+    public void updateStock(List<StockParams> params) {
+        params.forEach(params1 -> System.out.println(params1));
     }
 
     @Override

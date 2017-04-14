@@ -1,23 +1,37 @@
 package com.inspirationlogical.receipt.manager.controller;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.manager.viewmodel.StockViewModel;
 
+import com.inspirationlogical.receipt.manager.viewstate.StockViewState;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Popup;
+import javafx.util.converter.DoubleStringConverter;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
+import static java.util.stream.Collectors.toList;
 
 @Singleton
 public class StockControllerImpl implements StockController {
@@ -39,6 +53,8 @@ public class StockControllerImpl implements StockController {
     @FXML
     TableColumn<StockViewModel, String> stockPurchasedQuantity;
     @FXML
+    TableColumn<StockViewModel, String> stockInputQuantity;
+    @FXML
     TableColumn<StockViewModel, String> stockDate;
     @FXML
     TableColumn<StockViewModel, String> productType;
@@ -49,11 +65,15 @@ public class StockControllerImpl implements StockController {
     @FXML
     TableColumn<StockViewModel, String> productQuantityMultiplier;
     @FXML
-    Button createItem;
+    ToggleButton purchase;
     @FXML
-    Button modifyItem;
+    ToggleButton inventory;
     @FXML
-    Button deleteItem;
+    ToggleButton disposal;
+    @FXML
+    Button updateStock;
+    @FXML
+    ToggleGroup actionTypeToggleGroup;
     @FXML
     Button showGoods;
 
@@ -64,10 +84,31 @@ public class StockControllerImpl implements StockController {
 
     private CommonService commonService;
 
+    private StockViewState stockViewState;
+
     @Inject
-    public StockControllerImpl(GoodsController goodsController, CommonService commonService) {
+    public StockControllerImpl(GoodsController goodsController,
+                               CommonService commonService) {
         this.goodsController = goodsController;
         this.commonService = commonService;
+        this.stockViewState = new StockViewState();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initColumns();
+        initStockItems();
+        initActionTypeToggles();
+    }
+
+    @Override
+    public String getViewPath() {
+        return STOCK_VIEW_PATH;
+    }
+
+    @Override
+    public Node getRootNode() {
+        return root;
     }
 
     @FXML
@@ -75,11 +116,20 @@ public class StockControllerImpl implements StockController {
         viewLoader.loadViewIntoScene(goodsController);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        initColumns();
-        initStockItems();
+    @FXML
+    public void onUpdateStock(Event event) {
+        if(stockViewState.getReceiptType() == null) return;
+        List<StockParams> stockParamsList = stockTable.getItems().stream()
+                .filter(stockViewModel -> stockViewModel.getInputQuantity() != null)
+                .map(stockViewModel -> StockParams.builder()
+                        .productName(stockViewModel.getLongName())
+                        .actionType(stockViewState.getReceiptType())
+                        .quantity(Double.valueOf(stockViewModel.getInputQuantity()))
+                        .build())
+                .collect(Collectors.toList());
+        commonService.updateStock(stockParamsList);
     }
+
 
     private StockViewModel getViewModel(TableColumn.CellDataFeatures<StockViewModel, String> cellDataFeatures) {
         return cellDataFeatures.getValue();
@@ -101,6 +151,8 @@ public class StockControllerImpl implements StockController {
         initColumn(productStatus, StockViewModel::getStatus);
         initColumn(productQuantityUnit, StockViewModel::getQuantityUnit);
         initColumn(productQuantityMultiplier, StockViewModel::getQuantityMultiplier);
+        initInputColumn();
+        stockTable.setEditable(true);
     }
 
     private void initStockItems() {
@@ -111,13 +163,37 @@ public class StockControllerImpl implements StockController {
         commonService.getStockItems().forEach(stockView -> stockTable.getItems().add(new StockViewModel(stockView)));
     }
 
-    @Override
-    public String getViewPath() {
-        return STOCK_VIEW_PATH;
+    private void initInputColumn() {
+        stockInputQuantity.setCellFactory(TextFieldTableCell.forTableColumn());
+        stockInputQuantity.setOnEditCommit(e -> {
+            e.getRowValue().setInputQuantity(e.getNewValue());
+        });
+        hideInputColumn();
     }
 
-    @Override
-    public Node getRootNode() {
-        return root;
+    private void initActionTypeToggles() {
+        purchase.setUserData(ReceiptType.PURCHASE);
+        inventory.setUserData(ReceiptType.INVENTORY);
+        disposal.setUserData(ReceiptType.DISPOSAL);
+        actionTypeToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if(actionTypeToggleGroup.getSelectedToggle() == null) {
+                    hideInputColumn();
+                    stockViewState.setReceiptType(null);
+                    return;
+                }
+                stockViewState.setReceiptType((ReceiptType)actionTypeToggleGroup.getSelectedToggle().getUserData());
+                showInputColumn();
+            }
+        });
+    }
+
+    private void showInputColumn() {
+        stockInputQuantity.setVisible(true);
+    }
+
+    private void hideInputColumn() {
+        stockInputQuantity.setVisible(false);
     }
 }

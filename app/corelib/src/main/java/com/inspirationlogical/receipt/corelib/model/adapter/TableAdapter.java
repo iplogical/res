@@ -18,7 +18,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.service.PaymentParams;
+import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 
 import javafx.geometry.Point2D;
 import lombok.NonNull;

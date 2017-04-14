@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.google.inject.Singleton;
-import com.inspirationlogical.receipt.corelib.service.AdHocProductParams;
+import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;

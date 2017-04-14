@@ -11,6 +11,7 @@ public class StockViewModel extends ProductViewModel {
     private String availableQuantity;
     private String initialQuantity;
     private String soldQuantity;
+    private String inputQuantity;
     private String purchasedQuantity;
     private String date;
 

@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.manager.controller;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
-import com.inspirationlogical.receipt.corelib.service.PriceModifierParams;
+import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 
 /**
  * Created by régiDAGi on 2017. 04. 08..

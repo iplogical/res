@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.service;
+package com.inspirationlogical.receipt.corelib.params;
 
 import lombok.Builder;
 import lombok.Data;

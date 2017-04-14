@@ -2,12 +2,17 @@ package com.inspirationlogical.receipt.corelib.model.enums;
 
 public enum ReceiptType {
 
-    SALE,
-    PURCHASE,
-    INVENTORY,
-    DISPOSAL,
-    OTHER;
+    SALE("sale"),
+    PURCHASE("purchase"),
+    INVENTORY("inventory"),
+    DISPOSAL("disposal"),
+    OTHER("other");
 
+    private String name;
+
+    ReceiptType(String name) {
+        this.name = name;
+    }
     public static boolean isStockDecrement(ReceiptType type) {
         return type.equals(SALE) || type.equals(DISPOSAL);
     }
@@ -18,5 +23,10 @@ public enum ReceiptType {
 
     public static boolean isInventory(ReceiptType type) {
         return type.equals(INVENTORY);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

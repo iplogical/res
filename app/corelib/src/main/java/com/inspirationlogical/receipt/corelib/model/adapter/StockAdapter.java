@@ -7,9 +7,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
+import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Stock;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 public class StockAdapter extends AbstractAdapter<Stock> {
 

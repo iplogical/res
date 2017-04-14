@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.service;
+package com.inspirationlogical.receipt.corelib.params;
 
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import lombok.Builder;
