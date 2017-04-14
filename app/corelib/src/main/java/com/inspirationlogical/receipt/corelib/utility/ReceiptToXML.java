@@ -172,7 +172,7 @@ public class ReceiptToXML {
             footer.setTotalRounded(createTagCurrencyValue(factory,
                     Resources.PRINTER.getString("TotalRoundedTag"),
                     Resources.PRINTER.getString("TotalRoundedCurrency"),
-                    footer.getTotal().getValue().longValue())
+                    (long) RoundingLogic.create(PaymentMethod.CASH).round(footer.getTotal().getValue().doubleValue()))
             );
         }
         return footer;
