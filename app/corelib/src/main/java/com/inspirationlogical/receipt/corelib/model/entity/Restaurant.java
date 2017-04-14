@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidTables;
 
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
@@ -50,6 +51,10 @@ public @Data class Restaurant extends AbstractEntity {
     private String companyTaxPayerId;
 
     private String receiptNote;
+
+    private String phoneNumber;
+
+    private String receiptDisclaimer = Resources.PRINTER.getString("Disclaimer");
 
     @NotNull
     @Embedded
