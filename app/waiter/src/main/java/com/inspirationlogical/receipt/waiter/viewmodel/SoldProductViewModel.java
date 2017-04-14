@@ -98,6 +98,9 @@ public @Data class SoldProductViewModel {
 
     private void markDiscountedProduct() {
         if(!this.productDiscount.equals(valueOf(0D))) {
+            if(this.productName.contains("*")) {
+                return;
+            }
             this.productName = this.productName + " *";
         }
     }
