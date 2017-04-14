@@ -1,13 +1,13 @@
 package com.inspirationlogical.receipt.waiter.viewmodel;
 
-import static java.lang.String.valueOf;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
+import javafx.collections.ObservableList;
+import lombok.Data;
 
 import java.util.Comparator;
 
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-
-import javafx.collections.ObservableList;
-import lombok.Data;
+import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
+import static java.lang.String.valueOf;
 
 /**
  * Created by Bálint on 2017.03.22..
@@ -94,11 +94,6 @@ public @Data class SoldProductViewModel {
             totalPrice += Integer.valueOf(model.getProductTotalPrice());
         }
         return totalPrice;
-    }
-
-    private static double roundToTwoDecimals(double number) {
-        double rounded = Math.round(number * 100);
-        return rounded / 100;
     }
 
     private void markDiscountedProduct() {

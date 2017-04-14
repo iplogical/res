@@ -116,7 +116,7 @@ public class ProductCategoryAdapterTest {
     @Test
     public void testGetAllStorableProducts() {
         Set<ProductAdapter> products = root.getAllStorableProducts();
-        assertTrue(products.size() > 0);
+        assertEquals(8, products.size());
         assertEquals(0, products.stream().filter(productAdapter ->
                 productAdapter.getAdaptee().getLongName().equals("productFour")).collect(toList()).size());
     }

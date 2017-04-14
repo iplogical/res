@@ -5,6 +5,9 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
@@ -100,7 +103,13 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
          return getAllActiveProducts().stream()
                 .flatMap(productAdapter -> productAdapter.getAdaptee().getRecipes().stream())
                 .map(recipe -> new ProductAdapter(recipe.getComponent()))
+                .filter(distinctByKey(productAdapter -> productAdapter.getAdaptee().getLongName()))
                 .collect(toSet());
+    }
+
+    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
     public List<ProductCategoryAdapter> getChildrenCategories() {

@@ -3,7 +3,17 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
+import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
+import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+import com.inspirationlogical.receipt.corelib.params.StockParams;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,10 +22,6 @@ import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateExcep
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.params.PaymentParams;
-import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
-
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -23,7 +29,8 @@ import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 public class ReceiptAdapterTest {
 
     private TableAdapter tableAdapter;
-    private ReceiptAdapter receiptAdapter;
+    private ReceiptAdapter receiptSaleOne;
+    private ReceiptAdapter receiptPurchase;
     private ProductAdapter productAdapter;
     private PaymentParams paymentParams;
 
@@ -33,7 +40,8 @@ public class ReceiptAdapterTest {
     @Before
     public void createAdapters() {
         tableAdapter = new TableAdapter(schema.getTableNormal());
-        receiptAdapter = new ReceiptAdapter(schema.getReceiptSaleOne());
+        receiptSaleOne = new ReceiptAdapter(schema.getReceiptSaleOne());
+        receiptPurchase = new ReceiptAdapter(schema.getReceiptPurchase());
         productAdapter = new ProductAdapter(schema.getProductOne());
         paymentParams = PaymentParams.builder()
                 .paymentMethod(PaymentMethod.CASH)
@@ -44,13 +52,13 @@ public class ReceiptAdapterTest {
 
     @Test
     public void testGetSoldProducts() {
-        assertEquals(4, receiptAdapter.getSoldProducts().size());
+        assertEquals(4, receiptSaleOne.getSoldProducts().size());
     }
 
     @Test
     public void testSellProduct() {
-        receiptAdapter.sellProduct(productAdapter, 1, true, false);
-        assertEquals(5, receiptAdapter.getSoldProducts().size());
+        receiptSaleOne.sellProduct(productAdapter, 1, true, false);
+        assertEquals(5, receiptSaleOne.getSoldProducts().size());
     }
 
     @Test
@@ -61,8 +69,8 @@ public class ReceiptAdapterTest {
                 .purchasePrice(200)
                 .salePrice(400)
                 .build();
-        receiptAdapter.sellAdHocProduct(productParams, true);
-        assertEquals(5, receiptAdapter.getSoldProducts().size());
+        receiptSaleOne.sellAdHocProduct(productParams, true);
+        assertEquals(5, receiptSaleOne.getSoldProducts().size());
     }
 
     /*
@@ -78,84 +86,94 @@ public class ReceiptAdapterTest {
     */
     @Test
     public void testClose() {
-        receiptAdapter.close(paymentParams);
-        assertEquals(6550, receiptAdapter.getAdaptee().getSumPurchaseGrossPrice());
-        assertEquals(5157, receiptAdapter.getAdaptee().getSumPurchaseNetPrice());
-        assertEquals(13100, receiptAdapter.getAdaptee().getSumSaleGrossPrice());
-        assertEquals(10314, receiptAdapter.getAdaptee().getSumSaleNetPrice());
+        receiptSaleOne.close(paymentParams);
+        assertEquals(6550, receiptSaleOne.getAdaptee().getSumPurchaseGrossPrice());
+        assertEquals(5157, receiptSaleOne.getAdaptee().getSumPurchaseNetPrice());
+        assertEquals(13100, receiptSaleOne.getAdaptee().getSumSaleGrossPrice());
+        assertEquals(10314, receiptSaleOne.getAdaptee().getSumSaleNetPrice());
     }
 
     @Test
     public void testCloseWithDiscountPercent() {
         paymentParams.setDiscountPercent(10);
-        receiptAdapter.close(paymentParams);
-        assertEquals(6550, receiptAdapter.getAdaptee().getSumPurchaseGrossPrice());
-        assertEquals(5157, receiptAdapter.getAdaptee().getSumPurchaseNetPrice());
-        assertEquals(11790, receiptAdapter.getAdaptee().getSumSaleGrossPrice());
-        assertEquals(9282, receiptAdapter.getAdaptee().getSumSaleNetPrice());
-        assertEquals(10, receiptAdapter.getAdaptee().getDiscountPercent(), 0.0001);
+        receiptSaleOne.close(paymentParams);
+        assertEquals(6550, receiptSaleOne.getAdaptee().getSumPurchaseGrossPrice());
+        assertEquals(5157, receiptSaleOne.getAdaptee().getSumPurchaseNetPrice());
+        assertEquals(11790, receiptSaleOne.getAdaptee().getSumSaleGrossPrice());
+        assertEquals(9282, receiptSaleOne.getAdaptee().getSumSaleNetPrice());
+        assertEquals(10, receiptSaleOne.getAdaptee().getDiscountPercent(), 0.0001);
     }
 
     @Test
     public void testCloseWithDiscountAbsolute() {
         paymentParams.setDiscountAbsolute(1000);
-        receiptAdapter.close(paymentParams);
-        assertEquals(6550, receiptAdapter.getAdaptee().getSumPurchaseGrossPrice());
-        assertEquals(5157, receiptAdapter.getAdaptee().getSumPurchaseNetPrice());
-        assertEquals(12100, receiptAdapter.getAdaptee().getSumSaleGrossPrice());
-        assertEquals(9526, receiptAdapter.getAdaptee().getSumSaleNetPrice());
-        assertEquals(7.6335, receiptAdapter.getAdaptee().getDiscountPercent(), 0.0001);
+        receiptSaleOne.close(paymentParams);
+        assertEquals(6550, receiptSaleOne.getAdaptee().getSumPurchaseGrossPrice());
+        assertEquals(5157, receiptSaleOne.getAdaptee().getSumPurchaseNetPrice());
+        assertEquals(12100, receiptSaleOne.getAdaptee().getSumSaleGrossPrice());
+        assertEquals(9526, receiptSaleOne.getAdaptee().getSumSaleNetPrice());
+        assertEquals(7.6335, receiptSaleOne.getAdaptee().getDiscountPercent(), 0.0001);
     }
 
     @Test
     public void testCloseWithDiscountForProduct() {
-        GuardedTransaction.RunWithRefresh(receiptAdapter.getAdaptee(),
+        GuardedTransaction.RunWithRefresh(receiptSaleOne.getAdaptee(),
                 () -> {
             schema.getReceiptRecordSaleTwo().setDiscountPercent(20);
             schema.getReceiptRecordSaleTwo().setSalePrice(240);
         });
-        receiptAdapter.close(paymentParams);
-        assertEquals(6550, receiptAdapter.getAdaptee().getSumPurchaseGrossPrice());
-        assertEquals(5157, receiptAdapter.getAdaptee().getSumPurchaseNetPrice());
-        assertEquals(12460, receiptAdapter.getAdaptee().getSumSaleGrossPrice());
-        assertEquals(9811, receiptAdapter.getAdaptee().getSumSaleNetPrice());
-        assertEquals(0, receiptAdapter.getAdaptee().getDiscountPercent(), 0.0001);
+        receiptSaleOne.close(paymentParams);
+        assertEquals(6550, receiptSaleOne.getAdaptee().getSumPurchaseGrossPrice());
+        assertEquals(5157, receiptSaleOne.getAdaptee().getSumPurchaseNetPrice());
+        assertEquals(12460, receiptSaleOne.getAdaptee().getSumSaleGrossPrice());
+        assertEquals(9811, receiptSaleOne.getAdaptee().getSumSaleNetPrice());
+        assertEquals(0, receiptSaleOne.getAdaptee().getDiscountPercent(), 0.0001);
     }
 
     @Test(expected = IllegalReceiptStateException.class)
     public void testCloseAClosedReceipt() {
-        GuardedTransaction.RunWithRefresh(receiptAdapter.getAdaptee(),
+        GuardedTransaction.RunWithRefresh(receiptSaleOne.getAdaptee(),
                 () -> {
             schema.getReceiptSaleOne().setStatus(ReceiptStatus.CLOSED);
                     schema.getReceiptSaleOne().setClosureTime(LocalDateTime.now());
         });
-        receiptAdapter.close(paymentParams);
-        assertEquals(850, receiptAdapter.getAdaptee().getSumPurchaseGrossPrice());
+        receiptSaleOne.close(paymentParams);
+        assertEquals(850, receiptSaleOne.getAdaptee().getSumPurchaseGrossPrice());
     }
 
-//    @Test
-//    public void testPaySelective() {
-//        //TODO: Fix this -> Exception thrown from FormatterService create() method.
-//        ReceiptRecordView receiptRecordViewTwo = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptRecordSaleTwo()));
-//        ReceiptRecordView receiptRecordViewFive = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptRecordSaleFive()));
-//        ReceiptRecordView receiptRecordViewSix = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptRecordSaleSix()));
-//        List<ReceiptRecordView> recordsToPay = new ArrayList<>(Arrays.asList(receiptRecordViewTwo, receiptRecordViewFive, receiptRecordViewSix));
-//        receiptAdapter.paySelective(tableAdapter, recordsToPay, paymentParams);
-//        // 1 x Soproni, 1 x Jim Beam, 1,5 x Game Up Menu
-//        assertEquals(8485, receiptAdapter.getAdaptee().getRecords().stream()
-//                .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum());
-//        List<Receipt> closedReceipts = schema.getEntityManager().createNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER)
-//                .setParameter("status", ReceiptStatus.CLOSED)
-//                .setParameter("number", tableAdapter.getAdaptee().getNumber())
-//                .getResultList();
-//        assertEquals(2, closedReceipts.size());
-//        // 1 x Jim Beam, 2 x Edelweiss, 0,5 x Game Up Menu
-//        assertEquals(4615, closedReceipts.get(1).getRecords().stream()
-//                        .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum());
-//    }
+    @Test
+    public void testPaySelective() {
+        ReceiptRecordView receiptRecordViewTwo = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptRecordSaleTwo()));
+        ReceiptRecordView receiptRecordViewFive = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptRecordSaleFive()));
+        ReceiptRecordView receiptRecordViewSix = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptRecordSaleSix()));
+        List<ReceiptRecordView> recordsToPay = new ArrayList<>(Arrays.asList(receiptRecordViewTwo, receiptRecordViewFive, receiptRecordViewSix));
+        receiptSaleOne.paySelective(tableAdapter, recordsToPay, paymentParams);
+        // 1 x Soproni
+        assertEquals(440, receiptSaleOne.getAdaptee().getRecords().stream()
+                .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum());
+        List<Receipt> closedReceipts = GuardedTransaction.RunNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
+                query -> {query.setParameter("status", ReceiptStatus.CLOSED);
+                                query.setParameter("number", tableAdapter.getAdaptee().getNumber());
+                                return query;});
+        assertEquals(2, closedReceipts.size());
+        // 2 x Jim Beam, 2 x Edelweiss, 2 x Game Up Menu
+        assertEquals(12660, closedReceipts.get(1).getRecords().stream()
+                        .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum());
+    }
 
     @Test
     public void testGetTotalPrice() {
-        assertEquals(13100, receiptAdapter.getTotalPrice());
+        assertEquals(13100, receiptSaleOne.getTotalPrice());
+    }
+
+    @Test
+    public void testAddStockRecords() {
+        List<StockParams> paramsList = Arrays.asList(StockParams.builder()
+                .productName("productTwo")
+                .quantity(Double.valueOf(2))
+                .isAbsoluteQuantity(true)
+                .build());
+        receiptPurchase.addStockRecords(paramsList);
+        assertEquals(1, receiptPurchase.getSoldProducts().size());
     }
 }

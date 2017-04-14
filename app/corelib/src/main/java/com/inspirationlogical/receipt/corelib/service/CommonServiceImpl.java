@@ -5,17 +5,18 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.model.adapter.PriceModifierAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.*;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+
+import static java.util.stream.Collectors.toList;
 
 public class CommonServiceImpl extends AbstractService implements CommonService {
 
@@ -31,15 +32,15 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 //    }
 
     public static List<ProductView> createProductViews(List<ProductAdapter> adapters) {
-        return adapters.stream().map(ProductViewImpl::new).collect(Collectors.toList());
+        return adapters.stream().map(ProductViewImpl::new).collect(toList());
     }
 
     public static List<StockView> createStockViews(List<StockAdapter> adapters) {
-        return adapters.stream().map(StockViewImpl::new).collect(Collectors.toList());
+        return adapters.stream().map(StockViewImpl::new).collect(toList());
     }
 
     public static List<PriceModifierView> createPriceModifierViews(List<PriceModifierAdapter> adapters) {
-        return adapters.stream().map(PriceModifierViewImpl::new).collect(Collectors.toList());
+        return adapters.stream().map(PriceModifierViewImpl::new).collect(toList());
     }
 
     @Override
@@ -70,8 +71,11 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
-    public void updateStock(List<StockParams> params) {
-        params.forEach(params1 -> System.out.println(params1));
+    public void updateStock(List<StockParams> params, ReceiptType receiptType) {
+        TableAdapter.getTablesByType(TableType.getTableType(receiptType)).stream()
+                .map(TableAdapter::new)
+                .collect(toList())
+                .get(0).updateStock(params, receiptType);
     }
 
     @Override
@@ -87,24 +91,24 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     @Override
     public List<ProductCategoryView> getAllCategories() {
         List<ProductCategoryView> categoryViews = ProductCategoryAdapter.getCategoriesByType(ProductCategoryType.ROOT).stream().map(ProductCategoryViewImpl::new)
-                .collect(Collectors.toList());
+                .collect(toList());
         categoryViews.addAll(ProductCategoryAdapter.getCategoriesByType(ProductCategoryType.AGGREGATE).stream().map(ProductCategoryViewImpl::new)
-                .collect(Collectors.toList()));
+                .collect(toList()));
         categoryViews.addAll(ProductCategoryAdapter.getCategoriesByType(ProductCategoryType.LEAF).stream().map(ProductCategoryViewImpl::new)
-                .collect(Collectors.toList()));
+                .collect(toList()));
         return categoryViews;
     }
 
     @Override
     public List<ProductCategoryView> getAggregateCategories() {
         return ProductCategoryAdapter.getCategoriesByType(ProductCategoryType.AGGREGATE).stream().map(ProductCategoryViewImpl::new)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @Override
     public List<ProductCategoryView> getLeafCategories() {
         return ProductCategoryAdapter.getCategoriesByType(ProductCategoryType.LEAF).stream().map(ProductCategoryViewImpl::new)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @Override
@@ -114,7 +118,8 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public List<StockView> getStockItems() {
-        return createStockViews(StockAdapter.getItems());
+        List<StockAdapter> stockAdapters = StockAdapter.getItems();
+        return createStockViews(stockAdapters);
     }
 
     @Override

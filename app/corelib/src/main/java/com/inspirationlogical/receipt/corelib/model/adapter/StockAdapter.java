@@ -1,17 +1,16 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static java.time.LocalDateTime.now;
-import static java.util.stream.Collectors.toList;
+import com.inspirationlogical.receipt.corelib.model.entity.Stock;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.entity.Stock;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.params.StockParams;
+import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
+import static java.time.LocalDateTime.now;
+import static java.util.stream.Collectors.toList;
 
 public class StockAdapter extends AbstractAdapter<Stock> {
 
@@ -27,9 +26,17 @@ public class StockAdapter extends AbstractAdapter<Stock> {
 
     public static void updateStock(ReceiptRecordAdapter receiptRecordAdapter, ReceiptType receiptType) {
         receiptRecordAdapter.getAdaptee().getProduct().getRecipes().forEach(recipe ->
-                StockAdapter.getLatestItemByProduct(new ProductAdapter(recipe.getComponent()))
-                .updateStockAdapter(roundToTwoDecimals(recipe.getQuantityMultiplier() *
-                        receiptRecordAdapter.getAdaptee().getSoldQuantity()), receiptType));
+        {
+            StockAdapter stockAdapter = StockAdapter.getLatestItemByProduct(new ProductAdapter(recipe.getComponent()));
+            double quantity = 0;
+            if(receiptType == ReceiptType.SALE) {
+                quantity = recipe.getQuantityMultiplier() * receiptRecordAdapter.getAdaptee().getSoldQuantity();
+            } else {
+                quantity = receiptRecordAdapter.getAdaptee().getAbsoluteQuantity();
+            }
+            stockAdapter.updateStockAdapter(roundToTwoDecimals(quantity), receiptType);
+
+        });
     }
 
     public static StockAdapter getLatestItemByProduct(ProductAdapter productAdapter) {
@@ -38,7 +45,7 @@ public class StockAdapter extends AbstractAdapter<Stock> {
         return stockList.stream()
                 .map(stock -> new StockAdapter(stock))
                 .max(Comparator.comparing(stockAdapter -> stockAdapter.getAdaptee().getDate()))
-                .orElseGet(() -> createStockEntry(productAdapter, 50));
+                .orElseGet(() -> createStockEntry(productAdapter, 0));
     }
 
     public static void closeLatestStockEntries() {
@@ -91,10 +98,5 @@ public class StockAdapter extends AbstractAdapter<Stock> {
 
     private void increaseStock(double quantity) {
         GuardedTransaction.Run(() -> adaptee.setPurchasedQuantity(adaptee.getPurchasedQuantity() + quantity / adaptee.getOwner().getStorageMultiplier()));
-    }
-
-    private static double roundToTwoDecimals(double number) {
-        double rounded = Math.round(number * 100);
-        return rounded / 100;
     }
 }

@@ -1,11 +1,5 @@
 package com.inspirationlogical.receipt.manager.controller;
 
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
@@ -13,25 +7,24 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.manager.viewmodel.StockViewModel;
-
 import com.inspirationlogical.receipt.manager.viewstate.StockViewState;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Popup;
-import javafx.util.converter.DoubleStringConverter;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
-import static java.util.stream.Collectors.toList;
+import java.net.URL;
+import java.util.Comparator;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Singleton
 public class StockControllerImpl implements StockController {
@@ -63,7 +56,9 @@ public class StockControllerImpl implements StockController {
     @FXML
     TableColumn<StockViewModel, String> productQuantityUnit;
     @FXML
-    TableColumn<StockViewModel, String> productQuantityMultiplier;
+    TableColumn<StockViewModel, String> productStorageMultiplier;
+    @FXML
+    CheckBox quantityDisplay;
     @FXML
     ToggleButton purchase;
     @FXML
@@ -99,6 +94,7 @@ public class StockControllerImpl implements StockController {
         initColumns();
         initStockItems();
         initActionTypeToggles();
+        initCheckBox();
     }
 
     @Override
@@ -123,13 +119,26 @@ public class StockControllerImpl implements StockController {
                 .filter(stockViewModel -> stockViewModel.getInputQuantity() != null)
                 .map(stockViewModel -> StockParams.builder()
                         .productName(stockViewModel.getLongName())
-                        .actionType(stockViewState.getReceiptType())
                         .quantity(Double.valueOf(stockViewModel.getInputQuantity()))
+                        .isAbsoluteQuantity(quantityDisplay.selectedProperty().getValue())
                         .build())
                 .collect(Collectors.toList());
-        commonService.updateStock(stockParamsList);
+        commonService.updateStock(stockParamsList, stockViewState.getReceiptType());
+        hideInputColumn();
+        actionTypeToggleGroup.selectToggle(null);
+        updateStockItems();
     }
 
+    @FXML
+    public void onQuantityDisplayToggle(Event event) {
+        if(stockViewState.getIsAbsoluteQuantity().getValue()) {
+            displayAbsoluteValues();
+            updateStockItems();
+        } else {
+            displayUnitValues();
+            updateStockItems();
+        }
+    }
 
     private StockViewModel getViewModel(TableColumn.CellDataFeatures<StockViewModel, String> cellDataFeatures) {
         return cellDataFeatures.getValue();
@@ -150,7 +159,7 @@ public class StockControllerImpl implements StockController {
         initColumn(productType, StockViewModel::getType);
         initColumn(productStatus, StockViewModel::getStatus);
         initColumn(productQuantityUnit, StockViewModel::getQuantityUnit);
-        initColumn(productQuantityMultiplier, StockViewModel::getQuantityMultiplier);
+        initColumn(productStorageMultiplier, StockViewModel::getStorageMultiplier);
         initInputColumn();
         stockTable.setEditable(true);
     }
@@ -160,7 +169,11 @@ public class StockControllerImpl implements StockController {
     }
 
     private void updateStockItems() {
+        stockTable.getItems().clear();
         commonService.getStockItems().forEach(stockView -> stockTable.getItems().add(new StockViewModel(stockView)));
+        ObservableList<StockViewModel>  items = stockTable.getItems();
+        items.sort(Comparator.comparing(StockViewModel::getLongName));
+        stockTable.setItems(items);
     }
 
     private void initInputColumn() {
@@ -187,6 +200,24 @@ public class StockControllerImpl implements StockController {
                 showInputColumn();
             }
         });
+    }
+
+    private void initCheckBox() {
+        stockViewState.setIsAbsoluteQuantity(quantityDisplay.selectedProperty());
+    }
+
+    private void displayUnitValues() {
+        initColumn(stockAvailableQuantity, StockViewModel::getAvailableQuantity);
+        initColumn(stockInitialQuantity, StockViewModel::getInitialQuantity);
+        initColumn(stockSoldQuantity, StockViewModel::getSoldQuantity);
+        initColumn(stockPurchasedQuantity, StockViewModel::getPurchasedQuantity);
+    }
+
+    private void displayAbsoluteValues() {
+        initColumn(stockAvailableQuantity, StockViewModel::getAvailableQuantityAbsolute);
+        initColumn(stockInitialQuantity, StockViewModel::getInitialQuantityAbsolute);
+        initColumn(stockSoldQuantity, StockViewModel::getSoldQuantityAbsolute);
+        initColumn(stockPurchasedQuantity, StockViewModel::getPurchasedQuantityAbsolute);
     }
 
     private void showInputColumn() {

@@ -43,15 +43,9 @@ public class ReceiptTest {
     }
 
     @Test(expected = RollbackException.class)
-    public void saleReceiptWithoutPaymentMethod() {
+    public void rceiptWithoutPaymentMethod() {
         GuardedTransaction.Run(()->
                 schema.getReceiptSaleOne().setPaymentMethod(null));
-    }
-
-    @Test(expected = RollbackException.class)
-    public void inventoryReceiptWithPaymentMethod() {
-        GuardedTransaction.Run(()->
-                schema.getReceiptInventory().setPaymentMethod(PaymentMethod.CASH));
     }
 
     @Test(expected = RollbackException.class)

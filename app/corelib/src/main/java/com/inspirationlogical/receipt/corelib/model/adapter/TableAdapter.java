@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
@@ -20,6 +18,7 @@ import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 
+import com.inspirationlogical.receipt.corelib.params.StockParams;
 import javafx.geometry.Point2D;
 import lombok.NonNull;
 
@@ -29,30 +28,41 @@ public class TableAdapter extends AbstractAdapter<Table> {
         super(adaptee);
     }
 
-    public static TableAdapter getTableByNumber(EntityManager manager, int number) {
+    public static TableAdapter getTableByNumber(int number) {
         @SuppressWarnings("unchecked")
-        List<Table> tables = getTablesByNumber(manager, number);
+        List<Table> tables = getTablesByNumber(number);
         if (tables.isEmpty()) {
             return null;
         }
         return new TableAdapter(tables.get(0));
     }
 
-    private static List<Table> getTablesByNumber(EntityManager manager, int number) {
-        Query query = manager.createNamedQuery(Table.GET_TABLE_BY_NUMBER);
-        query.setParameter("number", number);
-        return (List<Table>) query.getResultList();
+    private static List<Table> getTablesByNumber(int number) {
+        return GuardedTransaction.RunNamedQuery(Table.GET_TABLE_BY_NUMBER, query -> {
+            query.setParameter("number", number);
+            return query;
+        });
+    }
+
+    public static List<Table> getTablesByType(TableType tableType) {
+        return GuardedTransaction.RunNamedQuery(Table.GET_TABLE_BY_TYPE,
+                query -> {query.setParameter("type", tableType);
+                    return query;});
+    }
+
+    public void updateStock(List<StockParams> paramsList, ReceiptType receiptType) {
+        ReceiptAdapter receiptAdapter = ReceiptAdapter.receiptAdapterFactory(receiptType);
+        receiptAdapter.addStockRecords(paramsList);
+        bindReceiptToTable(receiptAdapter);
+        GuardedTransaction.Persist(receiptAdapter.getAdaptee());
+        receiptAdapter.close(PaymentParams.builder().paymentMethod(PaymentMethod.CASH)
+                                                    .discountAbsolute(0)
+                                                    .discountPercent(0)
+                                                    .build());
     }
 
     public ReceiptAdapter getActiveReceipt() {
-
-        List<Receipt> adapters = GuardedTransaction.RunNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
-                query -> {
-                    query.setParameter("status", ReceiptStatus.OPEN);
-                    query.setParameter("number", adaptee.getNumber());
-                    return query;
-                });
-
+        List<Receipt> adapters = getReceiptsByStatusAndOwner(ReceiptStatus.OPEN, adaptee.getNumber());
         if (adapters.size() == 0) {
             return null;
         } else if (adapters.size() > 1) {
@@ -147,13 +157,13 @@ public class TableAdapter extends AbstractAdapter<Table> {
             throw new IllegalTableStateException("Delete table for an open table. Table number: " + adaptee.getNumber());
         }
         GuardedTransaction.RunWithRefresh(adaptee, () -> {
-            List<Table> orpahnageList = GuardedTransaction.RunNamedQuery(Table.GET_TABLE_ORPHANAGE);
-            Table orpahnage = orpahnageList.get(0);
-            if(orpahnage.getReceipts() == null)
-                orpahnage.setReceipts(new ArrayList<>());
-            orpahnage.getReceipts().addAll(adaptee.getReceipts().stream()
+            List<Table> orphanageList = getTablesByType(TableType.ORPHANAGE);
+            Table orphanage = orphanageList.get(0);
+            if(orphanage.getReceipts() == null)
+                orphanage.setReceipts(new ArrayList<>());
+            orphanage.getReceipts().addAll(adaptee.getReceipts().stream()
                     .map(receipt -> {
-                        receipt.setOwner(orpahnage);
+                        receipt.setOwner(orphanage);
                         return receipt;
                     }).collect(Collectors.toList()));
             adaptee.getReceipts().clear();
@@ -174,6 +184,15 @@ public class TableAdapter extends AbstractAdapter<Table> {
         return closedReceipts.stream()
                 .map(ReceiptAdapter::new)
                 .mapToInt(ReceiptAdapter::getTotalPrice).sum();
+    }
+
+    private List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
+        return GuardedTransaction.RunNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
+                query -> {
+                    query.setParameter("status", status);
+                    query.setParameter("number", tableNumber);
+                    return query;
+                });
     }
 
     private List<Receipt> getReceiptsByClosureTime(LocalDateTime finalPreviousClosure) {

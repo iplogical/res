@@ -69,6 +69,8 @@ public @Data class ReceiptRecord extends AbstractEntity {
 
     private double soldQuantity;
 
+    private double absoluteQuantity;
+
     private int purchasePrice;
 
     private int salePrice;

@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
+import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
@@ -25,6 +26,7 @@ import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 public class ReceiptAdapter extends AbstractAdapter<Receipt> {
 
@@ -130,6 +132,31 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             record.setOwner(adaptee);
             adaptee.getRecords().add(record);
         });
+    }
+
+    public void addStockRecords(List<StockParams> paramsList) {
+        GuardedTransaction.Run(() -> {
+            paramsList.forEach(params -> {
+                List<Product> productList = GuardedTransaction.RunNamedQuery(Product.GET_PRODUCT_BY_NAME,
+                        query -> {query.setParameter("longName", params.getProductName());
+                   return query;});
+                Product product = productList.get(0);
+                ReceiptRecord record = ReceiptRecord.builder()
+                        .product(product)
+                        .type(ReceiptRecordType.HERE)
+                        .created(now())
+                        .name(product.getLongName())
+                        .absoluteQuantity(params.isAbsoluteQuantity() ? params.getQuantity() : params.getQuantity() * product.getStorageMultiplier())
+                        .purchasePrice(product.getPurchasePrice())
+                        .salePrice(product.getSalePrice())
+                        .VAT(VATAdapter.getVatByName(ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
+                        .discountPercent(0)
+                        .build();
+                record.setOwner(adaptee);
+                adaptee.getRecords().add(record);
+            });
+        });
+
     }
 
     public Collection<ReceiptRecordAdapter> getSoldProducts() {

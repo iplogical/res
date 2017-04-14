@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.manager.viewmodel;
 
+import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
 import static java.lang.String.valueOf;
 
 import com.inspirationlogical.receipt.corelib.model.view.StockView;
@@ -17,11 +18,27 @@ public class StockViewModel extends ProductViewModel {
 
     public StockViewModel(StockView stockView) {
         super(stockView.getProduct());
-        double available = stockView.getInitialQuantity() - stockView.getSoldQuantity() + stockView.getPurchasedQuantity();
+        double available = roundToTwoDecimals(stockView.getInitialQuantity() - stockView.getSoldQuantity() + stockView.getPurchasedQuantity());
         availableQuantity = valueOf(available);
-        initialQuantity = valueOf(stockView.getInitialQuantity());
-        soldQuantity = valueOf(stockView.getSoldQuantity());
-        purchasedQuantity = valueOf(stockView.getPurchasedQuantity());
+        initialQuantity = valueOf(roundToTwoDecimals(stockView.getInitialQuantity()));
+        soldQuantity = valueOf(roundToTwoDecimals(stockView.getSoldQuantity()));
+        purchasedQuantity = valueOf(roundToTwoDecimals(stockView.getPurchasedQuantity()));
         date = stockView.getDate().toString();
+    }
+
+    public String getAvailableQuantityAbsolute() {
+        return String.valueOf(roundToTwoDecimals(Double.valueOf(availableQuantity) * Double.valueOf(storageMultiplier)));
+    }
+
+    public String getInitialQuantityAbsolute() {
+        return String.valueOf(roundToTwoDecimals(Double.valueOf(initialQuantity) * Double.valueOf(storageMultiplier)));
+    }
+
+    public String getSoldQuantityAbsolute() {
+        return String.valueOf(roundToTwoDecimals(Double.valueOf(soldQuantity) * Double.valueOf(storageMultiplier)));
+    }
+
+    public String getPurchasedQuantityAbsolute() {
+        return String.valueOf(roundToTwoDecimals(Double.valueOf(purchasedQuantity) * Double.valueOf(storageMultiplier)));
     }
 }

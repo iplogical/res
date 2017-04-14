@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.manager.viewstate;
 
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import javafx.beans.property.BooleanProperty;
 import lombok.Data;
 
 /**
@@ -8,4 +9,6 @@ import lombok.Data;
  */
 public @Data class StockViewState {
     private ReceiptType receiptType;
+
+    private BooleanProperty isAbsoluteQuantity;
 }

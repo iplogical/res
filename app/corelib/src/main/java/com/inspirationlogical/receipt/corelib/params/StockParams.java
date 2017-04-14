@@ -13,22 +13,7 @@ public @Data class StockParams {
 
     private String productName;
 
-    private ReceiptType actionType;
-
     private double quantity;
 
-    public enum StockActionType {
-        PURCHASE(Resources.MANAGER.getString("Stock.Purchase")),
-        INVENTORY(Resources.MANAGER.getString("Stock.Inventory")),
-        DISPOSAL(Resources.MANAGER.getString("Stock.Disposal"));
-
-        private String name;
-
-        StockActionType(String name) {
-            this.name = name;
-        }
-        @Override public String toString() {
-            return name;
-        }
-    }
+    private boolean isAbsoluteQuantity;
 }

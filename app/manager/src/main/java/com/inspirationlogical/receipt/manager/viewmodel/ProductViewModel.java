@@ -24,6 +24,7 @@ public class ProductViewModel {
     private String rapidCode = EMPTY;
     private String quantityUnit = EMPTY;
     private String quantityMultiplier = EMPTY;
+    protected String storageMultiplier = EMPTY;
     private String purchasePrice = EMPTY;
     private String salePrice = EMPTY;
     private String VATLocal = EMPTY;
@@ -41,6 +42,7 @@ public class ProductViewModel {
             longName =  productView.getLongName();
             rapidCode =  valueOf(productView.getRapidCode());
             quantityUnit =  valueOf(productView.getQuantityUnit());
+            storageMultiplier = valueOf(productView.getStorageMultiplier());
             purchasePrice =  valueOf(productView.getPurchasePrice());
             salePrice =  valueOf(productView.getSalePrice());
             VATLocal =  valueOf(productView.getVATLocal()) + PERCENT;

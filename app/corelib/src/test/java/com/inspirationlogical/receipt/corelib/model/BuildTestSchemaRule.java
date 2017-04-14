@@ -6,6 +6,7 @@ import static java.time.LocalDateTime.now;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -691,7 +692,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(PriceModifierType.SIMPLE_DISCOUNT)
                 .repeatPeriod(PriceModifierRepeatPeriod.DAILY)
                 .startTime(LocalTime.now().minusMinutes(5))
-                .endTime(LocalTime.now().plusMinutes(55))
+                .endTime(LocalTime.now().plusMinutes(5))
                 .startDate(LocalDateTime.of(2017, 2, 8, 16, 0))
                 .endDate(LocalDateTime.of(2020, 3, 8, 20, 20))
                 .discountPercent(33.333)
@@ -877,9 +878,11 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildReceiptPurchase() {
         receiptPurchase = Receipt.builder()
                 .type(ReceiptType.PURCHASE)
-                .status(ReceiptStatus.OPEN)
+                .records(new ArrayList<>())
+                .status(ReceiptStatus.CLOSED)
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(LocalDateTime.now())
+                .closureTime(LocalDateTime.now())
                 .client(buildDefaultClient())
                 .build();
     }
@@ -887,7 +890,9 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildReceiptInventory() {
         receiptInventory = Receipt.builder()
                 .type(ReceiptType.INVENTORY)
+                .records(new ArrayList<>())
                 .status(ReceiptStatus.CLOSED)
+                .paymentMethod(PaymentMethod.CASH)
                 .openTime(LocalDateTime.now())
                 .closureTime(LocalDateTime.now())
                 .client(buildDefaultClient())
@@ -897,7 +902,9 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildReceiptDisposal() {
         receiptDisposal = Receipt.builder()
                 .type(ReceiptType.DISPOSAL)
+                .records(new ArrayList<>())
                 .status(ReceiptStatus.CLOSED)
+                .paymentMethod(PaymentMethod.CASH)
                 .openTime(LocalDateTime.now())
                 .closureTime(LocalDateTime.now())
                 .client(buildDefaultClient())
@@ -907,6 +914,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildReceiptOther() {
         receiptOther = Receipt.builder()
                 .type(ReceiptType.OTHER)
+                .records(new ArrayList<>())
                 .status(ReceiptStatus.CLOSED)
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(LocalDateTime.now())
@@ -941,6 +949,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(ReceiptRecordType.HERE)
                 .VAT(27)
                 .soldQuantity(2D)
+                .absoluteQuantity(2D)
                 .salePrice(560)
                 .purchasePrice(300)
                 .created(now())

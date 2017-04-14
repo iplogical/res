@@ -53,6 +53,8 @@ public class GoodsControllerImpl implements GoodsController {
     @FXML
     TreeTableColumn<CategoryViewModel, String> productQuantityUnit;
     @FXML
+    TreeTableColumn<CategoryViewModel, String> productStorageMultiplier;
+    @FXML
     TreeTableColumn<CategoryViewModel, String> productQuantityMultiplier;
     @FXML
     TreeTableColumn<CategoryViewModel, String> productPurchasePrice;
@@ -256,6 +258,7 @@ public class GoodsControllerImpl implements GoodsController {
         initColumn(productType, CategoryViewModel::getType);
         initColumn(productStatus, CategoryViewModel::getStatus);
         initColumn(productQuantityUnit, CategoryViewModel::getQuantityUnit);
+        initColumn(productStorageMultiplier, CategoryViewModel::getStorageMultiplier);
         initColumn(productQuantityMultiplier, CategoryViewModel::getQuantityMultiplier);
         initColumn(productPurchasePrice, CategoryViewModel::getPurchasePrice);
         initColumn(productSalePrice, CategoryViewModel::getSalePrice);

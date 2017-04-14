@@ -6,6 +6,8 @@ import static org.powermock.api.mockito.PowerMockito.when;
 import java.util.Collection;
 import javax.persistence.EntityManager;
 
+import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
+import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -4,6 +4,8 @@ import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
+import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
+
 /**
  * Created by Bálint on 2017.03.15..
  */
@@ -62,10 +64,5 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
     @Override
     public boolean isPartiallyPayable() {
         return adapter.getAdaptee().getProduct().getType().equals(ProductType.PARTIALLY_PAYABLE);
-    }
-
-    private static double roundToTwoDecimals(double number) {
-        double rounded = Math.round(number * 100);
-        return rounded / 100;
     }
 }

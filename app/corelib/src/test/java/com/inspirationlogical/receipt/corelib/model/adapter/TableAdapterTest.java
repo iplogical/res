@@ -8,9 +8,17 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.persistence.RollbackException;
 
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+import com.inspirationlogical.receipt.corelib.params.StockParams;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,22 +28,23 @@ import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
-
 import javafx.geometry.Point2D;
 
 public class TableAdapterTest {
 
-    TableAdapter tableAdapter;
-    TableAdapter closedTableAdapter;
+    TableAdapter tableNormal;
+    TableAdapter tableNormalClosed;
+    TableAdapter tablePurchase;
     PaymentParams paymentParams;
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Before
-    public void persistObjects() {
-        tableAdapter = new TableAdapter(schema.getTableNormal());
-        closedTableAdapter = new TableAdapter(schema.getTableNormalClosed());
+    public void setUp() {
+        tableNormal = new TableAdapter(schema.getTableNormal());
+        tableNormalClosed = new TableAdapter(schema.getTableNormalClosed());
+        tablePurchase = new TableAdapter(schema.getTablePurchase());
         paymentParams = PaymentParams.builder()
                 .paymentMethod(PaymentMethod.COUPON)
                 .userCode(1000)
@@ -46,135 +55,162 @@ public class TableAdapterTest {
 
     @Test
     public void testNormalTableHasAnActiveReceipt() {
-        assertNotNull(tableAdapter.getActiveReceipt());
+        assertNotNull(tableNormal.getActiveReceipt());
     }
 
     @Test
     public void testSetTableName() {
-        tableAdapter.setTableName("New Table Name");
-        assertEquals("New Table Name", TableAdapter.getTableByNumber(schema.getEntityManager(),
-                tableAdapter.getAdaptee().getNumber()).getAdaptee().getName());
+        tableNormal.setTableName("New Table Name");
+        assertEquals("New Table Name", TableAdapter.getTableByNumber(
+                tableNormal.getAdaptee().getNumber()).getAdaptee().getName());
     }
 
     @Test
     public void testSetTableNumber() {
-        tableAdapter.setTableNumber(8);
-        assertEquals(8, TableAdapter.getTableByNumber(schema.getEntityManager(),
-                tableAdapter.getAdaptee().getNumber()).getAdaptee().getNumber());
+        tableNormal.setTableNumber(8);
+        assertEquals(8, TableAdapter.getTableByNumber(
+                tableNormal.getAdaptee().getNumber()).getAdaptee().getNumber());
     }
 
     @Test(expected = RollbackException.class)
     public void testSetTableNumberAlreadyUsed() {
-        tableAdapter.setTableNumber(3);
-        assertEquals(3, TableAdapter.getTableByNumber(schema.getEntityManager(),
-                tableAdapter.getAdaptee().getNumber()).getAdaptee().getNumber());
+        tableNormal.setTableNumber(3);
+        assertEquals(3, TableAdapter.getTableByNumber(
+                tableNormal.getAdaptee().getNumber()).getAdaptee().getNumber());
     }
 
     @Test
     public void testSetTableType() {
-        tableAdapter.setTableType(TableType.VIRTUAL);
-        assertEquals(TableType.VIRTUAL, TableAdapter.getTableByNumber(schema.getEntityManager(),
-                tableAdapter.getAdaptee().getNumber()).getAdaptee().getType());
+        tableNormal.setTableType(TableType.VIRTUAL);
+        assertEquals(TableType.VIRTUAL, TableAdapter.getTableByNumber(
+                tableNormal.getAdaptee().getNumber()).getAdaptee().getType());
     }
 
     @Test
     public void testSetCapacity() {
-        tableAdapter.setCapacity(10);
-        assertEquals(10, TableAdapter.getTableByNumber(schema.getEntityManager(),
-                tableAdapter.getAdaptee().getNumber()).getAdaptee().getCapacity());
+        tableNormal.setCapacity(10);
+        assertEquals(10, TableAdapter.getTableByNumber(
+                tableNormal.getAdaptee().getNumber()).getAdaptee().getCapacity());
     }
 
     @Test
     public void testSetGuestNumber() {
-        tableAdapter.setGuestNumber(5);
-        assertEquals(5, TableAdapter.getTableByNumber(schema.getEntityManager(),
-                tableAdapter.getAdaptee().getNumber()).getAdaptee().getGuestNumber());
+        tableNormal.setGuestNumber(5);
+        assertEquals(5, TableAdapter.getTableByNumber(
+                tableNormal.getAdaptee().getNumber()).getAdaptee().getGuestNumber());
     }
 
     @Test
     public void testSetNote() {
-        tableAdapter.setNote("Big chocklate cake for Spicces Feri");
+        tableNormal.setNote("Big chocklate cake for Spicces Feri");
         assertEquals("Big chocklate cake for Spicces Feri",
-                TableAdapter.getTableByNumber(schema.getEntityManager(),
-                tableAdapter.getAdaptee().getNumber()).getAdaptee().getNote());
+                TableAdapter.getTableByNumber(
+                        tableNormal.getAdaptee().getNumber()).getAdaptee().getNote());
     }
 
     @Test
     public void testDisplayTable() {
-        tableAdapter.displayTable();
-        assertTrue(TableAdapter.getTableByNumber(schema.getEntityManager(),
-                        tableAdapter.getAdaptee().getNumber()).getAdaptee().isVisible());
+        tableNormal.displayTable();
+        assertTrue(TableAdapter.getTableByNumber(
+                tableNormal.getAdaptee().getNumber()).getAdaptee().isVisible());
     }
 
     @Test
     public void testHideTable() {
-        tableAdapter.hideTable();
-        assertFalse(TableAdapter.getTableByNumber(schema.getEntityManager(),
-                tableAdapter.getAdaptee().getNumber()).getAdaptee().isVisible());
+        tableNormal.hideTable();
+        assertFalse(TableAdapter.getTableByNumber(
+                tableNormal.getAdaptee().getNumber()).getAdaptee().isVisible());
     }
 
     @Test
     public void testMoveTable() {
-        tableAdapter.moveTable(new Point2D(50, 70));
-        assertEquals(50, TableAdapter.getTableByNumber(schema.getEntityManager(),
-                tableAdapter.getAdaptee().getNumber()).getAdaptee().getCoordinateX());
-        assertEquals(70, TableAdapter.getTableByNumber(schema.getEntityManager(),
-                tableAdapter.getAdaptee().getNumber()).getAdaptee().getCoordinateY());
+        tableNormal.moveTable(new Point2D(50, 70));
+        assertEquals(50, TableAdapter.getTableByNumber(
+                tableNormal.getAdaptee().getNumber()).getAdaptee().getCoordinateX());
+        assertEquals(70, TableAdapter.getTableByNumber(
+                tableNormal.getAdaptee().getNumber()).getAdaptee().getCoordinateY());
     }
 
     @Test
     public void testRotateTable() {
-        tableAdapter.rotateTable();
-        assertEquals(TableAdapter.getTableByNumber(schema.getEntityManager(),
-                tableAdapter.getAdaptee().getNumber()).getAdaptee().getOrientation(), VERTICAL);
+        tableNormal.rotateTable();
+        assertEquals(TableAdapter.getTableByNumber(
+                tableNormal.getAdaptee().getNumber()).getAdaptee().getOrientation(), VERTICAL);
     }
 
     @Test(expected = IllegalTableStateException.class)
     public void testOpenTableAlreadyOpen() {
-        tableAdapter.openTable();
+        tableNormal.openTable();
     }
 
     @Test
     public void testOpenTable() {
-        closedTableAdapter.openTable();
-        assertNotNull(closedTableAdapter.getActiveReceipt());
+        tableNormalClosed.openTable();
+        assertNotNull(tableNormalClosed.getActiveReceipt());
     }
 
     @Test(expected = IllegalTableStateException.class)
     public void testOpenTableForOpen() {
-        tableAdapter.openTable();
-        assertNotNull(tableAdapter.getActiveReceipt());
+        tableNormal.openTable();
+        assertNotNull(tableNormal.getActiveReceipt());
     }
 
     @Test
     public void testPayTable() {
-        tableAdapter.payTable(paymentParams);
-        assertNull(tableAdapter.getActiveReceipt());
+        tableNormal.payTable(paymentParams);
+        assertNull(tableNormal.getActiveReceipt());
     }
 
     @Test(expected = IllegalTableStateException.class)
     public void testPayTableWithClosedTable() {
-        closedTableAdapter.payTable(paymentParams);
-        assertNull(closedTableAdapter.getActiveReceipt());
+        tableNormalClosed.payTable(paymentParams);
+        assertNull(tableNormalClosed.getActiveReceipt());
     }
 
     @Test(expected = IllegalTableStateException.class)
     public void testPaySelectiveWithClosedTable() {
-        closedTableAdapter.paySelective(new ArrayList<>(), paymentParams);
-        assertNull(closedTableAdapter.getActiveReceipt());
+        tableNormalClosed.paySelective(new ArrayList<>(), paymentParams);
+        assertNull(tableNormalClosed.getActiveReceipt());
     }
 
     @Test
     public void testDeleteTable() {
-        closedTableAdapter.deleteTable();
-        assertNull(TableAdapter.getTableByNumber(schema.getEntityManager(),
-                closedTableAdapter.getAdaptee().getNumber()));
+        tableNormalClosed.deleteTable();
+        assertNull(TableAdapter.getTableByNumber(
+                tableNormalClosed.getAdaptee().getNumber()));
     }
 
     @Test(expected = IllegalTableStateException.class)
     public void testDeleteTableWithOpenTable() {
-        tableAdapter.deleteTable();
-        assertNull(TableAdapter.getTableByNumber(schema.getEntityManager(),
-                tableAdapter.getAdaptee().getNumber()));
+        tableNormal.deleteTable();
+        assertNull(TableAdapter.getTableByNumber(
+                tableNormal.getAdaptee().getNumber()));
+    }
+
+    @Test
+    public void testUpdateStock() {
+        List<StockParams> paramsList = Arrays.asList(StockParams.builder()
+                .productName("productTwo")
+                .quantity(Double.valueOf(2))
+                .isAbsoluteQuantity(true)
+                .build());
+        List<Receipt> closedReceiptsBefore = GuardedTransaction.RunNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
+                query -> {query.setParameter("status", ReceiptStatus.CLOSED);
+                    query.setParameter("number", tablePurchase.getAdaptee().getNumber());
+                    return query;});
+        tablePurchase.updateStock(paramsList, ReceiptType.PURCHASE);
+        List<Receipt> closedReceiptsAfter = GuardedTransaction.RunNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
+                query -> {query.setParameter("status", ReceiptStatus.CLOSED);
+                    query.setParameter("number", tablePurchase.getAdaptee().getNumber());
+                    return query;});
+
+        assertEquals(closedReceiptsBefore.size() + 1, closedReceiptsAfter.size());
+    }
+
+    @Test
+    public void testGetTablesByType() {
+        assertEquals(2, TableAdapter.getTablesByType(TableType.NORMAL).size());
+        assertEquals(1, TableAdapter.getTablesByType(TableType.VIRTUAL).size());
+        assertEquals(1, TableAdapter.getTablesByType(TableType.DISPOSAL).size());
     }
 }

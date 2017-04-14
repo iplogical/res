@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Product.ProductBuilder;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier.PriceModifierBuilder;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.view.PriceModifierView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
@@ -23,7 +24,7 @@ public interface CommonService {
 
     ProductCategoryView updateProductCategory(ProductCategoryParams params);
 
-    void updateStock(List<StockParams> params);
+    void updateStock(List<StockParams> params, ReceiptType receiptType);
 
     void addPriceModifier(PriceModifierParams params);
 

@@ -52,6 +52,11 @@ public class ProductViewImpl extends AbstractModelViewImpl<ProductAdapter>
     }
 
     @Override
+    public double getStorageMultiplier() {
+        return adapter.getAdaptee().getStorageMultiplier();
+    }
+
+    @Override
     public int getPurchasePrice() {
         return adapter.getAdaptee().getPurchasePrice();
     }

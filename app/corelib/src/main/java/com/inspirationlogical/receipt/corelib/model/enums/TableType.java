@@ -34,4 +34,17 @@ public enum TableType {
     public static Comparator<Map.Entry<TableType, Long>> getComparator() {
         return (lhs, rhs) -> {return lhs.toString().compareTo(rhs.toString());};
     }
+
+    public static TableType getTableType(ReceiptType receiptType) {
+        switch(receiptType) {
+            case PURCHASE:
+                return TableType.PURCHASE;
+            case INVENTORY:
+                return TableType.INVENTORY;
+            case DISPOSAL:
+                return TableType.DISPOSAL;
+            default:
+                return null;
+        }
+    }
 }
