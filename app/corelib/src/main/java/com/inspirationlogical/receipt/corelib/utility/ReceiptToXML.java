@@ -10,8 +10,12 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 
 import com.inspirationlogical.receipt.corelib.jaxb.CustomerInfo;
 import com.inspirationlogical.receipt.corelib.jaxb.ObjectFactory;
@@ -29,6 +33,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -40,6 +45,18 @@ public class ReceiptToXML {
         return createReceipt(receiptAdapter, new ObjectFactory());
     }
 
+    private static Schema schema;
+
+    static {
+        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        try {
+            schema = factory.newSchema(new StreamSource(classloader.getResourceAsStream("schema/receipt.xsd")));
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static InputStream ConvertToStream(ReceiptAdapter receiptAdapter) {
         Receipt r = createReceipt(receiptAdapter, new ObjectFactory());
         try {
@@ -47,6 +64,7 @@ public class ReceiptToXML {
             Marshaller jaxbMarshaller = context.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             jaxbMarshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+            jaxbMarshaller.setSchema(schema);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             jaxbMarshaller.marshal(r, baos);
             return new ByteArrayInputStream(baos.toByteArray(), 0, baos.size());
