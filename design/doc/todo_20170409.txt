@@ -26,8 +26,6 @@ Kontext menu sebessége a kis gépen PRIORITY 1 [Attila]
 
 Törzsvendégek, alkalmazottak és lézengők tab PRIORITY 2 [Attila]
 
-Kedvezmény feltüntetése a nyugtán PRIORITY 1 [Fec]
-
 Napi fogyasztáshoz időintervallum FUTURE
 
 Foglalás esetén óra ikon jobb középen eladás nézetben pedig az időpontok PRIORITY 2
