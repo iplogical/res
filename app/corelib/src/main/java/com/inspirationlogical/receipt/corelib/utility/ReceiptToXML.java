@@ -29,7 +29,6 @@ import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
-import jdk.nashorn.internal.objects.annotations.Function;
 
 
 /**
@@ -69,7 +68,7 @@ public class ReceiptToXML {
         //TODO: add disclaimer in restaurant???
         footer.setDisclaimer(Resources.PRINTER.getString("Disclaimer"));
 
-        setOptionalString(footer::setNote,receiptAdapter.getAdaptee().getOwner().getOwner().getReceiptNote());
+        setOptionalString(footer::setNote, receiptAdapter.getAdaptee().getOwner().getOwner().getReceiptNote());
         footer.setGreet(Resources.PRINTER.getString("Greet"));
         GregorianCalendar gc = GregorianCalendar.from(receiptAdapter.getAdaptee().getClosureTime().atZone(ZoneId.systemDefault()));
         footer.setDatetime(new XMLGregorianCalendarImpl(gc));
@@ -78,18 +77,32 @@ public class ReceiptToXML {
         return footer;
     }
 
-    private static void setOptionalString(Consumer<String> c, String str) {
-        setOptionalStringWithTransformation(c, str, x -> x);
-    }
 
     @FunctionalInterface
     private interface Transformer<To, From> {
         To transform(From from);
     }
 
-    private static <T> void setOptionalStringWithTransformation(Consumer<T> c, String str, Transformer<T, String> t) {
-        if (str != null && !str.isEmpty()) {
-            c.accept(t.transform(str));
+    @FunctionalInterface
+    private interface Predicate<T> {
+        boolean apply(T t);
+    }
+
+    private static void setOptionalString(Consumer<String> c, String str) {
+        setOptionalString(c, str, x -> x);
+    }
+
+    private static <T> void setOptionalString(Consumer<T> c, String str, Transformer<T, String> t) {
+        setOptional(c, str, x -> x != null && !x.trim().isEmpty(), t);
+    }
+
+    private static <T, F> void setOptional(
+            Consumer<T> out,
+            F in,
+            Predicate<F> predicate,
+            Transformer<T, F> transformer) {
+        if (predicate.apply(in)) {
+            out.accept(transformer.transform(in));
         }
     }
 
@@ -113,11 +126,11 @@ public class ReceiptToXML {
         Client client = adapter.getAdaptee().getClient();
         if (client != null) {
             CustomerInfo customer = factory.createCustomerInfo();
-            setOptionalStringWithTransformation(customer::setName, client.getName()
+            setOptionalString(customer::setName, client.getName()
                     , x -> createTagValue(factory, Resources.PRINTER.getString("CustomerName"), x));
-            setOptionalStringWithTransformation(customer::setAddress, client.getAddress()
+            setOptionalString(customer::setAddress, client.getAddress()
                     , x -> createTagValue(factory, Resources.PRINTER.getString("CustomerAddress"), x));
-            setOptionalStringWithTransformation(customer::setTaxNumber, client.getTAXNumber()
+            setOptionalString(customer::setTaxNumber, client.getTAXNumber()
                     , x -> createTagValue(factory, Resources.PRINTER.getString("CustomerTAXnumber"), x));
             body.setCustomer(customer);
         }
@@ -131,7 +144,8 @@ public class ReceiptToXML {
         List<ReceiptBodyEntry> records = receiptAdapter.getAdaptee().getRecords().stream().map((record) -> {
             ReceiptBodyEntry entry = factory.createReceiptBodyEntry();
             String name = record.getName();
-            if (record.getDiscountPercent() > 0) {
+            if (record.getDiscountPercent() > 0.0) {
+                // NOTE: Mark entry with '*' if it has a discount
                 name += " *";
             }
             entry.setName(name);
@@ -155,10 +169,14 @@ public class ReceiptToXML {
     }
 
     static private TagCurrencyValue createTagCurrencyValue(ObjectFactory f, String tag, String currency, Long value) {
+        return createTagCurrencyValue(f, tag, currency, BigInteger.valueOf(value));
+    }
+
+    static private TagCurrencyValue createTagCurrencyValue(ObjectFactory f, String tag, String currency, BigInteger value) {
         TagCurrencyValue tcv = f.createTagCurrencyValue();
         tcv.setTag(tag);
         tcv.setCurrency(currency);
-        tcv.setValue(BigInteger.valueOf(value));
+        tcv.setValue(value);
         return tcv;
     }
 
@@ -178,18 +196,44 @@ public class ReceiptToXML {
                         .map(e -> e.getSalePrice() * e.getSoldQuantity())
                         .reduce(0.0, (x, y) -> x + y).longValue())
         );
+
+        setOptional(footer::setDiscount,
+                receiptAdapter.getAdaptee().getDiscountPercent(),
+                aDouble -> aDouble > 0.0,
+                aDouble -> createTagCurrencyValue(factory,
+                        Resources.PRINTER.getString("DiscountTag"),
+                        Resources.PRINTER.getString("TotalCurrency"),
+                        // NOTE: discount is in percentage dimension  hence the div by 100.0
+                       -(long) (aDouble / 100.0 * footer.getTotal().getValue().doubleValue()))
+        );
+
+        setOptional(footer::setDiscountedTotal, footer.getDiscount(),
+                tagCurrencyValue -> tagCurrencyValue != null && tagCurrencyValue.getValue().intValue() != 0,
+                tagCurrencyValue -> createTagCurrencyValue(factory,
+                        Resources.PRINTER.getString("DiscountedTotalTag"),
+                        tagCurrencyValue.getCurrency(),
+                        footer.getTotal().getValue().subtract(tagCurrencyValue.getValue().abs()))
+        );
+
+        footer.setPaymentMethod(createTagValue(factory,
+                Resources.PRINTER.getString("PaymentMethod"),
+                Resources.PRINTER.getString("PAYMENTMETHOD_" +
+                        receiptAdapter.getAdaptee().getPaymentMethod().toString().toUpperCase())));
+
         //FIXME: add currency in model.Receipt
-        TagValuePair paymentMethod = factory.createTagValuePair();
-        paymentMethod.setTag(Resources.PRINTER.getString("PaymentMethod"));
-        paymentMethod.setValue(Resources.PRINTER.getString("PAYMENTMETHOD_" + receiptAdapter.getAdaptee().getPaymentMethod().toString()));
-        footer.setPaymentMethod(paymentMethod);
-        if (receiptAdapter.getAdaptee().getPaymentMethod() == PaymentMethod.CASH) {
-            footer.setTotalRounded(createTagCurrencyValue(factory,
-                    Resources.PRINTER.getString("TotalRoundedTag"),
-                    Resources.PRINTER.getString("TotalRoundedCurrency"),
-                    (long) RoundingLogic.create(PaymentMethod.CASH).round(footer.getTotal().getValue().doubleValue()))
-            );
-        }
+        BigInteger total = footer.getDiscountedTotal() == null
+                ? footer.getTotal().getValue()
+                : footer.getDiscountedTotal().getValue();
+
+        // NOTE: set rounded total only if paymentmethod is cash, and rounded value not equals total
+        setOptional(footer::setTotalRounded, receiptAdapter.getAdaptee().getPaymentMethod(),
+                paymentMethod -> paymentMethod == PaymentMethod.CASH &&
+                        !total.equals(BigInteger.valueOf((long) RoundingLogic.create(PaymentMethod.CASH).round(total.doubleValue()))),
+                x -> createTagCurrencyValue(factory,
+                        Resources.PRINTER.getString("TotalRoundedTag"),
+                        Resources.PRINTER.getString("TotalRoundedCurrency"),
+                        (long) RoundingLogic.create(PaymentMethod.CASH).round(total.doubleValue()))
+        );
         return footer;
     }
 }
