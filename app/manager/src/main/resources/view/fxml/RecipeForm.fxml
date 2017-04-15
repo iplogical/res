@@ -15,7 +15,7 @@
       </Label>
       <HBox spacing="5.0">
          <children>
-            <TableView prefHeight="180.0">
+            <TableView fx:id="componentTable" prefHeight="180.0">
               <columns>
                 <TableColumn fx:id="componentName" prefWidth="150.0" text="%RecipeForm.Component" />
                 <TableColumn fx:id="componentQuantity" prefWidth="100.0" text="%RecipeForm.Quantity" />
@@ -53,7 +53,11 @@
                            </font>
                         </Label>
                         <TextField fx:id="quantity" prefWidth="45.0" />
-                        <TextField fx:id="unit" disable="true" prefWidth="100.0" promptText="%RecipeForm.Unit" />
+                        <Label fx:id="quantityUnit" prefWidth="100.0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
                   <HBox alignment="BOTTOM_RIGHT" spacing="5.0">

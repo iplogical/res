@@ -46,7 +46,7 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     public static void closeLatestStockEntries() {
-        Set<ProductAdapter> storableProducts =
+        List<ProductAdapter> storableProducts =
         ProductCategoryAdapter.getRootCategory().getAllStorableProducts();
         storableProducts.forEach(productAdapter ->
             {

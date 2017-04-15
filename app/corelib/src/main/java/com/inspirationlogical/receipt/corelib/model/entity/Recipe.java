@@ -30,17 +30,14 @@ import lombok.experimental.Tolerate;
 @NamedQueries({
     @NamedQuery(name = Recipe.GET_TEST_RECIPES,
             query="FROM Recipe r"),
-    @NamedQuery(name = Recipe.GET_RECIPE_OF_PRODUCT,
-            query="FROM Recipe r WHERE r.owner=:owner AND r.component=:owner"),
     @NamedQuery(name = Recipe.GET_RECIPES_OF_PRODUCT,
-            query="FROM Recipe r WHERE r.owner=:owner AND r.component!=:owner")
+            query="FROM Recipe r WHERE r.owner=:owner")
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECIPE_ID"))
 @ValidRecipe
 public @Data class Recipe extends AbstractEntity {
 
     public static final String GET_TEST_RECIPES = "Recipe.GetTestRecipes";
-    public static final String GET_RECIPE_OF_PRODUCT = "Recipe.GetRecipeOfProduct";
     public static final String GET_RECIPES_OF_PRODUCT = "Recipe.GetRecipesOfProduct";
 
     @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})

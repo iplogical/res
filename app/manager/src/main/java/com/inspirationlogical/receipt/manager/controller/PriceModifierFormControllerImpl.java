@@ -84,8 +84,6 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
 
     private ObservableList<ProductView> products;
 
-    private ProductCategoryView rootCategory;
-
     private ObservableList<ProductCategoryView> productCategories;
 
     private ObservableList<PriceModifierType> priceModifierTypes;
@@ -109,8 +107,7 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         isCategorySelected = isCategory.selectedProperty();
-        rootCategory = commonService.getRootProductCategory();
-        products = FXCollections.observableArrayList(commonService.getSellableProducts(rootCategory));
+        products = FXCollections.observableArrayList(commonService.getSellableProducts());
         ownerProduct.setItems(products);
         ownerProduct.setConverter(new ProductStringConverter(products));
         productCategories = FXCollections.observableArrayList(commonService.getAllCategories());

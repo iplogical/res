@@ -5,10 +5,7 @@ import java.util.List;
 import com.inspirationlogical.receipt.corelib.model.entity.Product.ProductBuilder;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier.PriceModifierBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.view.PriceModifierView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductView;
-import com.inspirationlogical.receipt.corelib.model.view.StockView;
+import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
@@ -36,9 +33,13 @@ public interface CommonService {
 
     List<ProductCategoryView> getLeafCategories();
 
-    List<ProductView> getSellableProducts(ProductCategoryView category);
+    List<ProductView> getSellableProducts();
+
+    List<ProductView> getStorableProducts();
 
     List<StockView> getStockItems();
 
     List<PriceModifierView> getPriceModifiers();
+
+    List<RecipeView> getRecipeComponents(ProductView product);
 }

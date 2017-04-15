@@ -43,6 +43,10 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
         return adapters.stream().map(PriceModifierViewImpl::new).collect(toList());
     }
 
+    public static List<RecipeView> createRecipeViews(List<RecipeAdapter> adapters) {
+        return adapters.stream().map(RecipeViewImpl::new).collect(toList());
+    }
+
     @Override
     public Product.ProductBuilder productBuilder() {
         return Product.builder();
@@ -112,18 +116,27 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
-    public List<ProductView> getSellableProducts(ProductCategoryView category) {
-        return createProductViews(getProductCategoryAdapter(category).getAllSellableProducts());
+    public List<ProductView> getSellableProducts() {
+        return createProductViews(ProductCategoryAdapter.getRootCategory().getAllSellableProducts());
+    }
+
+    @Override
+    public List<ProductView> getStorableProducts() {
+        return createProductViews(ProductCategoryAdapter.getRootCategory().getAllStorableProducts());
     }
 
     @Override
     public List<StockView> getStockItems() {
-        List<StockAdapter> stockAdapters = StockAdapter.getItems();
-        return createStockViews(stockAdapters);
+        return createStockViews(StockAdapter.getItems());
     }
 
     @Override
     public List<PriceModifierView> getPriceModifiers() {
         return createPriceModifierViews(PriceModifierAdapter.getPriceModifiers());
+    }
+
+    @Override
+    public List<RecipeView> getRecipeComponents(ProductView product) {
+        return createRecipeViews(RecipeAdapter.getRecipesOfProduct(getProductAdapter(product)));
     }
 }

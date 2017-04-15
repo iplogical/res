@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
+import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
@@ -25,7 +26,7 @@ import lombok.Setter;
 /**
  * Created by Bálint on 2017.03.28..
  */
-public class AbstractRetailControllerImpl {
+public class AbstractRetailControllerImpl extends AbstractController {
 
     @FXML
     protected Label tableName;
@@ -39,13 +40,13 @@ public class AbstractRetailControllerImpl {
     @FXML
     protected javafx.scene.control.TableView<SoldProductViewModel> soldProductsTable;
     @FXML
-    protected TableColumn productName;
+    protected TableColumn<SoldProductViewModel, String> productName;
     @FXML
-    protected TableColumn productQuantity;
+    protected TableColumn<SoldProductViewModel, String> productQuantity;
     @FXML
-    protected TableColumn productUnitPrice;
+    protected TableColumn<SoldProductViewModel, String> productUnitPrice;
     @FXML
-    protected TableColumn productTotalPrice;
+    protected TableColumn<SoldProductViewModel, String> productTotalPrice;
 
     @Inject
     private ViewLoader viewLoader;
@@ -93,10 +94,10 @@ public class AbstractRetailControllerImpl {
 
     protected void initializeSoldProductsTable() {
         soldProductsTable.setEditable(true);
-        productName.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productName"));
-        productQuantity.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productQuantity"));
-        productUnitPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productUnitPrice"));
-        productTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productTotalPrice"));
+        initColumn(productName, SoldProductViewModel::getProductName);
+        initColumn(productQuantity, SoldProductViewModel::getProductQuantity);
+        initColumn(productUnitPrice, SoldProductViewModel::getProductUnitPrice);
+        initColumn(productTotalPrice, SoldProductViewModel::getProductTotalPrice);
         soldProductsTableInitialized = true;
     }
 

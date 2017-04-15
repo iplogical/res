@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.manager.controller;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
@@ -23,11 +24,12 @@ import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Singleton
-public class StockControllerImpl implements StockController {
+public class StockControllerImpl extends AbstractController implements StockController {
 
     public static final String STOCK_VIEW_PATH = "/view/fxml/Stock.fxml";
 
@@ -140,15 +142,6 @@ public class StockControllerImpl implements StockController {
         }
     }
 
-    private StockViewModel getViewModel(TableColumn.CellDataFeatures<StockViewModel, String> cellDataFeatures) {
-        return cellDataFeatures.getValue();
-    }
-
-    private void initColumn(TableColumn<StockViewModel, String> tableColumn, Function<StockViewModel, String> method) {
-        tableColumn.setCellValueFactory((TableColumn.CellDataFeatures<StockViewModel, String> category) ->
-                new ReadOnlyStringWrapper(method.apply(getViewModel(category))));
-    }
-
     private void initColumns() {
         initColumn(productLongName, StockViewModel::getLongName);
         initColumn(stockAvailableQuantity, StockViewModel::getAvailableQuantity);
@@ -160,7 +153,8 @@ public class StockControllerImpl implements StockController {
         initColumn(productStatus, StockViewModel::getStatus);
         initColumn(productQuantityUnit, StockViewModel::getQuantityUnit);
         initColumn(productStorageMultiplier, StockViewModel::getStorageMultiplier);
-        initInputColumn();
+        initInputColumn(stockInputQuantity, StockViewModel::setInputQuantity);
+        hideInputColumn();
         stockTable.setEditable(true);
     }
 
@@ -176,30 +170,11 @@ public class StockControllerImpl implements StockController {
         stockTable.setItems(items);
     }
 
-    private void initInputColumn() {
-        stockInputQuantity.setCellFactory(TextFieldTableCell.forTableColumn());
-        stockInputQuantity.setOnEditCommit(e -> {
-            e.getRowValue().setInputQuantity(e.getNewValue());
-        });
-        hideInputColumn();
-    }
-
     private void initActionTypeToggles() {
         purchase.setUserData(ReceiptType.PURCHASE);
         inventory.setUserData(ReceiptType.INVENTORY);
         disposal.setUserData(ReceiptType.DISPOSAL);
-        actionTypeToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-                if(actionTypeToggleGroup.getSelectedToggle() == null) {
-                    hideInputColumn();
-                    stockViewState.setReceiptType(null);
-                    return;
-                }
-                stockViewState.setReceiptType((ReceiptType)actionTypeToggleGroup.getSelectedToggle().getUserData());
-                showInputColumn();
-            }
-        });
+        actionTypeToggleGroup.selectedToggleProperty().addListener(new ActionTypeToggleListener());
     }
 
     private void initCheckBox() {
@@ -226,5 +201,19 @@ public class StockControllerImpl implements StockController {
 
     private void hideInputColumn() {
         stockInputQuantity.setVisible(false);
+    }
+
+    private class ActionTypeToggleListener implements ChangeListener<Toggle> {
+
+        @Override
+        public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+            if(actionTypeToggleGroup.getSelectedToggle() == null) {
+                hideInputColumn();
+                stockViewState.setReceiptType(null);
+                return;
+            }
+            stockViewState.setReceiptType((ReceiptType)actionTypeToggleGroup.getSelectedToggle().getUserData());
+            showInputColumn();
+        }
     }
 }

@@ -4,6 +4,7 @@ import static junit.framework.TestCase.assertEquals;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -12,29 +13,27 @@ import com.inspirationlogical.receipt.corelib.model.entity.Product;
 
 public class RecipeAdapterTest {
 
+    private ProductAdapter product;
+    private ProductAdapter productFour;
+
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
-    @Test
-    public void testGetRecipeOfProduct() {
-        Product product = ProductCategoryAdapter.getRootCategory().getAllSellableProducts()
-                .stream()
-                .map(AbstractAdapter::getAdaptee)
-                .filter(p -> p.getLongName().equals("productTwo"))
-                .findFirst().orElse(null);
-        RecipeAdapter recipeAdapter = RecipeAdapter.getRecipeOfProduct(schema.getEntityManager(), product);
-        assertEquals(0.5, recipeAdapter.getAdaptee().getQuantityMultiplier());
+    @Before
+    public void setUp() {
+        product = new ProductAdapter(schema.getProductOne());
+        productFour = new ProductAdapter(schema.getProductFour());
     }
 
     @Test
     public void testGetRecipesOfProduct() {
-        Product product = ProductCategoryAdapter.getRootCategory().getAllSellableProducts()
-                .stream()
-                .map(AbstractAdapter::getAdaptee)
-                .filter(p -> p.getLongName().equals("productFour"))
-                .findFirst().orElse(null);
-        List<RecipeAdapter> recipeAdapters = RecipeAdapter.getRecipesOfProduct(schema.getEntityManager(), product);
-        assertEquals(3, recipeAdapters.size());
+        List<RecipeAdapter> recipeAdapters = RecipeAdapter.getRecipesOfProduct(product);
+        assertEquals(1, recipeAdapters.size());
     }
 
+    @Test
+    public void testGetRecipesOfProductFour() {
+        List<RecipeAdapter> recipeAdapters = RecipeAdapter.getRecipesOfProduct(productFour);
+        assertEquals(3, recipeAdapters.size());
+    }
 }

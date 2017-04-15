@@ -99,12 +99,12 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .collect(toList());
     }
 
-    public Set<ProductAdapter> getAllStorableProducts() {
+    public List<ProductAdapter> getAllStorableProducts() {
          return getAllActiveProducts().stream()
                 .flatMap(productAdapter -> productAdapter.getAdaptee().getRecipes().stream())
                 .map(recipe -> new ProductAdapter(recipe.getComponent()))
                 .filter(distinctByKey(productAdapter -> productAdapter.getAdaptee().getLongName()))
-                .collect(toSet());
+                .collect(toList());
     }
 
     private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {

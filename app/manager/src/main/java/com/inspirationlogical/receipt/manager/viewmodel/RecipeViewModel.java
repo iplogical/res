@@ -3,8 +3,9 @@ package com.inspirationlogical.receipt.manager.viewmodel;
 import static java.lang.String.valueOf;
 
 import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
+import lombok.Data;
 
-public class RecipeViewModel {
+public @Data class RecipeViewModel {
     String component;
     String quantity;
     String unit;
