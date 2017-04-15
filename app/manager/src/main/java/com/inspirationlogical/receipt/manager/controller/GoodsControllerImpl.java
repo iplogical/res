@@ -61,10 +61,6 @@ public class GoodsControllerImpl implements GoodsController {
     @FXML
     TreeTableColumn<CategoryViewModel, String> productSalePrice;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productVATLocal;
-    @FXML
-    TreeTableColumn<CategoryViewModel, String> productVATTakeAway;
-    @FXML
     TreeTableColumn<CategoryViewModel, String> productMinimumStock;
     @FXML
     TreeTableColumn<CategoryViewModel, String> productStockWindow;
@@ -255,17 +251,15 @@ public class GoodsControllerImpl implements GoodsController {
         initColumn(categoryName, CategoryViewModel::getName);
         initColumn(productShortName, CategoryViewModel::getShortName);
         initColumn(productRapidCode, CategoryViewModel::getRapidCode);
-        initColumn(productType, CategoryViewModel::getType);
-        initColumn(productStatus, CategoryViewModel::getStatus);
-        initColumn(productQuantityUnit, CategoryViewModel::getQuantityUnit);
-        initColumn(productStorageMultiplier, CategoryViewModel::getStorageMultiplier);
-        initColumn(productQuantityMultiplier, CategoryViewModel::getQuantityMultiplier);
         initColumn(productPurchasePrice, CategoryViewModel::getPurchasePrice);
         initColumn(productSalePrice, CategoryViewModel::getSalePrice);
-        initColumn(productVATLocal, CategoryViewModel::getVATLocal);
-        initColumn(productVATTakeAway, CategoryViewModel::getVATTakeAway);
+        initColumn(productStorageMultiplier, CategoryViewModel::getStorageMultiplier);
+        initColumn(productQuantityUnit, CategoryViewModel::getQuantityUnit);
+        initColumn(productQuantityMultiplier, CategoryViewModel::getQuantityMultiplier);
         initColumn(productMinimumStock, CategoryViewModel::getMinimumStock);
         initColumn(productStockWindow, CategoryViewModel::getStockWindow);
+        initColumn(productType, CategoryViewModel::getType);
+        initColumn(productStatus, CategoryViewModel::getStatus);
     }
 
     private void initCategories() {

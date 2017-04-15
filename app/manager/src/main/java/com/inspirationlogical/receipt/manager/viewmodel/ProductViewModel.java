@@ -27,8 +27,6 @@ public class ProductViewModel {
     protected String storageMultiplier = EMPTY;
     private String purchasePrice = EMPTY;
     private String salePrice = EMPTY;
-    private String VATLocal = EMPTY;
-    private String VATTakeAway = EMPTY;
     private String minimumStock = EMPTY;
     private String stockWindow = EMPTY;
 
@@ -45,8 +43,6 @@ public class ProductViewModel {
             storageMultiplier = valueOf(productView.getStorageMultiplier());
             purchasePrice =  valueOf(productView.getPurchasePrice());
             salePrice =  valueOf(productView.getSalePrice());
-            VATLocal =  valueOf(productView.getVATLocal()) + PERCENT;
-            VATTakeAway =  valueOf(productView.getVATTakeAway()) + PERCENT;
             minimumStock =  valueOf(productView.getMinimumStock());
             stockWindow =  valueOf(productView.getStockWindow());
 

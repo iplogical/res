@@ -8,6 +8,7 @@
 }
 .button, .toggle-button, .check-box, .radio-button, .label, .tab-pane, .text-field {
     -fx-font-size: 14;
+    -fx-font-style: normal;
     -fx-line-spacing: -5;
 }
 
@@ -32,3 +33,12 @@
     -fx-border-width: 2px;
     -fx-border-radius: 10;
 }
+
+.tree-table-view {
+    -fx-font-size: 12;
+}
+
+.tree-table-view .column-header .label {
+    -fx-font: normal 14 "SourceSansPro";
+}
+
