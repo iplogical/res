@@ -14,9 +14,19 @@ import com.inspirationlogical.receipt.corelib.model.view.RestaurantViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 public abstract class AbstractService {
 
     protected EntityManager manager;
+
+    protected static <View, Adapter> List<View> createViewsFromAdapters(List<Adapter> adapters, Function<Adapter, View> constructor) {
+        return adapters.stream()
+                .map(constructor)
+                .collect(Collectors.toList());
+    }
 
     protected AbstractService(EntityManager manager) {
         this.manager = manager;

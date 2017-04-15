@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
@@ -14,6 +15,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
+import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 import static java.util.stream.Collectors.toList;
@@ -23,28 +25,6 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     @Inject
     public CommonServiceImpl(EntityManager manager) {
         super(manager);
-    }
-
-//    public static <V, A> List<V> createViewsFromAdapters(List<A> adapters, Class<V> viewImpl) {
-//        return adapters.stream()
-//                .map(viewImpl::new)
-//                .collect(Collectors.toList());
-//    }
-
-    public static List<ProductView> createProductViews(List<ProductAdapter> adapters) {
-        return adapters.stream().map(ProductViewImpl::new).collect(toList());
-    }
-
-    public static List<StockView> createStockViews(List<StockAdapter> adapters) {
-        return adapters.stream().map(StockViewImpl::new).collect(toList());
-    }
-
-    public static List<PriceModifierView> createPriceModifierViews(List<PriceModifierAdapter> adapters) {
-        return adapters.stream().map(PriceModifierViewImpl::new).collect(toList());
-    }
-
-    public static List<RecipeView> createRecipeViews(List<RecipeAdapter> adapters) {
-        return adapters.stream().map(RecipeViewImpl::new).collect(toList());
     }
 
     @Override
@@ -88,18 +68,21 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
+    public void updateRecipe(ProductView owner, List<RecipeParams> recipeParamsList) {
+
+    }
+
+    @Override
     public ProductCategoryView getRootProductCategory() {
         return new ProductCategoryViewImpl(ProductCategoryAdapter.getRootCategory());
     }
 
     @Override
     public List<ProductCategoryView> getAllCategories() {
-        List<ProductCategoryView> categoryViews = ProductCategoryAdapter.getCategoriesByType(ProductCategoryType.ROOT).stream().map(ProductCategoryViewImpl::new)
-                .collect(toList());
-        categoryViews.addAll(ProductCategoryAdapter.getCategoriesByType(ProductCategoryType.AGGREGATE).stream().map(ProductCategoryViewImpl::new)
-                .collect(toList()));
-        categoryViews.addAll(ProductCategoryAdapter.getCategoriesByType(ProductCategoryType.LEAF).stream().map(ProductCategoryViewImpl::new)
-                .collect(toList()));
+        List<ProductCategoryView> categoryViews =
+                createViewsFromAdapters(ProductCategoryAdapter.getCategoriesByType(ProductCategoryType.ROOT),ProductCategoryViewImpl::new);
+        categoryViews.addAll(createViewsFromAdapters(ProductCategoryAdapter.getCategoriesByType(ProductCategoryType.AGGREGATE),ProductCategoryViewImpl::new));
+        categoryViews.addAll(createViewsFromAdapters(ProductCategoryAdapter.getCategoriesByType(ProductCategoryType.LEAF),ProductCategoryViewImpl::new));
         return categoryViews;
     }
 
@@ -117,26 +100,26 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public List<ProductView> getSellableProducts() {
-        return createProductViews(ProductCategoryAdapter.getRootCategory().getAllSellableProducts());
+        return createViewsFromAdapters(ProductCategoryAdapter.getRootCategory().getAllSellableProducts(), ProductViewImpl::new);
     }
 
     @Override
     public List<ProductView> getStorableProducts() {
-        return createProductViews(ProductCategoryAdapter.getRootCategory().getAllStorableProducts());
+        return createViewsFromAdapters(ProductCategoryAdapter.getRootCategory().getAllStorableProducts(), ProductViewImpl::new);
     }
 
     @Override
     public List<StockView> getStockItems() {
-        return createStockViews(StockAdapter.getItems());
+        return createViewsFromAdapters(StockAdapter.getItems(), StockViewImpl::new);
     }
 
     @Override
     public List<PriceModifierView> getPriceModifiers() {
-        return createPriceModifierViews(PriceModifierAdapter.getPriceModifiers());
+        return createViewsFromAdapters(PriceModifierAdapter.getPriceModifiers(), PriceModifierViewImpl::new);
     }
 
     @Override
     public List<RecipeView> getRecipeComponents(ProductView product) {
-        return createRecipeViews(RecipeAdapter.getRecipesOfProduct(getProductAdapter(product)));
+        return createViewsFromAdapters(RecipeAdapter.getRecipesOfProduct(getProductAdapter(product)), RecipeViewImpl::new);
     }
 }

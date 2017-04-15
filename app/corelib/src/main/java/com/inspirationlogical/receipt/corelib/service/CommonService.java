@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
+import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 public interface CommonService {
@@ -24,6 +25,8 @@ public interface CommonService {
     void updateStock(List<StockParams> params, ReceiptType receiptType);
 
     void addPriceModifier(PriceModifierParams params);
+
+    void updateRecipe(ProductView owner, List<RecipeParams> recipeParamsList);
 
     ProductCategoryView getRootProductCategory();
 

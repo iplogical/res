@@ -13,7 +13,7 @@ import java.util.function.Function;
  */
 public class AbstractController {
 
-    public <T> T getViewModel(TableColumn.CellDataFeatures<T, String> cellDataFeatures) {
+    private <T> T getViewModel(TableColumn.CellDataFeatures<T, String> cellDataFeatures) {
         return cellDataFeatures.getValue();
     }
 
