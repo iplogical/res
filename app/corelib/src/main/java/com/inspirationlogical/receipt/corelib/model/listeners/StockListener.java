@@ -6,6 +6,8 @@ import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter
 import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 
+import java.util.Optional;
+
 import static com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider.getEntityManager;
 
 /**
@@ -20,6 +22,6 @@ public class StockListener implements ReceiptAdapter.Listener {
 
     @Override
     public void onClose(ReceiptAdapter receipt) {
-        receipt.getSoldProductsNoRefresh().forEach(receiptRecordAdapter -> StockAdapter.updateStock(receiptRecordAdapter, receipt.getAdaptee().getType()));
+        receipt.getSoldProductsNoRefresh().forEach(receiptRecordAdapter -> StockAdapter.updateStock(receiptRecordAdapter, Optional.of(receipt.getAdaptee().getType())));
     }
 }

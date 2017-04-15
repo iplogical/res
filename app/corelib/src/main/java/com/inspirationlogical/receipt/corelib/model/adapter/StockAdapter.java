@@ -6,6 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
@@ -24,18 +25,14 @@ public class StockAdapter extends AbstractAdapter<Stock> {
                 .collect(toList());
     }
 
-    public static void updateStock(ReceiptRecordAdapter receiptRecordAdapter, ReceiptType receiptType) {
+    public static void updateStock(ReceiptRecordAdapter receiptRecordAdapter, Optional<ReceiptType> receiptType) {
         receiptRecordAdapter.getAdaptee().getProduct().getRecipes().forEach(recipe ->
         {
             StockAdapter stockAdapter = StockAdapter.getLatestItemByProduct(new ProductAdapter(recipe.getComponent()));
-            double quantity = 0;
-            if(receiptType == ReceiptType.SALE) {
-                quantity = recipe.getQuantityMultiplier() * receiptRecordAdapter.getAdaptee().getSoldQuantity();
-            } else {
-                quantity = receiptRecordAdapter.getAdaptee().getAbsoluteQuantity();
-            }
-            stockAdapter.updateStockAdapter(roundToTwoDecimals(quantity), receiptType);
-
+            double quantity = receiptType.filter(type -> type.equals(ReceiptType.SALE))
+                    .map(type -> recipe.getQuantityMultiplier() * receiptRecordAdapter.getAdaptee().getSoldQuantity())
+                    .orElse(receiptRecordAdapter.getAdaptee().getAbsoluteQuantity());
+            stockAdapter.updateStockAdapter(roundToTwoDecimals(quantity), receiptType.get());
         });
     }
 
