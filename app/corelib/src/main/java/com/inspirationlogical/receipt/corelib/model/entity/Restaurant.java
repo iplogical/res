@@ -94,6 +94,8 @@ class Restaurant extends AbstractEntity {
 
     private String receiptDisclaimer = Resources.PRINTER.getString("Disclaimer");
 
+    private String receiptGreet = Resources.PRINTER.getString("Greet");
+
     @Tolerate
     Restaurant() {
     }
@@ -128,7 +130,10 @@ class Restaurant extends AbstractEntity {
                     (r.receiptNote == null) == (receiptNote == null) &&
                     (r.receiptNote == null || r.receiptNote.equals(receiptNote)) &&
                     (r.receiptDisclaimer == null) == (receiptDisclaimer == null) &&
-                    (r.receiptDisclaimer == null || r.receiptDisclaimer.equals(receiptDisclaimer));
+                    (r.receiptDisclaimer == null || r.receiptDisclaimer.equals(receiptDisclaimer)) &&
+                    (r.receiptGreet == null) == (receiptGreet == null) &&
+                    (r.receiptGreet == null || r.receiptGreet.equals(receiptGreet));
+
         }
     }
 
@@ -145,6 +150,7 @@ class Restaurant extends AbstractEntity {
         if (socialMediaInfo != null)    result = Hash.combine(result,socialMediaInfo);
         if (receiptNote != null)        result = Hash.combine(result,receiptNote);
         if (receiptDisclaimer != null)  result = Hash.combine(result,receiptDisclaimer);
+        if (receiptGreet != null)  result = Hash.combine(result,receiptGreet);
         for (Table t : tables) {
             result = Hash.combine(result ,t);
         }

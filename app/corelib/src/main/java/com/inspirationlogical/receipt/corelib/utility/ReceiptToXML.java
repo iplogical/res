@@ -65,9 +65,10 @@ public class ReceiptToXML {
 
     private static ReceiptFooter createFooter(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptFooter footer = factory.createReceiptFooter();
-        setOptionalString(footer::setDisclaimer,receiptAdapter.getAdaptee().getOwner().getOwner().getReceiptDisclaimer());
-        setOptionalString(footer::setNote, receiptAdapter.getAdaptee().getOwner().getOwner().getReceiptNote());
-        footer.setGreet(Resources.PRINTER.getString("Greet"));
+        Restaurant restaurant = receiptAdapter.getAdaptee().getOwner().getOwner();
+        setOptionalString(footer::setDisclaimer,restaurant.getReceiptDisclaimer());
+        setOptionalString(footer::setNote, restaurant.getReceiptNote());
+        setOptionalString(footer::setGreet, restaurant.getReceiptGreet());
         GregorianCalendar gc = GregorianCalendar.from(receiptAdapter.getAdaptee().getClosureTime().atZone(ZoneId.systemDefault()));
         footer.setDatetime(new XMLGregorianCalendarImpl(gc));
         footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag") + ":" + receiptAdapter.getAdaptee().getId().toString());
