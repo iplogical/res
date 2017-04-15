@@ -65,9 +65,7 @@ public class ReceiptToXML {
 
     private static ReceiptFooter createFooter(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
         ReceiptFooter footer = factory.createReceiptFooter();
-        //TODO: add disclaimer in restaurant???
-        footer.setDisclaimer(Resources.PRINTER.getString("Disclaimer"));
-
+        setOptionalString(footer::setDisclaimer,receiptAdapter.getAdaptee().getOwner().getOwner().getReceiptDisclaimer());
         setOptionalString(footer::setNote, receiptAdapter.getAdaptee().getOwner().getOwner().getReceiptNote());
         footer.setGreet(Resources.PRINTER.getString("Greet"));
         GregorianCalendar gc = GregorianCalendar.from(receiptAdapter.getAdaptee().getClosureTime().atZone(ZoneId.systemDefault()));
