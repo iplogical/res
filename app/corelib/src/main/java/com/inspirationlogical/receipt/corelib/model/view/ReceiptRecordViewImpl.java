@@ -53,12 +53,12 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
 
     @Override
     public void increaseSoldQuantity(double amount) {
-        GuardedTransaction.Run(() -> adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() + amount)));
+        GuardedTransaction.run(() -> adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() + amount)));
     }
 
     @Override
     public void decreaseSoldQuantity(double amount) {
-        GuardedTransaction.Run(() -> adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() - amount)));
+        GuardedTransaction.run(() -> adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() - amount)));
     }
 
     @Override

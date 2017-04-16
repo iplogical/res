@@ -24,37 +24,37 @@ public class ReceiptRecordTest {
 
     @Test(expected = RollbackException.class)
     public void testNoType() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
             schema.getReceiptRecordSaleOne().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testNoOwner() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
             schema.getReceiptRecordSaleOne().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testNoName() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
             schema.getReceiptRecordSaleOne().setName(""));
     }
 
     @Test(expected = RollbackException.class)
     public void testNoProduct() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
             schema.getReceiptRecordSaleOne().setProduct(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testOtherReceiptRecordHasProduct() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
             schema.getReceiptRecordOther().setProduct(schema.getProductOne()));
     }
 
     @Test(expected = RollbackException.class)
     public void testPercentDiscountMoreThanHundred() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
             schema.getReceiptRecordSaleOne().setDiscountPercent(150D));
     }
 

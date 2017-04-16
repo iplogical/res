@@ -17,7 +17,7 @@ public class RecipeAdapter extends AbstractAdapter<Recipe> {
 
 
     public static List<RecipeAdapter> getRecipesOfProduct(ProductAdapter owner) {
-        List<Recipe> recipes = GuardedTransaction.RunNamedQuery(Recipe.GET_RECIPES_OF_PRODUCT, query -> {
+        List<Recipe> recipes = GuardedTransaction.runNamedQuery(Recipe.GET_RECIPES_OF_PRODUCT, query -> {
             query.setParameter("owner", owner.getAdaptee());
             return query;
         });

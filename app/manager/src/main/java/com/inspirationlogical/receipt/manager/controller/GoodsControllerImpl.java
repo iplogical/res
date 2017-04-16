@@ -176,6 +176,11 @@ public class GoodsControllerImpl implements GoodsController {
         }
     }
 
+    @Override
+    public void updateGoods() {
+        initCategories();
+    }
+
     @FXML
     public void onShowStock(Event event) {
         viewLoader.loadViewIntoScene(stockController);
@@ -228,14 +233,6 @@ public class GoodsControllerImpl implements GoodsController {
         recipeForm.getContent().add(viewLoader.loadView(recipeFormController));
         recipeFormController.loadRecipeForm(this);
         showPopup(recipeForm, recipeFormController, root, new Point2D(520, 200));
-    }
-
-    @FXML
-    public void onModifyRecipe(Event event) {
-    }
-
-    @FXML
-    public void onDeleteRecipe(Event event) {
     }
 
     private CategoryViewModel getViewModel(CellDataFeatures<CategoryViewModel, String> cellDataFeatures) {

@@ -103,17 +103,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button fx:id="createRecipe" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateRecipe" text="%Common.Add" textAlignment="CENTER" wrapText="true">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="modifyRecipe" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onModifyRecipe" text="%Common.Modify" textAlignment="CENTER" wrapText="true">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="deleteRecipe" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDeleteRecipe" text="%Common.Delete" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="createRecipe" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateRecipe" text="%Goods.RecipeView" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>

@@ -24,19 +24,19 @@ public class ReservationTest {
 
     @Test(expected = RollbackException.class)
     public void invalidTableNumber() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getReservationOne().setTableNumber(0));
     }
 
     @Test(expected = RollbackException.class)
     public void noStartTime() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getReservationOne().setStartTime(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noName() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getReservationOne().setName(null));
     }
 

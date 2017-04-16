@@ -27,7 +27,7 @@ public class ProductTest {
 
     @Test(expected = PersistenceException.class)
     public void testProductCategoryConstriant() {
-        GuardedTransaction.Run(()->{
+        GuardedTransaction.run(()->{
             schema.getProductOne().getCategory().setProduct(null);
             schema.getProductOne().setCategory(null);
         });
@@ -35,43 +35,43 @@ public class ProductTest {
 
     @Test(expected = RollbackException.class)
     public void testShortNameTooLong() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getProductOne().setShortName("ExtremelyLongShortNameExceedsItsLimit"));
     }
 
     @Test(expected = RollbackException.class)
     public void testShortNameEmpty() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getProductOne().setShortName(""));
     }
 
     @Test(expected = RollbackException.class)
     public void testLongNameEmpty() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getProductOne().setLongName(""));
     }
 
     @Test(expected = RollbackException.class)
     public void testQualityUnitNull() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getProductOne().setQuantityUnit(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testProductTypeNull() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getProductOne().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testProductStatusNull() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getProductOne().setStatus(null));
     }
 
     @Test(expected = RollbackException.class)
     public void productWithoutCategory() {
-        GuardedTransaction.Run(()->{
+        GuardedTransaction.run(()->{
             schema.getProductTwo().getCategory().setProduct(null);
             schema.getProductTwo().setCategory(null);
         });
@@ -79,7 +79,7 @@ public class ProductTest {
 
     @Test(expected = RollbackException.class)
     public void productWithLeafCategory() {
-        GuardedTransaction.Run(()->{
+        GuardedTransaction.run(()->{
             schema.getLeafOne().setProduct(schema.getProductTwo());
             schema.getProductTwo().setCategory(schema.getLeafOne());
         });
@@ -87,7 +87,7 @@ public class ProductTest {
 
     @Test(expected = RollbackException.class)
     public void testProductRecipeNull() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getProductOne().setRecipes(null));
     }
 

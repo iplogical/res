@@ -117,7 +117,7 @@ public class ReceiptAdapterTest {
 
     @Test
     public void testCloseWithDiscountForProduct() {
-        GuardedTransaction.RunWithRefresh(receiptSaleOne.getAdaptee(),
+        GuardedTransaction.runWithRefresh(receiptSaleOne.getAdaptee(),
                 () -> {
             schema.getReceiptRecordSaleTwo().setDiscountPercent(20);
             schema.getReceiptRecordSaleTwo().setSalePrice(240);
@@ -132,7 +132,7 @@ public class ReceiptAdapterTest {
 
     @Test(expected = IllegalReceiptStateException.class)
     public void testCloseAClosedReceipt() {
-        GuardedTransaction.RunWithRefresh(receiptSaleOne.getAdaptee(),
+        GuardedTransaction.runWithRefresh(receiptSaleOne.getAdaptee(),
                 () -> {
             schema.getReceiptSaleOne().setStatus(ReceiptStatus.CLOSED);
                     schema.getReceiptSaleOne().setClosureTime(LocalDateTime.now());
@@ -151,7 +151,7 @@ public class ReceiptAdapterTest {
         // 1 x Soproni
         assertEquals(440, receiptSaleOne.getAdaptee().getRecords().stream()
                 .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum());
-        List<Receipt> closedReceipts = GuardedTransaction.RunNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
+        List<Receipt> closedReceipts = GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
                 query -> {query.setParameter("status", ReceiptStatus.CLOSED);
                                 query.setParameter("number", tableAdapter.getAdaptee().getNumber());
                                 return query;});

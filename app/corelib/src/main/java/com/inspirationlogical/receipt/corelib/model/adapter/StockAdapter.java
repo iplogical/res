@@ -7,7 +7,6 @@ import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
 import static java.time.LocalDateTime.now;
@@ -37,7 +36,7 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     public static StockAdapter getLatestItemByProduct(ProductAdapter productAdapter) {
-        List<Stock> stockList = GuardedTransaction.RunNamedQuery(Stock.STOCK_GET_ITEM_BY_PRODUCT,
+        List<Stock> stockList = GuardedTransaction.runNamedQuery(Stock.STOCK_GET_ITEM_BY_PRODUCT,
                 query -> query.setParameter("product", productAdapter.getAdaptee()));
         return stockList.stream()
                 .map(stock -> new StockAdapter(stock))
@@ -57,7 +56,7 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     private static StockAdapter createStockEntry(ProductAdapter productAdapter, double initialQuantity) {
-        GuardedTransaction.RunWithRefresh(productAdapter.getAdaptee(), () -> {});
+        GuardedTransaction.runWithRefresh(productAdapter.getAdaptee(), () -> {});
             Stock stock = Stock.builder()
                     .owner(productAdapter.getAdaptee())
                     .initialQuantity(initialQuantity)
@@ -65,7 +64,7 @@ public class StockAdapter extends AbstractAdapter<Stock> {
                     .purchasedQuantity(0)
                     .date(now())
                     .build();
-        GuardedTransaction.Persist(stock);
+        GuardedTransaction.persist(stock);
         return new StockAdapter(stock);
     }
 
@@ -90,10 +89,10 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     private void decreaseStock(double quantity) {
-        GuardedTransaction.Run(() -> adaptee.setSoldQuantity(adaptee.getSoldQuantity() + quantity / adaptee.getOwner().getStorageMultiplier()));
+        GuardedTransaction.run(() -> adaptee.setSoldQuantity(adaptee.getSoldQuantity() + quantity / adaptee.getOwner().getStorageMultiplier()));
     }
 
     private void increaseStock(double quantity) {
-        GuardedTransaction.Run(() -> adaptee.setPurchasedQuantity(adaptee.getPurchasedQuantity() + quantity / adaptee.getOwner().getStorageMultiplier()));
+        GuardedTransaction.run(() -> adaptee.setPurchasedQuantity(adaptee.getPurchasedQuantity() + quantity / adaptee.getOwner().getStorageMultiplier()));
     }
 }

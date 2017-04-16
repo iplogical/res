@@ -36,7 +36,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
 
 
     public List<TableAdapter> getDisplayableTables() {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
+        GuardedTransaction.runWithRefresh(adaptee, () -> {});
         Collection<Table> tables = adaptee.getTables();
         return tables.stream()
                 .filter(table -> table.getType().equals(TableType.NORMAL) ||
@@ -48,7 +48,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     public TableAdapter addTable(Table.TableBuilder builder) {
         Table newTable = builder.build();
         checkTableNumberCollision(newTable.getNumber());
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.runWithRefresh(adaptee, () -> {
             adaptee.getTables().add(newTable);
             newTable.setOwner(adaptee);
         });
@@ -56,7 +56,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     }
 
     public void checkTableNumberCollision(int tableNumber) {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.runWithRefresh(adaptee, () -> {
             if (adaptee.getTables().stream().anyMatch(t -> t.getNumber() == tableNumber)) {
                 throw new IllegalTableStateException("The table number " + tableNumber + " is already in use");
             }
@@ -68,7 +68,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
             aggregate.openTable();
         }
         // todo refactor this method into smaller ones
-        GuardedTransaction.Run(() -> {
+        GuardedTransaction.run(() -> {
             List<ReceiptRecord> consumedRecords = consumed.stream()
                     .map(TableAdapter::getActiveReceipt)
                     .filter(Objects::nonNull)
@@ -91,7 +91,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
             }
         });
 
-        GuardedTransaction.Run(() -> {
+        GuardedTransaction.run(() -> {
             consumed.forEach(adapter -> {
                 Collection<Receipt> receipts = adapter.getAdaptee().getReceipts();
                 if (receipts != null) {
@@ -110,7 +110,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
 
         consumed.forEach(TableAdapter::deleteTable);
 
-        List<Table> tables = GuardedTransaction.RunNamedQuery(Table.GET_TABLE_BY_NUMBER,
+        List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_NUMBER,
                 query -> query.setParameter("number", aggregate.getAdaptee().getNumber()));
 
         aggregate.setAdaptee(tables.get(0));

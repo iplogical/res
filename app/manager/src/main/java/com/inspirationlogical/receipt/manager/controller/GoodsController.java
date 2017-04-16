@@ -10,4 +10,6 @@ public interface GoodsController extends Controller {
     void addProduct(ProductCategoryView parent, Product.ProductBuilder builder);
 
     void addProductCategory(ProductCategoryParams params);
+
+    void updateGoods();
 }

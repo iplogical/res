@@ -11,7 +11,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
 public class ReceiptTest {
@@ -26,86 +25,86 @@ public class ReceiptTest {
 
     @Test(expected = RollbackException.class)
     public void receiptWithoutOwner() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getReceiptSaleOne().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void receiptWithoutType() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getReceiptSaleOne().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void receiptWithoutStatus() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getReceiptSaleOne().setStatus(null));
     }
 
     @Test(expected = RollbackException.class)
     public void rceiptWithoutPaymentMethod() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getReceiptSaleOne().setPaymentMethod(null));
     }
 
     @Test(expected = RollbackException.class)
     public void corruptClient() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getReceiptSaleOne().getClient().setName(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noVatSerie() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getReceiptSaleOne().setVATSerie(null));
     }
 
     @Test(expected = RollbackException.class)
     public void moveVirtualReceiptToNormalTableTooManyOpen() {
-        GuardedTransaction.Run(()-> {
+        GuardedTransaction.run(()-> {
             schema.getReceiptSaleThree().setOwner(schema.getTableNormal());
             schema.getTableNormal().getReceipts().add(schema.getReceiptSaleThree());});
     }
 
     @Test(expected = RollbackException.class)
     public void saleReceiptWithInvalidOwner() {
-            GuardedTransaction.Run(()->
+            GuardedTransaction.run(()->
                     schema.getReceiptSaleOne().setOwner(schema.getTableDisposal()));
     }
 
     @Test(expected = RollbackException.class)
     public void purchaseReceiptWithInvalidOwner() {
-            GuardedTransaction.Run(()->
+            GuardedTransaction.run(()->
                     schema.getReceiptPurchase().setOwner(schema.getTableDisposal()));
     }
 
     @Test(expected = RollbackException.class)
     public void inventoryReceiptWithInvalidOwner() {
-            GuardedTransaction.Run(()->
+            GuardedTransaction.run(()->
                     schema.getReceiptInventory().setOwner(schema.getTableNormal()));
     }
 
     @Test(expected = RollbackException.class)
     public void disposalReceiptWithInvalidOwner() {
-            GuardedTransaction.Run(()->
+            GuardedTransaction.run(()->
                     schema.getReceiptDisposal().setOwner(schema.getTableOther()));
     }
 
     @Test(expected = RollbackException.class)
     public void otherReceiptWithInvalidOwner() {
-            GuardedTransaction.Run(()->
+            GuardedTransaction.run(()->
                     schema.getReceiptOther().setOwner(schema.getTableInventory()));
     }
 
     @Test(expected = RollbackException.class)
     public void openReceiptWithClosureTime() {
-            GuardedTransaction.Run(()->
+            GuardedTransaction.run(()->
                     schema.getReceiptSaleOne().setClosureTime(LocalDateTime.now()));
     }
 
     @Test(expected = RollbackException.class)
     public void closedReceiptWithoutClosureTime() {
-            GuardedTransaction.Run(()->
+            GuardedTransaction.run(()->
                     schema.getReceiptSaleTwo().setClosureTime(null));
     }
 

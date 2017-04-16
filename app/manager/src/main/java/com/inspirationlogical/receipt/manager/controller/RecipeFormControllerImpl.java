@@ -4,13 +4,16 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.h
 import static java.util.stream.Collectors.toList;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
+import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.RecipeViewModel;
@@ -98,12 +101,40 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
 
     @FXML
     public void onConfirm(Event event) {
-        hideNode(root);
+        List<RecipeParams> recipeParamsList = componentTable.getItems().stream()
+                .map(recipeViewModel -> RecipeParams.builder()
+                        .componentName(recipeViewModel.getComponent())
+                        .quantity(Double.valueOf(recipeViewModel.getQuantity()))
+                        .build())
+                .collect(toList());
+        commonService.updateRecipe(owner.getSelectionModel().getSelectedItem(), recipeParamsList);
+
+
     }
 
     @FXML
     public void onCancel(Event event) {
+        goodsController.updateGoods();
         hideNode(root);
+    }
+
+    @FXML
+    public void onAdd(Event event) {
+        if(owner.getSelectionModel().getSelectedItem() == null) return;
+        if(component.getSelectionModel().getSelectedItem() == null) return;
+        if(quantity.getText().equals("")) return;
+        RecipeViewModel newComponent = RecipeViewModel.builder()
+                .component(component.getSelectionModel().getSelectedItem().getLongName())
+                .unit(component.getSelectionModel().getSelectedItem().getQuantityUnit().toString())
+                .quantity(quantity.getText())
+                .build();
+        componentTable.getItems().add(newComponent);
+    }
+
+    @FXML
+    public void onDelete(Event event) {
+        if(componentTable.getSelectionModel().getSelectedItem() == null) return;
+        componentTable.getItems().remove(componentTable.getSelectionModel().getSelectedItem());
     }
 
     private class ComponentChoiceBoxListener implements ChangeListener<ProductView> {

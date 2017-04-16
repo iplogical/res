@@ -61,9 +61,9 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
 
     public void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift) {
 
-        GuardedTransaction.Run(() -> {
+        GuardedTransaction.run(() -> {
             LocalDateTime dateTime = now().minusSeconds(5);
-            List<ReceiptRecord> records = GuardedTransaction.RunNamedQuery(ReceiptRecord.GET_RECEIPT_RECORDS_BY_TIMESTAMP,
+            List<ReceiptRecord> records = GuardedTransaction.runNamedQuery(ReceiptRecord.GET_RECEIPT_RECORDS_BY_TIMESTAMP,
                     query -> {query.setParameter("created", dateTime);
                               query.setParameter("name", productAdapter.getAdaptee().getLongName());
                               return query;});
@@ -97,8 +97,8 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public void sellAdHocProduct(AdHocProductParams adHocProductParams, boolean takeAway) {
-        GuardedTransaction.Run(() -> {
-            ProductAdapter adHocProduct = ProductAdapter.getAdHocProduct(EntityManagerProvider.getEntityManager());
+        GuardedTransaction.run(() -> {
+            ProductAdapter adHocProduct = ProductAdapter.getAdHocProduct();
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(adHocProduct.getAdaptee())
                     .type(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE)
@@ -116,8 +116,8 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public void sellGameFee(int quantity) {
-        GuardedTransaction.Run(() -> {
-            ProductAdapter gameFeeProduct = ProductAdapter.getGameFeeProduct(EntityManagerProvider.getEntityManager());
+        GuardedTransaction.run(() -> {
+            ProductAdapter gameFeeProduct = ProductAdapter.getGameFeeProduct();
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(gameFeeProduct.getAdaptee())
                     .type(ReceiptRecordType.HERE)
@@ -135,9 +135,9 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public void addStockRecords(List<StockParams> paramsList) {
-        GuardedTransaction.Run(() -> {
+        GuardedTransaction.run(() -> {
             paramsList.forEach(params -> {
-                List<Product> productList = GuardedTransaction.RunNamedQuery(Product.GET_PRODUCT_BY_NAME,
+                List<Product> productList = GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_NAME,
                         query -> {query.setParameter("longName", params.getProductName());
                    return query;});
                 Product product = productList.get(0);
@@ -171,7 +171,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public void close(PaymentParams paymentParams){
-        GuardedTransaction.Run(() -> {
+        GuardedTransaction.run(() -> {
             if(adaptee.getStatus() == ReceiptStatus.CLOSED) {
                 throw new IllegalReceiptStateException("Close operation is illegal for a CLOSED receipt");
             }
@@ -196,7 +196,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public void paySelective(TableAdapter tableAdapter, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
         final ReceiptAdapter[] paidReceipt = new ReceiptAdapter[1];
 
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.runWithRefresh(adaptee, () -> {
             Map<Long, ReceiptRecordView> recordsToPay = records.stream()
                     .collect(Collectors.toMap(ReceiptRecordView::getId, Function.identity()));
             List<ReceiptRecord> notPaidRecords = adaptee.getRecords().stream()
@@ -214,14 +214,14 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             paidReceipt[0].getAdaptee().setStatus(ReceiptStatus.PENDING);
             paidReceipt[0].getAdaptee().setOwner(tableAdapter.getAdaptee());
             tableAdapter.getAdaptee().getReceipts().add(paidReceipt[0].getAdaptee());
-            GuardedTransaction.Persist(paidReceipt[0].adaptee);
+            GuardedTransaction.persist(paidReceipt[0].adaptee);
         });
         paidReceipt[0].close(paymentParams);
     }
 
     public ReceiptRecordAdapter cloneReceiptRecordAdapter(ReceiptRecordAdapter record, double amount) {
         final ReceiptRecord[] receiptRecord = new ReceiptRecord[1];
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.runWithRefresh(adaptee, () -> {
             receiptRecord[0] = ReceiptRecord.builder()
                     .owner(this.getAdaptee())
                     .product(record.getAdaptee().getProduct())
@@ -245,7 +245,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     private List<ReceiptRecord> getReceiptRecords() {
-        return GuardedTransaction.RunNamedQuery(ReceiptRecord.GET_RECEIPT_RECORDS_BY_RECEIPT,
+        return GuardedTransaction.runNamedQuery(ReceiptRecord.GET_RECEIPT_RECORDS_BY_RECEIPT,
                 query -> {query.setParameter("owner_id", adaptee.getId());
                     return query;});
     }

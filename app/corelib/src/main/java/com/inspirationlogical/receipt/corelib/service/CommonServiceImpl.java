@@ -1,8 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
@@ -69,7 +67,10 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public void updateRecipe(ProductView owner, List<RecipeParams> recipeParamsList) {
-
+        ProductAdapter ownerProduct = getProductAdapter(owner);
+        ownerProduct.updateRecipes(recipeParamsList);
+        ownerProduct.addRecipes(recipeParamsList);
+        ownerProduct.deleteRecipes(recipeParamsList);
     }
 
     @Override

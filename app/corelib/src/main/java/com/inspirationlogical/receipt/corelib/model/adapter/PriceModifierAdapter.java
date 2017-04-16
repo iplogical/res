@@ -20,12 +20,12 @@ import static java.util.stream.Collectors.toList;
 public class PriceModifierAdapter extends AbstractAdapter<PriceModifier> {
 
     public  static List<PriceModifierAdapter> getPriceModifiers() {
-        List<PriceModifier> priceModifiers = GuardedTransaction.RunNamedQuery(PriceModifier.GET_PRICE_MODIFIERS);
+        List<PriceModifier> priceModifiers = GuardedTransaction.runNamedQuery(PriceModifier.GET_PRICE_MODIFIERS);
         return priceModifiers.stream().map(PriceModifierAdapter::new).collect(toList());
     }
 
     public  static PriceModifierAdapter getPriceModifierByName(String name) {
-        List<PriceModifier> priceModifiers = GuardedTransaction.RunNamedQuery(PriceModifier.GET_PRICE_MODIFIERS_BY_NAME,
+        List<PriceModifier> priceModifiers = GuardedTransaction.runNamedQuery(PriceModifier.GET_PRICE_MODIFIERS_BY_NAME,
                 query -> {query.setParameter("name", name);
                             return query;});
         return priceModifiers.stream().map(PriceModifierAdapter::new).collect(toList()).get(0);
@@ -56,7 +56,7 @@ public class PriceModifierAdapter extends AbstractAdapter<PriceModifier> {
         PriceModifier priceModifier = params.getBuilder().build();
         priceModifier.setOwner(owner);
         owner.getPriceModifiers().add(priceModifier);
-        GuardedTransaction.Persist(priceModifier);
+        GuardedTransaction.persist(priceModifier);
     }
 
     public PriceModifierAdapter(PriceModifier adaptee) {

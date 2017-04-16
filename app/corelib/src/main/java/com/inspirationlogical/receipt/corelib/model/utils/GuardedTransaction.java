@@ -24,7 +24,7 @@ public class GuardedTransaction {
      * @exception Exception in case of an exception the transaction will be rolled back, but the persistence objects
      * are going to get in DETACHED state!
      */
-    public static void Run(Functor f, Functor before, Functor after) {
+    public static void run(Functor f, Functor before, Functor after) {
         boolean myTransaction = !manager.getTransaction().isActive();
         if(myTransaction){
             manager.getTransaction().begin();
@@ -44,9 +44,9 @@ public class GuardedTransaction {
         }
     }
 
-    public static <T extends AbstractEntity> List<T> RunNamedQuery(String name){
+    public static <T extends AbstractEntity> List<T> runNamedQuery(String name){
         Wrapper<List<T>> results = new Wrapper<>();
-        Run(()->{results.setContent(manager.createNamedQuery(name).getResultList());},()->{},()->{});
+        run(()->{results.setContent(manager.createNamedQuery(name).getResultList());},()->{},()->{});
         return results.getContent();
     }
 
@@ -55,27 +55,27 @@ public class GuardedTransaction {
         Query setup(Query query);
     }
 
-    public static <T extends AbstractEntity> List<T> RunNamedQuery(String name, NamedQueryCallback namedQueryCallback){
+    public static <T extends AbstractEntity> List<T> runNamedQuery(String name, NamedQueryCallback namedQueryCallback){
         Wrapper<List<T>> results = new Wrapper<>();
-        Run(()->{results.setContent(namedQueryCallback.setup(manager.createNamedQuery(name)).getResultList());},()->{},()->{});
+        run(()->{results.setContent(namedQueryCallback.setup(manager.createNamedQuery(name)).getResultList());},()->{},()->{});
         return results.getContent();
     }
 
-    public static void RunWithRefresh(AbstractEntity e, Functor f) {
-        Run(f,()->manager.refresh(e), () -> {});
+    public static void runWithRefresh(AbstractEntity e, Functor f) {
+        run(f,()->manager.refresh(e), () -> {});
     }
 
-    public static void Persist(AbstractEntity e) {
-        Run(() -> manager.persist(e), () -> {}, () -> {});
+    public static void persist(AbstractEntity e) {
+        run(() -> manager.persist(e), () -> {}, () -> {});
     }
 
-    public static void RunWithDelete(AbstractEntity e, Functor f) {
-        Run(f,()->{manager.refresh(e);}, ()->{
+    public static void delete(AbstractEntity e, Functor f) {
+        run(f,()->{}, ()->{
             manager.remove(e);
         });
     }
 
-    public static void Run(Functor f) {
-        Run(f,()->{}, ()->{});
+    public static void run(Functor f) {
+        run(f,()->{}, ()->{});
     }
 }

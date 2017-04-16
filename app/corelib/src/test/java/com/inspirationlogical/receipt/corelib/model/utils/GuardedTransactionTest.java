@@ -20,7 +20,7 @@ public class GuardedTransactionTest {
     public void test_if_exception_happens_inside_a_guarded_transaction_modifications_wont_be_visible() {
         int old_capacity = schema.getTableNormal().getCapacity();
         try{
-            GuardedTransaction.Run(() -> {
+            GuardedTransaction.run(() -> {
                 schema.getTableNormal().setCapacity(old_capacity+1);
                 throw new RuntimeException("test exception");
             });
@@ -34,9 +34,9 @@ public class GuardedTransactionTest {
     @Test
     public void test_nested_guarded_transactions_can_be_executed_successfully(){
         int old_capacity = schema.getTableNormal().getCapacity();
-        GuardedTransaction.Run(() -> {
+        GuardedTransaction.run(() -> {
             schema.getTableNormal().setCapacity(schema.getTableNormal().getCapacity()+1);
-            GuardedTransaction.Run(()->{
+            GuardedTransaction.run(()->{
                 schema.getTableNormal().setCoordinateX(100);
             });
         });

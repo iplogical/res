@@ -1,15 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
-import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.VERTICAL;
-import static java.time.LocalDateTime.now;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
@@ -17,10 +7,19 @@ import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
-
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import javafx.geometry.Point2D;
 import lombok.NonNull;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
+import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.VERTICAL;
+import static java.time.LocalDateTime.now;
+import static java.util.stream.Collectors.toList;
 
 public class TableAdapter extends AbstractAdapter<Table> {
 
@@ -38,14 +37,14 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     private static List<Table> getTablesByNumber(int number) {
-        return GuardedTransaction.RunNamedQuery(Table.GET_TABLE_BY_NUMBER, query -> {
+        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_NUMBER, query -> {
             query.setParameter("number", number);
             return query;
         });
     }
 
     public static List<Table> getTablesByType(TableType tableType) {
-        return GuardedTransaction.RunNamedQuery(Table.GET_TABLE_BY_TYPE,
+        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_TYPE,
                 query -> {query.setParameter("type", tableType);
                     return query;});
     }
@@ -54,7 +53,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         ReceiptAdapter receiptAdapter = ReceiptAdapter.receiptAdapterFactory(receiptType);
         receiptAdapter.addStockRecords(paramsList);
         bindReceiptToTable(receiptAdapter);
-        GuardedTransaction.Persist(receiptAdapter.getAdaptee());
+        GuardedTransaction.persist(receiptAdapter.getAdaptee());
         receiptAdapter.close(PaymentParams.builder().paymentMethod(PaymentMethod.CASH)
                                                     .discountAbsolute(0)
                                                     .discountPercent(0)
@@ -72,46 +71,46 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void setTableName(String name) {
-        GuardedTransaction.Run(() -> adaptee.setName(name));
+        GuardedTransaction.run(() -> adaptee.setName(name));
     }
 
     public void setTableNumber(int tableNumber) {
-        GuardedTransaction.Run(() -> adaptee.setNumber(tableNumber));
+        GuardedTransaction.run(() -> adaptee.setNumber(tableNumber));
     }
 
     public void setTableType(TableType tableType) {
-        GuardedTransaction.Run(() -> adaptee.setType(tableType));
+        GuardedTransaction.run(() -> adaptee.setType(tableType));
     }
 
     public void setCapacity(int capacity) {
-        GuardedTransaction.Run(() -> adaptee.setCapacity(capacity));
+        GuardedTransaction.run(() -> adaptee.setCapacity(capacity));
     }
 
     public void setGuestNumber(int guestNumber) {
-        GuardedTransaction.Run(() -> adaptee.setGuestNumber(guestNumber));
+        GuardedTransaction.run(() -> adaptee.setGuestNumber(guestNumber));
     }
 
     public void setNote(String note) {
-        GuardedTransaction.Run(() -> adaptee.setNote(note));
+        GuardedTransaction.run(() -> adaptee.setNote(note));
     }
 
     public void displayTable() {
-        GuardedTransaction.Run(() -> adaptee.setVisible(true));
+        GuardedTransaction.run(() -> adaptee.setVisible(true));
     }
 
     public void hideTable() {
-        GuardedTransaction.Run(() -> adaptee.setVisible(false));
+        GuardedTransaction.run(() -> adaptee.setVisible(false));
     }
 
     public void moveTable(Point2D position) {
-        GuardedTransaction.Run(() -> {
+        GuardedTransaction.run(() -> {
             adaptee.setCoordinateX((int) position.getX());
             adaptee.setCoordinateY((int) position.getY());
         });
     }
 
     public void rotateTable() {
-        GuardedTransaction.Run(() -> {
+        GuardedTransaction.run(() -> {
             Orientation orientation = adaptee.getOrientation();
             if (orientation == HORIZONTAL) {
                 adaptee.setOrientation(VERTICAL);
@@ -122,7 +121,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void openTable() {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.runWithRefresh(adaptee, () -> {
             if (isTableOpen()) {
                 throw new IllegalTableStateException("Open table for an open table. Table number: " + adaptee.getNumber());
             }
@@ -132,7 +131,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void payTable(PaymentParams paymentParams) {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.runWithRefresh(adaptee, () -> {
             if (!isTableOpen()) {
                 throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
             }
@@ -144,7 +143,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.runWithRefresh(adaptee, () -> {
             if (!isTableOpen()) {
                 throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
             }
@@ -156,7 +155,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         if (isTableOpen()) {
             throw new IllegalTableStateException("Delete table for an open table. Table number: " + adaptee.getNumber());
         }
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.runWithRefresh(adaptee, () -> {
             List<Table> orphanageList = getTablesByType(TableType.ORPHANAGE);
             Table orphanage = orphanageList.get(0);
             if(orphanage.getReceipts() == null)
@@ -165,10 +164,12 @@ public class TableAdapter extends AbstractAdapter<Table> {
                     .map(receipt -> {
                         receipt.setOwner(orphanage);
                         return receipt;
-                    }).collect(Collectors.toList()));
+                    }).collect(toList()));
             adaptee.getReceipts().clear();
-        });
-        GuardedTransaction.RunWithDelete(adaptee, () -> {
+            adaptee.getReservations().forEach(reservation -> GuardedTransaction.delete(reservation, () -> {}));
+            adaptee.getReservations().clear();
+            adaptee.getOwner().getTables().remove(adaptee);
+            GuardedTransaction.delete(adaptee, () -> {});
         });
     }
 
@@ -187,7 +188,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     private List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
-        return GuardedTransaction.RunNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
+        return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
                 query -> {
                     query.setParameter("status", status);
                     query.setParameter("number", tableNumber);
@@ -196,7 +197,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     private List<Receipt> getReceiptsByClosureTime(LocalDateTime finalPreviousClosure) {
-        return GuardedTransaction.RunNamedQuery(Receipt.GET_RECEIPT_BY_CLOSURE_TIME,
+        return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_CLOSURE_TIME,
                 query -> {
                     query.setParameter("closureTime", finalPreviousClosure);
                     return query;

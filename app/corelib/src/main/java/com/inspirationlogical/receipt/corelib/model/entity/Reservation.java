@@ -1,15 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import java.time.LocalDateTime;
-import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -34,7 +26,7 @@ public @Data class Reservation extends AbstractEntity {
     public static final String GET_TEST_RESERVATIONS = "Reservation.GetTestReservations";
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
-    @JoinColumn(name = "TABLE_ID")
+    @JoinColumn(name = "TABLE_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Table owner;
 
     @Min(1)

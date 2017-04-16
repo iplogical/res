@@ -30,7 +30,7 @@ public class VATSerieTest {
 
     @Test(expected = RollbackException.class)
     public void noStatus() {
-        GuardedTransaction.Run(()->schema.getVatSerie().setStatus(null));
+        GuardedTransaction.run(()->schema.getVatSerie().setStatus(null));
     }
 
     private List<VATSerie> getVATSerie() {

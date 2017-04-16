@@ -24,37 +24,37 @@ public class PriceModifierTest {
 
     @Test(expected = RollbackException.class)
     public void noOwner() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getPriceModifierOne().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noName() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getPriceModifierOne().setName(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noType() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getPriceModifierOne().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noRepeatPeriod() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getPriceModifierOne().setRepeatPeriod(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noStartTime() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getPriceModifierOne().setStartDate(null));
     }
 
     @Test(expected = RollbackException.class)
     public void noEndTime() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getPriceModifierOne().setEndDate(null));
     }
 

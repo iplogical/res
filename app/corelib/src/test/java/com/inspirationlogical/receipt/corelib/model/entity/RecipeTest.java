@@ -33,12 +33,12 @@ public class RecipeTest {
 
     @Test(expected = RollbackException.class)
     public void recipeWithoutOwner() {
-        GuardedTransaction.Run(()->schema.getProductFourPartThree().setOwner(null));
+        GuardedTransaction.run(()->schema.getProductFourPartThree().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void recipeWithoutElement() {
-        GuardedTransaction.Run(()->schema.getProductFourPartThree().setComponent(null));
+        GuardedTransaction.run(()->schema.getProductFourPartThree().setComponent(null));
     }
 
     private List<Recipe> getRecipes() {

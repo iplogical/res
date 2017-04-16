@@ -169,7 +169,7 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void dropAll(){
 
-        GuardedTransaction.Run(() -> {
+        GuardedTransaction.run(() -> {
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.PriceModifier").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Recipe").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Stock").executeUpdate();
@@ -227,7 +227,7 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void persistObjects() {
-        GuardedTransaction.Run(() -> entityManager.persist(restaurant));
+        GuardedTransaction.run(() -> entityManager.persist(restaurant));
     }
 
     private void buildProducts() {

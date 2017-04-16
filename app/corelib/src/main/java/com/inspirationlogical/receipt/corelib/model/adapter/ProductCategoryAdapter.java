@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,7 +31,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     }
 
     public static ProductCategoryAdapter getRootCategory() {
-        List<ProductCategory> rootCategoryList = GuardedTransaction.RunNamedQuery(ProductCategory.GET_CATEGORY_BY_TYPE,
+        List<ProductCategory> rootCategoryList = GuardedTransaction.runNamedQuery(ProductCategory.GET_CATEGORY_BY_TYPE,
                 query -> {query.setParameter("type", ProductCategoryType.ROOT);
                     return query;});
         if(rootCategoryList.isEmpty()) {
@@ -43,7 +42,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 
 
     public static List<ProductCategoryAdapter> getCategoriesByType(ProductCategoryType type) {
-        List<ProductCategory> aggregates = GuardedTransaction.RunNamedQuery(ProductCategory.GET_CATEGORY_BY_TYPE,
+        List<ProductCategory> aggregates = GuardedTransaction.runNamedQuery(ProductCategory.GET_CATEGORY_BY_TYPE,
                 query -> {query.setParameter("type", type);
                     return query;});
         return aggregates.stream().map(ProductCategoryAdapter::new)
@@ -51,7 +50,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     }
 
     public static List<ProductCategory> getProductCategoryByName(String name) {
-        return GuardedTransaction.RunNamedQuery(ProductCategory.GET_CATEGORY_BY_NAME,
+        return GuardedTransaction.runNamedQuery(ProductCategory.GET_CATEGORY_BY_NAME,
                 query -> {
                     query.setParameter("name", name);
                     return query;});
@@ -66,7 +65,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     }
 
     public List<ProductAdapter> getAllProducts() {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
+        GuardedTransaction.runWithRefresh(adaptee, () -> {});
         List<ProductCategory> childCategories = new ArrayList<>();
         traverseChildren(this.adaptee, childCategories);
         return childCategories.stream()
@@ -76,7 +75,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     }
 
     public List<ProductCategoryAdapter> getAllProductCategories() {
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {});
+        GuardedTransaction.runWithRefresh(adaptee, () -> {});
         List<ProductCategory> childCategories = new ArrayList<>();
         traverseChildren(this.adaptee, childCategories);
         return childCategories.stream()
@@ -113,7 +112,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     }
 
     public List<ProductCategoryAdapter> getChildrenCategories() {
-        List<ProductCategory> children = GuardedTransaction.RunNamedQuery(ProductCategory.GET_CHILDREN_CATEGORIES,
+        List<ProductCategory> children = GuardedTransaction.runNamedQuery(ProductCategory.GET_CHILDREN_CATEGORIES,
                 query -> {query.setParameter("parent_id", adaptee.getId());
                     return query;});
         return children.stream().map(ProductCategoryAdapter::new).collect(toList());
@@ -145,7 +144,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 
     public ProductCategoryAdapter addChildCategory(String name, ProductCategoryType type) {
         final ProductCategory[] newCategory = new ProductCategory[1];
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.runWithRefresh(adaptee, () -> {
             newCategory[0] = ProductCategory.builder()
                     .name(name)
                     .type(type)
@@ -169,13 +168,13 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     public ProductCategoryAdapter updateChildCategory(String newName, String originalName, ProductCategoryType type) {
         ProductCategory originalCategory = getProductCategoryByName(originalName).get(0);
         originalCategory.setName(newName);
-        GuardedTransaction.Persist(originalCategory);
+        GuardedTransaction.persist(originalCategory);
         return new ProductCategoryAdapter(originalCategory);
     }
 
     public ProductAdapter addProduct(ProductBuilder builder) {
         final Product[] newProduct = new Product[1];
-        GuardedTransaction.RunWithRefresh(adaptee, () -> {
+        GuardedTransaction.runWithRefresh(adaptee, () -> {
             newProduct[0] = builder.build();
             getRootCategory().getAllProducts().stream()
                     .filter(productAdapter -> productAdapter.getAdaptee().getLongName().equals(newProduct[0].getLongName()))
@@ -203,7 +202,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     }
 
     private List<PriceModifier> getPriceModifiersByProductAndDates(ProductCategory category) {
-        return GuardedTransaction.RunNamedQuery(PriceModifier.GET_PRICE_MODIFIERS_BY_PRODUCT_AND_DATES,
+        return GuardedTransaction.runNamedQuery(PriceModifier.GET_PRICE_MODIFIERS_BY_PRODUCT_AND_DATES,
                 query -> {
                     query.setParameter("owner_id", category.getId());
                     query.setParameter("time", now());

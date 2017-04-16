@@ -36,31 +36,31 @@ public class TableTest {
 
     @Test(expected = RollbackException.class)
     public void notUniqueTableNumber() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getTableVirtual().setNumber(schema.getTableNormal().getNumber()));
     }
 
     @Test(expected = RollbackException.class)
     public void TableWithoutNumber() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getTableVirtual().setNumber(0));
     }
 
     @Test(expected = RollbackException.class)
     public void tableWithoutOwner() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getTableOther().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void tableWithoutType() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getTableOther().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void tableWithMoreOpenReceipts() {
-        GuardedTransaction.Run(()->
+        GuardedTransaction.run(()->
                 schema.getReceiptSaleTwo().setStatus(ReceiptStatus.OPEN));
     }
 
