@@ -8,8 +8,12 @@ import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 public interface RoundingLogic {
     double round(double d);
 
+    static boolean roundingNeeded(PaymentMethod method){
+        return method == PaymentMethod.CASH || method == PaymentMethod.COUPON;
+    }
+
     static RoundingLogic create(PaymentMethod method) {
-        if (method == PaymentMethod.CASH)
+        if (roundingNeeded(method))
             return new CashRoundingLogic();
         else return new NoRoundingLogic();
     }

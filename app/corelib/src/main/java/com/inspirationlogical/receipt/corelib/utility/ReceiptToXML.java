@@ -244,12 +244,12 @@ public class ReceiptToXML {
 
         // NOTE: set rounded total only if paymentmethod is cash, and rounded value not equals total
         setOptional(footer::setTotalRounded, receiptAdapter.getAdaptee().getPaymentMethod(),
-                paymentMethod -> paymentMethod == PaymentMethod.CASH &&
-                        !total.equals(BigInteger.valueOf((long) RoundingLogic.create(PaymentMethod.CASH).round(total.doubleValue()))),
+                paymentMethod -> RoundingLogic.roundingNeeded(paymentMethod) &&
+                        !total.equals(BigInteger.valueOf((long) RoundingLogic.create(paymentMethod).round(total.doubleValue()))),
                 x -> createTagCurrencyValue(factory,
                         Resources.PRINTER.getString("TotalRoundedTag"),
                         Resources.PRINTER.getString("TotalRoundedCurrency"),
-                        (long) RoundingLogic.create(PaymentMethod.CASH).round(total.doubleValue()))
+                        (long) RoundingLogic.create(receiptAdapter.getAdaptee().getPaymentMethod()).round(total.doubleValue()))
         );
         return footer;
     }
