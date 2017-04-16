@@ -225,19 +225,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         }
     }
 
-    private void initializeSoldProductsTableRowHandler() {
-        soldProductsTable.setRowFactory(tv -> {
-            TableRow<SoldProductViewModel> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if(event.getClickCount() == 2 && (! row.isEmpty())) {
-                    rowClickHandler(row.getItem());
-                }
-            });
-            return row;
-        });
-    }
-
-    private void rowClickHandler(SoldProductViewModel row) {
+    @Override
+    protected void rowClickHandler(SoldProductViewModel row) {
         if(paymentViewState.isSelectivePayment()) {
             removeRowFromTable(row);
         } else if(paymentViewState.isSinglePayment()) {
@@ -371,31 +360,14 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         singlePayment.setUserData(SINGLE);
         partialPayment.setUserData(PARTIAL);
         paymentViewState.setPaymentType(FULL);
-        paymentTypeToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-                if(paymentTypeToggleGroup.getSelectedToggle() == null) {
-                    paymentViewState.setPaymentType(FULL);
-                    return;
-                }
-                paymentViewState.setPaymentType((PaymentViewState.PaymentType)paymentTypeToggleGroup.getSelectedToggle().getUserData());
-            }
-        });
+        paymentTypeToggleGroup.selectedToggleProperty().addListener(new PaymentTypeTogglesListener());
     }
 
     private void initializeDiscountToggles() {
         discountAbsolute.setUserData(PaymentViewState.DiscountType.ABSOLUTE);
         discountPercent.setUserData(PaymentViewState.DiscountType.PERCENT);
         paymentViewState.setDiscountType(PaymentViewState.DiscountType.NONE);
-        discountTypeToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-                if(discountTypeToggleGroup.getSelectedToggle() == null) {
-                    paymentViewState.setDiscountType(PaymentViewState.DiscountType.NONE);
-                }
-                paymentViewState.setDiscountType((PaymentViewState.DiscountType)discountTypeToggleGroup.getSelectedToggle().getUserData());
-            }
-        });
+        discountTypeToggleGroup.selectedToggleProperty().addListener(new DiscountTypeTogglesListener());
     }
 
     private void initializePayProductsTable() {
@@ -424,5 +396,28 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private void setAutomaticGameFee() {
         paymentViewState.setAutomaticGameFee(automaticGameFee.isSelected());
+    }
+
+    private class PaymentTypeTogglesListener implements ChangeListener<Toggle> {
+        @Override
+        public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+            if(paymentTypeToggleGroup.getSelectedToggle() == null) {
+                paymentViewState.setPaymentType(PaymentViewState.PaymentType.FULL);
+                return;
+            }
+            paymentViewState.setPaymentType((PaymentViewState.PaymentType)paymentTypeToggleGroup.getSelectedToggle().getUserData());
+        }
+    }
+
+    private class DiscountTypeTogglesListener implements ChangeListener<Toggle> {
+
+        @Override
+        public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+            if (discountTypeToggleGroup.getSelectedToggle() == null) {
+                paymentViewState.setDiscountType(PaymentViewState.DiscountType.NONE);
+                return;
+            }
+            paymentViewState.setDiscountType((PaymentViewState.DiscountType) discountTypeToggleGroup.getSelectedToggle().getUserData());
+        }
     }
 }

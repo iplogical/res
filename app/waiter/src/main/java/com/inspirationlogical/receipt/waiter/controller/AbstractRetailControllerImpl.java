@@ -20,13 +20,14 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Setter;
 
 /**
  * Created by Bálint on 2017.03.28..
  */
-public class AbstractRetailControllerImpl extends AbstractController {
+public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     @FXML
     protected Label tableName;
@@ -81,6 +82,21 @@ public class AbstractRetailControllerImpl extends AbstractController {
         restaurantController.updateRestaurant();
         viewLoader.loadViewIntoScene(restaurantController);
     }
+
+
+    protected void initializeSoldProductsTableRowHandler() {
+        soldProductsTable.setRowFactory(tv -> {
+            TableRow<SoldProductViewModel> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(event.getClickCount() == 2 && (! row.isEmpty())) {
+                    rowClickHandler(row.getItem());
+                }
+            });
+            return row;
+        });
+    }
+
+    protected abstract void rowClickHandler(SoldProductViewModel row);
 
     protected void updateTableSummary() {
         tableName.setText(tableView.getName());

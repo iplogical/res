@@ -7,4 +7,12 @@ public @Data class SaleViewState {
     private boolean takeAway;
 
     private boolean isGift;
+
+    private CancellationType cancellationType;
+
+    public enum CancellationType {
+        NONE,
+        SELECTIVE,
+        SINGLE;
+    }
 }

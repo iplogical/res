@@ -181,6 +181,16 @@
             <Button fx:id="sellAdHocProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSellAdHocProduct" text="%SaleView.SellAdHocProduct" textAlignment="CENTER" />
             <ToggleButton fx:id="giftProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGiftProduct" text="%SaleView.GiftProduct" textAlignment="CENTER" />
             <Separator prefWidth="200.0" />
+            <ToggleButton fx:id="selectiveCancellation" mnemonicParsing="false" prefWidth="150.0" text="%SaleView.SelectiveCancellation">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <toggleGroup>
+                  <ToggleGroup fx:id="cancellationTypeToggleGroup" />
+               </toggleGroup>
+            </ToggleButton>
+            <ToggleButton fx:id="singleCancellation" mnemonicParsing="false" prefWidth="150.0" text="%SaleView.SingleCancellation" toggleGroup="$cancellationTypeToggleGroup" />
+            <Separator prefWidth="200.0" />
             <Button fx:id="toPaymentView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onToPaymentView" text="%SaleView.ToPaymentView" textAlignment="CENTER" />
             <Separator prefWidth="200.0" />
             <Button fx:id="backToRestaurantView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%SaleView.Back" textAlignment="CENTER" />

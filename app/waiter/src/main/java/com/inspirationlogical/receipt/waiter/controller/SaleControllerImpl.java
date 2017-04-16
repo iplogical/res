@@ -2,6 +2,9 @@ package com.inspirationlogical.receipt.waiter.controller;
 
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
+import static com.inspirationlogical.receipt.waiter.viewstate.SaleViewState.CancellationType.SELECTIVE;
+import static com.inspirationlogical.receipt.waiter.viewstate.SaleViewState.CancellationType.SINGLE;
+import static com.inspirationlogical.receipt.waiter.viewstate.SaleViewState.CancellationType.NONE;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,15 +24,17 @@ import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
+import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import com.inspirationlogical.receipt.waiter.viewstate.SaleViewState;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -64,6 +69,13 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     private ToggleButton giftProduct;
+
+    @FXML
+    ToggleButton selectiveCancellation;
+    @FXML
+    ToggleButton singleCancellation;
+    @FXML
+    ToggleGroup cancellationTypeToggleGroup;
 
     @FXML
     private Button backToRestaurantView;
@@ -102,6 +114,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         this.commonService = commonService;
         this.adHocProductFormController = adHocProductFormController;
         this.elementControllers = new ArrayList<>();
+        saleViewState = new SaleViewState();
     }
 
 
@@ -109,9 +122,10 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     public void initialize(URL location, ResourceBundle resources) {
         initializeCategories();
         initializeSoldProductsTable();
-        initializeSaleViewState();
+        initializeCancellationToggles();
         updateNode();
         updateTableSummary();
+        initializeSoldProductsTableRowHandler();
     }
 
     @Override
@@ -164,6 +178,11 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         updateCategories(selectedCategory);
     }
 
+    @Override
+    protected void rowClickHandler(SoldProductViewModel row) {
+        System.out.println(row.getProductName());
+    }
+
     @FXML
     public void onToPaymentView(Event event) {
         PaymentController paymentController = WaiterRegistry.getInstance(PaymentController.class);
@@ -195,8 +214,11 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         selectedCategory = rootCategory.getChildrenCategories().get(0);
     }
 
-    private void initializeSaleViewState() {
-        saleViewState = new SaleViewState();
+    private void initializeCancellationToggles() {
+        singleCancellation.setUserData(SINGLE);
+        selectiveCancellation.setUserData(SELECTIVE);
+        saleViewState.setCancellationType(NONE);
+        cancellationTypeToggleGroup.selectedToggleProperty().addListener(new CancellationTypeToggleListener());
     }
 
     private void updateCategories(ProductCategoryView selectedCategory) {
@@ -302,5 +324,15 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private void setGiftProduct() {
         saleViewState.setGift(giftProduct.isSelected());
+    }
+
+    private class CancellationTypeToggleListener implements ChangeListener<Toggle> {
+        @Override
+        public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+            if(cancellationTypeToggleGroup.getSelectedToggle() == null) {
+                saleViewState.setCancellationType(NONE);
+            }
+            saleViewState.setCancellationType((SaleViewState.CancellationType)cancellationTypeToggleGroup.getSelectedToggle().getUserData());
+        }
     }
 }
