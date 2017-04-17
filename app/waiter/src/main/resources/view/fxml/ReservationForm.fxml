@@ -49,6 +49,40 @@
             </TextField>
          </children>
       </HBox>
+      <HBox alignment="CENTER_LEFT" spacing="5.0">
+         <children>
+            <Label prefWidth="100.0" text="%ReservationForm.Start">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <AnchorPane fx:id="startPlaceholder" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" layoutX="16.0" layoutY="130.0" spacing="5.0">
+         <children>
+            <Label prefWidth="100.0" text="%ReservationForm.End">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <AnchorPane fx:id="endPlaceholder" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" layoutX="16.0" layoutY="88.0" spacing="5.0">
+         <children>
+            <Label prefWidth="100.0" text="%ReservationForm.Note">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="note" alignment="CENTER" prefWidth="100.0" promptText="%ReservationForm.Note">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextField>
+         </children>
+      </HBox>
       <HBox spacing="5.0">
          <children>
             <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onConfirm" prefWidth="100.0" text="%Form.Confirm">

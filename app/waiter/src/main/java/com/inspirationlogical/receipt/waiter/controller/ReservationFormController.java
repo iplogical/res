@@ -10,12 +10,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.util.converter.IntegerStringConverter;
+import jfxtras.scene.control.CalendarPicker;
+import jfxtras.scene.control.CalendarTimePicker;
 import lombok.Getter;
 
 import java.net.URL;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
@@ -47,6 +52,15 @@ public class ReservationFormController implements Controller {
     Button confirm;
 
     @FXML
+    AnchorPane startPlaceholder;
+
+    @FXML
+    AnchorPane endPlaceholder;
+
+    @FXML
+    TextField note;
+
+    @FXML
     public void onCancel(MouseEvent event) {
         hideNode(root);
     }
@@ -56,6 +70,8 @@ public class ReservationFormController implements Controller {
         hideNode(root);
     }
 
+    CalendarPicker start;
+    CalendarTimePicker end;
 
     @Override
     public String getViewPath() {
@@ -74,11 +90,25 @@ public class ReservationFormController implements Controller {
     }
 
     void show(Node parent, Point2D position){
-        showPopup(popup, this , parent, position);
+        // TODO: determine position
+        double pos_x = 500;
+        double pos_y = 500;
+        popup.show(parent, pos_x, pos_y);
+        popup.getContent().forEach(node -> node.setVisible(true));
     }
 
     ReservationFormController(ViewLoader viewLoader) {
         popup = new Popup();
         popup.getContent().add(viewLoader.loadView(this));
+        start = new CalendarPicker();
+        start.setCalendar(Calendar.getInstance());
+        start.setShowTime(Boolean.TRUE);
+        start.setLocale(Locale.forLanguageTag("hu-HU"));
+        start.setCalendar(Calendar.getInstance());
+        end = new CalendarTimePicker();
+        end.setLocale(Locale.forLanguageTag("hu-HU"));
+        end.setCalendar(Calendar.getInstance());
+        startPlaceholder.getChildren().add(0,start);
+        endPlaceholder.getChildren().add(0,end);
     }
 }
