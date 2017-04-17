@@ -110,6 +110,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
 
     @FXML
     public void onConfirm(Event event) {
+        if (owner.getSelectionModel().isEmpty()) return;
         List<RecipeParams> recipeParamsList = componentTable.getItems().stream()
                 .map(recipeViewModel -> RecipeParams.builder()
                         .componentName(recipeViewModel.getComponent())
@@ -122,6 +123,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
     @FXML
     public void onHide(Event event) {
         goodsController.updateGoods();
+        componentTable.getItems().clear();
         hideNode(root);
     }
 
