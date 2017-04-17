@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
+import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
@@ -122,5 +123,6 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     @Override
     public void closeDay() {
         StockAdapter.closeLatestStockEntries();
+        DailyClosureAdapter.getOpenDailyClosure().close();
     }
 }

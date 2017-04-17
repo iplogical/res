@@ -20,7 +20,7 @@ asztalszám kapacitás méret
 12 5 80*80
 13 8 120*80
 
-Virtuális asztal számozása a tényleges asztalt jelenti ahol ül (kis ikon az asztalon (+virtuálisok száma), ha tartozik hozzá nyitott virtuális) PRIORITY 2
+Virtuális asztal számozása a tényleges asztalt jelenti ahol ül FUTURE
 
 Kontext menu sebessége a kis gépen PRIORITY 1 [Attila]
 
@@ -37,3 +37,11 @@ Rövid név nics kitöltve: megegyezik a hosszú névvel PRIORITY 2
 Nyugta fizetési mód módosítás manager terminálból FUTURE
 
 Asztal tört részének fizetése FUTURE
+
+Cégadatok átirása a manager terminálban FUTURE
+
+Enumok neve a UI-ban magyarul PRIORITY 1
+
+AD HOC ne legyen a manager terminálban
+
+manager terminálban tabok legyenek gombok helyett

@@ -780,27 +780,34 @@ eladási ár / (1 - Engedmény % / 100)
     <node id="n32">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="301.78019306527386" width="157.228591874706" x="-1224.6410816324412" y="-0.985478087649426"/>
+          <y:Geometry height="402.11498298124025" width="176.38341540411795" x="-1234.2184933971473" y="-0.985478087649426"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="34.673828125" x="61.27738187485306" y="4.0">Zárás</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="268.62109375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="148.0703125" x="2.0" y="30.701171875">ID
+          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="34.673828125" x="70.85479363955892" y="4.0">Zárás</y:NodeLabel>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="371.529296875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="172.744140625" x="2.0" y="30.701171875">ID
 GU ID
 Verzió ID
 Zárás időpont
-Bruttó forgalom készpénz
-Bruttó forgalom bankkártya
-Bruttó forgalom kupon
-Bruttó forgalom összesen
-Nettó forgalom készpénz
-Nettó forgalom bankkártya
-Nettó forgalom kupon
-Nettó forgalom összesen
-Nyereség ÁFA előtt
-Nyereség ÁFA után
+Beszerzési nettó ár készpénz
+Beszerzési nettó ár bankkártya
+Beszerzési nettó ár kupon
+Beszerzési nettó ár összesen
+Beszerzési bruttó ár készpénz
+Beszerzési bruttó ár bankkártya
+Beszerzési bruttó ár kupon
+Beszerzési bruttó ár összesen
+Eladási nettó ár készpénz
+Eladási nettó ár bankkártya
+Eladási nettó ár kupon
+Eladási nettó ár összesen
+Eladási bruttó ár készpénz
+Eladási bruttó ár bankkártya
+Eladási bruttó ár kupon
+Eladási bruttó ár összesen
+Nyereség
 Árrés
-Front árrés
-Asztal átlag
+Nyugta átlag
+Nyugtaszám
 Leértékelés<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
             </y:LabelModel>

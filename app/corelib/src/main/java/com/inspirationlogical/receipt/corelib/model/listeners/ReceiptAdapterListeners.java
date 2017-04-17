@@ -15,6 +15,7 @@ public class ReceiptAdapterListeners {
         List<ReceiptAdapter.Listener> list = new ArrayList<>();
         list.add(new ReceiptPrinter());
         list.add(new StockListener());
+        list.add(new DailyClosureListener());
         return list;
     }
 }

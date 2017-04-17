@@ -17,7 +17,7 @@ public class StockListener implements ReceiptAdapter.Listener {
 
     @Override
     public void onOpen(ReceiptAdapter receipt) {
-        System.out.println("A receipt was opened.");
+
     }
 
     @Override
