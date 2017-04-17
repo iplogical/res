@@ -169,7 +169,7 @@
          <right>
             <VBox alignment="TOP_CENTER" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="reservation" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%Restaurant.Reservation" textAlignment="CENTER">
+                  <Button fx:id="reservation" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onReservationClicked" text="%Restaurant.Reservation" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font></Button>

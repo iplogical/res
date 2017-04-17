@@ -10,6 +10,7 @@ import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMA
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -445,5 +446,12 @@ public class RestaurantControllerImpl implements RestaurantController {
                 .mapToInt(tableController -> tableController.getView().getTotalPrice()).sum()));
         paidConsumption.setText(String.valueOf(restaurantView.getPaidConsumptionOfTheDay()));
         totalIncome.setText(String.valueOf(Integer.valueOf(currentConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
+    }
+
+
+    @FXML
+    public void onReservationClicked(Event event) {
+        Point2D position = calculatePopupPosition(reservation, getActiveTab());
+        new ReservationFormController(viewLoader).show(getActiveTab(),position);
     }
 }

@@ -38,5 +38,5 @@ hs_err_pid*
 app/receipts/
 
 #duplicated resources
-app/waiter/src/main/resources/*
+#app/waiter/src/main/resources/*
 app/corelib/src/main/resources/properties/ui_hu.properties
