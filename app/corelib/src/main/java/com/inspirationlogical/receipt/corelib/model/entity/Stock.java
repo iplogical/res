@@ -46,6 +46,10 @@ public @Data class Stock extends AbstractEntity {
 
     private double purchasedQuantity;
 
+    private double inventoryQuantity;
+
+    private double disposedQuantity;
+
     private LocalDateTime date;
 
     @Tolerate

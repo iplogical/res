@@ -12,5 +12,9 @@ public interface StockView {
 
     double getPurchasedQuantity();
 
+    double getInventoryQuantity();
+
+    double getDisposedQuantity();
+
     LocalDateTime getDate();
 }

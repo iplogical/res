@@ -33,6 +33,16 @@ public class StockViewImpl extends AbstractModelViewImpl<StockAdapter>
     }
 
     @Override
+    public double getInventoryQuantity() {
+        return adapter.getAdaptee().getInventoryQuantity();
+    }
+
+    @Override
+    public double getDisposedQuantity() {
+        return adapter.getAdaptee().getDisposedQuantity();
+    }
+
+    @Override
     public LocalDateTime getDate() {
         return adapter.getAdaptee().getDate();
     }

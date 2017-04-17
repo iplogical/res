@@ -12,17 +12,25 @@ public class StockViewModel extends ProductViewModel {
     private String availableQuantity;
     private String initialQuantity;
     private String soldQuantity;
-    private String inputQuantity;
     private String purchasedQuantity;
+    private String inventoryQuantity;
+    private String disposedQuantity;
+    private String inputQuantity;
     private String date;
 
     public StockViewModel(StockView stockView) {
         super(stockView.getProduct());
-        double available = roundToTwoDecimals(stockView.getInitialQuantity() - stockView.getSoldQuantity() + stockView.getPurchasedQuantity());
+        double available = roundToTwoDecimals(stockView.getInitialQuantity()
+                - stockView.getSoldQuantity()
+                + stockView.getPurchasedQuantity()
+                + stockView.getInventoryQuantity()
+                - stockView.getDisposedQuantity());
         availableQuantity = valueOf(available);
         initialQuantity = valueOf(roundToTwoDecimals(stockView.getInitialQuantity()));
         soldQuantity = valueOf(roundToTwoDecimals(stockView.getSoldQuantity()));
         purchasedQuantity = valueOf(roundToTwoDecimals(stockView.getPurchasedQuantity()));
+        inventoryQuantity = valueOf(roundToTwoDecimals(stockView.getInventoryQuantity()));
+        disposedQuantity = valueOf(roundToTwoDecimals(stockView.getDisposedQuantity()));
         date = stockView.getDate().toString();
     }
 

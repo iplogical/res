@@ -62,6 +62,8 @@ public class StockAdapter extends AbstractAdapter<Stock> {
                     .initialQuantity(initialQuantity)
                     .soldQuantity(0)
                     .purchasedQuantity(0)
+                    .inventoryQuantity(0)
+                    .disposedQuantity(0)
                     .date(now())
                     .build();
         GuardedTransaction.persist(stock);
@@ -69,30 +71,41 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     private static double getInitialQuantity(StockAdapter stock) {
-        return stock.getAdaptee().getInitialQuantity() - stock.getAdaptee().getSoldQuantity() + stock.getAdaptee().getPurchasedQuantity();
+        return stock.getAdaptee().getInitialQuantity()
+                - stock.getAdaptee().getSoldQuantity()
+                + stock.getAdaptee().getPurchasedQuantity()
+                + stock.getAdaptee().getInventoryQuantity() // Inventory can be negative.
+                - stock.getAdaptee().getDisposedQuantity();
     }
 
     public void updateStockAdapter(double quantity, ReceiptType type) {
-        if(ReceiptType.isStockDecrement(type)) {
-            decreaseStock(quantity);
-        } else if(ReceiptType.isStockIncrement(type)){
-            increaseStock(quantity);
+        if(ReceiptType.isSale(type)) {
+            increaseSoldQuantity(quantity);
+        } else if(ReceiptType.isPurchase(type)){
+            increasePurchasedQuantity(quantity);
         } else if(ReceiptType.isInventory(type)) {
-            if(quantity > 0) {
-                decreaseStock(quantity);
-            } else {
-                increaseStock(Math.abs(quantity));
-            }
+            increaseInventoryQuantity(quantity);
+        } else if(ReceiptType.isDisposal(type)) {
+            increaseDisposedQuantity(quantity);
         } else {
             // OTHER type Receipt, do nothing.
         }
     }
 
-    private void decreaseStock(double quantity) {
+    private void increaseSoldQuantity(double quantity) {
         GuardedTransaction.run(() -> adaptee.setSoldQuantity(adaptee.getSoldQuantity() + quantity / adaptee.getOwner().getStorageMultiplier()));
     }
 
-    private void increaseStock(double quantity) {
+    private void increasePurchasedQuantity(double quantity) {
         GuardedTransaction.run(() -> adaptee.setPurchasedQuantity(adaptee.getPurchasedQuantity() + quantity / adaptee.getOwner().getStorageMultiplier()));
     }
+
+    private void increaseInventoryQuantity(double quantity) {
+        GuardedTransaction.run(() -> adaptee.setInventoryQuantity(adaptee.getInventoryQuantity() + quantity / adaptee.getOwner().getStorageMultiplier()));
+    }
+
+    private void increaseDisposedQuantity(double quantity) {
+        GuardedTransaction.run(() -> adaptee.setDisposedQuantity(adaptee.getDisposedQuantity() + quantity / adaptee.getOwner().getStorageMultiplier()));
+    }
+
 }

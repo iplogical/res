@@ -45,3 +45,5 @@ Enumok neve a UI-ban magyarul PRIORITY 1
 AD HOC ne legyen a manager terminálban
 
 manager terminálban tabok legyenek gombok helyett
+
+Napi zárás tiltása ha van nyitott asztal.

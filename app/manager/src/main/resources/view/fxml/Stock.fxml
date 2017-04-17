@@ -17,6 +17,8 @@
                   <TableColumn fx:id="stockInitialQuantity" prefWidth="100.0" text="%Stock.StockInitialQuantity" />
                   <TableColumn fx:id="stockSoldQuantity" prefWidth="100.0" text="%Stock.StockSoldQuantity" />
                   <TableColumn fx:id="stockPurchasedQuantity" prefWidth="100.0" text="%Stock.StockPurchasedQuantity" />
+                  <TableColumn fx:id="stockInventoryQuantity" prefWidth="75.0" text="%Stock.StockInventoryQuantity" />
+                  <TableColumn fx:id="stockDisposedQuantity" prefWidth="75.0" text="%Stock.StockDisposedQuantity" />
                   <TableColumn fx:id="stockInputQuantity" prefWidth="75.0" text="%Stock.StockInputQuantity" />
                   <TableColumn fx:id="productQuantityUnit" prefWidth="100.0" text="%Common.ProductQuantityUnit" />
                   <TableColumn fx:id="productStorageMultiplier" prefWidth="100.0" text="%Common.ProductStorageMultiplier" />

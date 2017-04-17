@@ -13,16 +13,20 @@ public enum ReceiptType {
     ReceiptType(String name) {
         this.name = name;
     }
-    public static boolean isStockDecrement(ReceiptType type) {
-        return type.equals(SALE) || type.equals(DISPOSAL);
+    public static boolean isSale(ReceiptType type) {
+        return type.equals(SALE);
     }
 
-    public static boolean isStockIncrement(ReceiptType type) {
+    public static boolean isPurchase(ReceiptType type) {
         return type.equals(PURCHASE);
     }
 
     public static boolean isInventory(ReceiptType type) {
         return type.equals(INVENTORY);
+    }
+
+    public static boolean isDisposal(ReceiptType type) {
+        return type.equals(DISPOSAL);
     }
 
     @Override

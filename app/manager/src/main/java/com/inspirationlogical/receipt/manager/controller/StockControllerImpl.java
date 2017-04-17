@@ -48,6 +48,10 @@ public class StockControllerImpl extends AbstractController implements StockCont
     @FXML
     TableColumn<StockViewModel, String> stockPurchasedQuantity;
     @FXML
+    TableColumn<StockViewModel, String> stockInventoryQuantity;
+    @FXML
+    TableColumn<StockViewModel, String> stockDisposedQuantity;
+    @FXML
     TableColumn<StockViewModel, String> stockInputQuantity;
     @FXML
     TableColumn<StockViewModel, String> stockDate;
@@ -148,6 +152,8 @@ public class StockControllerImpl extends AbstractController implements StockCont
         initColumn(stockInitialQuantity, StockViewModel::getInitialQuantity);
         initColumn(stockSoldQuantity, StockViewModel::getSoldQuantity);
         initColumn(stockPurchasedQuantity, StockViewModel::getPurchasedQuantity);
+        initColumn(stockInventoryQuantity, StockViewModel::getInventoryQuantity);
+        initColumn(stockDisposedQuantity, StockViewModel::getDisposedQuantity);
         initColumn(stockDate, StockViewModel::getDate);
         initColumn(productType, StockViewModel::getType);
         initColumn(productStatus, StockViewModel::getStatus);

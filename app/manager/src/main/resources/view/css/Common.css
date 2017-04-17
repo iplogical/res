@@ -38,7 +38,12 @@
     -fx-font-size: 12;
 }
 
+.table-view .column-header .label {
+    -fx-font: normal 14 "SourceSansPro";
+}
+
 .tree-table-view .column-header .label {
     -fx-font: normal 14 "SourceSansPro";
 }
+
 
