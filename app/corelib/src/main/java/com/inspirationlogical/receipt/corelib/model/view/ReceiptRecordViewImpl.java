@@ -51,6 +51,7 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
         return adapter.getAdaptee().getVAT();
     }
 
+    //TODO: Create a service functions for the increase and decrease operation. The view should not manipulate the database.
     @Override
     public void increaseSoldQuantity(double amount) {
         GuardedTransaction.run(() -> adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() + amount)));

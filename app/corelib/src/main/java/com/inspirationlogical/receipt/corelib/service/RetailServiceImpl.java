@@ -53,4 +53,9 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
         //TODO: Write test!
         return new ReceiptRecordViewImpl(getTableAdapter(tableView).getActiveReceipt().cloneReceiptRecordAdapter(getReceiptRecordAdapter(receiptRecordView), amount));
     }
+
+    @Override
+    public void cancelReceiptRecord(TableView tableView, ReceiptRecordView receiptRecordView) {
+        getTableAdapter(tableView).getActiveReceipt().cancelReceiptRecord(getReceiptRecordAdapter(receiptRecordView));
+    }
 }

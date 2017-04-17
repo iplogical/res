@@ -239,6 +239,12 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         return new ReceiptRecordAdapter(receiptRecord[0]);
     }
 
+    public void cancelReceiptRecord(ReceiptRecordAdapter receiptRecordAdapter) {
+        GuardedTransaction.delete(receiptRecordAdapter.getAdaptee(), () -> {
+            adaptee.getRecords().remove(receiptRecordAdapter.getAdaptee());
+        });
+    }
+
     public int getTotalPrice() {
         return getReceiptRecords().stream()
                 .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum();

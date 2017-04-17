@@ -29,9 +29,10 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 public class ReceiptAdapterTest {
 
     private TableAdapter tableAdapter;
+    private ProductAdapter productOne;
     private ReceiptAdapter receiptSaleOne;
     private ReceiptAdapter receiptPurchase;
-    private ProductAdapter productAdapter;
+    private ReceiptRecordAdapter receiptRecordSaleOne;
     private PaymentParams paymentParams;
 
     @Rule
@@ -40,9 +41,10 @@ public class ReceiptAdapterTest {
     @Before
     public void createAdapters() {
         tableAdapter = new TableAdapter(schema.getTableNormal());
+        productOne = new ProductAdapter(schema.getProductOne());
         receiptSaleOne = new ReceiptAdapter(schema.getReceiptSaleOne());
         receiptPurchase = new ReceiptAdapter(schema.getReceiptPurchase());
-        productAdapter = new ProductAdapter(schema.getProductOne());
+        receiptRecordSaleOne = new ReceiptRecordAdapter(schema.getReceiptRecordSaleOne());
         paymentParams = PaymentParams.builder()
                 .paymentMethod(PaymentMethod.CASH)
                 .discountAbsolute(0)
@@ -57,7 +59,7 @@ public class ReceiptAdapterTest {
 
     @Test
     public void testSellProduct() {
-        receiptSaleOne.sellProduct(productAdapter, 1, true, false);
+        receiptSaleOne.sellProduct(productOne, 1, true, false);
         assertEquals(5, receiptSaleOne.getSoldProducts().size());
     }
 
@@ -175,5 +177,13 @@ public class ReceiptAdapterTest {
                 .build());
         receiptPurchase.addStockRecords(paramsList);
         assertEquals(1, receiptPurchase.getSoldProducts().size());
+    }
+
+    @Test
+    public void testCancelReceiptRecord() {
+        int recordNum = receiptSaleOne.getAdaptee().getRecords().size();
+        receiptSaleOne.cancelReceiptRecord(receiptRecordSaleOne);
+        assertEquals(recordNum - 1, receiptSaleOne.getAdaptee().getRecords().size());
+
     }
 }

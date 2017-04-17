@@ -86,8 +86,6 @@ public @Data class SoldProductViewModel {
                 valueOf(receiptRecordView.getVat()).equals(row.getProductVat());
     }
 
-    public static Comparator<SoldProductViewModel> compareById = (o1, o2) -> o1.getProductId().compareTo(o2.getProductId());
-
     public static int getTotalPrice(ObservableList<SoldProductViewModel> paidProductsModel) {
         int totalPrice = 0;
         for(SoldProductViewModel model : paidProductsModel) {

@@ -180,7 +180,11 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     protected void rowClickHandler(SoldProductViewModel row) {
-        System.out.println(row.getProductName());
+        if(saleViewState.isSelectiveCancellation()) {
+            retailService.cancelReceiptRecord(tableView, removeRowFromSoldProducts(row));
+        } else if(saleViewState.isSingleCancellation()) {
+            decreaseRowInSoldProducts(row, 1);
+        }
     }
 
     @FXML
@@ -331,6 +335,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
             if(cancellationTypeToggleGroup.getSelectedToggle() == null) {
                 saleViewState.setCancellationType(NONE);
+                return;
             }
             saleViewState.setCancellationType((SaleViewState.CancellationType)cancellationTypeToggleGroup.getSelectedToggle().getUserData());
         }

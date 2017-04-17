@@ -10,6 +10,14 @@ public @Data class SaleViewState {
 
     private CancellationType cancellationType;
 
+    public boolean isSelectiveCancellation() {
+        return cancellationType.equals(CancellationType.SELECTIVE);
+    }
+
+    public boolean isSingleCancellation() {
+        return cancellationType.equals(CancellationType.SINGLE);
+    }
+
     public enum CancellationType {
         NONE,
         SELECTIVE,

@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -137,5 +138,40 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected void updateSoldTotalPrice() {
         totalPrice.setText(SoldProductViewModel.getTotalPrice(soldProductsModel) + " Ft");
+    }
+
+
+    protected ReceiptRecordView removeRowFromSoldProducts(final SoldProductViewModel row) {
+        soldProductsModel.remove(row);
+        soldProductsTable.setItems(soldProductsModel);
+        List<ReceiptRecordView> matching = findMatchingView(soldProductsView, row);
+        soldProductsView.remove(matching.get(0));
+        return matching.get(0);
+    }
+
+    protected List<ReceiptRecordView> findMatchingView(Collection<ReceiptRecordView> productsView, SoldProductViewModel row) {
+        return productsView.stream()
+                .filter(receiptRecordView -> SoldProductViewModel.isEquals(row, receiptRecordView))
+                .collect(Collectors.toList());
+    }
+
+    private boolean decreaseClickedRow(SoldProductViewModel row, double amount) {
+        soldProductsModel.remove(row);
+        if(row.decreaseProductQuantity(amount)) {
+            removeRowFromSoldProducts(row); // The whole product is paid, remove the row.
+            return true;
+        }
+        soldProductsModel.add(row);
+        soldProductsModel.sort(Comparator.comparing(SoldProductViewModel::getProductId));
+        soldProductsTable.setItems(soldProductsModel);
+        soldProductsTable.refresh();
+        return false;
+    }
+
+    protected ReceiptRecordView decreaseRowInSoldProducts(SoldProductViewModel row, double amount) {
+        List<ReceiptRecordView> matchingReceiptRecordView = findMatchingView(soldProductsView, row);
+        matchingReceiptRecordView.get(0).decreaseSoldQuantity(amount);
+        decreaseClickedRow(row, amount);
+        return matchingReceiptRecordView.get(0);
     }
 }
