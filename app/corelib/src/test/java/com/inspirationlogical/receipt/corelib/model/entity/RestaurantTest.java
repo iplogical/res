@@ -72,6 +72,11 @@ public class RestaurantTest {
                 schema.getTableNormal().setType(TableType.DISPOSAL));
     }
 
+    @Test(expected = RollbackException.class)
+    public void toNoDailyClosure() {
+        GuardedTransaction.run(() ->
+                schema.getRestaurant().setDailyClosures(null));
+    }
 
     @Test
     public void equalityAndHashCode() {

@@ -777,6 +777,43 @@ eladási ár / (1 - Engedmény % / 100)
         </y:UMLNoteNode>
       </data>
     </node>
+    <node id="n32">
+      <data key="d6">
+        <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
+          <y:Geometry height="301.78019306527386" width="157.228591874706" x="-1224.6410816324412" y="-0.985478087649426"/>
+          <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="34.673828125" x="61.27738187485306" y="4.0">Zárás</y:NodeLabel>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="268.62109375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="148.0703125" x="2.0" y="30.701171875">ID
+GU ID
+Verzió ID
+Zárás időpont
+Bruttó forgalom készpénz
+Bruttó forgalom bankkártya
+Bruttó forgalom kupon
+Bruttó forgalom összesen
+Nettó forgalom készpénz
+Nettó forgalom bankkártya
+Nettó forgalom kupon
+Nettó forgalom összesen
+Nyereség ÁFA előtt
+Nyereség ÁFA után
+Árrés
+Front árrés
+Asztal átlag
+Leértékelés<y:LabelModel>
+              <y:ErdAttributesNodeLabelModel/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:ErdAttributesNodeLabelModelParameter/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:StyleProperties>
+            <y:Property class="java.lang.Boolean" name="y.view.ShadowNodePainter.SHADOW_PAINTING" value="true"/>
+          </y:StyleProperties>
+        </y:GenericNode>
+      </data>
+    </node>
     <edge id="e0" source="n0" target="n3">
       <data key="d10">
         <y:PolyLineEdge>
@@ -1025,6 +1062,17 @@ eladási ár / (1 - Engedmény % / 100)
           <y:Path sx="0.0" sy="0.0" tx="57.2551093871179" ty="-81.03159030544657"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="dash"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e24" source="n4" target="n32">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="crows_foot_one" target="crows_foot_many_optional"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>

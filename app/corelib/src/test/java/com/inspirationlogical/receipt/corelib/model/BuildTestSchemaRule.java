@@ -38,6 +38,7 @@ public class BuildTestSchemaRule implements TestRule {
     public static final int NUMBER_OF_RESTAURANT = 1;
     public static final int NUMBER_OF_VAT_SERIE = 1;
     public static final int NUMBER_OF_VAT_RECORDS = 5;
+    public static final int NUMBER_OF_DAILY_CLOSURES = 2;
 
     private @Getter EntityManager entityManager;
 
@@ -141,6 +142,9 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter VAT vatFour;
     private @Getter VAT vatFive;
 
+    private @Getter DailyClosure dailyClosureOne;
+    private @Getter DailyClosure dailyClosureTwo;
+
     @Override
     public Statement apply(Statement base, Description description) {
         return new Statement() {
@@ -178,6 +182,7 @@ public class BuildTestSchemaRule implements TestRule {
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Receipt").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Reservation").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Table").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.DailyClosure").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Restaurant").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.VAT").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.VATSerie").executeUpdate();
@@ -207,7 +212,13 @@ public class BuildTestSchemaRule implements TestRule {
         BuildVATs();
         buildTables();
         buildReservations();
-        BuildRestaurant();
+        buildRestaurant();
+        buildDailyClosures();
+    }
+
+    private void buildDailyClosures() {
+        buildDailyClosureOne();
+        buildDailyClosureTwo();
     }
 
     private void setUpObjectRelationShips() {
@@ -224,6 +235,7 @@ public class BuildTestSchemaRule implements TestRule {
         vatSerieAndVatValues();
         receiptRecordsAndProducts();
         restaurantAndTables();
+        restaurantAndDailyClosures();
     }
 
     private void persistObjects() {
@@ -351,7 +363,7 @@ public class BuildTestSchemaRule implements TestRule {
         
     }
 
-    private void BuildRestaurant() {
+    private void buildRestaurant() {
         restaurant = Restaurant.builder()
                 .restaurantName("GameUp Pub")
                 .companyName("Arcopen Kft.")
@@ -370,6 +382,43 @@ public class BuildTestSchemaRule implements TestRule {
                 .ZIPCode("1066")
                 .city("Budapest")
                 .street("Zichy Jenő utca 4.")
+                .build();
+    }
+
+    private void buildDailyClosureOne() {
+        dailyClosureOne = DailyClosure.builder()
+                .closureTime(now().minusDays(1))
+                .grossCommerceCash(50000)
+                .grossCommerceCreditCard(30000)
+                .grossCommerceCoupon(20000)
+                .grossCommerceSum(100000)
+                .netCommerceCash(40000)
+                .netCommerceCreditCard(25000)
+                .netCommerceCoupon(15000)
+                .netCommerceSum(80000)
+                .profitBeforeVAT(40000)
+                .profitAfterVAT(30000)
+                .markup(50)
+                .frontMarkup(40)
+                .tableAverage(5000)
+                .build();
+    }
+
+    private void buildDailyClosureTwo() {
+        dailyClosureTwo = DailyClosure.builder()
+                .grossCommerceCash(40000)
+                .grossCommerceCreditCard(25000)
+                .grossCommerceCoupon(15000)
+                .grossCommerceSum(80000)
+                .netCommerceCash(30000)
+                .netCommerceCreditCard(20000)
+                .netCommerceCoupon(10000)
+                .netCommerceSum(60000)
+                .profitBeforeVAT(30000)
+                .profitAfterVAT(25000)
+                .markup(50)
+                .frontMarkup(40)
+                .tableAverage(4000)
                 .build();
     }
 
@@ -1387,8 +1436,14 @@ public class BuildTestSchemaRule implements TestRule {
         tableDisposal.setOwner(restaurant);
         tableOther.setOwner(restaurant);
         tableOrphanage.setOwner(restaurant);
-
    }
+
+    private void restaurantAndDailyClosures() {
+        restaurant.setDailyClosures(new ArrayList<>(
+                Arrays.asList(dailyClosureOne, dailyClosureTwo)));
+        dailyClosureOne.setOwner(restaurant);
+        dailyClosureTwo.setOwner(restaurant);
+    }
 
     private void tablesToReceipts() {
         receiptSaleOne.setOwner(tableNormal);

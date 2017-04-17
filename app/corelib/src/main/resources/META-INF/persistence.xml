@@ -19,6 +19,7 @@
         <class>com.inspirationlogical.receipt.corelib.model.entity.VAT</class>
         <class>com.inspirationlogical.receipt.corelib.model.entity.Reservation</class>
         <class>com.inspirationlogical.receipt.corelib.model.entity.PriceModifier</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.DailyClosure</class>
         <!--          -->
 
         <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>

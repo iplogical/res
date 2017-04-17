@@ -34,8 +34,6 @@ Termékek rendezése gyakoriság alapján (kell egy gyakoriság érték) PRIORIT
 
 Rövid név nics kitöltve: megegyezik a hosszú névvel PRIORITY 2 
 
-Étterem összesítőben nem látszik a kupon PRIORITY [Bálint]
-
 Nyugta fizetési mód módosítás manager terminálból FUTURE
 
 Asztal tört részének fizetése FUTURE
