@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.manager.controller;
 
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
 import static java.util.stream.Collectors.toList;
 
@@ -78,6 +79,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        addDragAndDrop(root);
         sellableProducts = FXCollections.observableArrayList(commonService.getSellableProducts());
         storalbeProducts = FXCollections.observableArrayList(commonService.getStorableProducts());
         owner.setItems(sellableProducts);

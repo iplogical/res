@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.manager.controller;
 
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
 
 import java.net.URL;
@@ -72,6 +73,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        addDragAndDrop(root);
         rootCategory = commonService.getRootProductCategory();
         parentCategories = FXCollections.observableArrayList(commonService.getAggregateCategories());
         parentCategories.add(rootCategory);

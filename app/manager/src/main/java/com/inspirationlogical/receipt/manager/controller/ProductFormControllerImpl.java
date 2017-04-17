@@ -1,30 +1,29 @@
 package com.inspirationlogical.receipt.manager.controller;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
-import com.inspirationlogical.receipt.corelib.model.enums.*;
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
+
+import java.net.URL;
+import java.util.Arrays;
+import java.util.ResourceBundle;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
+import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.persistence.criteria.CriteriaBuilder;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.ResourceBundle;
-
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
 
 /**
  * Created by régiDAGi on 2017. 04. 10..
@@ -86,6 +85,7 @@ public class ProductFormControllerImpl implements ProductFormController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        addDragAndDrop(root);
         leafCategories = FXCollections.observableArrayList(commonService.getLeafCategories());
         category.setItems(leafCategories);
         category.setConverter(new CategoryStringConverter(leafCategories));

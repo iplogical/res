@@ -1,38 +1,43 @@
 package com.inspirationlogical.receipt.manager.controller;
 
-import com.google.inject.Singleton;
-import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
-import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.*;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
-import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType.*;
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
+import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.DAILY;
+import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.NO_REPETITION;
+import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.WEEKLY;
+import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType.QUANTITY_DISCOUNT;
+import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType.SIMPLE_DISCOUNT;
 
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductView;
-import com.inspirationlogical.receipt.corelib.service.CommonService;
-import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
-import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
-import com.inspirationlogical.receipt.manager.viewmodel.ProductStringConverter;
-import javafx.beans.property.BooleanProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-
-import javax.inject.Inject;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import javax.inject.Inject;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
-import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.NO_REPETITION;
+import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
+import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
+import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
+import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
+import com.inspirationlogical.receipt.manager.viewmodel.ProductStringConverter;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 /**
  * Created by régiDAGi on 2017. 04. 08..
@@ -106,6 +111,7 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        addDragAndDrop(root);
         isCategorySelected = isCategory.selectedProperty();
         products = FXCollections.observableArrayList(commonService.getSellableProducts());
         ownerProduct.setItems(products);
