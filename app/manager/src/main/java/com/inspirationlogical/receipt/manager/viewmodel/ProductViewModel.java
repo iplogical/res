@@ -6,6 +6,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
@@ -46,16 +47,12 @@ public class ProductViewModel {
             minimumStock =  valueOf(productView.getMinimumStock());
             stockWindow =  valueOf(productView.getStockWindow());
 
-            recipes = productView.getRecipes();
+            recipes = productView.getRecipes().stream().filter(recipeView -> !recipeView.isTrivial()).collect(Collectors.toList());
 
-            Optional<RecipeView> recipeView = productView.getRecipes()
-                    .stream()
+            Optional<RecipeView> recipeView = productView.getRecipes().stream()
                     .filter(RecipeView::isTrivial).findFirst();
 
-            if (recipeView.isPresent()) {
-                quantityMultiplier = valueOf(recipeView.get().getQuantity());
-                recipes.clear();
-            }
+            recipeView.ifPresent(recipe -> quantityMultiplier = valueOf(recipe.getQuantity()));
         }
     }
 }
