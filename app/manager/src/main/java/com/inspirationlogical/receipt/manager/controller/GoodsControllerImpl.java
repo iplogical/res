@@ -4,21 +4,20 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.s
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Function;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
+import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
+import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -26,13 +25,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Popup;
 
 @Singleton
-public class GoodsControllerImpl implements GoodsController {
+public class GoodsControllerImpl extends AbstractController implements GoodsController {
 
     public static final String GOODS_VIEW_PATH = "/view/fxml/Goods.fxml";
 
@@ -233,15 +231,6 @@ public class GoodsControllerImpl implements GoodsController {
         recipeForm.getContent().add(viewLoader.loadView(recipeFormController));
         recipeFormController.loadRecipeForm(this);
         showPopup(recipeForm, recipeFormController, root, new Point2D(520, 200));
-    }
-
-    private CategoryViewModel getViewModel(CellDataFeatures<CategoryViewModel, String> cellDataFeatures) {
-        return cellDataFeatures.getValue().getValue();
-    }
-
-    private void initColumn(TreeTableColumn<CategoryViewModel, String> treeTableColumn, Function<CategoryViewModel, String> method) {
-        treeTableColumn.setCellValueFactory((CellDataFeatures<CategoryViewModel, String> category) ->
-                new ReadOnlyStringWrapper(method.apply(getViewModel(category))));
     }
 
     private void initColumns() {
