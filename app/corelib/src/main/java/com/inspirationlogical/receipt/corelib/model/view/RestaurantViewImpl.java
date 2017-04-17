@@ -21,4 +21,9 @@ public class RestaurantViewImpl extends AbstractModelViewImpl<RestaurantAdapter>
     public String getCompanyName() {
         return adapter.getAdaptee().getCompanyName();
     }
+
+    @Override
+    public int getPaidConsumptionOfTheDay() {
+        return adapter.getPaidConsumptionOfTheDay();
+    }
 }

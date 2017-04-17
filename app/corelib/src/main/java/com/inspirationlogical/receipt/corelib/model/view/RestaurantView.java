@@ -7,4 +7,7 @@ public interface RestaurantView {
     String getRestaurantName();
 
     String getCompanyName();
+
+    int getPaidConsumptionOfTheDay();
+
 }

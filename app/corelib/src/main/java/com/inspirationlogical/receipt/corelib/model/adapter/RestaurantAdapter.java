@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +17,8 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
+
+import static java.time.LocalDateTime.now;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -114,5 +117,27 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                 query -> query.setParameter("number", aggregate.getAdaptee().getNumber()));
 
         aggregate.setAdaptee(tables.get(0));
+    }
+
+    public int getPaidConsumptionOfTheDay() {
+        /// TODO: Replace this with the time of the previous closure.
+        LocalDateTime previousClosure = now();
+        previousClosure = previousClosure.plusHours(-1 * previousClosure.getHour());
+        LocalDateTime finalPreviousClosure = previousClosure;
+        List<Receipt> closedReceipts = getReceiptsByClosureTime(finalPreviousClosure);
+        if (closedReceipts.size() == 0) {
+            return 0;
+        }
+        return closedReceipts.stream()
+                .map(ReceiptAdapter::new)
+                .mapToInt(ReceiptAdapter::getTotalPrice).sum();
+    }
+
+    private List<Receipt> getReceiptsByClosureTime(LocalDateTime finalPreviousClosure) {
+        return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_CLOSURE_TIME,
+                query -> {
+                    query.setParameter("closureTime", finalPreviousClosure);
+                    return query;
+                });
     }
 }

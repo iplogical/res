@@ -173,33 +173,11 @@ public class TableAdapter extends AbstractAdapter<Table> {
         });
     }
 
-    public int getPaidConsumptionOfTheDay() {
-        /// TODO: Replace this with the time of the previous closure.
-        LocalDateTime previousClosure = now();
-        previousClosure = previousClosure.plusHours(-1 * previousClosure.getHour());
-        LocalDateTime finalPreviousClosure = previousClosure;
-        List<Receipt> closedReceipts = getReceiptsByClosureTime(finalPreviousClosure);
-        if (closedReceipts.size() == 0) {
-            return 0;
-        }
-        return closedReceipts.stream()
-                .map(ReceiptAdapter::new)
-                .mapToInt(ReceiptAdapter::getTotalPrice).sum();
-    }
-
     private List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
         return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
                 query -> {
                     query.setParameter("status", status);
                     query.setParameter("number", tableNumber);
-                    return query;
-                });
-    }
-
-    private List<Receipt> getReceiptsByClosureTime(LocalDateTime finalPreviousClosure) {
-        return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_CLOSURE_TIME,
-                query -> {
-                    query.setParameter("closureTime", finalPreviousClosure);
                     return query;
                 });
     }

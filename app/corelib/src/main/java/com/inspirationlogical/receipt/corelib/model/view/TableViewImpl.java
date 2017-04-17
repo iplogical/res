@@ -59,12 +59,6 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     }
 
     @Override
-    public int getPaidConsumptionOfTheDay() {
-        return adapter.getPaidConsumptionOfTheDay();
-    }
-
-
-    @Override
     public String getName() {
         return adapter.getAdaptee().getName();
     }

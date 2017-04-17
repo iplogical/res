@@ -443,8 +443,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         currentConsumption.setText(String.valueOf(tableControllers.stream()
                 .filter(tableController -> tableController.getView().isOpen())
                 .mapToInt(tableController -> tableController.getView().getTotalPrice()).sum()));
-        paidConsumption.setText(String.valueOf(tableControllers.stream()
-                .mapToInt(tableController -> tableController.getView().getPaidConsumptionOfTheDay()).sum()));
+        paidConsumption.setText(String.valueOf(restaurantView.getPaidConsumptionOfTheDay()));
         totalIncome.setText(String.valueOf(Integer.valueOf(currentConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
     }
 }

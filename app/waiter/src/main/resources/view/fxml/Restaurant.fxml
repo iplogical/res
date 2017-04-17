@@ -36,22 +36,22 @@
          <center>
             <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="30.0" prefWidth="1014.0">
+                  <HBox prefHeight="25.0" prefWidth="1014.0">
                      <children>
                         <HBox>
                            <children>
-                              <ImageView fitHeight="29.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="60.0" text="%Restaurant.RestaurantSummaryTables" textAlignment="CENTER" />
                               <Label fx:id="openTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER" contentDisplay="CENTER" text="/">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" text="/">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="totalTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="30.0" text="0">
+                              <Label fx:id="totalTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -60,13 +60,13 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <ImageView fitHeight="28.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="70.0" text="%Restaurant.RestaurantSummaryGuests" textAlignment="CENTER" />
                               <Label fx:id="totalGuests" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER" contentDisplay="CENTER" text="/">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" text="/">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -78,20 +78,20 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox prefHeight="25.0" prefWidth="480.0">
+                        <HBox prefHeight="25.0" prefWidth="540.0">
                            <children>
-                              <ImageView fitHeight="29.0" fitWidth="127.0" pickOnBounds="true" preserveRatio="true" />
-                              <Label fx:id="currentConsumption" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="0">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" text="%Restaurant.RestaurantSummaryCashFlow" textAlignment="CENTER" />
+                              <Label fx:id="currentConsumption" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="60.0" text="0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="paidConsumption" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="0">
+                              <Label fx:id="paidConsumption" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="60.0" text="0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="totalIncome" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="0">
+                              <Label fx:id="totalIncome" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="60.0" text="0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
