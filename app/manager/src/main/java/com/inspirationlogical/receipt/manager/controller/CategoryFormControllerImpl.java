@@ -85,7 +85,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     }
 
     @Override
-    public void loadProductCategoryForm(GoodsController goodsController) {
+    public void loadCategoryForm(GoodsController goodsController) {
         this.goodsController = goodsController;
         parentCategories = FXCollections.observableArrayList(commonService.getAggregateCategories());
         parentCategories.add(rootCategory);
@@ -125,7 +125,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
             ErrorMessage.showErrorMessage(root, Resources.MANAGER.getString("ProductCategoryNameEmpty"));
             return;
         }
-        goodsController.addProductCategory(
+        goodsController.addCategory(
                 ProductCategoryParams.builder()
                 .parent(parent.getValue())
                 .name(name.getText())

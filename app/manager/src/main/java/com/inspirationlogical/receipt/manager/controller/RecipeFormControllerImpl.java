@@ -6,19 +6,16 @@ import static java.util.stream.Collectors.toList;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
-import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.RecipeViewModel;
 
-import com.inspirationlogical.receipt.manager.viewmodel.StockViewModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -26,9 +23,11 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 /**
@@ -80,10 +79,10 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         sellableProducts = FXCollections.observableArrayList(commonService.getSellableProducts());
+        storalbeProducts = FXCollections.observableArrayList(commonService.getStorableProducts());
         owner.setItems(sellableProducts);
         owner.getSelectionModel().selectedItemProperty().addListener(new OwnerChoiceBoxListener());
         owner.setConverter(new ProductStringConverter(sellableProducts));
-        storalbeProducts = FXCollections.observableArrayList(commonService.getStorableProducts());
         component.setItems(storalbeProducts);
         component.setConverter(new ProductStringConverter(storalbeProducts));
         component.getSelectionModel().selectedItemProperty().addListener(new ComponentChoiceBoxListener());
@@ -92,6 +91,14 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
         initColumn(componentQuantity, RecipeViewModel::getQuantity);
         initInputColumn(componentQuantity, RecipeViewModel::setQuantity);
         initColumn(componentUnit, RecipeViewModel::getUnit);
+    }
+
+    @Override
+    public void fetchProducts() {
+        sellableProducts.clear();
+        sellableProducts.addAll(commonService.getSellableProducts());
+        storalbeProducts.clear();
+        storalbeProducts.addAll(commonService.getStorableProducts());
     }
 
     @Override
@@ -108,12 +115,10 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
                         .build())
                 .collect(toList());
         commonService.updateRecipe(owner.getSelectionModel().getSelectedItem(), recipeParamsList);
-
-
     }
 
     @FXML
-    public void onCancel(Event event) {
+    public void onHide(Event event) {
         goodsController.updateGoods();
         hideNode(root);
     }

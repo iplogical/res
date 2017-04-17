@@ -53,7 +53,7 @@
                            </font>
                         </Label>
                         <TextField fx:id="quantity" prefWidth="45.0" />
-                        <Label fx:id="quantityUnit" prefWidth="100.0">
+                        <Label fx:id="quantityUnit" prefWidth="100.0" text="unit">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -82,7 +82,7 @@
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCancel" prefWidth="100.0" text="%Form.Cancel">
+                        <Button fx:id="hide" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onHide" prefWidth="100.0" text="%Form.Hide">
                            <font>
                               <Font size="16.0" />
                            </font>

@@ -8,7 +8,7 @@ import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
  */
 public interface CategoryFormController extends Controller {
 
-    void loadProductCategoryForm(GoodsController goodsController);
+    void loadCategoryForm(GoodsController goodsController);
 
     void setCategory(CategoryViewModel categoryViewModel);
 }

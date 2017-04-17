@@ -20,7 +20,7 @@ asztalszám kapacitás méret
 12 5 80*80
 13 8 120*80
 
-Virtuális asztal számozása a tényleges asztalt jelenti ahol ül FUTURE
+Virtuális asztal számozása a tényleges asztalt jelenti ahol ül (kis ikon az asztalon (+virtuálisok száma), ha tartozik hozzá nyitott virtuális) PRIORITY 2
 
 Kontext menu sebessége a kis gépen PRIORITY 1 [Attila]
 

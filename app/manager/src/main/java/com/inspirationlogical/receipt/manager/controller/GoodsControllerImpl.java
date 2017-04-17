@@ -122,6 +122,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void initialize(URL location, ResourceBundle resources) {
         initColumns();
         initCategories();
+        initForms();
     }
 
     @Override
@@ -138,39 +139,37 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void addProduct(ProductCategoryView parent, Product.ProductBuilder builder) {
         try {
             commonService.addProduct(parent, builder);
-            initCategories();
             productForm.hide();
         } catch (IllegalProductStateException e ) {
             ErrorMessage.showErrorMessage(root, e.getMessage());
             initColumns();
-            initCategories();
             productForm.hide();
         } catch (Exception e) {
             initColumns();
+            productForm.hide();
+        } finally {
             initCategories();
-            categoryForm.hide();
         }
     }
 
     @Override
-    public void addProductCategory(ProductCategoryParams params) {
+    public void addCategory(ProductCategoryParams params) {
         try {
             if(params.getOriginalName().equals("")) {
                 commonService.addProductCategory(params);
             } else {
                 commonService.updateProductCategory(params);
             }
-            initCategories();
             categoryForm.hide();
         } catch (IllegalProductCategoryStateException e) {
             ErrorMessage.showErrorMessage(root, e.getMessage());
             initColumns();
-            initCategories();
             categoryForm.hide();
         } catch (Exception e) {
             initColumns();
-            initCategories();
             categoryForm.hide();
+        } finally {
+            initCategories();
         }
     }
 
@@ -207,7 +206,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     @FXML
     public void onCreateCategory(Event event) {
-        initProductCategoryForm();
+        initCategoryForm();
         showPopup(categoryForm, categoryFormController, root, new Point2D(520, 200));
     }
 
@@ -215,7 +214,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void onModifyCategory(Event event) {
         if(goodsTable.getSelectionModel().getSelectedItem() == null) return;
         CategoryViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
-        initProductCategoryForm();
+        initCategoryForm();
         if(selected.getName().equals("root")) return;
         categoryFormController.setCategory(goodsTable.getSelectionModel().getSelectedItem().getValue());
         showPopup(categoryForm, categoryFormController, root, new Point2D(520, 200));
@@ -227,9 +226,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     @FXML
     public void onCreateRecipe(Event event) {
-        recipeForm = new Popup();
-        recipeForm.getContent().add(viewLoader.loadView(recipeFormController));
-        recipeFormController.loadRecipeForm(this);
+        recipeFormController.fetchProducts();
         showPopup(recipeForm, recipeFormController, root, new Point2D(520, 200));
     }
 
@@ -274,9 +271,28 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         });
     }
 
-    private void initProductCategoryForm() {
+    private void initForms() {
+        initCategoryForm();
+        initProductForm();
+        initRecipeForm();
+    }
+
+    private void initCategoryForm() {
         categoryForm = new Popup();
         categoryForm.getContent().add(viewLoader.loadView(categoryFormController));
-        categoryFormController.loadProductCategoryForm(this);
+        categoryFormController.loadCategoryForm(this);
+    }
+
+    private void initProductForm() {
+        productForm = new Popup();
+        productForm.getContent().add(viewLoader.loadView(productFormController));
+        productFormController.loadProductForm(this);
+    }
+
+    @FXML
+    public void initRecipeForm() {
+        recipeForm = new Popup();
+        recipeForm.getContent().add(viewLoader.loadView(recipeFormController));
+        recipeFormController.loadRecipeForm(this);
     }
 }
