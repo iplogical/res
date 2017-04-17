@@ -133,11 +133,11 @@
                            <content>
                               <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
                                  <children>
-                                    <StackPane alignment="TOP_CENTER">
+                                    <StackPane alignment="TOP_CENTER" prefHeight="670.0">
                                        <children>
-                                          <AnchorPane fx:id="virtualTab">
+                                          <AnchorPane fx:id="virtualTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                              <children>
-                                                <Label fx:id="virtualLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label fx:id="virtualLab" maxHeight="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <graphic>
                                                       <AnchorPane />
                                                    </graphic>

@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.builder;
 
-import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
+import com.inspirationlogical.receipt.corelib.frontend.builder.ContextMenuBuilder;
+import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
 import javafx.scene.control.ContextMenu;
 

@@ -8,7 +8,7 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.s
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
-import static com.inspirationlogical.receipt.waiter.view.PressAndHoldHandler.addPressAndHold;
+import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 
 import java.net.URL;
 import java.util.ArrayList;

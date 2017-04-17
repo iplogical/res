@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.viewstate;
+package com.inspirationlogical.receipt.corelib.frontend.viewstate;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;

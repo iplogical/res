@@ -1,5 +1,8 @@
 package com.inspirationlogical.receipt.waiter.viewstate;
 
+import com.inspirationlogical.receipt.corelib.frontend.viewstate.MotionViewState;
+import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
+
 import javafx.beans.property.BooleanProperty;
 import lombok.Data;
 

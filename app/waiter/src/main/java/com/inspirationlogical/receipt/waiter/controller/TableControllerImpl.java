@@ -3,7 +3,7 @@ package com.inspirationlogical.receipt.waiter.controller;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculatePopupPosition;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
-import static com.inspirationlogical.receipt.waiter.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
 import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
@@ -19,7 +19,7 @@ import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
-import com.inspirationlogical.receipt.waiter.viewstate.ViewState;
+import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
