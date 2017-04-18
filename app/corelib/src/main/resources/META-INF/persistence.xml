@@ -36,7 +36,7 @@
             <property name="hbm2ddl.auto" value="create"/>
         <!--          -->
             <property name="javax.persistence.schema-generation.database.action"
-                  value="validate"/>
+                  value="update"/>
         </properties>
     </persistence-unit>
 </persistence>
