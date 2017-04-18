@@ -141,19 +141,9 @@ public class BuildSchema  {
     private @Getter DailyClosure dailyClosureOne;
     private @Getter DailyClosure dailyClosureTwo;
 
-    private TestType testType;
 
     public BuildSchema(){
-        this.testType = TestType.DROP_AND_CREATE;
-        entityManager = EntityManagerProvider.getEntityManager("TestPersistance");
-    }
-    public BuildSchema(String persistenceName) {
-        this.testType = TestType.DROP_AND_CREATE;
-        entityManager = EntityManagerProvider.getEntityManager(persistenceName);
-    }
-    public BuildSchema(TestType testType){
-        this.testType = testType;
-        entityManager = EntityManagerProvider.getEntityManager("TestPersistance");
+        entityManager = EntityManagerProvider.getEntityManager("ProductionPersistance");
     }
 
     private void dropAll(){
