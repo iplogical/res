@@ -1,5 +1,8 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +14,6 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 
 public class ProductAdapter extends AbstractAdapter<Product> {
 
@@ -56,7 +56,10 @@ public class ProductAdapter extends AbstractAdapter<Product> {
 
 
     public void delete() {
-        GuardedTransaction.run(() -> adaptee.setStatus(ProductStatus.DELETED));
+        GuardedTransaction.run(() -> {
+            adaptee.setStatus(ProductStatus.DELETED);
+            adaptee.getCategory().setStatus(ProductStatus.DELETED);
+        });
     }
 
     public void updateRecipes(List<RecipeParams> recipeParamsList) {
