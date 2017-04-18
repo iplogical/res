@@ -191,6 +191,8 @@
             </ToggleButton>
             <ToggleButton fx:id="singleCancellation" mnemonicParsing="false" prefWidth="150.0" text="%SaleView.SingleCancellation" toggleGroup="$cancellationTypeToggleGroup" />
             <Separator prefWidth="200.0" />
+            <TextField fx:id="search" onKeyReleased="#onSearchChanged" onMouseClicked="#onSearchSelected" promptText="%SaleView.Search" />
+            <Separator prefWidth="200.0" />
             <Button fx:id="toPaymentView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onToPaymentView" text="%SaleView.ToPaymentView" textAlignment="CENTER" />
             <Separator prefWidth="200.0" />
             <Button fx:id="backToRestaurantView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%SaleView.Back" textAlignment="CENTER" />

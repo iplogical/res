@@ -29,6 +29,8 @@ public class SaleCategoryControllerImpl extends SaleElementControllerImpl<Produc
         if(isSelected) {
             return;
         } else {
+            root.requestFocus();
+            saleController.clearSearch();
             saleController.selectCategory(this);
         }
 

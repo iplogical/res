@@ -17,4 +17,6 @@ public interface SaleController extends AbstractRetailController {
     void upWithCategories();
 
     void updateNode();
+
+    void clearSearch();
 }

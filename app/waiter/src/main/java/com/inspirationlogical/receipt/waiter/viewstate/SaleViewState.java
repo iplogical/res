@@ -6,9 +6,11 @@ public @Data class SaleViewState {
 
     private boolean takeAway;
 
-    private boolean isGift;
+    private boolean gift;
 
     private CancellationType cancellationType;
+
+    private boolean searching;
 
     public boolean isSelectiveCancellation() {
         return cancellationType.equals(CancellationType.SELECTIVE);
