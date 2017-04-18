@@ -48,12 +48,6 @@ public class ReceiptTest {
     }
 
     @Test(expected = RollbackException.class)
-    public void corruptClient() {
-        GuardedTransaction.run(()->
-                schema.getReceiptSaleOne().getClient().setName(null));
-    }
-
-    @Test(expected = RollbackException.class)
     public void noVatSerie() {
         GuardedTransaction.run(()->
                 schema.getReceiptSaleOne().setVATSerie(null));

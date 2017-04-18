@@ -80,6 +80,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         traverseChildren(this.adaptee, childCategories);
         return childCategories.stream()
                 .filter(elem -> !elem.getType().equals(ProductCategoryType.PSEUDO))
+                .filter(elem -> elem.getStatus().equals(ProductStatus.ACTIVE))
                 .map(elem -> new ProductCategoryAdapter(elem))
                 .collect(toList());
     }
@@ -148,6 +149,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
             newCategory[0] = ProductCategory.builder()
                     .name(name)
                     .type(type)
+                    .status(ProductStatus.ACTIVE)
                     .parent(adaptee)
                     .build();
             getRootCategory().getAllProductCategories().stream()
@@ -187,6 +189,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
             ProductCategory pseudo = ProductCategory.builder()
                     .name(newProduct[0].getLongName() + "pseudo")
                     .type(ProductCategoryType.PSEUDO)
+                    .status(ProductStatus.ACTIVE)
                     .parent(adaptee)
                     .product(newProduct[0])
                     .build();
@@ -199,6 +202,10 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                     .build())));
         });
         return new ProductAdapter(newProduct[0]);
+    }
+
+    public void delete() {
+        GuardedTransaction.run(() -> getAdaptee().setStatus(ProductStatus.DELETED));
     }
 
     private List<PriceModifier> getPriceModifiersByProductAndDates(ProductCategory category) {

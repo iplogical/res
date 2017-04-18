@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.corelib.exception.AdHocProductNotFoundExce
 import com.inspirationlogical.receipt.corelib.exception.GameFeeProductNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
@@ -37,7 +38,7 @@ public class ProductAdapter extends AbstractAdapter<Product> {
         return new ProductAdapter(gameFeeProductList.get(0));
     }
 
-    static List<Product> getProductByName(String name) {
+    public static List<Product> getProductByName(String name) {
         return GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_NAME,
                 query -> {
                     query.setParameter("longName", name);
@@ -51,6 +52,11 @@ public class ProductAdapter extends AbstractAdapter<Product> {
 
     ProductCategoryAdapter getCategoryAdapter() {
         return new ProductCategoryAdapter(adaptee.getCategory());
+    }
+
+
+    public void delete() {
+        GuardedTransaction.run(() -> adaptee.setStatus(ProductStatus.DELETED));
     }
 
     public void updateRecipes(List<RecipeParams> recipeParamsList) {

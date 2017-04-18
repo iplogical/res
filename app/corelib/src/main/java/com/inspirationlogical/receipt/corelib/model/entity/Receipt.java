@@ -91,9 +91,9 @@ public @Data class Receipt extends AbstractEntity {
 
     @Embedded
     @AttributeOverrides({
-        @AttributeOverride(name = "name", column = @Column(nullable = false)),
-        @AttributeOverride(name = "address", column = @Column(nullable = false)),
-        @AttributeOverride(name = "TAXNumber", column = @Column(nullable = false))
+        @AttributeOverride(name = "name", column = @Column(nullable = true)),
+        @AttributeOverride(name = "address", column = @Column(nullable = true)),
+        @AttributeOverride(name = "TAXNumber", column = @Column(nullable = true))
     })
     private Client client;
 

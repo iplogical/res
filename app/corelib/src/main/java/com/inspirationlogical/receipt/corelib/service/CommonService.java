@@ -18,9 +18,13 @@ public interface CommonService {
 
     ProductView addProduct(ProductCategoryView parent, ProductBuilder builder);
 
+    void deleteProduct(String longName);
+
     ProductCategoryView addProductCategory(ProductCategoryParams params);
 
     ProductCategoryView updateProductCategory(ProductCategoryParams params);
+
+    void deleteProductCategory(String name);
 
     void updateStock(List<StockParams> params, ReceiptType receiptType);
 

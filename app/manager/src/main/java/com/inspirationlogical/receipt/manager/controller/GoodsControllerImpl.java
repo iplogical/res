@@ -18,6 +18,7 @@ import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 
+import com.inspirationlogical.receipt.manager.viewmodel.ProductViewModel;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -202,6 +203,11 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     @FXML
     public void onDeleteProduct(Event event) {
+        if(isSelectionNull()) return;
+        if(goodsTable.getSelectionModel().getSelectedItem().getValue().getLongName().equals("")) return;
+        ProductViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
+        commonService.deleteProduct(selected.getLongName());
+        initCategories();
     }
 
     @FXML
@@ -212,7 +218,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     @FXML
     public void onModifyCategory(Event event) {
-        if(goodsTable.getSelectionModel().getSelectedItem() == null) return;
+        if(isSelectionNull()) return;
         CategoryViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
         initCategoryForm();
         if(selected.getName().equals("root")) return;
@@ -222,12 +228,24 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     @FXML
     public void onDeleteCategory(Event event) {
+        if(isSelectionNull()) return;
+        if(!goodsTable.getSelectionModel().getSelectedItem().getValue().getLongName().equals("")) return;
+        CategoryViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
+        commonService.deleteProductCategory(selected.getName());
+        initCategories();
     }
 
     @FXML
     public void onCreateRecipe(Event event) {
         recipeFormController.fetchProducts();
         showPopup(recipeForm, recipeFormController, root, new Point2D(520, 200));
+    }
+
+    @FXML
+    public void initRecipeForm() {
+        recipeForm = new Popup();
+        recipeForm.getContent().add(viewLoader.loadView(recipeFormController));
+        recipeFormController.loadRecipeForm(this);
     }
 
     private void initColumns() {
@@ -289,10 +307,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         productFormController.loadProductForm(this);
     }
 
-    @FXML
-    public void initRecipeForm() {
-        recipeForm = new Popup();
-        recipeForm.getContent().add(viewLoader.loadView(recipeFormController));
-        recipeFormController.loadRecipeForm(this);
+    private boolean isSelectionNull() {
+        return goodsTable.getSelectionModel().getSelectedItem() == null;
     }
 }

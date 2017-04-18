@@ -18,7 +18,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidCategory;
@@ -83,19 +85,18 @@ public @Data class ProductCategory extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private ProductCategoryType type;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status;
+
     @Tolerate
     ProductCategory(){}
 
     @Override
     public String toString() {
-//        return "ProductCategory: name=" + name +
-//                ", type=" + type.toString() +
-//                ", parent=" + parent == null ? "no parent" : parent.getName() +
-//                ", product=" + product == null ? "no product" : product.getLongName();
         return "ProductCategory: name=" + name +
                 ", type=" + type.toString() +
                 ", parent=" + (parent == null ? "no parent" : parent.getName()) +
                 ", product=" + (product == null ? "no product" : product.getLongName());
-
     }
 }

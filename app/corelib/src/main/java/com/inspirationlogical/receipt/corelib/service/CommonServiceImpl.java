@@ -41,6 +41,11 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
+    public void deleteProduct(String longName) {
+        new ProductAdapter(ProductAdapter.getProductByName(longName).get(0)).delete();
+    }
+
+    @Override
     public ProductCategoryView addProductCategory(ProductCategoryParams params) {
         return new ProductCategoryViewImpl(getProductCategoryAdapter(params.getParent())
                 .addChildCategory(params.getName(), params.getType()));
@@ -50,6 +55,11 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     public ProductCategoryView updateProductCategory(ProductCategoryParams params) {
         return new ProductCategoryViewImpl(getProductCategoryAdapter(params.getParent())
                 .updateChildCategory(params.getName(), params.getOriginalName(), params.getType()));
+    }
+
+    @Override
+    public void deleteProductCategory(String name) {
+        new ProductCategoryAdapter(ProductCategoryAdapter.getProductCategoryByName(name).get(0)).delete();
     }
 
     @Override

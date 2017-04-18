@@ -590,6 +590,7 @@ public class BuildTestSchemaRule implements TestRule {
         root = ProductCategory.builder()
                 .name("root")
                 .type(ProductCategoryType.ROOT)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -598,6 +599,7 @@ public class BuildTestSchemaRule implements TestRule {
         aggregateTopOne = ProductCategory.builder()
                 .name("aggregateTopOne")
                 .type(ProductCategoryType.AGGREGATE)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -605,6 +607,7 @@ public class BuildTestSchemaRule implements TestRule {
         aggregateTopTwo = ProductCategory.builder()
                 .name("aggregateTopTwo")
                 .type(ProductCategoryType.AGGREGATE)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -612,6 +615,7 @@ public class BuildTestSchemaRule implements TestRule {
         aggregateOne = ProductCategory.builder()
                 .name("aggregateOne")
                 .type(ProductCategoryType.AGGREGATE)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -619,6 +623,7 @@ public class BuildTestSchemaRule implements TestRule {
         aggregateTwo = ProductCategory.builder()
                 .name("aggregateTwo")
                 .type(ProductCategoryType.AGGREGATE)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -626,6 +631,7 @@ public class BuildTestSchemaRule implements TestRule {
         aggregateThree = ProductCategory.builder()
                 .name("aggregateThree")
                 .type(ProductCategoryType.AGGREGATE)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -633,6 +639,7 @@ public class BuildTestSchemaRule implements TestRule {
         aggregateFour = ProductCategory.builder()
                 .name("aggregateFour")
                 .type(ProductCategoryType.AGGREGATE)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -640,6 +647,7 @@ public class BuildTestSchemaRule implements TestRule {
         aggregateRecipeElements = ProductCategory.builder()
                 .name("aggregateRecipeElements")
                 .type(ProductCategoryType.AGGREGATE)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -647,6 +655,7 @@ public class BuildTestSchemaRule implements TestRule {
         leafOne = ProductCategory.builder()
                 .name("leafOne")
                 .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -654,6 +663,7 @@ public class BuildTestSchemaRule implements TestRule {
         leafTwo = ProductCategory.builder()
                 .name("leafTwo")
                 .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -661,6 +671,7 @@ public class BuildTestSchemaRule implements TestRule {
         leafThree = ProductCategory.builder()
                 .name("leafThree")
                 .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -668,6 +679,7 @@ public class BuildTestSchemaRule implements TestRule {
         leafFour = ProductCategory.builder()
                 .name("leafFour")
                 .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -675,6 +687,7 @@ public class BuildTestSchemaRule implements TestRule {
         leafRecipeElements = ProductCategory.builder()
                 .name("leafRecipeElements")
                 .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -682,6 +695,7 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoOne = ProductCategory.builder()
                 .name("pseudoOne")
                 .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -689,6 +703,7 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoTwo = ProductCategory.builder()
                 .name("pseudoTwo")
                 .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -696,6 +711,7 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoThree = ProductCategory.builder()
                 .name("pseudoThree")
                 .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -703,6 +719,7 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoFour = ProductCategory.builder()
                 .name("pseudoFour")
                 .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -711,6 +728,7 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoFive = ProductCategory.builder()
                 .name("pseudoFive")
                 .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -718,6 +736,7 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoSix = ProductCategory.builder()
                 .name("pseudoSix")
                 .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -725,6 +744,7 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoAdHoc = ProductCategory.builder()
                 .name("pseudoAdHoc")
                 .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -732,6 +752,7 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoGameFee = ProductCategory.builder()
                 .name("pseudoGameFee")
                 .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -739,6 +760,7 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoRecipeElementOne = ProductCategory.builder()
                 .name("pseudoRecipeElementOne")
                 .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -746,6 +768,7 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoRecipeElementTwo = ProductCategory.builder()
                 .name("pseudoRecipeElementTwo")
                 .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 
@@ -753,6 +776,7 @@ public class BuildTestSchemaRule implements TestRule {
         pseudoRecipeElementThree = ProductCategory.builder()
                 .name("pseudoRecipeElementThree")
                 .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
                 .build();
     }
 

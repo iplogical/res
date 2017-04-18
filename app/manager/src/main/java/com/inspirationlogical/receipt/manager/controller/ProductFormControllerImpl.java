@@ -106,7 +106,7 @@ public class ProductFormControllerImpl implements ProductFormController {
     public void onConfirm(Event event) {
         goodsController.addProduct(category.getValue(), commonService.productBuilder()
         .longName(longName.getText())
-        .shortName(shortName.getText())
+        .shortName(shortName.getText().equals("") ? longName.getText() : shortName.getText())
         .type(type.getValue())
         .status(status.getValue())
         .rapidCode(Integer.valueOf(rapidCode.getText()))
