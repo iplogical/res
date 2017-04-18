@@ -2,7 +2,7 @@ package com.inspirationlogical.receipt.waiter.controller;
 
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
-import static com.inspirationlogical.receipt.corelib.utility.Search.MATCH_HEAD_IGNORECASE;
+import static com.inspirationlogical.receipt.corelib.utility.Search.MATCH_HEAD_IGNORE_CASE;
 import static com.inspirationlogical.receipt.corelib.utility.Search.SPACE;
 import static com.inspirationlogical.receipt.waiter.viewstate.SaleViewState.CancellationType.NONE;
 import static com.inspirationlogical.receipt.waiter.viewstate.SaleViewState.CancellationType.SELECTIVE;
@@ -247,7 +247,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
             matches = new SearchBuilder<>(visibleProducts)
                     .withDelimiter(SPACE)
                     .withPattern(text)
-                    .withFormat(MATCH_HEAD_IGNORECASE)
+                    .withFormat(MATCH_HEAD_IGNORE_CASE)
                     .search();
         }
         productsGrid.getChildren().clear();
