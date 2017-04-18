@@ -89,7 +89,6 @@ public @Data class Receipt extends AbstractEntity {
 
     private double discountPercent;
 
-    @NotNull
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name = "name", column = @Column(nullable = false)),

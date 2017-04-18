@@ -43,16 +43,10 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                                         .paymentMethod(PaymentMethod.CASH)
                                         .openTime(now())
                                         .VATSerie(VATSerieAdapter.vatSerieAdapterFactory().getAdaptee())
-                                        .client(getDefaultClient())
                                         .records(new ArrayList<>())
                                         .build());
         ReceiptAdapterListeners.getAllListeners().forEach((l) -> {l.onOpen(newReceipt);});
         return newReceipt;
-    }
-
-    private static Client getDefaultClient() {
-        // FIXME
-        return Client.builder().name("client").address("dummy").TAXNumber("123").build();
     }
 
     public ReceiptAdapter(Receipt receipt) {
