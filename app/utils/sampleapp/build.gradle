@@ -4,6 +4,7 @@ mainClassName = 'com.inspirationlogical.receipt.utils.sampleapp.SampleApp'
 
 run {
     main = project.getProperty('mainClassName')
+    applicationDefaultJvmArgs = ["-Xms1024m","-Xmx4096m"]
 }
 
 // In this section you declare the dependencies for your production and test code

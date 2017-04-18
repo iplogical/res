@@ -14,6 +14,7 @@ mainClassName = 'com.inspirationlogical.receipt.waiter.application.WaiterApp'
 
 task waiter(type: JavaExec) {
     classpath sourceSets.main.runtimeClasspath
+    applicationDefaultJvmArgs = ["-Xms1024m","-Xmx4096m"]
     main = mainClassName
 }
 
