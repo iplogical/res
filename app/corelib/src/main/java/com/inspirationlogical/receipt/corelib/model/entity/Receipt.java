@@ -2,22 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.entity;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidOwner;
@@ -32,6 +17,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Tolerate;
 
+import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
+
 @Entity
 @Builder
 @EqualsAndHashCode(callSuper = true, exclude = {"owner", "records"})
@@ -40,9 +27,14 @@ import lombok.experimental.Tolerate;
     @NamedQuery(name = Receipt.GET_TEST_RECEIPTS,
             query="FROM Receipt r"),
     @NamedQuery(name = Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
-            query="SELECT r FROM Receipt r WHERE r.status=:status AND r.owner.number=:number"),
+            query="SELECT DISTINCT r FROM Receipt r WHERE r.status=:status AND r.owner.number=:number"),
     @NamedQuery(name = Receipt.GET_RECEIPT_BY_CLOSURE_TIME,
             query="SELECT r FROM Receipt r WHERE r.closureTime>:closureTime"),
+})
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = GRAPH_RECEIPT_AND_RECORDS,
+                attributeNodes = @NamedAttributeNode(value = ("records"), subgraph = "records"),
+                subgraphs = @NamedSubgraph(name = "records", attributeNodes = @NamedAttributeNode("product")))
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECEIPT_ID"))
 @ValidOwner
@@ -53,6 +45,7 @@ public @Data class Receipt extends AbstractEntity {
     public static final String GET_TEST_RECEIPTS = "Receipt.GetTestReceipts";
     public static final String GET_RECEIPT_BY_STATUS_AND_OWNER = "Receipt.GetActiveReceipt";
     public static final String GET_RECEIPT_BY_CLOSURE_TIME = "Receipt.GetReceiptByClosureTime";
+    public static final String GRAPH_RECEIPT_AND_RECORDS = "Receipt.GraphReceiptAndRecords";
 
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)

@@ -1,12 +1,13 @@
 package com.inspirationlogical.receipt.corelib.model.utils;
 
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.entity.AbstractEntity;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
+
+import javax.persistence.EntityGraph;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.List;
 
 /**
  * Created by Ferenc on 2017. 03. 10..
@@ -58,6 +59,15 @@ public class GuardedTransaction {
     public static <T extends AbstractEntity> List<T> runNamedQuery(String name, NamedQueryCallback namedQueryCallback){
         Wrapper<List<T>> results = new Wrapper<>();
         run(()->{results.setContent(namedQueryCallback.setup(manager.createNamedQuery(name)).getResultList());},()->{},()->{});
+        return results.getContent();
+    }
+
+    public static <T extends AbstractEntity> List<T> runNamedQuery(String name, String entityGraph, NamedQueryCallback namedQueryCallback) {
+        Wrapper<List<T>> results = new Wrapper<>();
+        EntityGraph graph = manager.createEntityGraph(entityGraph);
+        Query query = namedQueryCallback.setup(manager.createNamedQuery(name));
+        query.setHint("javax.persistence.loadgraph", graph);
+        run(() -> results.setContent(query.getResultList()));
         return results.getContent();
     }
 

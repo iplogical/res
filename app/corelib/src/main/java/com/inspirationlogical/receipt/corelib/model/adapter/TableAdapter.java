@@ -11,14 +11,12 @@ import com.inspirationlogical.receipt.corelib.params.StockParams;
 import javafx.geometry.Point2D;
 import lombok.NonNull;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.VERTICAL;
-import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
 public class TableAdapter extends AbstractAdapter<Table> {
@@ -174,7 +172,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     private List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
-        return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
+        return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER, Receipt.GRAPH_RECEIPT_AND_RECORDS,
                 query -> {
                     query.setParameter("status", status);
                     query.setParameter("number", tableNumber);

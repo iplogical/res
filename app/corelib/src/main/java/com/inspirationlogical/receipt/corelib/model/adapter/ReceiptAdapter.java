@@ -196,7 +196,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public void paySelective(TableAdapter tableAdapter, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
         final ReceiptAdapter[] paidReceipt = new ReceiptAdapter[1];
 
-        GuardedTransaction.runWithRefresh(adaptee, () -> {
+        GuardedTransaction.run(() -> {
             Map<Long, ReceiptRecordView> recordsToPay = records.stream()
                     .collect(Collectors.toMap(ReceiptRecordView::getId, Function.identity()));
             List<ReceiptRecord> notPaidRecords = adaptee.getRecords().stream()
@@ -221,7 +221,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
 
     public ReceiptRecordAdapter cloneReceiptRecordAdapter(ReceiptRecordAdapter record, double amount) {
         final ReceiptRecord[] receiptRecord = new ReceiptRecord[1];
-        GuardedTransaction.runWithRefresh(adaptee, () -> {
+        GuardedTransaction.run(() -> {
             receiptRecord[0] = ReceiptRecord.builder()
                     .owner(this.getAdaptee())
                     .product(record.getAdaptee().getProduct())
