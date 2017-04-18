@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.corelib.model.view;
 import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 
 public interface ProductCategoryView extends AbstractView {
 
@@ -19,4 +20,6 @@ public interface ProductCategoryView extends AbstractView {
     List<ProductView> getAllNormalProducts();
 
     ProductCategoryType getType();
+
+    ProductStatus getStatus();
 }

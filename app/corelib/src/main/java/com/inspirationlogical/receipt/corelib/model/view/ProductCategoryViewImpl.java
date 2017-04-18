@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 
 public class ProductCategoryViewImpl extends AbstractModelViewImpl<ProductCategoryAdapter>
         implements ProductCategoryView {
@@ -50,6 +51,11 @@ public class ProductCategoryViewImpl extends AbstractModelViewImpl<ProductCatego
     @Override
     public ProductCategoryType getType() {
         return adapter.getType();
+    }
+
+    @Override
+    public ProductStatus getStatus() {
+        return adapter.getAdaptee().getStatus();
     }
 
     @Override

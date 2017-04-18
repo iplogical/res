@@ -12,6 +12,7 @@ import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateExcep
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
@@ -274,11 +275,13 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     private void updateCategory(ProductCategoryView productCategoryView, TreeItem<CategoryViewModel> treeItem) {
         treeItem.setExpanded(true);
         productCategoryView.getChildrenCategories().forEach(child -> {
-            CategoryViewModel categoryViewModel = new CategoryViewModel(child);
-            TreeItem<CategoryViewModel> childItem = new TreeItem<>(categoryViewModel);
-            treeItem.getChildren().add(childItem);
-            updateProduct(categoryViewModel, childItem);
-            updateCategory(child, childItem);
+            if (child.getStatus() == ProductStatus.ACTIVE) {
+                CategoryViewModel categoryViewModel = new CategoryViewModel(child);
+                TreeItem<CategoryViewModel> childItem = new TreeItem<>(categoryViewModel);
+                treeItem.getChildren().add(childItem);
+                updateProduct(categoryViewModel, childItem);
+                updateCategory(child, childItem);
+            }
         });
     }
 
