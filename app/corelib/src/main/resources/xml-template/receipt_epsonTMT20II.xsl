@@ -71,7 +71,7 @@
     <fo:table-row>
     <fo:table-cell  number-columns-spanned="3">
     <fo:block font-weight="bold"  padding-before="2pt">
-        <fo:external-graphic src="{.}" width="100%" />
+        <fo:external-graphic src="{.}" content-width="70%" />
     </fo:block>
     </fo:table-cell>
     </fo:table-row>

@@ -14,8 +14,6 @@ public class PrintService {
     @Inject
     private Printer printer;
 
-    public PrintService() {}
-
     private PrintService(String input){
         printer = new NullPrinter();
     }
