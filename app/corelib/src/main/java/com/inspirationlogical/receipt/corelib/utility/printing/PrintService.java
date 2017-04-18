@@ -27,11 +27,7 @@ public class PrintService {
     }
 
     public static PrintService create(){
-        try {
-            return PrintingInjector.getInjector().getInstance(PrintService.class);
-        }catch (Exception e){
-            return new PrintService();
-        }
+        return PrintingInjector.getInjector().getInstance(PrintService.class);
     }
 }
 
