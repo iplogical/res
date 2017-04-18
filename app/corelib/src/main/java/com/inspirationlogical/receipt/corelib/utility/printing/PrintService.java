@@ -4,10 +4,13 @@ import java.io.InputStream;
 
 import com.google.inject.Inject;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * Created by Ferenc on 2017. 03. 18..
  */
+
+@NoArgsConstructor
 public class PrintService {
 
     @Getter
