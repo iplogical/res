@@ -14,7 +14,9 @@ public class PrintService {
     @Inject
     private Printer printer;
 
-    private PrintService(){
+    public PrintService() {}
+
+    private PrintService(String input){
         printer = new NullPrinter();
     }
 
@@ -27,7 +29,11 @@ public class PrintService {
     }
 
     public static PrintService create(){
-        return PrintingInjector.getInjector().getInstance(PrintService.class);
+        try {
+            return PrintingInjector.getInjector().getInstance(PrintService.class);
+        }catch (Exception e){
+            return new PrintService("");
+        }
     }
 }
 
