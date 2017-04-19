@@ -1,17 +1,8 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculatePopupPosition;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
-import static java.lang.String.valueOf;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
+import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
@@ -19,8 +10,6 @@ import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
-import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
-
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -32,6 +21,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculatePopupPosition;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
+import static java.lang.String.valueOf;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class TableControllerImpl implements TableController {
 
@@ -193,10 +192,6 @@ public class TableControllerImpl implements TableController {
     public void onTableClicked(MouseEvent event) {
         if (isContextMenuOpen() || tableViewState.getRestaurantViewState().getMotionViewState().getMovableProperty().getValue()) {
             restaurantController.moveTable(this);
-            return;
-        }
-
-        if (tableView.isVirtual()) {
             return;
         }
 
