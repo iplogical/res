@@ -45,7 +45,7 @@ import lombok.experimental.Tolerate;
 })
 @AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
 @ValidCategory
-@ValidRecipe
+//@ValidRecipe
 public @Data class Product extends AbstractEntity {
 
     public static final String GET_TEST_PRODUCTS = "Product.GetTestProducts";

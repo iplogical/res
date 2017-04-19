@@ -34,7 +34,7 @@ import lombok.experimental.Tolerate;
             query="FROM Recipe r WHERE r.owner=:owner")
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECIPE_ID"))
-@ValidRecipe
+//@ValidRecipe
 public @Data class Recipe extends AbstractEntity {
 
     public static final String GET_TEST_RECIPES = "Recipe.GetTestRecipes";
