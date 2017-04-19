@@ -232,6 +232,12 @@ public class BuildSchema  {
     private @Getter Product CaffeMelange;
     private @Getter Product ForroCsoki;
 
+    // Napi akciok
+    private @Getter Product CaptainAndGyomber;
+    private @Getter Product GinTonic;
+    private @Getter Product JackAndCoke;
+    private @Getter Product VodkaSzoda;
+
     private @Getter ProductCategory root;
 
     private @Getter ProductCategory etlap;
@@ -261,6 +267,7 @@ public class BuildSchema  {
     private @Getter ProductCategory piramis;
     private @Getter ProductCategory forraltBor;
     private @Getter ProductCategory kave;
+    private @Getter ProductCategory akciosItalok;
 
     private @Getter ProductCategory pseudoAdHoc;
     private @Getter ProductCategory pseudoGameFee;
@@ -473,7 +480,12 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoCaffeMelange;
     private @Getter ProductCategory PseudoForroCsoki;
 
-
+    // Napi akciok
+    private @Getter ProductCategory PseudoCaptainAndGyomber;
+    private @Getter ProductCategory PseudoGinTonic;
+    private @Getter ProductCategory PseudoJackAndCoke;
+    private @Getter ProductCategory PseudoVodkaSzoda;
+    
 //    private @Getter PriceModifier priceModifierOne;
 //    private @Getter PriceModifier priceModifierTwo;
 //    private @Getter PriceModifier priceModifierThree;
@@ -787,9 +799,13 @@ public class BuildSchema  {
         buildLatteMacchiato();
         buildCaffeMelange();
         buildForroCsoki();
+
+        // Napi akciok
+        buildCaptainAndGyomber();
+        buildGinTonic();
+        buildJackAndCoke();
+        buildVodkaSzoda();
     }
-
-
 
     private void buildProductAdHoc() {
         productAdHoc = Product.builder()
@@ -2803,6 +2819,58 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildCaptainAndGyomber() {
+        CaptainAndGyomber = Product.builder()
+                .longName("Captain And Gyömbér")
+                .shortName("Captain And Gyömbér")
+                .salePrice(1000)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildGinTonic() {
+        GinTonic = Product.builder()
+                .longName("Gin Tonic")
+                .shortName("Gin Tonic")
+                .salePrice(1000)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildJackAndCoke() {
+        JackAndCoke = Product.builder()
+                .longName("Jack And Coke")
+                .shortName("Jack And Cok")
+                .salePrice(1000)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildVodkaSzoda() {
+        VodkaSzoda = Product.builder()
+                .longName("Vodka Szóda")
+                .shortName("Vodka Szóda")
+                .salePrice(1000)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+    
     private void buildProductCategories() {
         buildRoot();
         buildEtlap();
@@ -2832,6 +2900,7 @@ public class BuildSchema  {
                 buildPiramis();
             buildForraltBor();
             buildKave();
+        buildAkciosItalok();
 
         buildPseudoAdHoc();
         buildPseudoGameFee();
@@ -3046,6 +3115,12 @@ public class BuildSchema  {
         buildPseudoLatteMacchiato();
         buildPseudoCaffeMelange();
         buildPseudoForroCsoki();
+
+        // Napi akciok
+        buildPseudoCaptainAndGyomber();
+        buildPseudoGinTonic();
+        buildPseudoJackAndCoke();
+        buildPseudoVodkaSzoda();
     }
 
     private void buildPseudoSosPerec() {
@@ -4272,6 +4347,38 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildPseudoCaptainAndGyomber() {
+        PseudoCaptainAndGyomber = ProductCategory.builder()
+                .name("CaptainAndGyomber_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoGinTonic() {
+        PseudoGinTonic = ProductCategory.builder()
+                .name("GinTonic_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoJackAndCoke() {
+        PseudoJackAndCoke = ProductCategory.builder()
+                .name("JackAndCoke_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoVodkaSzoda() {
+        PseudoVodkaSzoda = ProductCategory.builder()
+                .name("VodkaSzoda_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+    
     private void buildReceipts() {
         buildReceiptPurchase();
         buildReceiptInventory();
@@ -4600,6 +4707,14 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildAkciosItalok() {
+        akciosItalok = ProductCategory.builder()
+                .name("Akciós italok")
+                .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
+                .build();
+    }
+
     private void buildPseudoAdHoc() {
         pseudoAdHoc = ProductCategory.builder()
                 .name("pseudoAdHoc")
@@ -4771,7 +4886,7 @@ public class BuildSchema  {
         etlap.setChildren(new HashSet<>(
                 Arrays.asList(ragcsak, etelek, menuk)));
         itallap.setChildren(new HashSet<>(
-                Arrays.asList(shotok, sorok, borok, rovidek, palinkak, uditok, forroItalok)));
+                Arrays.asList(shotok, sorok, borok, rovidek, palinkak, uditok, forroItalok, akciosItalok)));
         ragcsak.setParent(etlap);
         etelek.setParent(etlap);
         menuk.setParent(etlap);
@@ -4782,6 +4897,7 @@ public class BuildSchema  {
         palinkak.setParent(itallap);
         uditok.setParent(itallap);
         forroItalok.setParent(itallap);
+        akciosItalok.setParent(itallap);
     }
 
     private void aggregatesAndLeafs() {
@@ -5026,6 +5142,12 @@ public class BuildSchema  {
         PseudoCaffeMelange.setParent(kave);
         PseudoForroCsoki.setParent(kave);
 
+        // Napi akciok
+        PseudoCaptainAndGyomber.setParent(akciosItalok);
+        PseudoGinTonic.setParent(akciosItalok);
+        PseudoJackAndCoke.setParent(akciosItalok);
+        PseudoVodkaSzoda.setParent(akciosItalok);
+
         // Rágcsák
         sos.setChildren(new HashSet<>(
                 Arrays.asList(
@@ -5261,6 +5383,14 @@ public class BuildSchema  {
                     PseudoLatteMacchiato,
                     PseudoCaffeMelange,
                     PseudoForroCsoki)));
+
+        // Napi akciok
+        akciosItalok.setChildren(new HashSet<>(
+                Arrays.asList(
+                    PseudoCaptainAndGyomber,
+                    PseudoGinTonic,
+                    PseudoJackAndCoke,
+                    PseudoVodkaSzoda)));
     }
 
     private void categoriesAndPriceModifiers() {
@@ -5484,6 +5614,12 @@ public class BuildSchema  {
         CaffeMelange.setCategory(PseudoCaffeMelange);
         ForroCsoki.setCategory(PseudoForroCsoki);
 
+        // Akcios italok
+        GinTonic.setCategory(PseudoGinTonic);
+        CaptainAndGyomber.setCategory(PseudoCaptainAndGyomber);
+        VodkaSzoda.setCategory(PseudoVodkaSzoda);
+        JackAndCoke.setCategory(PseudoJackAndCoke);
+
         /*----- ETLAP -----*/
         // Rágcsák
         PseudoSosPerec.setProduct(SosPerec);
@@ -5691,6 +5827,12 @@ public class BuildSchema  {
         PseudoLatteMacchiato.setProduct(LatteMacchiato);
         PseudoCaffeMelange.setProduct(CaffeMelange);
         PseudoForroCsoki.setProduct(ForroCsoki);        
+
+        // Akcios italok
+        PseudoGinTonic.setProduct(GinTonic);
+        PseudoCaptainAndGyomber.setProduct(CaptainAndGyomber);
+        PseudoVodkaSzoda.setProduct(VodkaSzoda);
+        PseudoJackAndCoke.setProduct(JackAndCoke);
         
         pseudoAdHoc.setProduct(productAdHoc);
         productAdHoc.setCategory(pseudoAdHoc);
