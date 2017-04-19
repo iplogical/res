@@ -18,6 +18,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
@@ -358,6 +359,11 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
             @Override
             public ProductCategoryType getType() {
+                return null;
+            }
+
+            @Override
+            public ProductStatus getStatus() {
                 return null;
             }
 
