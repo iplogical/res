@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.utility;
 
 import static java.time.LocalDateTime.now;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,12 +79,12 @@ public class BuildSchema  {
     // Borok
     private @Getter Product HazBoraNagyEsNagy;
     private @Getter Product HilltopIrsaiOliver;
+    private @Getter Product HilltopIrsaiOliverDecire;
     private @Getter Product GereAttilaOlaszrizling;
 
     private @Getter Product HazBoraLisiczaRoseCuvee;
-    private @Getter Product MeszarosPinot;
-    private @Getter Product NoirRose;
-
+    private @Getter Product MeszarosPinotNoirRose;
+    private @Getter Product MeszarosPinotNoirRoseDecire;
 
     private @Getter Product HazBoraPolgarSerumVeritas;
     private @Getter Product VinczeMerlot;
@@ -162,7 +163,6 @@ public class BuildSchema  {
     private @Getter Product Finca1;
     private @Getter Product Bang1;
     private @Getter Product Imagine1;
-    private @Getter Product RiffRaff1;
 
     private @Getter Product Finca6;
     private @Getter Product Bang6;
@@ -214,14 +214,14 @@ public class BuildSchema  {
     private @Getter Product MonsterRehab;
 
     // Filteres Teaak
-    private @Getter Product DallmyrFekete;
-    private @Getter Product DallmyrGyumolcs;
-    private @Getter Product DallmyrZold;
+    private @Getter Product DallmayrFekete;
+    private @Getter Product DallmayrGyumolcs;
+    private @Getter Product DallmayrZold;
 
-    private @Getter Product Piramis1;
-    private @Getter Product Piramis2;
-    private @Getter Product Piramis3;
-    private @Getter Product Piramis4;
+    private @Getter Product PiramisDarjeling;
+    private @Getter Product PiramisMangoMaracuja;
+    private @Getter Product PiramisAnanaszPapaja;
+    private @Getter Product PiramisCitrusVerbena;
 
     // Kavek
     private @Getter Product Espresso;
@@ -230,7 +230,8 @@ public class BuildSchema  {
     private @Getter Product CaffeLatte;
     private @Getter Product LatteMacchiato;
     private @Getter Product CaffeMelange;
-    private @Getter Product ForroCsoki;
+    private @Getter Product ForroCsokiBarna;
+    private @Getter Product ForroCsokiFeher;
 
     // Napi akciok
     private @Getter Product CaptainAndGyomber;
@@ -326,12 +327,12 @@ public class BuildSchema  {
     // Borok
     private @Getter ProductCategory PseudoHazBoraNagyEsNagy;
     private @Getter ProductCategory PseudoHilltopIrsaiOliver;
+    private @Getter ProductCategory PseudoHilltopIrsaiOliverDecire;
     private @Getter ProductCategory PseudoGereAttilaOlaszrizling;
 
     private @Getter ProductCategory PseudoHazBoraLisiczaRoseCuvee;
-    private @Getter ProductCategory PseudoMeszarosPinot;
-    private @Getter ProductCategory PseudoNoirRose;
-
+    private @Getter ProductCategory PseudoMeszarosPinotNoireRose;
+    private @Getter ProductCategory PseudoMeszarosPinotNoireRoseDecire;
 
     private @Getter ProductCategory PseudoHazBoraPolgarSerumVeritas;
     private @Getter ProductCategory PseudoVinczeMerlot;
@@ -410,7 +411,6 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoFinca1;
     private @Getter ProductCategory PseudoBang1;
     private @Getter ProductCategory PseudoImagine1;
-    private @Getter ProductCategory PseudoRiffRaff1;
 
     private @Getter ProductCategory PseudoFinca6;
     private @Getter ProductCategory PseudoBang6;
@@ -478,7 +478,8 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoCaffeLatte;
     private @Getter ProductCategory PseudoLatteMacchiato;
     private @Getter ProductCategory PseudoCaffeMelange;
-    private @Getter ProductCategory PseudoForroCsoki;
+    private @Getter ProductCategory PseudoForroCsokiBarna;
+    private @Getter ProductCategory PseudoForroCsokiFeher;
 
     // Napi akciok
     private @Getter ProductCategory PseudoCaptainAndGyomber;
@@ -486,7 +487,7 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoJackAndCoke;
     private @Getter ProductCategory PseudoVodkaSzoda;
     
-//    private @Getter PriceModifier priceModifierOne;
+    private @Getter PriceModifier priceModifierCaptainAndGyomber;
 //    private @Getter PriceModifier priceModifierTwo;
 //    private @Getter PriceModifier priceModifierThree;
 //    private @Getter PriceModifier priceModifierFour;
@@ -495,6 +496,20 @@ public class BuildSchema  {
     private @Getter Receipt receiptInventory;
     private @Getter Receipt receiptDisposal;
     private @Getter Receipt receiptOther;
+
+    private @Getter Table table1;
+    private @Getter Table table2;
+    private @Getter Table table3;
+    private @Getter Table table4;
+    private @Getter Table table5;
+    private @Getter Table table6;
+    private @Getter Table table7;
+    private @Getter Table table8;
+    private @Getter Table table9;
+    private @Getter Table table10;
+    private @Getter Table table11;
+    private @Getter Table table12;
+    private @Getter Table table13;
 
     private @Getter Table tablePurchase;
     private @Getter Table tableInventory;
@@ -552,7 +567,7 @@ public class BuildSchema  {
     private void buildObjects() {
         buildProducts();
         buildProductCategories();
-//        buildPriceModifiers();
+        buildPriceModifiers();
 //        buildRecipes();
 //        buildStocks();
         buildReceipts();
@@ -572,7 +587,7 @@ public class BuildSchema  {
 
     private void setUpObjectRelationShips() {
         productCategories();
-//        categoriesAndPriceModifiers();
+        categoriesAndPriceModifiers();
         productsAndCategories();
         vatSerieAndVatValues();
         restaurantAndTables();
@@ -583,6 +598,7 @@ public class BuildSchema  {
         GuardedTransaction.run(() -> entityManager.persist(restaurant));
         GuardedTransaction.run(() -> entityManager.persist(root));
         GuardedTransaction.run(() -> entityManager.persist(vatSerie));
+//        GuardedTransaction.run(() -> entityManager.persist(productGameFee));
     }
 
     private void buildProducts() {
@@ -646,12 +662,13 @@ public class BuildSchema  {
         // Borok
         buildHazBoraNagyEsNagy();
         buildHilltopIrsaiOliver();
+        buildHilltopIrsaiOliverDecire();
         buildGereAttilaOlaszrizling();
 
         buildHazBoraLisiczaRoseCuvee();
         buildMeszarosPinot();
-        buildNoirRose();
-        
+        buildMeszarosPinotDecire();
+
 
         buildHazBoraPolgarSerumVeritas();
         buildVinczeMerlot();
@@ -730,7 +747,6 @@ public class BuildSchema  {
         buildFinca1();
         buildBang1();
         buildImagine1();
-        buildRiffRaff1();
 
         buildFinca6();
         buildBang6();
@@ -798,7 +814,8 @@ public class BuildSchema  {
         buildCaffeLatte();
         buildLatteMacchiato();
         buildCaffeMelange();
-        buildForroCsoki();
+        buildForroCsokiBarna();
+        buildForroCsokiFeher();
 
         // Napi akciok
         buildCaptainAndGyomber();
@@ -833,7 +850,7 @@ public class BuildSchema  {
         SosPerec = Product.builder()
                 .longName("Sós Perec")
                 .shortName("Sós Perec")
-                .salePrice(1000)
+                .salePrice(290)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -846,7 +863,7 @@ public class BuildSchema  {
         Mogyoro = Product.builder()
                 .longName("Mogyoró")
                 .shortName("Mogyoró")
-                .salePrice(1000)
+                .salePrice(390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -859,7 +876,7 @@ public class BuildSchema  {
         RagcsaMix = Product.builder()
                 .longName("Rágcsa Mix")
                 .shortName("Rágcsa Mix")
-                .salePrice(1000)
+                .salePrice(890)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -872,7 +889,7 @@ public class BuildSchema  {
         NachosSosSajt = Product.builder()
                 .longName("Nachos Sós Sajt")
                 .shortName("Nachos Sós Sajt")
-                .salePrice(1000)
+                .salePrice(720)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -885,7 +902,7 @@ public class BuildSchema  {
         NachosSosChili = Product.builder()
                 .longName("Nachos Sos Chili")
                 .shortName("Nachos Sos Chili")
-                .salePrice(1000)
+                .salePrice(720)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -898,7 +915,7 @@ public class BuildSchema  {
         NachosBBQSajt = Product.builder()
                 .longName("Nachos BBQ Sajt")
                 .shortName("Nachos BBQ Sajt")
-                .salePrice(1000)
+                .salePrice(720)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -911,7 +928,7 @@ public class BuildSchema  {
         NachosBBQChili = Product.builder()
                 .longName("Nachos BBQ Chili")
                 .shortName("Nachos BBQ Chili")
-                .salePrice(1000)
+                .salePrice(720)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -924,7 +941,7 @@ public class BuildSchema  {
         Chips = Product.builder()
                 .longName("Chips")
                 .shortName("Chips")
-                .salePrice(1000)
+                .salePrice(490)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -937,7 +954,7 @@ public class BuildSchema  {
         Popcorn = Product.builder()
                 .longName("Popcorn")
                 .shortName("Popcorn")
-                .salePrice(1000)
+                .salePrice(390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -950,7 +967,7 @@ public class BuildSchema  {
         Gumicukor = Product.builder()
                 .longName("Gumicukor")
                 .shortName("Gumicukor")
-                .salePrice(1000)
+                .salePrice(490)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -963,7 +980,7 @@ public class BuildSchema  {
         Balatonszelet = Product.builder()
                 .longName("Balatonszelet")
                 .shortName("Balatonszelet")
-                .salePrice(1000)
+                .salePrice(190)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -976,7 +993,7 @@ public class BuildSchema  {
         Csoki = Product.builder()
                 .longName("Csoki")
                 .shortName("Csoki")
-                .salePrice(1000)
+                .salePrice(290)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -988,8 +1005,8 @@ public class BuildSchema  {
     private void buildMelegszendivcsSonkas() {
         MelegszendivcsSonkas = Product.builder()
                 .longName("Melegszendivcs Sonkás")
-                .shortName("Melegsz. Sonkás")
-                .salePrice(1000)
+                .shortName("Sonkás")
+                .salePrice(790)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1001,8 +1018,8 @@ public class BuildSchema  {
     private void buildMelegszendivcsSzalamis() {
         MelegszendivcsSzalamis = Product.builder()
                 .longName("Melegszendivcs Szalámis")
-                .shortName("Melegsz. Szalámis")
-                .salePrice(1000)
+                .shortName("Szalámis")
+                .salePrice(790)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1014,8 +1031,8 @@ public class BuildSchema  {
     private void buildMelegszendivcsVega() {
         MelegszendivcsVega = Product.builder()
                 .longName("Melegszendivcs Vega")
-                .shortName("Melegszendivcs Vega")
-                .salePrice(1000)
+                .shortName("Vega")
+                .salePrice(790)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1028,7 +1045,7 @@ public class BuildSchema  {
         SajtosCsikok = Product.builder()
                 .longName("Sajtos Csíkok")
                 .shortName("Sajtos Csíkok")
-                .salePrice(1000)
+                .salePrice(590)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1041,7 +1058,7 @@ public class BuildSchema  {
         ZsirosDeszka = Product.builder()
                 .longName("Zsíros Deszka")
                 .shortName("Zsíros Deszka")
-                .salePrice(1000)
+                .salePrice(590)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1054,7 +1071,7 @@ public class BuildSchema  {
         Wrap = Product.builder()
                 .longName("Wrap")
                 .shortName("Wrap")
-                .salePrice(1000)
+                .salePrice(990)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1067,7 +1084,7 @@ public class BuildSchema  {
         SpecialisFeltetekPiritossal = Product.builder()
                 .longName("Speciális Feltétek Piritóssal")
                 .shortName("Spec. Felt. Piritós")
-                .salePrice(1000)
+                .salePrice(890)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1080,7 +1097,7 @@ public class BuildSchema  {
         Sajttal = Product.builder()
                 .longName("Sajttál")
                 .shortName("Sajttál")
-                .salePrice(1000)
+                .salePrice(990)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1093,7 +1110,7 @@ public class BuildSchema  {
         GameUpTal = Product.builder()
                 .longName("Game Up Tál")
                 .shortName("Game Up Tál")
-                .salePrice(1000)
+                .salePrice(2490)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1106,7 +1123,7 @@ public class BuildSchema  {
         GameUpFalankTal = Product.builder()
                 .longName("Game Up Falánk Tál")
                 .shortName("Game Up Falánk Tál")
-                .salePrice(1000)
+                .salePrice(4990)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1119,7 +1136,7 @@ public class BuildSchema  {
         AgentShotCover = Product.builder()
                 .longName("Agent Shot Cover")
                 .shortName("Agent Shot Cover")
-                .salePrice(1000)
+                .salePrice(3990)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1132,7 +1149,7 @@ public class BuildSchema  {
         LimonCept = Product.builder()
                 .longName("Limoncept")
                 .shortName("Limoncept")
-                .salePrice(1000)
+                .salePrice(3900)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1145,7 +1162,7 @@ public class BuildSchema  {
         SplendBor = Product.builder()
                 .longName("SplendBor")
                 .shortName("SplendBor")
-                .salePrice(1000)
+                .salePrice(3990)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1158,7 +1175,7 @@ public class BuildSchema  {
         TatraTime = Product.builder()
                 .longName("Tátra Time")
                 .shortName("Tátra Time")
-                .salePrice(1000)
+                .salePrice(3990)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1172,7 +1189,7 @@ public class BuildSchema  {
         SorrelAzEmberisegEllen = Product.builder()
                 .longName("Sörrel Az Emberiség Ellen")
                 .shortName("Sörrel Az Emberiség")
-                .salePrice(1000)
+                .salePrice(3990)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1185,7 +1202,7 @@ public class BuildSchema  {
         Soproni03 = Product.builder()
                 .longName("Soproni 0,3L")
                 .shortName("Soproni 0,3L")
-                .salePrice(1000)
+                .salePrice(320)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1198,7 +1215,7 @@ public class BuildSchema  {
         Soproni05 = Product.builder()
                 .longName("Soproni 0,5L")
                 .shortName("Soproni 0,5L")
-                .salePrice(1000)
+                .salePrice(440)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1211,7 +1228,7 @@ public class BuildSchema  {
         Edelweiss03 = Product.builder()
                 .longName("Edelweiss 0,3L")
                 .shortName("Edelweiss 0,3L")
-                .salePrice(1000)
+                .salePrice(520)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1224,7 +1241,7 @@ public class BuildSchema  {
         Edelweiss05 = Product.builder()
                 .longName("Edelweiss 0,5L")
                 .shortName("Edelweiss 0,5L")
-                .salePrice(1000)
+                .salePrice(780)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1237,7 +1254,7 @@ public class BuildSchema  {
         KrusoviceSvetle = Product.builder()
                 .longName("Krusovice Svetlé")
                 .shortName("Krusovice Svetlé")
-                .salePrice(1000)
+                .salePrice(480)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1250,7 +1267,7 @@ public class BuildSchema  {
         SoproniDemon = Product.builder()
                 .longName("Soproni Démon")
                 .shortName("Soproni Démon")
-                .salePrice(1000)
+                .salePrice(480)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1263,7 +1280,7 @@ public class BuildSchema  {
         SoproniMaxx = Product.builder()
                 .longName("Soproni Maxx")
                 .shortName("Soproni Maxx")
-                .salePrice(1000)
+                .salePrice(420)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1276,7 +1293,7 @@ public class BuildSchema  {
         Heineken = Product.builder()
                 .longName("Heineken")
                 .shortName("Heineken")
-                .salePrice(1000)
+                .salePrice(540)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1289,7 +1306,7 @@ public class BuildSchema  {
         GosserNaturRadler = Product.builder()
                 .longName("Gosser Natur Radler")
                 .shortName("Gosser Natur Radler")
-                .salePrice(1000)
+                .salePrice(440)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1302,7 +1319,7 @@ public class BuildSchema  {
         GosserNaturRadler00 = Product.builder()
                 .longName("Gosser Natur Radler 0,0%")
                 .shortName("Gosser Radler 0,0%")
-                .salePrice(1000)
+                .salePrice(420)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1315,7 +1332,7 @@ public class BuildSchema  {
         BekesSzentandrasiMeggyes = Product.builder()
                 .longName("Békésszentandrási Meggyes")
                 .shortName("Békésszent. Meggy")
-                .salePrice(1000)
+                .salePrice(890)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1328,7 +1345,7 @@ public class BuildSchema  {
         StrongbowDarkfruit = Product.builder()
                 .longName("Strongbow Darkfruit")
                 .shortName("Strongbow Darkfruit")
-                .salePrice(1000)
+                .salePrice(640)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1341,7 +1358,7 @@ public class BuildSchema  {
         StrongbowGoldAppleCider = Product.builder()
                 .longName("Strongbow Gold Apple Cider")
                 .shortName("Strongbow Cider")
-                .salePrice(1000)
+                .salePrice(640)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1354,7 +1371,7 @@ public class BuildSchema  {
         Edelweiss = Product.builder()
                 .longName("Edelweiss")
                 .shortName("Edelweiss")
-                .salePrice(1000)
+                .salePrice(780)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1367,7 +1384,7 @@ public class BuildSchema  {
         HazBoraNagyEsNagy = Product.builder()
                 .longName("Ház Bora Nagy és Nagy")
                 .shortName("Ház Bora Nagy")
-                .salePrice(1000)
+                .salePrice(260)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1380,7 +1397,20 @@ public class BuildSchema  {
         HilltopIrsaiOliver = Product.builder()
                 .longName("Hilltop Irsai Olivér")
                 .shortName("Hilltop Irsai Olivér")
-                .salePrice(1000)
+                .salePrice(2200)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverDecire() {
+        HilltopIrsaiOliverDecire = Product.builder()
+                .longName("Hilltop Irsai Olivér 1dl")
+                .shortName("Hilltop Irsai 1dl")
+                .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1393,7 +1423,7 @@ public class BuildSchema  {
         GereAttilaOlaszrizling = Product.builder()
                 .longName("Gere Attila Olaszrizling")
                 .shortName("Gere Olaszrizling")
-                .salePrice(1000)
+                .salePrice(2900)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1406,7 +1436,7 @@ public class BuildSchema  {
         HazBoraLisiczaRoseCuvee = Product.builder()
                 .longName("Ház Bora Lisicza Rosé Cuvée")
                 .shortName("Ház Bora L. Rosé")
-                .salePrice(1000)
+                .salePrice(260)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1416,10 +1446,10 @@ public class BuildSchema  {
     }
 
     private void buildMeszarosPinot() {
-        MeszarosPinot = Product.builder()
-                .longName("Mészáros Pinot")
+        MeszarosPinotNoirRose = Product.builder()
+                .longName("Mészáros Pinot Noir Rose")
                 .shortName("Mészáros Pinot")
-                .salePrice(1000)
+                .salePrice(2400)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1428,11 +1458,11 @@ public class BuildSchema  {
                 .build();
     }
 
-    private void buildNoirRose() {
-        NoirRose = Product.builder()
-                .longName("Noir Rose")
-                .shortName("Noir Rose")
-                .salePrice(1000)
+    private void buildMeszarosPinotDecire() {
+        MeszarosPinotNoirRoseDecire = Product.builder()
+                .longName("Mészáros Pinot Noir Rose 1dl")
+                .shortName("Mészáros Pinot 1dl")
+                .salePrice(360)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1445,7 +1475,7 @@ public class BuildSchema  {
         HazBoraPolgarSerumVeritas = Product.builder()
                 .longName("Ház Bora Polgár Serum Veritas")
                 .shortName("Ház Bora Polgár")
-                .salePrice(1000)
+                .salePrice(360)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1458,7 +1488,7 @@ public class BuildSchema  {
         VinczeMerlot = Product.builder()
                 .longName("Vincze Merlot")
                 .shortName("Vincze Merlot")
-                .salePrice(1000)
+                .salePrice(2700)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1471,7 +1501,7 @@ public class BuildSchema  {
         VylyanCabernetSauvignon = Product.builder()
                 .longName("Vylyan Cabernet Sauvignon")
                 .shortName("Vylyan Cabernet S.")
-                .salePrice(1000)
+                .salePrice(3400)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1484,7 +1514,7 @@ public class BuildSchema  {
         MeszarosHidasptereCabernetFrancReserve = Product.builder()
                 .longName("Meszáros Hidasptere Cabernet Franc Reserve")
                 .shortName("Meszáros Cabernet F.")
-                .salePrice(1000)
+                .salePrice(4700)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1497,7 +1527,7 @@ public class BuildSchema  {
         TorleyGalaSzaraz = Product.builder()
                 .longName("Torley Gála Száraz")
                 .shortName("Torley Gála Száraz")
-                .salePrice(1000)
+                .salePrice(2400)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1510,7 +1540,7 @@ public class BuildSchema  {
         TorleyCharmantEdes = Product.builder()
                 .longName("Torley Charmant Édes")
                 .shortName("Torley Charmant Édes")
-                .salePrice(1000)
+                .salePrice(2400)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1523,7 +1553,7 @@ public class BuildSchema  {
         JimBeam04 = Product.builder()
                 .longName("Jim Beam 4cl")
                 .shortName("Jim Beam 4cl")
-                .salePrice(1000)
+                .salePrice(560)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1536,7 +1566,7 @@ public class BuildSchema  {
         JohnnieWalkerRedLabel04 = Product.builder()
                 .longName("Johnnie Walker Red Label 4cl")
                 .shortName("Johnnie Walker 4cl")
-                .salePrice(1000)
+                .salePrice(580)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1549,7 +1579,7 @@ public class BuildSchema  {
         JackDaniels04 = Product.builder()
                 .longName("Jack Daniels 4cl")
                 .shortName("Jack Daniels 4cl")
-                .salePrice(1000)
+                .salePrice(780)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1562,7 +1592,7 @@ public class BuildSchema  {
         TullamoreDew04 = Product.builder()
                 .longName("Tullamore Dew 4cl")
                 .shortName("Tullamore Dew 4cl")
-                .salePrice(1000)
+                .salePrice(780)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1575,7 +1605,7 @@ public class BuildSchema  {
         Royal04 = Product.builder()
                 .longName("Royal 4cl")
                 .shortName("Royal 4cl")
-                .salePrice(1000)
+                .salePrice(380)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1588,7 +1618,7 @@ public class BuildSchema  {
         Finlandia04 = Product.builder()
                 .longName("Finlandia 4cl")
                 .shortName("Finlandia 4cl")
-                .salePrice(1000)
+                .salePrice(580)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1601,7 +1631,7 @@ public class BuildSchema  {
         BacardiSuperior04 = Product.builder()
                 .longName("Bacardi Superior 4cl")
                 .shortName("Bacardi Sup. 4cl")
-                .salePrice(1000)
+                .salePrice(620)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1614,7 +1644,7 @@ public class BuildSchema  {
         CaptainMorganSpicedRum04 = Product.builder()
                 .longName("Captain Morgan Spiced Rum 4cl")
                 .shortName("Captain Morgan 4cl")
-                .salePrice(1000)
+                .salePrice(640)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1627,7 +1657,7 @@ public class BuildSchema  {
         Beefeater04 = Product.builder()
                 .longName("Beefeater 4cl")
                 .shortName("Beefeater 4cl")
-                .salePrice(1000)
+                .salePrice(620)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1640,7 +1670,7 @@ public class BuildSchema  {
         TequilaSierraReposadoGold04 = Product.builder()
                 .longName("Tequila Sierra Reposado Gold 4cl")
                 .shortName("Tequila Gold 4cl")
-                .salePrice(1000)
+                .salePrice(680)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1653,7 +1683,7 @@ public class BuildSchema  {
         TequilaSierraSilver04 = Product.builder()
                 .longName("Tequila Sierra Silver 4cl")
                 .shortName("Tequila Silver 4cl")
-                .salePrice(1000)
+                .salePrice(680)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1666,7 +1696,7 @@ public class BuildSchema  {
         Unicum04 = Product.builder()
                 .longName("Unicum 4cl")
                 .shortName("Unicum 4cl")
-                .salePrice(1000)
+                .salePrice(560)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1679,7 +1709,7 @@ public class BuildSchema  {
         Jagermeister04 = Product.builder()
                 .longName("Jagermeister 4cl")
                 .shortName("Jagermeister 4cl")
-                .salePrice(1000)
+                .salePrice(580)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1692,7 +1722,7 @@ public class BuildSchema  {
         Baileys08 = Product.builder()
                 .longName("Baileys 8cl")
                 .shortName("Baileys 8cl")
-                .salePrice(1000)
+                .salePrice(1280)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1705,7 +1735,7 @@ public class BuildSchema  {
         JimBeam02 = Product.builder()
                 .longName("Jim Beam 4cl")
                 .shortName("Jim Beam 4cl")
-                .salePrice(1000)
+                .salePrice(280)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1718,7 +1748,7 @@ public class BuildSchema  {
         JohnnieWalkerRedLabel02 = Product.builder()
                 .longName("Johnnie Walker Red Label 2cl")
                 .shortName("Johnnie Walker 2cl")
-                .salePrice(1000)
+                .salePrice(290)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1731,7 +1761,7 @@ public class BuildSchema  {
         JackDaniels02 = Product.builder()
                 .longName("Jack Daniels 2cl")
                 .shortName("Jack Daniels 2cl")
-                .salePrice(1000)
+                .salePrice(390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1744,7 +1774,7 @@ public class BuildSchema  {
         TullamoreDew02 = Product.builder()
                 .longName("Tullamore Dew 2cl")
                 .shortName("Tullamore Dew 2cl")
-                .salePrice(1000)
+                .salePrice(390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1757,7 +1787,7 @@ public class BuildSchema  {
         Royal02 = Product.builder()
                 .longName("Royal 2cl")
                 .shortName("Royal 2cl")
-                .salePrice(1000)
+                .salePrice(190)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1770,7 +1800,7 @@ public class BuildSchema  {
         Finlandia02 = Product.builder()
                 .longName("Finlandia 2cl")
                 .shortName("Finlandia 2cl")
-                .salePrice(1000)
+                .salePrice(290)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1783,7 +1813,7 @@ public class BuildSchema  {
         BacardiSuperior02 = Product.builder()
                 .longName("Bacardi Superior 2cl")
                 .shortName("Bacardi Sup. 2cl")
-                .salePrice(1000)
+                .salePrice(310)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1796,7 +1826,7 @@ public class BuildSchema  {
         CaptainMorganSpicedRum02 = Product.builder()
                 .longName("Captain Morgan SpicedRum 2cl")
                 .shortName("Captain Morgan 2cl")
-                .salePrice(1000)
+                .salePrice(320)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1809,7 +1839,7 @@ public class BuildSchema  {
         Beefeater02 = Product.builder()
                 .longName("Beefeater 2cl")
                 .shortName("Beefeater 2cl")
-                .salePrice(1000)
+                .salePrice(310)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1822,7 +1852,7 @@ public class BuildSchema  {
         TequilaSierraReposadoGold02 = Product.builder()
                 .longName("Tequila Sierra Reposado Gold 2cl")
                 .shortName("Tequila Gold 2cl")
-                .salePrice(1000)
+                .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1835,7 +1865,7 @@ public class BuildSchema  {
         TequilaSierraSilver02 = Product.builder()
                 .longName("Tequila Sierra Silver 2cl")
                 .shortName("Tequila Silver 2cl")
-                .salePrice(1000)
+                .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1848,7 +1878,7 @@ public class BuildSchema  {
         Unicum02 = Product.builder()
                 .longName("Unicum 2cl")
                 .shortName("Unicum 2cl")
-                .salePrice(1000)
+                .salePrice(280)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1861,7 +1891,7 @@ public class BuildSchema  {
         Jagermeister02 = Product.builder()
                 .longName("Jagermeister 2cl")
                 .shortName("Jagermeister 2cl")
-                .salePrice(1000)
+                .salePrice(290)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1874,7 +1904,7 @@ public class BuildSchema  {
         Baileys04 = Product.builder()
                 .longName("Baileys 4cl")
                 .shortName("Baileys 4cl")
-                .salePrice(1000)
+                .salePrice(640)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1887,7 +1917,7 @@ public class BuildSchema  {
         _22KokuszTatratea04 = Product.builder()
                 .longName("22% Kókusz Tátratea 4cl")
                 .shortName("22% Tátratea 4cl")
-                .salePrice(1000)
+                .salePrice(820)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1900,7 +1930,7 @@ public class BuildSchema  {
         _32CitrusTatratea04 = Product.builder()
                 .longName("32% Citrus Tátratea 4cl")
                 .shortName("32% Tátratea 4cl")
-                .salePrice(1000)
+                .salePrice(880)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1913,7 +1943,7 @@ public class BuildSchema  {
         _42BarackTatratea04 = Product.builder()
                 .longName("42% Barack Tátratea 4cl")
                 .shortName("42% Tátratea 4cl")
-                .salePrice(1000)
+                .salePrice(940)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1926,7 +1956,7 @@ public class BuildSchema  {
         _52EredetiTatratea04 = Product.builder()
                 .longName("52% Eredeti Tátratea 4cl")
                 .shortName("52% Tátratea 4cl")
-                .salePrice(1000)
+                .salePrice(980)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1939,7 +1969,7 @@ public class BuildSchema  {
         _62ErdeiGyumolcsTatratea04 = Product.builder()
                 .longName("62% Erdei Gyümölcs Tátratea 4cl")
                 .shortName("62% Tátratea 4cl")
-                .salePrice(1000)
+                .salePrice(1080)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1952,7 +1982,7 @@ public class BuildSchema  {
         _72OutlawBetyarTatratea04 = Product.builder()
                 .longName("72% Outlaw Betyár Tátratea 4cl")
                 .shortName("72% Tátratea 4cl")
-                .salePrice(1000)
+                .salePrice(1180)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1965,7 +1995,7 @@ public class BuildSchema  {
         CseresznyePalinka04 = Product.builder()
                 .longName("Cseresznye Pálinka 4cl")
                 .shortName("Cser. Pálinka 4cl")
-                .salePrice(1000)
+                .salePrice(880)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1978,7 +2008,7 @@ public class BuildSchema  {
         KajszibarackPalinka04 = Product.builder()
                 .longName("Kajszibarack Pálinka 4cl")
                 .shortName("Kajszi Pálinka 4cl")
-                .salePrice(1000)
+                .salePrice(880)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -1991,7 +2021,7 @@ public class BuildSchema  {
         Szilvapalinka04 = Product.builder()
                 .longName("Szilva pálinka 4cl")
                 .shortName("Szilva pálinka 4cl")
-                .salePrice(1000)
+                .salePrice(880)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2004,7 +2034,7 @@ public class BuildSchema  {
         _22KokuszTatratea02 = Product.builder()
                 .longName("22% Kókusz Tátratea 2cl")
                 .shortName("22% Tátratea 2cl")
-                .salePrice(1000)
+                .salePrice(410)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2017,7 +2047,7 @@ public class BuildSchema  {
         _32CitrusTatratea02 = Product.builder()
                 .longName("32% Citrus Tátratea 2cl")
                 .shortName("32% Tátratea 2cl")
-                .salePrice(1000)
+                .salePrice(440)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2030,7 +2060,7 @@ public class BuildSchema  {
         _42BarackTatratea02 = Product.builder()
                 .longName("42% Barack Tátratea 2cl")
                 .shortName("42% Tátratea 2cl")
-                .salePrice(1000)
+                .salePrice(470)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2043,7 +2073,7 @@ public class BuildSchema  {
         _52EredetiTatratea02 = Product.builder()
                 .longName("52% Eredeti Tátratea 2cl")
                 .shortName("52% Tátratea 2cl")
-                .salePrice(1000)
+                .salePrice(490)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2056,7 +2086,7 @@ public class BuildSchema  {
         _62ErdeiGyumolcsTatratea02 = Product.builder()
                 .longName("62% Erdei Gyümölcs Tátratea 2cl")
                 .shortName("62% Tátratea 2cl")
-                .salePrice(1000)
+                .salePrice(540)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2069,7 +2099,7 @@ public class BuildSchema  {
         _72OutlawBetyarTatratea02 = Product.builder()
                 .longName("72% Outlaw Betyár Tátratea 2cl")
                 .shortName("72% Tátratea 2cl")
-                .salePrice(1000)
+                .salePrice(590)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2082,7 +2112,7 @@ public class BuildSchema  {
         CseresznyePalinka02 = Product.builder()
                 .longName("Cseresznye Pálinka 2cl")
                 .shortName("Cser. Pálinka 2cl")
-                .salePrice(1000)
+                .salePrice(440)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2095,7 +2125,7 @@ public class BuildSchema  {
         KajszibarackPalinka02 = Product.builder()
                 .longName("Kajszibarack Pálinka 2cl")
                 .shortName("Kajszi Pálinka 2cl")
-                .salePrice(1000)
+                .salePrice(440)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2108,7 +2138,7 @@ public class BuildSchema  {
         Szilvapalinka02 = Product.builder()
                 .longName("Szilva pálinka 2cl")
                 .shortName("Szilva pálinka 2cl")
-                .salePrice(1000)
+                .salePrice(440)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2121,7 +2151,7 @@ public class BuildSchema  {
         Finca1 = Product.builder()
                 .longName("Finca 1db")
                 .shortName("Finca 1db")
-                .salePrice(1000)
+                .salePrice(390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2134,7 +2164,7 @@ public class BuildSchema  {
         Bang1 = Product.builder()
                 .longName("Bang 1db")
                 .shortName("Bang 1db")
-                .salePrice(1000)
+                .salePrice(390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2147,20 +2177,7 @@ public class BuildSchema  {
         Imagine1 = Product.builder()
                 .longName("Imagine 1db")
                 .shortName("Imagine 1db")
-                .salePrice(1000)
-                .purchasePrice(500)
-                .status(ProductStatus.ACTIVE)
-                .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
-                .build();
-    }
-
-    private void buildRiffRaff1() {
-        RiffRaff1 = Product.builder()
-                .longName("Riff Raff 1db")
-                .shortName("Riff Raff 1db")
-                .salePrice(1000)
+                .salePrice(390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2173,7 +2190,7 @@ public class BuildSchema  {
         Finca6 = Product.builder()
                 .longName("Finca 6db")
                 .shortName("Finca 6db")
-                .salePrice(6000)
+                .salePrice(1890)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2186,7 +2203,7 @@ public class BuildSchema  {
         Bang6 = Product.builder()
                 .longName("Bang 6db")
                 .shortName("Bang 6db")
-                .salePrice(6000)
+                .salePrice(1890)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2199,7 +2216,7 @@ public class BuildSchema  {
         Imagine6 = Product.builder()
                 .longName("Imagine 6db")
                 .shortName("Imagine 6db")
-                .salePrice(6000)
+                .salePrice(1890)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2212,7 +2229,7 @@ public class BuildSchema  {
         RiffRaff6 = Product.builder()
                 .longName("Riff Raff 6db")
                 .shortName("Riff Raff 6db")
-                .salePrice(6000)
+                .salePrice(1890)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2225,7 +2242,7 @@ public class BuildSchema  {
         Finca12 = Product.builder()
                 .longName("Finca 12db")
                 .shortName("Finca 12db")
-                .salePrice(12000)
+                .salePrice(3480)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2238,7 +2255,7 @@ public class BuildSchema  {
         Bang12 = Product.builder()
                 .longName("Bang 12db")
                 .shortName("Bang 12db")
-                .salePrice(12000)
+                .salePrice(3480)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2251,7 +2268,7 @@ public class BuildSchema  {
         Imagine12 = Product.builder()
                 .longName("Imagine 12db")
                 .shortName("Imagine 12db")
-                .salePrice(12000)
+                .salePrice(3480)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2264,7 +2281,7 @@ public class BuildSchema  {
         RiffRaff12 = Product.builder()
                 .longName("Riff Raff 12db")
                 .shortName("Riff Raff 12db")
-                .salePrice(12000)
+                .salePrice(3480)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2277,7 +2294,7 @@ public class BuildSchema  {
         CocaCola = Product.builder()
                 .longName("Coca Cola")
                 .shortName("Coca Cola")
-                .salePrice(1000)
+                .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2290,7 +2307,7 @@ public class BuildSchema  {
         CocaColaZero = Product.builder()
                 .longName("Coca Cola Zero")
                 .shortName("Coca Cola Zero")
-                .salePrice(1000)
+                .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2303,7 +2320,7 @@ public class BuildSchema  {
         FantaNarancs = Product.builder()
                 .longName("Fanta Narancs")
                 .shortName("Fanta Narancs")
-                .salePrice(1000)
+                .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2316,7 +2333,7 @@ public class BuildSchema  {
         Sprite = Product.builder()
                 .longName("Sprite")
                 .shortName("Sprite")
-                .salePrice(1000)
+                .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2329,7 +2346,7 @@ public class BuildSchema  {
         KinleyGyomber = Product.builder()
                 .longName("Kinley Gyömbér")
                 .shortName("Kinley Gyömbér")
-                .salePrice(1000)
+                .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2342,7 +2359,7 @@ public class BuildSchema  {
         KinleyTonic = Product.builder()
                 .longName("Kinley Tonic")
                 .shortName("Kinley Tonic")
-                .salePrice(1000)
+                .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2355,7 +2372,7 @@ public class BuildSchema  {
         NesteaCitrom = Product.builder()
                 .longName("Nestea Citrom")
                 .shortName("Nestea Citrom")
-                .salePrice(1000)
+                .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2368,7 +2385,7 @@ public class BuildSchema  {
         NesteaBarack = Product.builder()
                 .longName("Nestea Barack")
                 .shortName("Nestea Barack")
-                .salePrice(1000)
+                .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2381,7 +2398,7 @@ public class BuildSchema  {
         CappyAlma = Product.builder()
                 .longName("Cappy Alma")
                 .shortName("Cappy Alma")
-                .salePrice(1000)
+                .salePrice(150)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2394,7 +2411,7 @@ public class BuildSchema  {
         CappyNarancs = Product.builder()
                 .longName("Cappy Narancs")
                 .shortName("Cappy Narancs")
-                .salePrice(1000)
+                .salePrice(150)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2407,7 +2424,7 @@ public class BuildSchema  {
         CappyBarack = Product.builder()
                 .longName("Cappy Barack")
                 .shortName("Cappy Barack")
-                .salePrice(1000)
+                .salePrice(150)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2420,7 +2437,7 @@ public class BuildSchema  {
         CappyAnanasz = Product.builder()
                 .longName("Cappy Ananász")
                 .shortName("Cappy Ananász")
-                .salePrice(1000)
+                .salePrice(150)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2433,7 +2450,7 @@ public class BuildSchema  {
         LimonadeMalna05 = Product.builder()
                 .longName("Limonádé Málna 5dl")
                 .shortName("Limonádé Málna 5dl")
-                .salePrice(1000)
+                .salePrice(790)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2446,7 +2463,7 @@ public class BuildSchema  {
         LimonadeMeggy05 = Product.builder()
                 .longName("Limonádé Meggy 5dl")
                 .shortName("Limonádé Meggy 5dl")
-                .salePrice(1000)
+                .salePrice(790)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2459,7 +2476,7 @@ public class BuildSchema  {
         LimonadeEperNarancs05 = Product.builder()
                 .longName("Limonádé Eper Narancs 5dl")
                 .shortName("Limonádé Eper 5dl")
-                .salePrice(1000)
+                .salePrice(790)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2472,7 +2489,7 @@ public class BuildSchema  {
         LimonadeCitrus05 = Product.builder()
                 .longName("Limonádé Citrus 5dl")
                 .shortName("Limonádé Citrus 5dl")
-                .salePrice(1000)
+                .salePrice(790)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2485,7 +2502,7 @@ public class BuildSchema  {
         LimonadeMalna10 = Product.builder()
                 .longName("Limonádé Málna 1L")
                 .shortName("Limonádé Málna 1L")
-                .salePrice(1000)
+                .salePrice(1390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2498,7 +2515,7 @@ public class BuildSchema  {
         LimonadeMeggy10 = Product.builder()
                 .longName("Limonádé Meggy 1L")
                 .shortName("Limonádé Meggy 1L")
-                .salePrice(1000)
+                .salePrice(1390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2511,7 +2528,7 @@ public class BuildSchema  {
         LimonadeEperNarancs10 = Product.builder()
                 .longName("Limonádé Eper Narancs  1L")
                 .shortName("Limonádé Eper 1L")
-                .salePrice(1000)
+                .salePrice(1390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2524,7 +2541,7 @@ public class BuildSchema  {
         LimonadeCitrus10 = Product.builder()
                 .longName("Limonádé Citrus  1L")
                 .shortName("Limonádé Citrus  1L")
-                .salePrice(1000)
+                .salePrice(1390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2537,7 +2554,7 @@ public class BuildSchema  {
         NaturaquaSzensavas = Product.builder()
                 .longName("Naturaqua Szénsavas")
                 .shortName("Naturaqua Szénsavas")
-                .salePrice(1000)
+                .salePrice(280)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2550,7 +2567,7 @@ public class BuildSchema  {
         NaturaquaSzensavmentes = Product.builder()
                 .longName("Naturaqua Szénsavmentes")
                 .shortName("Naturaqua Szénsavm.")
-                .salePrice(1000)
+                .salePrice(280)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2563,7 +2580,7 @@ public class BuildSchema  {
         Szoda = Product.builder()
                 .longName("Szóda")
                 .shortName("Szóda")
-                .salePrice(1000)
+                .salePrice(40)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2576,7 +2593,7 @@ public class BuildSchema  {
         BurnOriginal = Product.builder()
                 .longName("Burn Original")
                 .shortName("Burn Original")
-                .salePrice(1000)
+                .salePrice(420)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2589,7 +2606,7 @@ public class BuildSchema  {
         BurnZero = Product.builder()
                 .longName("BurnZero")
                 .shortName("BurnZero")
-                .salePrice(1000)
+                .salePrice(420)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2602,7 +2619,7 @@ public class BuildSchema  {
         MonsterEnergy = Product.builder()
                 .longName("Monster Energy")
                 .shortName("Monster Energy")
-                .salePrice(1000)
+                .salePrice(640)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2615,7 +2632,7 @@ public class BuildSchema  {
         MonsterAssault = Product.builder()
                 .longName("Monster Assault")
                 .shortName("Monster Assault")
-                .salePrice(1000)
+                .salePrice(640)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2628,7 +2645,7 @@ public class BuildSchema  {
         MonsterRehab = Product.builder()
                 .longName("Monster Rehab")
                 .shortName("Monster Rehab")
-                .salePrice(1000)
+                .salePrice(640)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2638,10 +2655,10 @@ public class BuildSchema  {
     }
 
     private void buildDallmyrFekete() {
-        DallmyrFekete = Product.builder()
-                .longName("Dallmyr Fekete")
-                .shortName("Dallmyr Fekete")
-                .salePrice(1000)
+        DallmayrFekete = Product.builder()
+                .longName("Dallmayr Fekete")
+                .shortName("Dallmayr Fekete")
+                .salePrice(450)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2651,10 +2668,10 @@ public class BuildSchema  {
     }
 
     private void buildDallmyrGyumolcs() {
-        DallmyrGyumolcs = Product.builder()
-                .longName("Dallmyr Gyümölcs")
-                .shortName("Dallmyr Gyümölcs")
-                .salePrice(1000)
+        DallmayrGyumolcs = Product.builder()
+                .longName("Dallmayr Gyümölcs")
+                .shortName("Dallmayr Gyümölcs")
+                .salePrice(450)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2664,10 +2681,10 @@ public class BuildSchema  {
     }
 
     private void buildDallmyrZold() {
-        DallmyrZold = Product.builder()
-                .longName("Dallmyr Zöld")
-                .shortName("Dallmyr Zöld")
-                .salePrice(1000)
+        DallmayrZold = Product.builder()
+                .longName("Dallmyar Zöld")
+                .shortName("Dallmyar Zöld")
+                .salePrice(450)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2677,10 +2694,10 @@ public class BuildSchema  {
     }
 
     private void buildPiramis1() {
-        Piramis1 = Product.builder()
-                .longName("Piramis1")
-                .shortName("Piramis1")
-                .salePrice(1000)
+        PiramisDarjeling = Product.builder()
+                .longName("Piramis Darjeling")
+                .shortName("Piramis Darjeling")
+                .salePrice(490)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2690,10 +2707,10 @@ public class BuildSchema  {
     }
 
     private void buildPiramis2() {
-        Piramis2 = Product.builder()
-                .longName("Piramis2")
-                .shortName("Piramis2")
-                .salePrice(1000)
+        PiramisMangoMaracuja = Product.builder()
+                .longName("Piramis Mango Maracuja")
+                .shortName("Piramis Mango Mar.")
+                .salePrice(490)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2703,10 +2720,10 @@ public class BuildSchema  {
     }
 
     private void buildPiramis3() {
-        Piramis3 = Product.builder()
-                .longName("Piramis3")
-                .shortName("Piramis3")
-                .salePrice(1000)
+        PiramisAnanaszPapaja = Product.builder()
+                .longName("Piramis Ananász Papaja")
+                .shortName("Piramis Ananász P.")
+                .salePrice(490)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2716,10 +2733,10 @@ public class BuildSchema  {
     }
 
     private void buildPiramis4() {
-        Piramis4 = Product.builder()
-                .longName("Piramis4")
-                .shortName("Piramis4")
-                .salePrice(1000)
+        PiramisCitrusVerbena = Product.builder()
+                .longName("Piramis Citrus Verbéna")
+                .shortName("Piramis Citrus Verb.")
+                .salePrice(490)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2732,7 +2749,7 @@ public class BuildSchema  {
         Espresso = Product.builder()
                 .longName("Espresso")
                 .shortName("Espresso")
-                .salePrice(1000)
+                .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2745,7 +2762,7 @@ public class BuildSchema  {
         Americano = Product.builder()
                 .longName("Americano")
                 .shortName("Americano")
-                .salePrice(1000)
+                .salePrice(390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2758,7 +2775,7 @@ public class BuildSchema  {
         Cappuccino = Product.builder()
                 .longName("Cappuccino")
                 .shortName("Cappuccino")
-                .salePrice(1000)
+                .salePrice(470)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2771,7 +2788,7 @@ public class BuildSchema  {
         CaffeLatte = Product.builder()
                 .longName("Caffe Latte")
                 .shortName("Caffe Latte")
-                .salePrice(1000)
+                .salePrice(490)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2784,7 +2801,7 @@ public class BuildSchema  {
         LatteMacchiato = Product.builder()
                 .longName("Latte Macchiato")
                 .shortName("Latte Macchiato")
-                .salePrice(1000)
+                .salePrice(520)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2797,7 +2814,7 @@ public class BuildSchema  {
         CaffeMelange = Product.builder()
                 .longName("Caffe Melange")
                 .shortName("Caffe Melange")
-                .salePrice(1000)
+                .salePrice(590)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2806,11 +2823,24 @@ public class BuildSchema  {
                 .build();
     }
 
-    private void buildForroCsoki() {
-        ForroCsoki = Product.builder()
-                .longName("Forró Csoki")
-                .shortName("Forró Csoki")
-                .salePrice(1000)
+    private void buildForroCsokiBarna() {
+        ForroCsokiBarna = Product.builder()
+                .longName("Forró Csoki Barna")
+                .shortName("Forró Csoki Barna")
+                .salePrice(740)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildForroCsokiFeher() {
+        ForroCsokiFeher = Product.builder()
+                .longName("Forró Csoki Fehér")
+                .shortName("Forró Csoki Fehér")
+                .salePrice(780)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2823,7 +2853,7 @@ public class BuildSchema  {
         CaptainAndGyomber = Product.builder()
                 .longName("Captain And Gyömbér")
                 .shortName("Captain And Gyömbér")
-                .salePrice(1000)
+                .salePrice(980)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2836,7 +2866,7 @@ public class BuildSchema  {
         GinTonic = Product.builder()
                 .longName("Gin Tonic")
                 .shortName("Gin Tonic")
-                .salePrice(1000)
+                .salePrice(960)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2849,7 +2879,7 @@ public class BuildSchema  {
         JackAndCoke = Product.builder()
                 .longName("Jack And Coke")
                 .shortName("Jack And Cok")
-                .salePrice(1000)
+                .salePrice(1120)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2862,7 +2892,7 @@ public class BuildSchema  {
         VodkaSzoda = Product.builder()
                 .longName("Vodka Szóda")
                 .shortName("Vodka Szóda")
-                .salePrice(1000)
+                .salePrice(700)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -2962,12 +2992,12 @@ public class BuildSchema  {
         // Borok
         buildPseudoHazBoraNagyEsNagy();
         buildPseudoHilltopIrsaiOliver();
+        buildPseudoHilltopIrsaiOliverDecire();
         buildPseudoGereAttilaOlaszrizling();
 
         buildPseudoHazBoraLisiczaRoseCuvee();
         buildPseudoMeszarosPinot();
-        buildPseudoNoirRose();
-
+        buildPseudoMeszarosPinotDecire();
 
         buildPseudoHazBoraPolgarSerumVeritas();
         buildPseudoVinczeMerlot();
@@ -3046,7 +3076,6 @@ public class BuildSchema  {
         buildPseudoFinca1();
         buildPseudoBang1();
         buildPseudoImagine1();
-        buildPseudoRiffRaff1();
 
         buildPseudoFinca6();
         buildPseudoBang6();
@@ -3114,13 +3143,32 @@ public class BuildSchema  {
         buildPseudoCaffeLatte();
         buildPseudoLatteMacchiato();
         buildPseudoCaffeMelange();
-        buildPseudoForroCsoki();
+        buildPseudoForroCsokiBarna();
+        buildPseudoForroCsokiFeher();
 
         // Napi akciok
         buildPseudoCaptainAndGyomber();
         buildPseudoGinTonic();
         buildPseudoJackAndCoke();
         buildPseudoVodkaSzoda();
+    }
+
+    private void buildPriceModifiers() {
+        buildPriceModifierCaptainAndGyomber();
+    }
+
+    private void buildPriceModifierCaptainAndGyomber() {
+        priceModifierCaptainAndGyomber = PriceModifier.builder()
+                .name("Captain And Gyömbér")
+                .type(PriceModifierType.QUANTITY_DISCOUNT)
+                .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .startDate(LocalDateTime.of(2017, 1, 8, 16, 0))
+                .endDate(LocalDateTime.of(2020, 1, 8, 20, 20))
+                .discountPercent(33.333)
+                .quantityLimit(3)
+                .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .dayOfWeek(DayOfWeek.WEDNESDAY)
+                .build();
     }
 
     private void buildPseudoSosPerec() {
@@ -3467,6 +3515,14 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildPseudoHilltopIrsaiOliverDecire() {
+        PseudoHilltopIrsaiOliverDecire = ProductCategory.builder()
+                .name("Hilltop Irsai Olivér Decire_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
     private void buildPseudoGereAttilaOlaszrizling() {
         PseudoGereAttilaOlaszrizling = ProductCategory.builder()
                 .name("Gere Attila Olaszrizling_Pseudo")
@@ -3484,16 +3540,16 @@ public class BuildSchema  {
     }
 
     private void buildPseudoMeszarosPinot() {
-        PseudoMeszarosPinot = ProductCategory.builder()
+        PseudoMeszarosPinotNoireRose = ProductCategory.builder()
                 .name("Mészáros Pinot_Pseudo")
                 .status(ProductStatus.ACTIVE)
                 .type(ProductCategoryType.PSEUDO)
                 .build();
     }
 
-    private void buildPseudoNoirRose() {
-        PseudoNoirRose = ProductCategory.builder()
-                .name("Noir Rose_Pseudo")
+    private void buildPseudoMeszarosPinotDecire() {
+        PseudoMeszarosPinotNoireRoseDecire = ProductCategory.builder()
+                .name("Mészáros Pinot 1dl_Pseudo")
                 .status(ProductStatus.ACTIVE)
                 .type(ProductCategoryType.PSEUDO)
                 .build();
@@ -3939,14 +3995,6 @@ public class BuildSchema  {
                 .build();
     }
 
-    private void buildPseudoRiffRaff1() {
-        PseudoRiffRaff1 = ProductCategory.builder()
-                .name("Riff Raff 1db_Pseudo")
-                .status(ProductStatus.ACTIVE)
-                .type(ProductCategoryType.PSEUDO)
-                .build();
-    }
-
     private void buildPseudoFinca6() {
         PseudoFinca6 = ProductCategory.builder()
                 .name("Finca 6db_Pseudo")
@@ -4339,9 +4387,17 @@ public class BuildSchema  {
                 .build();
     }
 
-    private void buildPseudoForroCsoki() {
-        PseudoForroCsoki = ProductCategory.builder()
-                .name("Forró Csoki_Pseudo")
+    private void buildPseudoForroCsokiBarna() {
+        PseudoForroCsokiBarna = ProductCategory.builder()
+                .name("Forró Csoki Barna_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoForroCsokiFeher() {
+        PseudoForroCsokiFeher = ProductCategory.builder()
+                .name("Forró Csoki Fehér_Pseudo")
                 .status(ProductStatus.ACTIVE)
                 .type(ProductCategoryType.PSEUDO)
                 .build();
@@ -4399,12 +4455,30 @@ public class BuildSchema  {
     }
 
     private void buildTables() {
+        buildTable1();
+        buildTable2();
+        buildTable3();
+        buildTable4();
+        buildTable5();
+        buildTable6();
+        buildTable7();
+        buildTable8();
+        buildTable9();
+        buildTable10();
+        buildTable11();
+        buildTable12();
+        buildTable13();
+
         buildTablePurchase();
         buildTableInventory();
         buildTableDisposal();
         buildTableOrphanage();
         buildTableOther();
     }
+
+
+
+
 
     private void buildRestaurant() {
         restaurant = Restaurant.builder()
@@ -4833,6 +4907,139 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildTable1() {
+        table1 = Table.builder()
+                .number(1)
+                .capacity(7)
+                .coordinateX(50)
+                .coordinateY(50)
+                .visible(true)
+                .type(TableType.NORMAL)
+                .build();
+    }
+    private void buildTable2() {
+        table2 = Table.builder()
+                .number(2)
+                .capacity(2)
+                .coordinateX(50)
+                .coordinateY(200)
+                .visible(true)
+                .type(TableType.NORMAL)
+                .build();
+    }
+    private void buildTable3() {
+        table3 = Table.builder()
+                .number(3)
+                .capacity(4)
+                .coordinateX(50)
+                .coordinateY(400)
+                .visible(true)
+                .type(TableType.NORMAL)
+                .build();
+    }
+    private void buildTable4() {
+        table4 = Table.builder()
+                .number(4)
+                .capacity(4)
+                .coordinateX(200)
+                .coordinateY(50)
+                .visible(true)
+                .type(TableType.NORMAL)
+                .build();
+    }
+    private void buildTable5() {
+        table5 = Table.builder()
+                .number(5)
+                .capacity(8)
+                .coordinateX(200)
+                .coordinateY(200)
+                .visible(true)
+                .type(TableType.NORMAL)
+                .build();
+    }
+    private void buildTable6() {
+        table6 = Table.builder()
+                .number(6)
+                .capacity(4)
+                .coordinateX(200)
+                .coordinateY(400)
+                .visible(true)
+                .type(TableType.NORMAL)
+                .build();
+    }
+    private void buildTable7() {
+        table7 = Table.builder()
+                .number(7)
+                .capacity(2)
+                .coordinateX(550)
+                .coordinateY(50)
+                .visible(true)
+                .type(TableType.NORMAL)
+                .build();
+    }
+    private void buildTable8() {
+        table8 = Table.builder()
+                .number(8)
+                .capacity(4)
+                .coordinateX(550)
+                .coordinateY(200)
+                .visible(true)
+                .type(TableType.NORMAL)
+                .build();
+    }
+    private void buildTable9() {
+        table9 = Table.builder()
+                .number(9)
+                .capacity(4)
+                .coordinateX(550)
+                .coordinateY(400)
+                .visible(true)
+                .type(TableType.NORMAL)
+                .build();
+    }
+    private void buildTable10() {
+        table10 = Table.builder()
+                .number(10)
+                .capacity(3)
+                .coordinateX(800)
+                .coordinateY(50)
+                .visible(true)
+                .type(TableType.NORMAL)
+                .build();
+    }
+    private void buildTable11() {
+        table11 = Table.builder()
+                .number(11)
+                .capacity(6)
+                .coordinateX(800)
+                .coordinateY(200)
+                .visible(true)
+                .type(TableType.NORMAL)
+                .build();
+    }
+
+    private void buildTable12() {
+        table12 = Table.builder()
+                .number(12)
+                .capacity(5)
+                .coordinateX(800)
+                .coordinateY(400)
+                .visible(true)
+                .type(TableType.NORMAL)
+                .build();
+    }
+
+    private void buildTable13() {
+        table13 = Table.builder()
+                .number(13)
+                .capacity(8)
+                .coordinateX(800)
+                .coordinateY(600)
+                .visible(true)
+                .type(TableType.NORMAL)
+                .build();
+    }
+
     private void buildTablePurchase() {
         tablePurchase = Table.builder()
                 .number(1000)
@@ -4985,12 +5192,12 @@ public class BuildSchema  {
         // Borok
         PseudoHazBoraNagyEsNagy.setParent(borDecire);
         PseudoHilltopIrsaiOliver.setParent(uvegBor);
+        PseudoHilltopIrsaiOliverDecire.setParent(borDecire);
         PseudoGereAttilaOlaszrizling.setParent(uvegBor);
 
         PseudoHazBoraLisiczaRoseCuvee.setParent(borDecire);
-        PseudoMeszarosPinot.setParent(uvegBor);
-        PseudoNoirRose.setParent(uvegBor);
-
+        PseudoMeszarosPinotNoireRose.setParent(uvegBor);
+        PseudoMeszarosPinotNoireRoseDecire.setParent(borDecire);
 
         PseudoHazBoraPolgarSerumVeritas.setParent(borDecire);
         PseudoVinczeMerlot.setParent(uvegBor);
@@ -5069,7 +5276,6 @@ public class BuildSchema  {
         PseudoFinca1.setParent(shotok);
         PseudoBang1.setParent(shotok);
         PseudoImagine1.setParent(shotok);
-        PseudoRiffRaff1.setParent(shotok);
 
         PseudoFinca6.setParent(shotok);
         PseudoBang6.setParent(shotok);
@@ -5140,7 +5346,8 @@ public class BuildSchema  {
         PseudoCaffeLatte.setParent(kave);
         PseudoLatteMacchiato.setParent(kave);
         PseudoCaffeMelange.setParent(kave);
-        PseudoForroCsoki.setParent(kave);
+        PseudoForroCsokiBarna.setParent(kave);
+        PseudoForroCsokiFeher.setParent(kave);
 
         // Napi akciok
         PseudoCaptainAndGyomber.setParent(akciosItalok);
@@ -5212,8 +5419,7 @@ public class BuildSchema  {
                 Arrays.asList(
                     PseudoHilltopIrsaiOliver,
                     PseudoGereAttilaOlaszrizling,
-                    PseudoMeszarosPinot,
-                    PseudoNoirRose,
+                    PseudoMeszarosPinotNoireRose,
                     PseudoVinczeMerlot,
                     PseudoVylyanCabernetSauvignon,
                     PseudoMeszarosHidasptereCabernetFrancReserve,
@@ -5225,7 +5431,9 @@ public class BuildSchema  {
                 Arrays.asList(
                     PseudoHazBoraNagyEsNagy,
                     PseudoHazBoraLisiczaRoseCuvee,
-                    PseudoHazBoraPolgarSerumVeritas)));
+                    PseudoHazBoraPolgarSerumVeritas,
+                    PseudoHilltopIrsaiOliverDecire,
+                    PseudoMeszarosPinotNoireRoseDecire)));
 
         // Roviditalok
         rovidek.setChildren(new HashSet<>(
@@ -5301,7 +5509,6 @@ public class BuildSchema  {
                     PseudoFinca1,
                     PseudoBang1,
                     PseudoImagine1,
-                    PseudoRiffRaff1,
 
                     PseudoFinca6,
                     PseudoBang6,
@@ -5382,7 +5589,8 @@ public class BuildSchema  {
                     PseudoCaffeLatte,
                     PseudoLatteMacchiato,
                     PseudoCaffeMelange,
-                    PseudoForroCsoki)));
+                    PseudoForroCsokiBarna,
+                    PseudoForroCsokiFeher)));
 
         // Napi akciok
         akciosItalok.setChildren(new HashSet<>(
@@ -5394,8 +5602,9 @@ public class BuildSchema  {
     }
 
     private void categoriesAndPriceModifiers() {
-//        pseudoOne.setPriceModifiers(new HashSet<>(
-//                Arrays.asList(priceModifierOne, priceModifierTwo)));
+        PseudoCaptainAndGyomber.setPriceModifiers(new HashSet<>(
+                Arrays.asList(priceModifierCaptainAndGyomber)));
+        priceModifierCaptainAndGyomber.setOwner(PseudoCaptainAndGyomber);
 //        pseudoTwo.setPriceModifiers(new HashSet<>(
 //                Collections.singletonList(priceModifierFour)));
 //        priceModifierOne.setOwner(pseudoOne);
@@ -5461,11 +5670,12 @@ public class BuildSchema  {
         // Borok
         HazBoraNagyEsNagy.setCategory(PseudoHazBoraNagyEsNagy);
         HilltopIrsaiOliver.setCategory(PseudoHilltopIrsaiOliver);
+        HilltopIrsaiOliverDecire.setCategory(PseudoHilltopIrsaiOliverDecire);
         GereAttilaOlaszrizling.setCategory(PseudoGereAttilaOlaszrizling);
 
         HazBoraLisiczaRoseCuvee.setCategory(PseudoHazBoraLisiczaRoseCuvee);
-        MeszarosPinot.setCategory(PseudoMeszarosPinot);
-        NoirRose.setCategory(PseudoNoirRose);
+        MeszarosPinotNoirRose.setCategory(PseudoMeszarosPinotNoireRose);
+        MeszarosPinotNoirRoseDecire.setCategory(PseudoMeszarosPinotNoireRoseDecire);
 
         HazBoraPolgarSerumVeritas.setCategory(PseudoHazBoraPolgarSerumVeritas);
         VinczeMerlot.setCategory(PseudoVinczeMerlot);
@@ -5544,7 +5754,6 @@ public class BuildSchema  {
         Finca1.setCategory(PseudoFinca1);
         Bang1.setCategory(PseudoBang1);
         Imagine1.setCategory(PseudoImagine1);
-        RiffRaff1.setCategory(PseudoRiffRaff1);
 
         Finca6.setCategory(PseudoFinca6);
         Bang6.setCategory(PseudoBang6);
@@ -5596,14 +5805,14 @@ public class BuildSchema  {
         MonsterRehab.setCategory(PseudoMonsterRehab);
 
         // Filteres Teaak
-        DallmyrFekete.setCategory(PseudoDallmyrFekete);
-        DallmyrGyumolcs.setCategory(PseudoDallmyrGyumolcs);
-        DallmyrZold.setCategory(PseudoDallmyrZold);
+        DallmayrFekete.setCategory(PseudoDallmyrFekete);
+        DallmayrGyumolcs.setCategory(PseudoDallmyrGyumolcs);
+        DallmayrZold.setCategory(PseudoDallmyrZold);
 
-        Piramis1.setCategory(PseudoPiramis1);
-        Piramis2.setCategory(PseudoPiramis2);
-        Piramis3.setCategory(PseudoPiramis3);
-        Piramis4.setCategory(PseudoPiramis4);
+        PiramisDarjeling.setCategory(PseudoPiramis1);
+        PiramisMangoMaracuja.setCategory(PseudoPiramis2);
+        PiramisAnanaszPapaja.setCategory(PseudoPiramis3);
+        PiramisCitrusVerbena.setCategory(PseudoPiramis4);
 
         // Kavek
         Espresso.setCategory(PseudoEspresso);
@@ -5612,7 +5821,8 @@ public class BuildSchema  {
         CaffeLatte.setCategory(PseudoCaffeLatte);
         LatteMacchiato.setCategory(PseudoLatteMacchiato);
         CaffeMelange.setCategory(PseudoCaffeMelange);
-        ForroCsoki.setCategory(PseudoForroCsoki);
+        ForroCsokiBarna.setCategory(PseudoForroCsokiBarna);
+        ForroCsokiFeher.setCategory(PseudoForroCsokiFeher);
 
         // Akcios italok
         GinTonic.setCategory(PseudoGinTonic);
@@ -5675,11 +5885,12 @@ public class BuildSchema  {
         // Borok
         PseudoHazBoraNagyEsNagy.setProduct(HazBoraNagyEsNagy);
         PseudoHilltopIrsaiOliver.setProduct(HilltopIrsaiOliver);
+        PseudoHilltopIrsaiOliverDecire.setProduct(HilltopIrsaiOliverDecire);
         PseudoGereAttilaOlaszrizling.setProduct(GereAttilaOlaszrizling);
 
         PseudoHazBoraLisiczaRoseCuvee.setProduct(HazBoraLisiczaRoseCuvee);
-        PseudoMeszarosPinot.setProduct(MeszarosPinot);
-        PseudoNoirRose.setProduct(NoirRose);
+        PseudoMeszarosPinotNoireRose.setProduct(MeszarosPinotNoirRose);
+        PseudoMeszarosPinotNoireRoseDecire.setProduct(MeszarosPinotNoirRoseDecire);
 
         PseudoHazBoraPolgarSerumVeritas.setProduct(HazBoraPolgarSerumVeritas);
         PseudoVinczeMerlot.setProduct(VinczeMerlot);
@@ -5758,7 +5969,6 @@ public class BuildSchema  {
         PseudoFinca1.setProduct(Finca1);
         PseudoBang1.setProduct(Bang1);
         PseudoImagine1.setProduct(Imagine1);
-        PseudoRiffRaff1.setProduct(RiffRaff1);
 
         PseudoFinca6.setProduct(Finca6);
         PseudoBang6.setProduct(Bang6);
@@ -5810,14 +6020,14 @@ public class BuildSchema  {
         PseudoMonsterRehab.setProduct(MonsterRehab);
 
         // Filteres Teaak
-        PseudoDallmyrFekete.setProduct(DallmyrFekete);
-        PseudoDallmyrGyumolcs.setProduct(DallmyrGyumolcs);
-        PseudoDallmyrZold.setProduct(DallmyrZold);
+        PseudoDallmyrFekete.setProduct(DallmayrFekete);
+        PseudoDallmyrGyumolcs.setProduct(DallmayrGyumolcs);
+        PseudoDallmyrZold.setProduct(DallmayrZold);
 
-        PseudoPiramis1.setProduct(Piramis1);
-        PseudoPiramis2.setProduct(Piramis2);
-        PseudoPiramis3.setProduct(Piramis3);
-        PseudoPiramis4.setProduct(Piramis4);
+        PseudoPiramis1.setProduct(PiramisDarjeling);
+        PseudoPiramis2.setProduct(PiramisMangoMaracuja);
+        PseudoPiramis3.setProduct(PiramisAnanaszPapaja);
+        PseudoPiramis4.setProduct(PiramisCitrusVerbena);
 
         // Kavek
         PseudoEspresso.setProduct(Espresso);
@@ -5826,7 +6036,8 @@ public class BuildSchema  {
         PseudoCaffeLatte.setProduct(CaffeLatte);
         PseudoLatteMacchiato.setProduct(LatteMacchiato);
         PseudoCaffeMelange.setProduct(CaffeMelange);
-        PseudoForroCsoki.setProduct(ForroCsoki);        
+        PseudoForroCsokiBarna.setProduct(ForroCsokiBarna);
+        PseudoForroCsokiFeher.setProduct(ForroCsokiFeher);
 
         // Akcios italok
         PseudoGinTonic.setProduct(GinTonic);
@@ -5853,9 +6064,35 @@ public class BuildSchema  {
     }
 
     private void restaurantAndTables() {
-        //FIXME: Add service for building special tables in production
         restaurant.setTables(new HashSet<>(
-                Arrays.asList(tablePurchase, tableInventory, tableDisposal, tableOther, tableOrphanage)));
+                Arrays.asList(table1,
+                        table2,
+                        table3,
+                        table4,
+                        table5,
+                        table6,
+                        table7,
+                        table8,
+                        table9,
+                        table10,
+                        table11,
+                        table12,
+                        table13,
+                        tablePurchase, tableInventory, tableDisposal, tableOther, tableOrphanage)));
+
+        table1.setOwner(restaurant);
+        table2.setOwner(restaurant);
+        table3.setOwner(restaurant);
+        table4.setOwner(restaurant);
+        table5.setOwner(restaurant);
+        table6.setOwner(restaurant);
+        table7.setOwner(restaurant);
+        table8.setOwner(restaurant);
+        table9.setOwner(restaurant);
+        table10.setOwner(restaurant);
+        table11.setOwner(restaurant);
+        table12.setOwner(restaurant);
+        table13.setOwner(restaurant);
         tablePurchase.setOwner(restaurant);
         tableInventory.setOwner(restaurant);
         tableDisposal.setOwner(restaurant);
