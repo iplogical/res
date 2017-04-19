@@ -2,23 +2,22 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_PRODUCTS;
 import static java.util.stream.Collectors.toList;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
-import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
+import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 
 public class ProductCategoryAdapterTest {
 
@@ -42,7 +41,7 @@ public class ProductCategoryAdapterTest {
                 .shortName("newProduct")
                 .type(ProductType.SELLABLE)
                 .status(ProductStatus.ACTIVE)
-                .rapidCode(1010)
+                .rapidCode(110)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(Double.valueOf(100))
                 .purchasePrice(440)
