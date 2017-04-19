@@ -13,6 +13,8 @@ import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 
 public class ProductAdapter extends AbstractAdapter<Product> {
@@ -127,5 +129,12 @@ public class ProductAdapter extends AbstractAdapter<Product> {
     private void addNewComponent(Double value, Product component) {
         Recipe newComponent = Recipe.builder().component(component).quantityMultiplier(value).owner(adaptee).build();
         adaptee.getRecipes().add(newComponent);
+    }
+
+    public static List<ProductView> getProducts() {
+        List<Product> products = GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_STATUS,
+                query -> {query.setParameter("status", ProductStatus.ACTIVE);
+                return query;});
+        return products.stream().map(ProductAdapter::new).map(ProductViewImpl::new).collect(toList());
     }
 }

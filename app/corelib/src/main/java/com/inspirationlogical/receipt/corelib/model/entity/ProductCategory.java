@@ -53,7 +53,7 @@ import lombok.experimental.Tolerate;
 @ValidCategory
 public @Data class ProductCategory extends AbstractEntity {
 
-    public static final String GET_ALL_CATEGORIES = "ProductCategory.GetTestCategories";
+    public static final String GET_ALL_CATEGORIES = "ProductCategory.GetAllCategories";
     public static final String GET_CATEGORY_BY_TYPE = "ProductCategory.GetCategoryByType";
     public static final String GET_CATEGORY_BY_NAME = "ProductCategory.GetCategoryByName";
     public static final String GET_CHILDREN_CATEGORIES = "ProductCategory.GetChildrenCategories";

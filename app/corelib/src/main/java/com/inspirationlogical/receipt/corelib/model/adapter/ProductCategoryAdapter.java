@@ -21,6 +21,8 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 
 public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
@@ -63,6 +65,15 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
             traverseChildren(child, traversal);
         });
     }
+
+    public static List<ProductCategoryView> getProductCategories() {
+        List<ProductCategory> categories = GuardedTransaction.runNamedQuery(ProductCategory.GET_ALL_CATEGORIES);
+        return categories.stream()
+            .filter(productCategory -> !productCategory.getType().equals(ProductCategoryType.PSEUDO))
+            .filter(productCategory -> !productCategory.getType().equals(ProductCategoryType.PSEUDO_DELETED))
+            .map(ProductCategoryAdapter::new).map(ProductCategoryViewImpl::new).collect(toList());
+    }
+
 
     public List<ProductAdapter> getAllProducts() {
         GuardedTransaction.runWithRefresh(adaptee, () -> {});

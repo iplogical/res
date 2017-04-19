@@ -5,28 +5,28 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.*;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
-import com.inspirationlogical.receipt.corelib.model.view.RestaurantViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.*;
 
 import javafx.geometry.Point2D;
 
 
 public class RestaurantServiceImpl extends AbstractService implements RestaurantService {
 
+    private List<ProductView> productViews;
+
+    private List<ProductCategoryView> categoryViews;
+
+    private List<TableView> tableViews;
     @Inject
     public RestaurantServiceImpl(EntityManager manager) {
         super(manager);
+        productViews = ProductAdapter.getProducts();
+        categoryViews = ProductCategoryAdapter.getProductCategories();
+        tableViews = TableAdapter.getTables();
     }
 
     @Override

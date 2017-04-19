@@ -6,6 +6,8 @@ import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
+import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import javafx.geometry.Point2D;
@@ -14,6 +16,7 @@ import lombok.NonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.VERTICAL;
@@ -32,6 +35,17 @@ public class TableAdapter extends AbstractAdapter<Table> {
             return null;
         }
         return new TableAdapter(tables.get(0));
+    }
+
+    public static List<TableView> getTables() {
+        List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_ALL_TABLES);
+        return tables.stream()
+                .filter(table -> !table.getType().equals(TableType.PURCHASE))
+                .filter(table -> !table.getType().equals(TableType.INVENTORY))
+                .filter(table -> !table.getType().equals(TableType.DISPOSAL))
+                .filter(table -> !table.getType().equals(TableType.OTHER))
+                .filter(table -> !table.getType().equals(TableType.ORPHANAGE))
+                .map(TableAdapter::new).map(TableViewImpl::new).collect(toList());
     }
 
     private static List<Table> getTablesByNumber(int number) {

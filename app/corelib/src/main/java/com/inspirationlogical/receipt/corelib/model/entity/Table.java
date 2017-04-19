@@ -31,20 +31,19 @@ import lombok.experimental.Tolerate;
 @EqualsAndHashCode(callSuper = true, exclude = "owner")
 @javax.persistence.Table(name = "_TABLE")
 @NamedQueries({
-    @NamedQuery(name = Table.GET_TEST_TABLES,
+    @NamedQuery(name = Table.GET_ALL_TABLES,
             query="FROM Table t"),
     @NamedQuery(name = Table.GET_TABLE_BY_NUMBER,
             query="FROM Table t WHERE t.number=:number"),
     @NamedQuery(name = Table.GET_TABLE_BY_TYPE,
             query="FROM Table t WHERE t.type=:type")
-
 })
 @AttributeOverride(name = "id", column = @Column(name = "TABLE_ID"))
 @ValidReceipts
 @ValidTables
 public @Data class Table extends AbstractEntity {
 
-    public static final String GET_TEST_TABLES = "Table.GetTestTables";
+    public static final String GET_ALL_TABLES = "Table.GetAllTables";
     public static final String GET_TABLE_BY_NUMBER = "Table.GetTableByNumber";
     public static final String GET_TABLE_BY_TYPE = "Table.GetTableByType";
 

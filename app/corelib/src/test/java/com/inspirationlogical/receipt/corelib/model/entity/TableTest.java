@@ -66,7 +66,7 @@ public class TableTest {
 
     private List<Table> getTables() {
         @SuppressWarnings("unchecked")
-        List<Table> entries = schema.getEntityManager().createNamedQuery(Table.GET_TEST_TABLES).getResultList();
+        List<Table> entries = schema.getEntityManager().createNamedQuery(Table.GET_ALL_TABLES).getResultList();
         return entries;
     }
 }

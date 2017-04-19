@@ -41,7 +41,9 @@ import lombok.experimental.Tolerate;
     @NamedQuery(name = Product.GET_PRODUCT_BY_NAME,
             query = "SELECT p FROM Product p WHERE p.longName=:longName"),
     @NamedQuery(name = Product.GET_PRODUCT_BY_TYPE,
-            query = "SELECT p FROM Product p WHERE p.type=:type")
+            query = "SELECT p FROM Product p WHERE p.type=:type"),
+    @NamedQuery(name = Product.GET_PRODUCT_BY_STATUS,
+            query = "SELECT p FROM Product p WHERE p.status=:status")
 })
 @AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
 @ValidCategory
@@ -51,6 +53,7 @@ public @Data class Product extends AbstractEntity {
     public static final String GET_TEST_PRODUCTS = "Product.GetTestProducts";
     public static final String GET_PRODUCT_BY_NAME = "Product.GetProductByName";
     public static final String GET_PRODUCT_BY_TYPE = "Product.GetProductByType";
+    public static final String GET_PRODUCT_BY_STATUS = "Product.GetProductByStatus";
     public static final String DROP_ALL = "Product.DropAll";
 
     @OneToOne(mappedBy="product", optional = false, fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
