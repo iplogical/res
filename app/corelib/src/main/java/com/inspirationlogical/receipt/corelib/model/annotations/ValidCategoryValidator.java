@@ -30,10 +30,10 @@ public class ValidCategoryValidator  extends AbstractValidator
 
     public boolean isValid(Product value, ConstraintValidatorContext context) {
         if(value.getCategory() == null) {
-            addConstraintViolation( context, "The product category shall not be null.");
+            addConstraintViolation( context, "The product category shall not be null." + value.getLongName());
             return false;
         } else if(value.getCategory().getType() != ProductCategoryType.PSEUDO) {
-            addConstraintViolation( context, "The product category has to be of PSEUDO type.");
+            addConstraintViolation( context, "The product category has to be of PSEUDO type." + value.getLongName());
             return false;
         }
         return true;

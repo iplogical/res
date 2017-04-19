@@ -20,13 +20,13 @@ public class ValidProductValidatorProductCategory extends AbstractValidator
         if (ProductCategoryType.isPseudo(value.getType())) {
             if (hasProduct) {
                 addConstraintViolation(context,
-                        "The product must not be null for a PSEUDO categories.");
+                        "The product must not be null for a PSEUDO categories." + value.getName());
             }
             return hasProduct;
         } else {
             if (!hasProduct) {
                 addConstraintViolation(context,
-                        "The product has to be null for ROOT, AGGREGATE and LEAF categories.");
+                        "The product has to be null for ROOT, AGGREGATE and LEAF categories." + value.getName());
             }
             return !hasProduct;
         }

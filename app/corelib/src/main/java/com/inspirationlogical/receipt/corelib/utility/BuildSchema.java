@@ -598,7 +598,6 @@ public class BuildSchema  {
         GuardedTransaction.run(() -> entityManager.persist(restaurant));
         GuardedTransaction.run(() -> entityManager.persist(root));
         GuardedTransaction.run(() -> entityManager.persist(vatSerie));
-//        GuardedTransaction.run(() -> entityManager.persist(productGameFee));
     }
 
     private void buildProducts() {
@@ -881,7 +880,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -894,7 +893,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -907,7 +906,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -920,7 +919,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -933,7 +932,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1115,7 +1114,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1128,7 +1127,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1141,7 +1140,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1154,7 +1153,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1167,7 +1166,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1180,7 +1179,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1194,7 +1193,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
     
@@ -1402,7 +1401,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1428,7 +1427,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1454,7 +1453,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1493,7 +1492,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1506,7 +1505,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1519,7 +1518,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1532,7 +1531,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -1545,7 +1544,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -2195,7 +2194,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -2208,7 +2207,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -2221,7 +2220,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -2234,7 +2233,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -2247,7 +2246,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -2260,7 +2259,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -2273,7 +2272,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -2286,7 +2285,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
     
@@ -2507,7 +2506,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -2520,7 +2519,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -2533,7 +2532,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
@@ -2546,7 +2545,7 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
     
@@ -5134,6 +5133,11 @@ public class BuildSchema  {
         tea.setParent(forroItalok);
         forraltBor.setParent(forroItalok);
         kave.setParent(forroItalok);
+
+        tea.setChildren(new HashSet<>(
+                Arrays.asList(filteres, piramis)));
+        filteres.setParent(tea);
+        piramis.setParent(tea);
     }
     
     private void leafsAndPseudos() {

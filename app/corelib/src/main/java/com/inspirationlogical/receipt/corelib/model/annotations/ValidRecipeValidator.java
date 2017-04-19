@@ -37,7 +37,7 @@ public class ValidRecipeValidator extends AbstractValidator
             return true;
         }
         if(value.getRecipes() == null) {
-            addConstraintViolation( context, "The recipe shall not be null.");
+            addConstraintViolation( context, "The recipe shall not be null. Name: " + value.getLongName());
             return false;
         }
         return true;

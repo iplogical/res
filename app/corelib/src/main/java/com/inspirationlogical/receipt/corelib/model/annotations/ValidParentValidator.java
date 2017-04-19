@@ -20,39 +20,39 @@ public class ValidParentValidator extends AbstractValidator
         switch (value.getType()) {
             case ROOT:
                 if(value.getParent() != null) {
-                    addConstraintViolation(context, "The ROOT category must not have a parent category.");
+                    addConstraintViolation(context, "The ROOT category must not have a parent category. Name: " + value.getName());
                     return false;
                 }
                 return true;
             case AGGREGATE:
                 if(value.getParent() == null) {
-                    addConstraintViolation(context, "The AGGREGATE category must have a parent category.");
+                    addConstraintViolation(context, "The AGGREGATE category must have a parent category. Name: " + value.getName());
                     return false;
                 } else if(value.getParent().getType() == ProductCategoryType.LEAF) {
-                    addConstraintViolation(context, "The AGGREGATE category must have a ROOT or AGGREGATE parent category.");
+                    addConstraintViolation(context, "The AGGREGATE category must have a ROOT or AGGREGATE parent category. Name: " + value.getName());
                     return false;                
                 } else if(value.getParent().getType() == ProductCategoryType.PSEUDO) {
-                    addConstraintViolation(context, "The AGGREGATE category must have a ROOT or AGGREGATE parent category.");
+                    addConstraintViolation(context, "The AGGREGATE category must have a ROOT or AGGREGATE parent category. Name: " + value.getName());
                     return false;                
                 }
                 return true;
             case LEAF:
                 if(value.getParent() == null) {
-                    addConstraintViolation(context, "The LEAF category must have a parent category.");
+                    addConstraintViolation(context, "The LEAF category must have a parent category. Name: " + value.getName());
                     return false;
                 }
                 else if(value.getParent().getType() != ProductCategoryType.AGGREGATE) {
-                    addConstraintViolation(context, "The LEAF category must have an AGGREGATE parent category.");
+                    addConstraintViolation(context, "The LEAF category must have an AGGREGATE parent category. Name: " + value.getName());
                     return false;                
                 }
                 return true;
             case PSEUDO:
                 if(value.getParent() == null) {
-                    addConstraintViolation(context, "The PSEUDO category must have a parent category.");
+                    addConstraintViolation(context, "The PSEUDO category must have a parent category. Name: " + value.getName());
                     return false;
                 }
                 else if(value.getParent().getType() != ProductCategoryType.LEAF) {
-                    addConstraintViolation(context, "The PSEUDO category must have an LEAF parent category.");
+                    addConstraintViolation(context, "The PSEUDO category must have an LEAF parent category. Name: " + value.getName());
                     return false;                
                 }
                 return true;
