@@ -201,6 +201,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         } else if(saleViewState.isSingleCancellation()) {
             if(Double.valueOf(row.getProductQuantity()) <= 1) return;
             decreaseRowInSoldProducts(row, 1);
+        } else {
+            increaseRowInSoldProducts(row, 1);
         }
     }
 
