@@ -6,11 +6,7 @@ import static com.inspirationlogical.receipt.waiter.viewstate.PaymentViewState.P
 import static com.inspirationlogical.receipt.waiter.viewstate.PaymentViewState.PaymentType.SINGLE;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
@@ -18,6 +14,7 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
@@ -201,11 +198,14 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void onManualGameFee(Event event) {
         retailService.sellGameFee(tableView, 1);
         soldProductsView = getSoldProducts(restaurantService, tableView);
-        removeRowFromSoldProducts(convertReceiptRecordViewsToModel(soldProductsView.stream()
+        ReceiptRecordView gameFee = (soldProductsView.stream()
                 .sorted(Comparator.comparing(ReceiptRecordView::getId).reversed())
                 .filter(receiptRecordView -> receiptRecordView.getName().equals(Resources.CONFIG.getString("Product.GameFeeName")))
                 .limit(1)
-                .collect(Collectors.toList())).get(0));
+                .collect(Collectors.toList())).get(0);
+        Collection<ReceiptRecordView> gameFeeList = new ArrayList<>(Arrays.asList(gameFee));
+        removeRowFromSoldProducts(new SoldProductViewModel(gameFee));
+        addRowToPaidProducts(new SoldProductViewModel(gameFee), gameFee);
     }
 
     @FXML

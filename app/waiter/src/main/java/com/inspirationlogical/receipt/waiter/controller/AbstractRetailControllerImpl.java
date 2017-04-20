@@ -141,18 +141,18 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     }
 
 
+    protected List<ReceiptRecordView> findMatchingView(Collection<ReceiptRecordView> productsView, SoldProductViewModel row) {
+        return productsView.stream()
+                .filter(receiptRecordView -> SoldProductViewModel.isEquals(row, receiptRecordView))
+                .collect(Collectors.toList());
+    }
+
     protected ReceiptRecordView removeRowFromSoldProducts(final SoldProductViewModel row) {
         soldProductsModel.remove(row);
         soldProductsTable.setItems(soldProductsModel);
         List<ReceiptRecordView> matching = findMatchingView(soldProductsView, row);
         soldProductsView.remove(matching.get(0));
         return matching.get(0);
-    }
-
-    protected List<ReceiptRecordView> findMatchingView(Collection<ReceiptRecordView> productsView, SoldProductViewModel row) {
-        return productsView.stream()
-                .filter(receiptRecordView -> SoldProductViewModel.isEquals(row, receiptRecordView))
-                .collect(Collectors.toList());
     }
 
     protected ReceiptRecordView decreaseRowInSoldProducts(SoldProductViewModel row, double amount) {

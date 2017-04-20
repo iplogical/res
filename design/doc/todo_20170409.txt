@@ -51,8 +51,6 @@ Napi zárás tiltása ha van nyitott asztal.
 ---------------------------
 2017.04.19
 
-Játékdij nem jelenik meg egyből a fizetés nézetben. Ha visszalépsz eladás nézetbe akkor odakerül.
-
 Szirup + Topping - bevitel
 
 Téli akciók - bevitel
