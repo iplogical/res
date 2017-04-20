@@ -209,6 +209,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onToPaymentView(Event event) {
+        retailService.mergeReceiptRecords(receiptView);
         PaymentController paymentController = WaiterRegistry.getInstance(PaymentController.class);
         paymentController.setTableView(tableView);
         paymentController.updateNode();

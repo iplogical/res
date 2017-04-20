@@ -3,7 +3,6 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
-import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
@@ -250,44 +248,39 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public void mergeReceiptRecords() {
         Map<Double, Map<String, List<ReceiptRecord>>> receiptsByDiscountAndName =
                 adaptee.getRecords().stream().collect(groupingBy(ReceiptRecord::getDiscountPercent, groupingBy(ReceiptRecord::getName)));
-        List<Map<String, List<ReceiptRecord>>> listOfReceiptsByDiscountAndName = receiptsByDiscountAndName.values().stream().collect(toList());
+
+        List<Map<String, List<ReceiptRecord>>> listOfReceiptsByDiscountAndName = new ArrayList<>(receiptsByDiscountAndName.values());
 
         List<ReceiptRecord> mergedRecords = new ArrayList<>();
 
         listOfReceiptsByDiscountAndName.forEach(stringListMap -> {
-            List<ReceiptRecord> mergedRecordsPerMap = stringListMap.values().stream()
-                .map(group -> group.stream().reduce((a, b) -> ReceiptRecord.builder()
-                        .product(a.getProduct())
-                        .type(a.getType())
-                        .created(a.getCreated().isBefore(b.getCreated()) ? a.getCreated() : b.getCreated())
-                        .name(a.getName())
-                        .soldQuantity(a.getSoldQuantity() + b.getSoldQuantity())
-                        .absoluteQuantity(a.getAbsoluteQuantity() + b.getAbsoluteQuantity())
-                        .purchasePrice(a.getPurchasePrice())
-                        .salePrice(a.getSalePrice())
-                        .VAT(a.getVAT())
-                        .discountPercent(a.getDiscountPercent())
-                        .build()).get()).collect(toList());
-            mergedRecords.addAll(mergedRecordsPerMap);
+            stringListMap.values().forEach(group -> {
+                if (group.size() > 1) {
+                    ReceiptRecord mergedRecord = group.stream().reduce((a, b) -> {
+                        cancelReceiptRecord(a, adaptee);
+                        cancelReceiptRecord(b, adaptee);
+                        return ReceiptRecord.builder()
+                                .product(a.getProduct())
+                                .type(a.getType())
+                                .created(a.getCreated().isBefore(b.getCreated()) ? a.getCreated() : b.getCreated())
+                                .name(a.getName())
+                                .soldQuantity(a.getSoldQuantity() + b.getSoldQuantity())
+                                .absoluteQuantity(a.getAbsoluteQuantity() + b.getAbsoluteQuantity())
+                                .purchasePrice(a.getPurchasePrice())
+                                .salePrice(a.getSalePrice())
+                                .VAT(a.getVAT())
+                                .discountPercent(a.getDiscountPercent())
+                                .owner(adaptee)
+                                .build();
+                    }).get();
+                    mergedRecords.add(mergedRecord);
+                }
+            });
         });
 
-        List<ReceiptRecord> records = new ArrayList<>(adaptee.getRecords());
-        for(ReceiptRecord receiptRecord : records) {
-            cancelReceiptRecord(receiptRecord, adaptee);
-        }
-
-
-        for(ReceiptRecord receiptRecord : mergedRecords) {
-            receiptRecord.setOwner(adaptee);
-            GuardedTransaction.merge(receiptRecord);
-        }
-//        adaptee.getRecords().addAll(mergedRecords);
-//        GuardedTransaction.merge(adaptee);
-
-
-//        GuardedTransaction.persist(adaptee);
-
-        System.out.println(receiptsByDiscountAndName);
+        GuardedTransaction.run(() -> {
+            mergedRecords.forEach(receiptRecord -> adaptee.getRecords().add(receiptRecord));
+        });
     }
 
     public int getTotalPrice() {

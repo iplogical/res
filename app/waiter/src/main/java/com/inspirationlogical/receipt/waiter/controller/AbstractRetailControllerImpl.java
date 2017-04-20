@@ -79,8 +79,8 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     @FXML
     public void onBackToRestaurantView(Event event) {
-        restaurantController.updateRestaurant();
         retailService.mergeReceiptRecords(receiptView);
+        restaurantController.updateRestaurant();
         viewLoader.loadViewIntoScene(restaurantController);
     }
 
