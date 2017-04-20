@@ -217,6 +217,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
                 handleFullPayment();
             }
         } else {
+            if(paidProductsView.size() == 0) {
+                return;
+            }
             handleSelectivePayment();
         }
     }
@@ -286,7 +289,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private void createNewRow(SoldProductViewModel row, ReceiptRecordView newRecord, double amount) {
         SoldProductViewModel newRow = new SoldProductViewModel(row);
         newRow.setProductQuantity(String.valueOf(amount));
-        newRow.setProductTotalPrice(newRow.getProductUnitPrice());
+        newRow.setProductTotalPrice(String.valueOf(Integer.valueOf(newRow.getProductUnitPrice()) * amount));
         newRow.setProductId(String.valueOf(newRecord.getId()));
         paidProductsModel.add(newRow);
     }
