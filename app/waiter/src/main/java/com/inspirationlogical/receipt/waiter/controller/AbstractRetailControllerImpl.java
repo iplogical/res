@@ -22,7 +22,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
-import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Setter;
 
 /**
@@ -81,6 +80,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     @FXML
     public void onBackToRestaurantView(Event event) {
         restaurantController.updateRestaurant();
+        retailService.mergeReceiptRecords(receiptView);
         viewLoader.loadViewIntoScene(restaurantController);
     }
 

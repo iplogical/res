@@ -4,10 +4,7 @@ import java.util.Collection;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.model.view.ProductView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.TableView;
+import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 
@@ -57,5 +54,14 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     @Override
     public void cancelReceiptRecord(TableView tableView, ReceiptRecordView receiptRecordView) {
         getTableAdapter(tableView).getActiveReceipt().cancelReceiptRecord(getReceiptRecordAdapter(receiptRecordView));
+    }
+
+    @Override
+    public void mergeReceiptRecords(ReceiptView receiptView) {
+        getReceiptAdapter(receiptView).mergeReceiptRecords();
+
+
+
+        System.out.println("Hi!");
     }
 }

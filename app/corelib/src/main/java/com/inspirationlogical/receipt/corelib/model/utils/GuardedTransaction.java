@@ -79,6 +79,10 @@ public class GuardedTransaction {
         run(() -> manager.persist(e), () -> {}, () -> {});
     }
 
+    public static void merge(AbstractEntity e) {
+        run(() -> manager.merge(e), () -> {}, () -> {});
+    }
+
     public static void delete(AbstractEntity e, Functor f) {
         run(f,()->{}, ()->{
             manager.remove(e);

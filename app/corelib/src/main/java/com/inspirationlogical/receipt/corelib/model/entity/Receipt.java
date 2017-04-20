@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.entity;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -53,7 +54,7 @@ public @Data class Receipt extends AbstractEntity {
     private Table owner;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
-    private Collection<ReceiptRecord> records;
+    private List<ReceiptRecord> records;
 
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})

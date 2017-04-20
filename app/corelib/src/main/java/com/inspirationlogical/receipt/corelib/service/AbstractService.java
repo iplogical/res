@@ -3,16 +3,7 @@ package com.inspirationlogical.receipt.corelib.service;
 import javax.persistence.EntityManager;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.*;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.ProductView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
-import com.inspirationlogical.receipt.corelib.model.view.RestaurantViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.*;
 
 import java.util.List;
 import java.util.function.Function;
@@ -46,6 +37,10 @@ public abstract class AbstractService {
 
     protected ProductCategoryAdapter getProductCategoryAdapter(ProductCategoryView category) {
         return ((ProductCategoryViewImpl)category).getAdapter();
+    }
+
+    protected ReceiptAdapter getReceiptAdapter(ReceiptView receiptView) {
+        return ((ReceiptViewImpl)receiptView).getAdapter();
     }
 
     protected ReceiptRecordAdapter getReceiptRecordAdapter(ReceiptRecordView receiptRecordView) {
