@@ -211,7 +211,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onPay(Event event) {
         if(paymentViewState.isFullPayment()) {
-            handleFullPayment();
+            if(paidProductsView.size() != 0) {
+                handleSelectivePayment();
+            } else {
+                handleFullPayment();
+            }
         } else {
             handleSelectivePayment();
         }
