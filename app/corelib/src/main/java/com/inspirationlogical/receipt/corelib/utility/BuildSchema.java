@@ -6112,8 +6112,3 @@ public class BuildSchema  {
     }
 }
 
-enum TestType {
-    DROP_AND_CREATE,
-    CREATE,
-    VALIDATE;
-}

@@ -57,9 +57,7 @@ Szirup + Topping - bevitel
 
 Téli akciók - bevitel
 
-Egység ár tört rész fizetésénél.
-
-Szornó ha csak egy tétel van nem jó
+Egység ár tört rész fizetésénél. PRIO 1
 
 Formoknál a Rendben legyen a jobb oldalon
 
@@ -68,5 +66,3 @@ Formoknál a Rendben legyen a jobb oldalon
 Asztal szerkeztés és beállitás egy form legyen.
 
 Az Ubuntu ne menjen el aludni.
-
-Eladás nézetben legyen egy kategória a már fogyasztott tételeknek.

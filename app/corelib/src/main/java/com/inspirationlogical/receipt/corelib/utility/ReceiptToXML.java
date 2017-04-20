@@ -129,10 +129,9 @@ public class ReceiptToXML {
         Restaurant restaurant = receiptAdapter.getAdaptee().getOwner().getOwner();
         header.setRestaurantLogoPath(Resources.CONFIG.getString("ReceiptLogoPath"));
         header.setRestaurantName(restaurant.getRestaurantName());
-        header.setRestaurantAddress(
-                String.join(",", Arrays.asList(restaurant.getRestaurantAddress().getZIPCode(),
-                        restaurant.getRestaurantAddress().getCity(),
-                        restaurant.getRestaurantAddress().getStreet())));
+        header.setRestaurantAddress(restaurant.getRestaurantAddress().getZIPCode() + " "
+                                    + restaurant.getRestaurantAddress().getCity() + ", "
+                                    + restaurant.getRestaurantAddress().getStreet());
         setOptionalString(header::setRestaurantSocialMediaInfo, restaurant.getSocialMediaInfo());
         setOptionalString(header::setRestaurantWebsite, restaurant.getWebSite());
         setOptionalString(header::setRestaurantPhoneNumber, restaurant.getPhoneNumber());
