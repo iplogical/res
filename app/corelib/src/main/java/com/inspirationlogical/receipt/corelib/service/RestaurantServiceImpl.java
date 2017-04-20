@@ -16,16 +16,11 @@ import javafx.geometry.Point2D;
 
 public class RestaurantServiceImpl extends AbstractService implements RestaurantService {
 
-    private List<ProductView> productViews;
-
-    private List<ProductCategoryView> categoryViews;
-
     private List<TableView> tableViews;
+
     @Inject
     public RestaurantServiceImpl(EntityManager manager) {
         super(manager);
-        productViews = ProductAdapter.getProducts();
-        categoryViews = ProductCategoryAdapter.getProductCategories();
         tableViews = TableAdapter.getTables();
     }
 

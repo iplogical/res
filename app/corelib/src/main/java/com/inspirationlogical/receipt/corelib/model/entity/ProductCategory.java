@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
+
 import java.util.Collection;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
@@ -13,8 +14,12 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -44,7 +49,7 @@ import lombok.experimental.Tolerate;
             query="SELECT pc FROM ProductCategory pc WHERE pc.type=:type"),
     @NamedQuery(name = ProductCategory.GET_CATEGORY_BY_NAME,
             query="SELECT pc FROM ProductCategory pc WHERE pc.name=:name"),
-    @NamedQuery(name = ProductCategory.GET_CHILDREN_CATEGORIES,
+    @NamedQuery(name = ProductCategory.GET_CHILD_CATEGORIES,
             query="SELECT pc FROM ProductCategory pc WHERE pc.parent.id=:parent_id")
 })
 @AttributeOverride(name = "id", column = @Column(name = "CATEGORY_ID"))
@@ -56,7 +61,7 @@ public @Data class ProductCategory extends AbstractEntity {
     public static final String GET_ALL_CATEGORIES = "ProductCategory.GetAllCategories";
     public static final String GET_CATEGORY_BY_TYPE = "ProductCategory.GetCategoryByType";
     public static final String GET_CATEGORY_BY_NAME = "ProductCategory.GetCategoryByName";
-    public static final String GET_CHILDREN_CATEGORIES = "ProductCategory.GetChildrenCategories";
+    public static final String GET_CHILD_CATEGORIES = "ProductCategory.GetChildCategories";
 
     @NotEmpty
     @Column(unique = true)

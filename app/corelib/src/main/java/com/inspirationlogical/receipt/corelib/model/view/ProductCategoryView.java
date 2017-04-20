@@ -11,7 +11,9 @@ public interface ProductCategoryView extends AbstractView {
 
     ProductCategoryView getParent();
 
-    List<ProductCategoryView> getChildrenCategories();
+    List<ProductCategoryView> getChildCategories();
+
+    ProductView getProduct();
 
     List<ProductView> getAllProducts();
 

@@ -1,27 +1,34 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER;
+import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
+import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
+import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.VERTICAL;
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
-import com.inspirationlogical.receipt.corelib.model.enums.*;
+import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+
 import javafx.geometry.Point2D;
 import lombok.NonNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
-import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.VERTICAL;
-import static java.util.stream.Collectors.toList;
-
 public class TableAdapter extends AbstractAdapter<Table> {
 
     public TableAdapter(@NonNull Table adaptee) {
@@ -186,7 +193,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     private List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
-        return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER, Receipt.GRAPH_RECEIPT_AND_RECORDS,
+        return GuardedTransaction.runNamedQuery(GET_RECEIPT_BY_STATUS_AND_OWNER, GRAPH_RECEIPT_AND_RECORDS,
                 query -> {
                     query.setParameter("status", status);
                     query.setParameter("number", tableNumber);

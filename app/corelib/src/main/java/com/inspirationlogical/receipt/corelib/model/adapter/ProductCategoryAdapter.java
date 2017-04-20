@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static com.inspirationlogical.receipt.corelib.model.entity.ProductCategory.GET_CHILD_CATEGORIES;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
@@ -69,11 +70,14 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     public static List<ProductCategoryView> getProductCategories() {
         List<ProductCategory> categories = GuardedTransaction.runNamedQuery(ProductCategory.GET_ALL_CATEGORIES);
         return categories.stream()
-            .filter(productCategory -> !productCategory.getType().equals(ProductCategoryType.PSEUDO))
+            //.filter(productCategory -> !productCategory.getType().equals(ProductCategoryType.PSEUDO))
             .filter(productCategory -> !productCategory.getType().equals(ProductCategoryType.PSEUDO_DELETED))
             .map(ProductCategoryAdapter::new).map(ProductCategoryViewImpl::new).collect(toList());
     }
 
+    public ProductAdapter getProduct() {
+        return new ProductAdapter(adaptee.getProduct());
+    }
 
     public List<ProductAdapter> getAllProducts() {
         GuardedTransaction.runWithRefresh(adaptee, () -> {});
@@ -118,13 +122,13 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .collect(toList());
     }
 
-    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Map<Object,Boolean> seen = new ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
-    public List<ProductCategoryAdapter> getChildrenCategories() {
-        List<ProductCategory> children = GuardedTransaction.runNamedQuery(ProductCategory.GET_CHILDREN_CATEGORIES,
+    public List<ProductCategoryAdapter> getChildCategories() {
+        List<ProductCategory> children = GuardedTransaction.runNamedQuery(GET_CHILD_CATEGORIES,
                 query -> {query.setParameter("parent_id", adaptee.getId());
                     return query;});
         return children.stream().map(ProductCategoryAdapter::new).collect(toList());

@@ -133,8 +133,8 @@ public class ProductCategoryAdapterTest {
     @Test
     public void testAddChildCategory() {
         aggregateOne.addChildCategory("newChild", ProductCategoryType.LEAF);
-        assertEquals(3, aggregateOne.getChildrenCategories().size());
-        assertEquals(1, aggregateOne.getChildrenCategories().stream()
+        assertEquals(3, aggregateOne.getChildCategories().size());
+        assertEquals(1, aggregateOne.getChildCategories().stream()
         .filter(productCategoryAdapter -> productCategoryAdapter.getAdaptee().getName().equals("newChild"))
         .collect(toList()).size());
     }
@@ -142,20 +142,20 @@ public class ProductCategoryAdapterTest {
     @Test(expected = IllegalProductCategoryStateException.class)
     public void testAddChildCategoryAlreadyExist() {
         aggregateOne.addChildCategory("leafOne", ProductCategoryType.LEAF);
-        assertEquals(3, aggregateOne.getChildrenCategories().size());
+        assertEquals(3, aggregateOne.getChildCategories().size());
     }
 
     @Test(expected = IllegalProductCategoryStateException.class)
     public void testAddChildCategoryAlreadyHasLeaf() {
         aggregateOne.addChildCategory("newChild", ProductCategoryType.AGGREGATE);
-        assertEquals(3, aggregateOne.getChildrenCategories().size());
+        assertEquals(3, aggregateOne.getChildCategories().size());
     }
 
     @Test
     public void testUpdateChildCategory() {
         aggregateOne.updateChildCategory("newChild", "leafOne", ProductCategoryType.LEAF);
-        assertEquals(2, aggregateOne.getChildrenCategories().size());
-        assertEquals(1, aggregateOne.getChildrenCategories().stream()
+        assertEquals(2, aggregateOne.getChildCategories().size());
+        assertEquals(1, aggregateOne.getChildCategories().stream()
                 .filter(productCategoryAdapter -> productCategoryAdapter.getAdaptee().getName().equals("newChild"))
                 .collect(toList()).size());
     }

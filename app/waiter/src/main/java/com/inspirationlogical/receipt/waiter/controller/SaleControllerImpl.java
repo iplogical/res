@@ -232,7 +232,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onSearchSelected(Event event) {
         setSelectedElement(false);
-        visibleProducts = rootCategory.getAllNormalProducts();
+        visibleProducts = commonService.getSellableProducts(selectedCategory);
     }
 
     @FXML
@@ -257,7 +257,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private void initializeCategories() {
         rootCategory = commonService.getRootProductCategory();
-        selectedCategory = rootCategory.getChildrenCategories().get(0);
+        selectedCategory = commonService.getChildCategories(rootCategory).get(0);
     }
 
     private void initializeCancellationToggles() {
@@ -269,10 +269,10 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private void updateCategories(ProductCategoryView selectedCategory) {
         if(!ProductCategoryType.isLeaf(selectedCategory.getType())) {
-            selectedLevelCategories = selectedCategory.getParent().getChildrenCategories();
-            selectedChildrenCategories = selectedCategory.getChildrenCategories();
+            selectedLevelCategories = commonService.getChildCategories(selectedCategory.getParent());
+            selectedChildrenCategories = commonService.getChildCategories(selectedCategory);
         }
-        visibleProducts = selectedCategory.getAllNormalProducts();
+        visibleProducts = commonService.getSellableProducts(selectedCategory);
         redrawCategories(selectedCategory);
     }
 
@@ -338,7 +338,12 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
             }
 
             @Override
-            public List<ProductCategoryView> getChildrenCategories() {
+            public List<ProductCategoryView> getChildCategories() {
+                return null;
+            }
+
+            @Override
+            public ProductView getProduct() {
                 return null;
             }
 

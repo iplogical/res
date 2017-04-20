@@ -40,9 +40,23 @@ public interface CommonService {
 
     List<ProductCategoryView> getLeafCategories();
 
+    List<ProductCategoryView> getChildCategories(ProductCategoryView productCategoryView);
+
+    void getChildCategoriesRecursively(ProductCategoryView current, List<ProductCategoryView> traversal);
+
+    List<ProductCategoryView> getChildPseudoCategories(ProductCategoryView productCategoryView);
+
+    List<ProductView> getActiveProducts();
+
+    List<ProductView> getActiveProducts(ProductCategoryView productCategoryView);
+
     List<ProductView> getSellableProducts();
 
+    List<ProductView> getSellableProducts(ProductCategoryView productCategoryView);
+
     List<ProductView> getStorableProducts();
+
+    List<ProductView> getStorableProducts(ProductCategoryView productCategoryView);
 
     List<StockView> getStockItems();
 

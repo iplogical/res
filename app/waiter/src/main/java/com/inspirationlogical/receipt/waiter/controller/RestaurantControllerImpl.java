@@ -5,12 +5,11 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.c
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.moveNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.removeNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
+import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
-import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 
-import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,6 +27,7 @@ import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
+import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
@@ -141,6 +141,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     @Inject
     public RestaurantControllerImpl(RestaurantService restaurantService,
                                     RetailService retailService,
+                                    CommonService commonService,
                                     TableFormController tableFormController) {
         this.restaurantService = restaurantService;
         this.tableFormController = tableFormController;
