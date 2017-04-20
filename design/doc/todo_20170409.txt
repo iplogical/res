@@ -55,8 +55,6 @@ Szirup + Topping - bevitel
 
 Téli akciók - bevitel
 
-Egység ár tört rész fizetésénél. PRIO 1
-
 Formoknál a Rendben legyen a jobb oldalon
 
 Étterem nézetbe lépésnél vonja össze az azonos nem csillagos termékeket.
