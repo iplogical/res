@@ -486,11 +486,13 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoGinTonic;
     private @Getter ProductCategory PseudoJackAndCoke;
     private @Getter ProductCategory PseudoVodkaSzoda;
-    
+
+    private @Getter PriceModifier priceModifierEdelweiss;
     private @Getter PriceModifier priceModifierCaptainAndGyomber;
-//    private @Getter PriceModifier priceModifierTwo;
-//    private @Getter PriceModifier priceModifierThree;
-//    private @Getter PriceModifier priceModifierFour;
+    private @Getter PriceModifier priceModifierGinTonic;
+    private @Getter PriceModifier priceModifierJackAndCoke;
+    private @Getter PriceModifier priceModifierVodkaSzoda;
+    private @Getter PriceModifier priceModifierBekesSzentdrasiMeggyes;
 
     private @Getter Receipt receiptPurchase;
     private @Getter Receipt receiptInventory;
@@ -848,7 +850,7 @@ public class BuildSchema  {
     private void buildSosPerec() {
         SosPerec = Product.builder()
                 .longName("Sós Perec")
-                .shortName("Sós Perec")
+                .shortName("Perec")
                 .salePrice(290)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -861,7 +863,7 @@ public class BuildSchema  {
     private void buildMogyoro() {
         Mogyoro = Product.builder()
                 .longName("Mogyoró")
-                .shortName("Mogyoró")
+                .shortName("Mogyi")
                 .salePrice(390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -874,7 +876,7 @@ public class BuildSchema  {
     private void buildRagcsaMix() {
         RagcsaMix = Product.builder()
                 .longName("Rágcsa Mix")
-                .shortName("Rágcsa Mix")
+                .shortName("Mix")
                 .salePrice(890)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -887,7 +889,7 @@ public class BuildSchema  {
     private void buildNachosSosSajt() {
         NachosSosSajt = Product.builder()
                 .longName("Nachos Sós Sajt")
-                .shortName("Nachos Sós Sajt")
+                .shortName("Nachos SS")
                 .salePrice(720)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -900,7 +902,7 @@ public class BuildSchema  {
     private void buildNachosSosChili() {
         NachosSosChili = Product.builder()
                 .longName("Nachos Sos Chili")
-                .shortName("Nachos Sos Chili")
+                .shortName("Nachos SC")
                 .salePrice(720)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -913,7 +915,7 @@ public class BuildSchema  {
     private void buildNachosBBQSajt() {
         NachosBBQSajt = Product.builder()
                 .longName("Nachos BBQ Sajt")
-                .shortName("Nachos BBQ Sajt")
+                .shortName("Nachos BS")
                 .salePrice(720)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -926,7 +928,7 @@ public class BuildSchema  {
     private void buildNachosBBQChili() {
         NachosBBQChili = Product.builder()
                 .longName("Nachos BBQ Chili")
-                .shortName("Nachos BBQ Chili")
+                .shortName("Nachos BC")
                 .salePrice(720)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1082,7 +1084,7 @@ public class BuildSchema  {
     private void buildSpecialisFeltetekPiritossal() {
         SpecialisFeltetekPiritossal = Product.builder()
                 .longName("Speciális Feltétek Piritóssal")
-                .shortName("Spec. Felt. Piritós")
+                .shortName("Spec. Felt.")
                 .salePrice(890)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1121,7 +1123,7 @@ public class BuildSchema  {
     private void buildGameUpFalankTal() {
         GameUpFalankTal = Product.builder()
                 .longName("Game Up Falánk Tál")
-                .shortName("Game Up Falánk Tál")
+                .shortName("Falánk Tál")
                 .salePrice(4990)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1200,7 +1202,7 @@ public class BuildSchema  {
     private void buildSoproni03() {
         Soproni03 = Product.builder()
                 .longName("Soproni 0,3L")
-                .shortName("Soproni 0,3L")
+                .shortName("Sop 0,3L")
                 .salePrice(320)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1213,7 +1215,7 @@ public class BuildSchema  {
     private void buildSoproni05() {
         Soproni05 = Product.builder()
                 .longName("Soproni 0,5L")
-                .shortName("Soproni 0,5L")
+                .shortName("Sop 0,5L")
                 .salePrice(440)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1226,7 +1228,7 @@ public class BuildSchema  {
     private void buildEdelweiss03() {
         Edelweiss03 = Product.builder()
                 .longName("Edelweiss 0,3L")
-                .shortName("Edelweiss 0,3L")
+                .shortName("Edel 0,3L")
                 .salePrice(520)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1239,7 +1241,7 @@ public class BuildSchema  {
     private void buildEdelweiss05() {
         Edelweiss05 = Product.builder()
                 .longName("Edelweiss 0,5L")
-                .shortName("Edelweiss 0,5L")
+                .shortName("Edel 0,5L")
                 .salePrice(780)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1252,7 +1254,7 @@ public class BuildSchema  {
     private void buildKrusoviceSvetle() {
         KrusoviceSvetle = Product.builder()
                 .longName("Krusovice Svetlé")
-                .shortName("Krusovice Svetlé")
+                .shortName("Kruso")
                 .salePrice(480)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1265,7 +1267,7 @@ public class BuildSchema  {
     private void buildSoproniDemon() {
         SoproniDemon = Product.builder()
                 .longName("Soproni Démon")
-                .shortName("Soproni Démon")
+                .shortName("Démon")
                 .salePrice(480)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1278,7 +1280,7 @@ public class BuildSchema  {
     private void buildSoproniMaxx() {
         SoproniMaxx = Product.builder()
                 .longName("Soproni Maxx")
-                .shortName("Soproni Maxx")
+                .shortName("Maxx")
                 .salePrice(420)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1304,7 +1306,7 @@ public class BuildSchema  {
     private void buildGosserNaturRadler() {
         GosserNaturRadler = Product.builder()
                 .longName("Gosser Natur Radler")
-                .shortName("Gosser Natur Radler")
+                .shortName("Gosser")
                 .salePrice(440)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1317,7 +1319,7 @@ public class BuildSchema  {
     private void buildGosserNaturRadler00() {
         GosserNaturRadler00 = Product.builder()
                 .longName("Gosser Natur Radler 0,0%")
-                .shortName("Gosser Radler 0,0%")
+                .shortName("Gosser 0,0%")
                 .salePrice(420)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1330,7 +1332,7 @@ public class BuildSchema  {
     private void buildBekesSzentandrasiMeggyes() {
         BekesSzentandrasiMeggyes = Product.builder()
                 .longName("Békésszentandrási Meggyes")
-                .shortName("Békésszent. Meggy")
+                .shortName("Meggy Sör")
                 .salePrice(890)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1343,7 +1345,7 @@ public class BuildSchema  {
     private void buildStrongbowDarkfruit() {
         StrongbowDarkfruit = Product.builder()
                 .longName("Strongbow Darkfruit")
-                .shortName("Strongbow Darkfruit")
+                .shortName("Darkfruit")
                 .salePrice(640)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1356,7 +1358,7 @@ public class BuildSchema  {
     private void buildStrongbowGoldAppleCider() {
         StrongbowGoldAppleCider = Product.builder()
                 .longName("Strongbow Gold Apple Cider")
-                .shortName("Strongbow Cider")
+                .shortName("Cider")
                 .salePrice(640)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1369,7 +1371,7 @@ public class BuildSchema  {
     private void buildEdelweiss() {
         Edelweiss = Product.builder()
                 .longName("Edelweiss")
-                .shortName("Edelweiss")
+                .shortName("Edel Üv")
                 .salePrice(780)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1382,7 +1384,7 @@ public class BuildSchema  {
     private void buildHazBoraNagyEsNagy() {
         HazBoraNagyEsNagy = Product.builder()
                 .longName("Ház Bora Nagy és Nagy")
-                .shortName("Ház Bora Nagy")
+                .shortName("FHB")
                 .salePrice(260)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1395,7 +1397,7 @@ public class BuildSchema  {
     private void buildHilltopIrsaiOliver() {
         HilltopIrsaiOliver = Product.builder()
                 .longName("Hilltop Irsai Olivér")
-                .shortName("Hilltop Irsai Olivér")
+                .shortName("Irsai Üv")
                 .salePrice(2200)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1408,7 +1410,7 @@ public class BuildSchema  {
     private void buildHilltopIrsaiOliverDecire() {
         HilltopIrsaiOliverDecire = Product.builder()
                 .longName("Hilltop Irsai Olivér 1dl")
-                .shortName("Hilltop Irsai 1dl")
+                .shortName("Irsai")
                 .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1421,7 +1423,7 @@ public class BuildSchema  {
     private void buildGereAttilaOlaszrizling() {
         GereAttilaOlaszrizling = Product.builder()
                 .longName("Gere Attila Olaszrizling")
-                .shortName("Gere Olaszrizling")
+                .shortName("Gere")
                 .salePrice(2900)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1434,7 +1436,7 @@ public class BuildSchema  {
     private void buildHazBoraLisiczaRoseCuvee() {
         HazBoraLisiczaRoseCuvee = Product.builder()
                 .longName("Ház Bora Lisicza Rosé Cuvée")
-                .shortName("Ház Bora L. Rosé")
+                .shortName("RHB")
                 .salePrice(260)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1447,7 +1449,7 @@ public class BuildSchema  {
     private void buildMeszarosPinot() {
         MeszarosPinotNoirRose = Product.builder()
                 .longName("Mészáros Pinot Noir Rose")
-                .shortName("Mészáros Pinot")
+                .shortName("Mészáros Üv")
                 .salePrice(2400)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1460,7 +1462,7 @@ public class BuildSchema  {
     private void buildMeszarosPinotDecire() {
         MeszarosPinotNoirRoseDecire = Product.builder()
                 .longName("Mészáros Pinot Noir Rose 1dl")
-                .shortName("Mészáros Pinot 1dl")
+                .shortName("Mészáros")
                 .salePrice(360)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1473,7 +1475,7 @@ public class BuildSchema  {
     private void buildHazBoraPolgarSerumVeritas() {
         HazBoraPolgarSerumVeritas = Product.builder()
                 .longName("Ház Bora Polgár Serum Veritas")
-                .shortName("Ház Bora Polgár")
+                .shortName("VHB")
                 .salePrice(360)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1486,7 +1488,7 @@ public class BuildSchema  {
     private void buildVinczeMerlot() {
         VinczeMerlot = Product.builder()
                 .longName("Vincze Merlot")
-                .shortName("Vincze Merlot")
+                .shortName("Vincze")
                 .salePrice(2700)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1499,7 +1501,7 @@ public class BuildSchema  {
     private void buildVylyanCabernetSauvignon() {
         VylyanCabernetSauvignon = Product.builder()
                 .longName("Vylyan Cabernet Sauvignon")
-                .shortName("Vylyan Cabernet S.")
+                .shortName("Vylyan")
                 .salePrice(3400)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1512,7 +1514,7 @@ public class BuildSchema  {
     private void buildMeszarosHidasptereCabernetFrancReserve() {
         MeszarosHidasptereCabernetFrancReserve = Product.builder()
                 .longName("Meszáros Hidasptere Cabernet Franc Reserve")
-                .shortName("Meszáros Cabernet F.")
+                .shortName("Meszáros Cabernet")
                 .salePrice(4700)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1525,7 +1527,7 @@ public class BuildSchema  {
     private void buildTorleyGalaSzaraz() {
         TorleyGalaSzaraz = Product.builder()
                 .longName("Torley Gála Száraz")
-                .shortName("Torley Gála Száraz")
+                .shortName("Torley Sz")
                 .salePrice(2400)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1538,7 +1540,7 @@ public class BuildSchema  {
     private void buildTorleyCharmantEdes() {
         TorleyCharmantEdes = Product.builder()
                 .longName("Torley Charmant Édes")
-                .shortName("Torley Charmant Édes")
+                .shortName("Torley É")
                 .salePrice(2400)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1564,7 +1566,7 @@ public class BuildSchema  {
     private void buildJohnnieWalkerRedLabel04() {
         JohnnieWalkerRedLabel04 = Product.builder()
                 .longName("Johnnie Walker Red Label 4cl")
-                .shortName("Johnnie Walker 4cl")
+                .shortName("Johnnie 4cl")
                 .salePrice(580)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1577,7 +1579,7 @@ public class BuildSchema  {
     private void buildJackDaniels04() {
         JackDaniels04 = Product.builder()
                 .longName("Jack Daniels 4cl")
-                .shortName("Jack Daniels 4cl")
+                .shortName("Jack 4cl")
                 .salePrice(780)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1590,7 +1592,7 @@ public class BuildSchema  {
     private void buildTullamoreDew04() {
         TullamoreDew04 = Product.builder()
                 .longName("Tullamore Dew 4cl")
-                .shortName("Tullamore Dew 4cl")
+                .shortName("Tullamore 4cl")
                 .salePrice(780)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1629,7 +1631,7 @@ public class BuildSchema  {
     private void buildBacardiSuperior04() {
         BacardiSuperior04 = Product.builder()
                 .longName("Bacardi Superior 4cl")
-                .shortName("Bacardi Sup. 4cl")
+                .shortName("Bacardi 4cl")
                 .salePrice(620)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1642,7 +1644,7 @@ public class BuildSchema  {
     private void buildCaptainMorganSpicedRum04() {
         CaptainMorganSpicedRum04 = Product.builder()
                 .longName("Captain Morgan Spiced Rum 4cl")
-                .shortName("Captain Morgan 4cl")
+                .shortName("Captain 4cl")
                 .salePrice(640)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1668,7 +1670,7 @@ public class BuildSchema  {
     private void buildTequilaSierraReposadoGold04() {
         TequilaSierraReposadoGold04 = Product.builder()
                 .longName("Tequila Sierra Reposado Gold 4cl")
-                .shortName("Tequila Gold 4cl")
+                .shortName("Tequila G 4cl")
                 .salePrice(680)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1681,7 +1683,7 @@ public class BuildSchema  {
     private void buildTequilaSierraSilver04() {
         TequilaSierraSilver04 = Product.builder()
                 .longName("Tequila Sierra Silver 4cl")
-                .shortName("Tequila Silver 4cl")
+                .shortName("Tequila S 4cl")
                 .salePrice(680)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1707,7 +1709,7 @@ public class BuildSchema  {
     private void buildJagermeister04() {
         Jagermeister04 = Product.builder()
                 .longName("Jagermeister 4cl")
-                .shortName("Jagermeister 4cl")
+                .shortName("Jager 4cl")
                 .salePrice(580)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1732,8 +1734,8 @@ public class BuildSchema  {
 
     private void buildJimBeam02() {
         JimBeam02 = Product.builder()
-                .longName("Jim Beam 4cl")
-                .shortName("Jim Beam 4cl")
+                .longName("Jim Beam 2cl")
+                .shortName("Jim Beam 2cl")
                 .salePrice(280)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1746,7 +1748,7 @@ public class BuildSchema  {
     private void buildJohnnieWalkerRedLabel02() {
         JohnnieWalkerRedLabel02 = Product.builder()
                 .longName("Johnnie Walker Red Label 2cl")
-                .shortName("Johnnie Walker 2cl")
+                .shortName("Johnnie 2cl")
                 .salePrice(290)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1759,7 +1761,7 @@ public class BuildSchema  {
     private void buildJackDaniels02() {
         JackDaniels02 = Product.builder()
                 .longName("Jack Daniels 2cl")
-                .shortName("Jack Daniels 2cl")
+                .shortName("Jack 2cl")
                 .salePrice(390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1772,7 +1774,7 @@ public class BuildSchema  {
     private void buildTullamoreDew02() {
         TullamoreDew02 = Product.builder()
                 .longName("Tullamore Dew 2cl")
-                .shortName("Tullamore Dew 2cl")
+                .shortName("Tullamore 2cl")
                 .salePrice(390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1811,7 +1813,7 @@ public class BuildSchema  {
     private void buildBacardiSuperior02() {
         BacardiSuperior02 = Product.builder()
                 .longName("Bacardi Superior 2cl")
-                .shortName("Bacardi Sup. 2cl")
+                .shortName("Bacardi 2cl")
                 .salePrice(310)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1824,7 +1826,7 @@ public class BuildSchema  {
     private void buildCaptainMorganSpicedRum02() {
         CaptainMorganSpicedRum02 = Product.builder()
                 .longName("Captain Morgan SpicedRum 2cl")
-                .shortName("Captain Morgan 2cl")
+                .shortName("Captain 2cl")
                 .salePrice(320)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1850,7 +1852,7 @@ public class BuildSchema  {
     private void buildTequilaSierraReposadoGold02() {
         TequilaSierraReposadoGold02 = Product.builder()
                 .longName("Tequila Sierra Reposado Gold 2cl")
-                .shortName("Tequila Gold 2cl")
+                .shortName("Tequila G 2cl")
                 .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1863,7 +1865,7 @@ public class BuildSchema  {
     private void buildTequilaSierraSilver02() {
         TequilaSierraSilver02 = Product.builder()
                 .longName("Tequila Sierra Silver 2cl")
-                .shortName("Tequila Silver 2cl")
+                .shortName("Tequila S 2cl")
                 .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1889,7 +1891,7 @@ public class BuildSchema  {
     private void buildJagermeister02() {
         Jagermeister02 = Product.builder()
                 .longName("Jagermeister 2cl")
-                .shortName("Jagermeister 2cl")
+                .shortName("Jager 2cl")
                 .salePrice(290)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1915,7 +1917,7 @@ public class BuildSchema  {
     private void build22KokuszTatratea04() {
         _22KokuszTatratea04 = Product.builder()
                 .longName("22% Kókusz Tátratea 4cl")
-                .shortName("22% Tátratea 4cl")
+                .shortName("22% TT 4cl")
                 .salePrice(820)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1928,7 +1930,7 @@ public class BuildSchema  {
     private void build32CitrusTatratea04() {
         _32CitrusTatratea04 = Product.builder()
                 .longName("32% Citrus Tátratea 4cl")
-                .shortName("32% Tátratea 4cl")
+                .shortName("32% TT 4cl")
                 .salePrice(880)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1941,7 +1943,7 @@ public class BuildSchema  {
     private void build42BarackTatratea04() {
         _42BarackTatratea04 = Product.builder()
                 .longName("42% Barack Tátratea 4cl")
-                .shortName("42% Tátratea 4cl")
+                .shortName("42% TT 4cl")
                 .salePrice(940)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1954,7 +1956,7 @@ public class BuildSchema  {
     private void build52EredetiTatratea04() {
         _52EredetiTatratea04 = Product.builder()
                 .longName("52% Eredeti Tátratea 4cl")
-                .shortName("52% Tátratea 4cl")
+                .shortName("52% TT 4cl")
                 .salePrice(980)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1967,7 +1969,7 @@ public class BuildSchema  {
     private void build62ErdeiGyumolcsTatratea04() {
         _62ErdeiGyumolcsTatratea04 = Product.builder()
                 .longName("62% Erdei Gyümölcs Tátratea 4cl")
-                .shortName("62% Tátratea 4cl")
+                .shortName("62% TT 4cl")
                 .salePrice(1080)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1980,7 +1982,7 @@ public class BuildSchema  {
     private void build72OutlawBetyarTatratea04() {
         _72OutlawBetyarTatratea04 = Product.builder()
                 .longName("72% Outlaw Betyár Tátratea 4cl")
-                .shortName("72% Tátratea 4cl")
+                .shortName("72% TT 4cl")
                 .salePrice(1180)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -1993,7 +1995,7 @@ public class BuildSchema  {
     private void buildCseresznyePalinka04() {
         CseresznyePalinka04 = Product.builder()
                 .longName("Cseresznye Pálinka 4cl")
-                .shortName("Cser. Pálinka 4cl")
+                .shortName("Cseresznye 4cl")
                 .salePrice(880)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2006,7 +2008,7 @@ public class BuildSchema  {
     private void buildKajszibarackPalinka04() {
         KajszibarackPalinka04 = Product.builder()
                 .longName("Kajszibarack Pálinka 4cl")
-                .shortName("Kajszi Pálinka 4cl")
+                .shortName("Kajszi ű4cl")
                 .salePrice(880)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2018,8 +2020,8 @@ public class BuildSchema  {
 
     private void buildSzilvapalinka04() {
         Szilvapalinka04 = Product.builder()
-                .longName("Szilva pálinka 4cl")
-                .shortName("Szilva pálinka 4cl")
+                .longName("Szilva Pálinka 4cl")
+                .shortName("Szilva 4cl")
                 .salePrice(880)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2032,7 +2034,7 @@ public class BuildSchema  {
     private void build22KokuszTatratea02() {
         _22KokuszTatratea02 = Product.builder()
                 .longName("22% Kókusz Tátratea 2cl")
-                .shortName("22% Tátratea 2cl")
+                .shortName("22% TT 2cl")
                 .salePrice(410)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2045,7 +2047,7 @@ public class BuildSchema  {
     private void build32CitrusTatratea02() {
         _32CitrusTatratea02 = Product.builder()
                 .longName("32% Citrus Tátratea 2cl")
-                .shortName("32% Tátratea 2cl")
+                .shortName("32% TT 2cl")
                 .salePrice(440)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2058,7 +2060,7 @@ public class BuildSchema  {
     private void build42BarackTatratea02() {
         _42BarackTatratea02 = Product.builder()
                 .longName("42% Barack Tátratea 2cl")
-                .shortName("42% Tátratea 2cl")
+                .shortName("42% TT 2cl")
                 .salePrice(470)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2071,7 +2073,7 @@ public class BuildSchema  {
     private void build52EredetiTatratea02() {
         _52EredetiTatratea02 = Product.builder()
                 .longName("52% Eredeti Tátratea 2cl")
-                .shortName("52% Tátratea 2cl")
+                .shortName("52% TT 2cl")
                 .salePrice(490)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2084,7 +2086,7 @@ public class BuildSchema  {
     private void build62ErdeiGyumolcsTatratea02() {
         _62ErdeiGyumolcsTatratea02 = Product.builder()
                 .longName("62% Erdei Gyümölcs Tátratea 2cl")
-                .shortName("62% Tátratea 2cl")
+                .shortName("62% TT 2cl")
                 .salePrice(540)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2097,7 +2099,7 @@ public class BuildSchema  {
     private void build72OutlawBetyarTatratea02() {
         _72OutlawBetyarTatratea02 = Product.builder()
                 .longName("72% Outlaw Betyár Tátratea 2cl")
-                .shortName("72% Tátratea 2cl")
+                .shortName("72% TT 2cl")
                 .salePrice(590)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2110,7 +2112,7 @@ public class BuildSchema  {
     private void buildCseresznyePalinka02() {
         CseresznyePalinka02 = Product.builder()
                 .longName("Cseresznye Pálinka 2cl")
-                .shortName("Cser. Pálinka 2cl")
+                .shortName("Cseresznye 2cl")
                 .salePrice(440)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2123,7 +2125,7 @@ public class BuildSchema  {
     private void buildKajszibarackPalinka02() {
         KajszibarackPalinka02 = Product.builder()
                 .longName("Kajszibarack Pálinka 2cl")
-                .shortName("Kajszi Pálinka 2cl")
+                .shortName("Kajszi 2cl")
                 .salePrice(440)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2135,8 +2137,8 @@ public class BuildSchema  {
 
     private void buildSzilvapalinka02() {
         Szilvapalinka02 = Product.builder()
-                .longName("Szilva pálinka 2cl")
-                .shortName("Szilva pálinka 2cl")
+                .longName("Szilva Pálinka 2cl")
+                .shortName("Szilva 2cl")
                 .salePrice(440)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2292,7 +2294,7 @@ public class BuildSchema  {
     private void buildCocaCola() {
         CocaCola = Product.builder()
                 .longName("Coca Cola")
-                .shortName("Coca Cola")
+                .shortName("Cola")
                 .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2305,7 +2307,7 @@ public class BuildSchema  {
     private void buildCocaColaZero() {
         CocaColaZero = Product.builder()
                 .longName("Coca Cola Zero")
-                .shortName("Coca Cola Zero")
+                .shortName("Cola Zero")
                 .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2318,7 +2320,7 @@ public class BuildSchema  {
     private void buildFantaNarancs() {
         FantaNarancs = Product.builder()
                 .longName("Fanta Narancs")
-                .shortName("Fanta Narancs")
+                .shortName("Fanta")
                 .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2344,7 +2346,7 @@ public class BuildSchema  {
     private void buildKinleyGyomber() {
         KinleyGyomber = Product.builder()
                 .longName("Kinley Gyömbér")
-                .shortName("Kinley Gyömbér")
+                .shortName("Gyömbér")
                 .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2357,7 +2359,7 @@ public class BuildSchema  {
     private void buildKinleyTonic() {
         KinleyTonic = Product.builder()
                 .longName("Kinley Tonic")
-                .shortName("Kinley Tonic")
+                .shortName("Tonic")
                 .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2370,7 +2372,7 @@ public class BuildSchema  {
     private void buildNesteaCitrom() {
         NesteaCitrom = Product.builder()
                 .longName("Nestea Citrom")
-                .shortName("Nestea Citrom")
+                .shortName("Nestea C")
                 .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2383,7 +2385,7 @@ public class BuildSchema  {
     private void buildNesteaBarack() {
         NesteaBarack = Product.builder()
                 .longName("Nestea Barack")
-                .shortName("Nestea Barack")
+                .shortName("Nestea B")
                 .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2396,7 +2398,7 @@ public class BuildSchema  {
     private void buildCappyAlma() {
         CappyAlma = Product.builder()
                 .longName("Cappy Alma")
-                .shortName("Cappy Alma")
+                .shortName("Alma")
                 .salePrice(150)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2409,7 +2411,7 @@ public class BuildSchema  {
     private void buildCappyNarancs() {
         CappyNarancs = Product.builder()
                 .longName("Cappy Narancs")
-                .shortName("Cappy Narancs")
+                .shortName("Narancs")
                 .salePrice(150)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2422,7 +2424,7 @@ public class BuildSchema  {
     private void buildCappyBarack() {
         CappyBarack = Product.builder()
                 .longName("Cappy Barack")
-                .shortName("Cappy Barack")
+                .shortName("Barack")
                 .salePrice(150)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2435,7 +2437,7 @@ public class BuildSchema  {
     private void buildCappyAnanasz() {
         CappyAnanasz = Product.builder()
                 .longName("Cappy Ananász")
-                .shortName("Cappy Ananász")
+                .shortName("Ananász")
                 .salePrice(150)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2448,7 +2450,7 @@ public class BuildSchema  {
     private void buildLimonadeMalna05() {
         LimonadeMalna05 = Product.builder()
                 .longName("Limonádé Málna 5dl")
-                .shortName("Limonádé Málna 5dl")
+                .shortName("Limo M 5dl")
                 .salePrice(790)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2461,7 +2463,7 @@ public class BuildSchema  {
     private void buildLimonadeMeggy05() {
         LimonadeMeggy05 = Product.builder()
                 .longName("Limonádé Meggy 5dl")
-                .shortName("Limonádé Meggy 5dl")
+                .shortName("Limo Meggy 5dl")
                 .salePrice(790)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2474,7 +2476,7 @@ public class BuildSchema  {
     private void buildLimonadeEperNarancs05() {
         LimonadeEperNarancs05 = Product.builder()
                 .longName("Limonádé Eper Narancs 5dl")
-                .shortName("Limonádé Eper 5dl")
+                .shortName("Limo EN 5dl")
                 .salePrice(790)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2487,7 +2489,7 @@ public class BuildSchema  {
     private void buildLimonadeCitrus05() {
         LimonadeCitrus05 = Product.builder()
                 .longName("Limonádé Citrus 5dl")
-                .shortName("Limonádé Citrus 5dl")
+                .shortName("Limo C 5dl")
                 .salePrice(790)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2500,7 +2502,7 @@ public class BuildSchema  {
     private void buildLimonadeMalna10() {
         LimonadeMalna10 = Product.builder()
                 .longName("Limonádé Málna 1L")
-                .shortName("Limonádé Málna 1L")
+                .shortName("Limo M 1L")
                 .salePrice(1390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2513,7 +2515,7 @@ public class BuildSchema  {
     private void buildLimonadeMeggy10() {
         LimonadeMeggy10 = Product.builder()
                 .longName("Limonádé Meggy 1L")
-                .shortName("Limonádé Meggy 1L")
+                .shortName("Limo Meggy 1L")
                 .salePrice(1390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2526,7 +2528,7 @@ public class BuildSchema  {
     private void buildLimonadeEperNarancs10() {
         LimonadeEperNarancs10 = Product.builder()
                 .longName("Limonádé Eper Narancs  1L")
-                .shortName("Limonádé Eper 1L")
+                .shortName("Limo EM 1L")
                 .salePrice(1390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2539,7 +2541,7 @@ public class BuildSchema  {
     private void buildLimonadeCitrus10() {
         LimonadeCitrus10 = Product.builder()
                 .longName("Limonádé Citrus  1L")
-                .shortName("Limonádé Citrus  1L")
+                .shortName("Limo C 1L")
                 .salePrice(1390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2552,7 +2554,7 @@ public class BuildSchema  {
     private void buildNaturaquaSzensavas() {
         NaturaquaSzensavas = Product.builder()
                 .longName("Naturaqua Szénsavas")
-                .shortName("Naturaqua Szénsavas")
+                .shortName("Savas")
                 .salePrice(280)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2565,7 +2567,7 @@ public class BuildSchema  {
     private void buildNaturaquaSzensavmentes() {
         NaturaquaSzensavmentes = Product.builder()
                 .longName("Naturaqua Szénsavmentes")
-                .shortName("Naturaqua Szénsavm.")
+                .shortName("Mentes")
                 .salePrice(280)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2591,7 +2593,7 @@ public class BuildSchema  {
     private void buildBurnOriginal() {
         BurnOriginal = Product.builder()
                 .longName("Burn Original")
-                .shortName("Burn Original")
+                .shortName("Burn O")
                 .salePrice(420)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2603,8 +2605,8 @@ public class BuildSchema  {
 
     private void buildBurnZero() {
         BurnZero = Product.builder()
-                .longName("BurnZero")
-                .shortName("BurnZero")
+                .longName("Burn Zéro")
+                .shortName("Burn Z")
                 .salePrice(420)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2617,7 +2619,7 @@ public class BuildSchema  {
     private void buildMonsterEnergy() {
         MonsterEnergy = Product.builder()
                 .longName("Monster Energy")
-                .shortName("Monster Energy")
+                .shortName("Monster E")
                 .salePrice(640)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2630,7 +2632,7 @@ public class BuildSchema  {
     private void buildMonsterAssault() {
         MonsterAssault = Product.builder()
                 .longName("Monster Assault")
-                .shortName("Monster Assault")
+                .shortName("Monster A")
                 .salePrice(640)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2643,7 +2645,7 @@ public class BuildSchema  {
     private void buildMonsterRehab() {
         MonsterRehab = Product.builder()
                 .longName("Monster Rehab")
-                .shortName("Monster Rehab")
+                .shortName("Monster R")
                 .salePrice(640)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2747,7 +2749,7 @@ public class BuildSchema  {
     private void buildEspresso() {
         Espresso = Product.builder()
                 .longName("Espresso")
-                .shortName("Espresso")
+                .shortName("Presszó")
                 .salePrice(340)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2786,7 +2788,7 @@ public class BuildSchema  {
     private void buildCaffeLatte() {
         CaffeLatte = Product.builder()
                 .longName("Caffe Latte")
-                .shortName("Caffe Latte")
+                .shortName("Latte")
                 .salePrice(490)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2799,7 +2801,7 @@ public class BuildSchema  {
     private void buildLatteMacchiato() {
         LatteMacchiato = Product.builder()
                 .longName("Latte Macchiato")
-                .shortName("Latte Macchiato")
+                .shortName("Macchiato")
                 .salePrice(520)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2812,7 +2814,7 @@ public class BuildSchema  {
     private void buildCaffeMelange() {
         CaffeMelange = Product.builder()
                 .longName("Caffe Melange")
-                .shortName("Caffe Melange")
+                .shortName("Melange")
                 .salePrice(590)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2825,7 +2827,7 @@ public class BuildSchema  {
     private void buildForroCsokiBarna() {
         ForroCsokiBarna = Product.builder()
                 .longName("Forró Csoki Barna")
-                .shortName("Forró Csoki Barna")
+                .shortName("Forró Csoki B")
                 .salePrice(740)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2838,7 +2840,7 @@ public class BuildSchema  {
     private void buildForroCsokiFeher() {
         ForroCsokiFeher = Product.builder()
                 .longName("Forró Csoki Fehér")
-                .shortName("Forró Csoki Fehér")
+                .shortName("Forró Csoki F")
                 .salePrice(780)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2851,7 +2853,7 @@ public class BuildSchema  {
     private void buildCaptainAndGyomber() {
         CaptainAndGyomber = Product.builder()
                 .longName("Captain And Gyömbér")
-                .shortName("Captain And Gyömbér")
+                .shortName("C Gy")
                 .salePrice(980)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -2877,7 +2879,7 @@ public class BuildSchema  {
     private void buildJackAndCoke() {
         JackAndCoke = Product.builder()
                 .longName("Jack And Coke")
-                .shortName("Jack And Cok")
+                .shortName("J C")
                 .salePrice(1120)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -3153,9 +3155,28 @@ public class BuildSchema  {
     }
 
     private void buildPriceModifiers() {
+        buildPriceModifierEdelweiss();
         buildPriceModifierCaptainAndGyomber();
+        buildPriceModifierGinTonic();
+        buildPriceModifierJackAndCoke();
+        buildPriceModifierVodkaSzoda();
+        buildPriceModifierMeggyesSor();
     }
-
+    
+    private void buildPriceModifierEdelweiss() {
+        priceModifierEdelweiss = PriceModifier.builder()
+                .name("Edelweiss")
+                .type(PriceModifierType.QUANTITY_DISCOUNT)
+                .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .startDate(LocalDateTime.of(2017, 1, 8, 16, 0))
+                .endDate(LocalDateTime.of(2020, 1, 8, 20, 20))
+                .discountPercent(33.333)
+                .quantityLimit(3)
+                .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .dayOfWeek(DayOfWeek.TUESDAY)
+                .build();
+    }
+    
     private void buildPriceModifierCaptainAndGyomber() {
         priceModifierCaptainAndGyomber = PriceModifier.builder()
                 .name("Captain And Gyömbér")
@@ -3170,6 +3191,62 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildPriceModifierGinTonic() {
+        priceModifierGinTonic = PriceModifier.builder()
+                .name("Gin Tonic")
+                .type(PriceModifierType.QUANTITY_DISCOUNT)
+                .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .startDate(LocalDateTime.of(2017, 1, 8, 16, 0))
+                .endDate(LocalDateTime.of(2020, 1, 8, 20, 20))
+                .discountPercent(33.333)
+                .quantityLimit(3)
+                .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .dayOfWeek(DayOfWeek.THURSDAY)
+                .build();
+    }
+
+    private void buildPriceModifierJackAndCoke() {
+        priceModifierJackAndCoke = PriceModifier.builder()
+                .name("Jack And Coke")
+                .type(PriceModifierType.QUANTITY_DISCOUNT)
+                .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .startDate(LocalDateTime.of(2017, 1, 8, 16, 0))
+                .endDate(LocalDateTime.of(2020, 1, 8, 20, 20))
+                .discountPercent(33.333)
+                .quantityLimit(3)
+                .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .dayOfWeek(DayOfWeek.FRIDAY)
+                .build();
+    }
+
+    private void buildPriceModifierVodkaSzoda() {
+        priceModifierVodkaSzoda = PriceModifier.builder()
+                .name("Vodka Szóda")
+                .type(PriceModifierType.QUANTITY_DISCOUNT)
+                .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .startDate(LocalDateTime.of(2017, 1, 8, 16, 0))
+                .endDate(LocalDateTime.of(2020, 1, 8, 20, 20))
+                .discountPercent(33.333)
+                .quantityLimit(3)
+                .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .dayOfWeek(DayOfWeek.SATURDAY)
+                .build();
+    }
+
+    private void buildPriceModifierMeggyesSor() {
+        priceModifierBekesSzentdrasiMeggyes = PriceModifier.builder()
+                .name("Meggyes Sör")
+                .type(PriceModifierType.QUANTITY_DISCOUNT)
+                .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .startDate(LocalDateTime.of(2017, 1, 8, 16, 0))
+                .endDate(LocalDateTime.of(2020, 1, 8, 20, 20))
+                .discountPercent(33.333)
+                .quantityLimit(3)
+                .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .dayOfWeek(DayOfWeek.SUNDAY)
+                .build();
+    }
+    
     private void buildPseudoSosPerec() {
         PseudoSosPerec = ProductCategory.builder()
                 .name("SosPerec_Pseudo")
@@ -5208,6 +5285,8 @@ public class BuildSchema  {
         PseudoVylyanCabernetSauvignon.setParent(uvegBor);
         PseudoMeszarosHidasptereCabernetFrancReserve.setParent(uvegBor);
 
+        PseudoSzoda.setParent(borDecire);
+
         // Pezsgok
         PseudoTorleyGalaSzaraz.setParent(uvegBor);
         PseudoTorleyCharmantEdes.setParent(uvegBor);
@@ -5321,7 +5400,6 @@ public class BuildSchema  {
         // Asvanyviz
         PseudoNaturaquaSzensavas.setParent(uvegesUdito);
         PseudoNaturaquaSzensavmentes.setParent(uvegesUdito);
-        PseudoSzoda.setParent(uditoDecire);
 
         // Energiaitalok
         PseudoBurnOriginal.setParent(uvegesUdito);
@@ -5437,7 +5515,8 @@ public class BuildSchema  {
                     PseudoHazBoraLisiczaRoseCuvee,
                     PseudoHazBoraPolgarSerumVeritas,
                     PseudoHilltopIrsaiOliverDecire,
-                    PseudoMeszarosPinotNoireRoseDecire)));
+                    PseudoMeszarosPinotNoireRoseDecire,
+                    PseudoSzoda)));
 
         // Roviditalok
         rovidek.setChildren(new HashSet<>(
@@ -5538,7 +5617,6 @@ public class BuildSchema  {
         // Asvanyviz
                     PseudoNaturaquaSzensavas,
                     PseudoNaturaquaSzensavmentes,
-                    PseudoSzoda,
         // Energiaitalok
                     PseudoBurnOriginal,
                     PseudoBurnZero,
@@ -5606,9 +5684,26 @@ public class BuildSchema  {
     }
 
     private void categoriesAndPriceModifiers() {
+        PseudoEdelweiss05.setPriceModifiers(new HashSet<>(
+                Arrays.asList(priceModifierEdelweiss)));
         PseudoCaptainAndGyomber.setPriceModifiers(new HashSet<>(
                 Arrays.asList(priceModifierCaptainAndGyomber)));
+        PseudoGinTonic.setPriceModifiers(new HashSet<>(
+                Arrays.asList(priceModifierGinTonic)));
+        PseudoJackAndCoke.setPriceModifiers(new HashSet<>(
+                Arrays.asList(priceModifierJackAndCoke)));
+        PseudoVodkaSzoda.setPriceModifiers(new HashSet<>(
+                Arrays.asList(priceModifierVodkaSzoda)));
+        PseudoBekesSzentadrasiMeggyes.setPriceModifiers(new HashSet<>(
+                Arrays.asList(priceModifierBekesSzentdrasiMeggyes)));
+
+        priceModifierEdelweiss.setOwner(PseudoEdelweiss05);
         priceModifierCaptainAndGyomber.setOwner(PseudoCaptainAndGyomber);
+        priceModifierGinTonic.setOwner(PseudoGinTonic);
+        priceModifierJackAndCoke.setOwner(PseudoJackAndCoke);
+        priceModifierVodkaSzoda.setOwner(PseudoVodkaSzoda);
+        priceModifierBekesSzentdrasiMeggyes.setOwner(PseudoBekesSzentadrasiMeggyes);
+
 //        pseudoTwo.setPriceModifiers(new HashSet<>(
 //                Collections.singletonList(priceModifierFour)));
 //        priceModifierOne.setOwner(pseudoOne);
