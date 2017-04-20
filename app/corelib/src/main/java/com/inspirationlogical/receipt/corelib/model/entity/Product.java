@@ -105,6 +105,8 @@ public @Data class Product extends AbstractEntity {
 
     private int stockWindow;
 
+    private int orderNumber;
+
     @Tolerate
     Product(){}
 

@@ -15,6 +15,15 @@ public class ProductCategoryViewImpl extends AbstractModelViewImpl<ProductCatego
         super(adapter);
     }
 
+    @Override
+    public String getName() {
+        return adapter.getAdaptee().getName();
+    }
+
+    @Override
+    public int getOrderNumber() {
+        return adapter.getAdaptee().getOrderNumber();
+    }
 
     @Override
     public String getCategoryName() {
@@ -61,11 +70,6 @@ public class ProductCategoryViewImpl extends AbstractModelViewImpl<ProductCatego
     @Override
     public ProductStatus getStatus() {
         return adapter.getAdaptee().getStatus();
-    }
-
-    @Override
-    public String getName() {
-        return adapter.getAdaptee().getName();
     }
 
     private List<ProductView> mapProducts(List<ProductAdapter> productAdapters) {

@@ -10,6 +10,7 @@ import static com.inspirationlogical.receipt.waiter.viewstate.SaleViewState.Canc
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -298,7 +299,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     private <T extends AbstractView> void drawListOfElements(List<T> elements, GridPane grid) {
-        elements.sort(AbstractView.compareNames);
+        elements.sort(Comparator.comparing(AbstractView::getOrderNumber));
         for(int i = 0; i < elements.size(); i++) {
             drawElement(elements.get(i), grid, i);
         }

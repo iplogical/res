@@ -94,6 +94,7 @@ public @Data class ProductCategory extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
+    private int orderNumber;
     @Tolerate
     ProductCategory(){}
 

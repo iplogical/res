@@ -7,12 +7,7 @@ import java.util.Comparator;
  */
 public interface AbstractView {
 
-    Comparator<AbstractView> compareNames = new Comparator<AbstractView>() {
-        @Override
-        public int compare(AbstractView o1, AbstractView o2) {
-            return o1.getName().compareTo(o2.getName());
-        }
-    };
+    default int getOrderNumber() {return 0;}
 
     String getName();
 }

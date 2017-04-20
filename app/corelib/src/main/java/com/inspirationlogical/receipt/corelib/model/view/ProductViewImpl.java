@@ -22,6 +22,11 @@ public class ProductViewImpl extends AbstractModelViewImpl<ProductAdapter>
     }
 
     @Override
+    public int getOrderNumber() {
+        return adapter.getAdaptee().getOrderNumber();
+    }
+
+    @Override
     public ProductType getType() {
         return adapter.getAdaptee().getType();
     }
