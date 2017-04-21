@@ -27,7 +27,7 @@
     <xs:element name="type" type="xs:string" />
     <xs:element name="customer" type="customer_info" minOccurs="0" />
     <xs:element name="header" type="receipt_body_header" />
-    <xs:element name="entry" type="receipt_body_entry" minOccurs="1" maxOccurs="unbounded" />
+    <xs:element name="entry" type="receipt_body_entry" minOccurs="0" maxOccurs="unbounded" />
     <xs:element name="footer" type="receipt_body_footer"  minOccurs="0" />
   </xs:sequence>
 </xs:complexType>
