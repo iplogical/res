@@ -60,4 +60,9 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     public void mergeReceiptRecords(ReceiptView receiptView) {
         getReceiptAdapter(receiptView).mergeReceiptRecords();
     }
+
+    @Override
+    public void printDailyConsumption() {
+
+    }
 }

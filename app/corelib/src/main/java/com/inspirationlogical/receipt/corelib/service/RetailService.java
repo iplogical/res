@@ -28,4 +28,6 @@ public interface RetailService {
     void cancelReceiptRecord(TableView tableView, ReceiptRecordView receiptRecordView);
 
     void mergeReceiptRecords(ReceiptView receiptView);
+
+    void printDailyConsumption();
 }

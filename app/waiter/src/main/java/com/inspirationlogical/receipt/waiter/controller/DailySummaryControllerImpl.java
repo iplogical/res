@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
@@ -38,6 +39,8 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     private Label couponTotalPrice;
     @FXML
     private Label totalPrice;
+    @FXML
+    Button printDailyConsumption;
 
     private RestaurantView restaurantView;
 
@@ -94,5 +97,10 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
                 + Integer.valueOf(creditCardTotalPrice.getText())
                 + Integer.valueOf(couponTotalPrice.getText());
         totalPrice.setText(String.valueOf(totalPriceInt));
+    }
+
+    @FXML
+    public void onPrintDailyConsumption(Event event) {
+        retailService.printDailyConsumption();
     }
 }

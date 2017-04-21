@@ -170,6 +170,7 @@
    <right>
       <VBox fx:id="left" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
+            <Button fx:id="printDailyConsumption" mnemonicParsing="false" onAction="#onPrintDailyConsumption" text="%DailySummary.PrintDailyConsumption" />
             <Button fx:id="backToRestaurantView" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%Common.BackToRestaurantView" textAlignment="CENTER">
                <VBox.margin>
                   <Insets top="340.0" />
