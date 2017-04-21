@@ -27,3 +27,22 @@ sudo apt-get install openjfx
 # How to calibrate touch display on Ubuntu
 sudo ./scripts/touch_calibrate.sh 
 
+# How to disable sleep and hibernation
+sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+
+# How to install new binaries
+sudo ./scripts/install.sh 
+this will issue a gradlew installDist and copy the binaries to /opt/iplogical/ , either restart the app manually or logout and login for autostart
+
+# How to add application start after login
+add a file in ~/.config/autostart/.desktop 
+the file entry has to be the following
+
+[Desktop Entry]
+Type=Application
+Name=InspirationLogical-Waiter
+Exec=/opt/iplogical/bin/waiter
+X-GNOME-Autostart-enabled=true
+
+
+
