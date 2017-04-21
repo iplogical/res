@@ -41,7 +41,7 @@
                            <children>
                               <AnchorPane>
                                  <children>
-                                    <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="150.0">
+                                    <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                        <children>
                                           <AnchorPane>
                                              <children>
@@ -72,12 +72,6 @@
                                           </AnchorPane>
                                        </children>
                                     </VBox>
-                                    <ImageView fitHeight="110.0" fitWidth="160.0" pickOnBounds="true" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
-                                       <image>
-                                          <Image url="@../../images/sticky_note.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="note" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="60.0" prefWidth="135.0" style="-fx-line-spacing: -2;" wrapText="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
                                  </children>
                               </AnchorPane>
                               <TableView fx:id="soldProductsTable" prefHeight="640.0" prefWidth="458.0">
@@ -98,44 +92,41 @@
                            <children>
                               <VBox>
                                  <children>
-                                    <AnchorPane>
+                                    <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <Label AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <Label prefWidth="150.0" text="%Common.Cash" />
+                                          <Label fx:id="cashTotalPrice" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <font>
                                                 <Font name="System Bold" size="16.0" />
                                              </font>
                                           </Label>
                                        </children>
-                                    </AnchorPane>
-                                    <AnchorPane>
+                                    </HBox>
+                                    <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <Label AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <Label prefWidth="150.0" text="%Common.CreditCard" />
+                                          <Label fx:id="creditCardTotalPrice" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <font>
                                                 <Font size="24.0" />
                                              </font>
                                           </Label>
                                        </children>
-                                    </AnchorPane>
-                                    <AnchorPane>
+                                    </HBox>
+                                    <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <Label fx:id="payTotalPrice" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <Label prefWidth="150.0" text="%Common.Coupon" />
+                                          <Label fx:id="couponTotalPrice" alignment="CENTER" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <font>
                                                 <Font size="36.0" />
                                              </font>
                                           </Label>
                                        </children>
-                                    </AnchorPane>
-                                    <Pane prefHeight="87.0" />
+                                    </HBox>
                                  </children>
+                                 <VBox.margin>
+                                    <Insets top="100.0" />
+                                 </VBox.margin>
                               </VBox>
-                              <TableView fx:id="payProductsTable" prefHeight="669.0" prefWidth="453.0">
-                                <columns>
-                                  <TableColumn fx:id="payProductName" prefWidth="180.0" text="%SaleView.ProductName" />
-                                  <TableColumn fx:id="payProductQuantity" prefWidth="100.0" text="%SaleView.ProductQuantity" />
-                                    <TableColumn fx:id="payProductUnitPrice" text="%SaleView.ProductUnitPrice" />
-                                    <TableColumn fx:id="payProductTotalPrice" text="%SaleView.ProductTotalPrice" />
-                                </columns>
-                              </TableView>
                            </children>
                         </VBox>
                      </children>
@@ -147,37 +138,10 @@
    <right>
       <VBox fx:id="left" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox>
-               <children>
-                  <RadioButton fx:id="paymentMethodCash" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%Common.Cash" textAlignment="CENTER">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="paymentMethodToggleGroup" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton fx:id="paymentMethodCreditCard" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%Common.CreditCard" textAlignment="CENTER" toggleGroup="$paymentMethodToggleGroup" />
-                  <RadioButton fx:id="paymentMethodCoupon" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%Common.Coupon" textAlignment="CENTER" toggleGroup="$paymentMethodToggleGroup" />
-               </children>
-            </VBox>
-            <ToggleButton fx:id="selectivePayment" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.SelectivePayment" textAlignment="CENTER">
-               <toggleGroup>
-                  <ToggleGroup fx:id="paymentTypeToggleGroup" />
-               </toggleGroup></ToggleButton>
-            <ToggleButton fx:id="singlePayment" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.SinglePayment" textAlignment="CENTER" toggleGroup="$paymentTypeToggleGroup" />
-            <ToggleButton fx:id="partialPayment" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.PartialPayment" textAlignment="CENTER" toggleGroup="$paymentTypeToggleGroup" />
-            <TextField fx:id="partialPaymentValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.PartialPaymentPrompt" />
-            <ToggleButton fx:id="automaticGameFee" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAutomaticGameFeeToggleAction" text="%PaymentView.AutomaticGameFee" textAlignment="CENTER" />
-            <Button fx:id="manualGameFee" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onManualGameFee" text="%PaymentView.ManualGameFee" textAlignment="CENTER" />
-            <ToggleButton fx:id="discountAbsolute" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.DiscountAbsolute" textAlignment="CENTER">
-               <toggleGroup>
-                  <ToggleGroup fx:id="discountTypeToggleGroup" />
-               </toggleGroup>
-            </ToggleButton>
-            <TextField fx:id="discountAbsoluteValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.DiscountAbsolutePrompt" />
-            <ToggleButton fx:id="discountPercent" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.DiscountPercent" textAlignment="CENTER" toggleGroup="$discountTypeToggleGroup" />
-            <TextField fx:id="discountPercentValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.DiscountPercentPrompt" />
-            <Button fx:id="backToSaleView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToSaleView" text="%PaymentView.BackToSaleView" textAlignment="CENTER" />
-            <Button fx:id="backToRestaurantView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%Common.BackToRestaurantView" textAlignment="CENTER" />
-            <Button fx:id="pay" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPay" text="%PaymentView.Pay" textAlignment="CENTER" />
+            <Button fx:id="backToRestaurantView" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%Common.BackToRestaurantView" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets top="340.0" />
+               </VBox.margin></Button>
          </children>
          <padding>
             <Insets left="5.0" top="5.0" />
@@ -190,7 +154,7 @@
    <top>
       <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%PaymentView.Title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%DailySummary.Title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font size="16.0" />
                </font>

@@ -195,7 +195,7 @@
             <Separator prefWidth="200.0" />
             <Button fx:id="toPaymentView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onToPaymentView" text="%SaleView.ToPaymentView" textAlignment="CENTER" />
             <Separator prefWidth="200.0" />
-            <Button fx:id="backToRestaurantView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%SaleView.Back" textAlignment="CENTER" />
+            <Button fx:id="backToRestaurantView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%Common.BackToRestaurantView" textAlignment="CENTER" />
          </children>
          <BorderPane.margin>
             <Insets />

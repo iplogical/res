@@ -173,7 +173,7 @@
                      <font>
                         <Font size="16.0" />
                      </font></Button>
-                <Button fx:id="consumption" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%Restaurant.Consumption" textAlignment="CENTER">
+                <Button fx:id="dailySummary" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDailySummary" text="%Restaurant.Consumption" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font></Button>

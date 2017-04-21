@@ -68,7 +68,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     AnchorPane root;
 
     @FXML
-    Button consumption;
+    Button dailySummary;
 
     @FXML
     Button reservation;
@@ -150,28 +150,6 @@ public class RestaurantControllerImpl implements RestaurantController {
         selectedTables = new LinkedHashSet<>();
     }
 
-    @FXML
-    public void onConfigurationToggle(Event event) {
-        if (!configuration.isSelected()) {
-            selectedTables.forEach(TableController::deselectTable);
-        }
-    }
-
-    @FXML
-    public void onDailyClosure(Event event) {
-        ConfirmMessage.showConfirmDialog(Resources.WAITER.getString("Restaurant.DailyClosureConfirm"), () -> restaurantService.closeDay());
-    }
-
-    @FXML
-    public void onTablesSelected(Event event) {
-        restaurantViewState.setVirtual(false);
-    }
-
-    @FXML
-    public void onVirtualSelected(Event event) {
-        restaurantViewState.setVirtual(true);
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initContextMenu(tablesLab);
@@ -180,44 +158,6 @@ public class RestaurantControllerImpl implements RestaurantController {
         initControls();
         initRestaurant();
         updateRestaurantSummary();
-    }
-
-    private void initControls() {
-        restaurantViewState.setConfigurable(configuration.selectedProperty());
-        restaurantViewState.getMotionViewState().setMovableProperty(motion.selectedProperty());
-        restaurantViewState.getMotionViewState().setSnapToGridProperty(snapToGrid.selectedProperty());
-        restaurantViewState.getMotionViewState().setGridSizeProperty(setGridSize.valueProperty());
-        snapToGrid.disableProperty().bind(motion.selectedProperty().not());
-        setGridSize.disableProperty().bind(motion.selectedProperty().not());
-        getGridSize.textProperty().bind(Bindings.format("%.0f", setGridSize.valueProperty()));
-        setGridSize.setValue(INITIAL_GRID_SIZE);
-    }
-
-    private void initRestaurant() {
-        restaurantView = restaurantService.getActiveRestaurant();
-        initTables();
-    }
-
-    private void initTables() {
-        tablesTab.getChildren().removeAll(tableControllers.stream()
-                .filter(tableController -> !tableController.getView().isVirtual())
-                .map(TableController::getRoot).collect(Collectors.toList()));
-        virtualTab.getChildren().removeAll(tableControllers.stream()
-                .filter(tableController -> tableController.getView().isVirtual())
-                .map(TableController::getRoot).collect(Collectors.toList()));
-        tableControllers.clear();
-        restaurantService.getTables(restaurantView).stream().filter(VISIBLE_TABLE).forEach(this::drawTable);
-    }
-
-    private void initContextMenu(Control control) {
-        addPressAndHold(restaurantViewState, control,
-                new RestaurantContextMenuBuilderDecorator(this, new BaseContextMenuBuilder()),
-                Duration.millis(HOLD_DURATION_MILLIS));
-    }
-
-    private void initTableForm() {
-        tableForm = new Popup();
-        tableForm.getContent().add(viewLoader.loadView(tableFormController));
     }
 
     @Override
@@ -374,6 +314,78 @@ public class RestaurantControllerImpl implements RestaurantController {
         return restaurantViewState;
     }
 
+    @FXML
+    public void onConfigurationToggle(Event event) {
+        if (!configuration.isSelected()) {
+            selectedTables.forEach(TableController::deselectTable);
+        }
+    }
+
+    @FXML
+    public void onDailyClosure(Event event) {
+        ConfirmMessage.showConfirmDialog(Resources.WAITER.getString("Restaurant.DailyClosureConfirm"), () -> restaurantService.closeDay());
+    }
+
+    @FXML
+    public void onDailySummary(Event event) {
+        DailySummaryController dailySummaryController = WaiterRegistry.getInstance(DailySummaryController.class);
+        viewLoader.loadViewIntoScene(dailySummaryController);
+    }
+
+    @FXML
+    public void onReservationClicked(Event event) {
+        Point2D position = calculatePopupPosition(reservation, root);
+        new ReservationFormController(viewLoader).show(root,position);
+    }
+
+    @FXML
+    public void onTablesSelected(Event event) {
+        restaurantViewState.setVirtual(false);
+    }
+
+    @FXML
+    public void onVirtualSelected(Event event) {
+        restaurantViewState.setVirtual(true);
+    }
+
+    private void initControls() {
+        restaurantViewState.setConfigurable(configuration.selectedProperty());
+        restaurantViewState.getMotionViewState().setMovableProperty(motion.selectedProperty());
+        restaurantViewState.getMotionViewState().setSnapToGridProperty(snapToGrid.selectedProperty());
+        restaurantViewState.getMotionViewState().setGridSizeProperty(setGridSize.valueProperty());
+        snapToGrid.disableProperty().bind(motion.selectedProperty().not());
+        setGridSize.disableProperty().bind(motion.selectedProperty().not());
+        getGridSize.textProperty().bind(Bindings.format("%.0f", setGridSize.valueProperty()));
+        setGridSize.setValue(INITIAL_GRID_SIZE);
+    }
+
+    private void initRestaurant() {
+        restaurantView = restaurantService.getActiveRestaurant();
+        initTables();
+    }
+
+    private void initTables() {
+        tablesTab.getChildren().removeAll(tableControllers.stream()
+                .filter(tableController -> !tableController.getView().isVirtual())
+                .map(TableController::getRoot).collect(Collectors.toList()));
+        virtualTab.getChildren().removeAll(tableControllers.stream()
+                .filter(tableController -> tableController.getView().isVirtual())
+                .map(TableController::getRoot).collect(Collectors.toList()));
+        tableControllers.clear();
+        restaurantService.getTables(restaurantView).stream().filter(VISIBLE_TABLE).forEach(this::drawTable);
+    }
+
+    private void initContextMenu(Control control) {
+        addPressAndHold(restaurantViewState, control,
+                new RestaurantContextMenuBuilderDecorator(this, new BaseContextMenuBuilder()),
+                Duration.millis(HOLD_DURATION_MILLIS));
+    }
+
+    private void initTableForm() {
+        tableForm = new Popup();
+        tableForm.getContent().add(viewLoader.loadView(tableFormController));
+    }
+
     private void addNodeToPane(Node node, boolean isVirtual) {
         if (isVirtual) {
             toVirtualPane(node);
@@ -447,12 +459,5 @@ public class RestaurantControllerImpl implements RestaurantController {
                 .mapToInt(tableController -> tableController.getView().getTotalPrice()).sum()));
         paidConsumption.setText(String.valueOf(restaurantView.getPaidConsumptionOfTheDay()));
         totalIncome.setText(String.valueOf(Integer.valueOf(currentConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
-    }
-
-
-    @FXML
-    public void onReservationClicked(Event event) {
-        Point2D position = calculatePopupPosition(reservation, root);
-        new ReservationFormController(viewLoader).show(root,position);
     }
 }

@@ -50,7 +50,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected TableColumn<SoldProductViewModel, String> productTotalPrice;
 
     @Inject
-    private ViewLoader viewLoader;
+    protected ViewLoader viewLoader;
 
     protected RestaurantService restaurantService;
 
