@@ -44,5 +44,10 @@ Name=InspirationLogical-Waiter
 Exec=/opt/iplogical/bin/waiter
 X-GNOME-Autostart-enabled=true
 
+# How to recreate schema (use UTF8 beacuse it is inherited by the table created)
+CREATE DATABASE <name> CHARACTER SET = utf8
+The table created by javax persistence will use the same encoding
+Modify it with : ALTER DATABASE <name> CHARACTER SET = utf8
+ALTER TABLE <name> CHARACTER SET = utf8
 
 
