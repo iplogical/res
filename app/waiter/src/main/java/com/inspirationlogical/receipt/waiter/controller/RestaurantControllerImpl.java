@@ -325,6 +325,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     public void onDailyClosure(Event event) {
         ConfirmMessage.showConfirmDialog(Resources.WAITER.getString("Restaurant.DailyClosureConfirm"), () -> restaurantService.closeDay());
+        updateRestaurantSummary();
     }
 
     @FXML
