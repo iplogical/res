@@ -11,9 +11,8 @@ apply plugin: 'application'
 
 mainClassName = "com.inspirationlogical.receipt.manager.application.ManagerApp"
 
-task manager(type: JavaExec) {
-    classpath sourceSets.main.runtimeClasspath
-    main = mainClassName
+run {
+    main = project.getProperty('mainClassName')
     applicationDefaultJvmArgs = ["-Xms1024m","-Xmx4096m"]
 }
 

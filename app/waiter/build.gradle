@@ -12,10 +12,9 @@ apply plugin: 'application'
 
 mainClassName = 'com.inspirationlogical.receipt.waiter.application.WaiterApp'
 
-task waiter(type: JavaExec) {
-    classpath sourceSets.main.runtimeClasspath
+run {
+    main = project.getProperty('mainClassName')
     applicationDefaultJvmArgs = ["-Xms1024m","-Xmx4096m"]
-    main = mainClassName
 }
 
 // In this section you declare the dependencies for your production and test code
