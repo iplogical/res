@@ -23,7 +23,9 @@ rm -f $INSTALL_DIR/bin/*.bat
 chown manager:root $INSTALL_DIR/bin/manager
 chown manager:root $INSTALL_DIR/bin/sampleapp
 chown waiter:root $INSTALL_DIR/bin/waiter
-
+chmod 755 $INSTALL_DIR
+chmod 755 $INSTALL_DIR/bin
+chmod 755 $INSTALL_DIR/lib
 chmod 744 $INSTALL_DIR/bin/manager
 chmod 744 $INSTALL_DIR/bin/sampleapp
 chmod 744 $INSTALL_DIR/bin/waiter
