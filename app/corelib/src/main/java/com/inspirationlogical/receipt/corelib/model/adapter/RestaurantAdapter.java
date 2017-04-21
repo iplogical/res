@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -16,9 +17,12 @@ import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
+import com.inspirationlogical.receipt.corelib.utility.printing.PrintService;
 
 import static java.time.LocalDateTime.now;
 
@@ -139,5 +143,29 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                     query.setParameter("closureTime", finalPreviousClosure);
                     return query;
                 });
+    }
+
+    public void printDailyConsumption() {
+        LocalDateTime latestClosure = DailyClosureAdapter.getLatestClosureTime();
+        List<Receipt> receipts = GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_OPEN_TIME_AND_TYPE,
+                query -> query
+                        .setParameter("openTime",latestClosure)
+                        .setParameter("type",ReceiptType.SALE));
+        Receipt aggregatedReceipt = Receipt.builder()
+                .records(new ArrayList<>()) // TODO: refactor using Lombok builder prototype pattern see @ Restaurant
+                .openTime(latestClosure)
+                .closureTime(LocalDateTime.now())
+                .owner(TableAdapter.getTablesByType(TableType.ORPHANAGE).get(0))
+                .paymentMethod(PaymentMethod.CASH) // TODO: intorduce new payment method for this purpose
+                .status(ReceiptStatus.OPEN)
+                .VATSerie(VATSerieAdapter.vatSerieAdapterFactory().getAdaptee())
+                .type(ReceiptType.SALE)
+                .paymentMethod(PaymentMethod.CASH).build();
+
+        aggregatedReceipt.setId(-1L);
+        receipts.stream().forEach(receipt -> aggregatedReceipt.getRecords().addAll(receipt.getRecords()));
+
+        ReceiptAdapter adapter = new ReceiptAdapter(aggregatedReceipt);
+        new ReceiptPrinter().onClose(adapter);
     }
 }

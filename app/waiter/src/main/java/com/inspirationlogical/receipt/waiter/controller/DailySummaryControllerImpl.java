@@ -101,6 +101,6 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onPrintDailyConsumption(Event event) {
-        retailService.printDailyConsumption();
+        retailService.printDailyConsumption(restaurantView);
     }
 }

@@ -1435,12 +1435,12 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void receiptsAndReceiptRecords() {
-        receiptSaleOne.setRecords(new HashSet<>(
+        receiptSaleOne.setRecords(new ArrayList<>(
                 Arrays.asList(receiptRecordSaleOne, receiptRecordSaleTwo,
                         receiptRecordSaleFive, receiptRecordSaleSix)));
-        receiptSaleTwo.setRecords(new HashSet<>(
+        receiptSaleTwo.setRecords(new ArrayList<>(
                 Arrays.asList(receiptRecordSaleThree, receiptRecordSaleFour)));
-        receiptOther.setRecords(new HashSet<>(
+        receiptOther.setRecords(new ArrayList<>(
                 Collections.singletonList(receiptRecordOther)));
         receiptRecordSaleOne.setOwner(receiptSaleOne);
         receiptRecordSaleTwo.setOwner(receiptSaleOne);

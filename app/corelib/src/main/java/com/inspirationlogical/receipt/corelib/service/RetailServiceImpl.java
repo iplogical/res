@@ -62,7 +62,7 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     }
 
     @Override
-    public void printDailyConsumption() {
-
+    public void printDailyConsumption(RestaurantView restaurantView) {
+        getRestaurantAdapter(restaurantView).printDailyConsumption();
     }
 }

@@ -2,10 +2,7 @@ package com.inspirationlogical.receipt.corelib.service;
 
 import java.util.Collection;
 
-import com.inspirationlogical.receipt.corelib.model.view.ProductView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
-import com.inspirationlogical.receipt.corelib.model.view.TableView;
+import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 
@@ -29,5 +26,5 @@ public interface RetailService {
 
     void mergeReceiptRecords(ReceiptView receiptView);
 
-    void printDailyConsumption();
+    void printDailyConsumption(RestaurantView restaurantView);
 }
