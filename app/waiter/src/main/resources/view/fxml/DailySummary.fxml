@@ -92,35 +92,67 @@
                            <children>
                               <VBox>
                                  <children>
-                                    <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <HBox prefWidth="200.0" spacing="5.0">
                                        <children>
-                                          <Label prefWidth="150.0" text="%Common.Cash" />
-                                          <Label fx:id="cashTotalPrice" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <Label prefWidth="100.0" text="%DailySummary.OpenConsumption" />
+                                          <Label fx:id="openConsumption" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="60.0" />
+                                          <Label text="Ft" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox prefWidth="150.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <Label prefWidth="100.0" text="%Common.Cash" />
+                                          <Label fx:id="cashTotalPrice" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <font>
                                                 <Font name="System Bold" size="16.0" />
                                              </font>
                                           </Label>
+                                          <Label text="Ft" />
                                        </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
                                     </HBox>
-                                    <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <Label prefWidth="150.0" text="%Common.CreditCard" />
-                                          <Label fx:id="creditCardTotalPrice" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <Label prefWidth="100.0" text="%Common.CreditCard" />
+                                          <Label fx:id="creditCardTotalPrice" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <font>
                                                 <Font size="24.0" />
                                              </font>
                                           </Label>
+                                          <Label text="Ft" />
                                        </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
                                     </HBox>
-                                    <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <Label prefWidth="150.0" text="%Common.Coupon" />
-                                          <Label fx:id="couponTotalPrice" alignment="CENTER" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <Label prefWidth="100.0" text="%Common.Coupon" />
+                                          <Label fx:id="couponTotalPrice" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <font>
                                                 <Font size="36.0" />
                                              </font>
                                           </Label>
+                                          <Label text="Ft" />
                                        </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <Label prefWidth="100.0" text="%DailySummary.TotalPrice" />
+                                          <Label fx:id="totalPrice" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="60.0" />
+                                          <Label text="Ft" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
                                     </HBox>
                                  </children>
                                  <VBox.margin>

@@ -1,12 +1,14 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
 import javax.inject.Inject;
@@ -26,6 +28,21 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     @FXML
     private BorderPane root;
 
+    @FXML
+    private Label openConsumption;
+    @FXML
+    private Label cashTotalPrice;
+    @FXML
+    private Label creditCardTotalPrice;
+    @FXML
+    private Label couponTotalPrice;
+    @FXML
+    private Label totalPrice;
+
+    private RestaurantView restaurantView;
+
+    private String openConsumptionString;
+
     @Inject
     public DailySummaryControllerImpl(RestaurantService restaurantService, RetailService retailService, RestaurantController restaurantController) {
         super(restaurantService, retailService, restaurantController);
@@ -43,7 +60,7 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        updatePriceFields();
     }
 
     @Override
@@ -53,7 +70,29 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void onBackToRestaurantView(Event event) {
-        restaurantController.updateRestaurant();
         viewLoader.loadViewIntoScene(restaurantController);
+    }
+
+    @Override
+    public void setRestaurantView(RestaurantView restaurantView) {
+        this.restaurantView = restaurantView;
+    }
+
+    @Override
+    public void setOpenConsumption(String openConsumption) {
+        openConsumptionString = openConsumption;
+    }
+
+    @Override
+    public void updatePriceFields() {
+        cashTotalPrice.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> receipt.getPaymentMethod().equals(PaymentMethod.CASH))));
+        creditCardTotalPrice.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> receipt.getPaymentMethod().equals(PaymentMethod.CREDIT_CARD))));
+        couponTotalPrice.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> receipt.getPaymentMethod().equals(PaymentMethod.COUPON))));
+        openConsumption.setText(openConsumptionString);
+        int totalPriceInt  = Integer.valueOf(openConsumption.getText()) +
+                + Integer.valueOf(cashTotalPrice.getText())
+                + Integer.valueOf(creditCardTotalPrice.getText())
+                + Integer.valueOf(couponTotalPrice.getText());
+        totalPrice.setText(String.valueOf(totalPriceInt));
     }
 }

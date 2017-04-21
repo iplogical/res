@@ -24,6 +24,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
@@ -113,7 +114,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     Label totalCapacity;
 
     @FXML
-    Label currentConsumption;
+    Label openConsumption;
 
     @FXML
     Label paidConsumption;
@@ -329,7 +330,10 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     public void onDailySummary(Event event) {
         DailySummaryController dailySummaryController = WaiterRegistry.getInstance(DailySummaryController.class);
+        dailySummaryController.setRestaurantView(restaurantView);
+        dailySummaryController.setOpenConsumption(openConsumption.getText());
         viewLoader.loadViewIntoScene(dailySummaryController);
+        dailySummaryController.updatePriceFields();
     }
 
     @FXML
@@ -454,10 +458,10 @@ public class RestaurantControllerImpl implements RestaurantController {
         totalCapacity.setText(String.valueOf(tableControllers.stream()
                         .filter(tableController -> !tableController.getView().isVirtual())
                         .mapToInt(controller -> controller.getView().getTableCapacity()).sum()));
-        currentConsumption.setText(String.valueOf(tableControllers.stream()
+        openConsumption.setText(String.valueOf(tableControllers.stream()
                 .filter(tableController -> tableController.getView().isOpen())
                 .mapToInt(tableController -> tableController.getView().getTotalPrice()).sum()));
-        paidConsumption.setText(String.valueOf(restaurantView.getPaidConsumptionOfTheDay()));
-        totalIncome.setText(String.valueOf(Integer.valueOf(currentConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
+        paidConsumption.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> !receipt.getPaymentMethod().equals(PaymentMethod.COUPON))));
+        totalIncome.setText(String.valueOf(Integer.valueOf(openConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
     }
 }

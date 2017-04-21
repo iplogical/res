@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
@@ -15,7 +16,6 @@ import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
@@ -121,14 +121,14 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         aggregate.setAdaptee(tables.get(0));
     }
 
-    public int getPaidConsumptionOfTheDay() {
+    public int getConsumptionOfTheDay(Predicate<Receipt> filter) {
         LocalDateTime previousClosure = DailyClosureAdapter.getLatestClosureTime();
         List<Receipt> closedReceipts = getReceiptsByClosureTime(previousClosure);
         if (closedReceipts.size() == 0) {
             return 0;
         }
         return closedReceipts.stream()
-                .filter(receipt -> !receipt.getPaymentMethod().equals(PaymentMethod.COUPON))
+                .filter(filter)
                 .map(ReceiptAdapter::new)
                 .mapToInt(ReceiptAdapter::getTotalPrice).sum();
     }
