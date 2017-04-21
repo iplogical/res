@@ -89,7 +89,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         soldProductsTable.setRowFactory(tv -> {
             TableRow<SoldProductViewModel> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if(event.getClickCount() == 2 && (! row.isEmpty())) {
+                if(event.getClickCount() == 1 && (! row.isEmpty())) {
                     rowClickHandler(row.getItem());
                 }
             });

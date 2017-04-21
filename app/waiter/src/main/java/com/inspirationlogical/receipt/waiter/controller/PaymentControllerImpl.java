@@ -289,7 +289,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private void createNewRow(SoldProductViewModel row, ReceiptRecordView newRecord, double amount) {
         SoldProductViewModel newRow = new SoldProductViewModel(row);
         newRow.setProductQuantity(String.valueOf(amount));
-        newRow.setProductTotalPrice(String.valueOf(Integer.valueOf(newRow.getProductUnitPrice()) * amount));
+        newRow.setProductTotalPrice(String.valueOf((int)(Integer.valueOf(newRow.getProductUnitPrice()) * amount)));
         newRow.setProductId(String.valueOf(newRecord.getId()));
         paidProductsModel.add(newRow);
     }
