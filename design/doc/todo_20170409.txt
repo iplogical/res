@@ -30,8 +30,6 @@ Napi fogyasztáshoz időintervallum FUTURE
 
 Foglalás esetén óra ikon jobb középen eladás nézetben pedig az időpontok PRIORITY 2
 
-Termékek rendezése gyakoriság alapján (kell egy gyakoriság érték) PRIORITY 2 [Bálint]
-
 Rövid név nics kitöltve: megegyezik a hosszú névvel PRIORITY 2 
 
 Nyugta fizetési mód módosítás manager terminálból FUTURE
@@ -57,8 +55,8 @@ Téli akciók - bevitel
 
 Formoknál a Rendben legyen a jobb oldalon
 
-Étterem nézetbe lépésnél vonja össze az azonos nem csillagos termékeket.
-
 Asztal szerkeztés és beállitás egy form legyen.
 
 Az Ubuntu ne menjen el aludni.
+
+Asztalok összetolásánál az összetolt asztalok nem törlődnek csak nem láthatók. Széthúzásnál újra láthatók.
