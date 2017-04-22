@@ -265,13 +265,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     @FXML
-    public void onSearchSelected(Event event) {
-        setSelectedElement(false);
-        visibleProducts = commonService.getSellableProducts(selectedCategory);
-    }
-
-    @FXML
     public void onSearchChanged(Event event) {
+        setSelectedElement(false);
+        visibleProducts = commonService.getSellableProducts();
         String text = search.getText();
         try {
             int rapidCode = Integer.parseInt(text);
