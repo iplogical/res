@@ -41,11 +41,33 @@
                            <children>
                               <AnchorPane>
                                  <children>
-                                    <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="150.0">
+                                    <VBox spacing="5.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+                                       <children>
+                                          <Button fx:id="guestPlus" mnemonicParsing="false" onAction="#onGuestPlus" style="-fx-background-color: #ffffff;">
+                                             <graphic>
+                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../images/meeple_green.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="guestMinus" mnemonicParsing="false" onAction="#onGuestMinus" style="-fx-background-color: #ffffff;">
+                                             <graphic>
+                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../images/meeple_red.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                    <VBox AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="150.0">
                                        <children>
                                           <AnchorPane>
                                              <children>
-                                                <Label fx:id="tableName" alignment="CENTER" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label fx:id="tableName" alignment="CENTER" styleClass="header-label" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <font>
                                                       <Font name="System Bold" size="16.0" />
                                                    </font>
@@ -54,7 +76,7 @@
                                           </AnchorPane>
                                           <AnchorPane>
                                              <children>
-                                                <Label fx:id="tableNumber" alignment="CENTER" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label fx:id="tableNumber" alignment="CENTER" styleClass="header-label" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <font>
                                                       <Font size="24.0" />
                                                    </font>
@@ -63,7 +85,7 @@
                                           </AnchorPane>
                                           <AnchorPane>
                                              <children>
-                                                <Label fx:id="totalPrice" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label fx:id="totalPrice" alignment="CENTER" styleClass="header-label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <font>
                                                       <Font size="36.0" />
                                                    </font>

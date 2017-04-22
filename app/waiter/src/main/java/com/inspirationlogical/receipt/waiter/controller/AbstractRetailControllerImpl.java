@@ -19,6 +19,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -37,6 +38,10 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected Label totalPrice;
     @FXML
     protected Label note;
+    @FXML
+    protected Button guestPlus;
+    @FXML
+    protected Button guestMinus;
 
     @FXML
     protected javafx.scene.control.TableView<SoldProductViewModel> soldProductsTable;
@@ -84,6 +89,17 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         viewLoader.loadViewIntoScene(restaurantController);
     }
 
+    @FXML
+    public void onGuestPlus(Event event) {
+        restaurantService.setGuestCount(tableView, tableView.getGuestCount() + 1);
+        updateTableSummary();
+    }
+
+    @FXML
+    public void onGuestMinus(Event event) {
+        restaurantService.setGuestCount(tableView, tableView.getGuestCount() - 1);
+        updateTableSummary();
+    }
 
     protected void initializeSoldProductsTableRowHandler() {
         soldProductsTable.setRowFactory(tv -> {

@@ -43,3 +43,8 @@
 .table-row-cell:odd:filled:selected {
   -fx-background: -fx-control-inner-background-alt ;
 }
+
+.header-label {
+    -fx-font-size: 24;
+    -fx-line-spacing: -5;
+}
