@@ -230,8 +230,10 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                 return;
             }
             decreaseRowInSoldProducts(row, 1);
+            updateTableSummary();
         } else {
             increaseRowInSoldProducts(row, 1);
+            updateTableSummary();
         }
     }
 
