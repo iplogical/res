@@ -14,7 +14,6 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
@@ -211,31 +210,45 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onPay(Event event) {
         if(paymentViewState.isFullPayment()) {
-            if(paidProductsView.size() != 0) {
-                handleSelectivePayment();
+            if(!isPaidProductsEmpty()) {
+                if(isSoldProductsEmpty()) {
+                    handleFullPayment();
+                } else {
+                    handleSelectivePayment();
+                }
             } else {
                 handleFullPayment();
             }
         } else {
-            if(paidProductsView.size() == 0) {
+            if(isPaidProductsEmpty()) {
                 return;
+            } else if(isSoldProductsEmpty()) {
+                handleFullPayment();
+            } else {
+                handleSelectivePayment();
             }
-            handleSelectivePayment();
         }
+    }
+
+    private boolean isSoldProductsEmpty() {
+        return soldProductsView.size() == 0;
+    }
+
+    private boolean isPaidProductsEmpty() {
+        return paidProductsView.size() == 0;
     }
 
     private void handleFullPayment() {
         handleAutomaticGameFee();
         retailService.payTable(tableView, getPaymentParams());
         getSoldProductsAndUpdateTable();
+        discardPaidRecords();
         backToRestaurantView();
     }
 
     private void handleSelectivePayment() {
         retailService.paySelective(tableView, paidProductsView, getPaymentParams());
-        paidProductsView = new ArrayList<>();
-        paidProductsModel = convertReceiptRecordViewsToModel(paidProductsView);
-        updatePayProductsTable();
+        discardPaidRecords();
         getSoldProductsAndUpdateTable();
     }
 
