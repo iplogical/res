@@ -1,5 +1,13 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
+import static java.lang.String.valueOf;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
@@ -10,27 +18,15 @@ import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
+
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculatePopupPosition;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
-import static java.lang.String.valueOf;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class TableControllerImpl implements TableController {
 
@@ -58,11 +54,7 @@ public class TableControllerImpl implements TableController {
     @Inject
     private ViewLoader viewLoader;
 
-    private Popup tableSettingsForm;
-
     private RestaurantController restaurantController;
-
-    private TableSettingsFormController tableSettingsFormController;
 
     private RestaurantService restaurantService;
 
@@ -74,11 +66,9 @@ public class TableControllerImpl implements TableController {
 
     @Inject
     public TableControllerImpl(RestaurantController restaurantController,
-                               TableSettingsFormController tableSettingsFormController,
                                RestaurantService restaurantService,
                                RetailService retailService) {
         this.restaurantController = restaurantController;
-        this.tableSettingsFormController = tableSettingsFormController;
         this.restaurantService = restaurantService;
         this.retailService = retailService;
     }
@@ -150,22 +140,10 @@ public class TableControllerImpl implements TableController {
     }
 
     @Override
-    public void showTableSettingsForm(Control control) {
-        tableSettingsForm = new Popup();
-        tableSettingsForm.getContent().add(viewLoader.loadView(tableSettingsFormController));
-        tableSettingsFormController.loadTableSettings(this);
-
-        Point2D position = calculatePopupPosition(control, (Pane)root.getParent());
-
-        showPopup(tableSettingsForm, tableSettingsFormController, root, position);
-    }
-
-    @Override
     public void setTable(String name, int guestCount, String note) {
         restaurantService.setTableName(tableView, name);
         restaurantService.setGuestCount(tableView, guestCount);
         restaurantService.addTableNote(tableView, note);
-        tableSettingsForm.hide();
         restaurantController.updateRestaurant();
     }
 

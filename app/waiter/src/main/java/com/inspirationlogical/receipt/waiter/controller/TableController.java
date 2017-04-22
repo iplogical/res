@@ -18,8 +18,6 @@ public interface TableController extends Controller {
 
     void updateNode();
 
-    void showTableSettingsForm(Control control);
-
     void setTable(String name, int guestNumber, String note);
 
     void openTable(Control control);

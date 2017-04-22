@@ -57,11 +57,11 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
                         .build();
                 contextMenu.getItems().addAll(openTable);
             }
-            MenuItem setTable = new ContextMenuItemBuilder()
-                    .withLabel(Resources.WAITER.getString("ContextMenu.SetTable"))
-                    .withClickHandlerControl(tableController::showTableSettingsForm)
+            MenuItem editTable = new ContextMenuItemBuilder()
+                    .withLabel(Resources.WAITER.getString("ContextMenu.EditTable"))
+                    .withClickHandlerControl(restaurantController::showEditTableForm)
                     .build();
-            contextMenu.getItems().addAll(setTable);
+            contextMenu.getItems().addAll(editTable);
         }
         return contextMenu;
     }

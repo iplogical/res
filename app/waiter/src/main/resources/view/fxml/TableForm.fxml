@@ -16,51 +16,106 @@
 
 <VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" style="-fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #FFFFFF; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%Form.Confirm" textAlignment="CENTER">
+      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%TableForm.Title" textAlignment="CENTER">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <HBox alignment="CENTER_LEFT" spacing="5.0">
-         <children>
-            <Label prefWidth="100.0" text="%TableForm.Number">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="number" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Number">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </TextField>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER_LEFT" spacing="5.0">
-         <children>
-            <Label prefWidth="100.0" text="%TableForm.Capacity">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="capacity" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Capacity">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </TextField>
-         </children>
-      </HBox>
       <HBox spacing="5.0">
          <children>
-            <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onConfirm" prefWidth="100.0" text="%Form.Confirm">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onCancel" prefWidth="100.0" text="%Form.Cancel">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
+            <VBox spacing="5.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <Label prefWidth="45.0" text="%TableSettingsForm.Name">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tableName" alignment="CENTER" prefWidth="155.0" promptText="%TableSettingsForm.TableName">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox spacing="5.0">
+                     <children>
+                        <Label prefWidth="100.0" text="%TableSettingsForm.Guests">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="guestNumber" alignment="CENTER" prefWidth="100.0" promptText="%TableSettingsForm.Guests">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <TextArea fx:id="note" maxWidth="205.0" prefHeight="80.0" promptText="%TableSettingsForm.Note" wrapText="true">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextArea>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox spacing="5.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <Label prefWidth="100.0" text="%TableForm.Number">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="number" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Number">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <Label prefWidth="100.0" text="%TableForm.Capacity">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="capacity" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Capacity">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox spacing="5.0">
+                     <children>
+                        <Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onCancel" prefWidth="100.0" text="%Form.Cancel">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onConfirm" prefWidth="100.0" text="%Form.Confirm">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="43.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
          </children>
       </HBox>
    </children>

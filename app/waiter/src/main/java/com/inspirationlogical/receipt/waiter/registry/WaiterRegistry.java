@@ -22,7 +22,6 @@ public class WaiterRegistry extends Registry {
         bind(PaymentController.class).to(PaymentControllerImpl.class);
         bind(DailySummaryController.class).to(DailySummaryControllerImpl.class);
         bind(TableFormController.class).to(TableFormControllerImpl.class);
-        bind(TableSettingsFormController.class).to(TableSettingsFormControllerImpl.class);
         bind(AdHocProductFormController.class).to(AdHocProductFormControllerImpl.class);
         bind(RestaurantService.class).to(RestaurantServiceImpl.class);
         bind(RetailService.class).to(RetailServiceImpl.class);
@@ -30,12 +29,10 @@ public class WaiterRegistry extends Registry {
 
     @Provides
     TableController provideTableController(RestaurantController restaurantController,
-                                           TableSettingsFormController tableSettingsFormController,
                                            RestaurantService restaurantService,
                                            RetailService retailService) {
 
-        TableController tableController = new TableControllerImpl(restaurantController, tableSettingsFormController,
-                restaurantService, retailService);
+        TableController tableController = new TableControllerImpl(restaurantController, restaurantService, retailService);
 
         injector.injectMembers(tableController);
 

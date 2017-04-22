@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,8 +12,8 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
@@ -32,13 +32,19 @@ public class TableFormControllerImpl implements TableFormController {
     Label title;
 
     @FXML
+    private TextField tableName;
+
+    @FXML
+    private TextField guestNumber;
+
+    @FXML
+    private TextArea note;
+
+    @FXML
     TextField number;
 
     @FXML
     TextField capacity;
-
-    @FXML
-    Button confirm;
 
     private boolean creation;
 
@@ -57,6 +63,7 @@ public class TableFormControllerImpl implements TableFormController {
     public void initialize(URL location, ResourceBundle resources) {
         resourceBundle = resources;
         addDragAndDrop(root);
+        guestNumber.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         number.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         capacity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
     }
@@ -66,11 +73,13 @@ public class TableFormControllerImpl implements TableFormController {
         try {
             Integer tableNumber = Integer.valueOf(number.getText());
             Integer tableCapacity = Integer.valueOf(capacity.getText());
+            Integer tableGuestNumber = Integer.valueOf(guestNumber.getText());
             if (creation) {
                 restaurantController.createTable(tableNumber, tableCapacity);
             } else {
                 restaurantController.editTable(tableController, tableNumber, tableCapacity);
             }
+            tableController.setTable(tableName.getText(), tableGuestNumber, note.getText());
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
         }
@@ -90,11 +99,17 @@ public class TableFormControllerImpl implements TableFormController {
             TableView tableView = tableController.getView();
             number.setText(String.valueOf(tableView.getTableNumber()));
             capacity.setText(String.valueOf(tableView.getTableCapacity()));
+            tableName.setText(tableView.getName());
+            guestNumber.setText(String.valueOf(tableView.getGuestCount()));
+            note.setText(tableView.getNote());
         } else {
             creation = true;
             title.setText(resourceBundle.getString("TableForm.Create"));
             number.clear();
             capacity.clear();
+            tableName.clear();
+            guestNumber.clear();
+            note.clear();
         }
     }
 
