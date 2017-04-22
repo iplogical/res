@@ -44,6 +44,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -113,6 +114,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private List<ProductView> visibleProducts;
 
+    private List<ProductView> searchedProducts;
+
     private List<SaleElementController> elementControllers;
 
 
@@ -138,6 +141,25 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         updateNode();
         updateTableSummary();
         initializeSoldProductsTableRowHandler();
+        initializeQuickSearchAndSellHandler();
+    }
+
+    private void initializeQuickSearchAndSellHandler() {
+        root.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
+            switch (keyEvent.getCode()) {
+                case ENTER:
+                    if (searchedProducts.size() == 1) {
+                        sellProduct(searchedProducts.get(0));
+                    }
+                    break;
+                case DELETE:
+                    // todo: implement delete
+                default:
+                    search.appendText(keyEvent.getText());
+                    onSearchChanged(keyEvent);
+                    break;
+            }
+        });
     }
 
     @Override
@@ -246,21 +268,20 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onSearchChanged(Event event) {
         String text = search.getText();
-        List<ProductView> matches;
         try {
             int rapidCode = Integer.parseInt(text);
-            matches = visibleProducts.stream()
+            searchedProducts = visibleProducts.stream()
                     .filter(productView -> productView.getRapidCode() == rapidCode)
                     .collect(Collectors.toList());
         } catch (NumberFormatException e) {
-            matches = new SearchBuilder<>(visibleProducts)
+            searchedProducts = new SearchBuilder<>(visibleProducts)
                     .withDelimiter(SPACE)
                     .withPattern(text)
                     .withFormat(MATCH_HEAD_IGNORE_CASE)
                     .search();
         }
         productsGrid.getChildren().clear();
-        drawListOfElements(matches, productsGrid);
+        drawListOfElements(searchedProducts, productsGrid);
     }
 
     private void initializeCategories() {
