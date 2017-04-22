@@ -212,6 +212,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         soldProductsView = getSoldProducts(restaurantService, tableView);
         updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
         updateCategories(selectedCategory);
+        updateTableSummary();
     }
 
     @Override

@@ -40,25 +40,18 @@ public class TableControllerImpl implements TableController {
 
     @FXML
     AnchorPane tablesTab;
-
     @FXML
     Label root;
-
     @FXML
     VBox vBox;
-
     @FXML
     Label name;
-
     @FXML
     Label number;
-
     @FXML
     Label guests;
-
     @FXML
     Label capacity;
-
     @FXML
     ImageView note;
 
