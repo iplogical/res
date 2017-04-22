@@ -257,7 +257,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             //TODO: Make the 2000 configurable from the manager terminal.
             int guestCount = tableView.getGuestCount();
             int price = (int)receiptView.getTotalPrice();
-            int requiredGameFee = (guestCount * 2000 - price) / 2000;
+            int requiredGameFee = ((guestCount * 2000 - price) / 2000) + 1;
             if(requiredGameFee > 0) {
                 retailService.sellGameFee(tableView, requiredGameFee);
             }
