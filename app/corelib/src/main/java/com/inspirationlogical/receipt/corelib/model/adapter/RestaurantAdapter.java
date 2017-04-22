@@ -22,7 +22,6 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
-import com.inspirationlogical.receipt.corelib.utility.printing.PrintService;
 
 import static java.time.LocalDateTime.now;
 
@@ -138,11 +137,8 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     }
 
     private List<Receipt> getReceiptsByClosureTime(LocalDateTime finalPreviousClosure) {
-        return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_CLOSURE_TIME,
-                query -> {
-                    query.setParameter("closureTime", finalPreviousClosure);
-                    return query;
-                });
+        return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_CLOSURE_TIME_AND_TYPE,
+                query -> query.setParameter("closureTime", finalPreviousClosure).setParameter("type", ReceiptType.SALE));
     }
 
     public void printDailyConsumption() {
