@@ -152,6 +152,10 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                         sellProduct(searchedProducts.get(0));
                     }
                     break;
+                case DELETE:
+                    search.clear();
+                    updateCategories(selectedCategory);
+                    break;
                 case BACK_SPACE:
                     if (!search.getText().isEmpty()) {
                         search.setText(search.getText(0, search.getText().length() - 1));
