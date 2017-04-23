@@ -92,7 +92,7 @@ public class TableAdapterTest {
     }
 
     @Test
-    public void testSetguestCount() {
+    public void testSetGuestCount() {
         tableNormal.setGuestCount(5);
         assertEquals(5, TableAdapter.getTableByNumber(
                 tableNormal.getAdaptee().getNumber()).getAdaptee().getGuestCount());

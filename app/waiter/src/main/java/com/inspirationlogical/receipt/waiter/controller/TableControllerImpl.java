@@ -24,7 +24,6 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 public class TableControllerImpl implements TableController {
@@ -32,21 +31,19 @@ public class TableControllerImpl implements TableController {
     public static final String TABLE_VIEW_PATH = "/view/fxml/Table.fxml";
 
     @FXML
-    AnchorPane tablesTab;
-    @FXML
     Label root;
     @FXML
     VBox vBox;
     @FXML
     Label name;
     @FXML
-    Label number;
-    @FXML
     Label guests;
     @FXML
-    Label capacity;
-    @FXML
     ImageView note;
+    @FXML
+    Label number;
+    @FXML
+    Label capacity;
 
     @Inject
     private ViewLoader viewLoader;
@@ -116,14 +113,6 @@ public class TableControllerImpl implements TableController {
         }
         CSSUtilities.setBackgroundColor(tableViewState.isOpen(), vBox);
         showNode(root, tableView.getPosition());
-    }
-
-    @Override
-    public void setTable(String name, int guestCount, String note) {
-        restaurantService.setTableName(tableView, name);
-        restaurantService.setGuestCount(tableView, guestCount);
-        restaurantService.addTableNote(tableView, note);
-        restaurantController.updateRestaurant();
     }
 
     @Override

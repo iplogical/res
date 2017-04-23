@@ -11,6 +11,7 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -46,6 +47,12 @@ public class TableFormControllerImpl implements TableFormController {
     @FXML
     TextField capacity;
 
+    @FXML
+    TextField width;
+
+    @FXML
+    TextField height;
+
     private boolean creation;
 
     private TableController tableController;
@@ -66,6 +73,8 @@ public class TableFormControllerImpl implements TableFormController {
         guestCount.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         number.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         capacity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        width.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        height.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
     }
 
     @FXML
@@ -73,12 +82,13 @@ public class TableFormControllerImpl implements TableFormController {
         try {
             Integer tableNumber = Integer.valueOf(number.getText());
             Integer tableCapacity = Integer.valueOf(capacity.getText());
-            Integer tableguestCount = guestCount.getText().equals("") ? 0 : Integer.valueOf(guestCount.getText());
+            Integer tableGuestCount = guestCount.getText().equals("") ? 0 : Integer.valueOf(guestCount.getText());
+            Dimension2D dimension = new Dimension2D(Integer.valueOf(width.getText()), Integer.valueOf(height.getText()));
             if (creation) {
-                restaurantController.createTable(tableNumber, tableCapacity);
+                restaurantController.createTable(tableNumber, tableCapacity, dimension);
             } else {
-                restaurantController.editTable(tableController, tableNumber, tableCapacity);
-                tableController.setTable(tableName.getText(), tableguestCount, note.getText());
+                restaurantController.editTable(tableController, tableName.getText(), tableGuestCount, note.getText(),
+                        tableNumber, tableCapacity, dimension);
             }
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
@@ -102,6 +112,8 @@ public class TableFormControllerImpl implements TableFormController {
             tableName.setText(tableView.getName());
             guestCount.setText(String.valueOf(tableView.getGuestCount()));
             note.setText(tableView.getNote());
+            width.setText(String.valueOf((int) tableView.getDimension().getWidth()));
+            height.setText(String.valueOf((int) tableView.getDimension().getHeight()));
         } else {
             creation = true;
             title.setText(resourceBundle.getString("TableForm.Create"));
@@ -110,6 +122,8 @@ public class TableFormControllerImpl implements TableFormController {
             tableName.clear();
             guestCount.clear();
             note.clear();
+            width.clear();
+            height.clear();
         }
     }
 

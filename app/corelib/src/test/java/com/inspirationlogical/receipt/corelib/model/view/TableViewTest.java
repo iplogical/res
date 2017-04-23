@@ -53,7 +53,7 @@ public class TableViewTest {
     }
 
     @Test
-    public void testGetguestCount() {
+    public void testGetGuestCount() {
         assertEquals(4, tableView.getGuestCount());
     }
 

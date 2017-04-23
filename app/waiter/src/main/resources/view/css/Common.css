@@ -12,24 +12,24 @@
 }
 
 .button {
-   -fx-border-width: 2px;
-   -fx-background-radius: 10;
+    -fx-border-color: #00000000;
+    -fx-border-style: solid;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
 }
 
 .toggle-button {
+    -fx-border-color: #00000000;
+    -fx-border-style: solid;
     -fx-border-width: 2px;
+    -fx-border-radius: 10;
     -fx-background-radius: 10;
 }
 
 .toggle-button:selected {
-    -fx-background-color: #98FB98;
-    -fx-border-color: #00bfff;
-    -fx-border-radius: 10;
-}
-
-.radio-button:selected {
-    -fx-border-color: #00bfff;
-    -fx-border-width: 2px;
+    -fx-background-color: #00bfff3f;
+    -fx-border-color: #00bfffff;
     -fx-border-radius: 10;
 }
 

@@ -158,7 +158,7 @@ public class RestaurantServiceTest {
         //given
         when(tableView.getAdapter()).thenReturn(tableAdapter);
         //when
-        service.moveTable(tableView, position);
+        service.setTablePosition(tableView, position);
         //then
         verify(tableAdapter).setPosition(eq(position));
     }

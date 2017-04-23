@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
+import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 
 public interface RestaurantService {
@@ -37,7 +38,9 @@ public interface RestaurantService {
 
     void hideTable(TableView tableView);
 
-    void moveTable(TableView tableView, Point2D position);
+    void setTablePosition(TableView tableView, Point2D position);
+
+    void setTableDimension(TableView tableView,Dimension2D dimension);
 
     void rotateTable(TableView tableView);
 

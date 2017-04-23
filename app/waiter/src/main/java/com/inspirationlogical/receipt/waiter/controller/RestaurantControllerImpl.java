@@ -43,6 +43,7 @@ import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 import javafx.beans.binding.Bindings;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -179,7 +180,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
-    public void createTable(int tableNumber, int tableCapacity) {
+    public void createTable(Integer number, Integer capacity, Dimension2D dimmension) {
         TableType tableType = restaurantViewState.isVirtual() ? VIRTUAL : NORMAL;
         Point2D position = calculateTablePosition(tableFormController.getRootNode(), getActiveTab());
         TableView tableView;
@@ -188,11 +189,13 @@ public class RestaurantControllerImpl implements RestaurantController {
             tableView = restaurantService.addTable(restaurantView, restaurantService
                     .tableBuilder()
                     .type(tableType)
-                    .number(tableNumber)
-                    .capacity(tableCapacity)
+                    .number(number)
+                    .capacity(capacity)
                     .visible(true)
                     .coordinateX((int) position.getX())
-                    .coordinateY((int) position.getY()));
+                    .coordinateY((int) position.getY())
+                    .dimensionX((int) dimmension.getWidth())
+                    .dimensionY((int) dimmension.getHeight()));
 
             tableForm.hide();
 
@@ -200,7 +203,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(getActiveTab(),
-                    Resources.WAITER.getString("TableAlreadyUsed") + tableNumber);
+                    Resources.WAITER.getString("TableAlreadyUsed") + number);
             initRestaurant();
         } catch (Exception e) {
             initRestaurant();
@@ -208,15 +211,20 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
-    public void editTable(TableController tableController, Integer tableNumber, Integer tableCapacity) {
+    public void editTable(TableController tableController, String name, Integer guestCount, String note,
+                          Integer number, Integer capacity, Dimension2D dimension) {
         TableView tableView = tableController.getView();
 
         try {
-            if (tableView.getNumber() != tableNumber) {
-                restaurantService.setTableNumber(tableView, tableNumber, restaurantView);
+            if (tableView.getNumber() != number) {
+                restaurantService.setTableNumber(tableView, number, restaurantView);
             }
             restaurantService.setTableType(tableView, restaurantViewState.isVirtual() ? VIRTUAL : NORMAL);
-            restaurantService.setTableCapacity(tableView, tableCapacity);
+            restaurantService.setTableCapacity(tableView, capacity);
+            restaurantService.setTableName(tableView, name);
+            restaurantService.setGuestCount(tableView, guestCount);
+            restaurantService.addTableNote(tableView, note);
+            restaurantService.setTableDimension(tableView, dimension);
 
             tableForm.hide();
 
@@ -226,7 +234,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(getActiveTab(),
-                    Resources.WAITER.getString("TableAlreadyUsed") + tableNumber);
+                    Resources.WAITER.getString("TableAlreadyUsed") + number);
             initRestaurant();
         } catch (Exception e) {
             initRestaurant();
@@ -264,7 +272,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         Node view = tableController.getRoot();
         Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
 
-        restaurantService.moveTable(tableController.getView(), position);
+        restaurantService.setTablePosition(tableController.getView(), position);
 
         tableController.updateNode();
     }

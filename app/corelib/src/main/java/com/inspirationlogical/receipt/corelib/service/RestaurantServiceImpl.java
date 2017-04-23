@@ -11,6 +11,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 
+import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 
 
@@ -91,13 +92,18 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
-    public void moveTable(TableView tableView, Point2D position) {
+    public void setTablePosition(TableView tableView, Point2D position) {
         getTableAdapter(tableView).setPosition(position);
     }
 
     @Override
     public void rotateTable(TableView tableView) {
         getTableAdapter(tableView).rotateTable();
+    }
+
+    @Override
+    public void setTableDimension(TableView tableView,Dimension2D dimension) {
+        getTableAdapter(tableView).setDimension(dimension);
     }
 
     @Override

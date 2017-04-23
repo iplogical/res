@@ -124,7 +124,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         });
     }
 
-    public void setSize(Dimension2D dimension) {
+    public void setDimension(Dimension2D dimension) {
         GuardedTransaction.run(() -> {
             adaptee.setDimensionX((int) dimension.getWidth());
             adaptee.setDimensionY((int) dimension.getHeight());

@@ -27,12 +27,12 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <Label prefWidth="45.0" text="%TableSettingsForm.Name">
+                        <Label prefWidth="45.0" text="%TableForm.Name">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="tableName" alignment="CENTER" prefWidth="155.0" promptText="%TableSettingsForm.TableName">
+                        <TextField fx:id="tableName" alignment="CENTER" prefWidth="155.0" promptText="%TableForm.TableName">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -41,7 +41,7 @@
                   </HBox>
                   <HBox spacing="5.0">
                      <children>
-                        <Label prefWidth="100.0" text="%TableSettingsForm.Guests">
+                        <Label prefWidth="100.0" text="%TableForm.Guests">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -49,7 +49,7 @@
                               <Insets top="5.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="guestCount" alignment="CENTER" prefWidth="100.0" promptText="%TableSettingsForm.Guests">
+                        <TextField fx:id="guestCount" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Guests">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -58,7 +58,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <TextArea fx:id="note" maxWidth="205.0" prefHeight="80.0" promptText="%TableSettingsForm.Note" wrapText="true">
+                        <TextArea fx:id="note" maxWidth="205.0" prefHeight="121.0" promptText="%TableForm.Note" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -97,6 +97,34 @@
                         </TextField>
                      </children>
                   </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <Label prefWidth="100.0" text="%TableForm.Width">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="width" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Centimeters">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <Label prefWidth="100.0" text="%TableForm.Height">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="height" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Centimeters">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
                   <HBox spacing="5.0">
                      <children>
                         <Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onCancel" prefWidth="100.0" text="%Form.Cancel">
@@ -111,7 +139,7 @@
                         </Button>
                      </children>
                      <VBox.margin>
-                        <Insets top="43.0" />
+                        <Insets />
                      </VBox.margin>
                   </HBox>
                </children>
