@@ -373,27 +373,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
             }
 
             @Override
-            public List<ProductCategoryView> getChildCategories() {
-                return null;
-            }
-
-            @Override
             public ProductView getProduct() {
-                return null;
-            }
-
-            @Override
-            public List<ProductView> getAllProducts() {
-                return null;
-            }
-
-            @Override
-            public List<ProductView> getAllActiveProducts() {
-                return null;
-            }
-
-            @Override
-            public List<ProductView> getAllNormalProducts() {
                 return null;
             }
 

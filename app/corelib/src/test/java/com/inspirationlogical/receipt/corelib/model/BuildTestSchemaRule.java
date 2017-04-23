@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model;
 
-import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static java.time.LocalDateTime.now;
 
 import java.time.LocalDate;
@@ -1170,10 +1169,9 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(TableType.NORMAL)
                 .visible(true)
                 .capacity(6)
-                .guestNumber(4)
+                .guestCount(4)
                 .coordinateX(100)
                 .coordinateY(50)
-                .orientation(HORIZONTAL)
                 .build();
     }
 
@@ -1184,7 +1182,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(TableType.NORMAL)
                 .visible(true)
                 .capacity(6)
-                .guestNumber(6)
+                .guestCount(6)
                 .coordinateX(250)
                 .coordinateY(50)
                 .build();
@@ -1197,7 +1195,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .type(TableType.VIRTUAL)
                 .visible(true)
                 .capacity(1)
-                .guestNumber(1)
+                .guestCount(1)
                 .coordinateX(100)
                 .coordinateY(100)
                 .build();

@@ -33,7 +33,7 @@ public class RestaurantAdapterTest {
                 .type(TableType.NORMAL)
                 .coordinateX(20)
                 .coordinateY(20)
-                .guestNumber(5)
+                .guestCount(5)
                 .capacity(5)
                 .note("Big Chocklate Cake")
                 .visible(true));

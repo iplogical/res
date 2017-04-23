@@ -52,17 +52,17 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     @Override
     public void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant) {
         getRestaurantAdapter(restaurant).checkTableNumberCollision(tableNumber);
-        getTableAdapter(tableView).setTableNumber(tableNumber);
+        getTableAdapter(tableView).setNumber(tableNumber);
     }
 
     @Override
     public void setTableType(TableView tableView, TableType tableType) {
-        getTableAdapter(tableView).setTableType(tableType);
+        getTableAdapter(tableView).setType(tableType);
     }
 
     @Override
     public void setTableName(TableView tableView, String name) {
-        getTableAdapter(tableView).setTableName(name);
+        getTableAdapter(tableView).setName(name);
     }
 
     @Override
@@ -71,8 +71,8 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
-    public void setGuestCount(TableView tableView, int guestNumber) {
-        getTableAdapter(tableView).setGuestNumber(guestNumber);
+    public void setGuestCount(TableView tableView, int guestCount) {
+        getTableAdapter(tableView).setGuestCount(guestCount);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public void moveTable(TableView tableView, Point2D position) {
-        getTableAdapter(tableView).moveTable(position);
+        getTableAdapter(tableView).setPosition(position);
     }
 
     @Override

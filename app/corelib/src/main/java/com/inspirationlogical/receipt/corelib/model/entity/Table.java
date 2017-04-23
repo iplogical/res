@@ -4,10 +4,12 @@ import java.util.Collection;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -18,7 +20,6 @@ import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidReceipts;
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidTables;
-import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
 import lombok.Builder;
@@ -72,15 +73,24 @@ public @Data class Table extends AbstractEntity {
 
     private int coordinateY;
 
-    private Orientation orientation;
+    private int dimensionX;
 
-    private int guestNumber;
+    private int dimensionY;
+
+    private int guestCount;
 
     private int capacity;
 
     private String note;
 
     private boolean visible;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @JoinColumn(name = "AGGREGATE_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    private Table aggregate;
+
+    @OneToMany(mappedBy = "aggregate", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    private Collection<Table> consumed;
 
     @Tolerate
     Table(){}

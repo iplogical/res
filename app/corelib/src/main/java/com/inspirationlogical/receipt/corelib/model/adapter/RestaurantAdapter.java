@@ -111,10 +111,10 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         });
 
         Integer consumedCapacity = consumed.stream().mapToInt(adapter -> adapter.getAdaptee().getCapacity()).sum();
-        Integer consumedGuestCount = consumed.stream().mapToInt(adapter -> adapter.getAdaptee().getGuestNumber()).sum();
+        Integer consumedGuestCount = consumed.stream().mapToInt(adapter -> adapter.getAdaptee().getGuestCount()).sum();
 
         aggregate.setCapacity(aggregate.getAdaptee().getCapacity() + consumedCapacity);
-        aggregate.setGuestNumber(aggregate.getAdaptee().getGuestNumber() + consumedGuestCount);
+        aggregate.setGuestCount(aggregate.getAdaptee().getGuestCount() + consumedGuestCount);
 
         consumed.forEach(TableAdapter::deleteTable);
 

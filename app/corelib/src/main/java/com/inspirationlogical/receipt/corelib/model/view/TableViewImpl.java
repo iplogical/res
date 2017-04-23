@@ -1,9 +1,9 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
-import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
+import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 
 /**
@@ -36,17 +36,17 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     }
 
     @Override
-    public int getTableNumber() {
+    public int getNumber() {
         return adapter.getAdaptee().getNumber();
     }
 
     @Override
     public int getGuestCount() {
-        return adapter.getAdaptee().getGuestNumber();
+        return adapter.getAdaptee().getGuestCount();
     }
 
     @Override
-    public int getTableCapacity() {
+    public int getCapacity() {
         return adapter.getAdaptee().getCapacity();
     }
 
@@ -74,7 +74,7 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     }
 
     @Override
-    public Orientation getOrientation() {
-        return adapter.getAdaptee().getOrientation();
+    public Dimension2D getDimension() {
+        return new Dimension2D(adapter.getAdaptee().getDimensionX(), adapter.getAdaptee().getDimensionY());
     }
 }

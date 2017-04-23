@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.VERTICAL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -12,21 +11,20 @@ import java.util.Arrays;
 import java.util.List;
 import javax.persistence.RollbackException;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.params.PaymentParams;
-import com.inspirationlogical.receipt.corelib.params.StockParams;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 import javafx.geometry.Point2D;
 
@@ -60,28 +58,28 @@ public class TableAdapterTest {
 
     @Test
     public void testSetTableName() {
-        tableNormal.setTableName("New Table Name");
+        tableNormal.setName("New Table Name");
         assertEquals("New Table Name", TableAdapter.getTableByNumber(
                 tableNormal.getAdaptee().getNumber()).getAdaptee().getName());
     }
 
     @Test
     public void testSetTableNumber() {
-        tableNormal.setTableNumber(8);
+        tableNormal.setNumber(8);
         assertEquals(8, TableAdapter.getTableByNumber(
                 tableNormal.getAdaptee().getNumber()).getAdaptee().getNumber());
     }
 
     @Test(expected = RollbackException.class)
     public void testSetTableNumberAlreadyUsed() {
-        tableNormal.setTableNumber(3);
+        tableNormal.setNumber(3);
         assertEquals(3, TableAdapter.getTableByNumber(
                 tableNormal.getAdaptee().getNumber()).getAdaptee().getNumber());
     }
 
     @Test
     public void testSetTableType() {
-        tableNormal.setTableType(TableType.VIRTUAL);
+        tableNormal.setType(TableType.VIRTUAL);
         assertEquals(TableType.VIRTUAL, TableAdapter.getTableByNumber(
                 tableNormal.getAdaptee().getNumber()).getAdaptee().getType());
     }
@@ -94,10 +92,10 @@ public class TableAdapterTest {
     }
 
     @Test
-    public void testSetGuestNumber() {
-        tableNormal.setGuestNumber(5);
+    public void testSetguestCount() {
+        tableNormal.setGuestCount(5);
         assertEquals(5, TableAdapter.getTableByNumber(
-                tableNormal.getAdaptee().getNumber()).getAdaptee().getGuestNumber());
+                tableNormal.getAdaptee().getNumber()).getAdaptee().getGuestCount());
     }
 
     @Test
@@ -124,7 +122,7 @@ public class TableAdapterTest {
 
     @Test
     public void testMoveTable() {
-        tableNormal.moveTable(new Point2D(50, 70));
+        tableNormal.setPosition(new Point2D(50, 70));
         assertEquals(50, TableAdapter.getTableByNumber(
                 tableNormal.getAdaptee().getNumber()).getAdaptee().getCoordinateX());
         assertEquals(70, TableAdapter.getTableByNumber(
@@ -134,8 +132,10 @@ public class TableAdapterTest {
     @Test
     public void testRotateTable() {
         tableNormal.rotateTable();
-        assertEquals(TableAdapter.getTableByNumber(
-                tableNormal.getAdaptee().getNumber()).getAdaptee().getOrientation(), VERTICAL);
+        assertEquals(TableAdapter.getTableByNumber(tableNormal.getAdaptee().getNumber()).getAdaptee().getDimensionX(),
+                tableNormal.getAdaptee().getDimensionX());
+        assertEquals(TableAdapter.getTableByNumber(tableNormal.getAdaptee().getNumber()).getAdaptee().getDimensionY(),
+                tableNormal.getAdaptee().getDimensionY());
     }
 
     @Test(expected = IllegalTableStateException.class)

@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -45,16 +44,16 @@ public class TableViewTest {
 
     @Test
     public void testGetTableNumber() {
-        assertEquals(1, tableView.getTableNumber());
+        assertEquals(1, tableView.getNumber());
     }
 
     @Test
     public void testGetCapacity() {
-        assertEquals(6, tableView.getTableCapacity());
+        assertEquals(6, tableView.getCapacity());
     }
 
     @Test
-    public void testGetGuestNumber() {
+    public void testGetguestCount() {
         assertEquals(4, tableView.getGuestCount());
     }
 
@@ -66,10 +65,5 @@ public class TableViewTest {
     @Test
     public void testGetCoordinates() {
         assertEquals(new Point2D(100,50), tableView.getPosition());
-    }
-
-    @Test
-    public void testGetOrientation() {
-        assertEquals(HORIZONTAL, tableView.getOrientation());
     }
 }

@@ -35,7 +35,7 @@ public class TableFormControllerImpl implements TableFormController {
     private TextField tableName;
 
     @FXML
-    private TextField guestNumber;
+    private TextField guestCount;
 
     @FXML
     private TextArea note;
@@ -63,7 +63,7 @@ public class TableFormControllerImpl implements TableFormController {
     public void initialize(URL location, ResourceBundle resources) {
         resourceBundle = resources;
         addDragAndDrop(root);
-        guestNumber.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        guestCount.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         number.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         capacity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
     }
@@ -73,12 +73,12 @@ public class TableFormControllerImpl implements TableFormController {
         try {
             Integer tableNumber = Integer.valueOf(number.getText());
             Integer tableCapacity = Integer.valueOf(capacity.getText());
-            Integer tableGuestNumber = guestNumber.getText().equals("") ? 0 : Integer.valueOf(guestNumber.getText());
+            Integer tableguestCount = guestCount.getText().equals("") ? 0 : Integer.valueOf(guestCount.getText());
             if (creation) {
                 restaurantController.createTable(tableNumber, tableCapacity);
             } else {
                 restaurantController.editTable(tableController, tableNumber, tableCapacity);
-                tableController.setTable(tableName.getText(), tableGuestNumber, note.getText());
+                tableController.setTable(tableName.getText(), tableguestCount, note.getText());
             }
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
@@ -97,10 +97,10 @@ public class TableFormControllerImpl implements TableFormController {
             creation = false;
             title.setText(resourceBundle.getString("TableForm.Edit"));
             TableView tableView = tableController.getView();
-            number.setText(String.valueOf(tableView.getTableNumber()));
-            capacity.setText(String.valueOf(tableView.getTableCapacity()));
+            number.setText(String.valueOf(tableView.getNumber()));
+            capacity.setText(String.valueOf(tableView.getCapacity()));
             tableName.setText(tableView.getName());
-            guestNumber.setText(String.valueOf(tableView.getGuestCount()));
+            guestCount.setText(String.valueOf(tableView.getGuestCount()));
             note.setText(tableView.getNote());
         } else {
             creation = true;
@@ -108,7 +108,7 @@ public class TableFormControllerImpl implements TableFormController {
             number.clear();
             capacity.clear();
             tableName.clear();
-            guestNumber.clear();
+            guestCount.clear();
             note.clear();
         }
     }

@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
-import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
@@ -31,8 +30,6 @@ import javafx.scene.layout.VBox;
 public class TableControllerImpl implements TableController {
 
     public static final String TABLE_VIEW_PATH = "/view/fxml/Table.fxml";
-    private static double TABLE_SIZE_UNIT = 20.0;
-    private static double TABLE_SIZE_MIN = 4 * TABLE_SIZE_UNIT;
 
     @FXML
     AnchorPane tablesTab;
@@ -86,26 +83,8 @@ public class TableControllerImpl implements TableController {
     }
 
     private void initVisual() {
-        vBox.setPrefWidth(TABLE_SIZE_UNIT * roundCapacity());
-        vBox.setPrefHeight(TABLE_SIZE_MIN);
-    }
-
-    private int roundCapacity() {
-        int capacity = tableView.getTableCapacity();
-        return capacity <= 4 ? 4 : ((capacity + 1) / 2) * 2;
-    }
-
-    private void rotateRoot() {
-        initVisual();
-        int width = (int) vBox.getPrefWidth();
-        int height = (int) vBox.getPrefHeight();
-        if (tableView.getOrientation() != Orientation.HORIZONTAL) {
-            vBox.setPrefWidth(height);
-            vBox.setPrefHeight(width);
-        } else {
-            vBox.setPrefWidth(width);
-            vBox.setPrefHeight(height);
-        }
+        vBox.setPrefWidth(tableView.getDimension().getWidth());
+        vBox.setPrefHeight(tableView.getDimension().getHeight());
     }
 
     @Override
@@ -125,17 +104,17 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void updateNode() {
+        initVisual();
         name.setText(tableView.getName());
-        number.setText(valueOf(tableView.getTableNumber()));
+        number.setText(valueOf(tableView.getNumber()));
         guests.setText(valueOf(tableView.getGuestCount()));
-        capacity.setText(valueOf(tableView.getTableCapacity()));
+        capacity.setText(valueOf(tableView.getCapacity()));
         if(isEmpty(tableView.getNote())) {
             note.setVisible(false);
         } else {
             note.setVisible(true);
         }
         CSSUtilities.setBackgroundColor(tableViewState.isOpen(), vBox);
-        rotateRoot();
         showNode(root, tableView.getPosition());
     }
 

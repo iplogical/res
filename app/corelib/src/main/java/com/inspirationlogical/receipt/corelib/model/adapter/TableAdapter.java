@@ -2,8 +2,6 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER;
 import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
-import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
-import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.VERTICAL;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
@@ -13,7 +11,6 @@ import java.util.List;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
-import com.inspirationlogical.receipt.corelib.model.enums.Orientation;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
@@ -25,10 +22,9 @@ import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 
+import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import lombok.NonNull;
-
-import java.util.stream.Collectors;
 public class TableAdapter extends AbstractAdapter<Table> {
 
     public TableAdapter(@NonNull Table adaptee) {
@@ -89,15 +85,15 @@ public class TableAdapter extends AbstractAdapter<Table> {
         return new ReceiptAdapter(adapters.get(0));
     }
 
-    public void setTableName(String name) {
+    public void setName(String name) {
         GuardedTransaction.run(() -> adaptee.setName(name));
     }
 
-    public void setTableNumber(int tableNumber) {
+    public void setNumber(int tableNumber) {
         GuardedTransaction.run(() -> adaptee.setNumber(tableNumber));
     }
 
-    public void setTableType(TableType tableType) {
+    public void setType(TableType tableType) {
         GuardedTransaction.run(() -> adaptee.setType(tableType));
     }
 
@@ -105,8 +101,8 @@ public class TableAdapter extends AbstractAdapter<Table> {
         GuardedTransaction.run(() -> adaptee.setCapacity(capacity));
     }
 
-    public void setGuestNumber(int guestNumber) {
-        GuardedTransaction.run(() -> adaptee.setGuestNumber(guestNumber));
+    public void setGuestCount(int guestCount) {
+        GuardedTransaction.run(() -> adaptee.setGuestCount(guestCount));
     }
 
     public void setNote(String note) {
@@ -121,21 +117,26 @@ public class TableAdapter extends AbstractAdapter<Table> {
         GuardedTransaction.run(() -> adaptee.setVisible(false));
     }
 
-    public void moveTable(Point2D position) {
+    public void setPosition(Point2D position) {
         GuardedTransaction.run(() -> {
             adaptee.setCoordinateX((int) position.getX());
             adaptee.setCoordinateY((int) position.getY());
         });
     }
 
+    public void setSize(Dimension2D dimension) {
+        GuardedTransaction.run(() -> {
+            adaptee.setDimensionX((int) dimension.getWidth());
+            adaptee.setDimensionY((int) dimension.getHeight());
+        });
+    }
+
     public void rotateTable() {
         GuardedTransaction.run(() -> {
-            Orientation orientation = adaptee.getOrientation();
-            if (orientation == HORIZONTAL) {
-                adaptee.setOrientation(VERTICAL);
-            } else {
-                adaptee.setOrientation(HORIZONTAL);
-            }
+            int dimensionX = adaptee.getDimensionX();
+            int dimensionY = adaptee.getDimensionY();
+            adaptee.setDimensionX(dimensionY);
+            adaptee.setDimensionY(dimensionX);
         });
     }
 
@@ -156,7 +157,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
             }
             getActiveReceipt().close(paymentParams);
             adaptee.setName("");
-            adaptee.setGuestNumber(0);
+            adaptee.setGuestCount(0);
             adaptee.setNote("");
         });
     }

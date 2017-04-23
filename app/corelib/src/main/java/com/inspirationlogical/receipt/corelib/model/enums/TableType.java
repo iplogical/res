@@ -9,6 +9,7 @@ import java.util.Map;
 public enum TableType {
 
     NORMAL,
+    AGGREGATE,
     VIRTUAL,
     PURCHASE,
     INVENTORY,

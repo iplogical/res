@@ -89,7 +89,7 @@ public class RestaurantServiceTest {
         //when
         service.setTableName(tableView, "TestName");
         //then
-        verify(tableAdapter).setTableName(eq("TestName"));
+        verify(tableAdapter).setName(eq("TestName"));
     }
 
     @Test
@@ -100,7 +100,7 @@ public class RestaurantServiceTest {
         //when
         service.setTableNumber(tableView, 8, restaurantView);
         //then
-        verify(tableAdapter).setTableNumber(eq(8));
+        verify(tableAdapter).setNumber(eq(8));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class RestaurantServiceTest {
         //when
         service.setTableType(tableView, TableType.VIRTUAL);
         //then
-        verify(tableAdapter).setTableType(eq(TableType.VIRTUAL));
+        verify(tableAdapter).setType(eq(TableType.VIRTUAL));
     }
 
     @Test
@@ -160,7 +160,7 @@ public class RestaurantServiceTest {
         //when
         service.moveTable(tableView, position);
         //then
-        verify(tableAdapter).moveTable(eq(position));
+        verify(tableAdapter).setPosition(eq(position));
     }
 
     @Test

@@ -117,12 +117,12 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected void updateTableSummary() {
         tableName.setText(tableView.getName());
-        tableNumber.setText(String.valueOf(tableView.getTableNumber()) + getGuestPerCapacity());
+        tableNumber.setText(String.valueOf(tableView.getNumber()) + getGuestPerCapacity());
         note.setText(tableView.getNote());
     }
 
     protected String getGuestPerCapacity() {
-        return " (" + String.valueOf(tableView.getGuestCount()) + "/" + String.valueOf(tableView.getTableCapacity()) + ")";
+        return " (" + String.valueOf(tableView.getGuestCount()) + "/" + String.valueOf(tableView.getCapacity()) + ")";
     }
 
     protected void initializeSoldProductsTable() {

@@ -49,7 +49,7 @@
                               <Insets top="5.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="guestNumber" alignment="CENTER" prefWidth="100.0" promptText="%TableSettingsForm.Guests">
+                        <TextField fx:id="guestCount" alignment="CENTER" prefWidth="100.0" promptText="%TableSettingsForm.Guests">
                            <font>
                               <Font size="16.0" />
                            </font>

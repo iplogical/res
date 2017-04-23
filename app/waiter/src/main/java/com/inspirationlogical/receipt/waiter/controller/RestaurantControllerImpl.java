@@ -6,7 +6,6 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.m
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.removeNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
-import static com.inspirationlogical.receipt.corelib.model.enums.Orientation.HORIZONTAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMAL;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
 
@@ -193,8 +192,7 @@ public class RestaurantControllerImpl implements RestaurantController {
                     .capacity(tableCapacity)
                     .visible(true)
                     .coordinateX((int) position.getX())
-                    .coordinateY((int) position.getY())
-                    .orientation(HORIZONTAL));
+                    .coordinateY((int) position.getY()));
 
             tableForm.hide();
 
@@ -214,7 +212,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         TableView tableView = tableController.getView();
 
         try {
-            if (tableView.getTableNumber() != tableNumber) {
+            if (tableView.getNumber() != tableNumber) {
                 restaurantService.setTableNumber(tableView, tableNumber, restaurantView);
             }
             restaurantService.setTableType(tableView, restaurantViewState.isVirtual() ? VIRTUAL : NORMAL);
@@ -246,7 +244,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             tableControllers.remove(tableController);
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(getActiveTab(),
-                    Resources.WAITER.getString("TableIsOpen") + tableView.getTableNumber());
+                    Resources.WAITER.getString("TableIsOpen") + tableView.getNumber());
             initRestaurant();
         }
     }
@@ -458,7 +456,7 @@ public class RestaurantControllerImpl implements RestaurantController {
                         .mapToInt(controller -> controller.getView().getGuestCount()).sum()));
         totalCapacity.setText(String.valueOf(tableControllers.stream()
                         .filter(tableController -> !tableController.getView().isVirtual())
-                        .mapToInt(controller -> controller.getView().getTableCapacity()).sum()));
+                        .mapToInt(controller -> controller.getView().getCapacity()).sum()));
         openConsumption.setText(String.valueOf(tableControllers.stream()
                 .filter(tableController -> tableController.getView().isOpen())
                 .mapToInt(tableController -> tableController.getView().getTotalPrice()).sum()));
