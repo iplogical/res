@@ -44,19 +44,11 @@ AD HOC ne legyen a manager terminálban
 
 manager terminálban tabok legyenek gombok helyett
 
-Napi zárás tiltása ha van nyitott asztal.
-
 ---------------------------
 2017.04.19
 
 Szirup + Topping - bevitel
 
 Téli akciók - bevitel
-
-Formoknál a Rendben legyen a jobb oldalon
-
-Asztal szerkeztés és beállitás egy form legyen.
-
-Az Ubuntu ne menjen el aludni.
 
 Asztalok összetolásánál az összetolt asztalok nem törlődnek csak nem láthatók. Széthúzásnál újra láthatók.
