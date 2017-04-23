@@ -153,6 +153,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         }
         getSoldProductsAndUpdateTable();
         updateTableSummary();
+        resetToggleGroups();
     }
 
     @Override
@@ -389,6 +390,13 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         paymentViewState.setAutomaticGameFee(automaticGameFee.isSelected());
     }
 
+    private void resetToggleGroups() {
+        paymentMethodToggleGroup.selectToggle(paymentMethodCash);
+        paymentTypeToggleGroup.selectToggle(null);
+        discountTypeToggleGroup.selectToggle(null);
+        automaticGameFee.setSelected(true);
+    }
+    
     private class PaymentTypeTogglesListener implements ChangeListener<Toggle> {
         @Override
         public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {

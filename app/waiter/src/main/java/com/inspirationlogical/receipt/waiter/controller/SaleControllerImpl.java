@@ -217,6 +217,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
         updateCategories(selectedCategory);
         updateTableSummary();
+        resetToggleGroups();
     }
 
     @Override
@@ -417,6 +418,11 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private void setGiftProduct() {
         saleViewState.setGift(giftProduct.isSelected());
+    }
+
+    private void resetToggleGroups() {
+        cancellationTypeToggleGroup.selectToggle(null);
+        giftProduct.setSelected(false);
     }
 
     private class CancellationTypeToggleListener implements ChangeListener<Toggle> {
