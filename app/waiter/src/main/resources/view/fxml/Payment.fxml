@@ -169,6 +169,29 @@
    <right>
       <VBox fx:id="left" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
+            <ToggleButton fx:id="selectivePayment" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.SelectivePayment" textAlignment="CENTER">
+               <toggleGroup>
+                  <ToggleGroup fx:id="paymentTypeToggleGroup" />
+               </toggleGroup></ToggleButton>
+            <ToggleButton fx:id="singlePayment" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.SinglePayment" textAlignment="CENTER" toggleGroup="$paymentTypeToggleGroup" />
+            <ToggleButton fx:id="partialPayment" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.PartialPayment" textAlignment="CENTER" toggleGroup="$paymentTypeToggleGroup" />
+            <TextField fx:id="partialPaymentValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.PartialPaymentPrompt" />
+            <Separator />
+            <ToggleButton fx:id="automaticGameFee" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAutomaticGameFeeToggleAction" text="%PaymentView.AutomaticGameFee" textAlignment="CENTER" />
+            <Button fx:id="manualGameFee" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onManualGameFee" text="%PaymentView.ManualGameFee" textAlignment="CENTER" />
+            <Separator />
+            <ToggleButton fx:id="discountAbsolute" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.DiscountAbsolute" textAlignment="CENTER">
+               <toggleGroup>
+                  <ToggleGroup fx:id="discountTypeToggleGroup" />
+               </toggleGroup>
+            </ToggleButton>
+            <TextField fx:id="discountAbsoluteValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.DiscountAbsolutePrompt" />
+            <ToggleButton fx:id="discountPercent" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.DiscountPercent" textAlignment="CENTER" toggleGroup="$discountTypeToggleGroup" />
+            <TextField fx:id="discountPercentValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.DiscountPercentPrompt" />
+            <Separator />
+            <Button fx:id="backToSaleView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToSaleView" text="%PaymentView.BackToSaleView" textAlignment="CENTER" />
+            <Button fx:id="backToRestaurantView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%Common.BackToRestaurantView" textAlignment="CENTER" />
+            <Separator />
             <VBox>
                <children>
                   <RadioButton fx:id="paymentMethodCash" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%Common.Cash" textAlignment="CENTER">
@@ -180,25 +203,6 @@
                   <RadioButton fx:id="paymentMethodCoupon" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%Common.Coupon" textAlignment="CENTER" toggleGroup="$paymentMethodToggleGroup" />
                </children>
             </VBox>
-            <ToggleButton fx:id="selectivePayment" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.SelectivePayment" textAlignment="CENTER">
-               <toggleGroup>
-                  <ToggleGroup fx:id="paymentTypeToggleGroup" />
-               </toggleGroup></ToggleButton>
-            <ToggleButton fx:id="singlePayment" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.SinglePayment" textAlignment="CENTER" toggleGroup="$paymentTypeToggleGroup" />
-            <ToggleButton fx:id="partialPayment" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.PartialPayment" textAlignment="CENTER" toggleGroup="$paymentTypeToggleGroup" />
-            <TextField fx:id="partialPaymentValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.PartialPaymentPrompt" />
-            <ToggleButton fx:id="automaticGameFee" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAutomaticGameFeeToggleAction" text="%PaymentView.AutomaticGameFee" textAlignment="CENTER" />
-            <Button fx:id="manualGameFee" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onManualGameFee" text="%PaymentView.ManualGameFee" textAlignment="CENTER" />
-            <ToggleButton fx:id="discountAbsolute" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.DiscountAbsolute" textAlignment="CENTER">
-               <toggleGroup>
-                  <ToggleGroup fx:id="discountTypeToggleGroup" />
-               </toggleGroup>
-            </ToggleButton>
-            <TextField fx:id="discountAbsoluteValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.DiscountAbsolutePrompt" />
-            <ToggleButton fx:id="discountPercent" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.DiscountPercent" textAlignment="CENTER" toggleGroup="$discountTypeToggleGroup" />
-            <TextField fx:id="discountPercentValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.DiscountPercentPrompt" />
-            <Button fx:id="backToSaleView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToSaleView" text="%PaymentView.BackToSaleView" textAlignment="CENTER" />
-            <Button fx:id="backToRestaurantView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%Common.BackToRestaurantView" textAlignment="CENTER" />
             <Button fx:id="pay" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPay" text="%PaymentView.Pay" textAlignment="CENTER" />
          </children>
          <padding>
