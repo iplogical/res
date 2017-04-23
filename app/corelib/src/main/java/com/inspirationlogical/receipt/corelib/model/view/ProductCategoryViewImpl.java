@@ -35,31 +35,10 @@ public class ProductCategoryViewImpl extends AbstractModelViewImpl<ProductCatego
         return new ProductCategoryViewImpl(adapter.getParent());
     }
 
-    @Override
-    public List<ProductCategoryView> getChildCategories() {
-        return adapter.getChildCategories().stream()
-                .map(category -> new ProductCategoryViewImpl(category))
-                .collect(Collectors.toList());
-    }
 
     @Override
     public ProductView getProduct() {
         return new ProductViewImpl(adapter.getProduct());
-    }
-
-    @Override
-    public List<ProductView> getAllProducts() {
-        return mapProducts(adapter.getAllProducts());
-    }
-
-    @Override
-    public List<ProductView> getAllActiveProducts() {
-        return mapProducts(adapter.getAllActiveProducts());
-    }
-
-    @Override
-    public List<ProductView> getAllNormalProducts() {
-        return mapProducts(adapter.getAllSellableProducts());
     }
 
     @Override
@@ -70,11 +49,5 @@ public class ProductCategoryViewImpl extends AbstractModelViewImpl<ProductCatego
     @Override
     public ProductStatus getStatus() {
         return adapter.getAdaptee().getStatus();
-    }
-
-    private List<ProductView> mapProducts(List<ProductAdapter> productAdapters) {
-        return productAdapters.stream()
-                .map(productAdapter -> new ProductViewImpl(productAdapter))
-                .collect(Collectors.toList());
     }
 }

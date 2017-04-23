@@ -274,7 +274,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     private void updateCategory(ProductCategoryView productCategoryView, TreeItem<CategoryViewModel> treeItem) {
         treeItem.setExpanded(true);
-        productCategoryView.getChildCategories().forEach(child -> {
+        commonService.getChildCategories(productCategoryView).forEach(child -> {
             if (child.getStatus() == ProductStatus.ACTIVE) {
                 CategoryViewModel categoryViewModel = new CategoryViewModel(child);
                 TreeItem<CategoryViewModel> childItem = new TreeItem<>(categoryViewModel);
