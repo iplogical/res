@@ -73,13 +73,13 @@ public class TableFormControllerImpl implements TableFormController {
         try {
             Integer tableNumber = Integer.valueOf(number.getText());
             Integer tableCapacity = Integer.valueOf(capacity.getText());
-            Integer tableGuestNumber = Integer.valueOf(guestNumber.getText());
+            Integer tableGuestNumber = guestNumber.getText().equals("") ? 0 : Integer.valueOf(guestNumber.getText());
             if (creation) {
                 restaurantController.createTable(tableNumber, tableCapacity);
             } else {
                 restaurantController.editTable(tableController, tableNumber, tableCapacity);
+                tableController.setTable(tableName.getText(), tableGuestNumber, note.getText());
             }
-            tableController.setTable(tableName.getText(), tableGuestNumber, note.getText());
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
         }
