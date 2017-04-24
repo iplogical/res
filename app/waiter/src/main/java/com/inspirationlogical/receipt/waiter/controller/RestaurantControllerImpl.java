@@ -299,16 +299,33 @@ public class RestaurantControllerImpl implements RestaurantController {
             restaurantService.mergeTables(aggregate, consumed);
 
             firstSelected.consumeTables();
+            firstSelected.updateNode();
+
+            firstSelected.deselectTable();
+            selectedTables.remove(firstSelected);
 
             selectedTables.forEach(tableController -> {
-                tableController.deselectTable();
-                tableController.updateNode();
+                tableControllers.remove(tableController);
+                tablesTab.getChildren().remove(tableController.getRoot());
             });
 
             selectedTables.clear();
         } else {
             ErrorMessage.showErrorMessage(tablesLab, Resources.WAITER.getString("InsufficientSelection"));
         }
+    }
+
+    @Override
+    public void splitTables(Node node) {
+        TableController tableController = getTableController(node);
+        TableView tableView = tableController.getView();
+
+        List<TableView> tables = restaurantService.splitTables(tableView);
+
+        tables.forEach(this::drawTable);
+
+        tableController.releaseConsumed();
+        tableController.updateNode();
     }
 
     @Override

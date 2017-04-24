@@ -46,8 +46,4 @@ public class CSSUtilities {
             setBackgroundColor(node, BACKGROUND_DEFAULT);
         }
     }
-
-    public static void setConsumedBackgroundColor(Node node) {
-        setBackgroundColor(node, BACKGROUND_CONSUMED);
-    }
 }

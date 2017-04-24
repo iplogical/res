@@ -78,7 +78,7 @@ public class TableControllerImpl implements TableController {
         addDragAndDrop(root, tableViewState.getRestaurantViewState().getMotionViewState());
         initVisual();
         updateNode();
-        if (tableView.getType() == TableType.AGGREGATE) {
+        if (tableView.getType().equals(TableType.AGGREGATE)) {
             consumeTables();
         }
     }
@@ -90,8 +90,7 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void consumeTables() {
-        container.getChildren().clear();
-        container.getChildren().add(host);
+        releaseConsumed();
         tableView.getConsumedTables().forEach(view -> {
             StackPane stackPane = (StackPane) viewLoader.loadView(CONSUMED_VIEW_PATH);
             stackPane.setPrefWidth((int) view.getDimension().getWidth());
@@ -128,7 +127,7 @@ public class TableControllerImpl implements TableController {
             name.setText(tableView.getName());
             number.setText(valueOf(tableView.getNumber()));
 
-            if (tableView.getType() == TableType.AGGREGATE) {
+            if (tableView.getType().equals(TableType.AGGREGATE)) {
 
                 Integer tableGuests = tableView.getGuestCount();
                 Integer tableCapacity = tableView.getCapacity();
@@ -161,6 +160,12 @@ public class TableControllerImpl implements TableController {
     }
 
     @Override
+    public void releaseConsumed() {
+        container.getChildren().clear();
+        container.getChildren().add(host);
+    }
+
+    @Override
     public void openTable(Control control) {
         retailService.openTable(tableView);
         updateNode();
@@ -175,7 +180,7 @@ public class TableControllerImpl implements TableController {
     @FXML
     public void onTableClicked(MouseEvent event) {
         if (isContextMenuOpen() || tableViewState.getRestaurantViewState().getMotionViewState().getMovableProperty().getValue()) {
-            for(TableView view : tableView.getConsumedTables()) {
+            for (TableView view : tableView.getConsumedTables()) {
                 Point2D delta = new Point2D(root.getLayoutX(), root.getLayoutY()).subtract(tableView.getPosition());
                 restaurantController.moveTable(view, view.getPosition().add(delta));
             }

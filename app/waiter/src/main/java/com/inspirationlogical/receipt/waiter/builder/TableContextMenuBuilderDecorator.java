@@ -47,7 +47,14 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
                         .withLabel(Resources.WAITER.getString("ContextMenu.MergeTable"))
                         .withClickHandler(restaurantController::mergeTables)
                         .build();
-                contextMenu.getItems().addAll(mergeTables);
+                contextMenu.getItems().add(mergeTables);
+            }
+            if (!tableViewState.isAggregate()) {
+                MenuItem splitTables = new ContextMenuItemBuilder()
+                        .withLabel(Resources.WAITER.getString("ContextMenu.SplitTable"))
+                        .withClickHandlerControl(restaurantController::splitTables)
+                        .build();
+                contextMenu.getItems().add(splitTables);
             }
         } else {
             if(!tableViewState.isOpen()) {
@@ -55,13 +62,13 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
                         .withLabel(Resources.WAITER.getString("ContextMenu.OpenTable"))
                         .withClickHandlerControl(tableController::openTable)
                         .build();
-                contextMenu.getItems().addAll(openTable);
+                contextMenu.getItems().add(openTable);
             }
             MenuItem editTable = new ContextMenuItemBuilder()
                     .withLabel(Resources.WAITER.getString("ContextMenu.EditTable"))
                     .withClickHandlerControl(restaurantController::showEditTableForm)
                     .build();
-            contextMenu.getItems().addAll(editTable);
+            contextMenu.getItems().add(editTable);
         }
         return contextMenu;
     }

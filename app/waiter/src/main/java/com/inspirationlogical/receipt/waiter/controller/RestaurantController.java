@@ -22,6 +22,7 @@ public interface RestaurantController extends Controller {
     void moveTable(TableView tableView, Point2D position);
 
     void mergeTables();
+    void splitTables(Node node);
     void selectTable(TableController tableController, boolean selected);
     void updateRestaurant();
     RestaurantViewState getViewState();

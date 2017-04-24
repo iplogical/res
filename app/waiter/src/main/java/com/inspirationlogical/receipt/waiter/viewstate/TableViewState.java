@@ -29,4 +29,8 @@ public class TableViewState implements ViewState {
     public boolean isOpen() {
         return tableView.isOpen();
     }
+
+    public boolean isAggregate() {
+        return tableView.isVirtual();
+    }
 }

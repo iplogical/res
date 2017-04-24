@@ -16,6 +16,8 @@ public interface TableView extends AbstractView {
 
     boolean isVisible();
 
+    boolean isAggregate();
+
     boolean isVirtual();
 
     TableType getType();

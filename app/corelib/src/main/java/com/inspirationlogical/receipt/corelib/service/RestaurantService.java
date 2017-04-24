@@ -48,5 +48,7 @@ public interface RestaurantService {
 
     void mergeTables(TableView aggregate, List<TableView> consumed);
 
+    List<TableView> splitTables(TableView aggregate);
+
     void closeDay();
 }

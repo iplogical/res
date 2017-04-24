@@ -22,7 +22,10 @@ public class ValidOwnerValidator extends AbstractValidator
 
         switch (type) {
             case SALE:
-                if(ownerType == TableType.NORMAL || ownerType == TableType.AGGREGATE || ownerType == TableType.VIRTUAL || ownerType == TableType.ORPHANAGE) {
+                if (ownerType == TableType.NORMAL
+                        || ownerType == TableType.AGGREGATE
+                        || ownerType == TableType.VIRTUAL
+                        || ownerType == TableType.ORPHANAGE) {
                     return true;
                 } else {
                     addConstraintViolation(context,
@@ -30,25 +33,25 @@ public class ValidOwnerValidator extends AbstractValidator
                     return false;
                 }
             case PURCHASE:
-                if(ownerType != TableType.PURCHASE) {
+                if (ownerType != TableType.PURCHASE) {
                     addConstraintViolation(context,
                             "The PURCHASE receipt has to be owned by the PURCHASE table but found:" + ownerType);
                     return false;
                 } else return true;
             case INVENTORY:
-                if(ownerType != TableType.INVENTORY) {
+                if (ownerType != TableType.INVENTORY) {
                     addConstraintViolation(context,
                             "The INVENTORY receipt has to be owned by the INVENTORY table but found:" + ownerType);
                     return false;
                 } else return true;
             case DISPOSAL:
-                if(ownerType != TableType.DISPOSAL) {
+                if (ownerType != TableType.DISPOSAL) {
                     addConstraintViolation(context,
                             "The DISPOSAL receipt has to be owned by the DISPOSAL table but found:" + ownerType);
                     return false;
                 } else return true;
             case OTHER:
-                if(ownerType != TableType.OTHER) {
+                if (ownerType != TableType.OTHER) {
                     addConstraintViolation(context,
                             "The OTHER receipt has to be owned by the OTHER table but found:" + ownerType);
                     return false;

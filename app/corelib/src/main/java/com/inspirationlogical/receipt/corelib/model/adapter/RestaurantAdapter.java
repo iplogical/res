@@ -113,7 +113,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
 
                 table.setConsumer(aggregate.getAdaptee());
                 aggregate.getAdaptee().getConsumed().add(table);
-                if (table.getType() == TableType.AGGREGATE) {
+                if (table.getType().equals(TableType.AGGREGATE)) {
                     for (Table t : table.getConsumed()) {
                         t.setConsumer(aggregate.getAdaptee());
                         aggregate.getAdaptee().getConsumed().add(t);
@@ -125,6 +125,23 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         });
 
         aggregate.getAdaptee().setType(TableType.AGGREGATE);
+    }
+
+    public List<TableAdapter> splitTables(TableAdapter aggregate) {
+
+        List<Table> consumed = aggregate.getConsumedTables();
+
+        GuardedTransaction.run(() -> {
+            aggregate.getConsumedTables().clear();
+            aggregate.setType(TableType.NORMAL);
+            consumed.forEach(table -> {
+                table.setConsumer(null);
+                table.setType(TableType.NORMAL);
+                table.setVisible(true);
+            });
+        });
+
+        return consumed.stream().map(TableAdapter::new).collect(Collectors.toList());
     }
 
     public int getConsumptionOfTheDay(Predicate<Receipt> filter) {

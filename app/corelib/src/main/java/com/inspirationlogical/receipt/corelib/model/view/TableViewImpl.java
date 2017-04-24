@@ -29,6 +29,11 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     }
 
     @Override
+    public boolean isAggregate() {
+        return adapter.getAdaptee().getType().equals(TableType.AGGREGATE);
+    }
+
+    @Override
     public boolean isVirtual() {
         return adapter.getAdaptee().getType().equals(TableType.VIRTUAL);
     }

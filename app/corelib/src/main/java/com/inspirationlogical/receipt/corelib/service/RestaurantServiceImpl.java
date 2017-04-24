@@ -122,6 +122,16 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
+    public List<TableView> splitTables(TableView aggregate) {
+        TableAdapter aggregateTableAdapter = getTableAdapter(aggregate);
+
+        return getRestaurantAdapter(getActiveRestaurant()).splitTables(aggregateTableAdapter)
+                .stream()
+                .map(TableViewImpl::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void closeDay() {
         StockAdapter.closeLatestStockEntries();
         DailyClosureAdapter.getOpenDailyClosure().close();

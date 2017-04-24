@@ -20,6 +20,8 @@ public interface TableController extends Controller {
 
     void updateNode();
 
+    void releaseConsumed();
+
     void openTable(Control control);
 
     void deselectTable();
