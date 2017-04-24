@@ -11,6 +11,7 @@ public class CSSUtilities {
     private static String BORDER_DEFAULT = "#000000";
     private static String BACKGROUND_OPEN = "#98FB98";
     private static String BACKGROUND_DEFAULT = "#D2B48C";
+    private static String BACKGROUND_CONSUMED = "#00bfff3f";
 
     private static void setProperty(Node node, String property, String value) {
         node.setStyle(node.getStyle().replaceFirst("(" + property + ":.*?;)", property + ": " + value + ";"));
@@ -44,5 +45,9 @@ public class CSSUtilities {
         } else {
             setBackgroundColor(node, BACKGROUND_DEFAULT);
         }
+    }
+
+    public static void setConsumedBackgroundColor(Node node) {
+        setBackgroundColor(node, BACKGROUND_CONSUMED);
     }
 }

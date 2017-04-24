@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
 import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -11,29 +12,34 @@ import java.util.ResourceBundle;
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 
 public class TableControllerImpl implements TableController {
 
     public static final String TABLE_VIEW_PATH = "/view/fxml/Table.fxml";
+    public static final String CONSUMED_VIEW_PATH = "/view/fxml/ConsumedTable.fxml";
 
     @FXML
     Label root;
     @FXML
-    VBox vBox;
+    AnchorPane container;
+    @FXML
+    StackPane host;
     @FXML
     Label name;
     @FXML
@@ -50,8 +56,6 @@ public class TableControllerImpl implements TableController {
 
     private RestaurantController restaurantController;
 
-    private RestaurantService restaurantService;
-
     private RetailService retailService;
 
     private TableView tableView;
@@ -59,11 +63,8 @@ public class TableControllerImpl implements TableController {
     private TableViewState tableViewState;
 
     @Inject
-    public TableControllerImpl(RestaurantController restaurantController,
-                               RestaurantService restaurantService,
-                               RetailService retailService) {
+    public TableControllerImpl(RestaurantController restaurantController, RetailService retailService) {
         this.restaurantController = restaurantController;
-        this.restaurantService = restaurantService;
         this.retailService = retailService;
     }
 
@@ -77,11 +78,31 @@ public class TableControllerImpl implements TableController {
         addDragAndDrop(root, tableViewState.getRestaurantViewState().getMotionViewState());
         initVisual();
         updateNode();
+        if (tableView.getType() == TableType.AGGREGATE) {
+            consumeTables();
+        }
     }
 
     private void initVisual() {
-        vBox.setPrefWidth(tableView.getDimension().getWidth());
-        vBox.setPrefHeight(tableView.getDimension().getHeight());
+        host.setPrefWidth(tableView.getDimension().getWidth());
+        host.setPrefHeight(tableView.getDimension().getHeight());
+    }
+
+    @Override
+    public void consumeTables() {
+        container.getChildren().clear();
+        container.getChildren().add(host);
+        tableView.getConsumedTables().forEach(view -> {
+            StackPane stackPane = (StackPane) viewLoader.loadView(CONSUMED_VIEW_PATH);
+            stackPane.setPrefWidth((int) view.getDimension().getWidth());
+            stackPane.setPrefHeight((int) view.getDimension().getHeight());
+            Point2D position = view.getPosition().subtract(tableView.getPosition());
+            stackPane.setLayoutX((int) position.getX());
+            stackPane.setLayoutY((int) position.getY());
+            Label label = (Label) stackPane.lookup("#number");
+            label.setText(valueOf(view.getNumber()));
+            container.getChildren().add(stackPane);
+        });
     }
 
     @Override
@@ -101,18 +122,42 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void updateNode() {
-        initVisual();
-        name.setText(tableView.getName());
-        number.setText(valueOf(tableView.getNumber()));
-        guests.setText(valueOf(tableView.getGuestCount()));
-        capacity.setText(valueOf(tableView.getCapacity()));
-        if(isEmpty(tableView.getNote())) {
-            note.setVisible(false);
+        if (tableView.isVisible()) {
+            initVisual();
+
+            name.setText(tableView.getName());
+            number.setText(valueOf(tableView.getNumber()));
+
+            if (tableView.getType() == TableType.AGGREGATE) {
+
+                Integer tableGuests = tableView.getGuestCount();
+                Integer tableCapacity = tableView.getCapacity();
+
+                for(TableView view : tableView.getConsumedTables()) {
+                    tableGuests += view.getGuestCount();
+                    tableCapacity += view.getCapacity();
+                }
+
+                guests.setText(valueOf(tableGuests));
+                capacity.setText(valueOf(tableCapacity));
+            } else {
+                number.setText(valueOf(tableView.getNumber()));
+                guests.setText(valueOf(tableView.getGuestCount()));
+                capacity.setText(valueOf(tableView.getCapacity()));
+            }
+
+            if (isEmpty(tableView.getNote())) {
+                note.setVisible(false);
+            } else {
+                note.setVisible(true);
+            }
+
+            CSSUtilities.setBackgroundColor(tableViewState.isOpen(), host);
+
+            showNode(root, tableView.getPosition());
         } else {
-            note.setVisible(true);
+            hideNode(root);
         }
-        CSSUtilities.setBackgroundColor(tableViewState.isOpen(), vBox);
-        showNode(root, tableView.getPosition());
     }
 
     @Override
@@ -124,12 +169,16 @@ public class TableControllerImpl implements TableController {
     @Override
     public void deselectTable() {
         tableViewState.setSelected(false);
-        CSSUtilities.setBorderColor(tableViewState.isSelected(), vBox);
+        CSSUtilities.setBorderColor(tableViewState.isSelected(), host);
     }
 
     @FXML
     public void onTableClicked(MouseEvent event) {
         if (isContextMenuOpen() || tableViewState.getRestaurantViewState().getMotionViewState().getMovableProperty().getValue()) {
+            for(TableView view : tableView.getConsumedTables()) {
+                Point2D delta = new Point2D(root.getLayoutX(), root.getLayoutY()).subtract(tableView.getPosition());
+                restaurantController.moveTable(view, view.getPosition().add(delta));
+            }
             restaurantController.moveTable(this);
             return;
         }
@@ -137,7 +186,7 @@ public class TableControllerImpl implements TableController {
         if(tableViewState.getRestaurantViewState().getConfigurable().getValue()) {
             tableViewState.setSelected(!tableViewState.isSelected());
             restaurantController.selectTable(this, tableViewState.isSelected());
-            CSSUtilities.setBorderColor(tableViewState.isSelected(), vBox);
+            CSSUtilities.setBorderColor(tableViewState.isSelected(), host);
         } else {
             if(!tableView.isOpen()) {
                 return;

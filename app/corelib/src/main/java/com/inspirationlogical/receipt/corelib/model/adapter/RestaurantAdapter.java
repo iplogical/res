@@ -23,8 +23,6 @@ import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 
-import static java.time.LocalDateTime.now;
-
 /**
  * Created by Bálint on 2017.03.13..
  */
@@ -47,8 +45,9 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         GuardedTransaction.runWithRefresh(adaptee, () -> {});
         Collection<Table> tables = adaptee.getTables();
         return tables.stream()
-                .filter(table -> table.getType().equals(TableType.NORMAL) ||
-                        table.getType().equals(TableType.VIRTUAL))
+                .filter(table -> table.getType().equals(TableType.NORMAL)
+                        || table.getType().equals(TableType.AGGREGATE)
+                        || table.getType().equals(TableType.VIRTUAL))
                 .map(TableAdapter::new)
                 .collect(Collectors.toList());
     }
@@ -99,29 +98,33 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
             }
         });
 
+
         GuardedTransaction.run(() -> {
+            aggregate.getAdaptee().setConsumed(new ArrayList<>());
             consumed.forEach(adapter -> {
-                Collection<Receipt> receipts = adapter.getAdaptee().getReceipts();
+                Table table = adapter.getAdaptee();
+
+                Collection<Receipt> receipts = table.getReceipts();
                 if (receipts != null) {
                     receipts.forEach(receipt -> receipt.setOwner(aggregate.getAdaptee()));
                     aggregate.getAdaptee().getReceipts().addAll(receipts);
                     receipts.clear();
                 }
+
+                table.setConsumer(aggregate.getAdaptee());
+                aggregate.getAdaptee().getConsumed().add(table);
+                if (table.getType() == TableType.AGGREGATE) {
+                    for (Table t : table.getConsumed()) {
+                        t.setConsumer(aggregate.getAdaptee());
+                        aggregate.getAdaptee().getConsumed().add(t);
+                    }
+                }
+                table.setType(TableType.CONSUMED);
+                adapter.hideTable();
             });
         });
 
-        Integer consumedCapacity = consumed.stream().mapToInt(adapter -> adapter.getAdaptee().getCapacity()).sum();
-        Integer consumedGuestCount = consumed.stream().mapToInt(adapter -> adapter.getAdaptee().getGuestCount()).sum();
-
-        aggregate.setCapacity(aggregate.getAdaptee().getCapacity() + consumedCapacity);
-        aggregate.setGuestCount(aggregate.getAdaptee().getGuestCount() + consumedGuestCount);
-
-        consumed.forEach(TableAdapter::deleteTable);
-
-        List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_NUMBER,
-                query -> query.setParameter("number", aggregate.getAdaptee().getNumber()));
-
-        aggregate.setAdaptee(tables.get(0));
+        aggregate.getAdaptee().setType(TableType.AGGREGATE);
     }
 
     public int getConsumptionOfTheDay(Predicate<Receipt> filter) {

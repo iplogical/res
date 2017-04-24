@@ -10,6 +10,8 @@ public interface TableController extends Controller {
 
     void setView(TableView tableView);
 
+    void consumeTables();
+
     TableView getView();
 
     Control getRoot();

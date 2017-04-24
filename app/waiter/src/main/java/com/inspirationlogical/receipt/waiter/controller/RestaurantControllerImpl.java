@@ -219,7 +219,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             if (tableView.getNumber() != number) {
                 restaurantService.setTableNumber(tableView, number, restaurantView);
             }
-            restaurantService.setTableType(tableView, restaurantViewState.isVirtual() ? VIRTUAL : NORMAL);
+            restaurantService.setTableType(tableView, tableView.getType());
             restaurantService.setTableCapacity(tableView, capacity);
             restaurantService.setTableName(tableView, name);
             restaurantService.setGuestCount(tableView, guestCount);
@@ -278,24 +278,34 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
+    public void moveTable(TableView tableView, Point2D position) {
+
+        restaurantService.setTablePosition(tableView, position);
+    }
+
+    @Override
     public void mergeTables() {
         if (selectedTables.size() > 1) {
             TableController firstSelected = selectedTables.iterator().next();
             TableView aggregate = firstSelected.getView();
             List<TableView> consumed = new ArrayList<>();
-            selectedTables.remove(firstSelected);
-            selectedTables.iterator().forEachRemaining(tableController -> {
+
+            selectedTables.stream()
+                    .filter(tableController -> !tableController.equals(firstSelected))
+                    .forEach(tableController -> {
                 consumed.add(tableController.getView());
             });
 
             restaurantService.mergeTables(aggregate, consumed);
+
+            firstSelected.consumeTables();
+
             selectedTables.forEach(tableController -> {
-                tablesTab.getChildren().remove(tableController.getRoot());
-                tableControllers.remove(tableController);
+                tableController.deselectTable();
+                tableController.updateNode();
             });
+
             selectedTables.clear();
-            firstSelected.deselectTable();
-            firstSelected.updateNode();
         } else {
             ErrorMessage.showErrorMessage(tablesLab, Resources.WAITER.getString("InsufficientSelection"));
         }

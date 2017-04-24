@@ -210,4 +210,11 @@ public class TableAdapter extends AbstractAdapter<Table> {
     protected boolean isTableOpen() {
         return this.getActiveReceipt() != null;
     }
+
+    public List<Table> getConsumedTables() {
+        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_CONSUMER, query -> {
+            query.setParameter("consumer", adaptee);
+            return query;
+        });
+    }
 }

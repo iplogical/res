@@ -37,7 +37,9 @@ import lombok.experimental.Tolerate;
     @NamedQuery(name = Table.GET_TABLE_BY_NUMBER,
             query="FROM Table t WHERE t.number=:number"),
     @NamedQuery(name = Table.GET_TABLE_BY_TYPE,
-            query="FROM Table t WHERE t.type=:type")
+            query="FROM Table t WHERE t.type=:type"),
+    @NamedQuery(name = Table.GET_TABLE_BY_CONSUMER,
+            query="FROM Table t WHERE t.consumer=:consumer")
 })
 @AttributeOverride(name = "id", column = @Column(name = "TABLE_ID"))
 @ValidReceipts
@@ -47,6 +49,7 @@ public @Data class Table extends AbstractEntity {
     public static final String GET_ALL_TABLES = "Table.GetAllTables";
     public static final String GET_TABLE_BY_NUMBER = "Table.GetTableByNumber";
     public static final String GET_TABLE_BY_TYPE = "Table.GetTableByType";
+    public static final String GET_TABLE_BY_CONSUMER = "Table.GetTableByConsumer";
 
     @NotNull(message = "A table must belong to a restaurant")
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
@@ -86,10 +89,10 @@ public @Data class Table extends AbstractEntity {
     private boolean visible;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
-    @JoinColumn(name = "AGGREGATE_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-    private Table aggregate;
+    @JoinColumn(name = "CONSUMER_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    private Table consumer;
 
-    @OneToMany(mappedBy = "aggregate", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "consumer", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     private Collection<Table> consumed;
 
     @Tolerate

@@ -1,5 +1,8 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
@@ -76,5 +79,14 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     @Override
     public Dimension2D getDimension() {
         return new Dimension2D(adapter.getAdaptee().getDimensionX(), adapter.getAdaptee().getDimensionY());
+    }
+
+    @Override
+    public List<TableView> getConsumedTables() {
+        return adapter.getConsumedTables()
+                .stream()
+                .map(TableAdapter::new)
+                .map(TableViewImpl::new)
+                .collect(Collectors.toList());
     }
 }

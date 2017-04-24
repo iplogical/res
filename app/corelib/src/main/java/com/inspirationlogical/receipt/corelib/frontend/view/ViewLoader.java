@@ -19,6 +19,21 @@ public class ViewLoader {
         this.fxmlLoaderProvider = fxmlLoaderProvider;
     }
 
+    public Node loadView(String viewPath) {
+        Parent root = null;
+
+        FXMLLoader loader = fxmlLoaderProvider.getLoader(viewPath);
+        loader.setResources(MainStage.getResourcesProvider().getResources().getBundle());
+
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return root;
+    }
+
     public Node loadView(Controller controller) {
         Parent root = (Parent) controller.getRootNode();
 

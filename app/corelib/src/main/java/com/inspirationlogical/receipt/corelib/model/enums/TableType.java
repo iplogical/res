@@ -10,6 +10,7 @@ public enum TableType {
 
     NORMAL,
     AGGREGATE,
+    CONSUMED,
     VIRTUAL,
     PURCHASE,
     INVENTORY,

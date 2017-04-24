@@ -22,7 +22,7 @@ public class ValidOwnerValidator extends AbstractValidator
 
         switch (type) {
             case SALE:
-                if(ownerType == TableType.NORMAL || ownerType == TableType.VIRTUAL || ownerType == TableType.ORPHANAGE) {
+                if(ownerType == TableType.NORMAL || ownerType == TableType.AGGREGATE || ownerType == TableType.VIRTUAL || ownerType == TableType.ORPHANAGE) {
                     return true;
                 } else {
                     addConstraintViolation(context,
