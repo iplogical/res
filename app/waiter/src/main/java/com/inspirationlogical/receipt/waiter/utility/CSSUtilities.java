@@ -32,7 +32,7 @@ public class CSSUtilities {
     public static void setBorderColor(boolean isSelected, Node node) {
         if(isSelected) {
             setBorderColor(node, BORDER_SELECTED);
-            setBorderWidth(node, 3);
+            setBorderWidth(node, 2);
         } else {
             setBorderColor(node, BORDER_DEFAULT);
             setBorderWidth(node, 2);

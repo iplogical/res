@@ -156,9 +156,9 @@ public class RestaurantControllerImpl implements RestaurantController {
                                     TableFormController tableFormController) {
         this.restaurantService = restaurantService;
         this.tableFormController = tableFormController;
-        restaurantViewState = new RestaurantViewState();
         tableControllers = new HashSet<>();
         selectedTables = new LinkedHashSet<>();
+        restaurantViewState = new RestaurantViewState(selectedTables);
     }
 
     @Override
@@ -352,7 +352,6 @@ public class RestaurantControllerImpl implements RestaurantController {
         } else {
             selectedTables.remove(tableController);
         }
-        restaurantViewState.setHasSelection(!selectedTables.isEmpty());
     }
 
     @Override

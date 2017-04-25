@@ -1,8 +1,11 @@
 package com.inspirationlogical.receipt.waiter.viewstate;
 
+import java.util.Set;
+
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.MotionViewState;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.waiter.controller.TableController;
 
 import javafx.beans.property.BooleanProperty;
 import lombok.Data;
@@ -12,9 +15,14 @@ public class RestaurantViewState implements ViewState {
     private TableType tableType;
     private BooleanProperty configurable;
     private MotionViewState motionViewState;
-    private boolean hasSelection;
+    private Set<TableController> selectedTables;
 
-    public RestaurantViewState() {
+    public RestaurantViewState(Set<TableController> selectedTables) {
+        this.selectedTables = selectedTables;
         motionViewState = new MotionViewState();
+    }
+
+    public boolean hasSelection() {
+        return selectedTables.size() > 1;
     }
 }
