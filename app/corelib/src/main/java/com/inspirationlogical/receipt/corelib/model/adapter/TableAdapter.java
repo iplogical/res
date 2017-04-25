@@ -180,6 +180,9 @@ public class TableAdapter extends AbstractAdapter<Table> {
         if (isTableOpen()) {
             throw new IllegalTableStateException("Delete table for an open table. Table number: " + adaptee.getNumber());
         }
+        if (adaptee.getType().equals(TableType.AGGREGATE)) {
+            throw new IllegalTableStateException("Delete table for an aggregate table. Table number: " + adaptee.getNumber());
+        }
         GuardedTransaction.runWithRefresh(adaptee, () -> {
             List<Table> orphanageList = getTablesByType(TableType.ORPHANAGE);
             Table orphanage = orphanageList.get(0);

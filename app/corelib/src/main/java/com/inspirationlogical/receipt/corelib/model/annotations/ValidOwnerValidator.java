@@ -24,12 +24,14 @@ public class ValidOwnerValidator extends AbstractValidator
             case SALE:
                 if (ownerType == TableType.NORMAL
                         || ownerType == TableType.AGGREGATE
-                        || ownerType == TableType.VIRTUAL
+                        || ownerType == TableType.LOITERER
+                        || ownerType == TableType.FREQUENTER
+                        || ownerType == TableType.EMPLOYEE
                         || ownerType == TableType.ORPHANAGE) {
                     return true;
                 } else {
                     addConstraintViolation(context,
-                            "The SALE receipt has to be owned by NORMAL or VIRTUAL table but found:" + ownerType);
+                            "The SALE receipt has to be owned by NORMAL/AGGREGATE/CONSUMED/LOITERER/FREQUENTER/EMPLOYEE/ORPHANAGE table but found:" + ownerType);
                     return false;
                 }
             case PURCHASE:

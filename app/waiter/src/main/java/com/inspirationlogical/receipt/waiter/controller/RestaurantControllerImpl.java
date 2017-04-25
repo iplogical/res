@@ -6,8 +6,6 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.m
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.removeNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
-import static com.inspirationlogical.receipt.corelib.model.enums.TableType.NORMAL;
-import static com.inspirationlogical.receipt.corelib.model.enums.TableType.VIRTUAL;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -93,13 +91,25 @@ public class RestaurantControllerImpl implements RestaurantController {
     AnchorPane tablesTab;
 
     @FXML
-    Label tablesLab;
+    Label tablesControl;
 
     @FXML
-    AnchorPane virtualTab;
+    AnchorPane loiterersTab;
 
     @FXML
-    Label virtualLab;
+    Label loiterersControl;
+
+    @FXML
+    AnchorPane frequentersTab;
+
+    @FXML
+    Label frequentersControl;
+
+    @FXML
+    AnchorPane employeesTab;
+
+    @FXML
+    Label employeesControl;
 
     @FXML
     Label openTableNumber;
@@ -153,8 +163,10 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initContextMenu(tablesLab);
-        initContextMenu(virtualLab);
+        initContextMenu(tablesControl);
+        initContextMenu(loiterersControl);
+        initContextMenu(frequentersControl);
+        initContextMenu(employeesControl);
         initTableForm();
         initControls();
         initRestaurant();
@@ -186,7 +198,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void createTable(Integer number, Integer capacity, Dimension2D dimmension) {
-        TableType tableType = restaurantViewState.isVirtual() ? VIRTUAL : NORMAL;
+        TableType tableType = restaurantViewState.getTableType();
         Point2D position = calculateTablePosition(tableFormController.getRootNode(), getActiveTab());
         TableView tableView;
 
@@ -234,7 +246,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             tableForm.hide();
 
             Node node = tableController.getRoot();
-            addNodeToPane(node, restaurantViewState.isVirtual());
+            addNodeToPane(node, restaurantViewState.getTableType());
             tableController.updateNode();
             updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
@@ -316,7 +328,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
             selectedTables.clear();
         } else {
-            ErrorMessage.showErrorMessage(tablesLab, Resources.WAITER.getString("InsufficientSelection"));
+            ErrorMessage.showErrorMessage(tablesControl, Resources.WAITER.getString("InsufficientSelection"));
         }
     }
 
@@ -383,12 +395,22 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     public void onTablesSelected(Event event) {
-        restaurantViewState.setVirtual(false);
+        restaurantViewState.setTableType(TableType.NORMAL);
     }
 
     @FXML
-    public void onVirtualSelected(Event event) {
-        restaurantViewState.setVirtual(true);
+    public void onLoiterersSelected(Event event) {
+        restaurantViewState.setTableType(TableType.LOITERER);
+    }
+
+    @FXML
+    public void onFrequentersSelected(Event event) {
+        restaurantViewState.setTableType(TableType.FREQUENTER);
+    }
+
+    @FXML
+    public void onEmployeesSelected(Event event) {
+        restaurantViewState.setTableType(TableType.EMPLOYEE);
     }
 
     private void initControls() {
@@ -409,10 +431,16 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private void initTables() {
         tablesTab.getChildren().removeAll(tableControllers.stream()
-                .filter(tableController -> !tableController.getView().isVirtual())
+                .filter(tableController -> tableController.getView().isNormal() || tableController.getView().isAggregate())
                 .map(TableController::getRoot).collect(Collectors.toList()));
-        virtualTab.getChildren().removeAll(tableControllers.stream()
-                .filter(tableController -> tableController.getView().isVirtual())
+        loiterersTab.getChildren().removeAll(tableControllers.stream()
+                .filter(tableController -> tableController.getView().isLoiterer())
+                .map(TableController::getRoot).collect(Collectors.toList()));
+        frequentersTab.getChildren().removeAll(tableControllers.stream()
+                .filter(tableController -> tableController.getView().isFrequenter())
+                .map(TableController::getRoot).collect(Collectors.toList()));
+        employeesTab.getChildren().removeAll(tableControllers.stream()
+                .filter(tableController -> tableController.getView().isEmployee())
                 .map(TableController::getRoot).collect(Collectors.toList()));
         tableControllers.clear();
         restaurantService.getTables(restaurantView).stream().filter(VISIBLE_TABLE).forEach(this::drawTable);
@@ -429,24 +457,38 @@ public class RestaurantControllerImpl implements RestaurantController {
         tableForm.getContent().add(viewLoader.loadView(tableFormController));
     }
 
-    private void addNodeToPane(Node node, boolean isVirtual) {
-        if (isVirtual) {
-            toVirtualPane(node);
-        } else {
-            toTablesPane(node);
+    private void addNodeToPane(Node node, TableType tableType) {
+        switch (tableType) {
+            case NORMAL:
+            case AGGREGATE:
+                moveNode(node, tablesTab);
+                break;
+            case LOITERER:
+                moveNode(node, loiterersTab);
+                break;
+            case FREQUENTER:
+                moveNode(node, frequentersTab);
+                break;
+            case EMPLOYEE:
+                moveNode(node, employeesTab);
+                break;
         }
     }
 
     private Pane getActiveTab() {
-        return restaurantViewState.isVirtual() ? virtualTab : tablesTab;
-    }
-
-    private void toTablesPane(Node node) {
-        moveNode(virtualTab, tablesTab, node);
-    }
-
-    private void toVirtualPane(Node node) {
-        moveNode(tablesTab, virtualTab, node);
+        switch (restaurantViewState.getTableType()) {
+            case NORMAL:
+            case AGGREGATE:
+                return tablesTab;
+            case LOITERER:
+                return loiterersTab;
+            case FREQUENTER:
+                return frequentersTab;
+            case EMPLOYEE:
+                return employeesTab;
+            default:
+                return tablesTab;
+        }
     }
 
     private TableController getTableController(Node node) {
@@ -469,7 +511,7 @@ public class RestaurantControllerImpl implements RestaurantController {
                 new TableContextMenuBuilderDecorator(this, tableController, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
 
-        addNodeToPane(tableController.getRoot(), tableView.isVirtual());
+        addNodeToPane(tableController.getRoot(), tableView.getType());
     }
 
     @Override
@@ -485,17 +527,17 @@ public class RestaurantControllerImpl implements RestaurantController {
     private void updateRestaurantSummary() {
         // TODO: Icons for the ImageViews.
         totalTableNumber.setText(String.valueOf(tableControllers.stream()
-                        .filter(tableController -> !tableController.getView().isVirtual())
+                        .filter(tableController -> !tableController.getView().isLoiterer())
                         .count()));
         openTableNumber.setText(String.valueOf(tableControllers.stream()
-                        .filter(tableController -> !tableController.getView().isVirtual())
+                        .filter(tableController -> !tableController.getView().isLoiterer())
                         .filter(tableController -> tableController.getView().isOpen())
                         .count()));
         totalGuests.setText(String.valueOf(tableControllers.stream()
-                        .filter(tableController -> !tableController.getView().isVirtual())
+                        .filter(tableController -> !tableController.getView().isLoiterer())
                         .mapToInt(controller -> controller.getView().getGuestCount()).sum()));
         totalCapacity.setText(String.valueOf(tableControllers.stream()
-                        .filter(tableController -> !tableController.getView().isVirtual())
+                        .filter(tableController -> !tableController.getView().isLoiterer())
                         .mapToInt(controller -> controller.getView().getCapacity()).sum()));
         openConsumption.setText(String.valueOf(tableControllers.stream()
                 .filter(tableController -> tableController.getView().isOpen())

@@ -29,13 +29,33 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     }
 
     @Override
+    public boolean isNormal() {
+        return adapter.getAdaptee().getType().equals(TableType.NORMAL);
+    }
+
+    @Override
     public boolean isAggregate() {
         return adapter.getAdaptee().getType().equals(TableType.AGGREGATE);
     }
 
     @Override
-    public boolean isVirtual() {
-        return adapter.getAdaptee().getType().equals(TableType.VIRTUAL);
+    public boolean isConsumed() {
+        return adapter.getAdaptee().getType().equals(TableType.CONSUMED);
+    }
+
+    @Override
+    public boolean isLoiterer() {
+        return adapter.getAdaptee().getType().equals(TableType.LOITERER);
+    }
+
+    @Override
+    public boolean isFrequenter() {
+        return adapter.getAdaptee().getType().equals(TableType.FREQUENTER);
+    }
+
+    @Override
+    public boolean isEmployee() {
+        return adapter.getAdaptee().getType().equals(TableType.EMPLOYEE);
     }
 
     @Override

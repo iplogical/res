@@ -26,9 +26,9 @@ public class NodeUtility {
         node.setVisible(false);
     }
 
-    public static void moveNode(Pane source, Pane target, Node node) {
+    public static void moveNode(Node node, Pane target) {
         if (node != null) {
-            if (source.getChildren().contains(node)) source.getChildren().remove(node);
+            if (node.getParent() != null) ((Pane) node.getParent()).getChildren().remove(node);
             if (!target.getChildren().contains(node)) target.getChildren().add(node);
         }
     }

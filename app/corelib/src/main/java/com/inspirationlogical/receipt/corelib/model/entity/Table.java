@@ -29,7 +29,7 @@ import lombok.experimental.Tolerate;
 
 @Entity
 @Builder
-@EqualsAndHashCode(callSuper = true, exclude = "owner")
+@EqualsAndHashCode(callSuper = true, exclude = {"owner", "consumer", "consumed"})
 @javax.persistence.Table(name = "_TABLE")
 @NamedQueries({
     @NamedQuery(name = Table.GET_ALL_TABLES,

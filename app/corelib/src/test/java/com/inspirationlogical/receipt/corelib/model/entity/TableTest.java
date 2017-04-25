@@ -37,13 +37,13 @@ public class TableTest {
     @Test(expected = RollbackException.class)
     public void notUniqueTableNumber() {
         GuardedTransaction.run(()->
-                schema.getTableVirtual().setNumber(schema.getTableNormal().getNumber()));
+                schema.getTableLoiterer().setNumber(schema.getTableNormal().getNumber()));
     }
 
     @Test(expected = RollbackException.class)
     public void TableWithoutNumber() {
         GuardedTransaction.run(()->
-                schema.getTableVirtual().setNumber(0));
+                schema.getTableLoiterer().setNumber(0));
     }
 
     @Test(expected = RollbackException.class)

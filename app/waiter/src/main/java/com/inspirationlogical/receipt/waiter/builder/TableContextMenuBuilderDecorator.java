@@ -25,14 +25,18 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
     public ContextMenu build(ViewState viewState) {
         TableViewState tableViewState = (TableViewState) viewState;
         ContextMenu contextMenu = super.build(viewState);
+
         if (tableViewState.getRestaurantViewState().getMotionViewState().getMovableProperty().getValue()) {
             return contextMenu;
         }
+
+        MenuItem editTable = new ContextMenuItemBuilder()
+                .withLabel(Resources.WAITER.getString("ContextMenu.EditTable"))
+                .withClickHandlerControl(restaurantController::showEditTableForm)
+                .build();
+        contextMenu.getItems().add(editTable);
+
         if (tableViewState.getRestaurantViewState().getConfigurable().getValue()) {
-            MenuItem editTable = new ContextMenuItemBuilder()
-                    .withLabel(Resources.WAITER.getString("ContextMenu.EditTable"))
-                    .withClickHandlerControl(restaurantController::showEditTableForm)
-                    .build();
             MenuItem rotateTable = new ContextMenuItemBuilder()
                     .withLabel(Resources.WAITER.getString("ContextMenu.RotateTable"))
                     .withClickHandlerControl(restaurantController::rotateTable)
@@ -41,8 +45,8 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
                     .withLabel(Resources.WAITER.getString("ContextMenu.DeleteTable"))
                     .withClickHandlerControl(restaurantController::deleteTable)
                     .build();
-            contextMenu.getItems().addAll(editTable, rotateTable, deleteTable);
-            if (!tableViewState.isVirtual()) {
+            contextMenu.getItems().addAll(rotateTable, deleteTable);
+            if (tableViewState.isNormal()) {
                 MenuItem mergeTables = new ContextMenuItemBuilder()
                         .withLabel(Resources.WAITER.getString("ContextMenu.MergeTable"))
                         .withClickHandler(restaurantController::mergeTables)
@@ -64,11 +68,6 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
                         .build();
                 contextMenu.getItems().add(openTable);
             }
-            MenuItem editTable = new ContextMenuItemBuilder()
-                    .withLabel(Resources.WAITER.getString("ContextMenu.EditTable"))
-                    .withClickHandlerControl(restaurantController::showEditTableForm)
-                    .build();
-            contextMenu.getItems().add(editTable);
         }
         return contextMenu;
     }

@@ -54,7 +54,7 @@ public class ReceiptTest {
     }
 
     @Test(expected = RollbackException.class)
-    public void moveVirtualReceiptToNormalTableTooManyOpen() {
+    public void moveLoitererReceiptToNormalTableTooManyOpen() {
         GuardedTransaction.run(()-> {
             schema.getReceiptSaleThree().setOwner(schema.getTableNormal());
             schema.getTableNormal().getReceipts().add(schema.getReceiptSaleThree());});

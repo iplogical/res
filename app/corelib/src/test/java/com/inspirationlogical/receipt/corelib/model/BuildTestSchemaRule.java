@@ -31,8 +31,8 @@ public class BuildTestSchemaRule implements TestRule {
     public static final int NUMBER_OF_STOCKS = 3;
     public static final int NUMBER_OF_RECEIPTS = 9;
     public static final int NUMBER_OF_RECEIPT_RECORDS = 7;
-    public static final int NUMBER_OF_TABLES = 8;
-    public static final int NUMBER_OF_DISPLAYABLE_TABLES = 3;
+    public static final int NUMBER_OF_TABLES = 12;
+    public static final int NUMBER_OF_DISPLAYABLE_TABLES = 6;
     public static final int NUMBER_OF_RESERVATIONS = 2;
     public static final int NUMBER_OF_RESTAURANT = 1;
     public static final int NUMBER_OF_VAT_SERIE = 1;
@@ -121,7 +121,11 @@ public class BuildTestSchemaRule implements TestRule {
 
     private @Getter Table tableNormal;
     private @Getter Table tableNormalClosed;
-    private @Getter Table tableVirtual;
+    private @Getter Table tableAggregate;
+    private @Getter Table tableConsumed;
+    private @Getter Table tableLoiterer;
+    private @Getter Table tableFrequenter;
+    private @Getter Table tableEmployee;
     private @Getter Table tablePurchase;
     private @Getter Table tableInventory;
     private @Getter Table tableDisposal;
@@ -227,6 +231,7 @@ public class BuildTestSchemaRule implements TestRule {
         productsAndRecipes();
         recipesAndProducts();
         productFourAndStocks();
+        tables();
         tablesAndReceipts();
         tablesAndReservations();
         receiptsAndReceiptRecords();
@@ -348,7 +353,11 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildTables() {
         buildTableNormal();
         buildTableNormalClosed();
-        buildTableVirtual();
+        buildTableAggregate();
+        buildTableConsumed();
+        buildTableLoiterer();
+        buildTableFrequenter();
+        buildTableEmployee();
         buildTablePurchase();
         buildTableInventory();
         buildTableDisposal();
@@ -1188,11 +1197,63 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
-    private void buildTableVirtual() {
-        tableVirtual = Table.builder()
+    private void buildTableAggregate() {
+        tableAggregate = Table.builder()
+                .number(4)
+                .name("Összetolt Ödön")
+                .type(TableType.AGGREGATE)
+                .visible(true)
+                .capacity(1)
+                .guestCount(1)
+                .coordinateX(100)
+                .coordinateY(100)
+                .build();
+    }
+
+    private void buildTableConsumed() {
+        tableConsumed = Table.builder()
+                .number(5)
+                .name("Bekebelezett Bence")
+                .type(TableType.CONSUMED)
+                .visible(false)
+                .capacity(1)
+                .guestCount(1)
+                .coordinateX(100)
+                .coordinateY(100)
+                .build();
+    }
+
+    private void buildTableLoiterer() {
+        tableLoiterer = Table.builder()
                 .number(2)
                 .name("Bódult Karcsi")
-                .type(TableType.VIRTUAL)
+                .type(TableType.LOITERER)
+                .visible(true)
+                .capacity(1)
+                .guestCount(1)
+                .coordinateX(100)
+                .coordinateY(100)
+                .build();
+    }
+
+    private void buildTableFrequenter() {
+        tableFrequenter = Table.builder()
+                .number(6)
+                .name("Törzs Vendég")
+                .type(TableType.FREQUENTER)
+                .visible(true)
+                .capacity(1)
+                .guestCount(1)
+                .coordinateX(100)
+                .coordinateY(100)
+                .build();
+    }
+
+    private void buildTableEmployee() {
+        tableEmployee = Table.builder()
+                .number(7)
+                .name("Csapos Csajszi")
+                .type(TableType.EMPLOYEE)
                 .visible(true)
                 .capacity(1)
                 .guestCount(1)
@@ -1420,6 +1481,11 @@ public class BuildTestSchemaRule implements TestRule {
         stockThree.setOwner(productRecipeElementOne);
     }
 
+    private void tables() {
+        tableAggregate.setConsumed(Collections.singletonList(tableConsumed));
+        tableConsumed.setConsumer(tableAggregate);
+    }
+
     private void tablesAndReceipts() {
         receiptsToTables();
         tablesToReceipts();
@@ -1484,11 +1550,16 @@ public class BuildTestSchemaRule implements TestRule {
     private void restaurantAndTables() {
         //FIXME: Add service for building special tables in production
         restaurant.setTables(new HashSet<>(
-                Arrays.asList(tableNormal, tableNormalClosed, tableVirtual, tablePurchase,
-                        tableInventory, tableDisposal, tableOther, tableOrphanage)));
+                Arrays.asList(tableNormal, tableNormalClosed, tableAggregate, tableConsumed, tableLoiterer,
+                        tableFrequenter, tableEmployee, tablePurchase, tableInventory, tableDisposal, tableOther,
+                        tableOrphanage)));
         tableNormal.setOwner(restaurant);
         tableNormalClosed.setOwner(restaurant);
-        tableVirtual.setOwner(restaurant);
+        tableAggregate.setOwner(restaurant);
+        tableConsumed.setOwner(restaurant);
+        tableLoiterer.setOwner(restaurant);
+        tableFrequenter.setOwner(restaurant);
+        tableEmployee.setOwner(restaurant);
         tablePurchase.setOwner(restaurant);
         tableInventory.setOwner(restaurant);
         tableDisposal.setOwner(restaurant);
@@ -1506,8 +1577,8 @@ public class BuildTestSchemaRule implements TestRule {
     private void tablesToReceipts() {
         receiptSaleOne.setOwner(tableNormal);
         receiptSaleTwo.setOwner(tableNormal);
-        receiptSaleThree.setOwner(tableVirtual);
-        receiptSaleFour.setOwner(tableVirtual);
+        receiptSaleThree.setOwner(tableLoiterer);
+        receiptSaleFour.setOwner(tableLoiterer);
         receiptSaleClosedTable.setOwner(tableNormalClosed);
         receiptPurchase.setOwner(tablePurchase);
         receiptInventory.setOwner(tableInventory);
@@ -1520,7 +1591,7 @@ public class BuildTestSchemaRule implements TestRule {
                 Arrays.asList(receiptSaleOne, receiptSaleTwo)));
         tableNormalClosed.setReceipts(new HashSet<>(
                 Collections.singletonList(receiptSaleClosedTable)));
-        tableVirtual.setReceipts(new HashSet<>(
+        tableLoiterer.setReceipts(new HashSet<>(
                 Arrays.asList(receiptSaleThree, receiptSaleFour)));
         tablePurchase.setReceipts(new HashSet<>(
                 Collections.singletonList(receiptPurchase)));

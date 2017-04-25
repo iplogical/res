@@ -2,13 +2,14 @@ package com.inspirationlogical.receipt.waiter.viewstate;
 
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.MotionViewState;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
 import javafx.beans.property.BooleanProperty;
 import lombok.Data;
 
 @Data
 public class RestaurantViewState implements ViewState {
-    private boolean virtual;
+    private TableType tableType;
     private BooleanProperty configurable;
     private MotionViewState motionViewState;
 
@@ -16,11 +17,11 @@ public class RestaurantViewState implements ViewState {
         motionViewState = new MotionViewState();
     }
 
-    public boolean isVirtual() {
-        return virtual;
+    public TableType getTableType() {
+        return tableType;
     }
 
-    public void setVirtual(boolean virtual) {
-        this.virtual = virtual;
+    public void setTableType(TableType tableType) {
+        this.tableType = tableType;
     }
 }

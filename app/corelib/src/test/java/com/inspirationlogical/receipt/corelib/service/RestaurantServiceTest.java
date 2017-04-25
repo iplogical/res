@@ -108,9 +108,9 @@ public class RestaurantServiceTest {
         //given
         when(tableView.getAdapter()).thenReturn(tableAdapter);
         //when
-        service.setTableType(tableView, TableType.VIRTUAL);
+        service.setTableType(tableView, TableType.LOITERER);
         //then
-        verify(tableAdapter).setType(eq(TableType.VIRTUAL));
+        verify(tableAdapter).setType(eq(TableType.LOITERER));
     }
 
     @Test

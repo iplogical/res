@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.builder;
 
 import com.inspirationlogical.receipt.corelib.frontend.builder.ContextMenuBuilder;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.RestaurantController;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
@@ -28,7 +29,7 @@ public class RestaurantContextMenuBuilderDecorator extends ContextMenuBuilderDec
                     .withClickHandlerPoint2D(restaurantController::showCreateTableForm)
                     .build();
             contextMenu.getItems().addAll(addTable);
-            if (!restaurantViewState.isVirtual()) {
+            if (restaurantViewState.getTableType().equals(TableType.NORMAL)) {
                 MenuItem mergeTables = new ContextMenuItemBuilder()
                         .withLabel(Resources.WAITER.getString("ContextMenu.MergeTable"))
                         .withClickHandler(restaurantController::mergeTables)

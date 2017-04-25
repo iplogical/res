@@ -79,8 +79,8 @@ public class TableAdapterTest {
 
     @Test
     public void testSetTableType() {
-        tableNormal.setType(TableType.VIRTUAL);
-        assertEquals(TableType.VIRTUAL, TableAdapter.getTableByNumber(
+        tableNormal.setType(TableType.LOITERER);
+        assertEquals(TableType.LOITERER, TableAdapter.getTableByNumber(
                 tableNormal.getAdaptee().getNumber()).getAdaptee().getType());
     }
 
@@ -210,7 +210,7 @@ public class TableAdapterTest {
     @Test
     public void testGetTablesByType() {
         assertEquals(2, TableAdapter.getTablesByType(TableType.NORMAL).size());
-        assertEquals(1, TableAdapter.getTablesByType(TableType.VIRTUAL).size());
+        assertEquals(1, TableAdapter.getTablesByType(TableType.LOITERER).size());
         assertEquals(1, TableAdapter.getTablesByType(TableType.DISPOSAL).size());
     }
 }

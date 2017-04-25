@@ -47,7 +47,9 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         return tables.stream()
                 .filter(table -> table.getType().equals(TableType.NORMAL)
                         || table.getType().equals(TableType.AGGREGATE)
-                        || table.getType().equals(TableType.VIRTUAL))
+                        || table.getType().equals(TableType.LOITERER)
+                        || table.getType().equals(TableType.FREQUENTER)
+                        || table.getType().equals(TableType.EMPLOYEE))
                 .map(TableAdapter::new)
                 .collect(Collectors.toList());
     }

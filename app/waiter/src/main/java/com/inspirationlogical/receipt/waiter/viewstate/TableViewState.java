@@ -22,15 +22,35 @@ public class TableViewState implements ViewState {
         this.tableView = tableView;
     }
 
-    public boolean isVirtual() {
-        return tableView.isVirtual();
-    }
-
     public boolean isOpen() {
         return tableView.isOpen();
     }
 
+    public boolean isVisible() {
+        return tableView.isVisible();
+    }
+
+    public boolean isNormal() {
+        return tableView.isNormal();
+    }
+
     public boolean isAggregate() {
-        return tableView.isVirtual();
+        return tableView.isAggregate();
+    }
+
+    public boolean isConsumed() {
+        return tableView.isConsumed();
+    }
+
+    public boolean isLoiterer() {
+        return tableView.isLoiterer();
+    }
+
+    public boolean isFrequenter() {
+        return tableView.isFrequenter();
+    }
+
+    public boolean isEmployee() {
+        return tableView.isEmployee();
     }
 }

@@ -28,7 +28,7 @@
                               <Insets bottom="-8.0" top="-8.0" />
                            </VBox.margin>
                         </Label>
-                        <HBox alignment="CENTER" prefHeight="40.0" spacing="2.0">
+                        <HBox alignment="CENTER" prefHeight="40.0">
                            <children>
                               <Label fx:id="guests" text="%Table.Guests" />
                               <Label text="/" />
@@ -49,7 +49,7 @@
                                     <Image url="@../../images/sticky_note.png" />
                                  </image>
                                  <HBox.margin>
-                                    <Insets bottom="5.0" right="5.0" />
+                                    <Insets bottom="2.0" right="2.0" />
                                  </HBox.margin>
                               </ImageView>
                            </children>

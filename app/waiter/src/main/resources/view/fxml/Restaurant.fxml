@@ -97,11 +97,7 @@
                                                    </image>
                                                 </ImageView>
                                                 <Pane maxHeight="5.0" maxWidth="1.7976931348623157E308" prefHeight="5.0" style="-fx-background-color: #f3f3f3;" AnchorPane.leftAnchor="-70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                <Label fx:id="tablesLab" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <graphic>
-                                                      <AnchorPane />
-                                                   </graphic>
-                                                </Label>
+                                                <Label fx:id="tablesControl" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                              </children>
                                           </AnchorPane>
                                        </children>
@@ -110,19 +106,15 @@
                               </VBox>
                            </content>
                       </Tab>
-                      <Tab closable="false" onSelectionChanged="#onVirtualSelected" text="%Restaurant.Virtual">
+                      <Tab closable="false" onSelectionChanged="#onLoiterersSelected" text="%Restaurant.Loiterers">
                            <content>
                               <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
                                  <children>
                                     <StackPane alignment="TOP_CENTER" prefHeight="670.0">
                                        <children>
-                                          <AnchorPane fx:id="virtualTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                          <AnchorPane fx:id="loiterersTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                              <children>
-                                                <Label fx:id="virtualLab" maxHeight="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <graphic>
-                                                      <AnchorPane />
-                                                   </graphic>
-                                                </Label>
+                                                <Label fx:id="loiterersControl" maxHeight="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                              </children>
                                           </AnchorPane>
                                           <Pane maxHeight="5.0" prefHeight="5.0" style="-fx-background-color: #efefef;" />
@@ -132,6 +124,42 @@
                               </VBox>
                            </content>
                       </Tab>
+                        <Tab closable="false" onSelectionChanged="#onFrequentersSelected" text="%Restaurant.Frequenters">
+                           <content>
+                              <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
+                                 <children>
+                                    <StackPane alignment="TOP_CENTER" prefHeight="670.0">
+                                       <children>
+                                          <AnchorPane fx:id="frequentersTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                             <children>
+                                                <Label fx:id="frequentersControl" maxHeight="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                          <Pane maxHeight="5.0" prefHeight="5.0" style="-fx-background-color: #efefef;" />
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </Tab>
+                        <Tab closable="false" onSelectionChanged="#onEmployeesSelected" text="%Restaurant.Employees">
+                           <content>
+                              <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff;">
+                                 <children>
+                                    <StackPane alignment="TOP_CENTER" prefHeight="670.0">
+                                       <children>
+                                          <AnchorPane fx:id="employeesTab" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                             <children>
+                                                <Label fx:id="employeesControl" maxHeight="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                          <Pane maxHeight="5.0" prefHeight="5.0" style="-fx-background-color: #efefef;" />
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </Tab>
                     </tabs>
                   </TabPane>
                </children>
