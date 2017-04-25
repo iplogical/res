@@ -1,8 +1,4 @@
-﻿Asztal számozás összetolás esetén: pl 7-9 FUTURE
-
-Fogyasztás átmozgatása egyik asztalról másikra FUTURE
-
-Lépcsők a bejáratnál FUTURE
+﻿Fogyasztás átmozgatása egyik asztalról másikra FUTURE
 
 Asztalok
 asztalszám kapacitás méret
@@ -23,8 +19,6 @@ asztalszám kapacitás méret
 Virtuális asztal számozása a tényleges asztalt jelenti ahol ül FUTURE
 
 Kontext menu sebessége a kis gépen PRIORITY 1 [Attila]
-
-Törzsvendégek, alkalmazottak és lézengők tab PRIORITY 2 [Attila]
 
 Napi fogyasztáshoz időintervallum FUTURE
 
@@ -50,5 +44,3 @@ manager terminálban tabok legyenek gombok helyett
 Szirup + Topping - bevitel
 
 Téli akciók - bevitel
-
-Asztalok összetolásánál az összetolt asztalok nem törlődnek csak nem láthatók. Széthúzásnál újra láthatók.
