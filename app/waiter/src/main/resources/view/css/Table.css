@@ -6,3 +6,8 @@
     -fx-font-size: 32;
     -fx-font-weight: bold;
 }
+
+.loiterers {
+    -fx-font-size: 10;
+    -fx-font-weight: bold;
+}

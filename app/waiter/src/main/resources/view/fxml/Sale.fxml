@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.geometry.*?>
@@ -41,27 +42,50 @@
                            <children>
                               <AnchorPane>
                                  <children>
-                                    <VBox spacing="5.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+                                    <VBox spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
                                           <Button fx:id="guestPlus" mnemonicParsing="false" onAction="#onGuestPlus" style="-fx-background-color: #ffffff;">
                                              <graphic>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../../images/meeple_green.png" />
+                                                      <Image url="@../../images/meeple.png" />
                                                    </image>
+                                                   <effect>
+                                                      <Blend mode="SRC_ATOP">
+                                                         <topInput>
+                                                            <ColorInput height="32.0" paint="#00bf00" width="32.0" />
+                                                         </topInput>
+                                                      </Blend>
+                                                   </effect>
                                                 </ImageView>
                                              </graphic>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
                                           </Button>
                                           <Button fx:id="guestMinus" mnemonicParsing="false" onAction="#onGuestMinus" style="-fx-background-color: #ffffff;">
                                              <graphic>
-                                                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../../images/meeple_red.png" />
+                                                      <Image url="@../../images/meeple.png" />
                                                    </image>
+                                                   <effect>
+                                                      <Blend mode="SRC_ATOP">
+                                                         <topInput>
+                                                            <ColorInput height="32.0" width="32.0" />
+                                                         </topInput>
+                                                      </Blend>
+                                                   </effect>
                                                 </ImageView>
                                              </graphic>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
                                           </Button>
                                        </children>
+                                       <padding>
+                                          <Insets left="5.0" top="5.0" />
+                                       </padding>
                                     </VBox>
                                     <VBox alignment="CENTER" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="150.0">
                                        <children>
