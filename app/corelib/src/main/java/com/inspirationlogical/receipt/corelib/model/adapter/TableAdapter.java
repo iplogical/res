@@ -64,6 +64,11 @@ public class TableAdapter extends AbstractAdapter<Table> {
                     return query;});
     }
 
+    public static int getFirstUnusedNumber() {
+        List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_FIRST_UNUSED_NUMBER, query -> query);
+        return tables.stream().mapToInt(Table::getNumber).min().orElse(0) + 1;
+    }
+
     public void updateStock(List<StockParams> paramsList, ReceiptType receiptType) {
         ReceiptAdapter receiptAdapter = ReceiptAdapter.receiptAdapterFactory(receiptType);
         receiptAdapter.addStockRecords(paramsList);

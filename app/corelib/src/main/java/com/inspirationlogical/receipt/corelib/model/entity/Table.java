@@ -39,7 +39,9 @@ import lombok.experimental.Tolerate;
     @NamedQuery(name = Table.GET_TABLE_BY_TYPE,
             query="FROM Table t WHERE t.type=:type"),
     @NamedQuery(name = Table.GET_TABLE_BY_CONSUMER,
-            query="FROM Table t WHERE t.consumer=:consumer")
+            query="FROM Table t WHERE t.consumer=:consumer"),
+    @NamedQuery(name = Table.GET_FIRST_UNUSED_NUMBER,
+            query="FROM Table AS t1 WHERE NOT EXISTS (FROM Table AS t2 WHERE t2.number = t1.number + 1)")
 })
 @AttributeOverride(name = "id", column = @Column(name = "TABLE_ID"))
 @ValidReceipts
@@ -50,6 +52,7 @@ public @Data class Table extends AbstractEntity {
     public static final String GET_TABLE_BY_NUMBER = "Table.GetTableByNumber";
     public static final String GET_TABLE_BY_TYPE = "Table.GetTableByType";
     public static final String GET_TABLE_BY_CONSUMER = "Table.GetTableByConsumer";
+    public static final String GET_FIRST_UNUSED_NUMBER = "Table.GetFirstUnusedNumber";
 
     @NotNull(message = "A table must belong to a restaurant")
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})

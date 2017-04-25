@@ -18,6 +18,8 @@ public interface RestaurantService {
 
     List<TableView> getTables(RestaurantView restaurant);
 
+    int getFirstUnusedNumber();
+
     TableView addTable(RestaurantView restaurant, TableBuilder builder);
 
     ReceiptView getActiveReceipt(TableView tableView);

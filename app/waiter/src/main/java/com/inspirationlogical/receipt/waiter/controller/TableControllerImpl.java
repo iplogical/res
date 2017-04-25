@@ -31,8 +31,8 @@ import javafx.scene.layout.StackPane;
 
 public class TableControllerImpl implements TableController {
 
-    public static final String TABLE_VIEW_PATH = "/view/fxml/Table.fxml";
-    public static final String CONSUMED_VIEW_PATH = "/view/fxml/ConsumedTable.fxml";
+    private static final String TABLE_VIEW_PATH = "/view/fxml/Table.fxml";
+    private static final String CONSUMED_VIEW_PATH = "/view/fxml/ConsumedTable.fxml";
 
     @FXML
     Label root;

@@ -162,6 +162,11 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
+    public int getFirstUnusedTableNumber() {
+        return restaurantService.getFirstUnusedNumber();
+    }
+
+    @Override
     public void showCreateTableForm(Point2D position) {
         tableFormController.loadTable(null);
 

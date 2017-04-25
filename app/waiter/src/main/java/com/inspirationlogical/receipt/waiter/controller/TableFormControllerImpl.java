@@ -24,7 +24,10 @@ import javafx.util.converter.IntegerStringConverter;
 @Singleton
 public class TableFormControllerImpl implements TableFormController {
 
-    public static final String TABLE_FORM_VIEW_PATH = "/view/fxml/TableForm.fxml";
+    private static final String TABLE_FORM_VIEW_PATH = "/view/fxml/TableForm.fxml";
+    private static final Integer TABLE_DEFAULT_CAPACITY = 4;
+    private static final Integer TABLE_DEFAULT_WIDTH = 80;
+    private static final Integer TABLE_DEFAULT_HEIGHT = 80;
 
     @FXML
     VBox root;
@@ -117,13 +120,13 @@ public class TableFormControllerImpl implements TableFormController {
         } else {
             creation = true;
             title.setText(resourceBundle.getString("TableForm.Create"));
-            number.clear();
-            capacity.clear();
+            number.setText(String.valueOf(restaurantController.getFirstUnusedTableNumber()));
+            capacity.setText(TABLE_DEFAULT_CAPACITY.toString());
             tableName.clear();
             guestCount.clear();
             note.clear();
-            width.clear();
-            height.clear();
+            width.setText(TABLE_DEFAULT_WIDTH.toString());
+            height.setText(TABLE_DEFAULT_HEIGHT.toString());
         }
     }
 

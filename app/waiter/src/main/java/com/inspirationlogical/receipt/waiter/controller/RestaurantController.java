@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Control;
 
 public interface RestaurantController extends Controller {
+    int getFirstUnusedTableNumber();
     void showCreateTableForm(Point2D position);
     void showEditTableForm(Control control);
     void createTable(Integer number, Integer capacity, Dimension2D dimension);

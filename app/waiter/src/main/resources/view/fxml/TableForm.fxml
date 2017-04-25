@@ -104,11 +104,16 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="width" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Centimeters">
+                        <TextField fx:id="width" alignment="CENTER" prefWidth="70.0" promptText="%TableForm.Centimeters">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </TextField>
+                        <Label prefWidth="25.0" text="%TableForm.Centimeters">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
@@ -118,11 +123,16 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="height" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Centimeters">
+                        <TextField fx:id="height" alignment="CENTER" prefWidth="70.0" promptText="%TableForm.Centimeters">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </TextField>
+                        <Label prefWidth="25.0" text="%TableForm.Centimeters">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
                   <HBox spacing="5.0">

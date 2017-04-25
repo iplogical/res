@@ -41,6 +41,11 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
+    public int getFirstUnusedNumber() {
+        return TableAdapter.getFirstUnusedNumber();
+    }
+
+    @Override
     public TableView addTable(RestaurantView restaurant, TableBuilder builder) {
         return new TableViewImpl(getRestaurantAdapter(restaurant).addTable(builder));
     }
