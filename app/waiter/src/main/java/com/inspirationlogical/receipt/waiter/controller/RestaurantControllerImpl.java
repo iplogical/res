@@ -268,8 +268,14 @@ public class RestaurantControllerImpl implements RestaurantController {
             removeNode((Pane) node.getParent(), node);
             tableControllers.remove(tableController);
         } catch (IllegalTableStateException e) {
-            ErrorMessage.showErrorMessage(getActiveTab(),
-                    Resources.WAITER.getString("TableIsOpen") + tableView.getNumber());
+            if (tableView.isOpen()) {
+                ErrorMessage.showErrorMessage(getActiveTab(),
+                        Resources.WAITER.getString("TableIsOpen") + tableView.getNumber());
+            }
+            if (tableView.isAggregate()) {
+                ErrorMessage.showErrorMessage(getActiveTab(),
+                        Resources.WAITER.getString("TableIsAggregate") + tableView.getNumber());
+            }
             initRestaurant();
         }
     }
