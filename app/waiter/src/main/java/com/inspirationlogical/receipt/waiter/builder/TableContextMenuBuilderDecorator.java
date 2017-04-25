@@ -46,14 +46,14 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
                     .withClickHandlerControl(restaurantController::deleteTable)
                     .build();
             contextMenu.getItems().addAll(rotateTable, deleteTable);
-            if (tableViewState.isNormal()) {
+            if (tableViewState.isSelected()) {
                 MenuItem mergeTables = new ContextMenuItemBuilder()
                         .withLabel(Resources.WAITER.getString("ContextMenu.MergeTable"))
                         .withClickHandler(restaurantController::mergeTables)
                         .build();
                 contextMenu.getItems().add(mergeTables);
             }
-            if (!tableViewState.isAggregate()) {
+            if (tableViewState.isAggregate()) {
                 MenuItem splitTables = new ContextMenuItemBuilder()
                         .withLabel(Resources.WAITER.getString("ContextMenu.SplitTable"))
                         .withClickHandlerControl(restaurantController::splitTables)

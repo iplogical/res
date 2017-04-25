@@ -12,16 +12,9 @@ public class RestaurantViewState implements ViewState {
     private TableType tableType;
     private BooleanProperty configurable;
     private MotionViewState motionViewState;
+    private boolean hasSelection;
 
     public RestaurantViewState() {
         motionViewState = new MotionViewState();
-    }
-
-    public TableType getTableType() {
-        return tableType;
-    }
-
-    public void setTableType(TableType tableType) {
-        this.tableType = tableType;
     }
 }

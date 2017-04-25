@@ -352,6 +352,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         } else {
             selectedTables.remove(tableController);
         }
+        restaurantViewState.setHasSelection(!selectedTables.isEmpty());
     }
 
     @Override
