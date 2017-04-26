@@ -13,6 +13,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 
+import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 
@@ -152,5 +153,10 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
                 .stream()
                 .map(ReservationViewImpl::new)
                 .collect(toList());
+    }
+
+    @Override
+    public void addReservation(ReservationParams params) {
+        ReservationAdapter.addReservation(params);
     }
 }

@@ -3,6 +3,8 @@ package com.inspirationlogical.receipt.waiter.viewmodel;
 import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import lombok.Data;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 /**
  * Created by TheDagi on 2017. 04. 26..
  */
@@ -29,5 +31,9 @@ public @Data class ReservationViewModel {
         this.date = reservationView.getDate();
         this.startTime = reservationView.getStartTime();
         this.endTime = reservationView.getEndTime();
+    }
+
+    public int getTableNumberAsInt() {
+        return Integer.valueOf(tableNumber);
     }
 }

@@ -11,6 +11,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
+import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 
@@ -58,4 +59,6 @@ public interface RestaurantService {
     void closeDay();
 
     List<ReservationView> getReservations(LocalDate date);
+
+    void addReservation(ReservationParams params);
 }
