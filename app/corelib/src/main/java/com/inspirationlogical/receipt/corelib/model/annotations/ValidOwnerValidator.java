@@ -1,11 +1,11 @@
 package com.inspirationlogical.receipt.corelib.model.annotations;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 public class ValidOwnerValidator extends AbstractValidator
     implements ConstraintValidator<ValidOwner, Receipt> {
@@ -23,8 +23,6 @@ public class ValidOwnerValidator extends AbstractValidator
         switch (type) {
             case SALE:
                 if (ownerType == TableType.NORMAL
-                        || ownerType == TableType.AGGREGATE
-                        || ownerType == TableType.LOITERER
                         || ownerType == TableType.FREQUENTER
                         || ownerType == TableType.EMPLOYEE
                         || ownerType == TableType.ORPHANAGE) {

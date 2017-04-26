@@ -1,14 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
@@ -20,7 +11,14 @@ import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 
-import static java.time.LocalDateTime.now;
+import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -45,7 +43,6 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         Collection<Table> tables = adaptee.getTables();
         return tables.stream()
                 .filter(table -> table.getType().equals(TableType.NORMAL)
-                        || table.getType().equals(TableType.AGGREGATE)
                         || table.getType().equals(TableType.LOITERER)
                         || table.getType().equals(TableType.FREQUENTER)
                         || table.getType().equals(TableType.EMPLOYEE))
@@ -55,7 +52,10 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
 
     public TableAdapter addTable(Table.TableBuilder builder) {
         Table newTable = builder.build();
-        checkTableNumberCollision(newTable.getNumber());
+        if (isTableNumberAlreadyInUse(newTable.getNumber(), newTable.getType())) {
+            newTable.setHost(TableAdapter.getTableByNumber(newTable.getNumber()).getAdaptee());
+            newTable.setNumber(TableAdapter.getFirstUnusedNumber());
+        }
         GuardedTransaction.runWithRefresh(adaptee, () -> {
             adaptee.getTables().add(newTable);
             newTable.setOwner(adaptee);
@@ -63,17 +63,27 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         return new TableAdapter(newTable);
     }
 
-    public void checkTableNumberCollision(int tableNumber) {
+    public boolean isTableNumberAlreadyInUse(int tableNumber, TableType tableType) {
+        Wrapper<Boolean> alreadyInUse = new Wrapper<>();
         GuardedTransaction.runWithRefresh(adaptee, () -> {
-            if (adaptee.getTables().stream().anyMatch(t -> t.getNumber() == tableNumber)) {
-                throw new IllegalTableStateException("The table number " + tableNumber + " is already in use");
+            for (Table table : adaptee.getTables()) {
+                if (table.getNumber() == tableNumber) {
+                    if (tableType.equals(TableType.LOITERER)) {
+                        alreadyInUse.setContent(true);
+                        break;
+                    } else {
+                        throw new IllegalTableStateException("The table number " + tableNumber + " is already in use");
+                    }
+                }
             }
+            alreadyInUse.setContent(false);
         });
+        return alreadyInUse.getContent();
     }
 
-    public void mergeTables(TableAdapter aggregate, List<TableAdapter> consumed) {
-        if (!aggregate.isTableOpen() && consumed.stream().anyMatch(TableAdapter::isTableOpen)) {
-            aggregate.openTable();
+    public void mergeTables(TableAdapter consumer, List<TableAdapter> consumed) {
+        if (!consumer.isTableOpen() && consumed.stream().anyMatch(TableAdapter::isTableOpen)) {
+            consumer.openTable();
         }
         // todo refactor this method into smaller ones
         GuardedTransaction.run(() -> {
@@ -82,7 +92,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                     .filter(Objects::nonNull)
                     .map(receiptAdapter -> {
                         Wrapper<ReceiptAdapter> receiptAdapterWrapper = new Wrapper<>();
-                        receiptAdapterWrapper.setContent(aggregate.getActiveReceipt());
+                        receiptAdapterWrapper.setContent(consumer.getActiveReceipt());
                         Collection<ReceiptRecordAdapter> receiptRecordAdapters = receiptAdapter.getSoldProducts();
                         receiptAdapter.getAdaptee().setStatus(ReceiptStatus.CANCELED);
                         receiptAdapter.getAdaptee().getRecords().clear();
@@ -94,50 +104,45 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                     .flatMap(record -> record.stream().map(ReceiptRecordAdapter::getAdaptee))
                     .collect(Collectors.toList());
 
-            if (aggregate.isTableOpen()) {
-                aggregate.getActiveReceipt().getAdaptee().getRecords().addAll(consumedRecords);
+            if (consumer.isTableOpen()) {
+                consumer.getActiveReceipt().getAdaptee().getRecords().addAll(consumedRecords);
             }
         });
 
 
         GuardedTransaction.run(() -> {
-            aggregate.getAdaptee().setConsumed(new ArrayList<>());
+            consumer.getAdaptee().setConsumed(new ArrayList<>());
             consumed.forEach(adapter -> {
                 Table table = adapter.getAdaptee();
 
                 Collection<Receipt> receipts = table.getReceipts();
                 if (receipts != null) {
-                    receipts.forEach(receipt -> receipt.setOwner(aggregate.getAdaptee()));
-                    aggregate.getAdaptee().getReceipts().addAll(receipts);
+                    receipts.forEach(receipt -> receipt.setOwner(consumer.getAdaptee()));
+                    consumer.getAdaptee().getReceipts().addAll(receipts);
                     receipts.clear();
                 }
 
-                table.setConsumer(aggregate.getAdaptee());
-                aggregate.getAdaptee().getConsumed().add(table);
-                if (table.getType().equals(TableType.AGGREGATE)) {
+                table.setConsumer(consumer.getAdaptee());
+                consumer.getAdaptee().getConsumed().add(table);
+                if (adapter.isTableConsumer()) {
                     for (Table t : table.getConsumed()) {
-                        t.setConsumer(aggregate.getAdaptee());
-                        aggregate.getAdaptee().getConsumed().add(t);
+                        t.setConsumer(consumer.getAdaptee());
+                        consumer.getAdaptee().getConsumed().add(t);
                     }
                 }
-                table.setType(TableType.CONSUMED);
                 adapter.hideTable();
             });
         });
-
-        aggregate.getAdaptee().setType(TableType.AGGREGATE);
     }
 
-    public List<TableAdapter> splitTables(TableAdapter aggregate) {
+    public List<TableAdapter> splitTables(TableAdapter consumer) {
 
-        List<Table> consumed = aggregate.getConsumedTables();
+        List<Table> consumed = consumer.getConsumedTables();
 
         GuardedTransaction.run(() -> {
-            aggregate.getConsumedTables().clear();
-            aggregate.setType(TableType.NORMAL);
+            consumer.getConsumedTables().clear();
             consumed.forEach(table -> {
                 table.setConsumer(null);
-                table.setType(TableType.NORMAL);
                 table.setVisible(true);
             });
         });
@@ -148,7 +153,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     public int getConsumptionOfTheDay(Predicate<Receipt> filter) {
         LocalDateTime previousClosure = DailyClosureAdapter.getLatestClosureTime();
         List<Receipt> closedReceipts = getReceiptsByClosureTime(previousClosure);
-        if (closedReceipts.size() == 0) {
+        if (closedReceipts.isEmpty()) {
             return 0;
         }
         return closedReceipts.stream()

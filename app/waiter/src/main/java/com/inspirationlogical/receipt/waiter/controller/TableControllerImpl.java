@@ -1,24 +1,13 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
-import static java.lang.String.valueOf;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
-
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -28,6 +17,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
+import static java.lang.String.valueOf;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class TableControllerImpl implements TableController {
 
@@ -45,11 +44,15 @@ public class TableControllerImpl implements TableController {
     @FXML
     Label guests;
     @FXML
-    ImageView note;
-    @FXML
     Label number;
     @FXML
     Label capacity;
+    @FXML
+    ImageView note;
+    @FXML
+    ImageView meeple;
+    @FXML
+    Label hosted;
 
     @Inject
     private ViewLoader viewLoader;
@@ -78,7 +81,7 @@ public class TableControllerImpl implements TableController {
         addDragAndDrop(root, tableViewState.getRestaurantViewState().getMotionViewState());
         initVisual();
         updateNode();
-        if (tableView.getType().equals(TableType.AGGREGATE)) {
+        if (tableView.isConsumer()) {
             consumeTables();
         }
     }
@@ -127,7 +130,7 @@ public class TableControllerImpl implements TableController {
             name.setText(tableView.getName());
             number.setText(valueOf(tableView.getNumber()));
 
-            if (tableView.getType().equals(TableType.AGGREGATE)) {
+            if (tableView.isConsumer()) {
 
                 Integer tableGuests = tableView.getGuestCount();
                 Integer tableCapacity = tableView.getCapacity();
@@ -149,6 +152,14 @@ public class TableControllerImpl implements TableController {
                 note.setVisible(false);
             } else {
                 note.setVisible(true);
+            }
+
+            if (tableView.isHost()) {
+                meeple.setVisible(true);
+                hosted.setText(valueOf(tableView.getHostedTables().size()));
+            } else {
+                meeple.setVisible(false);
+                hosted.setText(EMPTY);
             }
 
             CSSUtilities.setBackgroundColor(tableViewState.isOpen(), host);

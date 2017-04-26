@@ -1,13 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER;
-import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
-import static java.util.stream.Collectors.toList;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
@@ -21,10 +13,17 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
-
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import lombok.NonNull;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER;
+import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
+import static java.util.stream.Collectors.toList;
 public class TableAdapter extends AbstractAdapter<Table> {
 
     public TableAdapter(@NonNull Table adaptee) {
@@ -88,6 +87,14 @@ public class TableAdapter extends AbstractAdapter<Table> {
             throw new RuntimeException();
         }
         return new ReceiptAdapter(adapters.get(0));
+    }
+
+    public TableAdapter getConsumer() {
+        return new TableAdapter(adaptee.getConsumer());
+    }
+
+    public TableAdapter getHost() {
+        return new TableAdapter(adaptee.getHost());
     }
 
     public void setName(String name) {
@@ -180,8 +187,8 @@ public class TableAdapter extends AbstractAdapter<Table> {
         if (isTableOpen()) {
             throw new IllegalTableStateException("Delete table for an open table. Table number: " + adaptee.getNumber());
         }
-        if (adaptee.getType().equals(TableType.AGGREGATE)) {
-            throw new IllegalTableStateException("Delete table for an aggregate table. Table number: " + adaptee.getNumber());
+        if (isTableConsumer()) {
+            throw new IllegalTableStateException("Delete table for a consumer table. Table number: " + adaptee.getNumber());
         }
         GuardedTransaction.runWithRefresh(adaptee, () -> {
             List<Table> orphanageList = getTablesByType(TableType.ORPHANAGE);
@@ -215,13 +222,36 @@ public class TableAdapter extends AbstractAdapter<Table> {
         adaptee.getReceipts().add(receiptAdapter.getAdaptee());
     }
 
-    protected boolean isTableOpen() {
+    public boolean isTableOpen() {
         return this.getActiveReceipt() != null;
+    }
+
+    public boolean isTableConsumer() {
+        return !this.getConsumedTables().isEmpty();
+    }
+
+    public boolean isTableConsumed() {
+        return adaptee.getConsumer() != null;
+    }
+
+    public boolean isTableHost() {
+        return !this.getHostedTables().isEmpty();
+    }
+
+    public boolean isTableHosted() {
+        return adaptee.getHost() != null;
     }
 
     public List<Table> getConsumedTables() {
         return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_CONSUMER, query -> {
             query.setParameter("consumer", adaptee);
+            return query;
+        });
+    }
+
+    public List<Table> getHostedTables() {
+        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_HOST, query -> {
+            query.setParameter("host", adaptee);
             return query;
         });
     }

@@ -1,7 +1,27 @@
 package com.inspirationlogical.receipt.corelib.model;
 
-import static java.time.LocalDateTime.now;
+import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.model.entity.*;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
+import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
+import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.enums.VATName;
+import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import lombok.Getter;
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -9,18 +29,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import javax.persistence.EntityManager;
 
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
-
-import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
-import com.inspirationlogical.receipt.corelib.model.entity.*;
-import com.inspirationlogical.receipt.corelib.model.enums.*;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-
-import lombok.Getter;
+import static java.time.LocalDateTime.now;
 
 public class BuildTestSchemaRule implements TestRule {
 
@@ -353,7 +363,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildTables() {
         buildTableNormal();
         buildTableNormalClosed();
-        buildTableAggregate();
+        buildTableConsumer();
         buildTableConsumed();
         buildTableLoiterer();
         buildTableFrequenter();
@@ -1197,11 +1207,11 @@ public class BuildTestSchemaRule implements TestRule {
                 .build();
     }
 
-    private void buildTableAggregate() {
+    private void buildTableConsumer() {
         tableAggregate = Table.builder()
                 .number(4)
                 .name("Összetolt Ödön")
-                .type(TableType.AGGREGATE)
+                .type(TableType.NORMAL)
                 .visible(true)
                 .capacity(1)
                 .guestCount(1)
@@ -1214,7 +1224,7 @@ public class BuildTestSchemaRule implements TestRule {
         tableConsumed = Table.builder()
                 .number(5)
                 .name("Bekebelezett Bence")
-                .type(TableType.CONSUMED)
+                .type(TableType.NORMAL)
                 .visible(false)
                 .capacity(1)
                 .guestCount(1)

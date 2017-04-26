@@ -89,7 +89,7 @@
                      <children>
                         <HBox alignment="BOTTOM_LEFT">
                            <children>
-                              <Label fx:id="loiterers" alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="18.0" styleClass="loiterers" text="0" textAlignment="CENTER" textFill="WHITE">
+                              <Label fx:id="hosted" alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="18.0" styleClass="loiterers" text="0" textAlignment="CENTER" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="10.0" />
                                  </font>

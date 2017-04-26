@@ -1,13 +1,12 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -34,13 +33,23 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     }
 
     @Override
-    public boolean isAggregate() {
-        return adapter.getAdaptee().getType().equals(TableType.AGGREGATE);
+    public boolean isConsumer() {
+        return adapter.isTableConsumer();
     }
 
     @Override
     public boolean isConsumed() {
-        return adapter.getAdaptee().getType().equals(TableType.CONSUMED);
+        return adapter.isTableConsumed();
+    }
+
+    @Override
+    public boolean isHost() {
+        return adapter.isTableHost();
+    }
+
+    @Override
+    public boolean isHosted() {
+        return adapter.isTableHosted();
     }
 
     @Override
@@ -105,10 +114,26 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     public Dimension2D getDimension() {
         return new Dimension2D(adapter.getAdaptee().getDimensionX(), adapter.getAdaptee().getDimensionY());
     }
+    @Override
+    public TableView getConsumer() {
+        return new TableViewImpl(adapter.getConsumer());
+    }
 
     @Override
     public List<TableView> getConsumedTables() {
         return adapter.getConsumedTables()
+                .stream()
+                .map(TableAdapter::new)
+                .map(TableViewImpl::new)
+                .collect(Collectors.toList());
+    }
+    @Override
+    public TableView getHost() {
+        return new TableViewImpl(adapter.getHost());
+    }
+    @Override
+    public List<TableView> getHostedTables() {
+        return adapter.getHostedTables()
                 .stream()
                 .map(TableAdapter::new)
                 .map(TableViewImpl::new)

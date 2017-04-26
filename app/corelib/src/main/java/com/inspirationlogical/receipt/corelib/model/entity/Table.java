@@ -1,6 +1,13 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import java.util.Collection;
+import com.inspirationlogical.receipt.corelib.model.annotations.ValidReceipts;
+import com.inspirationlogical.receipt.corelib.model.annotations.ValidTables;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Tolerate;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,15 +24,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import com.inspirationlogical.receipt.corelib.model.annotations.ValidReceipts;
-import com.inspirationlogical.receipt.corelib.model.annotations.ValidTables;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Tolerate;
+import java.util.Collection;
 
 @Entity
 @Builder
@@ -40,6 +39,8 @@ import lombok.experimental.Tolerate;
             query="FROM Table t WHERE t.type=:type"),
     @NamedQuery(name = Table.GET_TABLE_BY_CONSUMER,
             query="FROM Table t WHERE t.consumer=:consumer"),
+    @NamedQuery(name = Table.GET_TABLE_BY_HOST,
+            query="FROM Table t WHERE t.host=:host"),
     @NamedQuery(name = Table.GET_FIRST_UNUSED_NUMBER,
             query="FROM Table AS t1 WHERE NOT EXISTS (FROM Table AS t2 WHERE t2.number = t1.number + 1)")
 })
@@ -52,6 +53,7 @@ public @Data class Table extends AbstractEntity {
     public static final String GET_TABLE_BY_NUMBER = "Table.GetTableByNumber";
     public static final String GET_TABLE_BY_TYPE = "Table.GetTableByType";
     public static final String GET_TABLE_BY_CONSUMER = "Table.GetTableByConsumer";
+    public static final String GET_TABLE_BY_HOST = "Table.GetTableByHost";
     public static final String GET_FIRST_UNUSED_NUMBER = "Table.GetFirstUnusedNumber";
 
     @NotNull(message = "A table must belong to a restaurant")
@@ -97,6 +99,13 @@ public @Data class Table extends AbstractEntity {
 
     @OneToMany(mappedBy = "consumer", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     private Collection<Table> consumed;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @JoinColumn(name = "HOST_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    private Table host;
+
+    @OneToMany(mappedBy = "host", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    private Collection<Table> hosted;
 
     @Tolerate
     Table(){}

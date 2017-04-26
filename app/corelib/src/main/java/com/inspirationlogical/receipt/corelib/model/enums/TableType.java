@@ -9,8 +9,6 @@ import java.util.Map;
 public enum TableType {
 
     NORMAL,
-    AGGREGATE,
-    CONSUMED,
     LOITERER,
     FREQUENTER,
     EMPLOYEE,

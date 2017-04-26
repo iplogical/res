@@ -2,22 +2,29 @@ package com.inspirationlogical.receipt.corelib.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-
 import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.model.adapter.*;
+import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.view.*;
-
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
+import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
+import com.inspirationlogical.receipt.corelib.model.view.RestaurantViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
+import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 
 import static java.util.stream.Collectors.toList;
+
+import javax.persistence.EntityManager;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class RestaurantServiceImpl extends AbstractService implements RestaurantService {
@@ -62,7 +69,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant) {
-        getRestaurantAdapter(restaurant).checkTableNumberCollision(tableNumber);
+        getRestaurantAdapter(restaurant).isTableNumberAlreadyInUse(tableNumber, tableView.getType());
         getTableAdapter(tableView).setNumber(tableNumber);
     }
 
@@ -122,20 +129,20 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
-    public void mergeTables(TableView aggregate, List<TableView> consumed) {
-        TableAdapter aggregateTableAdapter = getTableAdapter(aggregate);
+    public void mergeTables(TableView consumer, List<TableView> consumed) {
+        TableAdapter consumerTableAdapter = getTableAdapter(consumer);
         List<TableAdapter> consumedTableAdapters = consumed.stream()
                 .map(this::getTableAdapter)
                 .collect(toList());
 
-        getRestaurantAdapter(getActiveRestaurant()).mergeTables(aggregateTableAdapter, consumedTableAdapters);
+        getRestaurantAdapter(getActiveRestaurant()).mergeTables(consumerTableAdapter, consumedTableAdapters);
     }
 
     @Override
-    public List<TableView> splitTables(TableView aggregate) {
-        TableAdapter aggregateTableAdapter = getTableAdapter(aggregate);
+    public List<TableView> splitTables(TableView consumer) {
+        TableAdapter consumerTableAdapter = getTableAdapter(consumer);
 
-        return getRestaurantAdapter(getActiveRestaurant()).splitTables(aggregateTableAdapter)
+        return getRestaurantAdapter(getActiveRestaurant()).splitTables(consumerTableAdapter)
                 .stream()
                 .map(TableViewImpl::new)
                 .collect(toList());

@@ -1,23 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculatePopupPosition;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculateTablePosition;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.moveNode;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.removeNode;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
-import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 import static java.util.stream.Collectors.toList;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
@@ -38,7 +21,6 @@ import com.inspirationlogical.receipt.waiter.exception.ViewNotFoundException;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.ConfirmMessage;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
-
 import javafx.beans.binding.Bindings;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -55,6 +37,24 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import javafx.util.Duration;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculatePopupPosition;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculateTablePosition;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.moveNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.removeNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
+import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @Singleton
 public class RestaurantControllerImpl implements RestaurantController {
@@ -292,14 +292,17 @@ public class RestaurantControllerImpl implements RestaurantController {
             removeNode((Pane) node.getParent(), node);
             tableControllers.remove(tableController);
         } catch (IllegalTableStateException e) {
+            String errorMessage = EMPTY;
             if (tableView.isOpen()) {
-                ErrorMessage.showErrorMessage(getActiveTab(),
-                        Resources.WAITER.getString("TableIsOpen") + tableView.getNumber());
+                errorMessage = Resources.WAITER.getString("TableIsOpen");
             }
-            if (tableView.isAggregate()) {
-                ErrorMessage.showErrorMessage(getActiveTab(),
-                        Resources.WAITER.getString("TableIsAggregate") + tableView.getNumber());
+            if (tableView.isConsumer()) {
+                errorMessage = Resources.WAITER.getString("TableIsConsumer");
             }
+            if (tableView.isHost()) {
+                errorMessage = Resources.WAITER.getString("TableIsHost");
+            }
+            ErrorMessage.showErrorMessage(getActiveTab(), errorMessage + tableView.getNumber());
             initRestaurant();
         }
     }
@@ -334,16 +337,14 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void mergeTables() {
         if (selectedTables.size() > 1) {
             TableController firstSelected = selectedTables.iterator().next();
-            TableView aggregate = firstSelected.getView();
+            TableView consumer = firstSelected.getView();
             List<TableView> consumed = new ArrayList<>();
 
             selectedTables.stream()
                     .filter(tableController -> !tableController.equals(firstSelected))
-                    .forEach(tableController -> {
-                consumed.add(tableController.getView());
-            });
+                    .forEach(tableController -> consumed.add(tableController.getView()));
 
-            restaurantService.mergeTables(aggregate, consumed);
+            restaurantService.mergeTables(consumer, consumed);
 
             firstSelected.consumeTables();
             firstSelected.updateNode();
@@ -462,7 +463,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private void initTables() {
         tablesTab.getChildren().removeAll(tableControllers.stream()
-                .filter(tableController -> tableController.getView().isNormal() || tableController.getView().isAggregate())
+                .filter(tableController -> tableController.getView().isNormal() || tableController.getView().isConsumer())
                 .map(TableController::getRoot).collect(toList()));
         loiterersTab.getChildren().removeAll(tableControllers.stream()
                 .filter(tableController -> tableController.getView().isLoiterer())
@@ -491,7 +492,6 @@ public class RestaurantControllerImpl implements RestaurantController {
     private void addNodeToPane(Node node, TableType tableType) {
         switch (tableType) {
             case NORMAL:
-            case AGGREGATE:
                 moveNode(node, tablesTab);
                 break;
             case LOITERER:
@@ -509,7 +509,6 @@ public class RestaurantControllerImpl implements RestaurantController {
     private Pane getActiveTab() {
         switch (restaurantViewState.getTableType()) {
             case NORMAL:
-            case AGGREGATE:
                 return tablesTab;
             case LOITERER:
                 return loiterersTab;

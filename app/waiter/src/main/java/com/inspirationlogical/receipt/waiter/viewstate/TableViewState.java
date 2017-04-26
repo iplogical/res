@@ -35,7 +35,7 @@ public class TableViewState implements ViewState {
     }
 
     public boolean isAggregate() {
-        return tableView.isAggregate();
+        return tableView.isConsumer();
     }
 
     public boolean isConsumed() {
