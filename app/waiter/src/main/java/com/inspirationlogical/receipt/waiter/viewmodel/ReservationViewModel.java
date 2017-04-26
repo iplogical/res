@@ -1,0 +1,33 @@
+package com.inspirationlogical.receipt.waiter.viewmodel;
+
+import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
+import lombok.Data;
+
+/**
+ * Created by TheDagi on 2017. 04. 26..
+ */
+public @Data class ReservationViewModel {
+    private String name;
+
+    private String tableNumber;
+
+    private String guestCount;
+
+    private String note;
+
+    private String date;
+
+    private String startTime;
+
+    private String endTime;
+
+    public ReservationViewModel(ReservationView reservationView) {
+        this.name = reservationView.getName();
+        this.tableNumber = reservationView.getTableNumber();
+        this.guestCount = reservationView.getGuestCount();
+        this.note = reservationView.getNote();
+        this.date = reservationView.getDate();
+        this.startTime = reservationView.getStartTime();
+        this.endTime = reservationView.getEndTime();
+    }
+}

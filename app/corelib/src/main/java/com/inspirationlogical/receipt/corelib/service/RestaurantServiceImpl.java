@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.corelib.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
@@ -13,6 +15,8 @@ import com.inspirationlogical.receipt.corelib.model.view.*;
 
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
+
+import static java.util.stream.Collectors.toList;
 
 
 public class RestaurantServiceImpl extends AbstractService implements RestaurantService {
@@ -121,7 +125,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
         TableAdapter aggregateTableAdapter = getTableAdapter(aggregate);
         List<TableAdapter> consumedTableAdapters = consumed.stream()
                 .map(this::getTableAdapter)
-                .collect(Collectors.toList());
+                .collect(toList());
 
         getRestaurantAdapter(getActiveRestaurant()).mergeTables(aggregateTableAdapter, consumedTableAdapters);
     }
@@ -133,12 +137,20 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
         return getRestaurantAdapter(getActiveRestaurant()).splitTables(aggregateTableAdapter)
                 .stream()
                 .map(TableViewImpl::new)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @Override
     public void closeDay() {
         StockAdapter.closeLatestStockEntries();
         DailyClosureAdapter.getOpenDailyClosure().close();
+    }
+
+    @Override
+    public List<ReservationView> getReservations(LocalDate date) {
+        return ReservationAdapter.getReservationsByDate(date)
+                .stream()
+                .map(ReservationViewImpl::new)
+                .collect(toList());
     }
 }

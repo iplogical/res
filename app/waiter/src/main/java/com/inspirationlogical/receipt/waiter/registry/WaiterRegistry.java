@@ -21,6 +21,7 @@ public class WaiterRegistry extends Registry {
         bind(SaleController.class).to(SaleControllerImpl.class);
         bind(PaymentController.class).to(PaymentControllerImpl.class);
         bind(DailySummaryController.class).to(DailySummaryControllerImpl.class);
+        bind(ReservationController.class).to(ReservationControllerImpl.class);
         bind(TableFormController.class).to(TableFormControllerImpl.class);
         bind(AdHocProductFormController.class).to(AdHocProductFormControllerImpl.class);
         bind(RestaurantService.class).to(RestaurantServiceImpl.class);

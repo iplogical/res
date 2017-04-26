@@ -1,6 +1,8 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -18,12 +20,15 @@ import lombok.experimental.Tolerate;
 @javax.persistence.Table(name = "RESERVATION")
 @NamedQueries({
     @NamedQuery(name = Reservation.GET_TEST_RESERVATIONS,
-            query="FROM Reservation r")
+            query="FROM Reservation r"),
+    @NamedQuery(name = Reservation.GET_RESERVATIONS_BY_DATE,
+            query="FROM Reservation r WHERE r.date =:date"),
 })
 @AttributeOverride(name = "id", column = @Column(name = "RESERVATION_ID"))
 public @Data class Reservation extends AbstractEntity {
 
     public static final String GET_TEST_RESERVATIONS = "Reservation.GetTestReservations";
+    public static final String GET_RESERVATIONS_BY_DATE = "Reservation.GetReservationsByDate";
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(name = "TABLE_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
@@ -33,12 +38,17 @@ public @Data class Reservation extends AbstractEntity {
     private int tableNumber;
 
     @NotNull
-    private LocalDateTime startTime;
+    private LocalDate date;
 
-    private LocalDateTime endTime;
+    @NotNull
+    private LocalTime startTime;
+
+    private LocalTime endTime;
 
     @NotEmpty
     private String name;
+
+    private int guestCount;
 
     private String note;
 

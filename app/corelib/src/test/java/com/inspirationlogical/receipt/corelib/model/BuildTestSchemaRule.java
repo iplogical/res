@@ -1299,9 +1299,10 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void buildReservationOne() {
         reservationOne = Reservation.builder()
-                .tableNumber(2)
-                .startTime(LocalDateTime.of(2017, 2, 8, 16, 0))
-                .endTime(LocalDateTime.of(2017, 2, 8, 20, 20))
+                .tableNumber(1)
+                .date(LocalDate.now())
+                .startTime(LocalTime.of(14, 0))
+                .endTime(LocalTime.of(20, 0))
                 .name("TestName1")
                 .note("TestNote1")
                 .build();
@@ -1310,8 +1311,9 @@ public class BuildTestSchemaRule implements TestRule {
     private void buildReservationTwo() {
         reservationTwo = Reservation.builder()
                 .tableNumber(2)
-                .startTime(LocalDateTime.of(2017, 2, 12, 16, 0))
-                .endTime(LocalDateTime.of(2017, 2, 12, 20, 20))
+                .date(LocalDate.now())
+                .startTime(LocalTime.of(14, 0))
+                .endTime(LocalTime.of(20, 0))
                 .name("TestName2")
                 .note("TestNote2")
                 .build();

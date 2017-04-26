@@ -3,9 +3,12 @@ package com.inspirationlogical.receipt.corelib.utility;
 import static java.time.LocalDateTime.now;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import javax.persistence.EntityManager;
 
@@ -519,6 +522,9 @@ public class BuildSchema  {
     private @Getter Table tableOther;
     private @Getter Table tableOrphanage;
 
+    private @Getter Reservation reservationOne;
+    private @Getter Reservation reservationTwo;
+
     private @Getter Restaurant restaurant;
 
     private @Getter VATSerie vatSerie;
@@ -577,10 +583,11 @@ public class BuildSchema  {
         buildVatSeries();
         BuildVATs();
         buildTables();
-//        buildReservations();
+        buildReservations();
         buildRestaurant();
         buildDailyClosures();
     }
+
 
     private void buildDailyClosures() {
         buildDailyClosureOne();
@@ -593,6 +600,7 @@ public class BuildSchema  {
         productsAndCategories();
         vatSerieAndVatValues();
         restaurantAndTables();
+        tablesAndReservations();
         restaurantAndDailyClosures();
     }
 
@@ -4810,6 +4818,32 @@ public class BuildSchema  {
     }
 
 
+    private void buildReservations() {
+        buildReservationOne();
+        buildReservationTwo();
+    }
+
+    private void buildReservationOne() {
+        reservationOne = Reservation.builder()
+                .tableNumber(1)
+                .date(LocalDate.now())
+                .startTime(LocalTime.of(14, 0))
+                .endTime(LocalTime.of(20, 0))
+                .name("TestName1")
+                .note("TestNote1")
+                .build();
+    }
+
+    private void buildReservationTwo() {
+        reservationTwo = Reservation.builder()
+                .tableNumber(2)
+                .date(LocalDate.now())
+                .startTime(LocalTime.of(14, 0))
+                .endTime(LocalTime.of(20, 0))
+                .name("TestName2")
+                .note("TestNote2")
+                .build();
+    }
 
 
 
@@ -6489,6 +6523,16 @@ public class BuildSchema  {
         tableOther.setOwner(restaurant);
         tableOrphanage.setOwner(restaurant);
    }
+
+    private void tablesAndReservations() {
+
+        table1.setReservations(new HashSet<>(
+                Collections.singletonList(reservationOne)));
+        table2.setReservations(new HashSet<>(
+                Collections.singletonList(reservationTwo)));
+        reservationOne.setOwner(table1);
+        reservationTwo.setOwner(table2);
+    }
 
     private void restaurantAndDailyClosures() {
         restaurant.setDailyClosures(new ArrayList<>(

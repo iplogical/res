@@ -622,12 +622,12 @@ csak egy létezhet<y:LabelModel>
           <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="136.310546875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="96.724609375" x="2.0" y="30.701171875">ID
 GU ID
 Verzió ID
-Foglalas Kezdete
-Foglalas Vege
-Asztalszam
-Nev
-Vendegek szama
-Megjegyzes<y:LabelModel>
+Foglalás Kezdete
+Foglalás Vége
+Asztalszám
+Név
+Vendégek száma
+Megjegyzés<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
             </y:LabelModel>
             <y:ModelParameter>

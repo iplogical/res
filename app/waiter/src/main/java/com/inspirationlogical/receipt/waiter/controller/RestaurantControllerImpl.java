@@ -395,8 +395,9 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     public void onReservationClicked(Event event) {
-        Point2D position = calculatePopupPosition(reservation, root);
-        new ReservationFormController(viewLoader).show(root,position);
+        ReservationController reservationController = WaiterRegistry.getInstance(ReservationController.class);
+        reservationController.setRestaurantView(restaurantView);
+        viewLoader.loadViewIntoScene(reservationController);
     }
 
     @FXML

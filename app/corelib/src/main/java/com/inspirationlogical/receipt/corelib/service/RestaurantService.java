@@ -1,10 +1,13 @@
 package com.inspirationlogical.receipt.corelib.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
+import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
@@ -53,4 +56,6 @@ public interface RestaurantService {
     List<TableView> splitTables(TableView aggregate);
 
     void closeDay();
+
+    List<ReservationView> getReservations(LocalDate date);
 }
