@@ -11,6 +11,8 @@ import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.viewmodel.ReservationViewModel;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -77,6 +79,7 @@ public class ReservationControllerImpl extends AbstractController
     private Button confirm;
 
     private CalendarPicker date;
+    private LocalDate selectedDate;
 
     private CalendarTimePicker startTime;
     private CalendarTimePicker endTime;
@@ -163,9 +166,14 @@ public class ReservationControllerImpl extends AbstractController
 
     private void initDate() {
         date.setCalendar(Calendar.getInstance());
+        selectedDate = LocalDate.now();
         date.setLocale(Locale.forLanguageTag("hu-HU"));
         date.setPrefWidth(400);
         dateContainer.getChildren().add(date);
+        date.calendarProperty().addListener((observable, oldValue, newValue) -> {
+            selectedDate = LocalDateTime.ofInstant(newValue.getTime().toInstant(), ZoneId.systemDefault()).toLocalDate();
+            initReservations();
+        });
     }
 
     private void initStartTime() {
@@ -193,7 +201,7 @@ public class ReservationControllerImpl extends AbstractController
     }
 
     private void initReservations() {
-        reservationViews = restaurantService.getReservations(LocalDate.now());
+        reservationViews = restaurantService.getReservations(selectedDate);
         List<ReservationViewModel> models = reservationViews.stream().map(ReservationViewModel::new).collect(toList());
         models.sort(Comparator.comparing(ReservationViewModel::getTableNumberAsInt));
         reservationModels = FXCollections.observableArrayList(models);
