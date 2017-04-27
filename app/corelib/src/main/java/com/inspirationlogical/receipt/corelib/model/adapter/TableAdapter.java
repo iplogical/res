@@ -1,5 +1,13 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER;
+import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
@@ -9,21 +17,12 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import lombok.NonNull;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER;
-import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
-import static java.util.stream.Collectors.toList;
 public class TableAdapter extends AbstractAdapter<Table> {
 
     public TableAdapter(@NonNull Table adaptee) {
@@ -39,17 +38,6 @@ public class TableAdapter extends AbstractAdapter<Table> {
         return new TableAdapter(tables.get(0));
     }
 
-    public static List<TableView> getTables() {
-        List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_ALL_TABLES);
-        return tables.stream()
-                .filter(table -> !table.getType().equals(TableType.PURCHASE))
-                .filter(table -> !table.getType().equals(TableType.INVENTORY))
-                .filter(table -> !table.getType().equals(TableType.DISPOSAL))
-                .filter(table -> !table.getType().equals(TableType.OTHER))
-                .filter(table -> !table.getType().equals(TableType.ORPHANAGE))
-                .map(TableAdapter::new).map(TableViewImpl::new).collect(toList());
-    }
-
     private static List<Table> getTablesByNumber(int number) {
         return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_NUMBER, query -> {
             query.setParameter("number", number);
@@ -63,9 +51,20 @@ public class TableAdapter extends AbstractAdapter<Table> {
                     return query;});
     }
 
+    public static boolean isDisplayable(TableType tableType) {
+        return tableType.equals(TableType.NORMAL)
+                || tableType.equals(TableType.LOITERER)
+                || tableType.equals(TableType.FREQUENTER)
+                || tableType.equals(TableType.EMPLOYEE);
+    }
+
     public static int getFirstUnusedNumber() {
         List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_FIRST_UNUSED_NUMBER, query -> query);
         return tables.stream().mapToInt(Table::getNumber).min().orElse(0) + 1;
+    }
+
+    public static boolean canBeHosted(TableType tableType) {
+        return tableType.equals(TableType.LOITERER) || tableType.equals(TableType.FREQUENTER);
     }
 
     public void updateStock(List<StockParams> paramsList, ReceiptType receiptType) {

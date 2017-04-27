@@ -1,12 +1,13 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import javafx.geometry.Dimension2D;
-import javafx.geometry.Point2D;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+
+import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -25,6 +26,11 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     @Override
     public boolean isVisible() {
         return adapter.getAdaptee().isVisible();
+    }
+
+    @Override
+    public boolean isDisplayable() {
+        return TableAdapter.isDisplayable(adapter.getAdaptee().getType());
     }
 
     @Override
@@ -65,6 +71,11 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     @Override
     public boolean isEmployee() {
         return adapter.getAdaptee().getType().equals(TableType.EMPLOYEE);
+    }
+
+    @Override
+    public boolean canBeHosted() {
+        return TableAdapter.canBeHosted(adapter.getAdaptee().getType());
     }
 
     @Override

@@ -1,17 +1,9 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
-import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
-import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
-import com.inspirationlogical.receipt.corelib.model.enums.*;
-import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.utility.Wrapper;
+import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.canBeHosted;
+import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.isDisplayable;
+import static java.time.LocalDateTime.now;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +11,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+
+import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
+import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
+import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -42,10 +49,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         GuardedTransaction.runWithRefresh(adaptee, () -> {});
         Collection<Table> tables = adaptee.getTables();
         return tables.stream()
-                .filter(table -> table.getType().equals(TableType.NORMAL)
-                        || table.getType().equals(TableType.LOITERER)
-                        || table.getType().equals(TableType.FREQUENTER)
-                        || table.getType().equals(TableType.EMPLOYEE))
+                .filter(table -> isDisplayable(table.getType()))
                 .map(TableAdapter::new)
                 .collect(Collectors.toList());
     }
@@ -68,7 +72,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         GuardedTransaction.runWithRefresh(adaptee, () -> {
             for (Table table : adaptee.getTables()) {
                 if (table.getNumber() == tableNumber) {
-                    if (tableType.equals(TableType.LOITERER)) {
+                    if (canBeHosted(tableType)) {
                         alreadyInUse.setContent(true);
                         break;
                     } else {
@@ -76,7 +80,6 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                     }
                 }
             }
-            alreadyInUse.setContent(false);
         });
         return alreadyInUse.getContent();
     }
@@ -176,7 +179,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         Receipt aggregatedReceipt = Receipt.builder()
                 .records(new ArrayList<>()) // TODO: refactor using Lombok builder prototype pattern see @ Restaurant
                 .openTime(latestClosure)
-                .closureTime(LocalDateTime.now())
+                .closureTime(now())
                 .owner(TableAdapter.getTablesByType(TableType.ORPHANAGE).get(0))
                 .paymentMethod(PaymentMethod.CASH) // TODO: intorduce new payment method for this purpose
                 .status(ReceiptStatus.OPEN)
@@ -185,7 +188,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                 .paymentMethod(PaymentMethod.CASH).build();
 
         aggregatedReceipt.setId(-1L);
-        receipts.stream().forEach(receipt -> {
+        receipts.forEach(receipt -> {
             receipt.getRecords().forEach(receiptRecord -> {
                 List<ReceiptRecord> aggregatedRecords = aggregatedReceipt.getRecords().stream().filter(aggregatedRecord -> aggregatedRecord.getName().equals(receiptRecord.getName()))
                         .map(aggregatedRecord -> {

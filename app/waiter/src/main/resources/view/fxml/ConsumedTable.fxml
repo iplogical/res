@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.geometry.*?>
@@ -26,6 +29,45 @@
                   <Insets bottom="-8.0" top="-8.0" />
                </VBox.margin>
             </Label>
+         </children>
+      </VBox>
+      <VBox alignment="BOTTOM_RIGHT">
+         <children>
+            <HBox alignment="BOTTOM_LEFT">
+               <children>
+                  <ImageView fx:id="meeple" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <effect>
+                        <Blend mode="SRC_ATOP">
+                           <topInput>
+                              <ColorInput height="18.0" paint="#005f7f" width="18.0" />
+                           </topInput>
+                        </Blend>
+                     </effect>
+                     <image>
+                        <Image url="@../../images/meeple.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="2.0" left="2.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox alignment="BOTTOM_RIGHT">
+         <children>
+            <HBox alignment="BOTTOM_LEFT">
+               <children>
+                  <Label fx:id="hosted" alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="18.0" styleClass="loiterers" text="0" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="2.0" left="2.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>

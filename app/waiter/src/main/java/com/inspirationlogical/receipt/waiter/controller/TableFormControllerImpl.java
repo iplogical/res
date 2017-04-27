@@ -1,9 +1,15 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
@@ -14,12 +20,6 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.converter.IntegerStringConverter;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
 
 @Singleton
 public class TableFormControllerImpl implements TableFormController {
@@ -111,7 +111,7 @@ public class TableFormControllerImpl implements TableFormController {
             creation = false;
             title.setText(resourceBundle.getString("TableForm.Edit"));
             TableView tableView = tableController.getView();
-            if (restaurantController.getViewState().getTableType().equals(TableType.LOITERER) && tableView.isHosted()) {
+            if (tableView.canBeHosted() && tableView.isHosted()) {
                 number.setText(String.valueOf(tableView.getHost().getNumber()));
             } else {
                 number.setText(String.valueOf(tableView.getNumber()));

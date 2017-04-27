@@ -28,4 +28,5 @@ public interface RestaurantController extends Controller {
     void selectTable(TableController tableController, boolean selected);
     void updateRestaurant();
     RestaurantViewState getViewState();
+    TableController getTableController(TableView tableView);
 }

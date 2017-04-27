@@ -1,6 +1,23 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculatePopupPosition;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculateTablePosition;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.moveNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.removeNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
+import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.function.Predicate;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
@@ -21,6 +38,7 @@ import com.inspirationlogical.receipt.waiter.exception.ViewNotFoundException;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.ConfirmMessage;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
+
 import javafx.beans.binding.Bindings;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -38,31 +56,13 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import javafx.util.Duration;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculatePopupPosition;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculateTablePosition;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.moveNode;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.removeNode;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
-import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-
 @Singleton
 public class RestaurantControllerImpl implements RestaurantController {
 
     public static final String RESTAURANT_VIEW_PATH = "/view/fxml/Restaurant.fxml";
     private static final int HOLD_DURATION_MILLIS = 200;
     private static final int INITIAL_GRID_SIZE = 10;
-    private static Predicate<TableView> VISIBLE_TABLE = TableView::isVisible;
+    private static Predicate<TableView> DISPLAYABLE_TABLE = TableView::isDisplayable;
 
     @FXML
     AnchorPane root;
@@ -218,6 +218,11 @@ public class RestaurantControllerImpl implements RestaurantController {
             tableForm.hide();
 
             drawTable(tableView);
+
+            if (tableView.isHosted()) {
+                getTableController(tableView.getHost()).updateNode();
+            }
+
             updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(getActiveTab(),
@@ -286,11 +291,20 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void deleteTable(Node node) {
         TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
+        TableController hostController = null;
+
+        if (tableView.isHosted()) {
+            hostController = getTableController(tableView.getHost());
+        }
 
         try {
             restaurantService.deleteTable(tableView);
             removeNode((Pane) node.getParent(), node);
             tableControllers.remove(tableController);
+
+            if (hostController != null) {
+                hostController.updateNode();
+            }
         } catch (IllegalTableStateException e) {
             String errorMessage = EMPTY;
             if (tableView.isOpen()) {
@@ -475,7 +489,7 @@ public class RestaurantControllerImpl implements RestaurantController {
                 .filter(tableController -> tableController.getView().isEmployee())
                 .map(TableController::getRoot).collect(toList()));
         tableControllers.clear();
-        restaurantService.getTables(restaurantView).stream().filter(VISIBLE_TABLE).forEach(this::drawTable);
+        restaurantService.getTables(restaurantView).stream().filter(DISPLAYABLE_TABLE).forEach(this::drawTable);
     }
 
     private void initContextMenu(Control control) {
@@ -527,6 +541,14 @@ public class RestaurantControllerImpl implements RestaurantController {
                 .filter(tableController -> tableController.getRoot().equals(node))
                 .findFirst()
                 .orElseThrow(() -> new ViewNotFoundException("Table root could not be found"));
+    }
+
+    public TableController getTableController(TableView tableView) {
+        return tableControllers
+                .stream()
+                .filter(tableController -> tableController.getView().getNumber() == tableView.getNumber())
+                .findFirst()
+                .orElseThrow(() -> new ViewNotFoundException("Table view could not be found"));
     }
 
     private void drawTable(TableView tableView) {

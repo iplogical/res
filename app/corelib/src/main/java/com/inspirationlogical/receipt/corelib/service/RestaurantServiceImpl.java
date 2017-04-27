@@ -1,9 +1,14 @@
 package com.inspirationlogical.receipt.corelib.service;
 
+import static java.util.stream.Collectors.toList;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
+import javax.persistence.EntityManager;
+
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
@@ -12,29 +17,23 @@ import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
-import com.inspirationlogical.receipt.corelib.params.ReservationParams;
+import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
+import com.inspirationlogical.receipt.corelib.model.view.ReservationViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
+import com.inspirationlogical.receipt.corelib.params.ReservationParams;
+
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
-
-import static java.util.stream.Collectors.toList;
-
-import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class RestaurantServiceImpl extends AbstractService implements RestaurantService {
 
-    private List<TableView> tableViews;
-
     @Inject
     public RestaurantServiceImpl(EntityManager manager) {
         super(manager);
-        tableViews = TableAdapter.getTables();
     }
 
     @Override

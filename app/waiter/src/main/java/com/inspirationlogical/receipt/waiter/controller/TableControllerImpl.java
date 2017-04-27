@@ -1,5 +1,15 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
+import static java.lang.String.valueOf;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
@@ -8,6 +18,7 @@ import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 import com.inspirationlogical.receipt.waiter.viewstate.TableViewState;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -17,16 +28,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
-import static java.lang.String.valueOf;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class TableControllerImpl implements TableController {
 
@@ -95,15 +96,29 @@ public class TableControllerImpl implements TableController {
     public void consumeTables() {
         releaseConsumed();
         tableView.getConsumedTables().forEach(view -> {
-            StackPane stackPane = (StackPane) viewLoader.loadView(CONSUMED_VIEW_PATH);
-            stackPane.setPrefWidth((int) view.getDimension().getWidth());
-            stackPane.setPrefHeight((int) view.getDimension().getHeight());
+            StackPane consumedRoot = (StackPane) viewLoader.loadView(CONSUMED_VIEW_PATH);
+            consumedRoot.setPrefWidth((int) view.getDimension().getWidth());
+            consumedRoot.setPrefHeight((int) view.getDimension().getHeight());
             Point2D position = view.getPosition().subtract(tableView.getPosition());
-            stackPane.setLayoutX((int) position.getX());
-            stackPane.setLayoutY((int) position.getY());
-            Label label = (Label) stackPane.lookup("#number");
-            label.setText(valueOf(view.getNumber()));
-            container.getChildren().add(stackPane);
+            consumedRoot.setLayoutX((int) position.getX());
+            consumedRoot.setLayoutY((int) position.getY());
+
+            Label consumedNumber = (Label) consumedRoot.lookup("#number");
+            Label consumedHosted = (Label) consumedRoot.lookup("#hosted");
+            ImageView consumedMeeple = (ImageView) consumedRoot.lookup("#meeple");
+
+            consumedNumber.setText(valueOf(view.getNumber()));
+
+            int hostedSize = view.getHostedTables().size();
+            if (hostedSize > 0) {
+                consumedMeeple.setVisible(true);
+                consumedHosted.setVisible(true);
+                consumedHosted.setText(valueOf(hostedSize));
+            } else {
+                consumedMeeple.setVisible(false);
+                consumedHosted.setVisible(false);
+            }
+            container.getChildren().add(consumedRoot);
         });
     }
 
@@ -128,22 +143,36 @@ public class TableControllerImpl implements TableController {
             initVisual();
 
             name.setText(tableView.getName());
-            number.setText(valueOf(tableView.getNumber()));
+
+            if (tableView.isHost()) {
+                meeple.setVisible(true);
+                hosted.setText(valueOf(tableView.getHostedTables().size()));
+            } else {
+                meeple.setVisible(false);
+                hosted.setText(EMPTY);
+            }
+
+            if (tableView.isHosted()) {
+                number.setText(valueOf(tableView.getHost().getNumber()));
+            } else {
+                number.setText(valueOf(tableView.getNumber()));
+            }
 
             if (tableView.isConsumer()) {
+
+                consumeTables();
 
                 Integer tableGuests = tableView.getGuestCount();
                 Integer tableCapacity = tableView.getCapacity();
 
-                for(TableView view : tableView.getConsumedTables()) {
-                    tableGuests += view.getGuestCount();
-                    tableCapacity += view.getCapacity();
+                for(TableView consumed : tableView.getConsumedTables()) {
+                    tableGuests += consumed.getGuestCount();
+                    tableCapacity += consumed.getCapacity();
                 }
 
                 guests.setText(valueOf(tableGuests));
                 capacity.setText(valueOf(tableCapacity));
             } else {
-                number.setText(valueOf(tableView.getNumber()));
                 guests.setText(valueOf(tableView.getGuestCount()));
                 capacity.setText(valueOf(tableView.getCapacity()));
             }
@@ -154,18 +183,14 @@ public class TableControllerImpl implements TableController {
                 note.setVisible(true);
             }
 
-            if (tableView.isHost()) {
-                meeple.setVisible(true);
-                hosted.setText(valueOf(tableView.getHostedTables().size()));
-            } else {
-                meeple.setVisible(false);
-                hosted.setText(EMPTY);
-            }
-
             CSSUtilities.setBackgroundColor(tableViewState.isOpen(), host);
 
             showNode(root, tableView.getPosition());
         } else {
+            if (tableView.isConsumed()) {
+                restaurantController.getTableController(tableView.getConsumer()).updateNode();
+            }
+            
             hideNode(root);
         }
     }
