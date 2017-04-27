@@ -36,4 +36,8 @@ public @Data class ReservationViewModel {
     public int getTableNumberAsInt() {
         return Integer.valueOf(tableNumber);
     }
+
+    public int getGuestCountAsInt() {
+        return Integer.valueOf(guestCount);
+    }
 }

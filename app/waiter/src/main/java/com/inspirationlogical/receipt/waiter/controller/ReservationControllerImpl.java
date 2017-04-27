@@ -11,6 +11,7 @@ import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.viewmodel.ReservationViewModel;
+import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -128,6 +129,7 @@ public class ReservationControllerImpl extends AbstractController
         initEndTime();
         initColumns();
         initReservations();
+        initializeReservationsTableRowHandler();
     }
 
     @Override
@@ -163,6 +165,23 @@ public class ReservationControllerImpl extends AbstractController
         }
 
     }
+
+    private void initializeReservationsTableRowHandler() {
+        reservationsTable.setRowFactory(tv -> {
+            TableRow<ReservationViewModel> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(event.getClickCount() == 2 && (! row.isEmpty())) {
+                    rowClickHandler(row.getItem());
+                }
+            });
+            return row;
+        });
+    }
+
+    private void rowClickHandler(ReservationViewModel row) {
+        restaurantController.openTable(row.getTableNumberAsInt(), row.getName(), row.getGuestCountAsInt(), row.getNote());
+    }
+
 
     private void initDate() {
         date.setCalendar(Calendar.getInstance());

@@ -6,6 +6,7 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.m
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.removeNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
+import static java.util.stream.Collectors.toList;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -259,6 +260,29 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
+    public void openTable(Integer number, String name, Integer guestCount, String note) {
+        List<TableController> filteredControllers = tableControllers.stream()
+                .filter(controller -> controller.getView().getNumber() == number)
+                .limit(1)
+                .collect(toList());
+        if(filteredControllers.isEmpty()) {
+            viewLoader.loadViewIntoScene(this);
+            ErrorMessage.showErrorMessage(getActiveTab(), Resources.WAITER.getString("TableDoesNotExist") + number);
+            return;
+        }
+        TableController tableController = filteredControllers.get(0);
+        TableView tableView = tableController.getView();
+        if(tableView.isOpen()) {
+            viewLoader.loadViewIntoScene(this);
+            ErrorMessage.showErrorMessage(getActiveTab(), Resources.WAITER.getString("TableIsOpenReservation") + tableView.getNumber());
+            return;
+        }
+        editTable(tableController, name, guestCount, note, number, tableView.getCapacity(), tableView.getDimension());
+        tableController.openTable(null);
+        viewLoader.loadViewIntoScene(this);
+    }
+
+    @Override
     public void deleteTable(Node node) {
         TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
@@ -439,16 +463,16 @@ public class RestaurantControllerImpl implements RestaurantController {
     private void initTables() {
         tablesTab.getChildren().removeAll(tableControllers.stream()
                 .filter(tableController -> tableController.getView().isNormal() || tableController.getView().isAggregate())
-                .map(TableController::getRoot).collect(Collectors.toList()));
+                .map(TableController::getRoot).collect(toList()));
         loiterersTab.getChildren().removeAll(tableControllers.stream()
                 .filter(tableController -> tableController.getView().isLoiterer())
-                .map(TableController::getRoot).collect(Collectors.toList()));
+                .map(TableController::getRoot).collect(toList()));
         frequentersTab.getChildren().removeAll(tableControllers.stream()
                 .filter(tableController -> tableController.getView().isFrequenter())
-                .map(TableController::getRoot).collect(Collectors.toList()));
+                .map(TableController::getRoot).collect(toList()));
         employeesTab.getChildren().removeAll(tableControllers.stream()
                 .filter(tableController -> tableController.getView().isEmployee())
-                .map(TableController::getRoot).collect(Collectors.toList()));
+                .map(TableController::getRoot).collect(toList()));
         tableControllers.clear();
         restaurantService.getTables(restaurantView).stream().filter(VISIBLE_TABLE).forEach(this::drawTable);
     }

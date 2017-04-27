@@ -16,6 +16,7 @@ public interface RestaurantController extends Controller {
     void createTable(Integer number, Integer capacity, Dimension2D dimension);
     void editTable(TableController tableController, String name, Integer guestCount, String note,
                    Integer number, Integer capacity, Dimension2D dimensions);
+    void openTable(Integer number, String name, Integer guestCount, String note);
     void deleteTable(Node node);
     void rotateTable(Node node);
     void moveTable(TableController tableController);
