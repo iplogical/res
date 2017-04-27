@@ -15,13 +15,12 @@ import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
+
+import static java.time.LocalDateTime.now;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -181,8 +180,28 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                 .paymentMethod(PaymentMethod.CASH).build();
 
         aggregatedReceipt.setId(-1L);
-        receipts.stream().forEach(receipt -> aggregatedReceipt.getRecords().addAll(receipt.getRecords()));
-
+        receipts.stream().forEach(receipt -> {
+            receipt.getRecords().forEach(receiptRecord -> {
+                List<ReceiptRecord> aggregatedRecords = aggregatedReceipt.getRecords().stream().filter(aggregatedRecord -> aggregatedRecord.getName().equals(receiptRecord.getName()))
+                        .map(aggregatedRecord -> {
+                            aggregatedRecord.setSoldQuantity(aggregatedRecord.getSoldQuantity() + receiptRecord.getSoldQuantity());
+                            return aggregatedRecord;
+                        }).collect(Collectors.toList());
+                if (aggregatedRecords.isEmpty()) {
+                    aggregatedReceipt.getRecords().add(ReceiptRecord.builder()
+                            .product(receiptRecord.getProduct())
+                            .type(receiptRecord.getType())
+                            .created(now())
+                            .name(receiptRecord.getName())
+                            .soldQuantity(receiptRecord.getSoldQuantity())
+                            .purchasePrice(receiptRecord.getPurchasePrice())
+                            .salePrice(receiptRecord.getSalePrice())
+                            .VAT(receiptRecord.getVAT())
+                            .discountPercent(0)
+                            .build());
+                }
+            });
+        });
         ReceiptAdapter adapter = new ReceiptAdapter(aggregatedReceipt);
         new ReceiptPrinter().onClose(adapter);
     }
