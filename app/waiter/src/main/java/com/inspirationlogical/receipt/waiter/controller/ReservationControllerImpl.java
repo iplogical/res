@@ -42,7 +42,7 @@ import static java.util.stream.Collectors.toList;
 public class ReservationControllerImpl extends AbstractController
         implements ReservationController {
 
-    public static final String RESERVATION_VIEW_PATH = "/view/fxml/Reservation.fxml ";
+    public static final String RESERVATION_VIEW_PATH = "/view/fxml/Reservation.fxml";
 
     @FXML
     private BorderPane root;
