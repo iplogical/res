@@ -33,6 +33,11 @@
     -fx-border-radius: 10;
 }
 
+/* TableView row header style definition */
+.table-view .column-header .label {
+    -fx-font: normal 14 "SourceSansPro";
+}
+
 /* Disable highlight for selected row in a TableView */
 .table-row-cell:filled:selected {
   -fx-background: -fx-control-inner-background ;
@@ -42,6 +47,11 @@
 }
 .table-row-cell:odd:filled:selected {
   -fx-background: -fx-control-inner-background-alt ;
+}
+
+/* Set the row height for TableViews. */
+.table-row-cell {
+    -fx-cell-size: 28px;
 }
 
 .header-label {

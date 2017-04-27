@@ -38,6 +38,7 @@
     -fx-font-size: 12;
 }
 
+/* TableView row header style definition */
 .table-view .column-header .label {
     -fx-font: normal 14 "SourceSansPro";
 }
