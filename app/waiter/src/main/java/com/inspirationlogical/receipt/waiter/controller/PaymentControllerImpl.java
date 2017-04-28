@@ -235,7 +235,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void handleFullPayment() {
-        handleAutomaticGameFee();
         retailService.payTable(tableView, getPaymentParams());
         getSoldProductsAndUpdateTable();
         discardPaidRecords();
@@ -252,7 +251,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         //TODO: Make the 2000 configurable from the manager terminal.
         int guestCount = tableView.getGuestCount();
         int price = (int)receiptView.getTotalPrice();
-        int requiredGameFee = ((guestCount * 2000 - price) / 2000) + 1;
+        int requiredGameFee = (((guestCount+1) * 2000 - (price+1)) / 2000);
         if(requiredGameFee > 0) {
             retailService.sellGameFee(tableView, requiredGameFee);
         }

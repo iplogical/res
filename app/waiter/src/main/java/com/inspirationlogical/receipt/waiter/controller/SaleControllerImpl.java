@@ -229,15 +229,25 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     protected void rowClickHandler(SoldProductViewModel row) {
         if(saleViewState.isSelectiveCancellation()) {
             retailService.cancelReceiptRecord(tableView, removeRowFromSoldProducts(row));
+            soldProductsView = getSoldProducts(restaurantService, tableView);
+            updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+            updateTableSummary();
         } else if(saleViewState.isSingleCancellation()) {
             if(Double.valueOf(row.getProductQuantity()) <= 1) {
                 retailService.cancelReceiptRecord(tableView, removeRowFromSoldProducts(row));
+                soldProductsView = getSoldProducts(restaurantService, tableView);
+                updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+                updateTableSummary();
                 return;
             }
             decreaseRowInSoldProducts(row, 1);
+            soldProductsView = getSoldProducts(restaurantService, tableView);
+            updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
             updateTableSummary();
         } else {
             increaseRowInSoldProducts(row, 1);
+            soldProductsView = getSoldProducts(restaurantService, tableView);
+            updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
             updateTableSummary();
         }
     }
