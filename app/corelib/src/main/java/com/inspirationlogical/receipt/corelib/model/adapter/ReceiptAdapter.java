@@ -56,11 +56,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift) {
 
         GuardedTransaction.run(() -> {
-            LocalDateTime dateTime = now().minusSeconds(5);
-            List<ReceiptRecord> records = GuardedTransaction.runNamedQuery(ReceiptRecord.GET_RECEIPT_RECORDS_BY_TIMESTAMP,
-                    query -> {query.setParameter("created", dateTime);
-                              query.setParameter("name", productAdapter.getAdaptee().getLongName());
-                              return query;});
+            List<ReceiptRecord> records = getReceiptRecordsByTimeStampAndName(productAdapter, now().minusSeconds(5));
             if(records.size() > 0) {
                 records.get(0).setSoldQuantity(records.get(0).getSoldQuantity() + 1);
                 records.get(0).setCreated(now());
@@ -85,11 +81,6 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         });
     }
 
-    private void applyDiscountOnRecordSalePrice(ReceiptRecord receiptRecord) {
-        receiptRecord.setSalePrice(receiptRecord.getProduct().getSalePrice());
-        receiptRecord.setSalePrice((int)Math.round(receiptRecord.getSalePrice() * getDiscountMultiplier(receiptRecord.getDiscountPercent())));
-    }
-
     public void sellAdHocProduct(AdHocProductParams adHocProductParams, boolean takeAway) {
         GuardedTransaction.run(() -> {
             ProductAdapter adHocProduct = ProductAdapter.getAdHocProduct();
@@ -112,6 +103,12 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public void sellGameFee(int quantity) {
         GuardedTransaction.run(() -> {
             ProductAdapter gameFeeProduct = ProductAdapter.getGameFeeProduct();
+            List<ReceiptRecord> records = getReceiptRecordsByTimeStampAndName(gameFeeProduct, now().minusSeconds(5));
+            if(records.size() > 0) {
+                records.get(0).setSoldQuantity(records.get(0).getSoldQuantity() + 1);
+                records.get(0).setCreated(now());
+                return;
+            }
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(gameFeeProduct.getAdaptee())
                     .type(ReceiptRecordType.HERE)
@@ -286,6 +283,17 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public int getTotalPrice() {
         return getReceiptRecords().stream()
                 .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum();
+    }
+
+    private List<ReceiptRecord> getReceiptRecordsByTimeStampAndName(ProductAdapter productAdapter, LocalDateTime dateTime) {
+        return GuardedTransaction.runNamedQuery(ReceiptRecord.GET_RECEIPT_RECORDS_BY_TIMESTAMP,
+                query -> query.setParameter("created", dateTime)
+                        .setParameter("name", productAdapter.getAdaptee().getLongName()));
+    }
+
+    private void applyDiscountOnRecordSalePrice(ReceiptRecord receiptRecord) {
+        receiptRecord.setSalePrice(receiptRecord.getProduct().getSalePrice());
+        receiptRecord.setSalePrice((int)Math.round(receiptRecord.getSalePrice() * getDiscountMultiplier(receiptRecord.getDiscountPercent())));
     }
 
     private List<ReceiptRecord> getReceiptRecords() {

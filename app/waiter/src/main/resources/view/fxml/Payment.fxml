@@ -201,8 +201,8 @@
             <ToggleButton fx:id="partialPayment" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.PartialPayment" textAlignment="CENTER" toggleGroup="$paymentTypeToggleGroup" />
             <TextField fx:id="partialPaymentValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.PartialPaymentPrompt" />
             <Separator />
-            <ToggleButton fx:id="automaticGameFee" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAutomaticGameFeeToggleAction" text="%PaymentView.AutomaticGameFee" textAlignment="CENTER" />
             <Button fx:id="manualGameFee" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onManualGameFee" text="%PaymentView.ManualGameFee" textAlignment="CENTER" />
+            <Button fx:id="automaticGameFee" layoutX="15.0" layoutY="214.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAutoGameFee" text="%PaymentView.AutomaticGameFee" textAlignment="CENTER" />
             <Separator />
             <ToggleButton fx:id="discountAbsolute" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.DiscountAbsolute" textAlignment="CENTER">
                <toggleGroup>

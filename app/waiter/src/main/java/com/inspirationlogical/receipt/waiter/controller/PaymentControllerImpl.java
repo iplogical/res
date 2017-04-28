@@ -70,7 +70,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     TextField partialPaymentValue;
 
     @FXML
-    ToggleButton automaticGameFee;
+    Button automaticGameFee;
 
     @FXML
     Button manualGameFee;
@@ -140,7 +140,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         initializeToggleGroups();
         initializeSoldProductsTable();
         initializePayProductsTable();
-        setAutomaticGameFee();
         getSoldProductsAndUpdateTable();
         updateTableSummary();
         initializeSoldProductsTableRowHandler();
@@ -185,27 +184,23 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onBackToSaleView(Event event) {
         discardPaidRecords();
+        retailService.mergeReceiptRecords(receiptView);
         saleController.updateNode();
         viewLoader.loadViewIntoScene(saleController);
     }
 
     @FXML
-    public void onAutomaticGameFeeToggleAction(Event event) {
-        setAutomaticGameFee();
+    public void onAutoGameFee(Event event) {
+        handleAutomaticGameFee();
+        getSoldProductsAndUpdateTable();
+        updateTableSummary();
     }
 
     @FXML
     public void onManualGameFee(Event event) {
         retailService.sellGameFee(tableView, 1);
-        soldProductsView = getSoldProducts(restaurantService, tableView);
-        ReceiptRecordView gameFee = (soldProductsView.stream()
-                .sorted(Comparator.comparing(ReceiptRecordView::getId).reversed())
-                .filter(receiptRecordView -> receiptRecordView.getName().equals(Resources.CONFIG.getString("Product.GameFeeName")))
-                .limit(1)
-                .collect(Collectors.toList())).get(0);
-        Collection<ReceiptRecordView> gameFeeList = new ArrayList<>(Arrays.asList(gameFee));
-        removeRowFromSoldProducts(new SoldProductViewModel(gameFee));
-        addRowToPaidProducts(new SoldProductViewModel(gameFee), gameFee);
+        getSoldProductsAndUpdateTable();
+        updateTableSummary();
     }
 
     @FXML
@@ -254,14 +249,12 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void handleAutomaticGameFee() {
-        if(paymentViewState.isAutomaticGameFee()) {
-            //TODO: Make the 2000 configurable from the manager terminal.
-            int guestCount = tableView.getGuestCount();
-            int price = (int)receiptView.getTotalPrice();
-            int requiredGameFee = ((guestCount * 2000 - price) / 2000) + 1;
-            if(requiredGameFee > 0) {
-                retailService.sellGameFee(tableView, requiredGameFee);
-            }
+        //TODO: Make the 2000 configurable from the manager terminal.
+        int guestCount = tableView.getGuestCount();
+        int price = (int)receiptView.getTotalPrice();
+        int requiredGameFee = ((guestCount * 2000 - price) / 2000) + 1;
+        if(requiredGameFee > 0) {
+            retailService.sellGameFee(tableView, requiredGameFee);
         }
     }
 
@@ -386,15 +379,10 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         viewLoader.loadViewIntoScene(restaurantController);
     }
 
-    private void setAutomaticGameFee() {
-        paymentViewState.setAutomaticGameFee(automaticGameFee.isSelected());
-    }
-
     private void resetToggleGroups() {
         paymentMethodToggleGroup.selectToggle(paymentMethodCash);
         paymentTypeToggleGroup.selectToggle(null);
         discountTypeToggleGroup.selectToggle(null);
-        automaticGameFee.setSelected(true);
     }
     
     private class PaymentTypeTogglesListener implements ChangeListener<Toggle> {

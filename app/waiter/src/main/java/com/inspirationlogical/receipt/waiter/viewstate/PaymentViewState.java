@@ -18,8 +18,6 @@ public @Data class PaymentViewState {
 
     private DiscountType discountType;
 
-    private boolean automaticGameFee;
-
     public boolean isFullPayment() {
         return paymentType == FULL;
     }
