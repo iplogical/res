@@ -13,7 +13,7 @@ public interface RestaurantController extends Controller {
     int getFirstUnusedTableNumber();
     void showCreateTableForm(Point2D position);
     void showEditTableForm(Control control);
-    void createTable(Integer number, Integer capacity, Dimension2D dimension);
+    void createTable(String name, Integer number, String note, Integer guestCount, Integer capacity, Dimension2D dimension);
     void editTable(TableController tableController, String name, Integer guestCount, String note,
                    Integer number, Integer capacity, Dimension2D dimensions);
     void openTable(Integer number, String name, Integer guestCount, String note);

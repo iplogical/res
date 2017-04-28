@@ -198,7 +198,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
-    public void createTable(Integer number, Integer capacity, Dimension2D dimmension) {
+    public void createTable(String name, Integer number, String note, Integer guestCount, Integer capacity, Dimension2D dimension) {
         TableType tableType = restaurantViewState.getTableType();
         Point2D position = calculateTablePosition(tableFormController.getRootNode(), getActiveTab());
         TableView tableView;
@@ -207,13 +207,16 @@ public class RestaurantControllerImpl implements RestaurantController {
             tableView = restaurantService.addTable(restaurantView, restaurantService
                     .tableBuilder()
                     .type(tableType)
+                    .name(name)
                     .number(number)
+                    .note(note)
+                    .guestCount(guestCount)
                     .capacity(capacity)
                     .visible(true)
                     .coordinateX((int) position.getX())
                     .coordinateY((int) position.getY())
-                    .dimensionX((int) dimmension.getWidth())
-                    .dimensionY((int) dimmension.getHeight()));
+                    .dimensionX((int) dimension.getWidth())
+                    .dimensionY((int) dimension.getHeight()));
 
             tableForm.hide();
 

@@ -69,6 +69,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
 
     public boolean isTableNumberAlreadyInUse(int tableNumber, TableType tableType) {
         Wrapper<Boolean> alreadyInUse = new Wrapper<>();
+        alreadyInUse.setContent(false);
         GuardedTransaction.runWithRefresh(adaptee, () -> {
             for (Table table : adaptee.getTables()) {
                 if (table.getNumber() == tableNumber) {

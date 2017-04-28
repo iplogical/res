@@ -89,7 +89,8 @@ public class TableFormControllerImpl implements TableFormController {
             Integer tableGuestCount = guestCount.getText().equals("") ? 0 : Integer.valueOf(guestCount.getText());
             Dimension2D dimension = new Dimension2D(Integer.valueOf(width.getText()), Integer.valueOf(height.getText()));
             if (creation) {
-                restaurantController.createTable(tableNumber, tableCapacity, dimension);
+                restaurantController.createTable(tableName.getText(), tableNumber, note.getText(),
+                        tableGuestCount,tableCapacity, dimension);
             } else {
                 restaurantController.editTable(tableController, tableName.getText(), tableGuestCount, note.getText(),
                         tableNumber, tableCapacity, dimension);
