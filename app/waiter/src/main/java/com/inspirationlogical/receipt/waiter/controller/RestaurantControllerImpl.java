@@ -240,11 +240,13 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void editTable(TableController tableController, String name, Integer guestCount, String note,
                           Integer number, Integer capacity, Dimension2D dimension) {
         TableView tableView = tableController.getView();
+        TableView previousHost = tableView.getHost();
 
         try {
             if (tableView.getNumber() != number) {
                 restaurantService.setTableNumber(tableView, number, restaurantView);
             }
+
             restaurantService.setTableType(tableView, tableView.getType());
             restaurantService.setTableCapacity(tableView, capacity);
             restaurantService.setTableName(tableView, name);
@@ -257,6 +259,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             Node node = tableController.getRoot();
             addNodeToPane(node, restaurantViewState.getTableType());
             tableController.updateNode();
+            updateHostNodes(tableView, previousHost);
             updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(getActiveTab(),
@@ -264,6 +267,15 @@ public class RestaurantControllerImpl implements RestaurantController {
             initRestaurant();
         } catch (Exception e) {
             initRestaurant();
+        }
+    }
+
+    private void updateHostNodes(TableView tableView, TableView previousHost) {
+        if(tableView.getHost() != null) {
+            getTableController(tableView.getHost()).updateNode();
+        }
+        if(previousHost != null) {
+            getTableController(previousHost).updateNode();
         }
     }
 

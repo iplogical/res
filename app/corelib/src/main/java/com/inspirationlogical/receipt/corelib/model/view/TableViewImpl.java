@@ -140,6 +140,9 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     }
     @Override
     public TableView getHost() {
+        if(adapter.getHost() == null) {
+            return null;
+        }
         return new TableViewImpl(adapter.getHost());
     }
     @Override

@@ -68,7 +68,10 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant) {
-        getRestaurantAdapter(restaurant).isTableNumberAlreadyInUse(tableNumber, tableView.getType());
+        if(getRestaurantAdapter(restaurant).isTableNumberAlreadyInUse(tableNumber, tableView.getType())) {
+            getTableAdapter(tableView).setHost(tableNumber);
+            return;
+        }
         getTableAdapter(tableView).setNumber(tableNumber);
     }
 

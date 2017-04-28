@@ -4,6 +4,7 @@ import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RE
 import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
 import static java.util.stream.Collectors.toList;
 
+import java.security.Guard;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -93,6 +94,9 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public TableAdapter getHost() {
+        if(adaptee.getHost() == null) {
+            return null;
+        }
         return new TableAdapter(adaptee.getHost());
     }
 
@@ -101,7 +105,9 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void setNumber(int tableNumber) {
-        GuardedTransaction.run(() -> adaptee.setNumber(tableNumber));
+        GuardedTransaction.run(() -> {
+            adaptee.setNumber(tableNumber);
+        });
     }
 
     public void setType(TableType tableType) {
@@ -252,6 +258,13 @@ public class TableAdapter extends AbstractAdapter<Table> {
         return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_HOST, query -> {
             query.setParameter("host", adaptee);
             return query;
+        });
+    }
+
+    public void setHost(int tableNumber) {
+        GuardedTransaction.run(() -> {
+            adaptee.getHost().getHosted().remove(adaptee);
+            adaptee.setHost(TableAdapter.getTableByNumber(tableNumber).getAdaptee());
         });
     }
 }
