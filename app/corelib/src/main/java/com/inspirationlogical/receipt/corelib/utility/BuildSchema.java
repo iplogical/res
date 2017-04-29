@@ -242,6 +242,188 @@ public class BuildSchema  {
     private @Getter Product JackAndCoke;
     private @Getter Product VodkaSzoda;
 
+    /* ----- ITALLAP -----*/
+    // Csapolt sorok
+    private @Getter Recipe Soproni03Recipe1;
+    private @Getter Recipe Soproni05Recipe1;
+    private @Getter Recipe Edelweiss03Recipe1;
+    private @Getter Recipe Edelweiss05Recipe1;
+
+    // Uveges sorok
+    private @Getter Recipe KrusoviceSvetleRecipe1;
+    private @Getter Recipe SoproniDemonRecipe1;
+    private @Getter Recipe SoproniMaxxRecipe1;
+    private @Getter Recipe HeinekenRecipe1;
+    private @Getter Recipe GosserNaturRadlerRecipe1;
+    private @Getter Recipe GosserNaturRadler00Recipe1;
+    private @Getter Recipe BekesSzentandrasiMeggyesRecipe1;
+    private @Getter Recipe StrongbowDarkfruitRecipe1;
+    private @Getter Recipe StrongbowGoldAppleCiderRecipe1;
+    private @Getter Recipe EdelweissRecipe1;
+
+    // Borok
+    private @Getter Recipe HazBoraNagyEsNagyRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverDecireRecipe1;
+    private @Getter Recipe GereAttilaOlaszrizlingRecipe1;
+
+    private @Getter Recipe HazBoraLisiczaRoseCuveeRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseDecireRecipe1;
+
+    private @Getter Recipe HazBoraPolgarSerumVeritasRecipe1;
+    private @Getter Recipe VinczeMerlotRecipe1;
+    private @Getter Recipe VylyanCabernetSauvignonRecipe1;
+    private @Getter Recipe MeszarosHidasptereCabernetFrancReserveRecipe1;
+
+    // Pezsgok
+    private @Getter Recipe TorleyGalaSzarazRecipe1;
+    private @Getter Recipe TorleyCharmantEdesRecipe1;
+
+    // Roviditalok
+    private @Getter Recipe JimBeam04Recipe1;
+    private @Getter Recipe JohnnieWalkerRedLabel04Recipe1;
+    private @Getter Recipe JackDaniels04Recipe1;
+    private @Getter Recipe TullamoreDew04Recipe1;
+
+    private @Getter Recipe Royal04Recipe1;
+    private @Getter Recipe Finlandia04Recipe1;
+
+    private @Getter Recipe BacardiSuperior04Recipe1;
+    private @Getter Recipe CaptainMorganSpicedRum04Recipe1;
+
+    private @Getter Recipe Beefeater04Recipe1;
+
+    private @Getter Recipe TequilaSierraReposadoGold04Recipe1;
+    private @Getter Recipe TequilaSierraSilver04Recipe1;
+
+    private @Getter Recipe Unicum04Recipe1;
+    private @Getter Recipe Jagermeister04Recipe1;
+    private @Getter Recipe Baileys08Recipe1;
+
+    private @Getter Recipe JimBeam02Recipe1;
+    private @Getter Recipe JohnnieWalkerRedLabel02Recipe1;
+    private @Getter Recipe JackDaniels02Recipe1;
+    private @Getter Recipe TullamoreDew02Recipe1;
+
+    private @Getter Recipe Royal02Recipe1;
+    private @Getter Recipe Finlandia02Recipe1;
+
+    private @Getter Recipe BacardiSuperior02Recipe1;
+    private @Getter Recipe CaptainMorganSpicedRum02Recipe1;
+
+    private @Getter Recipe Beefeater02Recipe1;
+
+    private @Getter Recipe TequilaSierraReposadoGold02Recipe1;
+    private @Getter Recipe TequilaSierraSilver02Recipe1;
+
+    private @Getter Recipe Unicum02Recipe1;
+    private @Getter Recipe Jagermeister02Recipe1;
+    private @Getter Recipe Baileys04Recipe1;
+
+    // Palinkak/
+    private @Getter Recipe _22KokuszTatratea04Recipe1;
+    private @Getter Recipe _32CitrusTatratea04Recipe1;
+    private @Getter Recipe _42BarackTatratea04Recipe1;
+    private @Getter Recipe _52EredetiTatratea04Recipe1;
+    private @Getter Recipe _62ErdeiGyumolcsTatratea04Recipe1;
+    private @Getter Recipe _72OutlawBetyarTatratea04Recipe1;
+
+    private @Getter Recipe CseresznyePalinka04Recipe1;
+    private @Getter Recipe KajszibarackPalinka04Recipe1;
+    private @Getter Recipe Szilvapalinka04Recipe1;
+
+    private @Getter Recipe _22KokuszTatratea02Recipe1;
+    private @Getter Recipe _32CitrusTatratea02Recipe1;
+    private @Getter Recipe _42BarackTatratea02Recipe1;
+    private @Getter Recipe _52EredetiTatratea02Recipe1;
+    private @Getter Recipe _62ErdeiGyumolcsTatratea02Recipe1;
+    private @Getter Recipe _72OutlawBetyarTatratea02Recipe1;
+
+    private @Getter Recipe CseresznyePalinka02Recipe1;
+    private @Getter Recipe KajszibarackPalinka02Recipe1;
+    private @Getter Recipe Szilvapalinka02Recipe1;
+
+    // Shotok
+    private @Getter Recipe Finca1Recipe1;
+    private @Getter Recipe Bang1Recipe1;
+    private @Getter Recipe Imagine1Recipe1;
+
+    private @Getter Recipe Finca6Recipe1;
+    private @Getter Recipe Bang6Recipe1;
+    private @Getter Recipe Imagine6Recipe1;
+    private @Getter Recipe RiffRaff6Recipe1;
+
+    private @Getter Recipe Finca12Recipe1;
+    private @Getter Recipe Bang12Recipe1;
+    private @Getter Recipe Imagine12Recipe1;
+    private @Getter Recipe RiffRaff12Recipe1;
+
+    // Uveges uditok
+    private @Getter Recipe CocaColaRecipe1;
+    private @Getter Recipe CocaColaZeroRecipe1;
+    private @Getter Recipe FantaNarancsRecipe1;
+    private @Getter Recipe SpriteRecipe1;
+    private @Getter Recipe KinleyGyomberRecipe1;
+    private @Getter Recipe KinleyTonicRecipe1;
+    private @Getter Recipe NesteaCitromRecipe1;
+    private @Getter Recipe NesteaBarackRecipe1;
+
+    // Kimert uditok
+    private @Getter Recipe CappyAlmaRecipe1;
+    private @Getter Recipe CappyNarancsRecipe1;
+    private @Getter Recipe CappyBarackRecipe1;
+    private @Getter Recipe CappyAnanaszRecipe1;
+
+    // Limonadek
+    private @Getter Recipe LimonadeMalna05Recipe1;
+    private @Getter Recipe LimonadeMeggy05Recipe1;
+    private @Getter Recipe LimonadeEperNarancs05Recipe1;
+    private @Getter Recipe LimonadeCitrus05Recipe1;
+
+    private @Getter Recipe LimonadeMalna10Recipe1;
+    private @Getter Recipe LimonadeMeggy10Recipe1;
+    private @Getter Recipe LimonadeEperNarancs10Recipe1;
+    private @Getter Recipe LimonadeCitrus10Recipe1;
+
+    // Asvanyviz
+    private @Getter Recipe NaturaquaSzensavasRecipe1;
+    private @Getter Recipe NaturaquaSzensavmentesRecipe1;
+    private @Getter Recipe SzodaRecipe1;
+
+    // Energiaitalok
+    private @Getter Recipe BurnOriginalRecipe1;
+    private @Getter Recipe BurnZeroRecipe1;
+    private @Getter Recipe MonsterEnergyRecipe1;
+    private @Getter Recipe MonsterAssaultRecipe1;
+    private @Getter Recipe MonsterRehabRecipe1;
+
+    // Filteres Teaak
+    private @Getter Recipe DallmayrFeketeRecipe1;
+    private @Getter Recipe DallmayrGyumolcsRecipe1;
+    private @Getter Recipe DallmayrZoldRecipe1;
+
+    private @Getter Recipe PiramisDarjelingRecipe1;
+    private @Getter Recipe PiramisMangoMaracujaRecipe1;
+    private @Getter Recipe PiramisAnanaszPapajaRecipe1;
+    private @Getter Recipe PiramisCitrusVerbenaRecipe1;
+
+    // Kavek
+    private @Getter Recipe EspressoRecipe1;
+    private @Getter Recipe AmericanoRecipe1;
+    private @Getter Recipe CappuccinoRecipe1;
+    private @Getter Recipe CaffeLatteRecipe1;
+    private @Getter Recipe LatteMacchiatoRecipe1;
+    private @Getter Recipe CaffeMelangeRecipe1;
+    private @Getter Recipe ForroCsokiBarnaRecipe1;
+    private @Getter Recipe ForroCsokiFeherRecipe1;
+
+    // Napi akciok
+    private @Getter Recipe CaptainAndGyomberRecipe1;
+    private @Getter Recipe GinTonicRecipe1;
+    private @Getter Recipe JackAndCokeRecipe1;
+    private @Getter Recipe VodkaSzodaRecipe1;
+
     private @Getter ProductCategory root;
 
     private @Getter ProductCategory etlap;
@@ -576,7 +758,7 @@ public class BuildSchema  {
         buildProducts();
         buildProductCategories();
         buildPriceModifiers();
-//        buildRecipes();
+        buildRecipes();
 //        buildStocks();
         buildReceipts();
 //        buildReceiptRecords();
@@ -598,6 +780,7 @@ public class BuildSchema  {
         productCategories();
         categoriesAndPriceModifiers();
         productsAndCategories();
+        productsAndRecipes();
         vatSerieAndVatValues();
         restaurantAndTables();
         tablesAndReservations();
@@ -3427,7 +3610,1239 @@ public class BuildSchema  {
         buildPriceModifierVodkaSzoda();
         buildPriceModifierMeggyesSor();
     }
-    
+
+    private void buildRecipes() {
+                /*----- ITALLAP -----*/
+        //Csapolt Sorok
+        buildSoproni03Recipe1();
+        buildSoproni05Recipe1();
+        buildEdelweiss03Recipe1();
+        buildEdelweiss05Recipe1();
+
+        // Uveges sorok
+        buildKrusoviceSvetleRecipe1();
+        buildSoproniDemonRecipe1();
+        buildSoproniMaxxRecipe1();
+        buildHeinekenRecipe1();
+        buildGosserNaturRadlerRecipe1();
+        buildGosserNaturRadler00Recipe1();
+        buildBekesSzentandrasiMeggyesRecipe1();
+        buildStrongbowDarkfruitRecipe1();
+        buildStrongbowGoldAppleCiderRecipe1();
+        buildEdelweissRecipe1();
+
+        // Borok
+        buildHazBoraNagyEsNagyRecipe1();
+        buildHilltopIrsaiOliverRecipe1();
+        buildHilltopIrsaiOliverDecireRecipe1();
+        buildGereAttilaOlaszrizlingRecipe1();
+
+        buildHazBoraLisiczaRoseCuveeRecipe1();
+        buildMeszarosPinotRecipe1();
+        buildMeszarosPinotDecireRecipe1();
+
+
+        buildHazBoraPolgarSerumVeritasRecipe1();
+        buildVinczeMerlotRecipe1();
+        buildVylyanCabernetSauvignonRecipe1();
+        buildMeszarosHidasptereCabernetFrancReserveRecipe1();
+
+        // Pezsgok
+        buildTorleyGalaSzarazRecipe1();
+        buildTorleyCharmantEdesRecipe1();
+
+        // Roviditalok
+        buildJimBeam04Recipe1();
+        buildJohnnieWalkerRedLabel04Recipe1();
+        buildJackDaniels04Recipe1();
+        buildTullamoreDew04Recipe1();
+
+        buildRoyal04Recipe1();
+        buildFinlandia04Recipe1();
+
+        buildBacardiSuperior04Recipe1();
+        buildCaptainMorganSpicedRum04Recipe1();
+
+        buildBeefeater04Recipe1();
+
+        buildTequilaSierraReposadoGold04Recipe1();
+        buildTequilaSierraSilver04Recipe1();
+
+        buildUnicum04Recipe1();
+        buildJagermeister04Recipe1();
+        buildBaileys08Recipe1();
+
+        buildJimBeam02Recipe1();
+        buildJohnnieWalkerRedLabel02Recipe1();
+        buildJackDaniels02Recipe1();
+        buildTullamoreDew02Recipe1();
+
+        buildRoyal02Recipe1();
+        buildFinlandia02Recipe1();
+
+        buildBacardiSuperior02Recipe1();
+        buildCaptainMorganSpicedRum02Recipe1();
+
+        buildBeefeater02Recipe1();
+
+        buildTequilaSierraReposadoGold02Recipe1();
+        buildTequilaSierraSilver02Recipe1();
+
+        buildUnicum02Recipe1();
+        buildJagermeister02Recipe1();
+        buildBaileys04Recipe1();
+
+        // Palinkak
+        build22KokuszTatratea04Recipe1();
+        build32CitrusTatratea04Recipe1();
+        build42BarackTatratea04Recipe1();
+        build52EredetiTatratea04Recipe1();
+        build62ErdeiGyumolcsTatratea04Recipe1();
+        build72OutlawBetyarTatratea04Recipe1();
+
+        buildCseresznyePalinka04Recipe1();
+        buildKajszibarackPalinka04Recipe1();
+        buildSzilvapalinka04Recipe1();
+
+        build22KokuszTatratea02Recipe1();
+        build32CitrusTatratea02Recipe1();
+        build42BarackTatratea02Recipe1();
+        build52EredetiTatratea02Recipe1();
+        build62ErdeiGyumolcsTatratea02Recipe1();
+        build72OutlawBetyarTatratea02Recipe1();
+
+        buildCseresznyePalinka02Recipe1();
+        buildKajszibarackPalinka02Recipe1();
+        buildSzilvapalinka02Recipe1();
+
+        // Shotok
+        buildFinca1Recipe1();
+        buildBang1Recipe1();
+        buildImagine1Recipe1();
+
+        buildFinca6Recipe1();
+        buildBang6Recipe1();
+        buildImagine6Recipe1();
+        buildRiffRaff6Recipe1();
+
+        buildFinca12Recipe1();
+        buildBang12Recipe1();
+        buildImagine12Recipe1();
+        buildRiffRaff12Recipe1();
+
+        // Uveges uditok
+        buildCocaColaRecipe1();
+        buildCocaColaZeroRecipe1();
+        buildFantaNarancsRecipe1();
+        buildSpriteRecipe1();
+        buildKinleyGyomberRecipe1();
+        buildKinleyTonicRecipe1();
+        buildNesteaCitromRecipe1();
+        buildNesteaBarackRecipe1();
+
+        // Kimert uditok
+        buildCappyAlmaRecipe1();
+        buildCappyNarancsRecipe1();
+        buildCappyBarackRecipe1();
+        buildCappyAnanaszRecipe1();
+
+        // Limonadek
+        buildLimonadeMalna05Recipe1();
+        buildLimonadeMeggy05Recipe1();
+        buildLimonadeEperNarancs05Recipe1();
+        buildLimonadeCitrus05Recipe1();
+
+        buildLimonadeMalna10Recipe1();
+        buildLimonadeMeggy10Recipe1();
+        buildLimonadeEperNarancs10Recipe1();
+        buildLimonadeCitrus10Recipe1();
+
+        // Asvanyviz
+        buildNaturaquaSzensavasRecipe1();
+        buildNaturaquaSzensavmentesRecipe1();
+        buildSzodaRecipe1();
+
+        // Energiaitalok
+        buildBurnOriginalRecipe1();
+        buildBurnZeroRecipe1();
+        buildMonsterEnergyRecipe1();
+        buildMonsterAssaultRecipe1();
+        buildMonsterRehabRecipe1();
+
+        // Filteres Teaak
+        buildDallmyrFeketeRecipe1();
+        buildDallmyrGyumolcsRecipe1();
+        buildDallmyrZoldRecipe1();
+
+        buildPiramisDarjelingRecipe1();
+        buildPiramisMangoMaracujaRecipe1();
+        buildPiramisAnanaszPapajaRecipe1();
+        buildPiramisCitrusVerbenaRecipe1();
+
+        // Kavek
+        buildEspressoRecipe1();
+        buildAmericanoRecipe1();
+        buildCappuccinoRecipe1();
+        buildCaffeLatteRecipe1();
+        buildLatteMacchiatoRecipe1();
+        buildCaffeMelangeRecipe1();
+        buildForroCsokiBarnaRecipe1();
+        buildForroCsokiFeherRecipe1();
+
+        // Napi akciok
+        buildCaptainAndGyomberRecipe1();
+        buildGinTonicRecipe1();
+        buildJackAndCokeRecipe1();
+        buildVodkaSzodaRecipe1();
+    }
+
+
+    private void buildSoproni03Recipe1() {
+        Soproni03Recipe1 = Recipe.builder()
+                .owner(Soproni03)
+                .component(Soproni03)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildSoproni05Recipe1() {
+        Soproni05Recipe1 = Recipe.builder()
+                .owner(Soproni05)
+                .component(Soproni05)
+                .quantityMultiplier(1)
+                .build();
+    }
+
+    private void buildEdelweiss03Recipe1() {
+        Edelweiss03Recipe1 = Recipe.builder()
+                .owner(Edelweiss03)
+                .component(Edelweiss03)
+                .quantityMultiplier(14)
+                .build();
+    }
+
+    private void buildEdelweiss05Recipe1() {
+        Edelweiss05Recipe1 = Recipe.builder()
+                .owner(Edelweiss05)
+                .component(Edelweiss05)
+                .quantityMultiplier(2)
+                .build();
+    }
+
+    private void buildKrusoviceSvetleRecipe1() {
+        KrusoviceSvetleRecipe1 = Recipe.builder()
+                .owner(KrusoviceSvetle)
+                .component(KrusoviceSvetle)
+                .quantityMultiplier(3)
+                .build();
+    }
+
+    private void buildSoproniDemonRecipe1() {
+        SoproniDemonRecipe1 = Recipe.builder()
+                .owner(SoproniDemon)
+                .component(SoproniDemon)
+                .quantityMultiplier(4)
+                .build();
+    }
+
+    private void buildSoproniMaxxRecipe1() {
+        SoproniMaxxRecipe1 = Recipe.builder()
+                .owner(SoproniMaxx)
+                .component(SoproniMaxx)
+                .quantityMultiplier(8)
+                .build();
+    }
+
+    private void buildHeinekenRecipe1() {
+        HeinekenRecipe1 = Recipe.builder()
+                .owner(Heineken)
+                .component(Heineken)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildGosserNaturRadlerRecipe1() {
+        GosserNaturRadlerRecipe1 = Recipe.builder()
+                .owner(GosserNaturRadler)
+                .component(GosserNaturRadler)
+                .quantityMultiplier(9)
+                .build();
+    }
+
+    private void buildGosserNaturRadler00Recipe1() {
+        GosserNaturRadler00Recipe1 = Recipe.builder()
+                .owner(GosserNaturRadler00)
+                .component(GosserNaturRadler00)
+                .quantityMultiplier(11)
+                .build();
+    }
+
+    private void buildBekesSzentandrasiMeggyesRecipe1() {
+        BekesSzentandrasiMeggyesRecipe1 = Recipe.builder()
+                .owner(BekesSzentandrasiMeggyes)
+                .component(BekesSzentandrasiMeggyes)
+                .quantityMultiplier(5)
+                .build();
+    }
+
+    private void buildStrongbowDarkfruitRecipe1() {
+        StrongbowDarkfruitRecipe1 = Recipe.builder()
+                .owner(StrongbowDarkfruit)
+                .component(StrongbowDarkfruit)
+                .quantityMultiplier(7)
+                .build();
+    }
+
+    private void buildStrongbowGoldAppleCiderRecipe1() {
+        StrongbowGoldAppleCiderRecipe1 = Recipe.builder()
+                .owner(StrongbowGoldAppleCider)
+                .component(StrongbowGoldAppleCider)
+                .quantityMultiplier(6)
+                .build();
+    }
+
+    private void buildEdelweissRecipe1() {
+        EdelweissRecipe1 = Recipe.builder()
+                .owner(Edelweiss)
+                .component(Edelweiss)
+                .quantityMultiplier(12)
+                .build();
+    }
+
+    private void buildHazBoraNagyEsNagyRecipe1() {
+        HazBoraNagyEsNagyRecipe1 = Recipe.builder()
+                .owner(HazBoraNagyEsNagy)
+                .component(HazBoraNagyEsNagy)
+                .quantityMultiplier(1)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverRecipe1() {
+        HilltopIrsaiOliverRecipe1 = Recipe.builder()
+                .owner(HilltopIrsaiOliver)
+                .component(HilltopIrsaiOliver)
+                .quantityMultiplier(6)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverDecireRecipe1() {
+        HilltopIrsaiOliverDecireRecipe1 = Recipe.builder()
+                .owner(HilltopIrsaiOliverDecire)
+                .component(HilltopIrsaiOliverDecire)
+                .quantityMultiplier(4)
+                .build();
+    }
+
+    private void buildGereAttilaOlaszrizlingRecipe1() {
+        GereAttilaOlaszrizlingRecipe1 = Recipe.builder()
+                .owner(GereAttilaOlaszrizling)
+                .component(GereAttilaOlaszrizling)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildHazBoraLisiczaRoseCuveeRecipe1() {
+        HazBoraLisiczaRoseCuveeRecipe1 = Recipe.builder()
+                .owner(HazBoraLisiczaRoseCuvee)
+                .component(HazBoraLisiczaRoseCuvee)
+                .quantityMultiplier(2)
+                .build();
+    }
+
+    private void buildMeszarosPinotRecipe1() {
+        MeszarosPinotNoirRoseRecipe1 = Recipe.builder()
+                .owner(MeszarosPinotNoirRose)
+                .component(MeszarosPinotNoirRose)
+                .quantityMultiplier(7)
+                .build();
+    }
+
+    private void buildMeszarosPinotDecireRecipe1() {
+        MeszarosPinotNoirRoseDecireRecipe1 = Recipe.builder()
+                .owner(MeszarosPinotNoirRoseDecire)
+                .component(MeszarosPinotNoirRoseDecire)
+                .quantityMultiplier(5)
+                .build();
+    }
+
+    private void buildHazBoraPolgarSerumVeritasRecipe1() {
+        HazBoraPolgarSerumVeritasRecipe1 = Recipe.builder()
+                .owner(HazBoraPolgarSerumVeritas)
+                .component(HazBoraPolgarSerumVeritas)
+                .quantityMultiplier(3)
+                .build();
+    }
+
+    private void buildVinczeMerlotRecipe1() {
+        VinczeMerlotRecipe1 = Recipe.builder()
+                .owner(VinczeMerlot)
+                .component(VinczeMerlot)
+                .quantityMultiplier(9)
+                .build();
+    }
+
+    private void buildVylyanCabernetSauvignonRecipe1() {
+        VylyanCabernetSauvignonRecipe1 = Recipe.builder()
+                .owner(VylyanCabernetSauvignon)
+                .component(VylyanCabernetSauvignon)
+                .quantityMultiplier(8)
+                .build();
+    }
+
+    private void buildMeszarosHidasptereCabernetFrancReserveRecipe1() {
+        MeszarosHidasptereCabernetFrancReserveRecipe1 = Recipe.builder()
+                .owner(MeszarosHidasptereCabernetFrancReserve)
+                .component(MeszarosHidasptereCabernetFrancReserve)
+                .quantityMultiplier(11)
+                .build();
+    }
+
+    private void buildTorleyGalaSzarazRecipe1() {
+        TorleyGalaSzarazRecipe1 = Recipe.builder()
+                .owner(TorleyGalaSzaraz)
+                .component(TorleyGalaSzaraz)
+                .quantityMultiplier(12)
+                .build();
+    }
+
+    private void buildTorleyCharmantEdesRecipe1() {
+        TorleyCharmantEdesRecipe1 = Recipe.builder()
+                .owner(TorleyCharmantEdes)
+                .component(TorleyCharmantEdes)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildSzodaRecipe1() {
+        SzodaRecipe1 = Recipe.builder()
+                .owner(Szoda)
+                .component(Szoda)
+                .quantityMultiplier(14)
+                .build();
+    }
+
+    private void buildJimBeam04Recipe1() {
+        JimBeam04Recipe1 = Recipe.builder()
+                .owner(JimBeam04)
+                .component(JimBeam04)
+                .quantityMultiplier(5)
+                .build();
+    }
+
+    private void buildJohnnieWalkerRedLabel04Recipe1() {
+        JohnnieWalkerRedLabel04Recipe1 = Recipe.builder()
+                .owner(JohnnieWalkerRedLabel04)
+                .component(JohnnieWalkerRedLabel04)
+                .quantityMultiplier(6)
+                .build();
+    }
+
+    private void buildJackDaniels04Recipe1() {
+        JackDaniels04Recipe1 = Recipe.builder()
+                .owner(JackDaniels04)
+                .component(JackDaniels04)
+                .quantityMultiplier(7)
+                .build();
+    }
+
+    private void buildTullamoreDew04Recipe1() {
+        TullamoreDew04Recipe1 = Recipe.builder()
+                .owner(TullamoreDew04)
+                .component(TullamoreDew04)
+                .quantityMultiplier(8)
+                .build();
+    }
+
+    private void buildRoyal04Recipe1() {
+        Royal04Recipe1 = Recipe.builder()
+                .owner(Royal04)
+                .component(Royal04)
+                .quantityMultiplier(3)
+                .build();
+    }
+
+    private void buildFinlandia04Recipe1() {
+        Finlandia04Recipe1 = Recipe.builder()
+                .owner(Finlandia04)
+                .component(Finlandia04)
+                .quantityMultiplier(4)
+                .build();
+    }
+
+    private void buildBacardiSuperior04Recipe1() {
+        BacardiSuperior04Recipe1 = Recipe.builder()
+                .owner(BacardiSuperior04)
+                .component(BacardiSuperior04)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildCaptainMorganSpicedRum04Recipe1() {
+        CaptainMorganSpicedRum04Recipe1 = Recipe.builder()
+                .owner(CaptainMorganSpicedRum04)
+                .component(CaptainMorganSpicedRum04)
+                .quantityMultiplier(9)
+                .build();
+    }
+
+    private void buildBeefeater04Recipe1() {
+        Beefeater04Recipe1 = Recipe.builder()
+                .owner(Beefeater04)
+                .component(Beefeater04)
+                .quantityMultiplier(11)
+                .build();
+    }
+
+    private void buildTequilaSierraReposadoGold04Recipe1() {
+        TequilaSierraReposadoGold04Recipe1 = Recipe.builder()
+                .owner(TequilaSierraReposadoGold04)
+                .component(TequilaSierraReposadoGold04)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildTequilaSierraSilver04Recipe1() {
+        TequilaSierraSilver04Recipe1 = Recipe.builder()
+                .owner(TequilaSierraSilver04)
+                .component(TequilaSierraSilver04)
+                .quantityMultiplier(12)
+                .build();
+    }
+
+    private void buildUnicum04Recipe1() {
+        Unicum04Recipe1 = Recipe.builder()
+                .owner(Unicum04)
+                .component(Unicum04)
+                .quantityMultiplier(1)
+                .build();
+    }
+
+    private void buildJagermeister04Recipe1() {
+        Jagermeister04Recipe1 = Recipe.builder()
+                .owner(Jagermeister04)
+                .component(Jagermeister04)
+                .quantityMultiplier(2)
+                .build();
+    }
+
+    private void buildBaileys08Recipe1() {
+        Baileys08Recipe1 = Recipe.builder()
+                .owner(Baileys08)
+                .component(Baileys08)
+                .quantityMultiplier(14)
+                .build();
+    }
+
+    private void buildJimBeam02Recipe1() {
+        JimBeam02Recipe1 = Recipe.builder()
+                .owner(JimBeam02)
+                .component(JimBeam02)
+                .quantityMultiplier(19)
+                .build();
+    }
+
+    private void buildJohnnieWalkerRedLabel02Recipe1() {
+        JohnnieWalkerRedLabel02Recipe1 = Recipe.builder()
+                .owner(JohnnieWalkerRedLabel02)
+                .component(JohnnieWalkerRedLabel02)
+                .quantityMultiplier(20)
+                .build();
+    }
+
+    private void buildJackDaniels02Recipe1() {
+        JackDaniels02Recipe1 = Recipe.builder()
+                .owner(JackDaniels02)
+                .component(JackDaniels02)
+                .quantityMultiplier(21)
+                .build();
+    }
+
+    private void buildTullamoreDew02Recipe1() {
+        TullamoreDew02Recipe1 = Recipe.builder()
+                .owner(TullamoreDew02)
+                .component(TullamoreDew02)
+                .quantityMultiplier(22)
+                .build();
+    }
+
+    private void buildRoyal02Recipe1() {
+        Royal02Recipe1 = Recipe.builder()
+                .owner(Royal02)
+                .component(Royal02)
+                .quantityMultiplier(17)
+                .build();
+    }
+
+    private void buildFinlandia02Recipe1() {
+        Finlandia02Recipe1 = Recipe.builder()
+                .owner(Finlandia02)
+                .component(Finlandia02)
+                .quantityMultiplier(18)
+                .build();
+    }
+
+    private void buildBacardiSuperior02Recipe1() {
+        BacardiSuperior02Recipe1 = Recipe.builder()
+                .owner(BacardiSuperior02)
+                .component(BacardiSuperior02)
+                .quantityMultiplier(24)
+                .build();
+    }
+
+    private void buildCaptainMorganSpicedRum02Recipe1() {
+        CaptainMorganSpicedRum02Recipe1 = Recipe.builder()
+                .owner(CaptainMorganSpicedRum02)
+                .component(CaptainMorganSpicedRum02)
+                .quantityMultiplier(23)
+                .build();
+    }
+
+    private void buildBeefeater02Recipe1() {
+        Beefeater02Recipe1 = Recipe.builder()
+                .owner(Beefeater02)
+                .component(Beefeater02)
+                .quantityMultiplier(25)
+                .build();
+    }
+
+    private void buildTequilaSierraReposadoGold02Recipe1() {
+        TequilaSierraReposadoGold02Recipe1 = Recipe.builder()
+                .owner(TequilaSierraReposadoGold02)
+                .component(TequilaSierraReposadoGold02)
+                .quantityMultiplier(27)
+                .build();
+    }
+
+    private void buildTequilaSierraSilver02Recipe1() {
+        TequilaSierraSilver02Recipe1 = Recipe.builder()
+                .owner(TequilaSierraSilver02)
+                .component(TequilaSierraSilver02)
+                .quantityMultiplier(26)
+                .build();
+    }
+
+    private void buildUnicum02Recipe1() {
+        Unicum02Recipe1 = Recipe.builder()
+                .owner(Unicum02)
+                .component(Unicum02)
+                .quantityMultiplier(15)
+                .build();
+    }
+
+    private void buildJagermeister02Recipe1() {
+        Jagermeister02Recipe1 = Recipe.builder()
+                .owner(Jagermeister02)
+                .component(Jagermeister02)
+                .quantityMultiplier(16)
+                .build();
+    }
+
+    private void buildBaileys04Recipe1() {
+        Baileys04Recipe1 = Recipe.builder()
+                .owner(Baileys04)
+                .component(Baileys04)
+                .quantityMultiplier(28)
+                .build();
+    }
+
+    private void build22KokuszTatratea04Recipe1() {
+        _22KokuszTatratea04Recipe1 = Recipe.builder()
+                .owner(_22KokuszTatratea04)
+                .component(_22KokuszTatratea04)
+                .quantityMultiplier(1)
+                .build();
+    }
+
+    private void build32CitrusTatratea04Recipe1() {
+        _32CitrusTatratea04Recipe1 = Recipe.builder()
+                .owner(_32CitrusTatratea04)
+                .component(_32CitrusTatratea04)
+                .quantityMultiplier(2)
+                .build();
+    }
+
+    private void build42BarackTatratea04Recipe1() {
+        _42BarackTatratea04Recipe1 = Recipe.builder()
+                .owner(_42BarackTatratea04)
+                .component(_42BarackTatratea04)
+                .quantityMultiplier(3)
+                .build();
+    }
+
+    private void build52EredetiTatratea04Recipe1() {
+        _52EredetiTatratea04Recipe1 = Recipe.builder()
+                .owner(_52EredetiTatratea04)
+                .component(_52EredetiTatratea04)
+                .quantityMultiplier(4)
+                .build();
+    }
+
+    private void build62ErdeiGyumolcsTatratea04Recipe1() {
+        _62ErdeiGyumolcsTatratea04Recipe1 = Recipe.builder()
+                .owner(_62ErdeiGyumolcsTatratea04)
+                .component(_62ErdeiGyumolcsTatratea04)
+                .quantityMultiplier(5)
+                .build();
+    }
+
+    private void build72OutlawBetyarTatratea04Recipe1() {
+        _72OutlawBetyarTatratea04Recipe1 = Recipe.builder()
+                .owner(_72OutlawBetyarTatratea04)
+                .component(_72OutlawBetyarTatratea04)
+                .quantityMultiplier(6)
+                .build();
+    }
+
+    private void buildCseresznyePalinka04Recipe1() {
+        CseresznyePalinka04Recipe1 = Recipe.builder()
+                .owner(CseresznyePalinka04)
+                .component(CseresznyePalinka04)
+                .quantityMultiplier(7)
+                .build();
+    }
+
+    private void buildKajszibarackPalinka04Recipe1() {
+        KajszibarackPalinka04Recipe1 = Recipe.builder()
+                .owner(KajszibarackPalinka04)
+                .component(KajszibarackPalinka04)
+                .quantityMultiplier(8)
+                .build();
+    }
+
+    private void buildSzilvapalinka04Recipe1() {
+        Szilvapalinka04Recipe1 = Recipe.builder()
+                .owner(Szilvapalinka04)
+                .component(Szilvapalinka04)
+                .quantityMultiplier(9)
+                .build();
+    }
+
+    private void build22KokuszTatratea02Recipe1() {
+        _22KokuszTatratea02Recipe1 = Recipe.builder()
+                .owner(_22KokuszTatratea02)
+                .component(_22KokuszTatratea02)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void build32CitrusTatratea02Recipe1() {
+        _32CitrusTatratea02Recipe1 = Recipe.builder()
+                .owner(_32CitrusTatratea02)
+                .component(_32CitrusTatratea02)
+                .quantityMultiplier(11)
+                .build();
+    }
+
+    private void build42BarackTatratea02Recipe1() {
+        _42BarackTatratea02Recipe1 = Recipe.builder()
+                .owner(_42BarackTatratea02)
+                .component(_42BarackTatratea02)
+                .quantityMultiplier(12)
+                .build();
+    }
+
+    private void build52EredetiTatratea02Recipe1() {
+        _52EredetiTatratea02Recipe1 = Recipe.builder()
+                .owner(_52EredetiTatratea02)
+                .component(_52EredetiTatratea02)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void build62ErdeiGyumolcsTatratea02Recipe1() {
+        _62ErdeiGyumolcsTatratea02Recipe1 = Recipe.builder()
+                .owner(_62ErdeiGyumolcsTatratea02)
+                .component(_62ErdeiGyumolcsTatratea02)
+                .quantityMultiplier(14)
+                .build();
+    }
+
+    private void build72OutlawBetyarTatratea02Recipe1() {
+        _72OutlawBetyarTatratea02Recipe1 = Recipe.builder()
+                .owner(_72OutlawBetyarTatratea02)
+                .component(_72OutlawBetyarTatratea02)
+                .quantityMultiplier(15)
+                .build();
+    }
+
+    private void buildCseresznyePalinka02Recipe1() {
+        CseresznyePalinka02Recipe1 = Recipe.builder()
+                .owner(CseresznyePalinka02)
+                .component(CseresznyePalinka02)
+                .quantityMultiplier(16)
+                .build();
+    }
+
+    private void buildKajszibarackPalinka02Recipe1() {
+        KajszibarackPalinka02Recipe1 = Recipe.builder()
+                .owner(KajszibarackPalinka02)
+                .component(KajszibarackPalinka02)
+                .quantityMultiplier(17)
+                .build();
+    }
+
+    private void buildSzilvapalinka02Recipe1() {
+        Szilvapalinka02Recipe1 = Recipe.builder()
+                .owner(Szilvapalinka02)
+                .component(Szilvapalinka02)
+                .quantityMultiplier(18)
+                .build();
+    }
+
+    private void buildFinca1Recipe1() {
+        Finca1Recipe1 = Recipe.builder()
+                .owner(Finca1)
+                .component(Finca1)
+                .quantityMultiplier(2)
+                .build();
+    }
+
+    private void buildBang1Recipe1() {
+        Bang1Recipe1 = Recipe.builder()
+                .owner(Bang1)
+                .component(Bang1)
+                .quantityMultiplier(1)
+                .build();
+    }
+
+    private void buildImagine1Recipe1() {
+        Imagine1Recipe1 = Recipe.builder()
+                .owner(Imagine1)
+                .component(Imagine1)
+                .quantityMultiplier(3)
+                .build();
+    }
+
+    private void buildFinca6Recipe1() {
+        Finca6Recipe1 = Recipe.builder()
+                .owner(Finca6)
+                .component(Finca6)
+                .build();
+    }
+
+    private void buildBang6Recipe1() {
+        Bang6Recipe1 = Recipe.builder()
+                .owner(Bang6)
+                .component(Bang6)
+                .build();
+    }
+
+    private void buildImagine6Recipe1() {
+        Imagine6Recipe1 = Recipe.builder()
+                .owner(Imagine6)
+                .component(Imagine6)
+                .quantityMultiplier(6)
+                .build();
+    }
+
+    private void buildRiffRaff6Recipe1() {
+        RiffRaff6Recipe1 = Recipe.builder()
+                .owner(RiffRaff6)
+                .component(RiffRaff6)
+                .quantityMultiplier(7)
+                .build();
+    }
+
+    private void buildFinca12Recipe1() {
+        Finca12Recipe1 = Recipe.builder()
+                .owner(Finca12)
+                .component(Finca12)
+                .quantityMultiplier(9)
+                .build();
+    }
+
+    private void buildBang12Recipe1() {
+        Bang12Recipe1 = Recipe.builder()
+                .owner(Bang12)
+                .component(Bang12)
+                .quantityMultiplier(8)
+                .build();
+    }
+
+    private void buildImagine12Recipe1() {
+        Imagine12Recipe1 = Recipe.builder()
+                .owner(Imagine12)
+                .component(Imagine12)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildRiffRaff12Recipe1() {
+        RiffRaff12Recipe1 = Recipe.builder()
+                .owner(RiffRaff12)
+                .component(RiffRaff12)
+                .quantityMultiplier(11)
+                .build();
+    }
+
+    private void buildCocaColaRecipe1() {
+        CocaColaRecipe1 = Recipe.builder()
+                .owner(CocaCola)
+                .component(CocaCola)
+                .quantityMultiplier(9)
+                .build();
+    }
+
+    private void buildCocaColaZeroRecipe1() {
+        CocaColaZeroRecipe1 = Recipe.builder()
+                .owner(CocaColaZero)
+                .component(CocaColaZero)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildFantaNarancsRecipe1() {
+        FantaNarancsRecipe1 = Recipe.builder()
+                .owner(FantaNarancs)
+                .component(FantaNarancs)
+                .quantityMultiplier(11)
+                .build();
+    }
+
+    private void buildSpriteRecipe1() {
+        SpriteRecipe1 = Recipe.builder()
+                .owner(Sprite)
+                .component(Sprite)
+                .quantityMultiplier(12)
+                .build();
+    }
+
+    private void buildKinleyGyomberRecipe1() {
+        KinleyGyomberRecipe1 = Recipe.builder()
+                .owner(KinleyGyomber)
+                .component(KinleyGyomber)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildKinleyTonicRecipe1() {
+        KinleyTonicRecipe1 = Recipe.builder()
+                .owner(KinleyTonic)
+                .component(KinleyTonic)
+                .quantityMultiplier(14)
+                .build();
+    }
+
+    private void buildNesteaCitromRecipe1() {
+        NesteaCitromRecipe1 = Recipe.builder()
+                .owner(NesteaCitrom)
+                .component(NesteaCitrom)
+                .quantityMultiplier(15)
+                .build();
+    }
+
+    private void buildNesteaBarackRecipe1() {
+        NesteaBarackRecipe1 = Recipe.builder()
+                .owner(NesteaBarack)
+                .component(NesteaBarack)
+                .quantityMultiplier(16)
+                .build();
+    }
+
+    private void buildCappyAlmaRecipe1() {
+        CappyAlmaRecipe1 = Recipe.builder()
+                .owner(CappyAlma)
+                .component(CappyAlma)
+                .quantityMultiplier(5)
+                .build();
+    }
+
+    private void buildCappyNarancsRecipe1() {
+        CappyNarancsRecipe1 = Recipe.builder()
+                .owner(CappyNarancs)
+                .component(CappyNarancs)
+                .quantityMultiplier(6)
+                .build();
+    }
+
+    private void buildCappyBarackRecipe1() {
+        CappyBarackRecipe1 = Recipe.builder()
+                .owner(CappyBarack)
+                .component(CappyBarack)
+                .quantityMultiplier(7)
+                .build();
+    }
+
+    private void buildCappyAnanaszRecipe1() {
+        CappyAnanaszRecipe1 = Recipe.builder()
+                .owner(CappyAnanasz)
+                .component(CappyAnanasz)
+                .quantityMultiplier(8)
+                .build();
+    }
+
+    private void buildLimonadeMalna05Recipe1() {
+        LimonadeMalna05Recipe1 = Recipe.builder()
+                .owner(LimonadeMalna05)
+                .component(LimonadeMalna05)
+                .quantityMultiplier(2)
+                .build();
+    }
+
+    private void buildLimonadeMeggy05Recipe1() {
+        LimonadeMeggy05Recipe1 = Recipe.builder()
+                .owner(LimonadeMeggy05)
+                .component(LimonadeMeggy05)
+                .quantityMultiplier(4)
+                .build();
+    }
+
+    private void buildLimonadeEperNarancs05Recipe1() {
+        LimonadeEperNarancs05Recipe1 = Recipe.builder()
+                .owner(LimonadeEperNarancs05)
+                .component(LimonadeEperNarancs05)
+                .quantityMultiplier(3)
+                .build();
+    }
+
+    private void buildLimonadeCitrus05Recipe1() {
+        LimonadeCitrus05Recipe1 = Recipe.builder()
+                .owner(LimonadeCitrus05)
+                .component(LimonadeCitrus05)
+                .quantityMultiplier(1)
+                .build();
+    }
+
+    private void buildLimonadeMalna10Recipe1() {
+        LimonadeMalna10Recipe1 = Recipe.builder()
+                .owner(LimonadeMalna10)
+                .component(LimonadeMalna10)
+                .quantityMultiplier(19)
+                .build();
+    }
+
+    private void buildLimonadeMeggy10Recipe1() {
+        LimonadeMeggy10Recipe1 = Recipe.builder()
+                .owner(LimonadeMeggy10)
+                .component(LimonadeMeggy10)
+                .quantityMultiplier(20)
+                .build();
+    }
+
+    private void buildLimonadeEperNarancs10Recipe1() {
+        LimonadeEperNarancs10Recipe1 = Recipe.builder()
+                .owner(LimonadeEperNarancs10)
+                .component(LimonadeEperNarancs10)
+                .quantityMultiplier(21)
+                .build();
+    }
+
+    private void buildLimonadeCitrus10Recipe1() {
+        LimonadeCitrus10Recipe1 = Recipe.builder()
+                .owner(LimonadeCitrus10)
+                .component(LimonadeCitrus10)
+                .quantityMultiplier(22)
+                .build();
+    }
+
+    private void buildNaturaquaSzensavasRecipe1() {
+        NaturaquaSzensavasRecipe1 = Recipe.builder()
+                .owner(NaturaquaSzensavas)
+                .component(NaturaquaSzensavas)
+                .quantityMultiplier(17)
+                .build();
+    }
+
+    private void buildNaturaquaSzensavmentesRecipe1() {
+        NaturaquaSzensavmentesRecipe1 = Recipe.builder()
+                .owner(NaturaquaSzensavmentes)
+                .component(NaturaquaSzensavmentes)
+                .quantityMultiplier(18)
+                .build();
+    }
+
+    private void buildBurnOriginalRecipe1() {
+        BurnOriginalRecipe1 = Recipe.builder()
+                .owner(BurnOriginal)
+                .component(BurnOriginal)
+                .quantityMultiplier(23)
+                .build();
+    }
+
+    private void buildBurnZeroRecipe1() {
+        BurnZeroRecipe1 = Recipe.builder()
+                .owner(BurnZero)
+                .component(BurnZero)
+                .quantityMultiplier(24)
+                .build();
+    }
+
+    private void buildMonsterEnergyRecipe1() {
+        MonsterEnergyRecipe1 = Recipe.builder()
+                .owner(MonsterEnergy)
+                .component(MonsterEnergy)
+                .quantityMultiplier(25)
+                .build();
+    }
+
+    private void buildMonsterAssaultRecipe1() {
+        MonsterAssaultRecipe1 = Recipe.builder()
+                .owner(MonsterAssault)
+                .component(MonsterAssault)
+                .quantityMultiplier(26)
+                .build();
+    }
+
+    private void buildMonsterRehabRecipe1() {
+        MonsterRehabRecipe1 = Recipe.builder()
+                .owner(MonsterRehab)
+                .component(MonsterRehab)
+                .quantityMultiplier(27)
+                .build();
+    }
+
+    private void buildDallmyrFeketeRecipe1() {
+        DallmayrFeketeRecipe1 = Recipe.builder()
+                .owner(DallmayrFekete)
+                .component(DallmayrFekete)
+                .quantityMultiplier(9)
+                .build();
+    }
+
+    private void buildDallmyrGyumolcsRecipe1() {
+        DallmayrGyumolcsRecipe1 = Recipe.builder()
+                .owner(DallmayrGyumolcs)
+                .component(DallmayrGyumolcs)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildDallmyrZoldRecipe1() {
+        DallmayrZoldRecipe1 = Recipe.builder()
+                .owner(DallmayrZold)
+                .component(DallmayrZold)
+                .quantityMultiplier(11)
+                .build();
+    }
+
+    private void buildPiramisDarjelingRecipe1() {
+        PiramisDarjelingRecipe1 = Recipe.builder()
+                .owner(PiramisDarjeling)
+                .component(PiramisDarjeling)
+                .quantityMultiplier(12)
+                .build();
+    }
+
+    private void buildPiramisMangoMaracujaRecipe1() {
+        PiramisMangoMaracujaRecipe1 = Recipe.builder()
+                .owner(PiramisMangoMaracuja)
+                .component(PiramisMangoMaracuja)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildPiramisAnanaszPapajaRecipe1() {
+        PiramisAnanaszPapajaRecipe1 = Recipe.builder()
+                .owner(PiramisAnanaszPapaja)
+                .component(PiramisAnanaszPapaja)
+                .quantityMultiplier(14)
+                .build();
+    }
+
+    private void buildPiramisCitrusVerbenaRecipe1() {
+        PiramisCitrusVerbenaRecipe1 = Recipe.builder()
+                .owner(PiramisCitrusVerbena)
+                .component(PiramisCitrusVerbena)
+                .quantityMultiplier(15)
+                .build();
+    }
+
+    private void buildEspressoRecipe1() {
+        EspressoRecipe1 = Recipe.builder()
+                .owner(Espresso)
+                .component(Espresso)
+                .quantityMultiplier(1)
+                .build();
+    }
+
+    private void buildAmericanoRecipe1() {
+        AmericanoRecipe1 = Recipe.builder()
+                .owner(Americano)
+                .component(Americano)
+                .quantityMultiplier(5)
+                .build();
+    }
+
+    private void buildCappuccinoRecipe1() {
+        CappuccinoRecipe1 = Recipe.builder()
+                .owner(Cappuccino)
+                .component(Cappuccino)
+                .quantityMultiplier(3)
+                .build();
+    }
+
+    private void buildCaffeLatteRecipe1() {
+        CaffeLatteRecipe1 = Recipe.builder()
+                .owner(CaffeLatte)
+                .component(CaffeLatte)
+                .quantityMultiplier(2)
+                .build();
+    }
+
+    private void buildLatteMacchiatoRecipe1() {
+        LatteMacchiatoRecipe1 = Recipe.builder()
+                .owner(LatteMacchiato)
+                .component(LatteMacchiato)
+                .quantityMultiplier(6)
+                .build();
+    }
+
+    private void buildCaffeMelangeRecipe1() {
+        CaffeMelangeRecipe1 = Recipe.builder()
+                .owner(CaffeMelange)
+                .component(CaffeMelange)
+                .quantityMultiplier(4)
+                .build();
+    }
+
+    private void buildForroCsokiBarnaRecipe1() {
+        ForroCsokiBarnaRecipe1 = Recipe.builder()
+                .owner(ForroCsokiBarna)
+                .component(ForroCsokiBarna)
+                .quantityMultiplier(7)
+                .build();
+    }
+
+    private void buildForroCsokiFeherRecipe1() {
+        ForroCsokiFeherRecipe1 = Recipe.builder()
+                .owner(ForroCsokiFeher)
+                .component(ForroCsokiFeher)
+                .quantityMultiplier(8)
+                .build();
+    }
+
+    private void buildCaptainAndGyomberRecipe1() {
+        CaptainAndGyomberRecipe1 = Recipe.builder()
+                .owner(CaptainAndGyomber)
+                .component(CaptainAndGyomber)
+                .quantityMultiplier(1)
+                .build();
+    }
+
+    private void buildGinTonicRecipe1() {
+        GinTonicRecipe1 = Recipe.builder()
+                .owner(GinTonic)
+                .component(GinTonic)
+                .quantityMultiplier(2)
+                .build();
+    }
+
+    private void buildJackAndCokeRecipe1() {
+        JackAndCokeRecipe1 = Recipe.builder()
+                .owner(JackAndCoke)
+                .component(JackAndCoke)
+                .quantityMultiplier(3)
+                .build();
+    }
+
+    private void buildVodkaSzodaRecipe1() {
+        VodkaSzodaRecipe1 = Recipe.builder()
+                .owner(VodkaSzoda)
+                .component(VodkaSzoda)
+                .quantityMultiplier(4)
+                .build();
+    }
+
     private void buildPriceModifierEdelweiss() {
         priceModifierEdelweiss = PriceModifier.builder()
                 .name("Edelweiss")
@@ -6477,6 +7892,190 @@ public class BuildSchema  {
 
     }
 
+
+    private void productsAndRecipes() {
+        // Csapolt Sorok
+        Soproni03.setRecipes(Arrays.asList(Soproni03Recipe1));
+        Soproni05.setRecipes(Arrays.asList(Soproni05Recipe1));
+        Edelweiss03.setRecipes(Arrays.asList(Edelweiss03Recipe1));
+        Edelweiss05.setRecipes(Arrays.asList(Edelweiss05Recipe1));
+
+        // Uveges sorok
+        KrusoviceSvetle.setRecipes(Arrays.asList(KrusoviceSvetleRecipe1));
+        SoproniDemon.setRecipes(Arrays.asList(SoproniDemonRecipe1));
+        SoproniMaxx.setRecipes(Arrays.asList(SoproniMaxxRecipe1));
+        Heineken.setRecipes(Arrays.asList(HeinekenRecipe1));
+        GosserNaturRadler.setRecipes(Arrays.asList(GosserNaturRadlerRecipe1));
+        GosserNaturRadler00.setRecipes(Arrays.asList(GosserNaturRadler00Recipe1));
+        BekesSzentandrasiMeggyes.setRecipes(Arrays.asList(BekesSzentandrasiMeggyesRecipe1));
+        StrongbowDarkfruit.setRecipes(Arrays.asList(StrongbowDarkfruitRecipe1));
+        StrongbowGoldAppleCider.setRecipes(Arrays.asList(StrongbowGoldAppleCiderRecipe1));
+        Edelweiss.setRecipes(Arrays.asList(EdelweissRecipe1));
+
+        // Borok
+        HazBoraNagyEsNagy.setRecipes(Arrays.asList(HazBoraNagyEsNagyRecipe1));
+        HilltopIrsaiOliver.setRecipes(Arrays.asList(HilltopIrsaiOliverRecipe1));
+        HilltopIrsaiOliverDecire.setRecipes(Arrays.asList(HilltopIrsaiOliverDecireRecipe1));
+        GereAttilaOlaszrizling.setRecipes(Arrays.asList(GereAttilaOlaszrizlingRecipe1));
+
+        HazBoraLisiczaRoseCuvee.setRecipes(Arrays.asList(HazBoraLisiczaRoseCuveeRecipe1));
+        MeszarosPinotNoirRose.setRecipes(Arrays.asList(MeszarosPinotNoirRoseRecipe1));
+        MeszarosPinotNoirRoseDecire.setRecipes(Arrays.asList(MeszarosPinotNoirRoseDecireRecipe1));
+
+        HazBoraPolgarSerumVeritas.setRecipes(Arrays.asList(HazBoraPolgarSerumVeritasRecipe1));
+        VinczeMerlot.setRecipes(Arrays.asList(VinczeMerlotRecipe1));
+        VylyanCabernetSauvignon.setRecipes(Arrays.asList(VylyanCabernetSauvignonRecipe1));
+        MeszarosHidasptereCabernetFrancReserve.setRecipes(Arrays.asList(MeszarosHidasptereCabernetFrancReserveRecipe1));
+
+        // Pezsgok
+        TorleyGalaSzaraz.setRecipes(Arrays.asList(TorleyGalaSzarazRecipe1));
+        TorleyCharmantEdes.setRecipes(Arrays.asList(TorleyCharmantEdesRecipe1));
+
+        // Roviditalok
+        JimBeam04.setRecipes(Arrays.asList(JimBeam04Recipe1));
+        JohnnieWalkerRedLabel04.setRecipes(Arrays.asList(JohnnieWalkerRedLabel04Recipe1));
+        JackDaniels04.setRecipes(Arrays.asList(JackDaniels04Recipe1));
+        TullamoreDew04.setRecipes(Arrays.asList(TullamoreDew04Recipe1));
+
+        Royal04.setRecipes(Arrays.asList(Royal04Recipe1));
+        Finlandia04.setRecipes(Arrays.asList(Finlandia04Recipe1));
+
+        BacardiSuperior04.setRecipes(Arrays.asList(BacardiSuperior04Recipe1));
+        CaptainMorganSpicedRum04.setRecipes(Arrays.asList(CaptainMorganSpicedRum04Recipe1));
+
+        Beefeater04.setRecipes(Arrays.asList(Beefeater04Recipe1));
+
+        TequilaSierraReposadoGold04.setRecipes(Arrays.asList(TequilaSierraReposadoGold04Recipe1));
+        TequilaSierraSilver04.setRecipes(Arrays.asList(TequilaSierraSilver04Recipe1));
+
+        Unicum04.setRecipes(Arrays.asList(Unicum04Recipe1));
+        Jagermeister04.setRecipes(Arrays.asList(Jagermeister04Recipe1));
+        Baileys08.setRecipes(Arrays.asList(Baileys08Recipe1));
+
+        JimBeam02.setRecipes(Arrays.asList(JimBeam02Recipe1));
+        JohnnieWalkerRedLabel02.setRecipes(Arrays.asList(JohnnieWalkerRedLabel02Recipe1));
+        JackDaniels02.setRecipes(Arrays.asList(JackDaniels02Recipe1));
+        TullamoreDew02.setRecipes(Arrays.asList(TullamoreDew02Recipe1));
+
+        Royal02.setRecipes(Arrays.asList(Royal02Recipe1));
+        Finlandia02.setRecipes(Arrays.asList(Finlandia02Recipe1));
+
+        BacardiSuperior02.setRecipes(Arrays.asList(BacardiSuperior02Recipe1));
+        CaptainMorganSpicedRum02.setRecipes(Arrays.asList(CaptainMorganSpicedRum02Recipe1));
+
+        Beefeater02.setRecipes(Arrays.asList(Beefeater02Recipe1));
+
+        TequilaSierraReposadoGold02.setRecipes(Arrays.asList(TequilaSierraReposadoGold02Recipe1));
+        TequilaSierraSilver02.setRecipes(Arrays.asList(TequilaSierraSilver02Recipe1));
+
+        Unicum02.setRecipes(Arrays.asList(Unicum02Recipe1));
+        Jagermeister02.setRecipes(Arrays.asList(Jagermeister02Recipe1));
+        Baileys04.setRecipes(Arrays.asList(Baileys04Recipe1));
+
+        // Palinkak/
+        _22KokuszTatratea04.setRecipes(Arrays.asList(_22KokuszTatratea04Recipe1));
+        _32CitrusTatratea04.setRecipes(Arrays.asList(_32CitrusTatratea04Recipe1));
+        _42BarackTatratea04.setRecipes(Arrays.asList(_42BarackTatratea04Recipe1));
+        _52EredetiTatratea04.setRecipes(Arrays.asList(_52EredetiTatratea04Recipe1));
+        _62ErdeiGyumolcsTatratea04.setRecipes(Arrays.asList(_62ErdeiGyumolcsTatratea04Recipe1));
+        _72OutlawBetyarTatratea04.setRecipes(Arrays.asList(_72OutlawBetyarTatratea04Recipe1));
+
+        CseresznyePalinka04.setRecipes(Arrays.asList(CseresznyePalinka04Recipe1));
+        KajszibarackPalinka04.setRecipes(Arrays.asList(KajszibarackPalinka04Recipe1));
+        Szilvapalinka04.setRecipes(Arrays.asList(Szilvapalinka04Recipe1));
+
+        _22KokuszTatratea02.setRecipes(Arrays.asList(_22KokuszTatratea02Recipe1));
+        _32CitrusTatratea02.setRecipes(Arrays.asList(_32CitrusTatratea02Recipe1));
+        _42BarackTatratea02.setRecipes(Arrays.asList(_42BarackTatratea02Recipe1));
+        _52EredetiTatratea02.setRecipes(Arrays.asList(_52EredetiTatratea02Recipe1));
+        _62ErdeiGyumolcsTatratea02.setRecipes(Arrays.asList(_62ErdeiGyumolcsTatratea02Recipe1));
+        _72OutlawBetyarTatratea02.setRecipes(Arrays.asList(_72OutlawBetyarTatratea02Recipe1));
+
+        CseresznyePalinka02.setRecipes(Arrays.asList(CseresznyePalinka02Recipe1));
+        KajszibarackPalinka02.setRecipes(Arrays.asList(KajszibarackPalinka02Recipe1));
+        Szilvapalinka02.setRecipes(Arrays.asList(Szilvapalinka02Recipe1));
+
+        // Shotok
+        Finca1.setRecipes(Arrays.asList(Finca1Recipe1));
+        Bang1.setRecipes(Arrays.asList(Bang1Recipe1));
+        Imagine1.setRecipes(Arrays.asList(Imagine1Recipe1));
+
+        Finca6.setRecipes(Arrays.asList(Finca6Recipe1));
+        Bang6.setRecipes(Arrays.asList(Bang6Recipe1));
+        Imagine6.setRecipes(Arrays.asList(Imagine6Recipe1));
+        RiffRaff6.setRecipes(Arrays.asList(RiffRaff6Recipe1));
+
+        Finca12.setRecipes(Arrays.asList(Finca12Recipe1));
+        Bang12.setRecipes(Arrays.asList(Bang12Recipe1));
+        Imagine12.setRecipes(Arrays.asList(Imagine12Recipe1));
+        RiffRaff12.setRecipes(Arrays.asList(RiffRaff12Recipe1));
+
+        // Uveges uditok
+        CocaCola.setRecipes(Arrays.asList(CocaColaRecipe1));
+        CocaColaZero.setRecipes(Arrays.asList(CocaColaZeroRecipe1));
+        FantaNarancs.setRecipes(Arrays.asList(FantaNarancsRecipe1));
+        Sprite.setRecipes(Arrays.asList(SpriteRecipe1));
+        KinleyGyomber.setRecipes(Arrays.asList(KinleyGyomberRecipe1));
+        KinleyTonic.setRecipes(Arrays.asList(KinleyTonicRecipe1));
+        NesteaCitrom.setRecipes(Arrays.asList(NesteaCitromRecipe1));
+        NesteaBarack.setRecipes(Arrays.asList(NesteaBarackRecipe1));
+
+        // Kimert uditok
+        CappyAlma.setRecipes(Arrays.asList(CappyAlmaRecipe1));
+        CappyNarancs.setRecipes(Arrays.asList(CappyNarancsRecipe1));
+        CappyBarack.setRecipes(Arrays.asList(CappyBarackRecipe1));
+        CappyAnanasz.setRecipes(Arrays.asList(CappyAnanaszRecipe1));
+
+        // Limonadek
+        LimonadeMalna05.setRecipes(Arrays.asList(LimonadeMalna05Recipe1));
+        LimonadeMeggy05.setRecipes(Arrays.asList(LimonadeMeggy05Recipe1));
+        LimonadeEperNarancs05.setRecipes(Arrays.asList(LimonadeEperNarancs05Recipe1));
+        LimonadeCitrus05.setRecipes(Arrays.asList(LimonadeCitrus05Recipe1));
+
+        LimonadeMalna10.setRecipes(Arrays.asList(LimonadeMalna10Recipe1));
+        LimonadeMeggy10.setRecipes(Arrays.asList(LimonadeMeggy10Recipe1));
+        LimonadeEperNarancs10.setRecipes(Arrays.asList(LimonadeEperNarancs10Recipe1));
+        LimonadeCitrus10.setRecipes(Arrays.asList(LimonadeCitrus10Recipe1));
+
+        // Asvanyviz
+        NaturaquaSzensavas.setRecipes(Arrays.asList(NaturaquaSzensavasRecipe1));
+        NaturaquaSzensavmentes.setRecipes(Arrays.asList(NaturaquaSzensavmentesRecipe1));
+        Szoda.setRecipes(Arrays.asList(SzodaRecipe1));
+
+        // Energiaitalok
+        BurnOriginal.setRecipes(Arrays.asList(BurnOriginalRecipe1));
+        BurnZero.setRecipes(Arrays.asList(BurnZeroRecipe1));
+        MonsterEnergy.setRecipes(Arrays.asList(MonsterEnergyRecipe1));
+        MonsterAssault.setRecipes(Arrays.asList(MonsterAssaultRecipe1));
+        MonsterRehab.setRecipes(Arrays.asList(MonsterRehabRecipe1));
+
+        // Filteres Teaak
+        DallmayrFekete.setRecipes(Arrays.asList(DallmayrFeketeRecipe1));
+        DallmayrGyumolcs.setRecipes(Arrays.asList(DallmayrGyumolcsRecipe1));
+        DallmayrZold.setRecipes(Arrays.asList(DallmayrZoldRecipe1));
+
+        PiramisDarjeling.setRecipes(Arrays.asList(PiramisDarjelingRecipe1));
+        PiramisMangoMaracuja.setRecipes(Arrays.asList(PiramisMangoMaracujaRecipe1));
+        PiramisAnanaszPapaja.setRecipes(Arrays.asList(PiramisAnanaszPapajaRecipe1));
+        PiramisCitrusVerbena.setRecipes(Arrays.asList(PiramisCitrusVerbenaRecipe1));
+
+        // Kavek
+        Espresso.setRecipes(Arrays.asList(EspressoRecipe1));
+        Americano.setRecipes(Arrays.asList(AmericanoRecipe1));
+        Cappuccino.setRecipes(Arrays.asList(CappuccinoRecipe1));
+        CaffeLatte.setRecipes(Arrays.asList(CaffeLatteRecipe1));
+        LatteMacchiato.setRecipes(Arrays.asList(LatteMacchiatoRecipe1));
+        CaffeMelange.setRecipes(Arrays.asList(CaffeMelangeRecipe1));
+        ForroCsokiBarna.setRecipes(Arrays.asList(ForroCsokiBarnaRecipe1));
+        ForroCsokiFeher.setRecipes(Arrays.asList(ForroCsokiFeherRecipe1));
+
+        // Akcios italok
+        GinTonic.setRecipes(Arrays.asList(GinTonicRecipe1));
+        CaptainAndGyomber.setRecipes(Arrays.asList(CaptainAndGyomberRecipe1));
+        VodkaSzoda.setRecipes(Arrays.asList(VodkaSzodaRecipe1));
+        JackAndCoke.setRecipes(Arrays.asList(JackAndCokeRecipe1));        
+    }
+    
     private void vatSerieAndVatValues() {
         vatSerie.setVat(new HashSet<>(
                 Arrays.asList(vatOne, vatTwo, vatThree, vatFour, vatFive)));
