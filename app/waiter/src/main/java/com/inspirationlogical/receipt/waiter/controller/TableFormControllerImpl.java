@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import javafx.fxml.FXML;
@@ -25,7 +26,8 @@ import javafx.util.converter.IntegerStringConverter;
 public class TableFormControllerImpl implements TableFormController {
 
     private static final String TABLE_FORM_VIEW_PATH = "/view/fxml/TableForm.fxml";
-    private static final Integer TABLE_DEFAULT_CAPACITY = 4;
+    private static final Integer NORMAL_TABLE_DEFAULT_CAPACITY = 4;
+    private static final Integer VIRTUAL_TABLE_DEFAULT_CAPACITY = 1;
     private static final Integer TABLE_DEFAULT_WIDTH = 80;
     private static final Integer TABLE_DEFAULT_HEIGHT = 80;
 
@@ -90,7 +92,7 @@ public class TableFormControllerImpl implements TableFormController {
             Dimension2D dimension = new Dimension2D(Integer.valueOf(width.getText()), Integer.valueOf(height.getText()));
             if (creation) {
                 restaurantController.createTable(tableName.getText(), tableNumber, note.getText(),
-                        tableGuestCount,tableCapacity, dimension);
+                        tableGuestCount, tableCapacity, dimension);
             } else {
                 restaurantController.editTable(tableController, tableName.getText(), tableGuestCount, note.getText(),
                         tableNumber, tableCapacity, dimension);
@@ -106,7 +108,7 @@ public class TableFormControllerImpl implements TableFormController {
     }
 
     @Override
-    public void loadTable(TableController tableController) {
+    public void loadTable(TableController tableController, TableType tableType) {
         this.tableController = tableController;
         if (tableController != null) {
             creation = false;
@@ -127,9 +129,9 @@ public class TableFormControllerImpl implements TableFormController {
             creation = true;
             title.setText(resourceBundle.getString("TableForm.Create"));
             number.setText(String.valueOf(restaurantController.getFirstUnusedTableNumber()));
-            capacity.setText(TABLE_DEFAULT_CAPACITY.toString());
+            guestCount.setText(tableType == TableType.NORMAL ? "0" : "1");
+            capacity.setText(tableType == TableType.NORMAL ? NORMAL_TABLE_DEFAULT_CAPACITY.toString() : VIRTUAL_TABLE_DEFAULT_CAPACITY.toString());
             tableName.clear();
-            guestCount.clear();
             note.clear();
             width.setText(TABLE_DEFAULT_WIDTH.toString());
             height.setText(TABLE_DEFAULT_HEIGHT.toString());

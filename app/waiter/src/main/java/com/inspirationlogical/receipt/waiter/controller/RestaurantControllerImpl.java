@@ -181,7 +181,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void showCreateTableForm(Point2D position) {
-        tableFormController.loadTable(null);
+        tableFormController.loadTable(null, restaurantViewState.getTableType());
 
         showPopup(tableForm, tableFormController, getActiveTab(), position);
     }
@@ -190,7 +190,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void showEditTableForm(Control control) {
         TableController tableController = getTableController(control);
 
-        tableFormController.loadTable(tableController);
+        tableFormController.loadTable(tableController, restaurantViewState.getTableType());
 
         Point2D position = calculatePopupPosition(control, getActiveTab());
 
@@ -594,10 +594,10 @@ public class RestaurantControllerImpl implements RestaurantController {
     private void updateRestaurantSummary() {
         // TODO: Icons for the ImageViews.
         totalTableNumber.setText(String.valueOf(tableControllers.stream()
-                        .filter(tableController -> !tableController.getView().isLoiterer())
+                        .filter(tableController -> tableController.getView().isNormal())
                         .count()));
         openTableNumber.setText(String.valueOf(tableControllers.stream()
-                        .filter(tableController -> !tableController.getView().isLoiterer())
+                        .filter(tableController -> tableController.getView().isNormal())
                         .filter(tableController -> tableController.getView().isOpen())
                         .count()));
         totalGuests.setText(String.valueOf(tableControllers.stream()
