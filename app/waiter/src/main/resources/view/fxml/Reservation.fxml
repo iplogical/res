@@ -76,11 +76,11 @@
                               </AnchorPane>
                               <TableView fx:id="reservationsTable" prefHeight="640.0" prefWidth="458.0">
                                 <columns>
-                                  <TableColumn fx:id="reservationName" prefWidth="160.0" text="%Reservation.Name" />
-                                  <TableColumn fx:id="reservationTableNumber" minWidth="0.0" prefWidth="91.0" text="%Reservation.TableNumber" />
-                                    <TableColumn fx:id="reservationDate" prefWidth="82.0" text="%Reservation.Date" />
-                                    <TableColumn fx:id="reservationStartTime" prefWidth="82.0" text="%Reservation.StartTime" />
-                                    <TableColumn fx:id="reservationEndTime" prefWidth="72.0" text="%Reservation.EndTime" />
+                                  <TableColumn fx:id="reservationName" prefWidth="182.0" text="%Reservation.Name" />
+                                  <TableColumn fx:id="reservationTableNumber" minWidth="0.0" prefWidth="75.0" text="%Reservation.TableNumber" />
+                                    <TableColumn fx:id="reservationDate" prefWidth="100.0" text="%Reservation.Date" />
+                                    <TableColumn fx:id="reservationStartTime" prefWidth="65.0" text="%Reservation.StartTime" />
+                                    <TableColumn fx:id="reservationEndTime" prefWidth="65.0" text="%Reservation.EndTime" />
                                 </columns>
                               </TableView>
                            </children>
