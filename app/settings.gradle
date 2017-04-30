@@ -1,4 +1,4 @@
 rootProject.name = 'Receipt'
-include 'corelib', 'waiter', 'manager', 'utils:sampleapp'
+include 'corelib', 'waiter', 'manager', 'utils:schemabuilderapp'
 
 

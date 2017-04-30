@@ -5,7 +5,7 @@ import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvide
 import com.inspirationlogical.receipt.corelib.service.RestaurantServiceImpl;
 import com.inspirationlogical.receipt.corelib.utility.BuildSchema;
 
-public class SampleApp {
+public class SchemaBuilderApp {
 
     public static void main(String[] args) {
         BuildSchema buildSchema = new BuildSchema();

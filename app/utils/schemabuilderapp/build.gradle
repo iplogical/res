@@ -1,6 +1,6 @@
 apply plugin: 'application'
 
-mainClassName = 'com.inspirationlogical.receipt.utils.sampleapp.SampleApp'
+mainClassName = 'com.inspirationlogical.receipt.utils.sampleapp.SchemaBuilderApp'
 
 run {
     main = project.getProperty('mainClassName')
