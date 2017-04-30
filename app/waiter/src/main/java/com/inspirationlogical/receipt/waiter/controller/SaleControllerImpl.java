@@ -277,7 +277,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private void initializeCategories() {
         rootCategory = commonService.getRootProductCategory();
-        selectedCategory = commonService.getChildCategories(rootCategory).get(0);
+        List<ProductCategoryView> childCategories = commonService.getChildCategories(rootCategory);
+        childCategories.sort(Comparator.comparing(ProductCategoryView::getOrderNumber));
+        selectedCategory = childCategories.get(0);
     }
 
     private void initializeCancellationToggles() {

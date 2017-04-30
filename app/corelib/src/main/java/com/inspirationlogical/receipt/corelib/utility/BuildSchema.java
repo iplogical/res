@@ -429,7 +429,6 @@ public class BuildSchema  {
     private @Getter ProductCategory etlap;
     private @Getter ProductCategory ragcsak;
     private @Getter ProductCategory etelek;
-    private @Getter ProductCategory menuk;
     private @Getter ProductCategory sos;
     private @Getter ProductCategory edes;
 
@@ -454,6 +453,9 @@ public class BuildSchema  {
     private @Getter ProductCategory forraltBor;
     private @Getter ProductCategory kave;
     private @Getter ProductCategory napiAkciok;
+
+    private @Getter ProductCategory menuk;
+    private @Getter ProductCategory menukAggregate;
 
     private @Getter ProductCategory pseudoAdHoc;
     private @Getter ProductCategory pseudoGameFee;
@@ -3357,7 +3359,6 @@ public class BuildSchema  {
                 buildSos();
                 buildEdes();
             buildEtelek();
-            buildMenuk();
 
         buildItallap();
             buildShotok();
@@ -3380,6 +3381,9 @@ public class BuildSchema  {
             buildForraltBor();
             buildKave();
         buildAkciosItalok();
+
+        buildMenukAggregate();
+            buildMenuk();
 
         buildPseudoAdHoc();
         buildPseudoGameFee();
@@ -6357,6 +6361,16 @@ public class BuildSchema  {
     private void buildEtlap() {
         etlap = ProductCategory.builder()
                 .name("Étlap")
+                .orderNumber(2)
+                .type(ProductCategoryType.AGGREGATE)
+                .status(ProductStatus.ACTIVE)
+                .build();
+    }
+
+    private void buildMenukAggregate() {
+        menukAggregate = ProductCategory.builder()
+                .name("Menü")
+                .orderNumber(3)
                 .type(ProductCategoryType.AGGREGATE)
                 .status(ProductStatus.ACTIVE)
                 .build();
@@ -6406,6 +6420,7 @@ public class BuildSchema  {
     private void buildItallap() {
         itallap = ProductCategory.builder()
                 .name("Itallap")
+                .orderNumber(1)
                 .type(ProductCategoryType.AGGREGATE)
                 .status(ProductStatus.ACTIVE)
                 .build();
@@ -6900,19 +6915,21 @@ public class BuildSchema  {
 
     private void rootAndAggregates() {
         root.setChildren(new HashSet<>(
-                Arrays.asList(etlap, itallap)));
+                Arrays.asList(etlap, itallap, menukAggregate)));
         etlap.setParent(root);
         itallap.setParent(root);
+        menukAggregate.setParent(root);
     }
 
     private void aggregatesAndAggregates() {
         etlap.setChildren(new HashSet<>(
-                Arrays.asList(ragcsak, etelek, menuk)));
+                Arrays.asList(ragcsak, etelek)));
         itallap.setChildren(new HashSet<>(
                 Arrays.asList(shotok, sorok, borok, rovidek, palinkak, uditok, forroItalok, napiAkciok)));
+        menukAggregate.setChildren(new HashSet<>(
+                Arrays.asList(menuk)));
         ragcsak.setParent(etlap);
         etelek.setParent(etlap);
-        menuk.setParent(etlap);
         shotok.setParent(itallap);
         sorok.setParent(itallap);
         borok.setParent(itallap);
@@ -6921,6 +6938,7 @@ public class BuildSchema  {
         uditok.setParent(itallap);
         forroItalok.setParent(itallap);
         napiAkciok.setParent(itallap);
+        menuk.setParent(menukAggregate);
     }
 
     private void aggregatesAndLeafs() {
