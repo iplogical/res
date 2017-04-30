@@ -4,6 +4,8 @@ SCRIPT_DIR=$(dirname $0)
 INSTALL_DIR="/opt/iplogical"
 
 pushd $SCRIPT_DIR/../app
+./gradlew clean --rerun-tasks
+./gradlew build -x test --rerun-tasks
 ./gradlew installDist
 popd
 
