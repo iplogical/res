@@ -27,6 +27,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 
 public class ReceiptAdapter extends AbstractAdapter<Receipt> {
 
@@ -100,13 +101,15 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         });
     }
 
-    public void sellGameFee(int quantity) {
+    public ReceiptRecordAdapter sellGameFee(int quantity) {
+        Wrapper<ReceiptRecord> newRecordWrapper = new Wrapper<>();
         GuardedTransaction.run(() -> {
             ProductAdapter gameFeeProduct = ProductAdapter.getGameFeeProduct();
-            List<ReceiptRecord> records = getReceiptRecordsByTimeStampAndName(gameFeeProduct, now().minusSeconds(5));
+            List<ReceiptRecord> records = getReceiptRecordsByTimeStampAndName(gameFeeProduct, now().minusSeconds(2));
             if(records.size() > 0) {
                 records.get(0).setSoldQuantity(records.get(0).getSoldQuantity() + 1);
                 records.get(0).setCreated(now());
+                newRecordWrapper.setContent(records.get(0));
                 return;
             }
             ReceiptRecord record = ReceiptRecord.builder()
@@ -122,7 +125,9 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                     .build();
             record.setOwner(adaptee);
             adaptee.getRecords().add(record);
+            newRecordWrapper.setContent(record);
         });
+        return new ReceiptRecordAdapter(newRecordWrapper.getContent());
     }
 
     public void addStockRecords(List<StockParams> paramsList) {

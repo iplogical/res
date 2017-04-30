@@ -17,7 +17,6 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import com.inspirationlogical.receipt.waiter.viewstate.PaymentViewState;
 
@@ -191,15 +190,22 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onAutoGameFee(Event event) {
-        handleAutomaticGameFee();
-        getSoldProductsAndUpdateTable();
+        ReceiptRecordView gameFee = handleAutomaticGameFee();
+        if(gameFee == null) return;
+        if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee)).size() == 0) {
+            soldProductsView.add(gameFee);
+        }
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
         updateTableSummary();
     }
 
     @FXML
     public void onManualGameFee(Event event) {
-        retailService.sellGameFee(tableView, 1);
-        getSoldProductsAndUpdateTable();
+        ReceiptRecordView gameFee = retailService.sellGameFee(tableView, 1);
+        if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee)).size() == 0) {
+            soldProductsView.add(gameFee);
+        }
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
         updateTableSummary();
     }
 
@@ -247,14 +253,15 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         getSoldProductsAndUpdateTable();
     }
 
-    private void handleAutomaticGameFee() {
+    private ReceiptRecordView handleAutomaticGameFee() {
         //TODO: Make the 2000 configurable from the manager terminal.
         int guestCount = tableView.getGuestCount();
         int price = (int)receiptView.getTotalPrice();
         int requiredGameFee = (((guestCount+1) * 2000 - (price+1)) / 2000);
         if(requiredGameFee > 0) {
-            retailService.sellGameFee(tableView, requiredGameFee);
+            return retailService.sellGameFee(tableView, requiredGameFee);
         }
+        return null;
     }
 
     private void addRowToPaidProducts(final SoldProductViewModel row, ReceiptRecordView toAdd) {

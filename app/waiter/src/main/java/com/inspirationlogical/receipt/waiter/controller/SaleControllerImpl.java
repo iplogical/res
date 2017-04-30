@@ -139,33 +139,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         initializeSoldProductsTable();
         initializeCancellationToggles();
         updateNode();
-        updateTableSummary();
         initializeSoldProductsTableRowHandler();
         initializeQuickSearchAndSellHandler();
-    }
-
-    private void initializeQuickSearchAndSellHandler() {
-        root.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
-            switch (keyEvent.getCode()) {
-                case ENTER:
-                    if (searchedProducts.size() == 1) {
-                        sellProduct(searchedProducts.get(0));
-                    }
-                    break;
-                case DELETE:
-                    search.clear();
-                    updateCategories(selectedCategory);
-                    break;
-                case BACK_SPACE:
-                    if (!search.getText().isEmpty()) {
-                        search.setText(search.getText(0, search.getText().length() - 1));
-                    }
-                default:
-                    search.appendText(keyEvent.getText());
-                    onSearchChanged(keyEvent);
-                    break;
-            }
-        });
     }
 
     @Override
@@ -310,6 +285,30 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         selectiveCancellation.setUserData(SELECTIVE);
         saleViewState.setCancellationType(NONE);
         cancellationTypeToggleGroup.selectedToggleProperty().addListener(new CancellationTypeToggleListener());
+    }
+
+    private void initializeQuickSearchAndSellHandler() {
+        root.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
+            switch (keyEvent.getCode()) {
+                case ENTER:
+                    if (searchedProducts.size() == 1) {
+                        sellProduct(searchedProducts.get(0));
+                    }
+                    break;
+                case DELETE:
+                    search.clear();
+                    updateCategories(selectedCategory);
+                    break;
+                case BACK_SPACE:
+                    if (!search.getText().isEmpty()) {
+                        search.setText(search.getText(0, search.getText().length() - 1));
+                    }
+                default:
+                    search.appendText(keyEvent.getText());
+                    onSearchChanged(keyEvent);
+                    break;
+            }
+        });
     }
 
     private void updateCategories(ProductCategoryView selectedCategory) {
