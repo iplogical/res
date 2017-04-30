@@ -172,7 +172,14 @@ public class TableAdapter extends AbstractAdapter<Table> {
             if (!isTableOpen()) {
                 throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
             }
-            getActiveReceipt().close(paymentParams);
+            ReceiptAdapter receiptAdapter = getActiveReceipt();
+            if(receiptAdapter.getAdaptee().getRecords().isEmpty()) {
+                GuardedTransaction.delete(receiptAdapter.getAdaptee(), () -> {});
+                return;
+            }
+            receiptAdapter.close(paymentParams);
+        });
+        GuardedTransaction.run(() -> {
             adaptee.setName("");
             adaptee.setGuestCount(0);
             adaptee.setNote("");
