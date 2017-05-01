@@ -1,9 +1,8 @@
-package com.inspirationlogical.receipt.waiter.viewmodel;
+package com.inspirationlogical.receipt.corelib.frontend.viewmodel;
 
 import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
-import lombok.Data;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import lombok.Data;
 
 /**
  * Created by TheDagi on 2017. 04. 26..

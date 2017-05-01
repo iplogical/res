@@ -1,0 +1,22 @@
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'com.inspirationlogical.receipt.reserver.application.ReserverApp'
+
+run {
+    main = project.getProperty('mainClassName')
+    applicationDefaultJvmArgs = ["-Xms1024m","-Xmx4096m"]
+}
+
+dependencies {
+    compile project(':corelib'),
+    'io.dropwizard:dropwizard-core:1.1.0'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-parameters'
+    options.encoding = 'UTF-8'
+}

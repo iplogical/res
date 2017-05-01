@@ -1,17 +1,16 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.params.ReservationParams;
-import javafx.scene.control.Tab;
+import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
+import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 
 /**
  * Created by TheDagi on 2017. 04. 26..
@@ -36,8 +35,8 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
                 .tableNumber(params.getTableNumber())
                 .guestCount(params.getGuestCount())
                 .date(params.getDate())
-                .startTime(params.getStartTime())
-                .endTime(params.getEndTime())
+                .startTime(LocalDateTime.of(params.getDate(), params.getStartTime()))
+                .endTime(LocalDateTime.of(params.getDate(), params.getEndTime()))
                 .build();
         if(tables.size() != 0) {
             bindReservationToTable(tables.get(0), reservation);

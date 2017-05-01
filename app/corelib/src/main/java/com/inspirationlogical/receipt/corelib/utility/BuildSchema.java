@@ -6246,8 +6246,8 @@ public class BuildSchema  {
         reservationOne = Reservation.builder()
                 .tableNumber(1)
                 .date(LocalDate.now())
-                .startTime(LocalTime.of(14, 0))
-                .endTime(LocalTime.of(20, 0))
+                .startTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(14, 0)))
+                .endTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)))
                 .name("TestName1")
                 .note("TestNote1")
                 .build();
@@ -6257,8 +6257,8 @@ public class BuildSchema  {
         reservationTwo = Reservation.builder()
                 .tableNumber(2)
                 .date(LocalDate.now())
-                .startTime(LocalTime.of(14, 0))
-                .endTime(LocalTime.of(20, 0))
+                .startTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(14, 0)))
+                .endTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)))
                 .name("TestName2")
                 .note("TestNote2")
                 .build();

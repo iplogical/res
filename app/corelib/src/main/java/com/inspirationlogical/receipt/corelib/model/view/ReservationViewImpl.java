@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
-import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
 
 /**
  * Created by TheDagi on 2017. 04. 26..
@@ -40,11 +39,11 @@ public class ReservationViewImpl extends AbstractModelViewImpl<ReservationAdapte
 
     @Override
     public String getStartTime() {
-        return adapter.getAdaptee().getStartTime().toString();
+        return adapter.getAdaptee().getStartTime().toLocalTime().toString();
     }
 
     @Override
     public String getEndTime() {
-        return adapter.getAdaptee().getEndTime().toString();
+        return adapter.getAdaptee().getEndTime().toLocalTime().toString();
     }
 }

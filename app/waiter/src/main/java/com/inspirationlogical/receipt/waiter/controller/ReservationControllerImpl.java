@@ -1,39 +1,44 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
-import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
-import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
-import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
-import com.inspirationlogical.receipt.corelib.params.ReservationParams;
-import com.inspirationlogical.receipt.corelib.service.RestaurantService;
-import com.inspirationlogical.receipt.corelib.service.RetailService;
-import com.inspirationlogical.receipt.waiter.viewmodel.ReservationViewModel;
-import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import jfxtras.scene.control.CalendarPicker;
-import jfxtras.scene.control.CalendarTimePicker;
+import static java.util.stream.Collectors.toList;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
-import static java.util.stream.Collectors.toList;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
+import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
+import com.inspirationlogical.receipt.corelib.frontend.viewmodel.ReservationViewModel;
+import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
+import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
+import com.inspirationlogical.receipt.corelib.params.ReservationParams;
+import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.corelib.service.RetailService;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import jfxtras.scene.control.CalendarPicker;
+import jfxtras.scene.control.CalendarTimePicker;
 
 /**
  * Created by TheDagi on 2017. 04. 26..

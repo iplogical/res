@@ -1,7 +1,36 @@
 package com.inspirationlogical.receipt.corelib.model;
 
+import static java.time.LocalDateTime.now;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import javax.persistence.EntityManager;
+
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
+
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
-import com.inspirationlogical.receipt.corelib.model.entity.*;
+import com.inspirationlogical.receipt.corelib.model.entity.Address;
+import com.inspirationlogical.receipt.corelib.model.entity.Client;
+import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
+import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
+import com.inspirationlogical.receipt.corelib.model.entity.Product;
+import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
+import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
+import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
+import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
+import com.inspirationlogical.receipt.corelib.model.entity.Stock;
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
+import com.inspirationlogical.receipt.corelib.model.entity.VAT;
+import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
@@ -16,21 +45,8 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+
 import lombok.Getter;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
-
-import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-
-import static java.time.LocalDateTime.now;
 
 public class BuildTestSchemaRule implements TestRule {
 
@@ -1311,8 +1327,8 @@ public class BuildTestSchemaRule implements TestRule {
         reservationOne = Reservation.builder()
                 .tableNumber(1)
                 .date(LocalDate.now())
-                .startTime(LocalTime.of(14, 0))
-                .endTime(LocalTime.of(20, 0))
+                .startTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(14, 0)))
+                .endTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)))
                 .name("TestName1")
                 .note("TestNote1")
                 .build();
@@ -1322,8 +1338,8 @@ public class BuildTestSchemaRule implements TestRule {
         reservationTwo = Reservation.builder()
                 .tableNumber(2)
                 .date(LocalDate.now())
-                .startTime(LocalTime.of(14, 0))
-                .endTime(LocalTime.of(20, 0))
+                .startTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(14, 0)))
+                .endTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)))
                 .name("TestName2")
                 .note("TestNote2")
                 .build();
