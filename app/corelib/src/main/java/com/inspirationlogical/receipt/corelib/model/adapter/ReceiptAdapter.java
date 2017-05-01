@@ -39,7 +39,6 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public static ReceiptAdapter receiptAdapterFactory(ReceiptType type) {
         ReceiptAdapter newReceipt = new ReceiptAdapter(Receipt.builder()
                                         .type(type)
-                                        .records(new ArrayList<>())
                                         .status(ReceiptStatus.OPEN)
                                         .paymentMethod(PaymentMethod.CASH)
                                         .openTime(now())

@@ -38,9 +38,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 })
 @AttributeOverride(name = "id", column = @Column(name = "RESTAURANT_ID"))
 @ValidTables
-public
-@Data
-class Restaurant extends AbstractEntity {
+public @Data class Restaurant extends AbstractEntity {
 
     public static final String GET_TEST_RESTAURANTS = "Restaurant.GetTestRestaurants";
     public static final String GET_ACTIVE_RESTAURANT = "Restaurant.GetActiveRestaurant";

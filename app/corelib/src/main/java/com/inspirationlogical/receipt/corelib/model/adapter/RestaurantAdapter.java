@@ -166,19 +166,10 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                 .mapToInt(ReceiptAdapter::getTotalPrice).sum();
     }
 
-    private List<Receipt> getReceiptsByClosureTime(LocalDateTime finalPreviousClosure) {
-        return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_CLOSURE_TIME_AND_TYPE,
-                query -> query.setParameter("closureTime", finalPreviousClosure).setParameter("type", ReceiptType.SALE));
-    }
-
     public void printDailyConsumption() {
         LocalDateTime latestClosure = DailyClosureAdapter.getLatestClosureTime();
-        List<Receipt> receipts = GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_OPEN_TIME_AND_TYPE,
-                query -> query
-                        .setParameter("openTime",latestClosure)
-                        .setParameter("type",ReceiptType.SALE));
+        List<Receipt> receipts = getReceiptsByClosureTime(latestClosure);
         Receipt aggregatedReceipt = Receipt.builder()
-                .records(new ArrayList<>()) // TODO: refactor using Lombok builder prototype pattern see @ Restaurant
                 .openTime(latestClosure)
                 .closureTime(now())
                 .owner(TableAdapter.getTablesByType(TableType.ORPHANAGE).get(0))
@@ -213,5 +204,10 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         });
         ReceiptAdapter adapter = new ReceiptAdapter(aggregatedReceipt);
         new ReceiptPrinter().onClose(adapter);
+    }
+
+    private List<Receipt> getReceiptsByClosureTime(LocalDateTime finalPreviousClosure) {
+        return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_CLOSURE_TIME_AND_TYPE,
+                query -> query.setParameter("closureTime", finalPreviousClosure).setParameter("type", ReceiptType.SALE));
     }
 }
