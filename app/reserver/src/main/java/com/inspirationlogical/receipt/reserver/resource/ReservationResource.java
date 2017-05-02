@@ -22,7 +22,7 @@ import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 
 import lombok.SneakyThrows;
 
-@Path("/reservation/{date}")
+@Path("/reservation")
 @Produces(MediaType.APPLICATION_JSON)
 public class ReservationResource {
 
@@ -38,9 +38,10 @@ public class ReservationResource {
     }
 
     @GET
+    @Path("/{date}")
     public List<ReservationViewModel> getReservations(@PathParam("date") Optional<String> dateParameter) throws ParseException {
 
-        final LocalDate localDate = dateParameter.isPresent() ? parseDate(dateParameter.get()) : LocalDate.now();
+        final LocalDate localDate = dateParameter.map(this::parseDate).orElseGet(LocalDate::now);
 
         return restaurantService.getReservations(localDate).stream().map(ReservationViewModel::new).collect(Collectors.toList());
     }
