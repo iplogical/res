@@ -21,7 +21,7 @@
                      <children>
                         <HBox>
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="60.0" text="%Restaurant.RestaurantSummaryTables" textAlignment="CENTER" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="75.0" text="%Restaurant.RestaurantSummaryTables" textAlignment="CENTER" />
                               <Label fx:id="openTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="0">
                                  <font>
                                     <Font size="16.0" />
@@ -41,7 +41,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="70.0" text="%Restaurant.RestaurantSummaryGuests" textAlignment="CENTER" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="75.0" text="%Restaurant.RestaurantSummaryGuests" textAlignment="CENTER" />
                               <Label fx:id="totalGuests" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="0">
                                  <font>
                                     <Font size="16.0" />

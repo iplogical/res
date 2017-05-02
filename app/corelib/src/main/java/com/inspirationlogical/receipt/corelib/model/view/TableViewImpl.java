@@ -89,6 +89,14 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     }
 
     @Override
+    public int getDisplayedNumber() {
+        if(adapter.getHost() != null) {
+            return adapter.getAdaptee().getHost().getNumber();
+        }
+        return adapter.getAdaptee().getNumber();
+    }
+
+    @Override
     public int getGuestCount() {
         return adapter.getAdaptee().getGuestCount();
     }

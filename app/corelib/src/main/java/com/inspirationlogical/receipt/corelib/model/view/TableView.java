@@ -40,6 +40,8 @@ public interface TableView extends AbstractView {
 
     int getNumber();
 
+    int getDisplayedNumber();
+
     int getGuestCount();
 
     int getCapacity();

@@ -106,6 +106,10 @@ public class TableAdapter extends AbstractAdapter<Table> {
 
     public void setNumber(int tableNumber) {
         GuardedTransaction.run(() -> {
+            if(adaptee.getHost() != null) {
+                adaptee.getHost().getHosted().remove(adaptee);
+                adaptee.setHost(null);
+            }
             adaptee.setNumber(tableNumber);
         });
     }
@@ -270,7 +274,13 @@ public class TableAdapter extends AbstractAdapter<Table> {
 
     public void setHost(int tableNumber) {
         GuardedTransaction.run(() -> {
-            adaptee.getHost().getHosted().remove(adaptee);
+            if(adaptee.getHost() != null) {
+                adaptee.getHost().getHosted().remove(adaptee);
+            }
+            if(tableNumber == adaptee.getNumber()) {
+                adaptee.setHost(null);  // Prevent a table being hosted by itself.
+                return;
+            }
             adaptee.setHost(TableAdapter.getTableByNumber(tableNumber).getAdaptee());
         });
     }

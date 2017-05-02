@@ -243,7 +243,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         TableView previousHost = tableView.getHost();
 
         try {
-            if (tableView.getNumber() != number) {
+            if (tableView.getDisplayedNumber() != number) {
                 restaurantService.setTableNumber(tableView, number, restaurantView);
             }
 
