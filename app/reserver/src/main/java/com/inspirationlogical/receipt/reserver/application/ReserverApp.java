@@ -9,6 +9,7 @@ import com.inspirationlogical.receipt.reserver.resource.ReservationResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
 
 public class ReserverApp extends Application<ReserverConfiguration> {
 
@@ -37,6 +38,7 @@ public class ReserverApp extends Application<ReserverConfiguration> {
 
     @Override
     public void initialize(Bootstrap<ReserverConfiguration> bootstrap) {
+        bootstrap.addBundle(new ViewBundle<>());
     }
 
     @Override

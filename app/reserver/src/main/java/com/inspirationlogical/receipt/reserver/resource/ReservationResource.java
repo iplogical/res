@@ -19,11 +19,12 @@ import javax.ws.rs.core.MediaType;
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.viewmodel.ReservationViewModel;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.reserver.view.GetReservationsView;
 
 import lombok.SneakyThrows;
 
 @Path("/reservation")
-@Produces(MediaType.APPLICATION_JSON)
+@Produces(MediaType.TEXT_HTML)
 public class ReservationResource {
 
     private static final String DATE_SEPARATOR = "-";
@@ -39,11 +40,16 @@ public class ReservationResource {
 
     @GET
     @Path("/{date}")
-    public List<ReservationViewModel> getReservations(@PathParam("date") Optional<String> dateParameter) throws ParseException {
+    public GetReservationsView getReservations(@PathParam("date") Optional<String> dateParameter) throws ParseException {
 
         final LocalDate localDate = dateParameter.map(this::parseDate).orElseGet(LocalDate::now);
 
-        return restaurantService.getReservations(localDate).stream().map(ReservationViewModel::new).collect(Collectors.toList());
+        List<ReservationViewModel> resservations = restaurantService.getReservations(localDate)
+                .stream()
+                .map(ReservationViewModel::new)
+                .collect(Collectors.toList());
+
+        return new GetReservationsView(resservations);
     }
 
     @SneakyThrows
