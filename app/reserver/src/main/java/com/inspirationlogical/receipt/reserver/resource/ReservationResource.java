@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -14,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.viewmodel.ReservationViewModel;
+import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.reserver.utility.DateParser;
 import com.inspirationlogical.receipt.reserver.view.GetReservationsView;
@@ -35,16 +37,18 @@ public class ReservationResource {
 
         final LocalDate localDate = dateParameter.map(DateParser::parseDate).orElseGet(LocalDate::now);
 
-        List<ReservationViewModel> resservations = restaurantService.getReservations(localDate)
+        List<ReservationViewModel> reservations = restaurantService.getReservations(localDate)
                 .stream()
                 .map(ReservationViewModel::new)
                 .collect(Collectors.toList());
 
-        return new GetReservationsView(resservations);
+        return new GetReservationsView(reservations);
     }
 
     @POST
-    public GetReservationsView addReservation() {
-        return null;
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void addReservation(ReservationParams reservationParams) {
+
+        restaurantService.addReservation(reservationParams);
     }
 }
