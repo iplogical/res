@@ -106,14 +106,14 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
             TableRow<SoldProductViewModel> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if(event.getClickCount() == 1 && (! row.isEmpty())) {
-                    rowClickHandler(row.getItem());
+                    soldProductsRowClickHandler(row.getItem());
                 }
             });
             return row;
         });
     }
 
-    protected abstract void rowClickHandler(SoldProductViewModel row);
+    protected abstract void soldProductsRowClickHandler(SoldProductViewModel row);
 
     protected void updateTableSummary() {
         tableName.setText(tableView.getName());
@@ -163,6 +163,12 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
                 .collect(Collectors.toList());
     }
 
+    protected List<ReceiptRecordView> findEquivalentView(Collection<ReceiptRecordView> productsView, SoldProductViewModel row) {
+        return productsView.stream()
+                .filter(receiptRecordView -> SoldProductViewModel.isEquivalent(row, receiptRecordView))
+                .collect(Collectors.toList());
+    }
+
     protected ReceiptRecordView removeRowFromSoldProducts(final SoldProductViewModel row) {
         soldProductsModel.remove(row);
         soldProductsTable.setItems(soldProductsModel);
@@ -179,10 +185,10 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     }
 
     protected ReceiptRecordView increaseRowInSoldProducts(SoldProductViewModel row, double amount) {
-        List<ReceiptRecordView> matchingReceiptRecordView = findMatchingView(soldProductsView, row);
-        matchingReceiptRecordView.get(0).increaseSoldQuantity(amount);
+        List<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentView(soldProductsView, row);
+        equivalentReceiptRecordView.get(0).increaseSoldQuantity(amount);
         increaseClickedRow(row, amount);
-        return matchingReceiptRecordView.get(0);
+        return equivalentReceiptRecordView.get(0);
     }
 
     private boolean decreaseClickedRow(SoldProductViewModel row, double amount) {
@@ -202,7 +208,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         return false;
     }
 
-    private void addRowToSoldProducts(SoldProductViewModel row) {
+    protected void addRowToSoldProducts(SoldProductViewModel row) {
         soldProductsModel.add(row);
         soldProductsModel.sort(Comparator.comparing(SoldProductViewModel::getProductId));
         soldProductsTable.setItems(soldProductsModel);

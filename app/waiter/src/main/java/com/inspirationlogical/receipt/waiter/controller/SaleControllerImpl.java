@@ -201,7 +201,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    protected void rowClickHandler(SoldProductViewModel row) {
+    protected void soldProductsRowClickHandler(SoldProductViewModel row) {
         if(saleViewState.isSelectiveCancellation()) {
             retailService.cancelReceiptRecord(tableView, removeRowFromSoldProducts(row));
             soldProductsView = getSoldProducts(restaurantService, tableView);

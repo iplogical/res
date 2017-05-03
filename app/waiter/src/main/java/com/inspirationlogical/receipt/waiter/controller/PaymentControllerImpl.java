@@ -4,10 +4,10 @@ import static com.inspirationlogical.receipt.waiter.viewstate.PaymentViewState.P
 import static com.inspirationlogical.receipt.waiter.viewstate.PaymentViewState.PaymentType.PARTIAL;
 import static com.inspirationlogical.receipt.waiter.viewstate.PaymentViewState.PaymentType.SELECTIVE;
 import static com.inspirationlogical.receipt.waiter.viewstate.PaymentViewState.PaymentType.SINGLE;
+import static java.util.stream.Collectors.toList;
 
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -27,14 +27,7 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 
@@ -91,7 +84,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     Label payTotalPrice;
 
     @FXML
-    protected javafx.scene.control.TableView<SoldProductViewModel> payProductsTable;
+    protected javafx.scene.control.TableView<SoldProductViewModel> paidProductsTable;
     @FXML
     protected TableColumn payProductName;
     @FXML
@@ -142,6 +135,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         getSoldProductsAndUpdateTable();
         updateTableSummary();
         initializeSoldProductsTableRowHandler();
+        initializePaidProductsTableRowHandler();
     }
 
     @Override
@@ -162,15 +156,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
 
     @Override
-    protected void rowClickHandler(SoldProductViewModel row) {
+    protected void soldProductsRowClickHandler(SoldProductViewModel row) {
         if(paymentViewState.isSelectivePayment()) {
             addRowToPaidProducts(row, removeRowFromSoldProducts(row));
         } else if(paymentViewState.isSinglePayment()) {
-            if(row.isSingleProduct()) {
-                addRowToPaidProducts(row, removeRowFromSoldProducts(row));
-            } else {
-                increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, 1), 1);
-            }
+            increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, 1), 1);
         } else if(paymentViewState.isPartialPayment()) {
             if(!isPartiallyPayable(row)) {
                 return;
@@ -264,10 +254,28 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         return null;
     }
 
+    private void paidProductsRowClickHandler(SoldProductViewModel row) {
+        List<SoldProductViewModel> rowInSoldProducts = soldProductsModel.stream().filter(model -> model.getProductName().equals(row.getProductName()))
+                .collect(toList());
+        if(rowInSoldProducts.isEmpty()) {
+            ReceiptRecordView recordInPaidProducts = findEquivalentView(paidProductsView, row).get(0);
+            ReceiptRecordView recordInSoldProducts = retailService.cloneReceiptRecordView(tableView, recordInPaidProducts, 1);
+            addRowToSoldProducts(new SoldProductViewModel(recordInSoldProducts), recordInSoldProducts);
+            decreaseRowInPaidProducts(row, recordInPaidProducts, 1);
+        } else {
+            decreaseRowInPaidProducts(row, increaseRowInSoldProducts(rowInSoldProducts.get(0), 1), 1);
+        }
+    }
+
     private void addRowToPaidProducts(final SoldProductViewModel row, ReceiptRecordView toAdd) {
         paidProductsView.add(toAdd);
         paidProductsModel.add(row);
         updatePayProductsTable();
+    }
+
+    private void addRowToSoldProducts(final SoldProductViewModel row, ReceiptRecordView toAdd) {
+        soldProductsView.add(toAdd);
+        addRowToSoldProducts(row);
     }
 
     private void increaseRowInPaidProducts(SoldProductViewModel row, ReceiptRecordView toAdd, double amount) {
@@ -275,22 +283,24 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         if(equivalentReceiptRecordView.size() == 0) {
             ReceiptRecordView newRecord = retailService.cloneReceiptRecordView(tableView, toAdd, amount);
             paidProductsView.add(newRecord);
-            createNewRow(row, newRecord, amount);
+            paidProductsModel.add(createNewRow(row, newRecord, amount));
         } else {
             equivalentReceiptRecordView.get(0).increaseSoldQuantity(amount);
             List<SoldProductViewModel> matchingRows =
                     paidProductsModel.stream().filter(thisRow -> SoldProductViewModel.isEquals(thisRow, equivalentReceiptRecordView.get(0)))
-                    .collect(Collectors.toList());
+                    .collect(toList());
             increaseRowQuantity(matchingRows.get(0), amount);
         }
         updatePayProductsTable();
     }
 
-    private void updatePayProductsTable() {
-        payTotalPrice.setText(SoldProductViewModel.getTotalPrice(paidProductsModel) + " Ft");
-        updateSoldTotalPrice();
-        payProductsTable.setItems(paidProductsModel);
-        payProductsTable.refresh();
+    private void decreaseRowInPaidProducts(SoldProductViewModel row, ReceiptRecordView toAdd, double amount) {
+        List<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentView(paidProductsView, row);
+        equivalentReceiptRecordView.get(0).decreaseSoldQuantity(amount);
+        List<SoldProductViewModel> matchingRows =
+                paidProductsModel.stream().filter(thisRow -> SoldProductViewModel.isEquals(thisRow, equivalentReceiptRecordView.get(0)))
+                        .collect(toList());
+        decreaseRowQuantity(matchingRows.get(0), amount);
     }
 
     private void increaseRowQuantity(SoldProductViewModel row, double amount) {
@@ -299,18 +309,44 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         paidProductsModel.add(row);
     }
 
-    private void createNewRow(SoldProductViewModel row, ReceiptRecordView newRecord, double amount) {
+    private boolean decreaseRowQuantity(SoldProductViewModel row, double amount) {
+        paidProductsModel.remove(row);
+        if(row.decreaseProductQuantity(amount)) {
+            removeRowFromPaidProducts(row);
+            return true;
+        }
+        addRowToPaidProducts(row);
+        return false;
+    }
+
+    private ReceiptRecordView removeRowFromPaidProducts(final SoldProductViewModel row) {
+        paidProductsModel.remove(row);
+        paidProductsTable.setItems(paidProductsModel);
+        List<ReceiptRecordView> matching = findMatchingView(paidProductsView, row);
+        paidProductsView.remove(matching.get(0));
+        return matching.get(0);
+    }
+
+    private void addRowToPaidProducts(SoldProductViewModel row) {
+        paidProductsModel.add(row);
+        paidProductsModel.sort(Comparator.comparing(SoldProductViewModel::getProductId));
+        paidProductsTable.setItems(paidProductsModel);
+        paidProductsTable.refresh();
+    }
+
+    private SoldProductViewModel createNewRow(SoldProductViewModel row, ReceiptRecordView newRecord, double amount) {
         SoldProductViewModel newRow = new SoldProductViewModel(row);
         newRow.setProductQuantity(String.valueOf(amount));
         newRow.setProductTotalPrice(String.valueOf((int)(Integer.valueOf(newRow.getProductUnitPrice()) * amount)));
         newRow.setProductId(String.valueOf(newRecord.getId()));
-        paidProductsModel.add(newRow);
+        return newRow;
     }
 
-    private List<ReceiptRecordView> findEquivalentView(Collection<ReceiptRecordView> productsView, SoldProductViewModel row) {
-        return productsView.stream()
-                .filter(receiptRecordView -> SoldProductViewModel.isEquivalent(row, receiptRecordView))
-                .collect(Collectors.toList());
+    private void updatePayProductsTable() {
+        payTotalPrice.setText(SoldProductViewModel.getTotalPrice(paidProductsModel) + " Ft");
+        updateSoldTotalPrice();
+        paidProductsTable.setItems(paidProductsModel);
+        paidProductsTable.refresh();
     }
 
     private boolean isPartiallyPayable(SoldProductViewModel row) {
@@ -362,11 +398,23 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void initializePayProductsTable() {
-        payProductsTable.setEditable(true);
+        paidProductsTable.setEditable(true);
         payProductName.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productName"));
         payProductQuantity.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productQuantity"));
         payProductUnitPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productUnitPrice"));
         payProductTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productTotalPrice"));
+    }
+
+    private void initializePaidProductsTableRowHandler() {
+        paidProductsTable.setRowFactory(tv -> {
+            TableRow<SoldProductViewModel> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(event.getClickCount() == 1 && (! row.isEmpty())) {
+                    paidProductsRowClickHandler(row.getItem());
+                }
+            });
+            return row;
+        });
     }
 
     private void getSoldProductsAndUpdateTable() {

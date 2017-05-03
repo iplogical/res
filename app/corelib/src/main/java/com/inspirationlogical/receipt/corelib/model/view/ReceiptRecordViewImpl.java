@@ -59,6 +59,14 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
 
     @Override
     public void decreaseSoldQuantity(double amount) {
+        if(adapter.getAdaptee().getSoldQuantity() - amount <= 0)
+        {
+            GuardedTransaction.delete(adapter.getAdaptee(), () -> {
+                adapter.getAdaptee().getOwner().getRecords().remove(adapter.getAdaptee());
+                adapter.getAdaptee().setOwner(null);
+            });
+            return;
+        }
         GuardedTransaction.run(() -> adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() - amount)));
     }
 

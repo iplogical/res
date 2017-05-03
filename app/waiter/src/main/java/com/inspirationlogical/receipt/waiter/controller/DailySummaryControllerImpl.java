@@ -67,7 +67,7 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    protected void rowClickHandler(SoldProductViewModel row) {
+    protected void soldProductsRowClickHandler(SoldProductViewModel row) {
 
     }
 

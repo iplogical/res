@@ -191,11 +191,10 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-        GuardedTransaction.runWithRefresh(adaptee, () -> {
-            if (!isTableOpen()) {
-                throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
-            }
-        });
+        ReceiptAdapter activeReceipt = getActiveReceipt();
+        if(activeReceipt == null) {
+            throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
+        }
         getActiveReceipt().paySelective(this, records, paymentParams);
     }
 
