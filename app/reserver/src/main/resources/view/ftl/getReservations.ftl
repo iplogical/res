@@ -14,9 +14,9 @@
             Note:   <input name="note" id="note"/><br/>
             Table:  <input name="tableNumber" id="tableNumber"/><br/>
             Guests: <input name="guestCount" id="guestCount"/><br/>
-            Date:   <input name="date" id="date"/><br/>
-            Start:  <input name="startTime" id="startTime"/><br/>
-            End:    <input name="endTime" id="endTime"/><br/>
+            Date:   <input name="date" id="date" placeholder="yyyy-MM-dd"/><br/>
+            Start:  <input name="startTime" id="startTime" placeholder="hh:mm:ss"/><br/>
+            End:    <input name="endTime" id="endTime" placeholder="hh:mm:ss"/><br/>
             <input type="submit" value="Add" onclick="submitForm()"/>
         </form>
     </fieldset>
