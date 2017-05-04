@@ -12,6 +12,7 @@
         <form action="" method="post" id="addReservation">
             Name:   <input name="name" id="name"/><br/>
             Note:   <input name="note" id="note"/><br/>
+            Phone:  <input name="phoneNumber" id="phoneNumber"/><br/>
             Table:  <input name="tableNumber" id="tableNumber"/><br/>
             Guests: <input name="guestCount" id="guestCount"/><br/>
             Date:   <input name="date" id="date" placeholder="yyyy-MM-dd"/><br/>

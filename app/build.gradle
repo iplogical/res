@@ -1,12 +1,13 @@
 allprojects {
 	group = 'com.inspirationlogical.receipt'
-	// TODO determinve version based on git tag
+	// TODO determine version based on git tag
 	version = '0.1.0'
 }
 
 subprojects {
    	apply plugin: 'java'
 	apply plugin: 'distribution'
+
 	// In this section you declare where to find the dependencies of your project
 	repositories {
 		// Use 'jcenter' for resolving your dependencies.
@@ -25,4 +26,5 @@ subprojects {
 		destinationDir = new File(rootProject.projectDir, "install")
 	}
 
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 }
