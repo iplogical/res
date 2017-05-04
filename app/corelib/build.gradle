@@ -35,6 +35,8 @@ dependencies {
     compile 'org.controlsfx:controlsfx:8.40.11'
     compile 'org.jfxtras:jfxtras-labs:8.0-r5'
 
+    compile 'io.dropwizard:dropwizard-core:1.1.0'
+    compile 'io.dropwizard:dropwizard-views-freemarker:1.1.0'
     compile 'com.fasterxml.jackson.core:jackson-core:2.8.8'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.8'
 

@@ -6,15 +6,12 @@ apply plugin: 'distribution'
 mainClassName = 'com.inspirationlogical.receipt.reserver.application.ReserverApp'
 
 run {
-    args 'server', './src/main/resources/configuration/config.yml'
     main = project.getProperty('mainClassName')
     applicationDefaultJvmArgs = ["-Xms1024m","-Xmx4096m"]
 }
 
 dependencies {
-    compile project(':corelib'),
-            'io.dropwizard:dropwizard-core:1.1.0',
-            'io.dropwizard:dropwizard-views-freemarker:1.1.0'
+    compile project(':corelib')
 }
 
 tasks.withType(JavaCompile) {
