@@ -8,10 +8,12 @@ import javax.servlet.FilterRegistration;
 
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
+import com.inspirationlogical.receipt.corelib.utility.LogConfiguration;
 import com.inspirationlogical.receipt.reserver.configuration.ReserverConfiguration;
 import com.inspirationlogical.receipt.reserver.healthcheck.ReservationHealthCheck;
 import com.inspirationlogical.receipt.reserver.resource.ReservationResource;
 
+import ch.qos.logback.classic.Level;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
@@ -38,6 +40,9 @@ public class ReserverApp extends Application<ReserverConfiguration> {
     }
 
     public static void main(String[] args) throws Exception {
+
+        LogConfiguration.setLoggingLevel(Level.WARN);
+
         if (args.length == 0) {
             args = new String[2];
             args[0] = SERVER_MODE;

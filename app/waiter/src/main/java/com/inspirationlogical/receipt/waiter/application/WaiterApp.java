@@ -10,9 +10,11 @@ import com.inspirationlogical.receipt.corelib.frontend.application.ResourcesProv
 import com.inspirationlogical.receipt.corelib.frontend.application.StageProvider;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.utility.LogConfiguration;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.RestaurantController;
 
+import ch.qos.logback.classic.Level;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,6 +31,8 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
     public void start(Stage stage) {
         this.stage = stage;
         resources = Resources.WAITER;
+
+        LogConfiguration.setLoggingLevel(Level.WARN);
 
         MainStage.setStageProvider(this);
         MainStage.setResourcesProvider(this);
