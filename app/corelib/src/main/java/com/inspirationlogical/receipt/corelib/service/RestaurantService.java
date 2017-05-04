@@ -60,4 +60,6 @@ public interface RestaurantService {
     List<ReservationView> getReservations(LocalDate date);
 
     void addReservation(ReservationParams params);
+
+    void updateReservation(ReservationView selectedReservation, ReservationParams reservationParams);
 }

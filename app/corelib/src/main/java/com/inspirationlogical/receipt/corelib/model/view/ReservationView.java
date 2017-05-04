@@ -12,9 +12,13 @@ public interface ReservationView {
 
     String getNote();
 
+    String getPhoneNumber();
+
     String getDate();
 
     String getStartTime();
 
     String getEndTime();
+
+    long getId();
 }

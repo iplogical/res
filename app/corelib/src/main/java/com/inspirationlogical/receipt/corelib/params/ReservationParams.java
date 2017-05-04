@@ -23,6 +23,8 @@ public @Data class ReservationParams {
 
     private String note;
 
+    private String phoneNumber;
+
     private int tableNumber;
 
     private int guestCount;

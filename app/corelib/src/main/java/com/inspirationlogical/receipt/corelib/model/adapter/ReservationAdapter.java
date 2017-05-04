@@ -34,10 +34,33 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
                 .note(params.getNote())
                 .tableNumber(params.getTableNumber())
                 .guestCount(params.getGuestCount())
+                .phoneNumber(params.getPhoneNumber())
                 .date(params.getDate())
                 .startTime(LocalDateTime.of(params.getDate(), params.getStartTime()))
                 .endTime(LocalDateTime.of(params.getDate(), params.getEndTime()))
                 .build();
+        bindReservationToTableOrOrphanage(tables, reservation);
+        GuardedTransaction.persist(reservation);
+    }
+
+    public void updateReservation(ReservationParams params) {
+        List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_NUMBER, query -> query.setParameter("number", params.getTableNumber()));
+        GuardedTransaction.run(() -> {
+            adaptee.setName(params.getName());
+            adaptee.setNote(params.getNote());
+            adaptee.setTableNumber(params.getTableNumber());
+            adaptee.setGuestCount(params.getGuestCount());
+            adaptee.setPhoneNumber(params.getPhoneNumber());
+            adaptee.setDate(params.getDate());
+            adaptee.setStartTime(LocalDateTime.of(params.getDate(), params.getStartTime()));
+            adaptee.setEndTime(LocalDateTime.of(params.getDate(), params.getEndTime()));
+            adaptee.getOwner().getReservations().remove(adaptee);
+            adaptee.setOwner(null);
+            bindReservationToTableOrOrphanage(tables, adaptee);
+        });
+    }
+
+    private static void bindReservationToTableOrOrphanage(List<Table> tables, Reservation reservation) {
         if(tables.size() != 0) {
             bindReservationToTable(tables.get(0), reservation);
         } else{
@@ -45,7 +68,6 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
                     query -> query.setParameter("type", TableType.ORPHANAGE));
             bindReservationToTable(tables.get(0), reservation);
         }
-        GuardedTransaction.persist(reservation);
     }
 
     private static void bindReservationToTable(Table table, Reservation reservation) {

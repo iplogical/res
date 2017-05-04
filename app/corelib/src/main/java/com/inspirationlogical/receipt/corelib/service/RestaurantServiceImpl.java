@@ -163,4 +163,9 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     public void addReservation(ReservationParams params) {
         ReservationAdapter.addReservation(params);
     }
+
+    @Override
+    public void updateReservation(ReservationView selectedReservation, ReservationParams reservationParams) {
+        getReservationAdapter(selectedReservation).updateReservation(reservationParams);
+    }
 }

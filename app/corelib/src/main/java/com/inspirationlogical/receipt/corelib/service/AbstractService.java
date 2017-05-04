@@ -53,4 +53,8 @@ public abstract class AbstractService {
     protected ReceiptRecordAdapter getReceiptRecordAdapter(ReceiptRecordView receiptRecordView) {
         return ((ReceiptRecordViewImpl)receiptRecordView).getAdapter();
     }
+
+    protected ReservationAdapter getReservationAdapter(ReservationView reservationView) {
+        return ((ReservationViewImpl)reservationView).getAdapter();
+    }
 }

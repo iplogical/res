@@ -61,6 +61,8 @@ public @Data class Reservation extends AbstractEntity {
 
     private String note;
 
+    private String phoneNumber;
+
     @Tolerate
     Reservation(){}
 }

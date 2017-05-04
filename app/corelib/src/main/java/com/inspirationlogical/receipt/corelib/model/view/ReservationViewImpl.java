@@ -33,6 +33,11 @@ public class ReservationViewImpl extends AbstractModelViewImpl<ReservationAdapte
     }
 
     @Override
+    public String getPhoneNumber() {
+        return adapter.getAdaptee().getPhoneNumber();
+    }
+
+    @Override
     public String getDate() {
         return adapter.getAdaptee().getDate().toString();
     }
@@ -45,5 +50,10 @@ public class ReservationViewImpl extends AbstractModelViewImpl<ReservationAdapte
     @Override
     public String getEndTime() {
         return adapter.getAdaptee().getEndTime().toLocalTime().toString();
+    }
+
+    @Override
+    public long getId() {
+        return adapter.getAdaptee().getId();
     }
 }

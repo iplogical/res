@@ -111,6 +111,15 @@
                                     <Insets left="5.0" right="5.0" />
                                  </padding>
                               </HBox>
+                              <HBox prefWidth="200.0" spacing="5.0">
+                                 <children>
+                                    <Label prefHeight="30.0" prefWidth="50.0" text="%Reservation.PhoneNumber" />
+                                    <TextField fx:id="phoneNumber" prefWidth="260.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="5.0" right="5.0" />
+                                 </padding>
+                              </HBox>
                               <HBox fx:id="dateContainer" prefHeight="100.0" prefWidth="200.0" />
                               <HBox fx:id="startTimeContainer" prefHeight="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
@@ -127,6 +136,8 @@
                               <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                                  <children>
                                     <Button fx:id="confirm" mnemonicParsing="false" onAction="#onConfirm" prefWidth="100.0" text="%Reservation.Confirm" />
+                                    <Button fx:id="update" mnemonicParsing="false" onAction="#onUpdate" prefWidth="100.0" text="%Reservation.Update" />
+                                    <Button fx:id="openTable" mnemonicParsing="false" onAction="#onOpenTable" prefWidth="100.0" text="%Reservation.OpenTable" />
                                  </children>
                                  <padding>
                                     <Insets left="5.0" right="5.0" />

@@ -1,8 +1,10 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
+import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -39,6 +41,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import jfxtras.scene.control.CalendarPicker;
 import jfxtras.scene.control.CalendarTimePicker;
+import lombok.SneakyThrows;
 
 /**
  * Created by TheDagi on 2017. 04. 26..
@@ -72,6 +75,8 @@ public class ReservationControllerImpl extends AbstractController
     @FXML
     private TextField guestCount;
     @FXML
+    private TextField phoneNumber;
+    @FXML
     private TextArea note;
 
     @FXML
@@ -83,6 +88,10 @@ public class ReservationControllerImpl extends AbstractController
 
     @FXML
     private Button confirm;
+    @FXML
+    private Button update;
+    @FXML
+    private Button openTable;
 
     private CalendarPicker date;
     private LocalDate selectedDate;
@@ -104,6 +113,8 @@ public class ReservationControllerImpl extends AbstractController
     private List<ReservationView> reservationViews;
 
     private ObservableList<ReservationViewModel> reservationModels;
+
+    private long reservationId;
 
     @Inject
     public ReservationControllerImpl(RestaurantService restaurantService,
@@ -150,32 +161,52 @@ public class ReservationControllerImpl extends AbstractController
     @FXML
     public void onConfirm(Event event) {
         try {
-            int startHour = LocalDateTime.ofInstant(startTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getHour();
-            int startMinute = LocalDateTime.ofInstant(startTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getMinute();
-            int endHour = LocalDateTime.ofInstant(endTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getHour();
-            int endMinute = LocalDateTime.ofInstant(endTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getMinute();
-            ReservationParams params = ReservationParams.builder()
-                    .name(name.getText())
-                    .note(note.getText())
-                    .tableNumber(Integer.valueOf(tableNumber.getText()))
-                    .guestCount(Integer.valueOf(guestCount.getText()))
-                    .date(LocalDateTime.ofInstant(date.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalDate())
-                    .startTime(LocalTime.of(startHour, startMinute))
-                    .endTime(LocalTime.of(endHour, endMinute))
-                    .build();
-            restaurantService.addReservation(params);
+            restaurantService.addReservation(initReservationParams());
             initReservations();
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
-    private void initializeReservationsTableRowHandler() {
+    private ReservationParams initReservationParams() {
+        int startHour = LocalDateTime.ofInstant(startTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getHour();
+        int startMinute = LocalDateTime.ofInstant(startTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getMinute();
+        int endHour = LocalDateTime.ofInstant(endTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getHour();
+        int endMinute = LocalDateTime.ofInstant(endTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getMinute();
+        return ReservationParams.builder()
+                .name(name.getText())
+                .note(note.getText())
+                .tableNumber(Integer.valueOf(tableNumber.getText()))
+                .guestCount(Integer.valueOf(guestCount.getText()))
+                .phoneNumber(phoneNumber.getText())
+                .date(LocalDateTime.ofInstant(date.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalDate())
+                .startTime(LocalTime.of(startHour, startMinute))
+                .endTime(LocalTime.of(endHour, endMinute))
+                .build();
+    }
+
+    @FXML
+    public void onUpdate(Event event) {
+        ReservationView selectedReservation = reservationViews.stream()
+                .filter(reservationView -> reservationView.getId() == reservationId)
+                .collect(toList()).get(0);
+        restaurantService.updateReservation(selectedReservation, initReservationParams());
+        initReservations();
+    }
+
+    @FXML
+    public void onOpenTable(Event event) {
+        try{
+            restaurantController.openTable(Integer.valueOf(tableNumber.getText()), name.getText(), Integer.valueOf(guestCount.getText()), note.getText());
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+        private void initializeReservationsTableRowHandler() {
         reservationsTable.setRowFactory(tv -> {
             TableRow<ReservationViewModel> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if(event.getClickCount() == 2 && (! row.isEmpty())) {
+                if(event.getClickCount() == 1 && (! row.isEmpty())) {
                     rowClickHandler(row.getItem());
                 }
             });
@@ -183,8 +214,20 @@ public class ReservationControllerImpl extends AbstractController
         });
     }
 
+    @SneakyThrows
     private void rowClickHandler(ReservationViewModel row) {
-        restaurantController.openTable(row.getTableNumberAsInt(), row.getName(), row.getGuestCountAsInt(), row.getNote());
+        name.setText(row.getName());
+        tableNumber.setText(row.getTableNumber());
+        guestCount.setText(row.getGuestCount());
+        phoneNumber.setText(row.getPhoneNumber());
+        note.setText(row.getNote());
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm");
+        calendar.setTime(dateFormat.parse(row.getStartTime()));
+        startTime.setCalendar(calendar);
+        calendar.setTime(dateFormat.parse(row.getEndTime()));
+        endTime.setCalendar(calendar);
+        reservationId = row.getReservationId();
     }
 
 
