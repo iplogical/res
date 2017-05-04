@@ -191,21 +191,19 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         return equivalentReceiptRecordView.get(0);
     }
 
-    private boolean decreaseClickedRow(SoldProductViewModel row, double amount) {
+    private void decreaseClickedRow(SoldProductViewModel row, double amount) {
         soldProductsModel.remove(row);
         if(row.decreaseProductQuantity(amount)) {
             removeRowFromSoldProducts(row); // The whole product is paid, remove the row.
-            return true;
+            return;
         }
         addRowToSoldProducts(row);
-        return false;
     }
 
-    private boolean increaseClickedRow(SoldProductViewModel row, double amount) {
+    private void increaseClickedRow(SoldProductViewModel row, double amount) {
         soldProductsModel.remove(row);
         row.increaseProductQuantity(amount);
         addRowToSoldProducts(row);
-        return false;
     }
 
     protected void addRowToSoldProducts(SoldProductViewModel row) {
