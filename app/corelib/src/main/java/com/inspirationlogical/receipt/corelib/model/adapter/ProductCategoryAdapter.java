@@ -80,7 +80,6 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     }
 
     public List<ProductAdapter> getAllProducts() {
-        GuardedTransaction.runWithRefresh(adaptee, () -> {});
         List<ProductCategory> childCategories = new ArrayList<>();
         traverseChildren(this.adaptee, childCategories);
         return childCategories.stream()
@@ -90,7 +89,6 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     }
 
     public List<ProductCategoryAdapter> getAllProductCategories() {
-        GuardedTransaction.runWithRefresh(adaptee, () -> {});
         List<ProductCategory> childCategories = new ArrayList<>();
         traverseChildren(this.adaptee, childCategories);
         return childCategories.stream()
@@ -106,14 +104,6 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .collect(toList());
     }
 
-    public List<ProductAdapter> getAllSellableProducts() {
-        return getAllActiveProducts().stream()
-                .filter(productAdapter -> !productAdapter.getAdaptee().getType().equals(ProductType.AD_HOC_PRODUCT))
-                .filter(productAdapter -> !productAdapter.getAdaptee().getType().equals(ProductType.GAME_FEE_PRODUCT))
-                .filter(productAdapter -> !productAdapter.getAdaptee().getType().equals(ProductType.STORABLE))
-                .collect(toList());
-    }
-
     public List<ProductAdapter> getAllStorableProducts() {
          return getAllActiveProducts().stream()
                 .flatMap(productAdapter -> productAdapter.getAdaptee().getRecipes().stream())
@@ -125,13 +115,6 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Map<Object,Boolean> seen = new ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
-    }
-
-    public List<ProductCategoryAdapter> getChildCategories() {
-        List<ProductCategory> children = GuardedTransaction.runNamedQuery(GET_CHILD_CATEGORIES,
-                query -> {query.setParameter("parent_id", adaptee.getId());
-                    return query;});
-        return children.stream().map(ProductCategoryAdapter::new).collect(toList());
     }
 
     public ProductCategoryAdapter getParent() {

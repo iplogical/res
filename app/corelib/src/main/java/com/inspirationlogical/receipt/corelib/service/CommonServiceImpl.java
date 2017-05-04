@@ -44,15 +44,9 @@ import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 public class CommonServiceImpl extends AbstractService implements CommonService {
 
-    private List<ProductView> productViews;
-
-    private List<ProductCategoryView> categoryViews;
-
     @Inject
     public CommonServiceImpl(EntityManager manager) {
         super(manager);
-        productViews = ProductAdapter.getProducts();
-        categoryViews = ProductCategoryAdapter.getProductCategories();
     }
 
     @Override

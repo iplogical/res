@@ -13,6 +13,11 @@ public abstract class AbstractService {
 
     protected EntityManager manager;
 
+    protected List<ProductView> productViews;
+
+    protected List<ProductCategoryView> categoryViews;
+
+
     protected static <View, Adapter> List<View> createViewsFromAdapters(List<Adapter> adapters, Function<Adapter, View> constructor) {
         return adapters.stream()
                 .map(constructor)
@@ -21,6 +26,8 @@ public abstract class AbstractService {
 
     protected AbstractService(EntityManager manager) {
         this.manager = manager;
+        productViews = ProductAdapter.getProducts();
+        categoryViews = ProductCategoryAdapter.getProductCategories();
     }
 
     protected RestaurantAdapter getRestaurantAdapter(RestaurantView restaurant) {

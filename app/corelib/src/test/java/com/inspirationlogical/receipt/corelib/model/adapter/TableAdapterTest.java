@@ -209,7 +209,7 @@ public class TableAdapterTest {
 
     @Test
     public void testGetTablesByType() {
-        assertEquals(2, TableAdapter.getTablesByType(TableType.NORMAL).size());
+        assertEquals(4, TableAdapter.getTablesByType(TableType.NORMAL).size());
         assertEquals(1, TableAdapter.getTablesByType(TableType.LOITERER).size());
         assertEquals(1, TableAdapter.getTablesByType(TableType.DISPOSAL).size());
     }

@@ -105,14 +105,6 @@ public class ProductCategoryAdapterTest {
     }
 
     @Test
-    public void testGetAllSellableProducts() {
-        List<ProductAdapter> products = root.getAllSellableProducts();
-        assertEquals(6, products.size());
-        assertEquals(0, products.stream().filter(productAdapter ->
-                productAdapter.getAdaptee().getLongName().equals("productAdHoc")).collect(toList()).size());
-    }
-
-    @Test
     public void testGetAllStorableProducts() {
         List<ProductAdapter> products = root.getAllStorableProducts();
         assertEquals(8, products.size());
@@ -128,36 +120,6 @@ public class ProductCategoryAdapterTest {
     @Test
     public void testGetAllCategories() {
         assertEquals(13, ProductCategoryAdapter.getRootCategory().getAllProductCategories().size());
-    }
-
-    @Test
-    public void testAddChildCategory() {
-        aggregateOne.addChildCategory("newChild", ProductCategoryType.LEAF);
-        assertEquals(3, aggregateOne.getChildCategories().size());
-        assertEquals(1, aggregateOne.getChildCategories().stream()
-        .filter(productCategoryAdapter -> productCategoryAdapter.getAdaptee().getName().equals("newChild"))
-        .collect(toList()).size());
-    }
-
-    @Test(expected = IllegalProductCategoryStateException.class)
-    public void testAddChildCategoryAlreadyExist() {
-        aggregateOne.addChildCategory("leafOne", ProductCategoryType.LEAF);
-        assertEquals(3, aggregateOne.getChildCategories().size());
-    }
-
-    @Test(expected = IllegalProductCategoryStateException.class)
-    public void testAddChildCategoryAlreadyHasLeaf() {
-        aggregateOne.addChildCategory("newChild", ProductCategoryType.AGGREGATE);
-        assertEquals(3, aggregateOne.getChildCategories().size());
-    }
-
-    @Test
-    public void testUpdateChildCategory() {
-        aggregateOne.updateChildCategory("newChild", "leafOne", ProductCategoryType.LEAF);
-        assertEquals(2, aggregateOne.getChildCategories().size());
-        assertEquals(1, aggregateOne.getChildCategories().stream()
-                .filter(productCategoryAdapter -> productCategoryAdapter.getAdaptee().getName().equals("newChild"))
-                .collect(toList()).size());
     }
 
     @Test

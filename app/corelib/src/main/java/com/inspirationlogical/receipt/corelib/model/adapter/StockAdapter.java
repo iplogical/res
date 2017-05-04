@@ -4,7 +4,6 @@ import com.inspirationlogical.receipt.corelib.model.entity.Stock;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,13 +35,14 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     public static StockAdapter getLatestItemByProduct(ProductAdapter productAdapter) {
-        List<Stock> stockList = GuardedTransaction.runNamedQuery(Stock.STOCK_GET_ITEM_BY_PRODUCT,
-                query -> query.setParameter("product", productAdapter.getAdaptee()));
-        return stockList.stream()
-                .map(stock -> new StockAdapter(stock))
-                .max(Comparator.comparing(stockAdapter -> stockAdapter.getAdaptee().getDate()))
-                .orElseGet(() -> createStockEntry(productAdapter, 0));
+        List<Stock> stockList = GuardedTransaction.runNamedQuery(Stock.STOCK_GET_LATEST_ITEM_BY_PRODUCT,
+                query -> query.setParameter("product", productAdapter.getAdaptee()).setMaxResults(1));
+        if(stockList.isEmpty()) {
+            return createStockEntry(productAdapter, 0);
+        }
+        return new StockAdapter(stockList.get(0));
     }
+
 
     public static void closeLatestStockEntries() {
         List<ProductAdapter> storableProducts =
@@ -56,16 +56,15 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     private static StockAdapter createStockEntry(ProductAdapter productAdapter, double initialQuantity) {
-        GuardedTransaction.runWithRefresh(productAdapter.getAdaptee(), () -> {});
-            Stock stock = Stock.builder()
-                    .owner(productAdapter.getAdaptee())
-                    .initialQuantity(initialQuantity)
-                    .soldQuantity(0)
-                    .purchasedQuantity(0)
-                    .inventoryQuantity(0)
-                    .disposedQuantity(0)
-                    .date(now())
-                    .build();
+        Stock stock = Stock.builder()
+                .owner(productAdapter.getAdaptee())
+                .initialQuantity(initialQuantity)
+                .soldQuantity(0)
+                .purchasedQuantity(0)
+                .inventoryQuantity(0)
+                .disposedQuantity(0)
+                .date(now())
+                .build();
         GuardedTransaction.persist(stock);
         return new StockAdapter(stock);
     }
