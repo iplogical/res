@@ -1,7 +1,8 @@
 <#-- @ftlvariable name="" type="com.inspirationlogical.receipt.reserver.view.GetReservationsView" -->
 <html>
     <head>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script type="text/javascript" src="/assets/js/jquery.ajax-cross-origin.min.js"></script>
     </head>
     <body>
     <#list reservations as reservation>
@@ -29,10 +30,13 @@
         var $form = $("#addReservation");
         var data = getFormData($form);
         $.ajax({
+            crossDomain: true,
+            crossOrigin: true,
             type: "POST",
             url: "http://localhost:9000/reservation/",
             data: JSON.stringify(data),
-            contentType : "application/json",
+            contentType: "application/json",
+            dataType: "json",
             success: function() {
                 location.reload();
             }
