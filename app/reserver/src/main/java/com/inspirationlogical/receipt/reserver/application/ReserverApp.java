@@ -13,6 +13,7 @@ import com.inspirationlogical.receipt.reserver.healthcheck.ReservationHealthChec
 import com.inspirationlogical.receipt.reserver.resource.ReservationResource;
 
 import io.dropwizard.Application;
+import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
@@ -32,7 +33,7 @@ public class ReserverApp extends Application<ReserverConfiguration> {
         if (args.length == 0) {
             args = new String[2];
             args[0] = SERVER_MODE;
-            args[1] = ReserverApp.class.getResource(CONFIG_PATH).getPath();
+            args[1] = CONFIG_PATH;
         }
         new ReserverApp(getInstance(ReservationResource.class)).run(args);
     }
@@ -45,6 +46,7 @@ public class ReserverApp extends Application<ReserverConfiguration> {
     @Override
     public void initialize(Bootstrap<ReserverConfiguration> bootstrap) {
         bootstrap.addBundle(new ViewBundle<>());
+        bootstrap.setConfigurationSourceProvider(new ResourceConfigurationSourceProvider());
     }
 
     @Override
