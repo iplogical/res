@@ -58,11 +58,12 @@ public class ReserverApp extends Application<ReserverConfiguration> {
 
         FilterRegistration.Dynamic filter = environment.servlets().addFilter("CORS", CrossOriginFilter.class);
         filter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
-        filter.setInitParameter("allowedOrigins", "http://localhost:9000/reservations, http://websocket.dnet.hu:9000/reservation");    // allowed origins comma separated
-        filter.setInitParameter("allowedHeaders", "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin");
-        filter.setInitParameter("allowedMethods", "GET,PUT,POST,DELETE,OPTIONS");
-        filter.setInitParameter("preflightMaxAge", "5184000"); // 2 months
-        filter.setInitParameter("allowCredentials", "true");
+        filter.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET,PUT,POST,DELETE,OPTIONS");
+        filter.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
+        filter.setInitParameter(CrossOriginFilter.ACCESS_CONTROL_ALLOW_ORIGIN_HEADER, "*");
+        filter.setInitParameter(CrossOriginFilter.EXPOSED_HEADERS_PARAM, "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,Location");
+        filter.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,Location");
+        filter.setInitParameter(CrossOriginFilter.ALLOW_CREDENTIALS_PARAM, "true");
     }
 
 }
