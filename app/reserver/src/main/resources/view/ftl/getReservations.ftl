@@ -36,7 +36,10 @@
             url: "http://localhost:9000/reservation/",
             data: JSON.stringify(data),
             contentType: "application/json",
-            dataType: "json",
+            dataType: 'json',
+            xhrFields: {
+                withCredentials: true
+            },
             success: function() {
                 location.reload();
             }
