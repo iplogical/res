@@ -10,6 +10,7 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -39,6 +40,9 @@ import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.ConfirmMessage;
 import com.inspirationlogical.receipt.waiter.viewstate.RestaurantViewState;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -133,6 +137,9 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     Label totalIncome;
 
+    @FXML
+    Label liveTime;
+
     @Inject
     private ViewLoader viewLoader;
 
@@ -171,6 +178,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         initTableForm();
         initControls();
         initRestaurant();
+        initLiveTime(liveTime);
         updateRestaurantSummary();
     }
 

@@ -40,7 +40,10 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     @FXML
     private Label totalPrice;
     @FXML
-    Button printDailyConsumption;
+    private Button printDailyConsumption;
+
+    @FXML
+    private Label liveTime;
 
     private RestaurantView restaurantView;
 
@@ -63,6 +66,7 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initLiveTime(liveTime);
         updatePriceFields();
     }
 

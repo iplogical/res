@@ -166,14 +166,19 @@
             </VBox>
          </center>
          <top>
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%Restaurant.Title" BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
-            </Label>
+            <AnchorPane>
+               <children>
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%Restaurant.Title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <BorderPane.margin>
+                        <Insets />
+                     </BorderPane.margin>
+                  </Label>
+                  <Label fx:id="liveTime" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="100.0" AnchorPane.leftAnchor="814.0" AnchorPane.rightAnchor="0.0" />
+               </children>
+            </AnchorPane>
          </top>
          <right>
             <VBox alignment="TOP_CENTER" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">

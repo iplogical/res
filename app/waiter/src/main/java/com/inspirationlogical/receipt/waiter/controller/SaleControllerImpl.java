@@ -38,12 +38,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -93,6 +88,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     private Button backToRestaurantView;
 
+    @FXML
+    private Label liveTime;
+
     @Inject
     private ViewLoader viewLoader;
 
@@ -141,6 +139,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         updateNode();
         initializeSoldProductsTableRowHandler();
         initializeQuickSearchAndSellHandler();
+        initLiveTime(liveTime);
     }
 
     @Override

@@ -84,6 +84,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     Label payTotalPrice;
 
     @FXML
+    Label liveTime;
+
+    @FXML
     protected javafx.scene.control.TableView<SoldProductViewModel> paidProductsTable;
     @FXML
     protected TableColumn payProductName;
@@ -136,6 +139,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         updateTableSummary();
         initializeSoldProductsTableRowHandler();
         initializePaidProductsTableRowHandler();
+        initLiveTime(liveTime);
     }
 
     @Override

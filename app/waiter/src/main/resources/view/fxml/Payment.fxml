@@ -245,6 +245,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
+            <Label fx:id="liveTime" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="100.0" AnchorPane.rightAnchor="0.0" />
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" />
