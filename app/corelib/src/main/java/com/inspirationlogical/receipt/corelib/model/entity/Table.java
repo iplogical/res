@@ -71,7 +71,7 @@ public @Data class Table extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private TableType type;
 
-    @Min(value = 1,message = "Table number must be greater than or equal to 1")
+    @Min(value = 0,message = "Table number must be greater than or equal to 0")
     @Column(unique = true)
     private int number;
 
