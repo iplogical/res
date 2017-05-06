@@ -11,12 +11,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import java.net.URL;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 import com.google.inject.Inject;
@@ -512,7 +507,9 @@ public class RestaurantControllerImpl implements RestaurantController {
                 .filter(tableController -> tableController.getView().isEmployee())
                 .map(TableController::getRoot).collect(toList()));
         tableControllers.clear();
-        restaurantService.getTables(restaurantView).stream().filter(DISPLAYABLE_TABLE).forEach(this::drawTable);
+        List<TableView> tables = restaurantService.getTables(restaurantView);
+        tables.sort(Comparator.comparing(TableView::isConsumed));   // Put consumed tables to the end so the consumer is loaded in advance.
+        tables.stream().filter(DISPLAYABLE_TABLE).forEach(this::drawTable);
     }
 
     private void initContextMenu(Control control) {
