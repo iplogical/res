@@ -183,6 +183,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
             }
             receiptAdapter.close(paymentParams);
         });
+        if(TableType.isVirtualTable(adaptee.getType())) return;
         GuardedTransaction.run(() -> {
             adaptee.setName("");
             adaptee.setGuestCount(0);

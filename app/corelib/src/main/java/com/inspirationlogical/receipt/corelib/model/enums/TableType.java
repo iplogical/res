@@ -49,4 +49,8 @@ public enum TableType {
                 return null;
         }
     }
+
+    public static boolean isVirtualTable(TableType type) {
+        return type.equals(LOITERER) || type.equals(FREQUENTER) || type.equals(EMPLOYEE);
+    }
 }
