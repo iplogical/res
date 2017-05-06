@@ -10,6 +10,11 @@ import javafx.scene.input.MouseEvent;
 
 public class DragAndDropHandler {
 
+    private static final int POSITION_X_MIN = 10;
+    private static final int POSITION_X_MAX = 810;
+    private static final int POSITION_Y_MIN = 10;
+    private static final int POSITION_Y_MAX = 600;
+
     public static void addDragAndDrop(Node view, MotionViewState motionViewState) {
         final Wrapper<Point2D> deltaWrapper = new Wrapper<>();
 
@@ -57,6 +62,14 @@ public class DragAndDropHandler {
             posX = snapToGrid(posX, motionViewState.getGridSizeProperty().intValue());
             posY = snapToGrid(posY, motionViewState.getGridSizeProperty().intValue());
         }
+        applyLimitsAndSetLayout(posX, posY, node);
+    }
+
+    private static void applyLimitsAndSetLayout(double posX, double posY, Node node) {
+        posX = posX < POSITION_X_MIN ? POSITION_X_MIN : posX;
+        posY = posY < POSITION_Y_MIN ? POSITION_Y_MIN : posY;
+        posX = posX > POSITION_X_MAX ? POSITION_X_MAX : posX;
+        posY = posY > POSITION_Y_MAX ? POSITION_Y_MAX : posY;
         node.setLayoutX(posX);
         node.setLayoutY(posY);
     }
