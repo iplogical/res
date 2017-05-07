@@ -51,8 +51,6 @@
         var $form = $("#addReservation");
         var data = getFormData($form);
         $.ajax({
-            crossDomain: true,
-            crossOrigin: true,
             type: "POST",
             url: "http://websockets.dnet.hu:9000/reservation",
             data: JSON.stringify(data),
