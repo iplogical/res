@@ -2,7 +2,7 @@
 <html>
     <head>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-        <script type="text/javascript" src="/assets/js/jquery.ajax-cross-origin.min.js"></script>
+        <script type="text/javascript" src="/assets/js/addReservation.js"></script>
     </head>
     <body>
     <table id="products" class="products" border="1pt solid black">
@@ -43,37 +43,5 @@
             <input type="submit" value="Add" onclick="submitForm()"/>
         </form>
     </fieldset>
-    <script type="text/javascript">
-    $("#addReservation").submit(function(e){
-        return false;
-    });
-    function submitForm(){
-        var $form = $("#addReservation");
-        var data = getFormData($form);
-        $.ajax({
-            type: "POST",
-            url: "http://websockets.dnet.hu:9000/reservation",
-            data: JSON.stringify(data),
-            contentType: "application/json",
-            dataType: 'json',
-            success: function() {
-                location.reload();
-            },
-            error: function(reserr){
-                console.log(reserr);
-            }
-        });
-    }
-    function getFormData($form){
-        var unindexed_array = $form.serializeArray();
-        var indexed_array = {};
-
-        $.map(unindexed_array, function(n, i){
-            indexed_array[n['name']] = n['value'];
-        });
-
-        return indexed_array;
-    }
-    </script>
     </body>
 </html>
