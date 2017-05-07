@@ -21,6 +21,11 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
         super(adaptee);
     }
 
+    public static List<ReservationAdapter> getReservations() {
+        List<Reservation> reservations = GuardedTransaction.runNamedQuery(Reservation.GET_RESERVATIONS);
+        return reservations.stream().map(ReservationAdapter::new).collect(toList());
+    }
+
     public static List<ReservationAdapter> getReservationsByDate(LocalDate date) {
         List<Reservation> reservations = GuardedTransaction.runNamedQuery(Reservation.GET_RESERVATIONS_BY_DATE,
                 query -> query.setParameter("date", date));

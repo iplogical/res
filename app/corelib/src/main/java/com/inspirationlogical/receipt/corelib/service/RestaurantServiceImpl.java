@@ -4,20 +4,25 @@ import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.model.adapter.*;
+import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.view.*;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
+import com.inspirationlogical.receipt.corelib.model.view.ReservationViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
+import com.inspirationlogical.receipt.corelib.model.view.RestaurantViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
+import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 
 import javafx.geometry.Dimension2D;
@@ -149,6 +154,14 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     public void closeDay() {
         StockAdapter.closeLatestStockEntries();
         DailyClosureAdapter.getOpenDailyClosure().close();
+    }
+
+    @Override
+    public List<ReservationView> getReservations() {
+        return ReservationAdapter.getReservations()
+                .stream()
+                .map(ReservationViewImpl::new)
+                .collect(toList());
     }
 
     @Override

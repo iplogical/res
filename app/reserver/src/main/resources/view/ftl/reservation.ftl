@@ -2,10 +2,18 @@
 <html>
     <head>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-        <script type="text/javascript" src="/assets/js/addReservation.js"></script>
+        <script type="text/javascript" src="/assets/js/reservation.js"></script>
+        <link rel="stylesheet" type="text/css" href="/assets/css/reservation.css">
+
+        <script type="text/javascript" src="https://momentjs.com/downloads/moment.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/hu.js"></script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/locale/hu.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css">
     </head>
     <body>
-    <table id="products" class="products" border="1pt solid black">
+    <table>
         <tr>
             <th>Name</th>
             <th>Note</th>
@@ -43,5 +51,6 @@
             <input type="submit" value="Add" onclick="submitForm()"/>
         </form>
     </fieldset>
+    <div id='calendar'></div>
     </body>
 </html>

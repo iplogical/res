@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.google.inject.Inject;
@@ -28,6 +29,18 @@ public class ReservationResource {
     @Inject
     public ReservationResource(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ReservationViewModel> getReservations() throws ParseException {
+
+        List<ReservationViewModel> reservations = restaurantService.getReservations()
+                .stream()
+                .map(ReservationViewModel::new)
+                .collect(Collectors.toList());
+
+        return reservations;
     }
 
     @GET

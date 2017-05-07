@@ -28,7 +28,7 @@ import lombok.experimental.Tolerate;
 @EqualsAndHashCode(callSuper = true, exclude = "owner")
 @javax.persistence.Table(name = "RESERVATION")
 @NamedQueries({
-    @NamedQuery(name = Reservation.GET_TEST_RESERVATIONS,
+    @NamedQuery(name = Reservation.GET_RESERVATIONS,
             query="FROM Reservation r"),
     @NamedQuery(name = Reservation.GET_RESERVATIONS_BY_DATE,
             query="FROM Reservation r WHERE r.date =:date"),
@@ -36,7 +36,7 @@ import lombok.experimental.Tolerate;
 @AttributeOverride(name = "id", column = @Column(name = "RESERVATION_ID"))
 public @Data class Reservation extends AbstractEntity {
 
-    public static final String GET_TEST_RESERVATIONS = "Reservation.GetTestReservations";
+    public static final String GET_RESERVATIONS = "Reservation.GetReservations";
     public static final String GET_RESERVATIONS_BY_DATE = "Reservation.GetReservationsByDate";
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})

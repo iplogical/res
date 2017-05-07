@@ -8,7 +8,7 @@ import io.dropwizard.views.View;
 
 public class GetReservationsView extends View {
 
-    private static final String TEMPLATE_NAME = "/view/ftl/getReservations.ftl";
+    private static final String TEMPLATE_NAME = "/view/ftl/reservation.ftl";
 
     private final List<ReservationViewModel> reservations;
 
