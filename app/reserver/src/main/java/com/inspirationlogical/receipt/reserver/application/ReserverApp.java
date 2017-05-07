@@ -26,16 +26,9 @@ public class ReserverApp extends Application<ReserverConfiguration> {
     private static final String SERVER_MODE = "server";
     private static final String CONFIG_PATH = "/configuration/config.yml";
 
-    private static final String CORSFILTER = "CORS";
-    private static final String CORS_SUPPORTED_METHODS = "cors.supportedMethods";
-    private static final String CORS_SUPPORTS_CREDENTIALS = "cors.supportsCredentials";
-    private static final String CORS_EXPOSED_HEADERS = "cors.exposedHeaders";
-    private static final String CORS_SUPPORTED_HEADERS = "cors.supportedHeaders";
-    private static final String CORS_ALLOW_ORIGIN = "cors.allowOrigin";
-
     private ReservationResource reservationResource;
 
-    public ReserverApp(ReservationResource reservationResource) {
+    private ReserverApp(ReservationResource reservationResource) {
         this.reservationResource = reservationResource;
     }
 
@@ -48,6 +41,7 @@ public class ReserverApp extends Application<ReserverConfiguration> {
             args[0] = SERVER_MODE;
             args[1] = CONFIG_PATH;
         }
+
         new ReserverApp(getInstance(ReservationResource.class)).run(args);
     }
 
@@ -64,34 +58,16 @@ public class ReserverApp extends Application<ReserverConfiguration> {
     }
 
     @Override
-    public void run(ReserverConfiguration configuration,
-                    Environment environment) {
+    public void run(ReserverConfiguration configuration, Environment environment) {
         final ReservationHealthCheck healthCheck = new ReservationHealthCheck();
         environment.healthChecks().register("reservation", healthCheck);
         environment.jersey().register(reservationResource);
 
-//        final FilterRegistration.Dynamic filter = environment.servlets().addFilter(CORSFILTER, CORSFilter.class);
-//        filter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
-//        filter.setInitParameter(CORS_ALLOW_ORIGIN, "*");
-//        filter.setInitParameter(CORS_SUPPORTED_HEADERS, "*");
-//        filter.setInitParameter(CORS_SUPPORTS_CREDENTIALS, "true");
-//        filter.setInitParameter(CORS_SUPPORTED_METHODS, "*");
-//        filter.setInitParameter(CrossOriginFilter.CHAIN_PREFLIGHT_PARAM, Boolean.FALSE.toString());
-
-        final FilterRegistration.Dynamic cors =
-                environment.servlets().addFilter("CORS", CrossOriginFilter.class);
-
-        // Configure CORS parameters
+        final FilterRegistration.Dynamic cors = environment.servlets().addFilter("CORS", CrossOriginFilter.class);
         cors.setInitParameter("allowedOrigins", "*");
         cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
         cors.setInitParameter("allowedMethods", "OPTIONS,GET,PUT,POST,DELETE,HEAD");
-
-        // Add URL mapping
         cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
-
-        // DO NOT pass a preflight request to down-stream auth filters
-        // unauthenticated preflight requests should be permitted by spec
         cors.setInitParameter(CrossOriginFilter.CHAIN_PREFLIGHT_PARAM, Boolean.FALSE.toString());
     }
-
 }

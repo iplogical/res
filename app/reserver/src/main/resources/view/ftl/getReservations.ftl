@@ -5,9 +5,30 @@
         <script type="text/javascript" src="/assets/js/jquery.ajax-cross-origin.min.js"></script>
     </head>
     <body>
-    <#list reservations as reservation>
-        <p>${reservation.name}: table ${reservation.tableNumber}</p>
-    </#list>
+    <table id="products" class="products" border="1pt solid black">
+        <tr>
+            <th>Name</th>
+            <th>Note</th>
+            <th>Phone</th>
+            <th>Table</th>
+            <th>Guests</th>
+            <th>Date</th>
+            <th>Start</th>
+            <th>End</th>
+        </tr>
+        <#list reservations as reservation>
+            <tr>
+                <td>${reservation.name!}</td>
+                <td>${reservation.note!}</td>
+                <td>${reservation.phoneNumber!}</td>
+                <td>${reservation.tableNumber!}</td>
+                <td>${reservation.guestCount!}</td>
+                <td>${reservation.date!}</td>
+                <td>${reservation.startTime!}</td>
+                <td>${reservation.endTime!}</td>
+            </tr>
+        </#list>
+    </table>
     <fieldset>
         <legend>Add Reservation</legend>
         <form action="" method="post" id="addReservation">
@@ -33,15 +54,15 @@
             crossDomain: true,
             crossOrigin: true,
             type: "POST",
-            url: "http://localhost:9000/reservation/",
+            url: "http://websockets.dnet.hu:9000/reservation",
             data: JSON.stringify(data),
             contentType: "application/json",
             dataType: 'json',
-            xhrFields: {
-                withCredentials: true
-            },
             success: function() {
                 location.reload();
+            },
+            error: function(reserr){
+                console.log(reserr);
             }
         });
     }

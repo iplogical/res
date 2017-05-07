@@ -3,6 +3,10 @@ package com.inspirationlogical.receipt.corelib.params;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -19,6 +23,7 @@ import lombok.Data;
 @JsonDeserialize(builder = ReservationParams.ReservationParamsBuilder.class)
 public @Data class ReservationParams {
 
+    @NotEmpty
     private String name;
 
     private String note;
@@ -29,10 +34,12 @@ public @Data class ReservationParams {
 
     private int guestCount;
 
+    @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate date;
 
+    @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss")
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime startTime;
