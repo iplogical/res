@@ -13,7 +13,13 @@ $(document).ready(function() {
         }
     });
 
-    calendar.fullCalendar('changeView', 'agendaDay', $("#date").val());
+    var localDate = $("#date").val();
+
+    if (localDate == "") {
+        calendar.fullCalendar('changeView', 'month');
+    } else {
+        calendar.fullCalendar('changeView', 'agendaDay', localDate);
+    }
 
     getEvents(calendar);
 });
