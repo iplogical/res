@@ -419,7 +419,6 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void updateRestaurant() {
-        tableControllers.forEach(TableController::updateNode);
         updateRestaurantSummary();
     }
 

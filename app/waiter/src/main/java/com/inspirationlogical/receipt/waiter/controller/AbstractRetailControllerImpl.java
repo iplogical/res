@@ -86,6 +86,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     public void onBackToRestaurantView(Event event) {
         retailService.mergeReceiptRecords(receiptView);
         restaurantController.updateRestaurant();
+        restaurantController.getTableController(tableView).updateNode();
         viewLoader.loadViewIntoScene(restaurantController);
     }
 
