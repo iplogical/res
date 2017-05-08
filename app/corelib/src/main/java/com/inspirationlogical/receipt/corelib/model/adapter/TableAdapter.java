@@ -172,7 +172,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void payTable(PaymentParams paymentParams) {
-        GuardedTransaction.runWithRefresh(adaptee, () -> {
+        GuardedTransaction.run(() -> {
             if (!isTableOpen()) {
                 throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
             }
@@ -196,7 +196,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         if(activeReceipt == null) {
             throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
         }
-        getActiveReceipt().paySelective(this, records, paymentParams);
+        activeReceipt.paySelective(this, records, paymentParams);
     }
 
     public void deleteTable() {
