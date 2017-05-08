@@ -1,10 +1,10 @@
 <#macro getCalendar>
     <div id='calendar'></div>
-    <div id="eventContent" title="Event Details" style="display:none;">
-        Start: <span id="eventStartTime"></span><br>
-        End: <span id="eventEndTime"></span><br>
-        Phone: <span id="eventPhone"></span><br>
-        Guests: <span id="eventGuests"></span><br>
-        <p id="eventInfo"></p>
+    <div id="showReservationForm" title="Reservation" style="display:none;">
+        Start: <span id="showStartTime"></span><br>
+        End: <span id="showEndTime"></span><br>
+        Phone: <span id="showPhone"></span><br>
+        Guests: <span id="showGuests"></span><br>
+        <p id="showNote"></p>
     </div>
 </#macro>

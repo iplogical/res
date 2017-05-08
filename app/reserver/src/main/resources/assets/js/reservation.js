@@ -13,30 +13,52 @@ $(document).ready(function() {
     var calendar = $('#calendar');
 
     calendar.fullCalendar({
+        customButtons: {
+            addReservationButton: {
+                text: 'Add',
+                click: function() {
+                    $("#addReservationForm").dialog({modal: true});
+                }
+            }
+        },
         header: {
             left:   'title',
-            center: '',
-            right:  'today,month,agendaDay,agendaWeek prev,next'
+            center: 'addReservationButton',
+            right:  'today,agendaDay,agendaWeek,month prev,next'
         },
         eventRender: function (event, element) {
             element.attr('href', 'javascript:void(0);');
             element.click(function() {
-                $("#eventStartTime").html(moment(event.start).format("HH:mm"));
-                $("#eventEndTime").html(moment(event.end).format("HH:mm"));
-                $("#eventPhone").html(event.phone);
-                $("#eventGuests").html(event.guests);
-                $("#eventInfo").html(event.description);
-                $("#eventContent").dialog({ modal: true, title: event.title});
+                $("#showStartTime").html(moment(event.start).format("HH:mm"));
+                $("#showEndTime").html(moment(event.end).format("HH:mm"));
+                $("#showPhone").html(event.phone);
+                $("#showGuests").html(event.guests);
+                $("#showNote").html(event.description);
+                $("#showReservationForm").dialog({ modal: true, title: event.title});
             });
-        }
+        },
+        selectable: true,
+        selectHelper: true,
+        select: function(start, end, event) {
+            calendar.fullCalendar('unselect');
+            $("#addDate").val(moment(start).format("YYYY-MM-DD"));
+            if (calendar.fullCalendar('getView').name == "month") {
+                calendar.fullCalendar('changeView', 'agendaDay', $("#addDate").val(), true);
+            } else {
+                $("#addStartTime").val(moment(start).format("HH:mm"));
+                $("#addEndTime").val(moment(end).format("HH:mm"));
+                $("#addReservationForm").dialog({modal: true});
+            }
+        },
+        editable: true
     });
 
-    var localDate = $("#date").val();
+    var localDate = $("#addDate").val();
 
     if (localDate == "") {
         calendar.fullCalendar('changeView', 'month');
     } else {
-        calendar.fullCalendar('changeView', 'agendaDay', localDate);
+        calendar.fullCalendar('changeView', 'agendaDay', localDate, true);
     }
 
     getEvents(calendar);
@@ -48,7 +70,9 @@ function getEvents(calendar) {
         success: function (data) {
             $.each( data, function(index, reservation) {
                 var event = new Object();
-                event.id = index;
+                event.id = reservation.id;
+                event.table = reservation.tableNumber;
+                event.name = reservation.name;
                 event.title = "[Table " + reservation.tableNumber + "] " + reservation.name;
                 event.start = reservation.date + " " + reservation.startTime;
                 event.end = reservation.date + " " + reservation.endTime;
