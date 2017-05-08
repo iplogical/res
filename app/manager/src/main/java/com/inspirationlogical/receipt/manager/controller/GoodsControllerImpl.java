@@ -221,8 +221,9 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void onModifyCategory(Event event) {
         if(isSelectionNull()) return;
         CategoryViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
-        initCategoryForm();
+        if(!selected.getLongName().equals("")) return;
         if(selected.getName().equals("root")) return;
+        initCategoryForm();
         categoryFormController.setCategory(goodsTable.getSelectionModel().getSelectedItem().getValue());
         showPopup(categoryForm, categoryFormController, root, new Point2D(520, 200));
     }
