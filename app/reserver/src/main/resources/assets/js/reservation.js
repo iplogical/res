@@ -3,6 +3,12 @@ $(document).ready(function() {
         return false;
     });
 
+    var apiUrl = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+'/reservation/api';
+
+    $.ajaxSetup({
+      url: apiUrl
+    });
+
     var calendar = $('#calendar');
 
     calendar.fullCalendar({
@@ -27,7 +33,6 @@ $(document).ready(function() {
 function getEvents(calendar) {
     $.ajax({
         type: "GET",
-        url: "http://websockets.dnet.hu:9000/reservation/api",
         dataType: "json",
         success: function (data) {
             $.each( data, function(index, reservation) {
@@ -47,7 +52,6 @@ function submitForm(e){
     var data = getFormData($form);
     $.ajax({
         type: "POST",
-        url: "http://websockets.dnet.hu:9000/reservation/api",
         data: JSON.stringify(data),
         contentType: "application/json",
         dataType: 'json',
