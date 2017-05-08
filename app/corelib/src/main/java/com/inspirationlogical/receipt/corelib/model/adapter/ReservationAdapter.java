@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.inspirationlogical.receipt.corelib.exception.ReservationNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
@@ -30,6 +31,12 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
         List<Reservation> reservations = GuardedTransaction.runNamedQuery(Reservation.GET_RESERVATIONS_BY_DATE,
                 query -> query.setParameter("date", date));
         return reservations.stream().map(ReservationAdapter::new).collect(toList());
+    }
+
+    public static ReservationAdapter getReservationById(long id) {
+        List<Reservation> reservations = GuardedTransaction.runNamedQuery(Reservation.GET_RESERVATION_BY_ID,
+                query -> query.setParameter("id", id).setMaxResults(1));
+        return reservations.stream().map(ReservationAdapter::new).findFirst().orElseThrow(ReservationNotFoundException::new);
     }
 
     public static void addReservation(ReservationParams params) {
@@ -63,6 +70,10 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
             adaptee.setOwner(null);
             bindReservationToTableOrOrphanage(tables, adaptee);
         });
+    }
+
+    public void deleteReservation() {
+        GuardedTransaction.delete(adaptee, () -> {});
     }
 
     private static void bindReservationToTableOrOrphanage(List<Table> tables, Reservation reservation) {

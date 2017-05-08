@@ -64,4 +64,8 @@ public interface RestaurantService {
     void addReservation(ReservationParams params);
 
     void updateReservation(ReservationView selectedReservation, ReservationParams reservationParams);
+
+    void updateReservation(long reservationId, ReservationParams reservationParams);
+
+    void deleteReservation(long reservationId);
 }

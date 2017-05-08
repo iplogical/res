@@ -32,12 +32,15 @@ import lombok.experimental.Tolerate;
             query="FROM Reservation r"),
     @NamedQuery(name = Reservation.GET_RESERVATIONS_BY_DATE,
             query="FROM Reservation r WHERE r.date =:date"),
+    @NamedQuery(name = Reservation.GET_RESERVATION_BY_ID,
+            query="FROM Reservation r WHERE r.id =:id")
 })
 @AttributeOverride(name = "id", column = @Column(name = "RESERVATION_ID"))
 public @Data class Reservation extends AbstractEntity {
 
     public static final String GET_RESERVATIONS = "Reservation.GetReservations";
     public static final String GET_RESERVATIONS_BY_DATE = "Reservation.GetReservationsByDate";
+    public static final String GET_RESERVATION_BY_ID = "Reservation.GetReservationById";
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(name = "TABLE_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
