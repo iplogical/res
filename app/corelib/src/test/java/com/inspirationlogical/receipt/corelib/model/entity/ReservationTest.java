@@ -42,7 +42,7 @@ public class ReservationTest {
 
     private List<Reservation> getReservations() {
         @SuppressWarnings("unchecked")
-        List<Reservation> entries = schema.getEntityManager().createNamedQuery(Reservation.GET_TEST_RESERVATIONS).getResultList();
+        List<Reservation> entries = schema.getEntityManager().createNamedQuery(Reservation.GET_RESERVATIONS).getResultList();
         return entries;
     }
 }

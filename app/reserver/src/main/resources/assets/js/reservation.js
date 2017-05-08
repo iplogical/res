@@ -10,8 +10,10 @@ $(document).ready(function() {
             left:   'title',
             center: '',
             right:  'today,month,agendaDay,agendaWeek prev,next'
-        }  // End of options
+        }
     });
+
+    calendar.fullCalendar('changeView', 'agendaDay', $("#date").val());
 
     getEvents(calendar);
 });
@@ -19,7 +21,7 @@ $(document).ready(function() {
 function getEvents(calendar) {
     $.ajax({
         type: "GET",
-        url: "http://websockets.dnet.hu:9000/reservation",
+        url: "http://websockets.dnet.hu:9000/reservation/api",
         dataType: "json",
         success: function (data) {
             $.each( data, function(index, reservation) {
@@ -39,7 +41,7 @@ function submitForm(e){
     var data = getFormData($form);
     $.ajax({
         type: "POST",
-        url: "http://websockets.dnet.hu:9000/reservation",
+        url: "http://websockets.dnet.hu:9000/reservation/api",
         data: JSON.stringify(data),
         contentType: "application/json",
         dataType: 'json',

@@ -13,6 +13,21 @@
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css">
     </head>
     <body>
+    <fieldset>
+        <legend>Add Reservation</legend>
+        <form action="" method="post" id="addReservation">
+            Name:   <input name="name" id="name"/><br/>
+            Note:   <input name="note" id="note"/><br/>
+            Phone:  <input name="phoneNumber" id="phoneNumber"/><br/>
+            Table:  <input name="tableNumber" id="tableNumber"/><br/>
+            Guests: <input name="guestCount" id="guestCount"/><br/>
+            Date:   <input name="date" id="date" placeholder="yyyy-MM-dd" value="${localDate}"/><br/>
+            Start:  <input name="startTime" id="startTime" placeholder="hh:mm:ss"/><br/>
+            End:    <input name="endTime" id="endTime" placeholder="hh:mm:ss"/><br/>
+            <input type="submit" value="Add" onclick="submitForm()"/>
+        </form>
+    </fieldset>
+    <div id='calendar'></div>
     <table>
         <tr>
             <th>Name</th>
@@ -37,20 +52,5 @@
             </tr>
         </#list>
     </table>
-    <fieldset>
-        <legend>Add Reservation</legend>
-        <form action="" method="post" id="addReservation">
-            Name:   <input name="name" id="name"/><br/>
-            Note:   <input name="note" id="note"/><br/>
-            Phone:  <input name="phoneNumber" id="phoneNumber"/><br/>
-            Table:  <input name="tableNumber" id="tableNumber"/><br/>
-            Guests: <input name="guestCount" id="guestCount"/><br/>
-            Date:   <input name="date" id="date" placeholder="yyyy-MM-dd"/><br/>
-            Start:  <input name="startTime" id="startTime" placeholder="hh:mm:ss"/><br/>
-            End:    <input name="endTime" id="endTime" placeholder="hh:mm:ss"/><br/>
-            <input type="submit" value="Add" onclick="submitForm()"/>
-        </form>
-    </fieldset>
-    <div id='calendar'></div>
     </body>
 </html>

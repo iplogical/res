@@ -19,6 +19,7 @@ import com.inspirationlogical.receipt.corelib.frontend.viewmodel.ReservationView
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.reserver.utility.DateParser;
+import com.inspirationlogical.receipt.reserver.view.GetReservationsByDateView;
 import com.inspirationlogical.receipt.reserver.view.GetReservationsView;
 
 @Path("/reservation")
@@ -32,6 +33,7 @@ public class ReservationResource {
     }
 
     @GET
+    @Path("/api")
     @Produces(MediaType.APPLICATION_JSON)
     public List<ReservationViewModel> getReservations() throws ParseException {
 
@@ -44,8 +46,14 @@ public class ReservationResource {
     }
 
     @GET
+    public GetReservationsView getReservationsView() throws ParseException {
+
+        return new GetReservationsView();
+    }
+
+    @GET
     @Path("/{date}")
-    public GetReservationsView getReservations(@PathParam("date") Optional<String> dateParameter) throws ParseException {
+    public GetReservationsByDateView getReservationsView(@PathParam("date") Optional<String> dateParameter) throws ParseException {
 
         final LocalDate localDate = dateParameter.map(DateParser::parseDate).orElseGet(LocalDate::now);
 
@@ -54,10 +62,11 @@ public class ReservationResource {
                 .map(ReservationViewModel::new)
                 .collect(Collectors.toList());
 
-        return new GetReservationsView(reservations);
+        return new GetReservationsByDateView(reservations, localDate);
     }
 
     @POST
+    @Path("/api")
     @Consumes(MediaType.APPLICATION_JSON)
     public void addReservation(@Valid ReservationParams reservationParams) {
 
