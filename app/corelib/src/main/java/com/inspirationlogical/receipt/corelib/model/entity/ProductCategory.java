@@ -74,10 +74,8 @@ public @Data class ProductCategory extends AbstractEntity {
     @OneToMany(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinTable(
             name = "PRODUCT_CATEGORY_RELATIONS",
-            joinColumns = @JoinColumn(name = "parent",foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)),
-            inverseJoinColumns = @JoinColumn(name = "children",
-                    foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-    )
+            joinColumns = @JoinColumn(name = "parent", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)),
+            inverseJoinColumns = @JoinColumn(name = "children", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)))
     private Collection<ProductCategory> children;
 
     @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})

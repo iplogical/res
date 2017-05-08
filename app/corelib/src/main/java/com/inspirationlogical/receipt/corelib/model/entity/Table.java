@@ -8,20 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Tolerate;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
@@ -94,17 +81,25 @@ public @Data class Table extends AbstractEntity {
     private boolean visible;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
-    @JoinColumn(name = "CONSUMER_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Table consumer;
 
-    @OneToMany(mappedBy = "consumer", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @JoinTable(
+            name = "_table_consumer_relations",
+            joinColumns = @JoinColumn(name = "consumer", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)),
+            inverseJoinColumns = @JoinColumn(name = "consumed", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)))
     private Collection<Table> consumed;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
-    @JoinColumn(name = "HOST_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Table host;
 
-    @OneToMany(mappedBy = "host", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @JoinTable(
+            name = "_table_host_relations",
+            joinColumns = @JoinColumn(name = "host", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)),
+            inverseJoinColumns = @JoinColumn(name = "hosted", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)))
     private Collection<Table> hosted;
 
     @Tolerate
