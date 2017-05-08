@@ -6,7 +6,8 @@ $(document).ready(function() {
     var apiUrl = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+'/reservation/api';
 
     $.ajaxSetup({
-      url: apiUrl
+      url: apiUrl,
+      dataType: "json"
     });
 
     var calendar = $('#calendar');
@@ -33,7 +34,7 @@ $(document).ready(function() {
 function getEvents(calendar) {
     $.ajax({
         type: "GET",
-        dataType: "json",
+
         success: function (data) {
             $.each( data, function(index, reservation) {
                 var event = new Object();
@@ -54,7 +55,6 @@ function submitForm(e){
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json",
-        dataType: 'json',
         success: function() {
             location.reload();
         },

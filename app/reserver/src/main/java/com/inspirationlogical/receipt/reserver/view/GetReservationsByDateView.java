@@ -1,15 +1,14 @@
 package com.inspirationlogical.receipt.reserver.view;
 
+import com.inspirationlogical.receipt.corelib.frontend.viewmodel.ReservationViewModel;
+import io.dropwizard.views.View;
+
 import java.time.LocalDate;
 import java.util.List;
 
-import com.inspirationlogical.receipt.corelib.frontend.viewmodel.ReservationViewModel;
-
-import io.dropwizard.views.View;
-
 public class GetReservationsByDateView extends View {
 
-    private static final String TEMPLATE_NAME = "/view/ftl/reservationsByDate.ftl";
+    private static final String TEMPLATE_NAME = "/view/ftl/reservationByDate.ftl";
 
     private final LocalDate localDate;
 
