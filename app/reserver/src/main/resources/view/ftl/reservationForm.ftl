@@ -8,8 +8,8 @@
             Table:  <input name="tableNumber" id="tableNumber"/><br/>
             Guests: <input name="guestCount" id="guestCount"/><br/>
             Date:   <input name="date" id="date" placeholder="yyyy-MM-dd" value="${localDate!}"/><br/>
-            Start:  <input name="startTime" id="startTime" placeholder="hh:mm:ss"/><br/>
-            End:    <input name="endTime" id="endTime" placeholder="hh:mm:ss"/><br/>
+            Start:  <input name="startTime" id="startTime" placeholder="hh:mm"/><br/>
+            End:    <input name="endTime" id="endTime" placeholder="hh:mm"/><br/>
             <input type="submit" value="Add" onclick="submitForm()"/>
         </form>
     </fieldset>
