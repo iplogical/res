@@ -43,7 +43,7 @@ public class TableTest {
     @Test(expected = RollbackException.class)
     public void TableWithoutNumber() {
         GuardedTransaction.run(()->
-                schema.getTableLoiterer().setNumber(0));
+                schema.getTableLoiterer().setNumber(-1));
     }
 
     @Test(expected = RollbackException.class)

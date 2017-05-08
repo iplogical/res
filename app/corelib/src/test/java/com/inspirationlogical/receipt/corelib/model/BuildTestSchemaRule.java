@@ -11,26 +11,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import javax.persistence.EntityManager;
 
+import com.inspirationlogical.receipt.corelib.model.entity.*;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
-import com.inspirationlogical.receipt.corelib.model.entity.Address;
-import com.inspirationlogical.receipt.corelib.model.entity.Client;
-import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
-import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
-import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
-import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
-import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
-import com.inspirationlogical.receipt.corelib.model.entity.Stock;
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
-import com.inspirationlogical.receipt.corelib.model.entity.VAT;
-import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
@@ -58,7 +44,7 @@ public class BuildTestSchemaRule implements TestRule {
     public static final int NUMBER_OF_RECEIPTS = 9;
     public static final int NUMBER_OF_RECEIPT_RECORDS = 7;
     public static final int NUMBER_OF_TABLES = 12;
-    public static final int NUMBER_OF_DISPLAYABLE_TABLES = 6;
+    public static final int NUMBER_OF_DISPLAYABLE_TABLES = 7;
     public static final int NUMBER_OF_RESERVATIONS = 2;
     public static final int NUMBER_OF_RESTAURANT = 1;
     public static final int NUMBER_OF_VAT_SERIE = 1;
@@ -145,6 +131,14 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter ReceiptRecord receiptRecordSaleSix;
     private @Getter ReceiptRecord receiptRecordOther;
 
+    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleOne;
+    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleTwo;
+    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleThree;
+    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleFour;
+    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleFive;
+    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleSix;
+    private @Getter ReceiptRecordCreated receiptRecordCreatedOther;
+    
     private @Getter Table tableNormal;
     private @Getter Table tableNormalClosed;
     private @Getter Table tableAggregate;
@@ -207,6 +201,7 @@ public class BuildTestSchemaRule implements TestRule {
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Recipe").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Stock").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Product").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Receipt").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Reservation").executeUpdate();
@@ -237,6 +232,7 @@ public class BuildTestSchemaRule implements TestRule {
         buildStocks();
         buildReceipts();
         buildReceiptRecords();
+        buildReceiptRecordCreateds();
         buildVatSeries();
         BuildVATs();
         buildTables();
@@ -261,6 +257,7 @@ public class BuildTestSchemaRule implements TestRule {
         tablesAndReceipts();
         tablesAndReservations();
         receiptsAndReceiptRecords();
+        receiptRecordsAndCreated();
         receiptsAndVatSerie();
         vatSerieAndVatValues();
         receiptRecordsAndProducts();
@@ -362,6 +359,16 @@ public class BuildTestSchemaRule implements TestRule {
         buildReceiptRecordSaleFive();
         buildReceiptRecordSaleSix();
         buildReceiptRecordOther();
+    }
+
+    private void buildReceiptRecordCreateds() {
+        buildReceiptRecordCreatedSaleOne();
+        buildReceiptRecordCreatedSaleTwo();
+        buildReceiptRecordCreatedSaleThree();
+        buildReceiptRecordCreatedSaleFour();
+        buildReceiptRecordCreatedSaleFive();
+        buildReceiptRecordCreatedSaleSix();
+        buildReceiptRecordCreatedOther();
     }
 
     private void buildVatSeries() {
@@ -1082,7 +1089,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .salePrice(440)
                 .purchasePrice(250)
                 .soldQuantity(1D)
-                .created(now())
+                .createdList(new ArrayList<>())
                 .build();
     }
 
@@ -1095,7 +1102,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .absoluteQuantity(2D)
                 .salePrice(560)
                 .purchasePrice(300)
-                .created(now())
+                .createdList(new ArrayList<>())
                 .build();
     }
 
@@ -1104,7 +1111,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("C")
                 .soldQuantity(1D)
                 .type(ReceiptRecordType.HERE)
-                .created(now())
+                .createdList(new ArrayList<>())
                 .build();
     }
 
@@ -1113,7 +1120,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("D")
                 .soldQuantity(0.5)
                 .type(ReceiptRecordType.HERE)
-                .created(now())
+                .createdList(new ArrayList<>())
                 .build();
     }
 
@@ -1126,7 +1133,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .salePrice(780)
                 .purchasePrice(350)
                 .soldQuantity(2D)
-                .created(now())
+                .createdList(new ArrayList<>())
                 .build();
     }
 
@@ -1138,7 +1145,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .salePrice(4990)
                 .purchasePrice(2500)
                 .soldQuantity(2D)
-                .created(now())
+                .createdList(new ArrayList<>())
                 .build();
     }
 
@@ -1147,10 +1154,52 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("E")
                 .soldQuantity(1)
                 .type(ReceiptRecordType.HERE)
+                .createdList(new ArrayList<>())
+                .build();
+    }
+
+    private void buildReceiptRecordCreatedSaleOne() {
+        receiptRecordCreatedSaleOne = ReceiptRecordCreated.builder()
                 .created(now())
                 .build();
     }
 
+    private void buildReceiptRecordCreatedSaleTwo() {
+        receiptRecordCreatedSaleTwo = ReceiptRecordCreated.builder()
+                .created(now())
+                .build();
+    }
+
+    private void buildReceiptRecordCreatedSaleThree() {
+        receiptRecordCreatedSaleThree = ReceiptRecordCreated.builder()
+                .created(now())
+                .build();
+    }
+
+    private void buildReceiptRecordCreatedSaleFour() {
+        receiptRecordCreatedSaleFour = ReceiptRecordCreated.builder()
+                .created(now())
+                .build();
+    }
+
+    private void buildReceiptRecordCreatedSaleFive() {
+        receiptRecordCreatedSaleFive = ReceiptRecordCreated.builder()
+                .created(now())
+                .build();
+    }
+
+    private void buildReceiptRecordCreatedSaleSix() {
+        receiptRecordCreatedSaleSix = ReceiptRecordCreated.builder()
+                .created(now())
+                .build();
+    }
+
+    private void buildReceiptRecordCreatedOther() {
+        receiptRecordCreatedOther = ReceiptRecordCreated.builder()
+                .created(now())
+                .build();
+    }
+    
     private void buildVatSerieOne() {
         vatSerie = VATSerie.builder()
                 .status(VATStatus.VALID)
@@ -1553,6 +1602,25 @@ public class BuildTestSchemaRule implements TestRule {
         receiptRecordSaleSix.setProduct(productSix);
     }
 
+
+    private void receiptRecordsAndCreated() {
+        receiptRecordSaleOne.getCreatedList().add(receiptRecordCreatedSaleOne);
+        receiptRecordSaleTwo.getCreatedList().add(receiptRecordCreatedSaleTwo);
+        receiptRecordSaleThree.getCreatedList().add(receiptRecordCreatedSaleThree);
+        receiptRecordSaleFour.getCreatedList().add(receiptRecordCreatedSaleFour);
+        receiptRecordSaleFive.getCreatedList().add(receiptRecordCreatedSaleFive);
+        receiptRecordSaleSix.getCreatedList().add(receiptRecordCreatedOther);
+        receiptRecordOther.getCreatedList().add(receiptRecordCreatedOther);
+
+        receiptRecordCreatedSaleOne.setOwner(receiptRecordSaleOne);
+        receiptRecordCreatedSaleTwo.setOwner(receiptRecordSaleTwo);
+        receiptRecordCreatedSaleThree.setOwner(receiptRecordSaleThree);
+        receiptRecordCreatedSaleFour.setOwner(receiptRecordSaleFour);
+        receiptRecordCreatedSaleFive.setOwner(receiptRecordSaleFive);
+        receiptRecordCreatedSaleSix.setOwner(receiptRecordSaleSix);
+        receiptRecordCreatedOther.setOwner(receiptRecordOther);
+    }
+    
     private void receiptsAndVatSerie() {
         receiptSaleOne.setVATSerie(vatSerie);
         receiptSaleTwo.setVATSerie(vatSerie);
