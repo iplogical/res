@@ -203,26 +203,18 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     protected void soldProductsRowClickHandler(SoldProductViewModel row) {
         if(saleViewState.isSelectiveCancellation()) {
             retailService.cancelReceiptRecord(tableView, removeRowFromSoldProducts(row));
-            soldProductsView = getSoldProducts(restaurantService, tableView);
-            updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
-            updateTableSummary();
+            getSoldProductsAndUpdateTable();
         } else if(saleViewState.isSingleCancellation()) {
             if(Double.valueOf(row.getProductQuantity()) <= 1) {
                 retailService.cancelReceiptRecord(tableView, removeRowFromSoldProducts(row));
-                soldProductsView = getSoldProducts(restaurantService, tableView);
-                updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
-                updateTableSummary();
+                getSoldProductsAndUpdateTable();
                 return;
             }
             decreaseRowInSoldProducts(row, 1);
-            soldProductsView = getSoldProducts(restaurantService, tableView);
-            updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
-            updateTableSummary();
+            getSoldProductsAndUpdateTable();
         } else {
             increaseRowInSoldProducts(row, 1);
-            soldProductsView = getSoldProducts(restaurantService, tableView);
-            updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
-            updateTableSummary();
+//            getSoldProductsAndUpdateTable();
         }
     }
 
@@ -310,6 +302,13 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                     break;
             }
         });
+    }
+
+
+    private void getSoldProductsAndUpdateTable() {
+        soldProductsView = getSoldProducts(restaurantService, tableView);
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+        updateTableSummary();
     }
 
     private void updateCategories(ProductCategoryView selectedCategory) {
