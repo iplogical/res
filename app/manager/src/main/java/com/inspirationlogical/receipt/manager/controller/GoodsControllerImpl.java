@@ -192,14 +192,20 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     @FXML
     public void onCreateProduct(Event event) {
-        productForm = new Popup();
-        productForm.getContent().add(viewLoader.loadView(productFormController));
-        productFormController.loadProductForm(this);
+        initProductForm();
         showPopup(productForm, productFormController, root, new Point2D(520, 200));
     }
 
     @FXML
     public void onModifyProduct(Event event) {
+        if(isSelectionNull()) return;
+        ProductViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
+        CategoryViewModel parent = goodsTable.getSelectionModel().getSelectedItem().getParent().getValue();
+        if(selected.getLongName().equals("")) return;
+        initProductForm();
+        productFormController.setProductViewModel(selected);
+        productFormController.setCategory(parent);
+        showPopup(productForm, productFormController, root, new Point2D(520, 200));
     }
 
     @FXML

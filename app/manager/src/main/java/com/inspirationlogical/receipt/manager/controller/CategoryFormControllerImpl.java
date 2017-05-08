@@ -78,10 +78,9 @@ public class CategoryFormControllerImpl implements CategoryFormController {
         parentCategories = FXCollections.observableArrayList(commonService.getAggregateCategories());
         parentCategories.add(rootCategory);
         allCategories = FXCollections.observableArrayList(commonService.getLeafCategories());
-        allCategories.add(rootCategory);
         allCategories.addAll(parentCategories);
         parent.setItems(parentCategories);
-        parent.setConverter(new CategoryStringConverter(parentCategories));
+        parent.setConverter(new CategoryStringConverter(allCategories));
         categoryTypes = FXCollections.observableArrayList(Arrays.asList(ProductCategoryType.AGGREGATE, ProductCategoryType.LEAF));
         type.setItems(categoryTypes);
     }
@@ -89,13 +88,11 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     @Override
     public void loadCategoryForm(GoodsController goodsController) {
         this.goodsController = goodsController;
-        parentCategories = FXCollections.observableArrayList(commonService.getAggregateCategories());
-        parentCategories.add(rootCategory);
-        parent.setItems(parentCategories);
         parent.setDisable(false);
+        parent.setValue(null);
         type.setValue(null);
         type.setDisable(false);
-        name.setText("");
+        name.clear();
         originalCategoryName = "";
     }
 
@@ -129,11 +126,11 @@ public class CategoryFormControllerImpl implements CategoryFormController {
         }
         goodsController.addCategory(
                 ProductCategoryParams.builder()
-                .parent(parent.getValue())
-                .name(name.getText())
-                .originalName(originalCategoryName)
-                .type(type.getValue())
-                .build());
+                    .parent(parent.getValue())
+                    .name(name.getText())
+                    .originalName(originalCategoryName)
+                    .type(type.getValue())
+                    .build());
     }
 
     @FXML
