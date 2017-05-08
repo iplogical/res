@@ -267,7 +267,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             addRowToSoldProducts(new SoldProductViewModel(recordInSoldProducts), recordInSoldProducts);
             decreaseRowInPaidProducts(row, recordInPaidProducts, 1);
         } else {
-            decreaseRowInPaidProducts(row, increaseRowInSoldProducts(rowInSoldProducts.get(0), 1), 1);
+            decreaseRowInPaidProducts(row, increaseRowInSoldProducts(rowInSoldProducts.get(0), 1, false), 1);
         }
     }
 
@@ -289,7 +289,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             paidProductsView.add(newRecord);
             paidProductsModel.add(createNewRow(row, newRecord, amount));
         } else {
-            equivalentReceiptRecordView.get(0).increaseSoldQuantity(amount);
+            equivalentReceiptRecordView.get(0).increaseSoldQuantity(amount, false);
             List<SoldProductViewModel> matchingRows =
                     paidProductsModel.stream().filter(thisRow -> SoldProductViewModel.isEquals(thisRow, equivalentReceiptRecordView.get(0)))
                     .collect(toList());

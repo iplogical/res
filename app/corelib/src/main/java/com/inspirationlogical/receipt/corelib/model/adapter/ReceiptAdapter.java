@@ -16,6 +16,7 @@ import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateExcep
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
@@ -56,24 +57,25 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift) {
 
         GuardedTransaction.run(() -> {
-            List<ReceiptRecord> records = getReceiptRecordsByTimeStampAndName(productAdapter, now().minusSeconds(5));
+            List<Object[]> records = getReceiptRecordsByTimeStampAndName(productAdapter, now().minusSeconds(5));
             if(records.size() > 0) {
-                records.get(0).setSoldQuantity(records.get(0).getSoldQuantity() + 1);
-                records.get(0).setCreated(now());
-                records.get(0).setDiscountPercent(productAdapter.getCategoryAdapter().getDiscount(new ReceiptRecordAdapter(records.get(0))));
-                applyDiscountOnRecordSalePrice(records.get(0));
+                ((ReceiptRecord)records.get(0)[0]).setSoldQuantity(((ReceiptRecord)records.get(0)[0]).getSoldQuantity() + 1);
+                ((ReceiptRecord)records.get(0)[0]).getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(((ReceiptRecord)records.get(0)[0])).build());
+                ((ReceiptRecord)records.get(0)[0]).setDiscountPercent(productAdapter.getCategoryAdapter().getDiscount(new ReceiptRecordAdapter(((ReceiptRecord)records.get(0)[0]))));
+                applyDiscountOnRecordSalePrice(((ReceiptRecord)records.get(0)[0]));
                 return;
             }
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(productAdapter.getAdaptee())
                     .type(isTakeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE)
-                    .created(now())
                     .name(productAdapter.getAdaptee().getLongName())
                     .soldQuantity(amount)
                     .purchasePrice(productAdapter.getAdaptee().getPurchasePrice())
                     .salePrice(productAdapter.getAdaptee().getSalePrice())
                     .VAT(VATAdapter.getVatByName(isTakeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
+                    .createdList(new ArrayList<>())
                     .build();
+            record.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(record).build());
             record.setDiscountPercent(isGift ? 100 : productAdapter.getCategoryAdapter().getDiscount(new ReceiptRecordAdapter(record)));
             applyDiscountOnRecordSalePrice(record);
             record.setOwner(adaptee);
@@ -87,14 +89,15 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(adHocProduct.getAdaptee())
                     .type(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE)
-                    .created(now())
                     .name(adHocProductParams.getName())
                     .soldQuantity(adHocProductParams.getQuantity())
                     .purchasePrice(adHocProductParams.getPurchasePrice())
                     .salePrice(adHocProductParams.getSalePrice())
                     .VAT(VATAdapter.getVatByName(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
                     .discountPercent(0)
+                    .createdList(new ArrayList<>())
                     .build();
+            record.getCreatedList().add(ReceiptRecordCreated.builder().owner(record).created(now()).build());
             record.setOwner(adaptee);
             adaptee.getRecords().add(record);
         });
@@ -104,24 +107,25 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         Wrapper<ReceiptRecord> newRecordWrapper = new Wrapper<>();
         GuardedTransaction.run(() -> {
             ProductAdapter gameFeeProduct = ProductAdapter.getGameFeeProduct();
-            List<ReceiptRecord> records = getReceiptRecordsByTimeStampAndName(gameFeeProduct, now().minusSeconds(2));
+            List<Object[]> records = getReceiptRecordsByTimeStampAndName(gameFeeProduct, now().minusSeconds(2));
             if(records.size() > 0) {
-                records.get(0).setSoldQuantity(records.get(0).getSoldQuantity() + 1);
-                records.get(0).setCreated(now());
-                newRecordWrapper.setContent(records.get(0));
+                ((ReceiptRecord)records.get(0)[0]).setSoldQuantity(((ReceiptRecord)records.get(0)[0]).getSoldQuantity() + 1);
+                ((ReceiptRecord)records.get(0)[0]).getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(((ReceiptRecord)records.get(0)[0])).build());
+                newRecordWrapper.setContent(((ReceiptRecord)records.get(0)[0]));
                 return;
             }
             ReceiptRecord record = ReceiptRecord.builder()
                     .product(gameFeeProduct.getAdaptee())
                     .type(ReceiptRecordType.HERE)
-                    .created(now())
                     .name(gameFeeProduct.getAdaptee().getLongName())
                     .soldQuantity(quantity)
                     .purchasePrice(gameFeeProduct.getAdaptee().getPurchasePrice())
                     .salePrice(gameFeeProduct.getAdaptee().getSalePrice())
                     .VAT(VATAdapter.getVatByName(ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
                     .discountPercent(0)
+                    .createdList(new ArrayList<>())
                     .build();
+            record.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(record).build());
             record.setOwner(adaptee);
             adaptee.getRecords().add(record);
             newRecordWrapper.setContent(record);
@@ -139,14 +143,15 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                 ReceiptRecord record = ReceiptRecord.builder()
                         .product(product)
                         .type(ReceiptRecordType.HERE)
-                        .created(now())
                         .name(product.getLongName())
                         .absoluteQuantity(params.isAbsoluteQuantity() ? params.getQuantity() : params.getQuantity() * product.getStorageMultiplier())
                         .purchasePrice(product.getPurchasePrice())
                         .salePrice(product.getSalePrice())
                         .VAT(VATAdapter.getVatByName(ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
                         .discountPercent(0)
+                        .createdList(new ArrayList<>())
                         .build();
+                record.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(record).build());
                 record.setOwner(adaptee);
                 adaptee.getRecords().add(record);
             });
@@ -221,14 +226,15 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                     .owner(this.getAdaptee())
                     .product(record.getAdaptee().getProduct())
                     .type(record.getAdaptee().getType())
-                    .created(now())
                     .name(record.getAdaptee().getName())
                     .soldQuantity(amount)
                     .purchasePrice(record.getAdaptee().getPurchasePrice())
                     .salePrice(record.getAdaptee().getSalePrice())
                     .VAT(record.getAdaptee().getVAT())
                     .discountPercent(record.getAdaptee().getDiscountPercent())
+                    .createdList(new ArrayList<>())
                     .build();
+            receiptRecord[0].getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(receiptRecord[0]).build());
             this.getAdaptee().getRecords().add(receiptRecord[0]);
         });
         return new ReceiptRecordAdapter(receiptRecord[0]);
@@ -247,39 +253,42 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public void mergeReceiptRecords() {
-        Map<Double, Map<String, List<ReceiptRecord>>> receiptsByDiscountAndName =
-                adaptee.getRecords().stream().collect(groupingBy(ReceiptRecord::getDiscountPercent, groupingBy(ReceiptRecord::getName)));
-
-        List<Map<String, List<ReceiptRecord>>> listOfReceiptsByDiscountAndName = new ArrayList<>(receiptsByDiscountAndName.values());
-
-        List<ReceiptRecord> mergedRecords = new ArrayList<>();
-
-        listOfReceiptsByDiscountAndName.forEach(stringListMap -> {
-            stringListMap.values().forEach(group -> {
-                if (group.size() > 1) {
-                    ReceiptRecord mergedRecord = group.stream().reduce((a, b) -> {
-                        cancelReceiptRecord(a, adaptee);
-                        cancelReceiptRecord(b, adaptee);
-                        return ReceiptRecord.builder()
-                                .product(a.getProduct())
-                                .type(a.getType())
-                                .created(a.getCreated().isBefore(b.getCreated()) ? a.getCreated() : b.getCreated())
-                                .name(a.getName())
-                                .soldQuantity(a.getSoldQuantity() + b.getSoldQuantity())
-                                .absoluteQuantity(a.getAbsoluteQuantity() + b.getAbsoluteQuantity())
-                                .purchasePrice(a.getPurchasePrice())
-                                .salePrice(a.getSalePrice())
-                                .VAT(a.getVAT())
-                                .discountPercent(a.getDiscountPercent())
-                                .owner(adaptee)
-                                .build();
-                    }).get();
-                    mergedRecords.add(mergedRecord);
-                }
-            });
-        });
-
         GuardedTransaction.run(() -> {
+            Map<Double, Map<String, List<ReceiptRecord>>> receiptsByDiscountAndName =
+                    adaptee.getRecords().stream().collect(groupingBy(ReceiptRecord::getDiscountPercent, groupingBy(ReceiptRecord::getName)));
+
+            List<Map<String, List<ReceiptRecord>>> listOfReceiptsByDiscountAndName = new ArrayList<>(receiptsByDiscountAndName.values());
+
+            List<ReceiptRecord> mergedRecords = new ArrayList<>();
+
+            listOfReceiptsByDiscountAndName.forEach(stringListMap -> {
+                stringListMap.values().forEach(group -> {
+                    if (group.size() > 1) {
+                        ReceiptRecord mergedRecord = group.stream().reduce((a, b) -> {
+                            cancelReceiptRecord(a, adaptee);
+                            cancelReceiptRecord(b, adaptee);
+                            ReceiptRecord receiptRecord = ReceiptRecord.builder()
+                                    .product(a.getProduct())
+                                    .type(a.getType())
+                                    .name(a.getName())
+                                    .soldQuantity(a.getSoldQuantity() + b.getSoldQuantity())
+                                    .absoluteQuantity(a.getAbsoluteQuantity() + b.getAbsoluteQuantity())
+                                    .purchasePrice(a.getPurchasePrice())
+                                    .salePrice(a.getSalePrice())
+                                    .VAT(a.getVAT())
+                                    .discountPercent(a.getDiscountPercent())
+                                    .owner(adaptee)
+                                    .createdList(new ArrayList<>())
+                                    .build();
+                            receiptRecord.getCreatedList().addAll(a.getCreatedList());
+                            receiptRecord.getCreatedList().addAll(b.getCreatedList());
+                            receiptRecord.getCreatedList().forEach(created -> created.setOwner(receiptRecord));
+                            return receiptRecord;
+                        }).get();
+                        mergedRecords.add(mergedRecord);
+                    }
+                });
+            });
             mergedRecords.forEach(receiptRecord -> adaptee.getRecords().add(receiptRecord));
         });
     }
@@ -289,8 +298,8 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                 .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum();
     }
 
-    private List<ReceiptRecord> getReceiptRecordsByTimeStampAndName(ProductAdapter productAdapter, LocalDateTime dateTime) {
-        return GuardedTransaction.runNamedQuery(ReceiptRecord.GET_RECEIPT_RECORDS_BY_TIMESTAMP,
+    private List<Object[]> getReceiptRecordsByTimeStampAndName(ProductAdapter productAdapter, LocalDateTime dateTime) {
+        return GuardedTransaction.runNamedQueryWithJoin(ReceiptRecord.GET_RECEIPT_RECORDS_BY_TIMESTAMP,
                 query -> query.setParameter("created", dateTime)
                         .setParameter("name", productAdapter.getAdaptee().getLongName()));
     }

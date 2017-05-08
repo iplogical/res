@@ -1,10 +1,16 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
+import static java.time.LocalDateTime.now;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by Bálint on 2017.03.15..
@@ -51,10 +57,22 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
         return adapter.getAdaptee().getVAT();
     }
 
+    @Override
+    public List<LocalDateTime> getCreated() {
+        return adapter.getAdaptee().getCreatedList().stream()
+                .map(receiptRecordCreated -> receiptRecordCreated.getCreated())
+                .collect(toList());
+    }
+
     //TODO: Create a service functions for the increase and decrease operation. The view should not manipulate the database.
     @Override
-    public void increaseSoldQuantity(double amount) {
-        GuardedTransaction.run(() -> adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() + amount)));
+    public void increaseSoldQuantity(double amount, boolean isSale) {
+        GuardedTransaction.run(() -> {
+            adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() + amount));
+            if(isSale) {
+                adapter.getAdaptee().getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(adapter.getAdaptee()).build());
+            }
+        });
     }
 
     @Override

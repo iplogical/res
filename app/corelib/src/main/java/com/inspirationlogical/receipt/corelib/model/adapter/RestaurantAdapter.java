@@ -5,10 +5,7 @@ import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.
 import static java.time.LocalDateTime.now;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
@@ -182,7 +179,9 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         aggregatedReceipt.setId(-1L);
         receipts.forEach(receipt -> {
             receipt.getRecords().forEach(receiptRecord -> {
-                List<ReceiptRecord> aggregatedRecords = aggregatedReceipt.getRecords().stream().filter(aggregatedRecord -> aggregatedRecord.getName().equals(receiptRecord.getName()))
+                List<ReceiptRecord> aggregatedRecords = aggregatedReceipt.getRecords().stream()
+                        .filter(aggregatedRecord -> aggregatedRecord.getName().equals(receiptRecord.getName()))
+                        .filter(aggregatedRecord -> aggregatedRecord.getDiscountPercent() == receiptRecord.getDiscountPercent())
                         .map(aggregatedRecord -> {
                             aggregatedRecord.setSoldQuantity(aggregatedRecord.getSoldQuantity() + receiptRecord.getSoldQuantity());
                             return aggregatedRecord;
@@ -191,17 +190,17 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                     aggregatedReceipt.getRecords().add(ReceiptRecord.builder()
                             .product(receiptRecord.getProduct())
                             .type(receiptRecord.getType())
-                            .created(now())
                             .name(receiptRecord.getName())
                             .soldQuantity(receiptRecord.getSoldQuantity())
                             .purchasePrice(receiptRecord.getPurchasePrice())
                             .salePrice(receiptRecord.getSalePrice())
                             .VAT(receiptRecord.getVAT())
-                            .discountPercent(0)
+                            .discountPercent(receiptRecord.getDiscountPercent())
                             .build());
                 }
             });
         });
+        aggregatedReceipt.getRecords().sort(Comparator.comparing(ReceiptRecord::getSoldQuantity).reversed());
         ReceiptAdapter adapter = new ReceiptAdapter(aggregatedReceipt);
         new ReceiptPrinter().onClose(adapter);
     }

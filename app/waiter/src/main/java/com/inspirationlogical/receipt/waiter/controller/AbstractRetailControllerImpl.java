@@ -129,7 +129,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected void initializeSoldProductsTable() {
         soldProductsTable.setEditable(true);
         initColumn(productName, SoldProductViewModel::getProductName);
-        initColumn(productQuantity, SoldProductViewModel::getProductQuantity);
+        initColumn(productQuantity, SoldProductViewModel::getProductQuantityWithRecent);
         initColumn(productUnitPrice, SoldProductViewModel::getProductUnitPrice);
         initColumn(productTotalPrice, SoldProductViewModel::getProductTotalPrice);
         soldProductsTableInitialized = true;
@@ -149,7 +149,9 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected void updateSoldProductsTable(List<SoldProductViewModel> soldProducts) {
         soldProductsModel = FXCollections.observableArrayList();
         soldProductsModel.addAll(soldProducts);
+        soldProductsModel.sort(Comparator.comparing(SoldProductViewModel::getLatestClickTime));
         soldProductsTable.setItems(soldProductsModel);
+        soldProductsTable.refresh();
         updateSoldTotalPrice();
     }
 
@@ -185,9 +187,9 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         return matchingReceiptRecordView.get(0);
     }
 
-    protected ReceiptRecordView increaseRowInSoldProducts(SoldProductViewModel row, double amount) {
+    protected ReceiptRecordView increaseRowInSoldProducts(SoldProductViewModel row, double amount, boolean isSale) {
         List<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentView(soldProductsView, row);
-        equivalentReceiptRecordView.get(0).increaseSoldQuantity(amount);
+        equivalentReceiptRecordView.get(0).increaseSoldQuantity(amount, isSale);
         increaseClickedRow(row, amount);
         return equivalentReceiptRecordView.get(0);
     }
@@ -209,7 +211,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected void addRowToSoldProducts(SoldProductViewModel row) {
         soldProductsModel.add(row);
-        soldProductsModel.sort(Comparator.comparing(SoldProductViewModel::getProductId));
+        soldProductsModel.sort(Comparator.comparing(SoldProductViewModel::getLatestClickTime));
         soldProductsTable.setItems(soldProductsModel);
         soldProductsTable.refresh();
     }

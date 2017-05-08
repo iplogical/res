@@ -1,20 +1,9 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import java.time.LocalDateTime;
-import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -32,14 +21,14 @@ import lombok.experimental.Tolerate;
 
 @Entity
 @Builder
-@EqualsAndHashCode(callSuper = true, exclude = {"owner", "product"})
+@EqualsAndHashCode(callSuper = true, exclude = {"owner", "product", "createdList"})
 @ToString(exclude = {"owner", "product"})
 @Table(name = "RECEIPT_RECORD")
 @NamedQueries({
     @NamedQuery(name = ReceiptRecord.GET_TEST_RECEIPT_RECORDS,
             query="FROM ReceiptRecord r"),
     @NamedQuery(name = ReceiptRecord.GET_RECEIPT_RECORDS_BY_TIMESTAMP,
-            query="FROM ReceiptRecord r WHERE r.created >:created AND r.name=:name"),
+            query="FROM ReceiptRecord r INNER JOIN r.createdList cl WHERE cl.created >:created AND r.name=:name ORDER BY cl.created DESC"),
     @NamedQuery(name = ReceiptRecord.GET_RECEIPT_RECORDS_BY_RECEIPT,
             query="FROM ReceiptRecord r WHERE r.owner.id =:owner_id")
 })
@@ -80,8 +69,8 @@ public @Data class ReceiptRecord extends AbstractEntity {
     @Max(100)
     private double discountPercent;
 
-    @NotNull
-    private LocalDateTime created;
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST , CascadeType.REFRESH, CascadeType.REMOVE})
+    private List<ReceiptRecordCreated> createdList;
 
     @Tolerate
     ReceiptRecord(){}

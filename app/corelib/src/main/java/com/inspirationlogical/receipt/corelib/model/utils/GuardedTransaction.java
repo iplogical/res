@@ -62,6 +62,12 @@ public class GuardedTransaction {
         return results.getContent();
     }
 
+    public static List<Object[]> runNamedQueryWithJoin(String name, NamedQueryCallback namedQueryCallback){
+        Wrapper<List<Object[]>> results = new Wrapper<>();
+        run(()->{results.setContent(namedQueryCallback.setup(manager.createNamedQuery(name)).getResultList());},()->{},()->{});
+        return results.getContent();
+    }
+
     public static <T extends AbstractEntity> List<T> runNamedQuery(String name, String entityGraph, NamedQueryCallback namedQueryCallback) {
         Wrapper<List<T>> results = new Wrapper<>();
         EntityGraph graph = manager.createEntityGraph(entityGraph);
