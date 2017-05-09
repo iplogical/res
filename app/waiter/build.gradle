@@ -20,6 +20,11 @@ run {
 // In this section you declare the dependencies for your production and test code
 dependencies {
     compile project(':corelib')
+
+    testCompile project(':corelib')
+    // https://mvnrepository.com/artifact/org.testfx/testfx-core
+    testCompile group: 'org.testfx', name: 'testfx-core', version: '4.0.6-alpha'
+    testCompile group: 'org.testfx', name: 'testfx-junit', version: '4.0.6-alpha'
 }
 
 tasks.withType(JavaCompile) { 
