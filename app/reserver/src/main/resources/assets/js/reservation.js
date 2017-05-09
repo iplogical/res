@@ -35,7 +35,19 @@ $(document).ready(function() {
                 $("#showPhone").html(event.phone);
                 $("#showGuests").html(event.guests);
                 $("#showNote").html(event.description);
-                $("#showReservationForm").dialog({ modal: true, title: event.title});
+                $("#showReservationForm").dialog({
+                    modal: true,
+                    title: event.title,
+                    buttons: {
+                        Delete: function() {
+                            deleteReservation(event, calendar);
+                            $( this ).dialog( "close" );
+                        },
+                        Edit: function() {
+
+                        }
+                    }
+                });
             });
         },
         selectable: true,
@@ -117,7 +129,20 @@ function updateReservation(event) {
         data: JSON.stringify(reservation),
         contentType: "application/json",
         success: function() {
-//            location.reload();
+        },
+        error: function(error){
+            console.log(error);
+            alert(error.responseText);
+        }
+    });
+}
+
+function deleteReservation(event, calendar) {
+    $.ajax({
+        type: "DELETE",
+        url: apiUrl + "/" + event.id,
+        success: function() {
+            calendar.fullCalendar('removeEvents', event.id);
         },
         error: function(error){
             console.log(error);
