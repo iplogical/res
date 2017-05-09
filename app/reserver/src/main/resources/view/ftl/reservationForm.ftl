@@ -31,6 +31,9 @@
 
 <#macro showReservation>
     <div id="showReservationForm" title="Reservation" style="display:none;">
+        <label>Date
+            <span id="showDate"></span>
+        </label>
         <label>Start
             <span id="showStartTime"></span>
         </label>

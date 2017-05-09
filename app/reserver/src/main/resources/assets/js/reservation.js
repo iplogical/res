@@ -34,6 +34,7 @@ $(document).ready(function() {
         eventRender: function (event, element) {
             element.attr('href', 'javascript:void(0);');
             element.click(function() {
+                $("#showDate").html(moment(event.start).format("YYYY-MM-DD"));
                 $("#showStartTime").html(moment(event.start).format("HH:mm"));
                 $("#showEndTime").html(moment(event.end).format("HH:mm"));
                 $("#showPhone").html(event.phone);
