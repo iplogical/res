@@ -4,5 +4,7 @@
 <#import "reservationView.ftl" as reservationView>
 <@reservationBase.base>
     <@reservationForm.addReservation />
+    <@reservationForm.editReservation />
+    <@reservationForm.showReservation />
     <@reservationView.getCalendar />
 </@reservationBase.base>

@@ -28,5 +28,7 @@
         </#list>
     </table>
     <@reservationForm.addReservation />
+    <@reservationForm.editReservation />
+    <@reservationForm.showReservation />
     <@reservationView.getCalendar />
 </@reservationBase.base>
