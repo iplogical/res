@@ -77,9 +77,7 @@ public class ProductFormControllerImpl implements ProductFormController {
 
     private ObservableList<QuantityUnit> quantityUnits;
 
-    private ProductViewModel productViewModel;
-
-    private CategoryViewModel categoryViewModel;
+    private Long productId;
 
     @Override
     public String getViewPath() {
@@ -97,12 +95,15 @@ public class ProductFormControllerImpl implements ProductFormController {
         leafCategories = FXCollections.observableArrayList(commonService.getLeafCategories());
         category.setItems(leafCategories);
         category.setConverter(new CategoryStringConverter(leafCategories));
+
         productTypes = FXCollections.observableArrayList(Arrays.asList(ProductType.SELLABLE, ProductType.PARTIALLY_PAYABLE, ProductType.STORABLE));
         type.setItems(productTypes);
         type.setConverter(new ProductTypeStringConverter(productTypes));
+
         productStatuses = FXCollections.observableArrayList(Arrays.asList(ProductStatus.values()));
         status.setItems(productStatuses);
         status.setConverter(new ProductStatusStringConverter(productStatuses));
+
         quantityUnits = FXCollections.observableArrayList(Arrays.asList(QuantityUnit.values()));
         quantityUnit.setItems(quantityUnits);
         quantityUnit.setConverter(new QuantityUnitStringConverter(quantityUnits));
@@ -111,6 +112,7 @@ public class ProductFormControllerImpl implements ProductFormController {
     @Override
     public void loadProductForm(GoodsController goodsController) {
         this.goodsController = goodsController;
+        productId = 0L;
         longName.clear();
         shortName.clear();
         rapidCode.clear();
@@ -127,7 +129,7 @@ public class ProductFormControllerImpl implements ProductFormController {
 
     @Override
     public void setProductViewModel(ProductViewModel productViewModel) {
-        this.productViewModel = productViewModel;
+        productId = productViewModel.getId();
         longName.setText(productViewModel.getLongName());
         shortName.setText(productViewModel.getShortName());
         rapidCode.setText(productViewModel.getRapidCode());
@@ -143,24 +145,27 @@ public class ProductFormControllerImpl implements ProductFormController {
 
     @Override
     public void setCategory(CategoryViewModel categoryViewModel) {
-        this.categoryViewModel = categoryViewModel;
         category.setValue(category.getConverter().fromString(categoryViewModel.getName()));
     }
 
     @FXML
     public void onConfirm(Event event) {
-        goodsController.addProduct(category.getValue(), commonService.productBuilder()
-            .longName(longName.getText())
-            .shortName(shortName.getText().equals("") ? longName.getText() : shortName.getText())
-            .type(type.getValue())
-            .status(status.getValue())
-            .rapidCode(Integer.valueOf(rapidCode.getText()))
-            .quantityUnit(quantityUnit.getValue())
-            .storageMultiplier(Double.valueOf(storageMultiplier.getText()))
-            .purchasePrice(Integer.valueOf(purchasePrice.getText()))
-            .salePrice(Integer.valueOf(salePrice.getText()))
-            .minimumStock(Integer.valueOf(minimumStock.getText()))
-            .stockWindow(Integer.valueOf(stockWindow.getText())));
+        try {
+            goodsController.addProduct(productId, category.getValue(), commonService.productBuilder()
+                .longName(longName.getText())
+                .shortName(shortName.getText().equals("") ? longName.getText() : shortName.getText())
+                .type(type.getValue())
+                .status(status.getValue())
+                .rapidCode(Integer.valueOf(rapidCode.getText()))
+                .quantityUnit(quantityUnit.getValue())
+                .storageMultiplier(Double.valueOf(storageMultiplier.getText()))
+                .purchasePrice(Integer.valueOf(purchasePrice.getText()))
+                .salePrice(Integer.valueOf(salePrice.getText()))
+                .minimumStock(Integer.valueOf(minimumStock.getText()))
+                .stockWindow(Integer.valueOf(stockWindow.getText())));
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @FXML

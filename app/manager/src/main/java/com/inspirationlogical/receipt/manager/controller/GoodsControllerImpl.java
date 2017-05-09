@@ -138,9 +138,13 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     }
 
     @Override
-    public void addProduct(ProductCategoryView parent, Product.ProductBuilder builder) {
+    public void addProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
         try {
-            commonService.addProduct(parent, builder);
+            if(productId == 0) {
+                commonService.addProduct(parent, builder);
+            } else {
+                commonService.updateProduct(productId, parent, builder);
+            }
             productForm.hide();
         } catch (IllegalProductStateException e ) {
             ErrorMessage.showErrorMessage(root, e.getMessage());

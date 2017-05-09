@@ -40,6 +40,8 @@ import lombok.experimental.Tolerate;
             query = "FROM Product p"),
     @NamedQuery(name = Product.GET_PRODUCT_BY_NAME,
             query = "SELECT p FROM Product p WHERE p.longName=:longName"),
+    @NamedQuery(name = Product.GET_PRODUCT_BY_ID,
+            query = "SELECT p FROM Product p WHERE p.id=:id"),
     @NamedQuery(name = Product.GET_PRODUCT_BY_TYPE,
             query = "SELECT p FROM Product p WHERE p.type=:type"),
     @NamedQuery(name = Product.GET_PRODUCT_BY_STATUS,
@@ -52,6 +54,7 @@ public @Data class Product extends AbstractEntity {
 
     public static final String GET_TEST_PRODUCTS = "Product.GetTestProducts";
     public static final String GET_PRODUCT_BY_NAME = "Product.GetProductByName";
+    public static final String GET_PRODUCT_BY_ID = "Product.GetProductById";
     public static final String GET_PRODUCT_BY_TYPE = "Product.GetProductByType";
     public static final String GET_PRODUCT_BY_STATUS = "Product.GetProductByStatus";
     public static final String DROP_ALL = "Product.DropAll";

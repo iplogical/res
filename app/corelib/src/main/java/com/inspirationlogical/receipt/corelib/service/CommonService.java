@@ -18,6 +18,8 @@ public interface CommonService {
 
     ProductView addProduct(ProductCategoryView parent, ProductBuilder builder);
 
+    ProductView updateProduct(Long productId, ProductCategoryView parent, ProductBuilder builder);
+
     void deleteProduct(String longName);
 
     ProductCategoryView addProductCategory(ProductCategoryParams params);

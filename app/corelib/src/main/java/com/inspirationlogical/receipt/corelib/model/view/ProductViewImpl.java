@@ -27,6 +27,11 @@ public class ProductViewImpl extends AbstractModelViewImpl<ProductAdapter>
     }
 
     @Override
+    public Long getId() {
+        return adapter.getAdaptee().getId();
+    }
+
+    @Override
     public ProductType getType() {
         return adapter.getAdaptee().getType();
     }

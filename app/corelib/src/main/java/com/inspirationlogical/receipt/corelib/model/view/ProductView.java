@@ -8,6 +8,8 @@ import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
 
 public interface ProductView extends AbstractView {
 
+    Long getId();
+
     ProductType getType();
 
     ProductStatus getStatus();

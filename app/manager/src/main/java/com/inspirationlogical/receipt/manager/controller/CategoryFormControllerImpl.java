@@ -57,8 +57,6 @@ public class CategoryFormControllerImpl implements CategoryFormController {
 
     private ObservableList<ProductCategoryType> categoryTypes;
 
-    private CategoryViewModel categoryViewModel;
-
     private String originalCategoryName;
 
     @Override
@@ -98,18 +96,15 @@ public class CategoryFormControllerImpl implements CategoryFormController {
 
     @Override
     public void setCategory(CategoryViewModel categoryViewModel) {
-        this.categoryViewModel = categoryViewModel;
-        if(categoryViewModel != null) {
-            CategoryStringConverter converterAll = new CategoryStringConverter(allCategories);
-            CategoryStringConverter converterParent = new CategoryStringConverter(parentCategories);
-            originalCategoryName = categoryViewModel.getName();
-            name.setText(originalCategoryName);
-            type.setValue(converterAll.fromString(categoryViewModel.getName()).getType());
-            type.setDisable(true);
-            String parentName = converterAll.fromString(categoryViewModel.getName()).getParent().getName();
-            parent.setValue(converterParent.fromString(parentName));
-            parent.setDisable(true);
-        }
+        CategoryStringConverter converterAll = new CategoryStringConverter(allCategories);
+        CategoryStringConverter converterParent = new CategoryStringConverter(parentCategories);
+        originalCategoryName = categoryViewModel.getName();
+        name.setText(originalCategoryName);
+        type.setValue(converterAll.fromString(categoryViewModel.getName()).getType());
+        type.setDisable(true);
+        String parentName = converterAll.fromString(categoryViewModel.getName()).getParent().getName();
+        parent.setValue(converterParent.fromString(parentName));
+        parent.setDisable(true);
     }
 
     @FXML

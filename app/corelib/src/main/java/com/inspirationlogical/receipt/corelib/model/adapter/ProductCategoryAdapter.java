@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.entity.ProductCategory.GET_CHILD_CATEGORIES;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
@@ -20,11 +19,11 @@ import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 
 public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 {
@@ -202,6 +201,34 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         return new ProductAdapter(newProduct[0]);
     }
 
+
+    public ProductAdapter updateProduct(Long productId, ProductBuilder builder) {
+        Wrapper<Product> productWrapper = new Wrapper<>();
+        GuardedTransaction.run(() -> {
+            List<Product> productList = GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_ID,
+                    query -> query.setParameter("id", productId));
+            Product product = productList.get(0);
+            Product productToBuild = builder.build();
+            product.setLongName(productToBuild.getLongName());
+            product.setShortName(productToBuild.getShortName());
+            product.setType(productToBuild.getType());
+            product.setStatus(productToBuild.getStatus());
+            product.setRapidCode(productToBuild.getRapidCode());
+            product.setQuantityUnit(productToBuild.getQuantityUnit());
+            product.setStorageMultiplier(productToBuild.getStorageMultiplier());
+            product.setSalePrice(productToBuild.getSalePrice());
+            product.setPurchasePrice(productToBuild.getPurchasePrice());
+            product.setMinimumStock(productToBuild.getMinimumStock());
+            product.setStockWindow(productToBuild.getStockWindow());
+            productWrapper.setContent(product);
+        });
+
+        if(isCategoryChanged(productWrapper.getContent())) {
+            movePseudoToNewParent(productWrapper.getContent());
+        }
+        return new ProductAdapter(productWrapper.getContent());
+    }
+
     public void delete() {
         GuardedTransaction.run(() -> getAdaptee().setStatus(ProductStatus.DELETED));
     }
@@ -212,5 +239,23 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                     query.setParameter("owner_id", category.getId());
                     query.setParameter("time", now());
                     return query;});
+    }
+
+    private boolean isCategoryChanged(Product product) {
+        return !product.getCategory().getParent().getName().equals(adaptee.getName());
+    }
+
+    private void movePseudoToNewParent(Product product) {
+        GuardedTransaction.run(() -> {
+            ProductCategory originalCategory = getProductCategoryByName(product.getCategory().getParent().getName()).get(0);
+            ProductCategory pseudoCategory = getProductCategoryByName(product.getCategory().getName()).get(0);
+            originalCategory.getChildren().remove(pseudoCategory);
+            pseudoCategory.setParent(adaptee);
+
+        });
+        GuardedTransaction.run(() -> {
+            ProductCategory pseudoCategory = getProductCategoryByName(product.getCategory().getName()).get(0);
+            adaptee.getChildren().add(pseudoCategory);
+        });
     }
 }

@@ -18,6 +18,7 @@ public class ProductViewModel {
 
     private static String PERCENT = " %";
 
+    private Long id;
     private String type = EMPTY;
     private String status = EMPTY;
     private String shortName = EMPTY;
@@ -35,6 +36,7 @@ public class ProductViewModel {
 
     public ProductViewModel(ProductView productView) {
         if (productView != null) {
+            id = productView.getId();
             type = productView.getType().name();
             status =  productView.getStatus().name();
             shortName =  productView.getShortName();

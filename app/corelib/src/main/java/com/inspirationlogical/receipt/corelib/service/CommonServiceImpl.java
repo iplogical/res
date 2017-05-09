@@ -65,6 +65,11 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
+    public ProductView updateProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
+        return new ProductViewImpl(getProductCategoryAdapter(parent).updateProduct(productId, builder));
+    }
+
+    @Override
     public void deleteProduct(String longName) {
         new ProductAdapter(ProductAdapter.getProductByName(longName).get(0)).delete();
     }
