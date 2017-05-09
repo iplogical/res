@@ -162,35 +162,24 @@ public class ReservationControllerImpl extends AbstractController
         try {
             restaurantService.addReservation(initReservationParams());
             initReservations();
+            clearForm();
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private ReservationParams initReservationParams() {
-        int startHour = LocalDateTime.ofInstant(startTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getHour();
-        int startMinute = LocalDateTime.ofInstant(startTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getMinute();
-        int endHour = LocalDateTime.ofInstant(endTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getHour();
-        int endMinute = LocalDateTime.ofInstant(endTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getMinute();
-        return ReservationParams.builder()
-                .name(name.getText())
-                .note(note.getText())
-                .tableNumber(Integer.valueOf(tableNumber.getText()))
-                .guestCount(Integer.valueOf(guestCount.getText()))
-                .phoneNumber(phoneNumber.getText())
-                .date(LocalDateTime.ofInstant(date.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalDate())
-                .startTime(LocalTime.of(startHour, startMinute))
-                .endTime(LocalTime.of(endHour, endMinute))
-                .build();
-    }
-
     @FXML
     public void onUpdate(Event event) {
-        ReservationView selectedReservation = reservationViews.stream()
-                .filter(reservationView -> reservationView.getId() == reservationId)
-                .collect(toList()).get(0);
-        restaurantService.updateReservation(selectedReservation, initReservationParams());
-        initReservations();
+        try {
+            ReservationView selectedReservation = reservationViews.stream()
+                    .filter(reservationView -> reservationView.getId() == reservationId)
+                    .collect(toList()).get(0);
+            restaurantService.updateReservation(selectedReservation, initReservationParams());
+            initReservations();
+            clearForm();
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @FXML
@@ -207,6 +196,8 @@ public class ReservationControllerImpl extends AbstractController
             row.setOnMouseClicked(event -> {
                 if(event.getClickCount() == 1 && (! row.isEmpty())) {
                     rowClickHandler(row.getItem());
+                } else if(row.isEmpty()) {
+                    clearForm();
                 }
             });
             return row;
@@ -228,7 +219,6 @@ public class ReservationControllerImpl extends AbstractController
         endTime.setCalendar(calendar);
         reservationId = row.getReservationId();
     }
-
 
     private void initDate() {
         date.setCalendar(Calendar.getInstance());
@@ -272,5 +262,32 @@ public class ReservationControllerImpl extends AbstractController
         models.sort(Comparator.comparing(ReservationViewModel::getTableNumberAsInt));
         reservationModels = FXCollections.observableArrayList(models);
         reservationsTable.setItems(reservationModels);
+    }
+
+    private ReservationParams initReservationParams() {
+        int startHour = LocalDateTime.ofInstant(startTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getHour();
+        int startMinute = LocalDateTime.ofInstant(startTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getMinute();
+        int endHour = LocalDateTime.ofInstant(endTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getHour();
+        int endMinute = LocalDateTime.ofInstant(endTime.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime().getMinute();
+        return ReservationParams.builder()
+                .name(name.getText())
+                .note(note.getText())
+                .tableNumber(Integer.valueOf(tableNumber.getText()))
+                .guestCount(Integer.valueOf(guestCount.getText()))
+                .phoneNumber(phoneNumber.getText())
+                .date(LocalDateTime.ofInstant(date.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalDate())
+                .startTime(LocalTime.of(startHour, startMinute))
+                .endTime(LocalTime.of(endHour, endMinute))
+                .build();
+    }
+
+    private void clearForm() {
+        name.clear();
+        tableNumber.clear();
+        guestCount.clear();
+        phoneNumber.clear();
+        note.clear();
+        startTime.setCalendar(Calendar.getInstance());
+        endTime.setCalendar(Calendar.getInstance());
     }
 }
