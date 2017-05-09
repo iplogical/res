@@ -17,6 +17,7 @@ $(document).ready(function() {
     var calendar = $('#calendar');
 
     calendar.fullCalendar({
+        theme: true,
         customButtons: {
             addReservationButton: {
                 text: 'Add',
@@ -40,6 +41,7 @@ $(document).ready(function() {
                 $("#showNote").html(event.description);
                 $("#showReservationForm").dialog({
                     modal: true,
+                    width: "250px",
                     title: event.title,
                     buttons: {
                         Delete: function() {
@@ -59,6 +61,7 @@ $(document).ready(function() {
                             $("#editEndTime").val(moment(event.end).format("HH:mm"));
                             $("#editReservationForm").dialog({
                                 modal: true,
+                                width: "250px",
                                 buttons: {
                                     Save: function() {
                                         var $form = $("#editReservation");
@@ -119,6 +122,7 @@ $(document).ready(function() {
 function showAddReservationForm(calendar) {
     $("#addReservationForm").dialog({
         modal: true,
+        width: "250px",
         buttons: {
             Save: function() {
                 var $form = $("#addReservation");

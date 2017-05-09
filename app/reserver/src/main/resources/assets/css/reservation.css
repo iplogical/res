@@ -1,1 +1,21 @@
 
+label {
+    display: block;
+    width: 200px;
+    margin-top: 5px;
+}
+
+form label {
+    font-weight: bold;
+}
+
+span {
+    font-weight: bold;
+}
+
+input {
+}
+
+label span {
+    word-wrap: break-word;
+}
