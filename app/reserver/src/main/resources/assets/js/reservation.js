@@ -1,9 +1,10 @@
+
+var apiUrl = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+'/reservation/api';
+
 $(document).ready(function() {
     $("#addReservation").submit(function(e){
         return false;
     });
-
-    var apiUrl = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+'/reservation/api';
 
     $.ajaxSetup({
       url: apiUrl,
@@ -50,7 +51,21 @@ $(document).ready(function() {
                 $("#addReservationForm").dialog({modal: true});
             }
         },
-        editable: true
+        editable: true,
+        eventDrop: function(event, delta, revertFunc) {
+            if (!confirm("Confirm start time change")) {
+                revertFunc();
+            } else {
+                updateReservation(event);
+            }
+        },
+        eventResize: function(event, delta, revertFunc) {
+            if (!confirm("Confirm end time change")) {
+                revertFunc();
+            } else {
+                updateReservation(event);
+            }
+        }
     });
 
     var localDate = $("#addDate").val();
@@ -70,10 +85,10 @@ function getEvents(calendar) {
         success: function (data) {
             $.each( data, function(index, reservation) {
                 var event = new Object();
-                event.id = reservation.id;
+                event.id = reservation.reservationId;
                 event.table = reservation.tableNumber;
                 event.name = reservation.name;
-                event.title = "[Table " + reservation.tableNumber + "] " + reservation.name;
+                event.title = "[" + reservation.tableNumber + "] " + reservation.name;
                 event.start = reservation.date + " " + reservation.startTime;
                 event.end = reservation.date + " " + reservation.endTime;
                 event.phone = reservation.phoneNumber;
@@ -81,6 +96,32 @@ function getEvents(calendar) {
                 event.description = reservation.note;
                 calendar.fullCalendar('renderEvent', event);
             });
+        }
+    });
+}
+
+function updateReservation(event) {
+    var reservation = new Object();
+    reservation.name = event.name;
+    reservation.note = event.description;
+    reservation.phoneNumber = event.phone;
+    reservation.tableNumber = event.table;
+    reservation.guestCount = event.guests;
+    reservation.date = moment(event.start).format("YYYY-MM-DD");
+    reservation.startTime = moment(event.start).format("HH:mm");
+    reservation.endTime = moment(event.end).format("HH:mm");
+
+    $.ajax({
+        type: "PUT",
+        url: apiUrl + "/" + event.id,
+        data: JSON.stringify(reservation),
+        contentType: "application/json",
+        success: function() {
+//            location.reload();
+        },
+        error: function(error){
+            console.log(error);
+            alert(error.responseText);
         }
     });
 }
