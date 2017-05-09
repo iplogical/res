@@ -94,7 +94,7 @@ function getEvents(calendar) {
                 event.phone = reservation.phoneNumber;
                 event.guests = reservation.guestCount;
                 event.description = reservation.note;
-                calendar.fullCalendar('renderEvent', event);
+                calendar.fullCalendar('renderEvent', event, true);
             });
         }
     });
