@@ -310,6 +310,35 @@ public class BuildSchema  {
     private @Getter Recipe TorleyGalaSzarazRecipe1;
     private @Getter Recipe TorleyCharmantEdesRecipe1;
 
+    // Fröccsok
+    private @Getter Recipe HazBoraNagyEsNagyKisfroccsRecipe1;
+    private @Getter Recipe HazBoraNagyEsNagyNagyfroccsRecipe1;
+    private @Getter Recipe HazBoraNagyEsNagyVicehazmesterRecipe1;
+    private @Getter Recipe HazBoraNagyEsNagyHazmesterRecipe1;
+    private @Getter Recipe HazBoraNagyEsNagyHosszulepesRecipe1;
+    private @Getter Recipe HazBoraNagyEsNagySportFroccsRecipe1;
+
+    private @Getter Recipe HilltopIrsaiOliverKisfroccsRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverNagyfroccsRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverVicehazmesterRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverHazmesterRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverHosszulepesRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverSportFroccsRecipe1;
+
+    private @Getter Recipe HazBoraLisiczaRoseCuveeKisfroccsRecipe1;
+    private @Getter Recipe HazBoraLisiczaRoseCuveeNagyfroccsRecipe1;
+    private @Getter Recipe HazBoraLisiczaRoseCuveeVicehazmesterRecipe1;
+    private @Getter Recipe HazBoraLisiczaRoseCuveeHazmesterRecipe1;
+    private @Getter Recipe HazBoraLisiczaRoseCuveeHosszulepesRecipe1;
+    private @Getter Recipe HazBoraLisiczaRoseCuveeSportFroccsRecipe1;
+
+    private @Getter Recipe MeszarosPinotNoirRoseKisfroccsRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseNagyfroccsRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseVicehazmesterRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseHazmesterRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseHosszulepesRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseSportFroccsRecipe1;
+    
     // Roviditalok
     private @Getter Recipe JimBeam04Recipe1;
     private @Getter Recipe JohnnieWalkerRedLabel04Recipe1;
@@ -1744,7 +1773,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(150)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -1758,7 +1787,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(75)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -1773,7 +1802,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(75)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -1787,7 +1816,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(75)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -1802,7 +1831,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(150)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -1816,7 +1845,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(75)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -1831,7 +1860,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(75)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -1846,7 +1875,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(150)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -1860,7 +1889,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(75)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -1874,7 +1903,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(75)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -1888,7 +1917,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(75)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -1903,7 +1932,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -1918,7 +1946,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -1933,7 +1960,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -1948,7 +1974,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -1963,7 +1988,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -1978,7 +2002,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -1992,7 +2015,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -2006,7 +2028,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -2020,7 +2041,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -2034,7 +2054,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -2048,7 +2067,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -2062,7 +2080,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -2077,7 +2094,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2092,7 +2108,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2107,7 +2122,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2122,7 +2136,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2137,7 +2150,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2152,7 +2164,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2166,7 +2177,6 @@ public class BuildSchema  {
                 .purchasePrice(400)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2180,7 +2190,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2194,7 +2203,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2208,7 +2216,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2222,7 +2229,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2236,7 +2242,6 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2250,7 +2255,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(75)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -2264,7 +2269,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(75)
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
@@ -2294,7 +2299,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2309,7 +2314,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2324,7 +2329,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2339,7 +2344,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2354,7 +2359,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2369,7 +2374,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2384,7 +2389,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2399,7 +2404,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2414,7 +2419,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2429,7 +2434,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2444,7 +2449,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2459,7 +2464,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2474,7 +2479,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2504,7 +2509,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2519,7 +2524,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2534,7 +2539,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2549,7 +2554,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2564,7 +2569,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2579,7 +2584,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2594,7 +2599,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2609,7 +2614,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2624,7 +2629,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2639,7 +2644,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2654,7 +2659,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2669,7 +2674,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2684,7 +2689,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2804,7 +2809,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(50)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2819,7 +2824,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(50)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2834,7 +2839,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(50)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2939,7 +2944,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(50)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2954,7 +2959,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(50)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2969,7 +2974,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(50)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -2983,7 +2988,7 @@ public class BuildSchema  {
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
+                .storageMultiplier(50)
                 .type(ProductType.SELLABLE)
                 .build();
     }
@@ -4123,6 +4128,35 @@ public class BuildSchema  {
         buildTorleyGalaSzarazRecipe1();
         buildTorleyCharmantEdesRecipe1();
 
+        // Fröccsök
+        buildHazBoraNagyEsNagyKisfroccsRecipe1();
+        buildHazBoraNagyEsNagyNagyfroccsRecipe1();
+        buildHazBoraNagyEsNagyVicehazmesterRecipe1();
+        buildHazBoraNagyEsNagyHazmesterRecipe1();
+        buildHazBoraNagyEsNagyHosszulepesRecipe1();
+        buildHazBoraNagyEsNagySportfroccsRecipe1();
+
+        buildHilltopIrsaiOliverKisfroccsRecipe1();
+        buildHilltopIrsaiOliverNagyfroccsRecipe1();
+        buildHilltopIrsaiOliverVicehazmesterRecipe1();
+        buildHilltopIrsaiOliverHazmesterRecipe1();
+        buildHilltopIrsaiOliverHosszulepesRecipe1();
+        buildHilltopIrsaiOliverSportfroccsRecipe1();
+
+        buildHazBoraLisiczaRoseCuveeKisfroccsRecipe1();
+        buildHazBoraLisiczaRoseCuveeNagyfroccsRecipe1();
+        buildHazBoraLisiczaRoseCuveeVicehazmesterRecipe1();
+        buildHazBoraLisiczaRoseCuveeHazmesterRecipe1();
+        buildHazBoraLisiczaRoseCuveeHosszulepesRecipe1();
+        buildHazBoraLisiczaRoseCuveeSportfroccsRecipe1();
+
+        buildMeszarosPinotKisfroccsRecipe1();
+        buildMeszarosPinotNagyfroccsRecipe1();
+        buildMeszarosPinotVicehazmesterRecipe1();
+        buildMeszarosPinotHazmesterRecipe1();
+        buildMeszarosPinotHosszulepesRecipe1();
+        buildMeszarosPinotSportfroccsRecipe1();
+
         // Roviditalok
         buildJimBeam04Recipe1();
         buildJohnnieWalkerRedLabel04Recipe1();
@@ -4493,11 +4527,203 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildHazBoraNagyEsNagyKisfroccsRecipe1() {
+        HazBoraNagyEsNagyKisfroccsRecipe1 = Recipe.builder()
+                .owner(HazBoraNagyEsNagyKisfroccs)
+                .component(HazBoraNagyEsNagy)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildHazBoraNagyEsNagyNagyfroccsRecipe1() {
+        HazBoraNagyEsNagyNagyfroccsRecipe1 = Recipe.builder()
+                .owner(HazBoraNagyEsNagyNagyfroccs)
+                .component(HazBoraNagyEsNagy)
+                .quantityMultiplier(20)
+                .build();
+    }
+
+    private void buildHazBoraNagyEsNagyVicehazmesterRecipe1() {
+        HazBoraNagyEsNagyVicehazmesterRecipe1 = Recipe.builder()
+                .owner(HazBoraNagyEsNagyVicehazmester)
+                .component(HazBoraNagyEsNagy)
+                .quantityMultiplier(20)
+                .build();
+    }
+
+    private void buildHazBoraNagyEsNagyHazmesterRecipe1() {
+        HazBoraNagyEsNagyHazmesterRecipe1 = Recipe.builder()
+                .owner(HazBoraNagyEsNagyHazmester)
+                .component(HazBoraNagyEsNagy)
+                .quantityMultiplier(30)
+                .build();
+    }
+
+    private void buildHazBoraNagyEsNagyHosszulepesRecipe1() {
+        HazBoraNagyEsNagyHosszulepesRecipe1 = Recipe.builder()
+                .owner(HazBoraNagyEsNagyHosszulepes)
+                .component(HazBoraNagyEsNagy)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildHazBoraNagyEsNagySportfroccsRecipe1() {
+        HazBoraNagyEsNagySportFroccsRecipe1 = Recipe.builder()
+                .owner(HazBoraNagyEsNagySportFroccs)
+                .component(HazBoraNagyEsNagy)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverKisfroccsRecipe1() {
+        HilltopIrsaiOliverKisfroccsRecipe1 = Recipe.builder()
+                .owner(HilltopIrsaiOliverKisfroccs)
+                .component(HilltopIrsaiOliver)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverNagyfroccsRecipe1() {
+        HilltopIrsaiOliverNagyfroccsRecipe1 = Recipe.builder()
+                .owner(HilltopIrsaiOliverNagyfroccs)
+                .component(HilltopIrsaiOliver)
+                .quantityMultiplier(20)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverVicehazmesterRecipe1() {
+        HilltopIrsaiOliverVicehazmesterRecipe1 = Recipe.builder()
+                .owner(HilltopIrsaiOliverVicehazmester)
+                .component(HilltopIrsaiOliver)
+                .quantityMultiplier(20)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverHazmesterRecipe1() {
+        HilltopIrsaiOliverHazmesterRecipe1 = Recipe.builder()
+                .owner(HilltopIrsaiOliverHazmester)
+                .component(HilltopIrsaiOliver)
+                .quantityMultiplier(30)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverHosszulepesRecipe1() {
+        HilltopIrsaiOliverHosszulepesRecipe1 = Recipe.builder()
+                .owner(HilltopIrsaiOliverHosszulepes)
+                .component(HilltopIrsaiOliver)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverSportfroccsRecipe1() {
+        HilltopIrsaiOliverSportFroccsRecipe1 = Recipe.builder()
+                .owner(HilltopIrsaiOliverSportFroccs)
+                .component(HilltopIrsaiOliver)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildHazBoraLisiczaRoseCuveeKisfroccsRecipe1() {
+        HazBoraLisiczaRoseCuveeKisfroccsRecipe1 = Recipe.builder()
+                .owner(HazBoraLisiczaRoseCuveeKisfroccs)
+                .component(HazBoraLisiczaRoseCuvee)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildHazBoraLisiczaRoseCuveeNagyfroccsRecipe1() {
+        HazBoraLisiczaRoseCuveeNagyfroccsRecipe1 = Recipe.builder()
+                .owner(HazBoraLisiczaRoseCuveeNagyfroccs)
+                .component(HazBoraLisiczaRoseCuvee)
+                .quantityMultiplier(20)
+                .build();
+    }
+
+    private void buildHazBoraLisiczaRoseCuveeVicehazmesterRecipe1() {
+        HazBoraLisiczaRoseCuveeVicehazmesterRecipe1 = Recipe.builder()
+                .owner(HazBoraLisiczaRoseCuveeVicehazmester)
+                .component(HazBoraLisiczaRoseCuvee)
+                .quantityMultiplier(20)
+                .build();
+    }
+
+    private void buildHazBoraLisiczaRoseCuveeHazmesterRecipe1() {
+        HazBoraLisiczaRoseCuveeHazmesterRecipe1 = Recipe.builder()
+                .owner(HazBoraLisiczaRoseCuveeHazmester)
+                .component(HazBoraLisiczaRoseCuvee)
+                .quantityMultiplier(30)
+                .build();
+    }
+
+    private void buildHazBoraLisiczaRoseCuveeHosszulepesRecipe1() {
+        HazBoraLisiczaRoseCuveeHosszulepesRecipe1 = Recipe.builder()
+                .owner(HazBoraLisiczaRoseCuveeHosszulepes)
+                .component(HazBoraLisiczaRoseCuvee)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildHazBoraLisiczaRoseCuveeSportfroccsRecipe1() {
+        HazBoraLisiczaRoseCuveeSportFroccsRecipe1 = Recipe.builder()
+                .owner(HazBoraLisiczaRoseCuveeSportFroccs)
+                .component(HazBoraLisiczaRoseCuvee)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildMeszarosPinotKisfroccsRecipe1() {
+        MeszarosPinotNoirRoseKisfroccsRecipe1 = Recipe.builder()
+                .owner(MeszarosPinotNoirRoseKisfroccs)
+                .component(MeszarosPinotNoirRose)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildMeszarosPinotNagyfroccsRecipe1() {
+        MeszarosPinotNoirRoseNagyfroccsRecipe1 = Recipe.builder()
+                .owner(MeszarosPinotNoirRoseNagyfroccs)
+                .component(MeszarosPinotNoirRose)
+                .quantityMultiplier(20)
+                .build();
+    }
+
+    private void buildMeszarosPinotVicehazmesterRecipe1() {
+        MeszarosPinotNoirRoseVicehazmesterRecipe1 = Recipe.builder()
+                .owner(MeszarosPinotNoirRoseVicehazmester)
+                .component(MeszarosPinotNoirRose)
+                .quantityMultiplier(20)
+                .build();
+    }
+
+    private void buildMeszarosPinotHazmesterRecipe1() {
+        MeszarosPinotNoirRoseHazmesterRecipe1 = Recipe.builder()
+                .owner(MeszarosPinotNoirRoseHazmester)
+                .component(MeszarosPinotNoirRose)
+                .quantityMultiplier(30)
+                .build();
+    }
+
+    private void buildMeszarosPinotHosszulepesRecipe1() {
+        MeszarosPinotNoirRoseHosszulepesRecipe1 = Recipe.builder()
+                .owner(MeszarosPinotNoirRoseHosszulepes)
+                .component(MeszarosPinotNoirRose)
+                .quantityMultiplier(10)
+                .build();
+    }
+
+    private void buildMeszarosPinotSportfroccsRecipe1() {
+        MeszarosPinotNoirRoseSportFroccsRecipe1 = Recipe.builder()
+                .owner(MeszarosPinotNoirRoseSportFroccs)
+                .component(MeszarosPinotNoirRose)
+                .quantityMultiplier(10)
+                .build();
+    }
+
     private void buildJimBeam04Recipe1() {
         JimBeam04Recipe1 = Recipe.builder()
                 .owner(JimBeam04)
                 .component(JimBeam04)
-                .quantityMultiplier(5)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4505,7 +4731,7 @@ public class BuildSchema  {
         JohnnieWalkerRedLabel04Recipe1 = Recipe.builder()
                 .owner(JohnnieWalkerRedLabel04)
                 .component(JohnnieWalkerRedLabel04)
-                .quantityMultiplier(6)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4513,7 +4739,7 @@ public class BuildSchema  {
         JackDaniels04Recipe1 = Recipe.builder()
                 .owner(JackDaniels04)
                 .component(JackDaniels04)
-                .quantityMultiplier(7)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4521,7 +4747,7 @@ public class BuildSchema  {
         TullamoreDew04Recipe1 = Recipe.builder()
                 .owner(TullamoreDew04)
                 .component(TullamoreDew04)
-                .quantityMultiplier(8)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4529,7 +4755,7 @@ public class BuildSchema  {
         Royal04Recipe1 = Recipe.builder()
                 .owner(Royal04)
                 .component(Royal04)
-                .quantityMultiplier(3)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4545,7 +4771,7 @@ public class BuildSchema  {
         BacardiSuperior04Recipe1 = Recipe.builder()
                 .owner(BacardiSuperior04)
                 .component(BacardiSuperior04)
-                .quantityMultiplier(10)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4553,7 +4779,7 @@ public class BuildSchema  {
         CaptainMorganSpicedRum04Recipe1 = Recipe.builder()
                 .owner(CaptainMorganSpicedRum04)
                 .component(CaptainMorganSpicedRum04)
-                .quantityMultiplier(9)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4561,7 +4787,7 @@ public class BuildSchema  {
         Beefeater04Recipe1 = Recipe.builder()
                 .owner(Beefeater04)
                 .component(Beefeater04)
-                .quantityMultiplier(11)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4569,7 +4795,7 @@ public class BuildSchema  {
         TequilaSierraReposadoGold04Recipe1 = Recipe.builder()
                 .owner(TequilaSierraReposadoGold04)
                 .component(TequilaSierraReposadoGold04)
-                .quantityMultiplier(13)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4577,7 +4803,7 @@ public class BuildSchema  {
         TequilaSierraSilver04Recipe1 = Recipe.builder()
                 .owner(TequilaSierraSilver04)
                 .component(TequilaSierraSilver04)
-                .quantityMultiplier(12)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4585,7 +4811,7 @@ public class BuildSchema  {
         Unicum04Recipe1 = Recipe.builder()
                 .owner(Unicum04)
                 .component(Unicum04)
-                .quantityMultiplier(1)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4593,7 +4819,7 @@ public class BuildSchema  {
         Jagermeister04Recipe1 = Recipe.builder()
                 .owner(Jagermeister04)
                 .component(Jagermeister04)
-                .quantityMultiplier(2)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4601,119 +4827,119 @@ public class BuildSchema  {
         Baileys08Recipe1 = Recipe.builder()
                 .owner(Baileys08)
                 .component(Baileys08)
-                .quantityMultiplier(14)
+                .quantityMultiplier(8)
                 .build();
     }
 
     private void buildJimBeam02Recipe1() {
         JimBeam02Recipe1 = Recipe.builder()
                 .owner(JimBeam02)
-                .component(JimBeam02)
-                .quantityMultiplier(19)
+                .component(JimBeam04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildJohnnieWalkerRedLabel02Recipe1() {
         JohnnieWalkerRedLabel02Recipe1 = Recipe.builder()
                 .owner(JohnnieWalkerRedLabel02)
-                .component(JohnnieWalkerRedLabel02)
-                .quantityMultiplier(20)
+                .component(JohnnieWalkerRedLabel04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildJackDaniels02Recipe1() {
         JackDaniels02Recipe1 = Recipe.builder()
                 .owner(JackDaniels02)
-                .component(JackDaniels02)
-                .quantityMultiplier(21)
+                .component(JackDaniels04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildTullamoreDew02Recipe1() {
         TullamoreDew02Recipe1 = Recipe.builder()
                 .owner(TullamoreDew02)
-                .component(TullamoreDew02)
-                .quantityMultiplier(22)
+                .component(TullamoreDew04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildRoyal02Recipe1() {
         Royal02Recipe1 = Recipe.builder()
                 .owner(Royal02)
-                .component(Royal02)
-                .quantityMultiplier(17)
+                .component(Royal04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildFinlandia02Recipe1() {
         Finlandia02Recipe1 = Recipe.builder()
                 .owner(Finlandia02)
-                .component(Finlandia02)
-                .quantityMultiplier(18)
+                .component(Finlandia04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildBacardiSuperior02Recipe1() {
         BacardiSuperior02Recipe1 = Recipe.builder()
                 .owner(BacardiSuperior02)
-                .component(BacardiSuperior02)
-                .quantityMultiplier(24)
+                .component(BacardiSuperior04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildCaptainMorganSpicedRum02Recipe1() {
         CaptainMorganSpicedRum02Recipe1 = Recipe.builder()
                 .owner(CaptainMorganSpicedRum02)
-                .component(CaptainMorganSpicedRum02)
-                .quantityMultiplier(23)
+                .component(CaptainMorganSpicedRum04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildBeefeater02Recipe1() {
         Beefeater02Recipe1 = Recipe.builder()
                 .owner(Beefeater02)
-                .component(Beefeater02)
-                .quantityMultiplier(25)
+                .component(Beefeater04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildTequilaSierraReposadoGold02Recipe1() {
         TequilaSierraReposadoGold02Recipe1 = Recipe.builder()
                 .owner(TequilaSierraReposadoGold02)
-                .component(TequilaSierraReposadoGold02)
-                .quantityMultiplier(27)
+                .component(TequilaSierraReposadoGold04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildTequilaSierraSilver02Recipe1() {
         TequilaSierraSilver02Recipe1 = Recipe.builder()
                 .owner(TequilaSierraSilver02)
-                .component(TequilaSierraSilver02)
-                .quantityMultiplier(26)
+                .component(TequilaSierraSilver04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildUnicum02Recipe1() {
         Unicum02Recipe1 = Recipe.builder()
                 .owner(Unicum02)
-                .component(Unicum02)
-                .quantityMultiplier(15)
+                .component(Unicum04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildJagermeister02Recipe1() {
         Jagermeister02Recipe1 = Recipe.builder()
                 .owner(Jagermeister02)
-                .component(Jagermeister02)
-                .quantityMultiplier(16)
+                .component(Jagermeister04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildBaileys04Recipe1() {
         Baileys04Recipe1 = Recipe.builder()
                 .owner(Baileys04)
-                .component(Baileys04)
-                .quantityMultiplier(28)
+                .component(Baileys08)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4721,7 +4947,7 @@ public class BuildSchema  {
         _22KokuszTatratea04Recipe1 = Recipe.builder()
                 .owner(_22KokuszTatratea04)
                 .component(_22KokuszTatratea04)
-                .quantityMultiplier(1)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4729,7 +4955,7 @@ public class BuildSchema  {
         _32CitrusTatratea04Recipe1 = Recipe.builder()
                 .owner(_32CitrusTatratea04)
                 .component(_32CitrusTatratea04)
-                .quantityMultiplier(2)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4737,7 +4963,7 @@ public class BuildSchema  {
         _42BarackTatratea04Recipe1 = Recipe.builder()
                 .owner(_42BarackTatratea04)
                 .component(_42BarackTatratea04)
-                .quantityMultiplier(3)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4753,7 +4979,7 @@ public class BuildSchema  {
         _62ErdeiGyumolcsTatratea04Recipe1 = Recipe.builder()
                 .owner(_62ErdeiGyumolcsTatratea04)
                 .component(_62ErdeiGyumolcsTatratea04)
-                .quantityMultiplier(5)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4761,7 +4987,7 @@ public class BuildSchema  {
         _72OutlawBetyarTatratea04Recipe1 = Recipe.builder()
                 .owner(_72OutlawBetyarTatratea04)
                 .component(_72OutlawBetyarTatratea04)
-                .quantityMultiplier(6)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4769,7 +4995,7 @@ public class BuildSchema  {
         CseresznyePalinka04Recipe1 = Recipe.builder()
                 .owner(CseresznyePalinka04)
                 .component(CseresznyePalinka04)
-                .quantityMultiplier(7)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4777,7 +5003,7 @@ public class BuildSchema  {
         KajszibarackPalinka04Recipe1 = Recipe.builder()
                 .owner(KajszibarackPalinka04)
                 .component(KajszibarackPalinka04)
-                .quantityMultiplier(8)
+                .quantityMultiplier(4)
                 .build();
     }
 
@@ -4785,79 +5011,79 @@ public class BuildSchema  {
         Szilvapalinka04Recipe1 = Recipe.builder()
                 .owner(Szilvapalinka04)
                 .component(Szilvapalinka04)
-                .quantityMultiplier(9)
+                .quantityMultiplier(4)
                 .build();
     }
 
     private void build22KokuszTatratea02Recipe1() {
         _22KokuszTatratea02Recipe1 = Recipe.builder()
                 .owner(_22KokuszTatratea02)
-                .component(_22KokuszTatratea02)
-                .quantityMultiplier(10)
+                .component(_22KokuszTatratea04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void build32CitrusTatratea02Recipe1() {
         _32CitrusTatratea02Recipe1 = Recipe.builder()
                 .owner(_32CitrusTatratea02)
-                .component(_32CitrusTatratea02)
-                .quantityMultiplier(11)
+                .component(_32CitrusTatratea04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void build42BarackTatratea02Recipe1() {
         _42BarackTatratea02Recipe1 = Recipe.builder()
                 .owner(_42BarackTatratea02)
-                .component(_42BarackTatratea02)
-                .quantityMultiplier(12)
+                .component(_42BarackTatratea04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void build52EredetiTatratea02Recipe1() {
         _52EredetiTatratea02Recipe1 = Recipe.builder()
                 .owner(_52EredetiTatratea02)
-                .component(_52EredetiTatratea02)
-                .quantityMultiplier(13)
+                .component(_52EredetiTatratea04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void build62ErdeiGyumolcsTatratea02Recipe1() {
         _62ErdeiGyumolcsTatratea02Recipe1 = Recipe.builder()
                 .owner(_62ErdeiGyumolcsTatratea02)
-                .component(_62ErdeiGyumolcsTatratea02)
-                .quantityMultiplier(14)
+                .component(_62ErdeiGyumolcsTatratea04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void build72OutlawBetyarTatratea02Recipe1() {
         _72OutlawBetyarTatratea02Recipe1 = Recipe.builder()
                 .owner(_72OutlawBetyarTatratea02)
-                .component(_72OutlawBetyarTatratea02)
-                .quantityMultiplier(15)
+                .component(_72OutlawBetyarTatratea04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildCseresznyePalinka02Recipe1() {
         CseresznyePalinka02Recipe1 = Recipe.builder()
                 .owner(CseresznyePalinka02)
-                .component(CseresznyePalinka02)
-                .quantityMultiplier(16)
+                .component(CseresznyePalinka04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildKajszibarackPalinka02Recipe1() {
         KajszibarackPalinka02Recipe1 = Recipe.builder()
                 .owner(KajszibarackPalinka02)
-                .component(KajszibarackPalinka02)
-                .quantityMultiplier(17)
+                .component(KajszibarackPalinka04)
+                .quantityMultiplier(2)
                 .build();
     }
 
     private void buildSzilvapalinka02Recipe1() {
         Szilvapalinka02Recipe1 = Recipe.builder()
                 .owner(Szilvapalinka02)
-                .component(Szilvapalinka02)
-                .quantityMultiplier(18)
+                .component(Szilvapalinka04)
+                .quantityMultiplier(2)
                 .build();
     }
 
@@ -8737,6 +8963,35 @@ public class BuildSchema  {
         // Pezsgok
         TorleyGalaSzaraz.setRecipes(Arrays.asList(TorleyGalaSzarazRecipe1));
         TorleyCharmantEdes.setRecipes(Arrays.asList(TorleyCharmantEdesRecipe1));
+
+        // Fröccsok
+        HazBoraNagyEsNagyKisfroccs.setRecipes(Arrays.asList(HazBoraNagyEsNagyKisfroccsRecipe1));
+        HazBoraNagyEsNagyNagyfroccs.setRecipes(Arrays.asList(HazBoraNagyEsNagyNagyfroccsRecipe1));
+        HazBoraNagyEsNagyVicehazmester.setRecipes(Arrays.asList(HazBoraNagyEsNagyVicehazmesterRecipe1));
+        HazBoraNagyEsNagyHazmester.setRecipes(Arrays.asList(HazBoraNagyEsNagyHazmesterRecipe1));
+        HazBoraNagyEsNagyHosszulepes.setRecipes(Arrays.asList(HazBoraNagyEsNagyHosszulepesRecipe1));
+        HazBoraNagyEsNagySportFroccs.setRecipes(Arrays.asList(HazBoraNagyEsNagySportFroccsRecipe1));
+
+        HilltopIrsaiOliverKisfroccs.setRecipes(Arrays.asList(HilltopIrsaiOliverKisfroccsRecipe1));
+        HilltopIrsaiOliverNagyfroccs.setRecipes(Arrays.asList(HilltopIrsaiOliverNagyfroccsRecipe1));
+        HilltopIrsaiOliverVicehazmester.setRecipes(Arrays.asList(HilltopIrsaiOliverVicehazmesterRecipe1));
+        HilltopIrsaiOliverHazmester.setRecipes(Arrays.asList(HilltopIrsaiOliverHazmesterRecipe1));
+        HilltopIrsaiOliverHosszulepes.setRecipes(Arrays.asList(HilltopIrsaiOliverHosszulepesRecipe1));
+        HilltopIrsaiOliverSportFroccs.setRecipes(Arrays.asList(HilltopIrsaiOliverSportFroccsRecipe1));
+
+        HazBoraLisiczaRoseCuveeKisfroccs.setRecipes(Arrays.asList(HazBoraLisiczaRoseCuveeKisfroccsRecipe1));
+        HazBoraLisiczaRoseCuveeNagyfroccs.setRecipes(Arrays.asList(HazBoraLisiczaRoseCuveeNagyfroccsRecipe1));
+        HazBoraLisiczaRoseCuveeVicehazmester.setRecipes(Arrays.asList(HazBoraLisiczaRoseCuveeVicehazmesterRecipe1));
+        HazBoraLisiczaRoseCuveeHazmester.setRecipes(Arrays.asList(HazBoraLisiczaRoseCuveeHazmesterRecipe1));
+        HazBoraLisiczaRoseCuveeHosszulepes.setRecipes(Arrays.asList(HazBoraLisiczaRoseCuveeHosszulepesRecipe1));
+        HazBoraLisiczaRoseCuveeSportFroccs.setRecipes(Arrays.asList(HazBoraLisiczaRoseCuveeSportFroccsRecipe1));
+
+        MeszarosPinotNoirRoseKisfroccs.setRecipes(Arrays.asList(MeszarosPinotNoirRoseKisfroccsRecipe1));
+        MeszarosPinotNoirRoseNagyfroccs.setRecipes(Arrays.asList(MeszarosPinotNoirRoseNagyfroccsRecipe1));
+        MeszarosPinotNoirRoseVicehazmester.setRecipes(Arrays.asList(MeszarosPinotNoirRoseVicehazmesterRecipe1));
+        MeszarosPinotNoirRoseHazmester.setRecipes(Arrays.asList(MeszarosPinotNoirRoseHazmesterRecipe1));
+        MeszarosPinotNoirRoseHosszulepes.setRecipes(Arrays.asList(MeszarosPinotNoirRoseHosszulepesRecipe1));
+        MeszarosPinotNoirRoseSportFroccs.setRecipes(Arrays.asList(MeszarosPinotNoirRoseSportFroccsRecipe1));
 
         // Roviditalok
         JimBeam04.setRecipes(Arrays.asList(JimBeam04Recipe1));
