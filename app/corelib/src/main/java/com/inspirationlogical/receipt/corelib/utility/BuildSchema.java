@@ -60,6 +60,55 @@ public class BuildSchema  {
     private @Getter Product TatraTime;
     private @Getter Product SorrelAzEmberisegEllen;
 
+    // Alapanyagok
+    private @Getter Product Citrom;
+    private @Getter Product Narancs;
+
+    private @Getter Product MalnaSzirup;
+    private @Getter Product EperNarancsSzirup;
+    private @Getter Product Tabasco;
+    private @Getter Product BlueCuracao;
+
+    private @Getter Product FagyiGyumi;
+
+    private @Getter Product BarnaCukor;
+    private @Getter Product FeherCukor;
+    private @Getter Product Mez;
+
+    private @Getter Product Tej;
+
+    private @Getter Product TortillaSos;
+    private @Getter Product TortillaBBQ;
+    private @Getter Product NachosSajtszosz;
+    private @Getter Product NachosChiliszosz;
+
+    private @Getter Product Bagett;
+    private @Getter Product Zsir;
+
+    private @Getter Product Lilahagyma;
+    private @Getter Product Pirospaprika;
+    private @Getter Product Salata;
+    private @Getter Product Paradicsom;
+    private @Getter Product Uborka;
+    private @Getter Product PiritottHagyma;
+
+    private @Getter Product Trappista;
+    private @Getter Product Cheddar;
+    private @Getter Product Kecskesajt;
+    private @Getter Product Camambert;
+
+    private @Getter Product Sonka;
+    private @Getter Product Szalami;
+    private @Getter Product TonhalKrem;
+
+    private @Getter Product Margarin;
+
+    private @Getter Product Mustar;
+    private @Getter Product Majonez;
+    private @Getter Product Ajvar;
+
+    private @Getter Product TortillaLap;
+    
     /* ----- ITALLAP -----*/
     // Csapolt sorok
     private @Getter Product Soproni03;
@@ -271,218 +320,7 @@ public class BuildSchema  {
     private @Getter Product GinTonic;
     private @Getter Product JackAndCoke;
     private @Getter Product VodkaSzoda;
-
-    /* ----- ITALLAP -----*/
-    // Csapolt sorok
-    private @Getter Recipe Soproni03Recipe1;
-    private @Getter Recipe Soproni05Recipe1;
-    private @Getter Recipe Edelweiss03Recipe1;
-    private @Getter Recipe Edelweiss05Recipe1;
-
-    // Uveges sorok
-    private @Getter Recipe KrusoviceSvetleRecipe1;
-    private @Getter Recipe SoproniDemonRecipe1;
-    private @Getter Recipe SoproniMaxxRecipe1;
-    private @Getter Recipe HeinekenRecipe1;
-    private @Getter Recipe GosserNaturRadlerRecipe1;
-    private @Getter Recipe GosserNaturRadler00Recipe1;
-    private @Getter Recipe BekesSzentandrasiMeggyesRecipe1;
-    private @Getter Recipe StrongbowDarkfruitRecipe1;
-    private @Getter Recipe StrongbowGoldAppleCiderRecipe1;
-    private @Getter Recipe EdelweissRecipe1;
-
-    // Borok
-    private @Getter Recipe HazBoraNagyEsNagyRecipe1;
-    private @Getter Recipe HilltopIrsaiOliverRecipe1;
-    private @Getter Recipe HilltopIrsaiOliverDecireRecipe1;
-    private @Getter Recipe GereAttilaOlaszrizlingRecipe1;
-
-    private @Getter Recipe HazBoraLisiczaRoseCuveeRecipe1;
-    private @Getter Recipe MeszarosPinotNoirRoseRecipe1;
-    private @Getter Recipe MeszarosPinotNoirRoseDecireRecipe1;
-
-    private @Getter Recipe HazBoraPolgarSerumVeritasRecipe1;
-    private @Getter Recipe VinczeMerlotRecipe1;
-    private @Getter Recipe VylyanCabernetSauvignonRecipe1;
-    private @Getter Recipe MeszarosHidasptereCabernetFrancReserveRecipe1;
-
-    // Pezsgok
-    private @Getter Recipe TorleyGalaSzarazRecipe1;
-    private @Getter Recipe TorleyCharmantEdesRecipe1;
-
-    // Fröccsok
-    private @Getter Recipe HazBoraNagyEsNagyKisfroccsRecipe1;
-    private @Getter Recipe HazBoraNagyEsNagyNagyfroccsRecipe1;
-    private @Getter Recipe HazBoraNagyEsNagyVicehazmesterRecipe1;
-    private @Getter Recipe HazBoraNagyEsNagyHazmesterRecipe1;
-    private @Getter Recipe HazBoraNagyEsNagyHosszulepesRecipe1;
-    private @Getter Recipe HazBoraNagyEsNagySportFroccsRecipe1;
-
-    private @Getter Recipe HilltopIrsaiOliverKisfroccsRecipe1;
-    private @Getter Recipe HilltopIrsaiOliverNagyfroccsRecipe1;
-    private @Getter Recipe HilltopIrsaiOliverVicehazmesterRecipe1;
-    private @Getter Recipe HilltopIrsaiOliverHazmesterRecipe1;
-    private @Getter Recipe HilltopIrsaiOliverHosszulepesRecipe1;
-    private @Getter Recipe HilltopIrsaiOliverSportFroccsRecipe1;
-
-    private @Getter Recipe HazBoraLisiczaRoseCuveeKisfroccsRecipe1;
-    private @Getter Recipe HazBoraLisiczaRoseCuveeNagyfroccsRecipe1;
-    private @Getter Recipe HazBoraLisiczaRoseCuveeVicehazmesterRecipe1;
-    private @Getter Recipe HazBoraLisiczaRoseCuveeHazmesterRecipe1;
-    private @Getter Recipe HazBoraLisiczaRoseCuveeHosszulepesRecipe1;
-    private @Getter Recipe HazBoraLisiczaRoseCuveeSportFroccsRecipe1;
-
-    private @Getter Recipe MeszarosPinotNoirRoseKisfroccsRecipe1;
-    private @Getter Recipe MeszarosPinotNoirRoseNagyfroccsRecipe1;
-    private @Getter Recipe MeszarosPinotNoirRoseVicehazmesterRecipe1;
-    private @Getter Recipe MeszarosPinotNoirRoseHazmesterRecipe1;
-    private @Getter Recipe MeszarosPinotNoirRoseHosszulepesRecipe1;
-    private @Getter Recipe MeszarosPinotNoirRoseSportFroccsRecipe1;
     
-    // Roviditalok
-    private @Getter Recipe JimBeam04Recipe1;
-    private @Getter Recipe JohnnieWalkerRedLabel04Recipe1;
-    private @Getter Recipe JackDaniels04Recipe1;
-    private @Getter Recipe TullamoreDew04Recipe1;
-
-    private @Getter Recipe Royal04Recipe1;
-    private @Getter Recipe Finlandia04Recipe1;
-
-    private @Getter Recipe BacardiSuperior04Recipe1;
-    private @Getter Recipe CaptainMorganSpicedRum04Recipe1;
-
-    private @Getter Recipe Beefeater04Recipe1;
-
-    private @Getter Recipe TequilaSierraReposadoGold04Recipe1;
-    private @Getter Recipe TequilaSierraSilver04Recipe1;
-
-    private @Getter Recipe Unicum04Recipe1;
-    private @Getter Recipe Jagermeister04Recipe1;
-    private @Getter Recipe Baileys08Recipe1;
-
-    private @Getter Recipe JimBeam02Recipe1;
-    private @Getter Recipe JohnnieWalkerRedLabel02Recipe1;
-    private @Getter Recipe JackDaniels02Recipe1;
-    private @Getter Recipe TullamoreDew02Recipe1;
-
-    private @Getter Recipe Royal02Recipe1;
-    private @Getter Recipe Finlandia02Recipe1;
-
-    private @Getter Recipe BacardiSuperior02Recipe1;
-    private @Getter Recipe CaptainMorganSpicedRum02Recipe1;
-
-    private @Getter Recipe Beefeater02Recipe1;
-
-    private @Getter Recipe TequilaSierraReposadoGold02Recipe1;
-    private @Getter Recipe TequilaSierraSilver02Recipe1;
-
-    private @Getter Recipe Unicum02Recipe1;
-    private @Getter Recipe Jagermeister02Recipe1;
-    private @Getter Recipe Baileys04Recipe1;
-
-    // Palinkak/
-    private @Getter Recipe _22KokuszTatratea04Recipe1;
-    private @Getter Recipe _32CitrusTatratea04Recipe1;
-    private @Getter Recipe _42BarackTatratea04Recipe1;
-    private @Getter Recipe _52EredetiTatratea04Recipe1;
-    private @Getter Recipe _62ErdeiGyumolcsTatratea04Recipe1;
-    private @Getter Recipe _72OutlawBetyarTatratea04Recipe1;
-
-    private @Getter Recipe CseresznyePalinka04Recipe1;
-    private @Getter Recipe KajszibarackPalinka04Recipe1;
-    private @Getter Recipe Szilvapalinka04Recipe1;
-
-    private @Getter Recipe _22KokuszTatratea02Recipe1;
-    private @Getter Recipe _32CitrusTatratea02Recipe1;
-    private @Getter Recipe _42BarackTatratea02Recipe1;
-    private @Getter Recipe _52EredetiTatratea02Recipe1;
-    private @Getter Recipe _62ErdeiGyumolcsTatratea02Recipe1;
-    private @Getter Recipe _72OutlawBetyarTatratea02Recipe1;
-
-    private @Getter Recipe CseresznyePalinka02Recipe1;
-    private @Getter Recipe KajszibarackPalinka02Recipe1;
-    private @Getter Recipe Szilvapalinka02Recipe1;
-
-    // Shotok
-    private @Getter Recipe Finca1Recipe1;
-    private @Getter Recipe Bang1Recipe1;
-    private @Getter Recipe Imagine1Recipe1;
-
-    private @Getter Recipe Finca6Recipe1;
-    private @Getter Recipe Bang6Recipe1;
-    private @Getter Recipe Imagine6Recipe1;
-    private @Getter Recipe RiffRaff6Recipe1;
-
-    private @Getter Recipe Finca12Recipe1;
-    private @Getter Recipe Bang12Recipe1;
-    private @Getter Recipe Imagine12Recipe1;
-    private @Getter Recipe RiffRaff12Recipe1;
-
-    // Uveges uditok
-    private @Getter Recipe CocaColaRecipe1;
-    private @Getter Recipe CocaColaZeroRecipe1;
-    private @Getter Recipe FantaNarancsRecipe1;
-    private @Getter Recipe SpriteRecipe1;
-    private @Getter Recipe KinleyGyomberRecipe1;
-    private @Getter Recipe KinleyTonicRecipe1;
-    private @Getter Recipe NesteaCitromRecipe1;
-    private @Getter Recipe NesteaBarackRecipe1;
-
-    // Kimert uditok
-    private @Getter Recipe CappyAlmaRecipe1;
-    private @Getter Recipe CappyNarancsRecipe1;
-    private @Getter Recipe CappyBarackRecipe1;
-    private @Getter Recipe CappyAnanaszRecipe1;
-
-    // Limonadek
-    private @Getter Recipe LimonadeMalna05Recipe1;
-    private @Getter Recipe LimonadeMeggy05Recipe1;
-    private @Getter Recipe LimonadeEperNarancs05Recipe1;
-    private @Getter Recipe LimonadeCitrus05Recipe1;
-
-    private @Getter Recipe LimonadeMalna10Recipe1;
-    private @Getter Recipe LimonadeMeggy10Recipe1;
-    private @Getter Recipe LimonadeEperNarancs10Recipe1;
-    private @Getter Recipe LimonadeCitrus10Recipe1;
-
-    // Asvanyviz
-    private @Getter Recipe NaturaquaSzensavasRecipe1;
-    private @Getter Recipe NaturaquaSzensavmentesRecipe1;
-    private @Getter Recipe SzodaRecipe1;
-
-    // Energiaitalok
-    private @Getter Recipe BurnOriginalRecipe1;
-    private @Getter Recipe BurnZeroRecipe1;
-    private @Getter Recipe MonsterEnergyRecipe1;
-    private @Getter Recipe MonsterAssaultRecipe1;
-    private @Getter Recipe MonsterRehabRecipe1;
-
-    // Filteres Teaak
-    private @Getter Recipe DallmayrFeketeRecipe1;
-    private @Getter Recipe DallmayrGyumolcsRecipe1;
-    private @Getter Recipe DallmayrZoldRecipe1;
-
-    private @Getter Recipe PiramisDarjelingRecipe1;
-    private @Getter Recipe PiramisMangoMaracujaRecipe1;
-    private @Getter Recipe PiramisAnanaszPapajaRecipe1;
-    private @Getter Recipe PiramisCitrusVerbenaRecipe1;
-
-    // Kavek
-    private @Getter Recipe EspressoRecipe1;
-    private @Getter Recipe AmericanoRecipe1;
-    private @Getter Recipe CappuccinoRecipe1;
-    private @Getter Recipe CaffeLatteRecipe1;
-    private @Getter Recipe LatteMacchiatoRecipe1;
-    private @Getter Recipe CaffeMelangeRecipe1;
-    private @Getter Recipe ForroCsokiBarnaRecipe1;
-    private @Getter Recipe ForroCsokiFeherRecipe1;
-
-    // Napi akciok
-    private @Getter Recipe CaptainAndGyomberRecipe1;
-    private @Getter Recipe GinTonicRecipe1;
-    private @Getter Recipe JackAndCokeRecipe1;
-    private @Getter Recipe VodkaSzodaRecipe1;
-
     private @Getter ProductCategory root;
 
     private @Getter ProductCategory etlap;
@@ -516,6 +354,9 @@ public class BuildSchema  {
 
     private @Getter ProductCategory menuk;
     private @Getter ProductCategory menukAggregate;
+
+    private @Getter ProductCategory alapanyagok;
+    private @Getter ProductCategory alapanyagokAggregate;
 
     private @Getter ProductCategory pseudoAdHoc;
     private @Getter ProductCategory pseudoGameFee;
@@ -552,7 +393,56 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoSplendBor;
     private @Getter ProductCategory PseudoTatraTime;
     private @Getter ProductCategory PseudoSorrelAzEmberisegEllen;
-    
+
+    // Alapanyagok
+    private @Getter ProductCategory PseudoCitrom;
+    private @Getter ProductCategory PseudoNarancs;
+
+    private @Getter ProductCategory PseudoMalnaSzirup;
+    private @Getter ProductCategory PseudoEperNarancsSzirup;
+    private @Getter ProductCategory PseudoTabasco;
+    private @Getter ProductCategory PseudoBlueCuracao;
+
+    private @Getter ProductCategory PseudoFagyiGyumi;
+
+    private @Getter ProductCategory PseudoBarnaCukor;
+    private @Getter ProductCategory PseudoFeherCukor;
+    private @Getter ProductCategory PseudoMez;
+
+    private @Getter ProductCategory PseudoTej;
+
+    private @Getter ProductCategory PseudoTortillaSos;
+    private @Getter ProductCategory PseudoTortillaBBQ;
+    private @Getter ProductCategory PseudoNachosSajtszosz;
+    private @Getter ProductCategory PseudoNachosChiliszosz;
+
+    private @Getter ProductCategory PseudoBagett;
+    private @Getter ProductCategory PseudoZsir;
+
+    private @Getter ProductCategory PseudoLilahagyma;
+    private @Getter ProductCategory PseudoPirospaprika;
+    private @Getter ProductCategory PseudoSalata;
+    private @Getter ProductCategory PseudoParadicsom;
+    private @Getter ProductCategory PseudoUborka;
+    private @Getter ProductCategory PseudoPiritottHagyma;
+
+    private @Getter ProductCategory PseudoTrappista;
+    private @Getter ProductCategory PseudoCheddar;
+    private @Getter ProductCategory PseudoKecskesajt;
+    private @Getter ProductCategory PseudoCamambert;
+
+    private @Getter ProductCategory PseudoSonka;
+    private @Getter ProductCategory PseudoSzalami;
+    private @Getter ProductCategory PseudoTonhalKrem;
+
+    private @Getter ProductCategory PseudoMargarin;
+
+    private @Getter ProductCategory PseudoMustar;
+    private @Getter ProductCategory PseudoMajonez;
+    private @Getter ProductCategory PseudoAjvar;
+
+    private @Getter ProductCategory PseudoTortillaLap;
+
     // Csapolt sorok
     private @Getter ProductCategory PseudoSoproni03;
     private @Getter ProductCategory PseudoSoproni05;
@@ -763,6 +653,217 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoJackAndCoke;
     private @Getter ProductCategory PseudoVodkaSzoda;
 
+    /* ----- ITALLAP -----*/
+    // Csapolt sorok
+    private @Getter Recipe Soproni03Recipe1;
+    private @Getter Recipe Soproni05Recipe1;
+    private @Getter Recipe Edelweiss03Recipe1;
+    private @Getter Recipe Edelweiss05Recipe1;
+
+    // Uveges sorok
+    private @Getter Recipe KrusoviceSvetleRecipe1;
+    private @Getter Recipe SoproniDemonRecipe1;
+    private @Getter Recipe SoproniMaxxRecipe1;
+    private @Getter Recipe HeinekenRecipe1;
+    private @Getter Recipe GosserNaturRadlerRecipe1;
+    private @Getter Recipe GosserNaturRadler00Recipe1;
+    private @Getter Recipe BekesSzentandrasiMeggyesRecipe1;
+    private @Getter Recipe StrongbowDarkfruitRecipe1;
+    private @Getter Recipe StrongbowGoldAppleCiderRecipe1;
+    private @Getter Recipe EdelweissRecipe1;
+
+    // Borok
+    private @Getter Recipe HazBoraNagyEsNagyRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverDecireRecipe1;
+    private @Getter Recipe GereAttilaOlaszrizlingRecipe1;
+
+    private @Getter Recipe HazBoraLisiczaRoseCuveeRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseDecireRecipe1;
+
+    private @Getter Recipe HazBoraPolgarSerumVeritasRecipe1;
+    private @Getter Recipe VinczeMerlotRecipe1;
+    private @Getter Recipe VylyanCabernetSauvignonRecipe1;
+    private @Getter Recipe MeszarosHidasptereCabernetFrancReserveRecipe1;
+
+    // Pezsgok
+    private @Getter Recipe TorleyGalaSzarazRecipe1;
+    private @Getter Recipe TorleyCharmantEdesRecipe1;
+
+    // Fröccsok
+    private @Getter Recipe HazBoraNagyEsNagyKisfroccsRecipe1;
+    private @Getter Recipe HazBoraNagyEsNagyNagyfroccsRecipe1;
+    private @Getter Recipe HazBoraNagyEsNagyVicehazmesterRecipe1;
+    private @Getter Recipe HazBoraNagyEsNagyHazmesterRecipe1;
+    private @Getter Recipe HazBoraNagyEsNagyHosszulepesRecipe1;
+    private @Getter Recipe HazBoraNagyEsNagySportFroccsRecipe1;
+
+    private @Getter Recipe HilltopIrsaiOliverKisfroccsRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverNagyfroccsRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverVicehazmesterRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverHazmesterRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverHosszulepesRecipe1;
+    private @Getter Recipe HilltopIrsaiOliverSportFroccsRecipe1;
+
+    private @Getter Recipe HazBoraLisiczaRoseCuveeKisfroccsRecipe1;
+    private @Getter Recipe HazBoraLisiczaRoseCuveeNagyfroccsRecipe1;
+    private @Getter Recipe HazBoraLisiczaRoseCuveeVicehazmesterRecipe1;
+    private @Getter Recipe HazBoraLisiczaRoseCuveeHazmesterRecipe1;
+    private @Getter Recipe HazBoraLisiczaRoseCuveeHosszulepesRecipe1;
+    private @Getter Recipe HazBoraLisiczaRoseCuveeSportFroccsRecipe1;
+
+    private @Getter Recipe MeszarosPinotNoirRoseKisfroccsRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseNagyfroccsRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseVicehazmesterRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseHazmesterRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseHosszulepesRecipe1;
+    private @Getter Recipe MeszarosPinotNoirRoseSportFroccsRecipe1;
+
+    // Roviditalok
+    private @Getter Recipe JimBeam04Recipe1;
+    private @Getter Recipe JohnnieWalkerRedLabel04Recipe1;
+    private @Getter Recipe JackDaniels04Recipe1;
+    private @Getter Recipe TullamoreDew04Recipe1;
+
+    private @Getter Recipe Royal04Recipe1;
+    private @Getter Recipe Finlandia04Recipe1;
+
+    private @Getter Recipe BacardiSuperior04Recipe1;
+    private @Getter Recipe CaptainMorganSpicedRum04Recipe1;
+
+    private @Getter Recipe Beefeater04Recipe1;
+
+    private @Getter Recipe TequilaSierraReposadoGold04Recipe1;
+    private @Getter Recipe TequilaSierraSilver04Recipe1;
+
+    private @Getter Recipe Unicum04Recipe1;
+    private @Getter Recipe Jagermeister04Recipe1;
+    private @Getter Recipe Baileys08Recipe1;
+
+    private @Getter Recipe JimBeam02Recipe1;
+    private @Getter Recipe JohnnieWalkerRedLabel02Recipe1;
+    private @Getter Recipe JackDaniels02Recipe1;
+    private @Getter Recipe TullamoreDew02Recipe1;
+
+    private @Getter Recipe Royal02Recipe1;
+    private @Getter Recipe Finlandia02Recipe1;
+
+    private @Getter Recipe BacardiSuperior02Recipe1;
+    private @Getter Recipe CaptainMorganSpicedRum02Recipe1;
+
+    private @Getter Recipe Beefeater02Recipe1;
+
+    private @Getter Recipe TequilaSierraReposadoGold02Recipe1;
+    private @Getter Recipe TequilaSierraSilver02Recipe1;
+
+    private @Getter Recipe Unicum02Recipe1;
+    private @Getter Recipe Jagermeister02Recipe1;
+    private @Getter Recipe Baileys04Recipe1;
+
+    // Palinkak/
+    private @Getter Recipe _22KokuszTatratea04Recipe1;
+    private @Getter Recipe _32CitrusTatratea04Recipe1;
+    private @Getter Recipe _42BarackTatratea04Recipe1;
+    private @Getter Recipe _52EredetiTatratea04Recipe1;
+    private @Getter Recipe _62ErdeiGyumolcsTatratea04Recipe1;
+    private @Getter Recipe _72OutlawBetyarTatratea04Recipe1;
+
+    private @Getter Recipe CseresznyePalinka04Recipe1;
+    private @Getter Recipe KajszibarackPalinka04Recipe1;
+    private @Getter Recipe Szilvapalinka04Recipe1;
+
+    private @Getter Recipe _22KokuszTatratea02Recipe1;
+    private @Getter Recipe _32CitrusTatratea02Recipe1;
+    private @Getter Recipe _42BarackTatratea02Recipe1;
+    private @Getter Recipe _52EredetiTatratea02Recipe1;
+    private @Getter Recipe _62ErdeiGyumolcsTatratea02Recipe1;
+    private @Getter Recipe _72OutlawBetyarTatratea02Recipe1;
+
+    private @Getter Recipe CseresznyePalinka02Recipe1;
+    private @Getter Recipe KajszibarackPalinka02Recipe1;
+    private @Getter Recipe Szilvapalinka02Recipe1;
+
+    // Shotok
+    private @Getter Recipe Finca1Recipe1;
+    private @Getter Recipe Bang1Recipe1;
+    private @Getter Recipe Imagine1Recipe1;
+
+    private @Getter Recipe Finca6Recipe1;
+    private @Getter Recipe Bang6Recipe1;
+    private @Getter Recipe Imagine6Recipe1;
+    private @Getter Recipe RiffRaff6Recipe1;
+
+    private @Getter Recipe Finca12Recipe1;
+    private @Getter Recipe Bang12Recipe1;
+    private @Getter Recipe Imagine12Recipe1;
+    private @Getter Recipe RiffRaff12Recipe1;
+
+    // Uveges uditok
+    private @Getter Recipe CocaColaRecipe1;
+    private @Getter Recipe CocaColaZeroRecipe1;
+    private @Getter Recipe FantaNarancsRecipe1;
+    private @Getter Recipe SpriteRecipe1;
+    private @Getter Recipe KinleyGyomberRecipe1;
+    private @Getter Recipe KinleyTonicRecipe1;
+    private @Getter Recipe NesteaCitromRecipe1;
+    private @Getter Recipe NesteaBarackRecipe1;
+
+    // Kimert uditok
+    private @Getter Recipe CappyAlmaRecipe1;
+    private @Getter Recipe CappyNarancsRecipe1;
+    private @Getter Recipe CappyBarackRecipe1;
+    private @Getter Recipe CappyAnanaszRecipe1;
+
+    // Limonadek
+    private @Getter Recipe LimonadeMalna05Recipe1;
+    private @Getter Recipe LimonadeMeggy05Recipe1;
+    private @Getter Recipe LimonadeEperNarancs05Recipe1;
+    private @Getter Recipe LimonadeCitrus05Recipe1;
+
+    private @Getter Recipe LimonadeMalna10Recipe1;
+    private @Getter Recipe LimonadeMeggy10Recipe1;
+    private @Getter Recipe LimonadeEperNarancs10Recipe1;
+    private @Getter Recipe LimonadeCitrus10Recipe1;
+
+    // Asvanyviz
+    private @Getter Recipe NaturaquaSzensavasRecipe1;
+    private @Getter Recipe NaturaquaSzensavmentesRecipe1;
+    private @Getter Recipe SzodaRecipe1;
+
+    // Energiaitalok
+    private @Getter Recipe BurnOriginalRecipe1;
+    private @Getter Recipe BurnZeroRecipe1;
+    private @Getter Recipe MonsterEnergyRecipe1;
+    private @Getter Recipe MonsterAssaultRecipe1;
+    private @Getter Recipe MonsterRehabRecipe1;
+
+    // Filteres Teaak
+    private @Getter Recipe DallmayrFeketeRecipe1;
+    private @Getter Recipe DallmayrGyumolcsRecipe1;
+    private @Getter Recipe DallmayrZoldRecipe1;
+
+    private @Getter Recipe PiramisDarjelingRecipe1;
+    private @Getter Recipe PiramisMangoMaracujaRecipe1;
+    private @Getter Recipe PiramisAnanaszPapajaRecipe1;
+    private @Getter Recipe PiramisCitrusVerbenaRecipe1;
+
+    // Kavek
+    private @Getter Recipe EspressoRecipe1;
+    private @Getter Recipe AmericanoRecipe1;
+    private @Getter Recipe CappuccinoRecipe1;
+    private @Getter Recipe CaffeLatteRecipe1;
+    private @Getter Recipe LatteMacchiatoRecipe1;
+    private @Getter Recipe CaffeMelangeRecipe1;
+    private @Getter Recipe ForroCsokiBarnaRecipe1;
+    private @Getter Recipe ForroCsokiFeherRecipe1;
+
+    // Napi akciok
+    private @Getter Recipe CaptainAndGyomberRecipe1;
+    private @Getter Recipe GinTonicRecipe1;
+    private @Getter Recipe JackAndCokeRecipe1;
+    private @Getter Recipe VodkaSzodaRecipe1;
+
     private @Getter PriceModifier priceModifierEdelweiss;
     private @Getter PriceModifier priceModifierCaptainAndGyomber;
     private @Getter PriceModifier priceModifierGinTonic;
@@ -922,7 +1023,55 @@ public class BuildSchema  {
         buildSplendBor();
         buildTatraTime();
         buildSorrelAzEmberisegEllen();
-        
+
+        // Alapanyagok
+        buildCitrom();
+        buildNarancs();
+
+        buildMalnaSzirup();
+        buildEperNarancsSzirup();
+        buildTabasco();
+        buildBlueCuracao();
+
+        buildFagyiGyumi();
+
+        buildBarnaCukor();
+        buildFeherCukor();
+        buildMez();
+
+        buildTej();
+
+        buildTortillaSos();
+        buildTortillaBBQ();
+        buildNachosSajtszosz();
+        buildNachosChiliszosz();
+
+        buildBagett();
+        buildZsir();
+
+        buildLilahagyma();
+        buildPirospaprika();
+        buildSalata();
+        buildParadicsom();
+        buildUborka();
+        buildPiritottHagyma();
+
+        buildTrappista();
+        buildCheddar();
+        buildKecskesajt();
+        buildCamambert();
+
+        buildSonka();
+        buildSzalami();
+        buildTonhalKrem();
+
+        buildMargarin();
+
+        buildMustar();
+        buildMajonez();
+        buildAjvar();
+
+        buildTortillaLap();
 
         /*----- ITALLAP -----*/
         //Csapolt Sorok
@@ -1559,7 +1708,497 @@ public class BuildSchema  {
                 .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
-    
+
+    private void buildCitrom() {
+        Citrom = Product.builder()
+                .longName("Citrom")
+                .shortName("Citrom")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildNarancs() {
+        Narancs = Product.builder()
+                .longName("Narancs")
+                .shortName("Narancs")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildMalnaSzirup() {
+        MalnaSzirup = Product.builder()
+                .longName("Málna Szirup")
+                .shortName("Málna Szirup")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildEperNarancsSzirup() {
+        EperNarancsSzirup = Product.builder()
+                .longName("Eper-Narancs Szirup")
+                .shortName("Eper-Narancs Szirup")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildTabasco() {
+        Tabasco = Product.builder()
+                .longName("Tabasco")
+                .shortName("Tabasco")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildBlueCuracao() {
+        BlueCuracao = Product.builder()
+                .longName("Blue Curacao")
+                .shortName("Blue Curacao")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildFagyiGyumi() {
+        FagyiGyumi = Product.builder()
+                .longName("Fagyi Gyumi")
+                .shortName("Fagyi Gyumi")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildBarnaCukor() {
+        BarnaCukor = Product.builder()
+                .longName("Barna Cukor")
+                .shortName("Barna Cukor")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildFeherCukor() {
+        FeherCukor = Product.builder()
+                .longName("Feher Cukor")
+                .shortName("Feher Cukor")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildMez() {
+        Mez = Product.builder()
+                .longName("Méz")
+                .shortName("Méz")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildTej() {
+        Tej = Product.builder()
+                .longName("Tej")
+                .shortName("Tej")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildTortillaSos() {
+        TortillaSos = Product.builder()
+                .longName("Tortilla Sós")
+                .shortName("Tortilla Sós")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildTortillaBBQ() {
+        TortillaBBQ = Product.builder()
+                .longName("Tortilla BBQ")
+                .shortName("Tortilla BBQ")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildNachosSajtszosz() {
+        NachosSajtszosz = Product.builder()
+                .longName("Nachos Sajtszósz")
+                .shortName("Nachos Sajtszósz")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildNachosChiliszosz() {
+        NachosChiliszosz = Product.builder()
+                .longName("Nachos Chiliszósz")
+                .shortName("Nachos Chiliszósz")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildBagett() {
+        Bagett = Product.builder()
+                .longName("Bagett")
+                .shortName("Bagett")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildZsir() {
+        Zsir = Product.builder()
+                .longName("Zsir")
+                .shortName("Zsir")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildLilahagyma() {
+        Lilahagyma = Product.builder()
+                .longName("Lilahagyma")
+                .shortName("Lilahagyma")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildPirospaprika() {
+        Pirospaprika = Product.builder()
+                .longName("Pirospaprika")
+                .shortName("Pirospaprika")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildSalata() {
+        Salata = Product.builder()
+                .longName("Saláta")
+                .shortName("Saláta")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildParadicsom() {
+        Paradicsom = Product.builder()
+                .longName("Paradicsom")
+                .shortName("Paradicsom")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildUborka() {
+        Uborka = Product.builder()
+                .longName("Uborka")
+                .shortName("Uborka")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildPiritottHagyma() {
+        PiritottHagyma = Product.builder()
+                .longName("Piritott Hagyma")
+                .shortName("Piritott Hagyma")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildTrappista() {
+        Trappista = Product.builder()
+                .longName("Trappista")
+                .shortName("Trappista")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildCheddar() {
+        Cheddar = Product.builder()
+                .longName("Cheddar")
+                .shortName("Cheddar")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildKecskesajt() {
+        Kecskesajt = Product.builder()
+                .longName("Kecskesajt")
+                .shortName("Kecskesajt")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildCamambert() {
+        Camambert = Product.builder()
+                .longName("Camambert")
+                .shortName("Camambert")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildSonka() {
+        Sonka = Product.builder()
+                .longName("Sonka")
+                .shortName("Sonka")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildSzalami() {
+        Szalami = Product.builder()
+                .longName("Szalámi")
+                .shortName("Szalámi")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildTonhalKrem() {
+        TonhalKrem = Product.builder()
+                .longName("Tonhal Krém")
+                .shortName("Tonhal Krém")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildMargarin() {
+        Margarin = Product.builder()
+                .longName("Margarin")
+                .shortName("Margarin")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildMustar() {
+        Mustar = Product.builder()
+                .longName("Mustár")
+                .shortName("Mustár")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildMajonez() {
+        Majonez = Product.builder()
+                .longName("Majonéz")
+                .shortName("Majonéz")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildAjvar() {
+        Ajvar = Product.builder()
+                .longName("Ajvár")
+                .shortName("Ajvár")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildTortillaLap() {
+        TortillaLap = Product.builder()
+                .longName("Tortilla Lap")
+                .shortName("Tortilla Lap")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
     private void buildSoproni03() {
         Soproni03 = Product.builder()
                 .longName("Soproni 0,3L")
@@ -3829,6 +4468,9 @@ public class BuildSchema  {
         buildMenukAggregate();
             buildMenuk();
 
+        buildAlapanyagokAggregate();
+            buildAlapanyagok();
+        
         buildPseudoAdHoc();
         buildPseudoGameFee();
 
@@ -3867,7 +4509,55 @@ public class BuildSchema  {
         buildPseudoTatraTime();
         buildPseudoSorrelAzEmberisegEllen();
 
+        // Alapanyagok
+        buildPseudoCitrom();
+        buildPseudoNarancs();
 
+        buildPseudoMalnaSzirup();
+        buildPseudoEperNarancsSzirup();
+        buildPseudoTabasco();
+        buildPseudoBlueCuracao();
+
+        buildPseudoFagyiGyumi();
+
+        buildPseudoBarnaCukor();
+        buildPseudoFeherCukor();
+        buildPseudoMez();
+
+        buildPseudoTej();
+
+        buildPseudoTortillaSos();
+        buildPseudoTortillaBBQ();
+        buildPseudoNachosSajtszosz();
+        buildPseudoNachosChiliszosz();
+
+        buildPseudoBagett();
+        buildPseudoZsir();
+
+        buildPseudoLilahagyma();
+        buildPseudoPirospaprika();
+        buildPseudoSalata();
+        buildPseudoParadicsom();
+        buildPseudoUborka();
+        buildPseudoPiritottHagyma();
+
+        buildPseudoTrappista();
+        buildPseudoCheddar();
+        buildPseudoKecskesajt();
+        buildPseudoCamambert();
+
+        buildPseudoSonka();
+        buildPseudoSzalami();
+        buildPseudoTonhalKrem();
+
+        buildPseudoMargarin();
+
+        buildPseudoMustar();
+        buildPseudoMajonez();
+        buildPseudoAjvar();
+
+        buildPseudoTortillaLap();
+        
         //Csapolt Sorok
         buildPseudoSoproni03();
         buildPseudoSoproni05();
@@ -5841,6 +6531,287 @@ public class BuildSchema  {
                 .build();
     }
 
+
+    private void buildPseudoCitrom() {
+        PseudoCitrom = ProductCategory.builder()
+                .name("Citrom_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoNarancs() {
+        PseudoNarancs = ProductCategory.builder()
+                .name("Narancs_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMalnaSzirup() {
+        PseudoMalnaSzirup = ProductCategory.builder()
+                .name("Málna Szirup_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoEperNarancsSzirup() {
+        PseudoEperNarancsSzirup = ProductCategory.builder()
+                .name("Eper-Narancs Szirup_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoTabasco() {
+        PseudoTabasco = ProductCategory.builder()
+                .name("Tabasco_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoBlueCuracao() {
+        PseudoBlueCuracao = ProductCategory.builder()
+                .name("Blue Curacao_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoFagyiGyumi() {
+        PseudoFagyiGyumi = ProductCategory.builder()
+                .name("Fagyi Gyumi_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoBarnaCukor() {
+        PseudoBarnaCukor = ProductCategory.builder()
+                .name("Barna Cukor_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoFeherCukor() {
+        PseudoFeherCukor = ProductCategory.builder()
+                .name("Feher Cukor_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMez() {
+        PseudoMez = ProductCategory.builder()
+                .name("Méz_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoTej() {
+        PseudoTej = ProductCategory.builder()
+                .name("Tej_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoTortillaSos() {
+        PseudoTortillaSos = ProductCategory.builder()
+                .name("Tortilla Sós_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoTortillaBBQ() {
+        PseudoTortillaBBQ = ProductCategory.builder()
+                .name("Tortilla BBQ_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoNachosSajtszosz() {
+        PseudoNachosSajtszosz = ProductCategory.builder()
+                .name("Nachos Sajtszósz_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoNachosChiliszosz() {
+        PseudoNachosChiliszosz = ProductCategory.builder()
+                .name("Nachos Chiliszósz_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoBagett() {
+        PseudoBagett = ProductCategory.builder()
+                .name("Bagett_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+               .build();
+    }
+
+    private void buildPseudoZsir() {
+        PseudoZsir = ProductCategory.builder()
+                .name("Zsir_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoLilahagyma() {
+        PseudoLilahagyma = ProductCategory.builder()
+                .name("Lilahagyma_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoPirospaprika() {
+        PseudoPirospaprika = ProductCategory.builder()
+                .name("Pirospaprika_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoSalata() {
+        PseudoSalata = ProductCategory.builder()
+                .name("Saláta_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoParadicsom() {
+        PseudoParadicsom = ProductCategory.builder()
+                .name("Paradicsom_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoUborka() {
+        PseudoUborka = ProductCategory.builder()
+                .name("Uborka_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoPiritottHagyma() {
+        PseudoPiritottHagyma = ProductCategory.builder()
+                .name("Piritott Hagyma_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoTrappista() {
+        PseudoTrappista = ProductCategory.builder()
+                .name("Trappista_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoCheddar() {
+        PseudoCheddar = ProductCategory.builder()
+                .name("Cheddar_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoKecskesajt() {
+        PseudoKecskesajt = ProductCategory.builder()
+                .name("Kecskesajt_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoCamambert() {
+        PseudoCamambert = ProductCategory.builder()
+                .name("Camambert_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoSonka() {
+        PseudoSonka = ProductCategory.builder()
+                .name("Sonka_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoSzalami() {
+        PseudoSzalami = ProductCategory.builder()
+                .name("Szalámi_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoTonhalKrem() {
+        PseudoTonhalKrem = ProductCategory.builder()
+                .name("Tonhal Krém_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMargarin() {
+        PseudoMargarin = ProductCategory.builder()
+                .name("Margarin_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMustar() {
+        PseudoMustar = ProductCategory.builder()
+                .name("Mustár_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMajonez() {
+        PseudoMajonez = ProductCategory.builder()
+                .name("Majonéz_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoAjvar() {
+        PseudoAjvar = ProductCategory.builder()
+                .name("Ajvár_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoTortillaLap() {
+        PseudoTortillaLap = ProductCategory.builder()
+                .name("Tortilla Lap_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
     private void buildPseudoSoproni03() {
         PseudoSoproni03 = ProductCategory.builder()
                 .name("Soproni 0,3L_Pseudo")
@@ -7287,6 +8258,22 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildAlapanyagokAggregate() {
+        alapanyagokAggregate = ProductCategory.builder()
+                .name(" Alapanyagok")
+                .type(ProductCategoryType.AGGREGATE)
+                .status(ProductStatus.ACTIVE)
+                .build();
+    }
+
+    private void buildAlapanyagok() {
+        alapanyagok = ProductCategory.builder()
+                .name("Alapanyagok")
+                .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
+                .build();
+    }
+    
     private void buildSos() {
         sos = ProductCategory.builder()
                 .name("Sós")
@@ -7810,10 +8797,11 @@ public class BuildSchema  {
 
     private void rootAndAggregates() {
         root.setChildren(new HashSet<>(
-                Arrays.asList(etlap, itallap, menukAggregate)));
+                Arrays.asList(etlap, itallap, menukAggregate, alapanyagokAggregate)));
         etlap.setParent(root);
         itallap.setParent(root);
         menukAggregate.setParent(root);
+        alapanyagokAggregate.setParent(root);
     }
 
     private void aggregatesAndAggregates() {
@@ -7823,6 +8811,8 @@ public class BuildSchema  {
                 Arrays.asList(shotok, sorok, borok, rovidek, palinkak, uditok, forroItalok, napiAkciok)));
         menukAggregate.setChildren(new HashSet<>(
                 Arrays.asList(menuk)));
+        alapanyagokAggregate.setChildren(new HashSet<>(
+                Arrays.asList(alapanyagok)));
         ragcsak.setParent(etlap);
         etelek.setParent(etlap);
         shotok.setParent(itallap);
@@ -7834,6 +8824,7 @@ public class BuildSchema  {
         forroItalok.setParent(itallap);
         napiAkciok.setParent(itallap);
         menuk.setParent(menukAggregate);
+        alapanyagok.setParent(alapanyagokAggregate);
     }
 
     private void aggregatesAndLeafs() {
@@ -7905,7 +8896,56 @@ public class BuildSchema  {
         PseudoSplendBor.setParent(menuk);
         PseudoTatraTime.setParent(menuk);
         PseudoSorrelAzEmberisegEllen.setParent(menuk);
-        
+
+        // Alapanyagok
+        PseudoCitrom.setParent(alapanyagok);
+        PseudoNarancs.setParent(alapanyagok);
+
+        PseudoMalnaSzirup.setParent(alapanyagok);
+        PseudoEperNarancsSzirup.setParent(alapanyagok);
+        PseudoTabasco.setParent(alapanyagok);
+        PseudoBlueCuracao.setParent(alapanyagok);
+
+        PseudoFagyiGyumi.setParent(alapanyagok);
+
+        PseudoBarnaCukor.setParent(alapanyagok);
+        PseudoFeherCukor.setParent(alapanyagok);
+        PseudoMez.setParent(alapanyagok);
+
+        PseudoTej.setParent(alapanyagok);
+
+        PseudoTortillaSos.setParent(alapanyagok);
+        PseudoTortillaBBQ.setParent(alapanyagok);
+        PseudoNachosSajtszosz.setParent(alapanyagok);
+        PseudoNachosChiliszosz.setParent(alapanyagok);
+
+        PseudoBagett.setParent(alapanyagok);
+        PseudoZsir.setParent(alapanyagok);
+
+        PseudoLilahagyma.setParent(alapanyagok);
+        PseudoPirospaprika.setParent(alapanyagok);
+        PseudoSalata.setParent(alapanyagok);
+        PseudoParadicsom.setParent(alapanyagok);
+        PseudoUborka.setParent(alapanyagok);
+        PseudoPiritottHagyma.setParent(alapanyagok);
+
+        PseudoTrappista.setParent(alapanyagok);
+        PseudoCheddar.setParent(alapanyagok);
+        PseudoKecskesajt.setParent(alapanyagok);
+        PseudoCamambert.setParent(alapanyagok);
+
+        PseudoSonka.setParent(alapanyagok);
+        PseudoSzalami.setParent(alapanyagok);
+        PseudoTonhalKrem.setParent(alapanyagok);
+
+        PseudoMargarin.setParent(alapanyagok);
+
+        PseudoMustar.setParent(alapanyagok);
+        PseudoMajonez.setParent(alapanyagok);
+        PseudoAjvar.setParent(alapanyagok);
+
+        PseudoTortillaLap.setParent(alapanyagok);
+
         // Csapolt sorok
         PseudoSoproni03.setParent(csapolt);
         PseudoSoproni05.setParent(csapolt);
@@ -8161,6 +9201,57 @@ public class BuildSchema  {
                     PseudoSplendBor,
                     PseudoTatraTime,
                     PseudoSorrelAzEmberisegEllen)));
+
+        // Alapanyagok
+        alapanyagok.setChildren(new HashSet<>(
+                Arrays.asList(
+                    PseudoCitrom,
+                    PseudoNarancs,
+
+                    PseudoMalnaSzirup,
+                    PseudoEperNarancsSzirup,
+                    PseudoTabasco,
+                    PseudoBlueCuracao,
+
+                    PseudoFagyiGyumi,
+
+                    PseudoBarnaCukor,
+                    PseudoFeherCukor,
+                    PseudoMez,
+
+                    PseudoTej,
+
+                    PseudoTortillaSos,
+                    PseudoTortillaBBQ,
+                    PseudoNachosSajtszosz,
+                    PseudoNachosChiliszosz,
+
+                    PseudoBagett,
+                    PseudoZsir,
+
+                    PseudoLilahagyma,
+                    PseudoPirospaprika,
+                    PseudoSalata,
+                    PseudoParadicsom,
+                    PseudoUborka,
+                    PseudoPiritottHagyma,
+
+                    PseudoTrappista,
+                    PseudoCheddar,
+                    PseudoKecskesajt,
+                    PseudoCamambert,
+
+                    PseudoSonka,
+                    PseudoSzalami,
+                    PseudoTonhalKrem,
+
+                    PseudoMargarin,
+
+                    PseudoMustar,
+                    PseudoMajonez,
+                    PseudoAjvar,
+
+                    PseudoTortillaLap)));
         
         // Csapolt sorok
         csapolt.setChildren(new HashSet<>(
@@ -8461,7 +9552,56 @@ public class BuildSchema  {
         SplendBor.setCategory(PseudoSplendBor);
         TatraTime.setCategory(PseudoTatraTime);
         SorrelAzEmberisegEllen.setCategory(PseudoSorrelAzEmberisegEllen);
-        
+
+        // Alapanyagok
+        Citrom.setCategory(PseudoCitrom);
+        Narancs.setCategory(PseudoNarancs);
+
+        MalnaSzirup.setCategory(PseudoMalnaSzirup);
+        EperNarancsSzirup.setCategory(PseudoEperNarancsSzirup);
+        Tabasco.setCategory(PseudoTabasco);
+        BlueCuracao.setCategory(PseudoBlueCuracao);
+
+        FagyiGyumi.setCategory(PseudoFagyiGyumi);
+
+        BarnaCukor.setCategory(PseudoBarnaCukor);
+        FeherCukor.setCategory(PseudoFeherCukor);
+        Mez.setCategory(PseudoMez);
+
+        Tej.setCategory(PseudoTej);
+
+        TortillaSos.setCategory(PseudoTortillaSos);
+        TortillaBBQ.setCategory(PseudoTortillaBBQ);
+        NachosSajtszosz.setCategory(PseudoNachosSajtszosz);
+        NachosChiliszosz.setCategory(PseudoNachosChiliszosz);
+
+        Bagett.setCategory(PseudoBagett);
+        Zsir.setCategory(PseudoZsir);
+
+        Lilahagyma.setCategory(PseudoLilahagyma);
+        Pirospaprika.setCategory(PseudoPirospaprika);
+        Salata.setCategory(PseudoSalata);
+        Paradicsom.setCategory(PseudoParadicsom);
+        Uborka.setCategory(PseudoUborka);
+        PiritottHagyma.setCategory(PseudoPiritottHagyma);
+
+        Trappista.setCategory(PseudoTrappista);
+        Cheddar.setCategory(PseudoCheddar);
+        Kecskesajt.setCategory(PseudoKecskesajt);
+        Camambert.setCategory(PseudoCamambert);
+
+        Sonka.setCategory(PseudoSonka);
+        Szalami.setCategory(PseudoSzalami);
+        TonhalKrem.setCategory(PseudoTonhalKrem);
+
+        Margarin.setCategory(PseudoMargarin);
+
+        Mustar.setCategory(PseudoMustar);
+        Majonez.setCategory(PseudoMajonez);
+        Ajvar.setCategory(PseudoAjvar);
+
+        TortillaLap.setCategory(PseudoTortillaLap);
+
         // Csapolt Sorok
         Soproni03.setCategory(PseudoSoproni03);
         Soproni05.setCategory(PseudoSoproni05);
@@ -8706,6 +9846,56 @@ public class BuildSchema  {
         PseudoSplendBor.setProduct(SplendBor);
         PseudoTatraTime.setProduct(TatraTime);
         PseudoSorrelAzEmberisegEllen.setProduct(SorrelAzEmberisegEllen);
+
+
+        // Alapanyagok
+        PseudoCitrom.setProduct(Citrom);
+        PseudoNarancs.setProduct(Narancs);
+
+        PseudoMalnaSzirup.setProduct(MalnaSzirup);
+        PseudoEperNarancsSzirup.setProduct(EperNarancsSzirup);
+        PseudoTabasco.setProduct(Tabasco);
+        PseudoBlueCuracao.setProduct(BlueCuracao);
+
+        PseudoFagyiGyumi.setProduct(FagyiGyumi);
+
+        PseudoBarnaCukor.setProduct(BarnaCukor);
+        PseudoFeherCukor.setProduct(FeherCukor);
+        PseudoMez.setProduct(Mez);
+
+        PseudoTej.setProduct(Tej);
+
+        PseudoTortillaSos.setProduct(TortillaSos);
+        PseudoTortillaBBQ.setProduct(TortillaBBQ);
+        PseudoNachosSajtszosz.setProduct(NachosSajtszosz);
+        PseudoNachosChiliszosz.setProduct(NachosChiliszosz);
+
+        PseudoBagett.setProduct(Bagett);
+        PseudoZsir.setProduct(Zsir);
+
+        PseudoLilahagyma.setProduct(Lilahagyma);
+        PseudoPirospaprika.setProduct(Pirospaprika);
+        PseudoSalata.setProduct(Salata);
+        PseudoParadicsom.setProduct(Paradicsom);
+        PseudoUborka.setProduct(Uborka);
+        PseudoPiritottHagyma.setProduct(PiritottHagyma);
+
+        PseudoTrappista.setProduct(Trappista);
+        PseudoCheddar.setProduct(Cheddar);
+        PseudoKecskesajt.setProduct(Kecskesajt);
+        PseudoCamambert.setProduct(Camambert);
+
+        PseudoSonka.setProduct(Sonka);
+        PseudoSzalami.setProduct(Szalami);
+        PseudoTonhalKrem.setProduct(TonhalKrem);
+
+        PseudoMargarin.setProduct(Margarin);
+
+        PseudoMustar.setProduct(Mustar);
+        PseudoMajonez.setProduct(Majonez);
+        PseudoAjvar.setProduct(Ajvar);
+
+        PseudoTortillaLap.setProduct(TortillaLap);
         
         // Csapolt Sorok
         PseudoSoproni03.setProduct(Soproni03);
