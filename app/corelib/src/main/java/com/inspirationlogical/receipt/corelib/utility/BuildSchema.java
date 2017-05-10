@@ -13,9 +13,34 @@ import java.util.HashSet;
 import javax.persistence.EntityManager;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
-import com.inspirationlogical.receipt.corelib.model.entity.*;
-import com.inspirationlogical.receipt.corelib.model.enums.*;
+import com.inspirationlogical.receipt.corelib.model.entity.Address;
+import com.inspirationlogical.receipt.corelib.model.entity.Client;
+import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
+import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
+import com.inspirationlogical.receipt.corelib.model.entity.Product;
+import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
+import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
+import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
+import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
+import com.inspirationlogical.receipt.corelib.model.entity.VAT;
+import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
+import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
+import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.enums.VATName;
+import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.security.Role;
+import com.inspirationlogical.receipt.corelib.security.model.entity.AuthUser;
 
 import lombok.Getter;
 
@@ -912,6 +937,8 @@ public class BuildSchema  {
     private @Getter DailyClosure dailyClosureOne;
     private @Getter DailyClosure dailyClosureTwo;
 
+    private @Getter AuthUser admin;
+    private @Getter AuthUser user;
 
     public BuildSchema(){
         entityManager = EntityManagerProvider.getEntityManager("ProductionPersistance");
@@ -934,6 +961,7 @@ public class BuildSchema  {
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.VAT").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.VATSerie").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ProductCategory").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.security.model.entity.AuthUser").executeUpdate();
             entityManager.createNativeQuery("DELETE FROM PRODUCT_CATEGORY_RELATIONS").executeUpdate();
             entityManager.createNativeQuery("UPDATE hibernate_sequence SET next_val=1").executeUpdate();
         });
@@ -961,8 +989,13 @@ public class BuildSchema  {
         buildReservations();
         buildRestaurant();
         buildDailyClosures();
+        buildAuthUsers();
     }
 
+    private void buildAuthUsers() {
+        buildAdmin();
+        buildUser();
+    }
 
     private void buildDailyClosures() {
         buildDailyClosureOne();
@@ -984,6 +1017,8 @@ public class BuildSchema  {
         GuardedTransaction.run(() -> entityManager.persist(restaurant));
         GuardedTransaction.run(() -> entityManager.persist(root));
         GuardedTransaction.run(() -> entityManager.persist(vatSerie));
+        GuardedTransaction.run(() -> entityManager.persist(admin));
+        GuardedTransaction.run(() -> entityManager.persist(user));
     }
 
     private void buildProducts() {
@@ -8207,6 +8242,22 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildAdmin() {
+        admin = AuthUser.builder()
+                .username("admin")
+                .password("admin")
+                .role(Role.ADMIN)
+                .build();
+    }
+
+    private void buildUser() {
+        user = AuthUser.builder()
+                .username("user")
+                .password("user")
+                .role(Role.USER)
+                .build();
+    }
+
     private void buildRoot() {
         root = ProductCategory.builder()
                 .name("root")
@@ -8357,7 +8408,6 @@ public class BuildSchema  {
                 .status(ProductStatus.ACTIVE)
                 .build();
     }
-
 
     private void buildFroccsok() {
         froccsok = ProductCategory.builder()
@@ -8786,7 +8836,7 @@ public class BuildSchema  {
                 .number(1003)
                 .type(TableType.OTHER)
                 .build();
-       }
+    }
 
     private void productCategories() {
         rootAndAggregates();

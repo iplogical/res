@@ -1,10 +1,13 @@
 package com.inspirationlogical.receipt.reserver.resource;
 
-import java.text.ParseException;
+import static com.inspirationlogical.receipt.corelib.security.Role.ADMIN;
+import static com.inspirationlogical.receipt.corelib.security.Role.USER;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -37,26 +40,24 @@ public class ReservationResource {
     @GET
     @Path("/api")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReservationViewModel> getReservations() throws ParseException {
-
-        List<ReservationViewModel> reservations = restaurantService.getReservations()
+    @RolesAllowed({ADMIN, USER})
+    public List<ReservationViewModel> getReservations() {
+        return restaurantService.getReservations()
                 .stream()
                 .map(ReservationViewModel::new)
                 .collect(Collectors.toList());
-
-        return reservations;
     }
 
     @GET
-    public GetReservationsView getReservationsView() throws ParseException {
-
+    @RolesAllowed({ADMIN, USER})
+    public GetReservationsView getReservationsView() {
         return new GetReservationsView();
     }
 
     @GET
     @Path("/{date}")
-    public GetReservationsByDateView getReservationsView(@PathParam("date") Optional<String> dateParameter) throws ParseException {
-
+    @RolesAllowed({ADMIN, USER})
+    public GetReservationsByDateView getReservationsView(@PathParam("date") Optional<String> dateParameter) {
         final LocalDate localDate = dateParameter.map(DateParser::parseDate).orElseGet(LocalDate::now);
 
         List<ReservationViewModel> reservations = restaurantService.getReservations(localDate)
@@ -70,21 +71,23 @@ public class ReservationResource {
     @POST
     @Path("/api")
     @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed(ADMIN)
     public void addReservation(@Valid ReservationParams reservationParams) {
-
         restaurantService.addReservation(reservationParams);
     }
 
     @PUT
     @Path("/api/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed(ADMIN)
     public void editReservation(@PathParam("id") long reservationId, @Valid ReservationParams reservationParams) {
         restaurantService.updateReservation(reservationId, reservationParams);
     }
 
     @DELETE
     @Path("/api/{id}")
-    public void editReservation(@PathParam("id") long reservationId) {
+    @RolesAllowed(ADMIN)
+    public void deleteReservation(@PathParam("id") long reservationId) {
         restaurantService.deleteReservation(reservationId);
     }
 }

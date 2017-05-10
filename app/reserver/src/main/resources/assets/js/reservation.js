@@ -1,10 +1,13 @@
 
-var apiUrl = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+'/reservation/api';
+var url = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+var apiUrl = url+'/reservation/api';
 
 $(document).ready(function() {
+
     $("#addReservation").submit(function(e){
         return false;
     });
+
     $("#editReservation").submit(function(e){
         return false;
     });
@@ -20,37 +23,39 @@ $(document).ready(function() {
         theme: true,
         customButtons: {
             addReservationButton: {
-                text: 'Add',
+                text: 'New reservation',
                 click: function() {
                     showAddReservationForm(calendar);
+                }
+            },
+            logoutButton: {
+                text: 'Logout',
+                click: function() {
+                    logout(url+'/logout');
                 }
             }
         },
         header: {
             left:   'title',
-            center: 'addReservationButton',
-            right:  'today,agendaDay,agendaWeek,month prev,next'
+            center: '',
+            right:  'addReservationButton today,agendaDay,agendaWeek,month prev,next logoutButton'
         },
         eventRender: function (event, element) {
             element.attr('href', 'javascript:void(0);');
             element.click(function() {
-                $("#showDate").html(moment(event.start).format("YYYY-MM-DD"));
-                $("#showStartTime").html(moment(event.start).format("HH:mm"));
-                $("#showEndTime").html(moment(event.end).format("HH:mm"));
-                $("#showPhone").html(event.phone);
-                $("#showGuests").html(event.guests);
-                $("#showNote").html(event.description);
+                updateShowReservationForm(event);
                 $("#showReservationForm").dialog({
                     modal: true,
-                    width: "250px",
+                    width: "270px",
                     title: event.title,
                     buttons: {
                         Delete: function() {
-                            deleteReservation(event, calendar);
-                            $( this ).dialog( "close" );
+                            if (confirm("Confirm delete")) {
+                                deleteReservation(event, calendar);
+                                $( this ).dialog( "close" );
+                            }
                         },
                         Edit: function() {
-                            $( this ).dialog( "close" );
                             $("#editId").val(event.id);
                             $("#editName").val(event.name);
                             $("#editNote").val(event.description);
@@ -67,13 +72,17 @@ $(document).ready(function() {
                                     Save: function() {
                                         var $form = $("#editReservation");
                                         var reservation = getFormData($form);
-                                        reservationToEvent(reservation, event)
-                                        updateReservation(event, calendar);
+                                        updateReservation(reservation, event, calendar);
                                         $( this ).dialog( "close" );
-                                        element.click();
+                                    },
+                                    Cancel: function() {
+                                        $( this ).dialog( "close" );
                                     }
                                 }
                             });
+                        },
+                        Close: function() {
+                            $( this ).dialog( "close" );
                         }
                     }
                 });
@@ -97,14 +106,14 @@ $(document).ready(function() {
             if (!confirm("Confirm start time change")) {
                 revertFunc();
             } else {
-                updateReservation(event);
+                updateReservationTime(event, calendar, revertFunc);
             }
         },
         eventResize: function(event, delta, revertFunc) {
             if (!confirm("Confirm end time change")) {
                 revertFunc();
             } else {
-                updateReservation(event);
+                updateReservationTime(event, calendar, revertFunc);
             }
         }
     });
@@ -120,6 +129,23 @@ $(document).ready(function() {
     getReservations(calendar);
 });
 
+function logout(to_url) {
+    var out = window.location.href.replace(/:\/\//, '://log:out@');
+
+    jQuery.get(out).error(function() {
+        window.location = to_url;
+    });
+}
+
+function updateShowReservationForm(event) {
+    $("#showDate").html(moment(event.start).format("YYYY-MM-DD"));
+    $("#showStartTime").html(moment(event.start).format("HH:mm"));
+    $("#showEndTime").html(moment(event.end).format("HH:mm"));
+    $("#showPhone").html(event.phone);
+    $("#showGuests").html(event.guests);
+    $("#showNote").html(event.description);
+}
+
 function showAddReservationForm(calendar) {
     $("#addReservationForm").dialog({
         modal: true,
@@ -129,6 +155,9 @@ function showAddReservationForm(calendar) {
                 var $form = $("#addReservation");
                 var reservation = getFormData($form);
                 addReservation(reservation, calendar);
+                $( this ).dialog( "close" );
+            },
+            Cancel: function() {
                 $( this ).dialog( "close" );
             }
         }
@@ -150,6 +179,7 @@ function reservationToEvent(reservation, event) {
 
 function eventToReservation(event) {
     var reservation = new Object();
+    reservation.reservationId = event.id;
     reservation.name = event.name;
     reservation.note = event.description;
     reservation.phoneNumber = event.phone;
@@ -180,7 +210,7 @@ function addReservation(reservation, calendar){
         data: JSON.stringify(reservation),
         contentType: "application/json",
         success: function() {
-            calendar.fullCalendar('renderEvent', event);
+            calendar.fullCalendar('renderEvent', event, true);
         },
         error: function(error){
             console.log(error);
@@ -189,7 +219,25 @@ function addReservation(reservation, calendar){
     });
 }
 
-function updateReservation(event, calendar) {
+function updateReservation(reservation, event, calendar) {
+    $.ajax({
+        type: "PUT",
+        url: apiUrl + "/" + event.id,
+        data: JSON.stringify(reservation),
+        contentType: "application/json",
+        success: function() {
+            reservationToEvent(reservation, event);
+            calendar.fullCalendar('updateEvent', event);
+            updateShowReservationForm(event);
+        },
+        error: function(error){
+            console.log(error);
+            alert(error.responseText);
+        }
+    });
+}
+
+function updateReservationTime(event, calendar, revertFunc) {
     var reservation = eventToReservation(event);
     $.ajax({
         type: "PUT",
@@ -197,9 +245,9 @@ function updateReservation(event, calendar) {
         data: JSON.stringify(reservation),
         contentType: "application/json",
         success: function() {
-            calendar.fullCalendar('updateEvent', event);
         },
         error: function(error){
+            revertFunc();
             console.log(error);
             alert(error.responseText);
         }

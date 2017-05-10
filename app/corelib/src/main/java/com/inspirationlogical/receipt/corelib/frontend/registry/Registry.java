@@ -11,6 +11,8 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.FXMLLoaderProvider;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.security.service.SecurityService;
+import com.inspirationlogical.receipt.corelib.security.service.SecurityServiceImpl;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.CommonServiceImpl;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
@@ -26,6 +28,7 @@ public abstract class Registry extends AbstractModule {
     protected void configure() {
         bind(RestaurantService.class).to(RestaurantServiceImpl.class);
         bind(CommonService.class).to(CommonServiceImpl.class);
+        bind(SecurityService.class).to(SecurityServiceImpl.class);
     }
 
     @SneakyThrows
