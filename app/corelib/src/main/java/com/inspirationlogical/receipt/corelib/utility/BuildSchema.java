@@ -94,6 +94,36 @@ public class BuildSchema  {
     private @Getter Product VylyanCabernetSauvignon;
     private @Getter Product MeszarosHidasptereCabernetFrancReserve;
 
+    // Fröccsök
+    private @Getter Product HazBoraNagyEsNagyKisfroccs;
+    private @Getter Product HazBoraNagyEsNagyNagyfroccs;
+    private @Getter Product HazBoraNagyEsNagyVicehazmester;
+    private @Getter Product HazBoraNagyEsNagyHazmester;
+    private @Getter Product HazBoraNagyEsNagyHosszulepes;
+    private @Getter Product HazBoraNagyEsNagySportFroccs;
+    
+    private @Getter Product HilltopIrsaiOliverKisfroccs;
+    private @Getter Product HilltopIrsaiOliverNagyfroccs;
+    private @Getter Product HilltopIrsaiOliverVicehazmester;
+    private @Getter Product HilltopIrsaiOliverHazmester;
+    private @Getter Product HilltopIrsaiOliverHosszulepes;
+    private @Getter Product HilltopIrsaiOliverSportFroccs;
+    
+    private @Getter Product HazBoraLisiczaRoseCuveeKisfroccs;
+    private @Getter Product HazBoraLisiczaRoseCuveeNagyfroccs;
+    private @Getter Product HazBoraLisiczaRoseCuveeVicehazmester;
+    private @Getter Product HazBoraLisiczaRoseCuveeHazmester;
+    private @Getter Product HazBoraLisiczaRoseCuveeHosszulepes;
+    private @Getter Product HazBoraLisiczaRoseCuveeSportFroccs;
+    
+    private @Getter Product MeszarosPinotNoirRoseKisfroccs;
+    private @Getter Product MeszarosPinotNoirRoseNagyfroccs;
+    private @Getter Product MeszarosPinotNoirRoseVicehazmester;
+    private @Getter Product MeszarosPinotNoirRoseHazmester;
+    private @Getter Product MeszarosPinotNoirRoseHosszulepes;
+    private @Getter Product MeszarosPinotNoirRoseSportFroccs;
+    
+    
     // Pezsgok
     private @Getter Product TorleyGalaSzaraz;
     private @Getter Product TorleyCharmantEdes;
@@ -440,6 +470,7 @@ public class BuildSchema  {
     private @Getter ProductCategory borok;
     private @Getter ProductCategory uvegBor;
     private @Getter ProductCategory borDecire;
+    private @Getter ProductCategory froccsok;
     private @Getter ProductCategory rovidek;
     private @Getter ProductCategory palinkak;
     private @Getter ProductCategory uditok;
@@ -526,6 +557,35 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoVylyanCabernetSauvignon;
     private @Getter ProductCategory PseudoMeszarosHidasptereCabernetFrancReserve;
 
+    // Fröccsök
+    private @Getter ProductCategory PseudoHazBoraNagyEsNagyKisfroccs;
+    private @Getter ProductCategory PseudoHazBoraNagyEsNagyNagyfroccs;
+    private @Getter ProductCategory PseudoHazBoraNagyEsNagyVicehazmester;
+    private @Getter ProductCategory PseudoHazBoraNagyEsNagyHazmester;
+    private @Getter ProductCategory PseudoHazBoraNagyEsNagyHosszulepes;
+    private @Getter ProductCategory PseudoHazBoraNagyEsNagySportFroccs;
+
+    private @Getter ProductCategory PseudoHilltopIrsaiOliverKisfroccs;
+    private @Getter ProductCategory PseudoHilltopIrsaiOliverNagyfroccs;
+    private @Getter ProductCategory PseudoHilltopIrsaiOliverVicehazmester;
+    private @Getter ProductCategory PseudoHilltopIrsaiOliverHazmester;
+    private @Getter ProductCategory PseudoHilltopIrsaiOliverHosszulepes;
+    private @Getter ProductCategory PseudoHilltopIrsaiOliverSportFroccs;
+
+    private @Getter ProductCategory PseudoHazBoraLisiczaRoseCuveeKisfroccs;
+    private @Getter ProductCategory PseudoHazBoraLisiczaRoseCuveeNagyfroccs;
+    private @Getter ProductCategory PseudoHazBoraLisiczaRoseCuveeVicehazmester;
+    private @Getter ProductCategory PseudoHazBoraLisiczaRoseCuveeHazmester;
+    private @Getter ProductCategory PseudoHazBoraLisiczaRoseCuveeHosszulepes;
+    private @Getter ProductCategory PseudoHazBoraLisiczaRoseCuveeSportFroccs;
+
+    private @Getter ProductCategory PseudoMeszarosPinotNoirRoseKisfroccs;
+    private @Getter ProductCategory PseudoMeszarosPinotNoirRoseNagyfroccs;
+    private @Getter ProductCategory PseudoMeszarosPinotNoirRoseVicehazmester;
+    private @Getter ProductCategory PseudoMeszarosPinotNoirRoseHazmester;
+    private @Getter ProductCategory PseudoMeszarosPinotNoirRoseHosszulepes;
+    private @Getter ProductCategory PseudoMeszarosPinotNoirRoseSportFroccs;
+    
     // Pezsgok
     private @Getter ProductCategory PseudoTorleyGalaSzaraz;
     private @Getter ProductCategory PseudoTorleyCharmantEdes;
@@ -869,6 +929,35 @@ public class BuildSchema  {
         buildVinczeMerlot();
         buildVylyanCabernetSauvignon();
         buildMeszarosHidasptereCabernetFrancReserve();
+
+        // Fröccsök
+        buildHazBoraNagyEsNagyKisfroccs();
+        buildHazBoraNagyEsNagyNagyfroccs();
+        buildHazBoraNagyEsNagyVicehazmester();
+        buildHazBoraNagyEsNagyHazmester();
+        buildHazBoraNagyEsNagyHosszulepes();
+        buildHazBoraNagyEsNagySportfroccs();
+
+        buildHilltopIrsaiOliverKisfroccs();
+        buildHilltopIrsaiOliverNagyfroccs();
+        buildHilltopIrsaiOliverVicehazmester();
+        buildHilltopIrsaiOliverHazmester();
+        buildHilltopIrsaiOliverHosszulepes();
+        buildHilltopIrsaiOliverSportfroccs();
+
+        buildHazBoraLisiczaRoseCuveeKisfroccs();
+        buildHazBoraLisiczaRoseCuveeNagyfroccs();
+        buildHazBoraLisiczaRoseCuveeVicehazmester();
+        buildHazBoraLisiczaRoseCuveeHazmester();
+        buildHazBoraLisiczaRoseCuveeHosszulepes();
+        buildHazBoraLisiczaRoseCuveeSportfroccs();
+
+        buildMeszarosPinotKisfroccs();
+        buildMeszarosPinotNagyfroccs();
+        buildMeszarosPinotVicehazmester();
+        buildMeszarosPinotHazmester();
+        buildMeszarosPinotHosszulepes();
+        buildMeszarosPinotSportfroccs();
 
         // Pezsgok
         buildTorleyGalaSzaraz();
@@ -1801,6 +1890,354 @@ public class BuildSchema  {
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
                 .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+
+    private void buildHazBoraNagyEsNagyKisfroccs() {
+        HazBoraNagyEsNagyKisfroccs = Product.builder()
+                .longName("Ház Bora Nagy és Nagy Kisförccs")
+                .shortName("FHB Kisförccs")
+                .orderNumber(1)
+                .rapidCode(0)
+                .salePrice(300)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildHazBoraNagyEsNagyNagyfroccs() {
+        HazBoraNagyEsNagyNagyfroccs = Product.builder()
+                .longName("Ház Bora Nagy és Nagy Nagyfröccs")
+                .shortName("FHB Nagyfröccs")
+                .orderNumber(5)
+                .rapidCode(0)
+                .salePrice(560)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildHazBoraNagyEsNagyVicehazmester() {
+        HazBoraNagyEsNagyVicehazmester = Product.builder()
+                .longName("Ház Bora Nagy és Nagy Viceházmester")
+                .shortName("FHB Vice")
+                .orderNumber(9)
+                .rapidCode(0)
+                .salePrice(640)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildHazBoraNagyEsNagyHazmester() {
+        HazBoraNagyEsNagyHazmester = Product.builder()
+                .longName("Ház Bora Nagy és Nagy Házmester")
+                .shortName("FHB Házmester")
+                .orderNumber(13)
+                .rapidCode(0)
+                .salePrice(860)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildHazBoraNagyEsNagyHosszulepes() {
+        HazBoraNagyEsNagyHosszulepes = Product.builder()
+                .longName("Ház Bora Nagy és Nagy Hosszúlépés")
+                .shortName("FHB Hosszúlépés")
+                .orderNumber(17)
+                .rapidCode(0)
+                .salePrice(340)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildHazBoraNagyEsNagySportfroccs() {
+        HazBoraNagyEsNagySportFroccs = Product.builder()
+                .longName("Ház Bora Nagy és Nagy Sportfröccs")
+                .shortName("FHB Sportfröccs")
+                .orderNumber(21)
+                .rapidCode(0)
+                .salePrice(420)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverKisfroccs() {
+        HilltopIrsaiOliverKisfroccs = Product.builder()
+                .longName("Hilltop Irsai Olivér Kisfröccs")
+                .shortName("Irsai Kisfröccs")
+                .orderNumber(2)
+                .salePrice(340)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverNagyfroccs() {
+        HilltopIrsaiOliverNagyfroccs = Product.builder()
+                .longName("Hilltop Irsai Olivér Nagyfröccs")
+                .shortName("Irsai Nagyfröccs")
+                .orderNumber(6)
+                .salePrice(720)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverVicehazmester() {
+        HilltopIrsaiOliverVicehazmester = Product.builder()
+                .longName("Hilltop Irsai Olivér Viceházmester")
+                .shortName("Irsai Vice")
+                .orderNumber(10)
+                .salePrice(800)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverHazmester() {
+        HilltopIrsaiOliverHazmester = Product.builder()
+                .longName("Hilltop Irsai Olivér Házmester")
+                .shortName("Irsai Házmester")
+                .orderNumber(14)
+                .salePrice(1100)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverHosszulepes() {
+        HilltopIrsaiOliverHosszulepes = Product.builder()
+                .longName("Hilltop Irsai Olivér Hosszúlépés")
+                .shortName("Irsai Hosszúlépés")
+                .orderNumber(18)
+                .salePrice(420)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+
+    private void buildHilltopIrsaiOliverSportfroccs() {
+        HilltopIrsaiOliverSportFroccs = Product.builder()
+                .longName("Hilltop Irsai Olivér Sportföccs")
+                .shortName("Irsai Sportföccs")
+                .orderNumber(22)
+                .salePrice(500)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+
+    private void buildHazBoraLisiczaRoseCuveeKisfroccs() {
+        HazBoraLisiczaRoseCuveeKisfroccs = Product.builder()
+                .longName("Ház Bora Lisicza Rosé Cuvée Kisfröccs")
+                .shortName("RHB Kisfröccs")
+                .orderNumber(3)
+                .rapidCode(0)
+                .salePrice(300)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildHazBoraLisiczaRoseCuveeNagyfroccs() {
+        HazBoraLisiczaRoseCuveeNagyfroccs = Product.builder()
+                .longName("Ház Bora Lisicza Rosé Cuvée Nagyfröccs")
+                .shortName("RHB Nagyfröccs")
+                .orderNumber(7)
+                .rapidCode(0)
+                .salePrice(560)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildHazBoraLisiczaRoseCuveeVicehazmester() {
+        HazBoraLisiczaRoseCuveeVicehazmester = Product.builder()
+                .longName("Ház Bora Lisicza Rosé Cuvée Viceházmester")
+                .shortName("RHB Vice")
+                .orderNumber(11)
+                .rapidCode(0)
+                .salePrice(640)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildHazBoraLisiczaRoseCuveeHazmester() {
+        HazBoraLisiczaRoseCuveeHazmester = Product.builder()
+                .longName("Ház Bora Lisicza Rosé Cuvée Házmester")
+                .shortName("RHB Házmester")
+                .orderNumber(15)
+                .rapidCode(0)
+                .salePrice(860)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildHazBoraLisiczaRoseCuveeHosszulepes() {
+        HazBoraLisiczaRoseCuveeHosszulepes = Product.builder()
+                .longName("Ház Bora Lisicza Rosé Cuvée Hosszúlépés")
+                .shortName("RHB Hosszúlépés")
+                .orderNumber(19)
+                .rapidCode(0)
+                .salePrice(340)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildHazBoraLisiczaRoseCuveeSportfroccs() {
+        HazBoraLisiczaRoseCuveeSportFroccs = Product.builder()
+                .longName("Ház Bora Lisicza Rosé Cuvée Sportföccs")
+                .shortName("RHB Sportföccs")
+                .orderNumber(23)
+                .rapidCode(0)
+                .salePrice(420)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildMeszarosPinotKisfroccs() {
+        MeszarosPinotNoirRoseKisfroccs = Product.builder()
+                .longName("Mészáros Pinot Noir Rose Kisfröccs")
+                .shortName("Mészáros Kisfröccs")
+                .orderNumber(4)
+                .salePrice(2400)
+                .purchasePrice(400)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildMeszarosPinotNagyfroccs() {
+        MeszarosPinotNoirRoseNagyfroccs = Product.builder()
+                .longName("Mészáros Pinot Noir Rose Nagyfröccs")
+                .shortName("Mészáros Nagyfröccs")
+                .orderNumber(8)
+                .salePrice(760)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildMeszarosPinotVicehazmester() {
+        MeszarosPinotNoirRoseVicehazmester = Product.builder()
+                .longName("Mészáros Pinot Noir Rose Viceházmester")
+                .shortName("Mészáros Vice")
+                .orderNumber(12)
+                .salePrice(840)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildMeszarosPinotHazmester() {
+        MeszarosPinotNoirRoseHazmester = Product.builder()
+                .longName("Mészáros Pinot Noir Rose Házmester")
+                .shortName("Mészáros Házmester")
+                .orderNumber(16)
+                .salePrice(1160)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildMeszarosPinotHosszulepes() {
+        MeszarosPinotNoirRoseHosszulepes = Product.builder()
+                .longName("Mészáros Pinot Noir Rose Hosszúlépés")
+                .shortName("Mészáros Hosszúlépés")
+                .orderNumber(20)
+                .salePrice(440)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildMeszarosPinotSportfroccs() {
+        MeszarosPinotNoirRoseSportFroccs = Product.builder()
+                .longName("Mészáros Pinot Noir Rose Sprotfröccs")
+                .shortName("Mészáros Sprotfröccs")
+                .orderNumber(24)
+                .salePrice(520)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
                 .build();
     }
 
@@ -3369,6 +3806,7 @@ public class BuildSchema  {
             buildBorok();
                 buildUveg();
                 buildBorDecire();
+                buildFroccsok();
             buildRovidek();
             buildPalinkak();
         buildUdito();
@@ -3458,6 +3896,35 @@ public class BuildSchema  {
         buildPseudoVylyanCabernetSauvignon();
         buildPseudoMeszarosHidasptereCabernetFrancReserve();
 
+        // Fröccsök
+        buildPseudoHazBoraNagyEsNagyKisfroccs();
+        buildPseudoHazBoraNagyEsNagyNagyfroccs();
+        buildPseudoHazBoraNagyEsNagyVicehazmester();
+        buildPseudoHazBoraNagyEsNagyHazmester();
+        buildPseudoHazBoraNagyEsNagyHosszulepes();
+        buildPseudoHazBoraNagyEsNagySportfroccs();
+
+        buildPseudoHilltopIrsaiOliverKisfroccs();
+        buildPseudoHilltopIrsaiOliverNagyfroccs();
+        buildPseudoHilltopIrsaiOliverVicehazmester();
+        buildPseudoHilltopIrsaiOliverHazmester();
+        buildPseudoHilltopIrsaiOliverHosszulepes();
+        buildPseudoHilltopIrsaiOliverSportfroccs();
+
+        buildPseudoHazBoraLisiczaRoseCuveeKisfroccs();
+        buildPseudoHazBoraLisiczaRoseCuveeNagyfroccs();
+        buildPseudoHazBoraLisiczaRoseCuveeVicehazmester();
+        buildPseudoHazBoraLisiczaRoseCuveeHazmester();
+        buildPseudoHazBoraLisiczaRoseCuveeHosszulepes();
+        buildPseudoHazBoraLisiczaRoseCuveeSportfroccs();
+
+        buildPseudoMeszarosPinotKisfroccs();
+        buildPseudoMeszarosPinotNagyfroccs();
+        buildPseudoMeszarosPinotVicehazmester();
+        buildPseudoMeszarosPinotHazmester();
+        buildPseudoMeszarosPinotHosszulepes();
+        buildPseudoMeszarosPinotSportfroccs();
+        
         // Pezsgok
         buildPseudoTorleyGalaSzaraz();
         buildPseudoTorleyCharmantEdes();
@@ -3651,7 +4118,7 @@ public class BuildSchema  {
         buildVinczeMerlotRecipe1();
         buildVylyanCabernetSauvignonRecipe1();
         buildMeszarosHidasptereCabernetFrancReserveRecipe1();
-
+        
         // Pezsgok
         buildTorleyGalaSzarazRecipe1();
         buildTorleyCharmantEdesRecipe1();
@@ -5348,6 +5815,198 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildPseudoHazBoraNagyEsNagyKisfroccs() {
+        PseudoHazBoraNagyEsNagyKisfroccs = ProductCategory.builder()
+                .name("FHB Kisförccs_Pseudo_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHazBoraNagyEsNagyNagyfroccs() {
+        PseudoHazBoraNagyEsNagyNagyfroccs = ProductCategory.builder()
+                .name("FHB Nagyfröccs_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHazBoraNagyEsNagyVicehazmester() {
+        PseudoHazBoraNagyEsNagyVicehazmester = ProductCategory.builder()
+                .name("FHB Viceházmester_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHazBoraNagyEsNagyHazmester() {
+        PseudoHazBoraNagyEsNagyHazmester = ProductCategory.builder()
+                .name("FHB Házmester_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHazBoraNagyEsNagyHosszulepes() {
+        PseudoHazBoraNagyEsNagyHosszulepes = ProductCategory.builder()
+                .name("FHB Hosszúlépés_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHazBoraNagyEsNagySportfroccs() {
+        PseudoHazBoraNagyEsNagySportFroccs = ProductCategory.builder()
+                .name("FHB Sportfröccs_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHilltopIrsaiOliverKisfroccs() {
+        PseudoHilltopIrsaiOliverKisfroccs = ProductCategory.builder()
+                .name("Irsai Kisfröccs_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHilltopIrsaiOliverNagyfroccs() {
+        PseudoHilltopIrsaiOliverNagyfroccs = ProductCategory.builder()
+                .name("Irsai Nagyfröccs_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHilltopIrsaiOliverVicehazmester() {
+        PseudoHilltopIrsaiOliverVicehazmester = ProductCategory.builder()
+                .name("Irsai Viceházmester_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHilltopIrsaiOliverHazmester() {
+        PseudoHilltopIrsaiOliverHazmester = ProductCategory.builder()
+                .name("Irsai Házmester_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHilltopIrsaiOliverHosszulepes() {
+        PseudoHilltopIrsaiOliverHosszulepes = ProductCategory.builder()
+                .name("Irsai Hosszúlépés_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHilltopIrsaiOliverSportfroccs() {
+        PseudoHilltopIrsaiOliverSportFroccs = ProductCategory.builder()
+                .name("Irsai Sportföccs_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHazBoraLisiczaRoseCuveeKisfroccs() {
+        PseudoHazBoraLisiczaRoseCuveeKisfroccs = ProductCategory.builder()
+                .name("RHB Kisfröccs_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHazBoraLisiczaRoseCuveeNagyfroccs() {
+        PseudoHazBoraLisiczaRoseCuveeNagyfroccs = ProductCategory.builder()
+                .name("RHB Nagyfröccs_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHazBoraLisiczaRoseCuveeVicehazmester() {
+        PseudoHazBoraLisiczaRoseCuveeVicehazmester = ProductCategory.builder()
+                .name("RHB Viceházmester_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHazBoraLisiczaRoseCuveeHazmester() {
+        PseudoHazBoraLisiczaRoseCuveeHazmester = ProductCategory.builder()
+                .name("RHB Házmester_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHazBoraLisiczaRoseCuveeHosszulepes() {
+        PseudoHazBoraLisiczaRoseCuveeHosszulepes = ProductCategory.builder()
+                .name("RHB Hosszúlépés_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoHazBoraLisiczaRoseCuveeSportfroccs() {
+        PseudoHazBoraLisiczaRoseCuveeSportFroccs = ProductCategory.builder()
+                .name("RHB Sportföccs_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMeszarosPinotKisfroccs() {
+        PseudoMeszarosPinotNoirRoseKisfroccs = ProductCategory.builder()
+                .name("Mészáros Kisfröccs_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMeszarosPinotNagyfroccs() {
+        PseudoMeszarosPinotNoirRoseNagyfroccs = ProductCategory.builder()
+                .name("Mészáros Nagyfröccs_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMeszarosPinotVicehazmester() {
+        PseudoMeszarosPinotNoirRoseVicehazmester = ProductCategory.builder()
+                .name("Mészáros Viceházmester_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMeszarosPinotHazmester() {
+        PseudoMeszarosPinotNoirRoseHazmester = ProductCategory.builder()
+                .name("Mészáros Házmester_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMeszarosPinotHosszulepes() {
+        PseudoMeszarosPinotNoirRoseHosszulepes = ProductCategory.builder()
+                .name("Mészáros Hosszúlépés_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMeszarosPinotSportfroccs() {
+        PseudoMeszarosPinotNoirRoseSportFroccs = ProductCategory.builder()
+                .name("Mészáros Sprotfröccs_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
     private void buildPseudoTorleyGalaSzaraz() {
         PseudoTorleyGalaSzaraz = ProductCategory.builder()
                 .name("Torley Gála Száraz_Pseudo")
@@ -6486,6 +7145,15 @@ public class BuildSchema  {
                 .build();
     }
 
+
+    private void buildFroccsok() {
+        froccsok = ProductCategory.builder()
+                .name("Fröccsök")
+                .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
+                .build();
+    }
+
     private void buildRovidek() {
         rovidek = ProductCategory.builder()
                 .name("Rövidek")
@@ -6948,7 +7616,7 @@ public class BuildSchema  {
         sorok.setChildren(new HashSet<>(
                 Arrays.asList(uvegesSor, csapolt)));
         borok.setChildren(new HashSet<>(
-                Arrays.asList(uvegBor, borDecire)));
+                Arrays.asList(uvegBor, borDecire, froccsok)));
         uditok.setChildren(new HashSet<>(
                 Arrays.asList(uvegesUdito, limo, uditoDecire)));
         forroItalok.setChildren(new HashSet<>(
@@ -6961,6 +7629,7 @@ public class BuildSchema  {
 
         uvegBor.setParent(borok);
         borDecire.setParent(borok);
+        froccsok.setParent(borok);
 
         uvegesUdito.setParent(uditok);
         limo.setParent(uditok);
@@ -7046,6 +7715,35 @@ public class BuildSchema  {
 
         PseudoSzoda.setParent(borDecire);
 
+        // Fröccsök
+        PseudoHazBoraNagyEsNagyKisfroccs.setParent(froccsok);
+        PseudoHazBoraNagyEsNagyNagyfroccs.setParent(froccsok);
+        PseudoHazBoraNagyEsNagyVicehazmester.setParent(froccsok);
+        PseudoHazBoraNagyEsNagyHazmester.setParent(froccsok);
+        PseudoHazBoraNagyEsNagyHosszulepes.setParent(froccsok);
+        PseudoHazBoraNagyEsNagySportFroccs.setParent(froccsok);
+
+        PseudoHilltopIrsaiOliverKisfroccs.setParent(froccsok);
+        PseudoHilltopIrsaiOliverNagyfroccs.setParent(froccsok);
+        PseudoHilltopIrsaiOliverVicehazmester.setParent(froccsok);
+        PseudoHilltopIrsaiOliverHazmester.setParent(froccsok);
+        PseudoHilltopIrsaiOliverHosszulepes.setParent(froccsok);
+        PseudoHilltopIrsaiOliverSportFroccs.setParent(froccsok);
+
+        PseudoHazBoraLisiczaRoseCuveeKisfroccs.setParent(froccsok);
+        PseudoHazBoraLisiczaRoseCuveeNagyfroccs.setParent(froccsok);
+        PseudoHazBoraLisiczaRoseCuveeVicehazmester.setParent(froccsok);
+        PseudoHazBoraLisiczaRoseCuveeHazmester.setParent(froccsok);
+        PseudoHazBoraLisiczaRoseCuveeHosszulepes.setParent(froccsok);
+        PseudoHazBoraLisiczaRoseCuveeSportFroccs.setParent(froccsok);
+
+        PseudoMeszarosPinotNoirRoseKisfroccs.setParent(froccsok);
+        PseudoMeszarosPinotNoirRoseNagyfroccs.setParent(froccsok);
+        PseudoMeszarosPinotNoirRoseVicehazmester.setParent(froccsok);
+        PseudoMeszarosPinotNoirRoseHazmester.setParent(froccsok);
+        PseudoMeszarosPinotNoirRoseHosszulepes.setParent(froccsok);
+        PseudoMeszarosPinotNoirRoseSportFroccs.setParent(froccsok);
+        
         // Pezsgok
         PseudoTorleyGalaSzaraz.setParent(uvegBor);
         PseudoTorleyCharmantEdes.setParent(uvegBor);
@@ -7277,6 +7975,37 @@ public class BuildSchema  {
                     PseudoMeszarosPinotNoireRoseDecire,
                     PseudoSzoda)));
 
+        // Fröccsök
+        froccsok.setChildren(new HashSet<>(
+                Arrays.asList(
+                    PseudoHazBoraNagyEsNagyKisfroccs,
+                    PseudoHazBoraNagyEsNagyNagyfroccs,
+                    PseudoHazBoraNagyEsNagyVicehazmester,
+                    PseudoHazBoraNagyEsNagyHazmester,
+                    PseudoHazBoraNagyEsNagyHosszulepes,
+                    PseudoHazBoraNagyEsNagySportFroccs,
+            
+                    PseudoHilltopIrsaiOliverKisfroccs,
+                    PseudoHilltopIrsaiOliverNagyfroccs,
+                    PseudoHilltopIrsaiOliverVicehazmester,
+                    PseudoHilltopIrsaiOliverHazmester,
+                    PseudoHilltopIrsaiOliverHosszulepes,
+                    PseudoHilltopIrsaiOliverSportFroccs,
+            
+                    PseudoHazBoraLisiczaRoseCuveeKisfroccs,
+                    PseudoHazBoraLisiczaRoseCuveeNagyfroccs,
+                    PseudoHazBoraLisiczaRoseCuveeVicehazmester,
+                    PseudoHazBoraLisiczaRoseCuveeHazmester,
+                    PseudoHazBoraLisiczaRoseCuveeHosszulepes,
+                    PseudoHazBoraLisiczaRoseCuveeSportFroccs,
+            
+                    PseudoMeszarosPinotNoirRoseKisfroccs,
+                    PseudoMeszarosPinotNoirRoseNagyfroccs,
+                    PseudoMeszarosPinotNoirRoseVicehazmester,
+                    PseudoMeszarosPinotNoirRoseHazmester,
+                    PseudoMeszarosPinotNoirRoseHosszulepes,
+                    PseudoMeszarosPinotNoirRoseSportFroccs)));       
+        
         // Roviditalok
         rovidek.setChildren(new HashSet<>(
                 Arrays.asList(
@@ -7535,6 +8264,36 @@ public class BuildSchema  {
         MeszarosPinotNoirRose.setCategory(PseudoMeszarosPinotNoireRose);
         MeszarosPinotNoirRoseDecire.setCategory(PseudoMeszarosPinotNoireRoseDecire);
 
+        
+        // Fröccsök
+        HazBoraNagyEsNagyKisfroccs.setCategory(PseudoHazBoraNagyEsNagyKisfroccs);
+        HazBoraNagyEsNagyNagyfroccs.setCategory(PseudoHazBoraNagyEsNagyNagyfroccs);
+        HazBoraNagyEsNagyVicehazmester.setCategory(PseudoHazBoraNagyEsNagyVicehazmester);
+        HazBoraNagyEsNagyHazmester.setCategory(PseudoHazBoraNagyEsNagyHazmester);
+        HazBoraNagyEsNagyHosszulepes.setCategory(PseudoHazBoraNagyEsNagyHosszulepes);
+        HazBoraNagyEsNagySportFroccs.setCategory(PseudoHazBoraNagyEsNagySportFroccs);
+
+        HilltopIrsaiOliverKisfroccs.setCategory(PseudoHilltopIrsaiOliverKisfroccs);
+        HilltopIrsaiOliverNagyfroccs.setCategory(PseudoHilltopIrsaiOliverNagyfroccs);
+        HilltopIrsaiOliverVicehazmester.setCategory(PseudoHilltopIrsaiOliverVicehazmester);
+        HilltopIrsaiOliverHazmester.setCategory(PseudoHilltopIrsaiOliverHazmester);
+        HilltopIrsaiOliverHosszulepes.setCategory(PseudoHilltopIrsaiOliverHosszulepes);
+        HilltopIrsaiOliverSportFroccs.setCategory(PseudoHilltopIrsaiOliverSportFroccs);
+
+        HazBoraLisiczaRoseCuveeKisfroccs.setCategory(PseudoHazBoraLisiczaRoseCuveeKisfroccs);
+        HazBoraLisiczaRoseCuveeNagyfroccs.setCategory(PseudoHazBoraLisiczaRoseCuveeNagyfroccs);
+        HazBoraLisiczaRoseCuveeVicehazmester.setCategory(PseudoHazBoraLisiczaRoseCuveeVicehazmester);
+        HazBoraLisiczaRoseCuveeHazmester.setCategory(PseudoHazBoraLisiczaRoseCuveeHazmester);
+        HazBoraLisiczaRoseCuveeHosszulepes.setCategory(PseudoHazBoraLisiczaRoseCuveeHosszulepes);
+        HazBoraLisiczaRoseCuveeSportFroccs.setCategory(PseudoHazBoraLisiczaRoseCuveeSportFroccs);
+
+        MeszarosPinotNoirRoseKisfroccs.setCategory(PseudoMeszarosPinotNoirRoseKisfroccs);
+        MeszarosPinotNoirRoseNagyfroccs.setCategory(PseudoMeszarosPinotNoirRoseNagyfroccs);
+        MeszarosPinotNoirRoseVicehazmester.setCategory(PseudoMeszarosPinotNoirRoseVicehazmester);
+        MeszarosPinotNoirRoseHazmester.setCategory(PseudoMeszarosPinotNoirRoseHazmester);
+        MeszarosPinotNoirRoseHosszulepes.setCategory(PseudoMeszarosPinotNoirRoseHosszulepes);
+        MeszarosPinotNoirRoseSportFroccs.setCategory(PseudoMeszarosPinotNoirRoseSportFroccs);
+
         HazBoraPolgarSerumVeritas.setCategory(PseudoHazBoraPolgarSerumVeritas);
         VinczeMerlot.setCategory(PseudoVinczeMerlot);
         VylyanCabernetSauvignon.setCategory(PseudoVylyanCabernetSauvignon);
@@ -7758,7 +8517,36 @@ public class BuildSchema  {
         // Pezsgok
         PseudoTorleyGalaSzaraz.setProduct(TorleyGalaSzaraz);
         PseudoTorleyCharmantEdes.setProduct(TorleyCharmantEdes);
+        
+        // Fröccsök
+        PseudoHazBoraNagyEsNagyKisfroccs.setProduct(HazBoraNagyEsNagyKisfroccs);
+        PseudoHazBoraNagyEsNagyNagyfroccs.setProduct(HazBoraNagyEsNagyNagyfroccs);
+        PseudoHazBoraNagyEsNagyVicehazmester.setProduct(HazBoraNagyEsNagyVicehazmester);
+        PseudoHazBoraNagyEsNagyHazmester.setProduct(HazBoraNagyEsNagyHazmester);
+        PseudoHazBoraNagyEsNagyHosszulepes.setProduct(HazBoraNagyEsNagyHosszulepes);
+        PseudoHazBoraNagyEsNagySportFroccs.setProduct(HazBoraNagyEsNagySportFroccs);
 
+        PseudoHilltopIrsaiOliverKisfroccs.setProduct(HilltopIrsaiOliverKisfroccs);
+        PseudoHilltopIrsaiOliverNagyfroccs.setProduct(HilltopIrsaiOliverNagyfroccs);
+        PseudoHilltopIrsaiOliverVicehazmester.setProduct(HilltopIrsaiOliverVicehazmester);
+        PseudoHilltopIrsaiOliverHazmester.setProduct(HilltopIrsaiOliverHazmester);
+        PseudoHilltopIrsaiOliverHosszulepes.setProduct(HilltopIrsaiOliverHosszulepes);
+        PseudoHilltopIrsaiOliverSportFroccs.setProduct(HilltopIrsaiOliverSportFroccs);
+
+        PseudoHazBoraLisiczaRoseCuveeKisfroccs.setProduct(HazBoraLisiczaRoseCuveeKisfroccs);
+        PseudoHazBoraLisiczaRoseCuveeNagyfroccs.setProduct(HazBoraLisiczaRoseCuveeNagyfroccs);
+        PseudoHazBoraLisiczaRoseCuveeVicehazmester.setProduct(HazBoraLisiczaRoseCuveeVicehazmester);
+        PseudoHazBoraLisiczaRoseCuveeHazmester.setProduct(HazBoraLisiczaRoseCuveeHazmester);
+        PseudoHazBoraLisiczaRoseCuveeHosszulepes.setProduct(HazBoraLisiczaRoseCuveeHosszulepes);
+        PseudoHazBoraLisiczaRoseCuveeSportFroccs.setProduct(HazBoraLisiczaRoseCuveeSportFroccs);
+
+        PseudoMeszarosPinotNoirRoseKisfroccs.setProduct(MeszarosPinotNoirRoseKisfroccs);
+        PseudoMeszarosPinotNoirRoseNagyfroccs.setProduct(MeszarosPinotNoirRoseNagyfroccs);
+        PseudoMeszarosPinotNoirRoseVicehazmester.setProduct(MeszarosPinotNoirRoseVicehazmester);
+        PseudoMeszarosPinotNoirRoseHazmester.setProduct(MeszarosPinotNoirRoseHazmester);
+        PseudoMeszarosPinotNoirRoseHosszulepes.setProduct(MeszarosPinotNoirRoseHosszulepes);
+        PseudoMeszarosPinotNoirRoseSportFroccs.setProduct(MeszarosPinotNoirRoseSportFroccs);
+        
         // Roviditalok
         PseudoJimBeam04.setProduct(JimBeam04);
         PseudoJohnnieWalkerRedLabel04.setProduct(JohnnieWalkerRedLabel04);
