@@ -65,4 +65,6 @@ public interface CommonService {
     List<PriceModifierView> getPriceModifiers();
 
     List<RecipeView> getRecipeComponents(ProductView product);
+
+    List<ReceiptView> getReceipts();
 }

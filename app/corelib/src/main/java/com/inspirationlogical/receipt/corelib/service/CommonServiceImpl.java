@@ -33,6 +33,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
 import com.inspirationlogical.receipt.corelib.model.view.RecipeViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.StockView;
@@ -238,5 +239,10 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     @Override
     public List<RecipeView> getRecipeComponents(ProductView product) {
         return createViewsFromAdapters(RecipeAdapter.getRecipesOfProduct(getProductAdapter(product)), RecipeViewImpl::new);
+    }
+
+    @Override
+    public List<ReceiptView> getReceipts() {
+        return null;
     }
 }

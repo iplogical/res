@@ -79,7 +79,9 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     @FXML
     Button showStock;
     @FXML
-    Button showPriceModifier;
+    Button showPriceModifiers;
+    @FXML
+    Button showReceipts;
 
     @Inject
     private ViewLoader viewLoader;
@@ -192,6 +194,11 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     @FXML
     public void onShowPriceModifiers(Event event) {
         viewLoader.loadViewIntoScene(priceModifierController);
+    }
+
+    @FXML
+    public void onShowReceipts(Event event) {
+
     }
 
     @FXML
