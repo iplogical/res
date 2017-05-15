@@ -1,8 +1,5 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
@@ -10,9 +7,11 @@ import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
-
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public interface RestaurantService {
     TableBuilder tableBuilder();
@@ -61,7 +60,7 @@ public interface RestaurantService {
 
     List<ReservationView> getReservations(LocalDate date);
 
-    void addReservation(ReservationParams params);
+    long addReservation(ReservationParams params);
 
     void updateReservation(ReservationView selectedReservation, ReservationParams reservationParams);
 

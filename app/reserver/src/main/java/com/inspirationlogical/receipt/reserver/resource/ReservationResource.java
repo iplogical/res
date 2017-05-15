@@ -1,12 +1,13 @@
 package com.inspirationlogical.receipt.reserver.resource;
 
-import static com.inspirationlogical.receipt.corelib.security.Role.ADMIN;
-import static com.inspirationlogical.receipt.corelib.security.Role.USER;
+import com.google.inject.Inject;
+import com.inspirationlogical.receipt.corelib.frontend.viewmodel.ReservationViewModel;
+import com.inspirationlogical.receipt.corelib.params.ReservationParams;
+import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.reserver.utility.DateParser;
+import com.inspirationlogical.receipt.reserver.view.GetReservationsByDateView;
+import com.inspirationlogical.receipt.reserver.view.GetReservationsView;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -18,14 +19,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.frontend.viewmodel.ReservationViewModel;
-import com.inspirationlogical.receipt.corelib.params.ReservationParams;
-import com.inspirationlogical.receipt.corelib.service.RestaurantService;
-import com.inspirationlogical.receipt.reserver.utility.DateParser;
-import com.inspirationlogical.receipt.reserver.view.GetReservationsByDateView;
-import com.inspirationlogical.receipt.reserver.view.GetReservationsView;
+import static com.inspirationlogical.receipt.corelib.security.Role.ADMIN;
+import static com.inspirationlogical.receipt.corelib.security.Role.USER;
 
 @Path("/reservation")
 public class ReservationResource {
@@ -72,8 +72,8 @@ public class ReservationResource {
     @Path("/api")
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed(ADMIN)
-    public void addReservation(@Valid ReservationParams reservationParams) {
-        restaurantService.addReservation(reservationParams);
+    public long addReservation(@Valid ReservationParams reservationParams) {
+        return restaurantService.addReservation(reservationParams);
     }
 
     @PUT

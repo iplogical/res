@@ -209,7 +209,8 @@ function addReservation(reservation, calendar){
         type: "POST",
         data: JSON.stringify(reservation),
         contentType: "application/json",
-        success: function() {
+        success: function(id) {
+            event.id = id;
             calendar.fullCalendar('renderEvent', event, true);
         },
         error: function(error){

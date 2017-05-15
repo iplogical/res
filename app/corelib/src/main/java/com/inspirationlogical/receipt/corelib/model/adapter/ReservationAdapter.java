@@ -1,17 +1,17 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static java.util.stream.Collectors.toList;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import com.inspirationlogical.receipt.corelib.exception.ReservationNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by TheDagi on 2017. 04. 26..
@@ -39,7 +39,7 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
         return reservations.stream().map(ReservationAdapter::new).findFirst().orElseThrow(ReservationNotFoundException::new);
     }
 
-    public static void addReservation(ReservationParams params) {
+    public static long addReservation(ReservationParams params) {
         List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_NUMBER, query -> query.setParameter("number", params.getTableNumber()));
         Reservation reservation = Reservation.builder()
                 .name(params.getName())
@@ -53,6 +53,7 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
                 .build();
         bindReservationToTableOrOrphanage(tables, reservation);
         GuardedTransaction.persist(reservation);
+        return reservation.getId();
     }
 
     public void updateReservation(ReservationParams params) {

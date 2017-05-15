@@ -173,8 +173,8 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
-    public void addReservation(ReservationParams params) {
-        ReservationAdapter.addReservation(params);
+    public long addReservation(ReservationParams params) {
+        return ReservationAdapter.addReservation(params);
     }
 
     @Override
