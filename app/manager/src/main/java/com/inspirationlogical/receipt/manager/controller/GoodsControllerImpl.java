@@ -286,6 +286,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         rootCategory = commonService.getRootProductCategory();
         TreeItem<CategoryViewModel> rootItem = new TreeItem<>(new CategoryViewModel(rootCategory));
         goodsTable.setRoot(rootItem);
+        goodsTable.setShowRoot(false);
 
         updateCategory(rootCategory, rootItem);
     }
@@ -299,6 +300,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
                 treeItem.getChildren().add(childItem);
                 updateProduct(categoryViewModel, childItem);
                 updateCategory(child, childItem);
+                childItem.setExpanded(false);
             }
         });
     }
