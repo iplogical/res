@@ -5,6 +5,7 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.h
 import static java.util.stream.Collectors.toList;
 
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.inject.Inject;
@@ -99,8 +100,10 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
     public void fetchProducts() {
         sellableProducts.clear();
         sellableProducts.addAll(commonService.getSellableProducts());
+        sellableProducts.sort(Comparator.comparing(ProductView::getLongName));
         storalbeProducts.clear();
         storalbeProducts.addAll(commonService.getStorableProducts());
+        storalbeProducts.sort(Comparator.comparing(ProductView::getLongName));
     }
 
     @Override
