@@ -13,6 +13,7 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
@@ -209,9 +210,16 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public List<ProductView> getStorableProducts() {
-        return getActiveProducts().stream()
+        List<ProductView> productsAsRecipe = getActiveProducts().stream()
                 .flatMap(productView -> productView.getRecipes().stream())
                 .map(RecipeView::getComponent)
+                .filter(distinctByKey(ProductView::getLongName))
+                .collect(toList());
+        List<ProductView> storableProducts = getActiveProducts().stream()
+                .filter(productView -> productView.getType().equals(STORABLE))
+                .collect(toList());
+        productsAsRecipe.addAll(storableProducts);
+        return productsAsRecipe.stream()
                 .filter(distinctByKey(ProductView::getLongName))
                 .collect(toList());
     }
