@@ -91,6 +91,9 @@ public class BuildSchema  {
 
     private @Getter Product MalnaSzirup;
     private @Getter Product EperNarancsSzirup;
+    private @Getter Product CitrusSzirup;
+    private @Getter Product MeggySzirup;
+
     private @Getter Product Tabasco;
     private @Getter Product BlueCuracao;
 
@@ -425,6 +428,9 @@ public class BuildSchema  {
 
     private @Getter ProductCategory PseudoMalnaSzirup;
     private @Getter ProductCategory PseudoEperNarancsSzirup;
+    private @Getter ProductCategory PseudoCitrusSzirup;
+    private @Getter ProductCategory PseudoMeggySzirup;
+
     private @Getter ProductCategory PseudoTabasco;
     private @Getter ProductCategory PseudoBlueCuracao;
 
@@ -1065,6 +1071,9 @@ public class BuildSchema  {
 
         buildMalnaSzirup();
         buildEperNarancsSzirup();
+        buildCitrusSzirup();
+        buildMeggySzirup();
+
         buildTabasco();
         buildBlueCuracao();
 
@@ -1790,6 +1799,34 @@ public class BuildSchema  {
         EperNarancsSzirup = Product.builder()
                 .longName("Eper-Narancs Szirup")
                 .shortName("Eper-Narancs Szirup")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildCitrusSzirup() {
+        CitrusSzirup = Product.builder()
+                .longName("Citrus Szirup")
+                .shortName("Citrus Szirup")
+                .orderNumber(3)
+                .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.STORABLE)
+                .build();
+    }
+
+    private void buildMeggySzirup() {
+        MeggySzirup = Product.builder()
+                .longName("Meggy Szirup")
+                .shortName("Meggy Szirup")
                 .orderNumber(3)
                 .salePrice(3990)
                 .purchasePrice(500)
@@ -4550,6 +4587,9 @@ public class BuildSchema  {
 
         buildPseudoMalnaSzirup();
         buildPseudoEperNarancsSzirup();
+        buildPseudoCitrusSzirup();
+        buildPseudoMeggySzirup();
+
         buildPseudoTabasco();
         buildPseudoBlueCuracao();
 
@@ -6594,6 +6634,22 @@ public class BuildSchema  {
     private void buildPseudoEperNarancsSzirup() {
         PseudoEperNarancsSzirup = ProductCategory.builder()
                 .name("Eper-Narancs Szirup_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoCitrusSzirup() {
+        PseudoCitrusSzirup = ProductCategory.builder()
+                .name("Citrus Szirup_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMeggySzirup() {
+        PseudoMeggySzirup = ProductCategory.builder()
+                .name("Meggy Szirup_Pseudo")
                 .status(ProductStatus.ACTIVE)
                 .type(ProductCategoryType.PSEUDO)
                 .build();
@@ -8953,6 +9009,9 @@ public class BuildSchema  {
 
         PseudoMalnaSzirup.setParent(alapanyagok);
         PseudoEperNarancsSzirup.setParent(alapanyagok);
+        PseudoCitrusSzirup.setParent(alapanyagok);
+        PseudoMeggySzirup.setParent(alapanyagok);
+
         PseudoTabasco.setParent(alapanyagok);
         PseudoBlueCuracao.setParent(alapanyagok);
 
@@ -9260,6 +9319,9 @@ public class BuildSchema  {
 
                     PseudoMalnaSzirup,
                     PseudoEperNarancsSzirup,
+                    PseudoCitrusSzirup,
+                    PseudoMeggySzirup,
+
                     PseudoTabasco,
                     PseudoBlueCuracao,
 
@@ -9609,6 +9671,9 @@ public class BuildSchema  {
 
         MalnaSzirup.setCategory(PseudoMalnaSzirup);
         EperNarancsSzirup.setCategory(PseudoEperNarancsSzirup);
+        CitrusSzirup.setCategory(PseudoCitrusSzirup);
+        MeggySzirup.setCategory(PseudoMeggySzirup);
+
         Tabasco.setCategory(PseudoTabasco);
         BlueCuracao.setCategory(PseudoBlueCuracao);
 
@@ -9904,6 +9969,9 @@ public class BuildSchema  {
 
         PseudoMalnaSzirup.setProduct(MalnaSzirup);
         PseudoEperNarancsSzirup.setProduct(EperNarancsSzirup);
+        PseudoCitrusSzirup.setProduct(CitrusSzirup);
+        PseudoMeggySzirup.setProduct(MeggySzirup);
+
         PseudoTabasco.setProduct(Tabasco);
         PseudoBlueCuracao.setProduct(BlueCuracao);
 
