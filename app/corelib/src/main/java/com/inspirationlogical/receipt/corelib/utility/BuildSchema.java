@@ -684,6 +684,33 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoJackAndCoke;
     private @Getter ProductCategory PseudoVodkaSzoda;
 
+    /* ----- ETLAP -----*/
+    // Rágcsák
+    private @Getter Recipe SosPerecRecipe1;
+    private @Getter Recipe MogyoroRecipe1;
+    private @Getter Recipe RagcsaMixRecipe1;
+    private @Getter Recipe NachosSosSajtRecipe1;
+    private @Getter Recipe NachosSosChiliRecipe1;
+    private @Getter Recipe NachosBBQSajtRecipe1;
+    private @Getter Recipe NachosBBQChiliRecipe1;
+    private @Getter Recipe ChipsRecipe1;
+    private @Getter Recipe PopcornRecipe1;
+    private @Getter Recipe GumicukorRecipe1;
+    private @Getter Recipe BalatonszeletRecipe1;
+    private @Getter Recipe CsokiRecipe1;
+
+    // Ételek
+    private @Getter Recipe MelegszendivcsSonkasRecipe1;
+    private @Getter Recipe MelegszendivcsSzalamisRecipe1;
+    private @Getter Recipe MelegszendivcsVegaRecipe1;
+    private @Getter Recipe SajtosCsikokRecipe1;
+    private @Getter Recipe ZsirosDeszkaRecipe1;
+    private @Getter Recipe WrapRecipe1;
+    private @Getter Recipe SpecialisFeltetekPiritossalRecipe1;
+    private @Getter Recipe SajttalRecipe1;
+    private @Getter Recipe GameUpTalRecipe1;
+    private @Getter Recipe GameUpFalankTalRecipe1;
+
     /* ----- ITALLAP -----*/
     // Csapolt sorok
     private @Getter Recipe Soproni03Recipe1;
@@ -4854,7 +4881,34 @@ public class BuildSchema  {
     }
 
     private void buildRecipes() {
-                /*----- ITALLAP -----*/
+        /* ----- ETLAP -----*/
+        // Rágcsák
+        buildSosPerecRecipe1();
+        buildMogyoroRecipe1();
+        buildRagcsaMixRecipe1();
+        buildNachosSosSajtRecipe1();
+        buildNachosSosChiliRecipe1();
+        buildNachosBBQSajtRecipe1();
+        buildNachosBBQChiliRecipe1();
+        buildChipsRecipe1();
+        buildPopcornRecipe1();
+        buildGumicukorRecipe1();
+        buildBalatonszeletRecipe1();
+        buildCsokiRecipe1();
+
+        // Ételek
+        buildMelegszendivcsSonkasRecipe1();
+        buildMelegszendivcsSzalamisRecipe1();
+        buildMelegszendivcsVegaRecipe1();
+        buildSajtosCsikokRecipe1();
+        buildZsirosDeszkaRecipe1();
+        buildWrapRecipe1();
+        buildSpecialisFeltetekPiritossalRecipe1();
+        buildSajttalRecipe1();
+        buildGameUpTalRecipe1();
+        buildGameUpFalankTalRecipe1();
+        
+        /*----- ITALLAP -----*/
         //Csapolt Sorok
         buildSoproni03Recipe1();
         buildSoproni05Recipe1();
@@ -5066,7 +5120,182 @@ public class BuildSchema  {
         buildJackAndCokeRecipe1();
         buildVodkaSzodaRecipe1();
     }
+    
+    private void buildSosPerecRecipe1() {
+        SosPerecRecipe1 = Recipe.builder()
+                .owner(SosPerec)
+                .component(SosPerec)
+                .quantityMultiplier(13)
+                .build();
+    }
 
+    private void buildMogyoroRecipe1() {
+        MogyoroRecipe1 = Recipe.builder()
+                .owner(Mogyoro)
+                .component(Mogyoro)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildRagcsaMixRecipe1() {
+        RagcsaMixRecipe1 = Recipe.builder()
+                .owner(RagcsaMix)
+                .component(RagcsaMix)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildNachosSosSajtRecipe1() {
+        NachosSosSajtRecipe1 = Recipe.builder()
+                .owner(NachosSosSajt)
+                .component(NachosSosSajt)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildNachosSosChiliRecipe1() {
+        NachosSosChiliRecipe1 = Recipe.builder()
+                .owner(NachosSosChili)
+                .component(NachosSosChili)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildNachosBBQSajtRecipe1() {
+        NachosBBQSajtRecipe1 = Recipe.builder()
+                .owner(NachosBBQSajt)
+                .component(NachosBBQSajt)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildNachosBBQChiliRecipe1() {
+        NachosBBQChiliRecipe1 = Recipe.builder()
+                .owner(NachosBBQChili)
+                .component(NachosBBQChili)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildChipsRecipe1() {
+        ChipsRecipe1 = Recipe.builder()
+                .owner(Chips)
+                .component(Chips)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildPopcornRecipe1() {
+        PopcornRecipe1 = Recipe.builder()
+                .owner(Popcorn)
+                .component(Popcorn)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildGumicukorRecipe1() {
+        GumicukorRecipe1 = Recipe.builder()
+                .owner(Gumicukor)
+                .component(Gumicukor)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildBalatonszeletRecipe1() {
+        BalatonszeletRecipe1 = Recipe.builder()
+                .owner(Balatonszelet)
+                .component(Balatonszelet)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildCsokiRecipe1() {
+        CsokiRecipe1 = Recipe.builder()
+                .owner(Csoki)
+                .component(Csoki)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildMelegszendivcsSonkasRecipe1() {
+        MelegszendivcsSonkasRecipe1 = Recipe.builder()
+                .owner(MelegszendivcsSonkas)
+                .component(MelegszendivcsSonkas)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildMelegszendivcsSzalamisRecipe1() {
+        MelegszendivcsSzalamisRecipe1 = Recipe.builder()
+                .owner(MelegszendivcsSzalamis)
+                .component(MelegszendivcsSzalamis)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildMelegszendivcsVegaRecipe1() {
+        MelegszendivcsVegaRecipe1 = Recipe.builder()
+                .owner(MelegszendivcsVega)
+                .component(MelegszendivcsVega)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildSajtosCsikokRecipe1() {
+        SajtosCsikokRecipe1 = Recipe.builder()
+                .owner(SajtosCsikok)
+                .component(SajtosCsikok)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildZsirosDeszkaRecipe1() {
+        ZsirosDeszkaRecipe1 = Recipe.builder()
+                .owner(ZsirosDeszka)
+                .component(ZsirosDeszka)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildWrapRecipe1() {
+        WrapRecipe1 = Recipe.builder()
+                .owner(Wrap)
+                .component(Wrap)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildSpecialisFeltetekPiritossalRecipe1() {
+        SpecialisFeltetekPiritossalRecipe1 = Recipe.builder()
+                .owner(SpecialisFeltetekPiritossal)
+                .component(SpecialisFeltetekPiritossal)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildSajttalRecipe1() {
+        SajttalRecipe1 = Recipe.builder()
+                .owner(Sajttal)
+                .component(Sajttal)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildGameUpTalRecipe1() {
+        GameUpTalRecipe1 = Recipe.builder()
+                .owner(GameUpTal)
+                .component(GameUpTal)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildGameUpFalankTalRecipe1() {
+        GameUpFalankTalRecipe1 = Recipe.builder()
+                .owner(GameUpFalankTal)
+                .component(GameUpFalankTal)
+                .quantityMultiplier(13)
+                .build();
+    }
 
     private void buildSoproni03Recipe1() {
         Soproni03Recipe1 = Recipe.builder()
@@ -10235,6 +10464,33 @@ public class BuildSchema  {
 
 
     private void productsAndRecipes() {
+            /* ----- ETLAP -----*/
+        // Rágcsák
+        SosPerec.setRecipes(Arrays.asList(SosPerecRecipe1));
+        Mogyoro.setRecipes(Arrays.asList(MogyoroRecipe1));
+        RagcsaMix.setRecipes(Arrays.asList(RagcsaMixRecipe1));
+        NachosSosSajt.setRecipes(Arrays.asList(NachosSosSajtRecipe1));
+        NachosSosChili.setRecipes(Arrays.asList(NachosSosChiliRecipe1));
+        NachosBBQSajt.setRecipes(Arrays.asList(NachosBBQSajtRecipe1));
+        NachosBBQChili.setRecipes(Arrays.asList(NachosBBQChiliRecipe1));
+        Chips.setRecipes(Arrays.asList(ChipsRecipe1));
+        Popcorn.setRecipes(Arrays.asList(PopcornRecipe1));
+        Gumicukor.setRecipes(Arrays.asList(GumicukorRecipe1));
+        Balatonszelet.setRecipes(Arrays.asList(BalatonszeletRecipe1));
+        Csoki.setRecipes(Arrays.asList(CsokiRecipe1));
+
+        // Ételek
+        MelegszendivcsSonkas.setRecipes(Arrays.asList(MelegszendivcsSonkasRecipe1));
+        MelegszendivcsSzalamis.setRecipes(Arrays.asList(MelegszendivcsSzalamisRecipe1));
+        MelegszendivcsVega.setRecipes(Arrays.asList(MelegszendivcsVegaRecipe1));
+        SajtosCsikok.setRecipes(Arrays.asList(SajtosCsikokRecipe1));
+        ZsirosDeszka.setRecipes(Arrays.asList(ZsirosDeszkaRecipe1));
+        Wrap.setRecipes(Arrays.asList(WrapRecipe1));
+        SpecialisFeltetekPiritossal.setRecipes(Arrays.asList(SpecialisFeltetekPiritossalRecipe1));
+        Sajttal.setRecipes(Arrays.asList(SajttalRecipe1));
+        GameUpTal.setRecipes(Arrays.asList(GameUpTalRecipe1));
+        GameUpFalankTal.setRecipes(Arrays.asList(GameUpFalankTalRecipe1));
+        
         // Csapolt Sorok
         Soproni03.setRecipes(Arrays.asList(Soproni03Recipe1));
         Soproni05.setRecipes(Arrays.asList(Soproni05Recipe1));
