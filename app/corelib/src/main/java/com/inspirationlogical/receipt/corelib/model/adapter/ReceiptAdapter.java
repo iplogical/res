@@ -59,10 +59,11 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         GuardedTransaction.run(() -> {
             List<Object[]> records = getReceiptRecordsByTimeStampAndName(productAdapter, now().minusSeconds(5));
             if(records.size() > 0) {
-                ((ReceiptRecord)records.get(0)[0]).setSoldQuantity(((ReceiptRecord)records.get(0)[0]).getSoldQuantity() + 1);
-                ((ReceiptRecord)records.get(0)[0]).getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(((ReceiptRecord)records.get(0)[0])).build());
-                ((ReceiptRecord)records.get(0)[0]).setDiscountPercent(productAdapter.getCategoryAdapter().getDiscount(new ReceiptRecordAdapter(((ReceiptRecord)records.get(0)[0]))));
-                applyDiscountOnRecordSalePrice(((ReceiptRecord)records.get(0)[0]));
+                ReceiptRecord record = ((ReceiptRecord)records.get(0)[0]);
+                record.setSoldQuantity(record.getSoldQuantity() + 1);
+                record.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(record).build());
+                record.setDiscountPercent(isGift ? 100 : productAdapter.getCategoryAdapter().getDiscount(new ReceiptRecordAdapter(record)));
+                applyDiscountOnRecordSalePrice(record);
                 return;
             }
             ReceiptRecord record = ReceiptRecord.builder()
@@ -109,9 +110,10 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             ProductAdapter gameFeeProduct = ProductAdapter.getGameFeeProduct();
             List<Object[]> records = getReceiptRecordsByTimeStampAndName(gameFeeProduct, now().minusSeconds(2));
             if(records.size() > 0) {
-                ((ReceiptRecord)records.get(0)[0]).setSoldQuantity(((ReceiptRecord)records.get(0)[0]).getSoldQuantity() + 1);
-                ((ReceiptRecord)records.get(0)[0]).getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(((ReceiptRecord)records.get(0)[0])).build());
-                newRecordWrapper.setContent(((ReceiptRecord)records.get(0)[0]));
+                ReceiptRecord record = ((ReceiptRecord)records.get(0)[0]);
+                record.setSoldQuantity(record.getSoldQuantity() + 1);
+                record.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(record).build());
+                newRecordWrapper.setContent(record);
                 return;
             }
             ReceiptRecord record = ReceiptRecord.builder()
