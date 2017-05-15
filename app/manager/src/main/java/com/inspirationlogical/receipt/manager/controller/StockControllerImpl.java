@@ -192,6 +192,7 @@ public class StockControllerImpl extends AbstractController implements StockCont
         initColumn(stockInitialQuantity, StockViewModel::getInitialQuantity);
         initColumn(stockSoldQuantity, StockViewModel::getSoldQuantity);
         initColumn(stockPurchasedQuantity, StockViewModel::getPurchasedQuantity);
+        initColumn(stockInventoryQuantity, StockViewModel::getInventoryQuantity);
     }
 
     private void displayAbsoluteValues() {
@@ -199,6 +200,7 @@ public class StockControllerImpl extends AbstractController implements StockCont
         initColumn(stockInitialQuantity, StockViewModel::getInitialQuantityAbsolute);
         initColumn(stockSoldQuantity, StockViewModel::getSoldQuantityAbsolute);
         initColumn(stockPurchasedQuantity, StockViewModel::getPurchasedQuantityAbsolute);
+        initColumn(stockInventoryQuantity, StockViewModel::getInventoryQuantityAbsolute);
     }
 
     private void showInputColumn() {

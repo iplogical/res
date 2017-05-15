@@ -49,4 +49,9 @@ public class StockViewModel extends ProductViewModel {
     public String getPurchasedQuantityAbsolute() {
         return String.valueOf(roundToTwoDecimals(Double.valueOf(purchasedQuantity) * Double.valueOf(storageMultiplier)));
     }
+
+    public String getInventoryQuantityAbsolute() {
+        return String.valueOf(roundToTwoDecimals(Double.valueOf(inventoryQuantity) * Double.valueOf(storageMultiplier)));
+    }
+
 }
