@@ -55,7 +55,9 @@ public class BuildSchema  {
     // Rágcsák
     private @Getter Product SosPerec;
     private @Getter Product Mogyoro;
-    private @Getter Product RagcsaMix;
+    private @Getter Product RagcsaMix1Perec2Mogyi;
+    private @Getter Product RagcsaMix2Perec1Mogyi;
+    private @Getter Product RagcsaMix3Perec;
     private @Getter Product NachosSosSajt;
     private @Getter Product NachosSosChili;
     private @Getter Product NachosBBQSajt;
@@ -392,7 +394,9 @@ public class BuildSchema  {
     // Rágcsák
     private @Getter ProductCategory PseudoSosPerec;
     private @Getter ProductCategory PseudoMogyoro;
-    private @Getter ProductCategory PseudoRagcsaMix;
+    private @Getter ProductCategory PseudoRagcsaMix1Perec2Mogyi;
+    private @Getter ProductCategory PseudoRagcsaMix2Perec1Mogyi;
+    private @Getter ProductCategory PseudoRagcsaMix3Perec;
     private @Getter ProductCategory PseudoNachosSosSajt;
     private @Getter ProductCategory PseudoNachosSosChili;
     private @Getter ProductCategory PseudoNachosBBQSajt;
@@ -688,7 +692,9 @@ public class BuildSchema  {
     // Rágcsák
     private @Getter Recipe SosPerecRecipe1;
     private @Getter Recipe MogyoroRecipe1;
-    private @Getter Recipe RagcsaMixRecipe1;
+    private @Getter Recipe RagcsaMix1Perec2MogyiRecipe1;
+    private @Getter Recipe RagcsaMix2Perec1MogyiRecipe1;
+    private @Getter Recipe RagcsaMix3PerecRecipe1;
     private @Getter Recipe NachosSosSajtRecipe1;
     private @Getter Recipe NachosSosChiliRecipe1;
     private @Getter Recipe NachosBBQSajtRecipe1;
@@ -1062,7 +1068,9 @@ public class BuildSchema  {
         // Rágcsák
         buildSosPerec();
         buildMogyoro();
-        buildRagcsaMix();
+        buildRagcsaMix1Perec2Mogyi();
+        buildRagcsaMix2Perec1Mogyi();
+        buildRagcsaMix3Perec();
         buildNachosSosSajt();
         buildNachosSosChili();
         buildNachosBBQSajt();
@@ -1388,7 +1396,7 @@ public class BuildSchema  {
                 .salePrice(290)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
-                .quantityUnit(QuantityUnit.CENTILITER)
+                .quantityUnit(QuantityUnit.GRAM)
                 .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
@@ -1403,17 +1411,47 @@ public class BuildSchema  {
                 .salePrice(390)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
-                .quantityUnit(QuantityUnit.CENTILITER)
+                .quantityUnit(QuantityUnit.GRAM)
                 .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
                 .build();
     }
 
-    private void buildRagcsaMix() {
-        RagcsaMix = Product.builder()
-                .longName("Rágcsa Mix")
-                .shortName("Mix")
+    private void buildRagcsaMix1Perec2Mogyi() {
+        RagcsaMix1Perec2Mogyi = Product.builder()
+                .longName("Rágcsa Mix 1")
+                .shortName("Mix 1Perec 2Mogyi")
                 .orderNumber(8)
+                .rapidCode(98)
+                .salePrice(890)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+
+    private void buildRagcsaMix2Perec1Mogyi() {
+        RagcsaMix2Perec1Mogyi = Product.builder()
+                .longName("Rágcsa Mix 2")
+                .shortName("Mix 2Perec 1Mogyi")
+                .orderNumber(9)
+                .rapidCode(98)
+                .salePrice(890)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+
+    private void buildRagcsaMix3Perec() {
+        RagcsaMix3Perec = Product.builder()
+                .longName("Rágcsa Mix 3")
+                .shortName("Mix 3Perec")
+                .orderNumber(10)
                 .rapidCode(98)
                 .salePrice(890)
                 .purchasePrice(500)
@@ -1488,7 +1526,7 @@ public class BuildSchema  {
         Chips = Product.builder()
                 .longName("Chips")
                 .shortName("Chips")
-                .orderNumber(9)
+                .orderNumber(11)
                 .rapidCode(99)
                 .salePrice(490)
                 .purchasePrice(500)
@@ -1518,7 +1556,7 @@ public class BuildSchema  {
         Gumicukor = Product.builder()
                 .longName("Gumicukor")
                 .shortName("Gumicukor")
-                .orderNumber(12)
+                .orderNumber(14)
                 .rapidCode(102)
                 .salePrice(490)
                 .purchasePrice(500)
@@ -1533,7 +1571,7 @@ public class BuildSchema  {
         Balatonszelet = Product.builder()
                 .longName("Balatonszelet")
                 .shortName("Balatonszelet")
-                .orderNumber(11)
+                .orderNumber(13)
                 .rapidCode(101)
                 .salePrice(190)
                 .purchasePrice(500)
@@ -1548,7 +1586,7 @@ public class BuildSchema  {
         Csoki = Product.builder()
                 .longName("Csoki")
                 .shortName("Csoki")
-                .orderNumber(10)
+                .orderNumber(12)
                 .rapidCode(100)
                 .salePrice(290)
                 .purchasePrice(500)
@@ -4578,7 +4616,9 @@ public class BuildSchema  {
         // Rágcsák
         buildPseudoSosPerec();
         buildPseudoMogyoro();
-        buildPseudoRagcsaMix();
+        buildPseudoRagcsaMix1Perec2Mogyi();
+        buildPseudoRagcsaMix2Perec1Mogyi();
+        buildPseudoRagcsaMix3Perec();
         buildPseudoNachosSosSajt();
         buildPseudoNachosSosChili();
         buildPseudoNachosBBQSajt();
@@ -4885,7 +4925,9 @@ public class BuildSchema  {
         // Rágcsák
         buildSosPerecRecipe1();
         buildMogyoroRecipe1();
-        buildRagcsaMixRecipe1();
+        buildRagcsaMix1Perec2MogyiRecipe1();
+        buildRagcsaMix2Perec1MogyiRecipe1();
+        buildRagcsaMix3PerecRecipe1();
         buildNachosSosSajtRecipe1();
         buildNachosSosChiliRecipe1();
         buildNachosBBQSajtRecipe1();
@@ -5120,12 +5162,12 @@ public class BuildSchema  {
         buildJackAndCokeRecipe1();
         buildVodkaSzodaRecipe1();
     }
-    
+
     private void buildSosPerecRecipe1() {
         SosPerecRecipe1 = Recipe.builder()
                 .owner(SosPerec)
                 .component(SosPerec)
-                .quantityMultiplier(13)
+                .quantityMultiplier(45)
                 .build();
     }
 
@@ -5133,14 +5175,30 @@ public class BuildSchema  {
         MogyoroRecipe1 = Recipe.builder()
                 .owner(Mogyoro)
                 .component(Mogyoro)
+                .quantityMultiplier(105)
+                .build();
+    }
+
+    private void buildRagcsaMix1Perec2MogyiRecipe1() {
+        RagcsaMix1Perec2MogyiRecipe1 = Recipe.builder()
+                .owner(RagcsaMix1Perec2Mogyi)
+                .component(RagcsaMix1Perec2Mogyi)
                 .quantityMultiplier(13)
                 .build();
     }
 
-    private void buildRagcsaMixRecipe1() {
-        RagcsaMixRecipe1 = Recipe.builder()
-                .owner(RagcsaMix)
-                .component(RagcsaMix)
+    private void buildRagcsaMix2Perec1MogyiRecipe1() {
+        RagcsaMix2Perec1MogyiRecipe1 = Recipe.builder()
+                .owner(RagcsaMix2Perec1Mogyi)
+                .component(RagcsaMix2Perec1Mogyi)
+                .quantityMultiplier(13)
+                .build();
+    }
+
+    private void buildRagcsaMix3PerecRecipe1() {
+        RagcsaMix3PerecRecipe1 = Recipe.builder()
+                .owner(RagcsaMix3Perec)
+                .component(RagcsaMix3Perec)
                 .quantityMultiplier(13)
                 .build();
     }
@@ -6635,9 +6693,25 @@ public class BuildSchema  {
                 .build();
     }
 
-    private void buildPseudoRagcsaMix() {
-        PseudoRagcsaMix = ProductCategory.builder()
-                .name("RagcsaMix_Pseudo")
+    private void buildPseudoRagcsaMix1Perec2Mogyi() {
+        PseudoRagcsaMix1Perec2Mogyi = ProductCategory.builder()
+                .name("RagcsaMix 1_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoRagcsaMix2Perec1Mogyi() {
+        PseudoRagcsaMix2Perec1Mogyi = ProductCategory.builder()
+                .name("RagcsaMix 2_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoRagcsaMix3Perec() {
+        PseudoRagcsaMix3Perec = ProductCategory.builder()
+                .name("RagcsaMix 3_Pseudo")
                 .status(ProductStatus.ACTIVE)
                 .type(ProductCategoryType.PSEUDO)
                 .build();
@@ -9202,7 +9276,9 @@ public class BuildSchema  {
         // Ragcsak
         PseudoSosPerec.setParent(sos);
         PseudoMogyoro.setParent(sos);
-        PseudoRagcsaMix.setParent(sos);
+        PseudoRagcsaMix1Perec2Mogyi.setParent(sos);
+        PseudoRagcsaMix2Perec1Mogyi.setParent(sos);
+        PseudoRagcsaMix3Perec.setParent(sos);
         PseudoNachosSosSajt.setParent(sos);
         PseudoNachosSosChili.setParent(sos);
         PseudoNachosBBQSajt.setParent(sos);
@@ -9503,7 +9579,9 @@ public class BuildSchema  {
                 Arrays.asList(
                     PseudoSosPerec,
                     PseudoMogyoro,
-                    PseudoRagcsaMix,
+                    PseudoRagcsaMix1Perec2Mogyi,
+                    PseudoRagcsaMix2Perec1Mogyi,
+                    PseudoRagcsaMix3Perec,
                     PseudoNachosSosSajt,
                     PseudoNachosSosChili,
                     PseudoNachosBBQSajt,
@@ -9864,7 +9942,9 @@ public class BuildSchema  {
         // Rágcsák
         SosPerec.setCategory(PseudoSosPerec);
         Mogyoro.setCategory(PseudoMogyoro);
-        RagcsaMix.setCategory(PseudoRagcsaMix);
+        RagcsaMix1Perec2Mogyi.setCategory(PseudoRagcsaMix1Perec2Mogyi);
+        RagcsaMix2Perec1Mogyi.setCategory(PseudoRagcsaMix2Perec1Mogyi);
+        RagcsaMix3Perec.setCategory(PseudoRagcsaMix3Perec);
         NachosSosSajt.setCategory(PseudoNachosSosSajt);
         NachosSosChili.setCategory(PseudoNachosSosChili);
         NachosBBQSajt.setCategory(PseudoNachosBBQSajt);
@@ -10161,7 +10241,9 @@ public class BuildSchema  {
         // Rágcsák
         PseudoSosPerec.setProduct(SosPerec);
         PseudoMogyoro.setProduct(Mogyoro);
-        PseudoRagcsaMix.setProduct(RagcsaMix);
+        PseudoRagcsaMix1Perec2Mogyi.setProduct(RagcsaMix1Perec2Mogyi);
+        PseudoRagcsaMix2Perec1Mogyi.setProduct(RagcsaMix2Perec1Mogyi);
+        PseudoRagcsaMix3Perec.setProduct(RagcsaMix3Perec);
         PseudoNachosSosSajt.setProduct(NachosSosSajt);
         PseudoNachosSosChili.setProduct(NachosSosChili);
         PseudoNachosBBQSajt.setProduct(NachosBBQSajt);
@@ -10468,7 +10550,9 @@ public class BuildSchema  {
         // Rágcsák
         SosPerec.setRecipes(Arrays.asList(SosPerecRecipe1));
         Mogyoro.setRecipes(Arrays.asList(MogyoroRecipe1));
-        RagcsaMix.setRecipes(Arrays.asList(RagcsaMixRecipe1));
+        RagcsaMix1Perec2Mogyi.setRecipes(Arrays.asList(RagcsaMix1Perec2MogyiRecipe1));
+        RagcsaMix2Perec1Mogyi.setRecipes(Arrays.asList(RagcsaMix2Perec1MogyiRecipe1));
+        RagcsaMix3Perec.setRecipes(Arrays.asList(RagcsaMix3PerecRecipe1));
         NachosSosSajt.setRecipes(Arrays.asList(NachosSosSajtRecipe1));
         NachosSosChili.setRecipes(Arrays.asList(NachosSosChiliRecipe1));
         NachosBBQSajt.setRecipes(Arrays.asList(NachosBBQSajtRecipe1));
