@@ -3,7 +3,7 @@ appName: Reserver
 server:
   applicationConnectors:
   - type: http
-    port: 9000
+    port: 80
   adminConnectors:
   - type: http
     port: 9001
