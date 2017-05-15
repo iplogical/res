@@ -1,6 +1,7 @@
 
 var url = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
 var apiUrl = url+'/reservation/api';
+var formWidth = "400px";
 
 $(document).ready(function() {
 
@@ -42,13 +43,16 @@ $(document).ready(function() {
             center: '',
             right:  'addReservationButton today,agendaDay,agendaWeek,month prev,next logoutButton'
         },
+        windowResize: function(view) {
+            height: $(window).height() - 20
+        },
         eventRender: function (event, element) {
             element.attr('href', 'javascript:void(0);');
             element.click(function() {
                 updateShowReservationForm(event);
                 $("#showReservationForm").dialog({
                     modal: true,
-                    width: "270px",
+                    width: formWidth,
                     title: event.title,
                     buttons: {
                         Delete: function() {
@@ -69,7 +73,7 @@ $(document).ready(function() {
                             $("#editEndTime").val(moment(event.end).format("HH:mm"));
                             $("#editReservationForm").dialog({
                                 modal: true,
-                                width: "250px",
+                                width: formWidth,
                                 buttons: {
                                     Save: function() {
                                         var $form = $("#editReservation");
@@ -151,7 +155,7 @@ function updateShowReservationForm(event) {
 function showAddReservationForm(calendar) {
     $("#addReservationForm").dialog({
         modal: true,
-        width: "250px",
+        width: formWidth,
         buttons: {
             Save: function() {
                 var $form = $("#addReservation");

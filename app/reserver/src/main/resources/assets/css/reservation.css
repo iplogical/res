@@ -1,7 +1,6 @@
 
 label {
     display: block;
-    width: 200px;
     margin-top: 5px;
 }
 
@@ -18,4 +17,9 @@ input {
 
 label span {
     word-wrap: break-word;
+}
+
+input,
+button {
+    font-size: 24px !important;
 }
