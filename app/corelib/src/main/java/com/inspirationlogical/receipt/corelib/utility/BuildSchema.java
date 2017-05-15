@@ -9315,8 +9315,8 @@ public class BuildSchema  {
 
     private void buildAdmin() {
         admin = AuthUser.builder()
-                .username("admin")
-                .password("admin")
+                .username("gameup")
+                .password("b2gate")
                 .role(Role.ADMIN)
                 .build();
     }
@@ -9324,7 +9324,7 @@ public class BuildSchema  {
     private void buildUser() {
         user = AuthUser.builder()
                 .username("user")
-                .password("user")
+                .password("userb2gate")
                 .role(Role.USER)
                 .build();
     }
