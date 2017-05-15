@@ -21,6 +21,8 @@ $(document).ready(function() {
 
     calendar.fullCalendar({
         theme: true,
+        height: $(window).height() - 20,
+        longPressDelay: 250,
         customButtons: {
             addReservationButton: {
                 text: 'New reservation',
