@@ -343,6 +343,21 @@ public class BuildSchema  {
     private @Getter Product AlpesiGyogyTea;
     private @Getter Product PiramisCitrusVerbena;
 
+    // Szirupok
+    private @Getter Product KaramellSzirup;
+    private @Getter Product CsokiSzirup;
+    private @Getter Product IrishCremeSzirup;
+    private @Getter Product FranciaVanilliaSzirup;
+    private @Getter Product AmarettoSzirup;
+    private @Getter Product KokuszSzirup;
+    
+    // Toppings
+    private @Getter Product TejszinhabTopping;
+    private @Getter Product CsokiszoszTopping;
+    private @Getter Product EperszoszTopping;
+    private @Getter Product MogyoroTopping;
+    private @Getter Product GumicukorTopping;
+    
     // Kavek
     private @Getter Product Espresso;
     private @Getter Product Americano;
@@ -385,6 +400,8 @@ public class BuildSchema  {
     private @Getter ProductCategory forroItalok;
     private @Getter ProductCategory tea;
     private @Getter ProductCategory filteres;
+    private @Getter ProductCategory szirup;
+    private @Getter ProductCategory topping;
     private @Getter ProductCategory forraltBor;
     private @Getter ProductCategory kave;
     private @Getter ProductCategory napiAkciok;
@@ -687,6 +704,21 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoAlpesiGyogyTea;
     private @Getter ProductCategory PseudoPiramisCitrusVerbena;
 
+    // Szirupok
+    private @Getter ProductCategory PseudoKaramellSzirup;
+    private @Getter ProductCategory PseudoCsokiSzirup;
+    private @Getter ProductCategory PseudoIrishCremeSzirup;
+    private @Getter ProductCategory PseudoFranciaVanilliaSzirup;
+    private @Getter ProductCategory PseudoAmarettoSzirup;
+    private @Getter ProductCategory PseudoKokuszSzirup;
+
+    // Toppings
+    private @Getter ProductCategory PseudoTejszinhabTopping;
+    private @Getter ProductCategory PseudoCsokiszoszTopping;
+    private @Getter ProductCategory PseudoEperszoszTopping;
+    private @Getter ProductCategory PseudoMogyoroTopping;
+    private @Getter ProductCategory PseudoGumicukorTopping;
+    
     // Kavek
     private @Getter ProductCategory PseudoEspresso;
     private @Getter ProductCategory PseudoAmericano;
@@ -1506,6 +1538,21 @@ public class BuildSchema  {
         buildAlpesiGyogyTea();
         buildPiramisCitrusVerbena();
 
+        // Szirupok
+        buildKaramellSzirup();
+        buildCsokiSzirup();
+        buildIrishCremeSzirup();
+        buildFranciaVanilliaSzirup();
+        buildAmarettoSzirup();
+        buildKokuszSzirup();
+
+        // Toppings
+        buildTejszinhabTopping();
+        buildCsokiszoszTopping();
+        buildEperszoszTopping();
+        buildMogyoroTopping();
+        buildGumicukorTopping();
+        
         // Kavek
         buildEspresso();
         buildAmericano();
@@ -4689,6 +4736,160 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildKaramellSzirup() {
+        KaramellSzirup = Product.builder()
+                .longName("Karamell Szirup")
+                .shortName("Karamell Szirup")
+                .orderNumber(1)
+                .salePrice(120)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();  
+    }
+
+    private void buildCsokiSzirup() {
+        CsokiSzirup = Product.builder()
+                .longName("Csoki Szirup")
+                .shortName("Csoki Szirup")
+                .orderNumber(2)
+                .salePrice(120)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build(); 
+    }
+
+    private void buildIrishCremeSzirup() {
+        IrishCremeSzirup = Product.builder()
+                .longName("Irish Creme Szirup")
+                .shortName("Irish Creme Szirup")
+                .orderNumber(3)
+                .salePrice(120)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildFranciaVanilliaSzirup() {
+        FranciaVanilliaSzirup = Product.builder()
+                .longName("Francia Vanillia Szirup")
+                .shortName("Vanillia Szirup")
+                .orderNumber(4)
+                .salePrice(120)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildAmarettoSzirup() {
+        AmarettoSzirup = Product.builder()
+                .longName("Amaretto Szirup")
+                .shortName("Amaretto Szirup")
+                .orderNumber(5)
+                .salePrice(120)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build(); 
+    }
+
+    private void buildKokuszSzirup() {
+        KokuszSzirup = Product.builder()
+                .longName("Kókusz Szirup")
+                .shortName("Kókusz Szirup")
+                .orderNumber(6)
+                .salePrice(120)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildTejszinhabTopping() {
+        TejszinhabTopping = Product.builder()
+                .longName("Tejszinhab Topping")
+                .shortName("Tejszinhab")
+                .orderNumber(1)
+                .salePrice(100)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildCsokiszoszTopping() {
+        CsokiszoszTopping = Product.builder()
+                .longName("Csokiszósz Topping")
+                .shortName("Csokiszósz")
+                .orderNumber(2)
+                .salePrice(100)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build(); 
+    }
+
+    private void buildEperszoszTopping() {
+        EperszoszTopping = Product.builder()
+                .longName("Eperszósz Topping")
+                .shortName("Eperszósz")
+                .orderNumber(3)
+                .salePrice(100)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build(); 
+    }
+
+    private void buildMogyoroTopping() {
+        MogyoroTopping = Product.builder()
+                .longName("Mogyoró Topping")
+                .shortName("Mogyoró")
+                .orderNumber(4)
+                .salePrice(100)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build(); 
+    }
+
+    private void buildGumicukorTopping() {
+        GumicukorTopping = Product.builder()
+                .longName("Gumicukor Topping")
+                .shortName("Gumicukor")
+                .orderNumber(5)
+                .salePrice(100)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build(); 
+    }
+
     private void buildEspresso() {
         Espresso = Product.builder()
                 .longName("Espresso")
@@ -4885,6 +5086,8 @@ public class BuildSchema  {
                 buildFilteres();
             buildForraltBor();
             buildKave();
+            buildSzirup();
+            buildTopping();
         buildAkciosItalok();
 
         buildMenukAggregate();
@@ -5187,6 +5390,21 @@ public class BuildSchema  {
         buildPseudoAlpesiGyogyTea();
         buildPseudoPiramisCitrusVerbena();
 
+        // Szirupok
+        buildPseudoKaramellSzirup();
+        buildPseudoCsokiSzirup();
+        buildPseudoIrishCremeSzirup();
+        buildPseudoFranciaVanilliaSzirup();
+        buildPseudoAmarettoSzirup();
+        buildPseudoKokuszSzirup();
+
+        // Toppings
+        buildPseudoTejszinhabTopping();
+        buildPseudoCsokiszoszTopping();
+        buildPseudoEperszoszTopping();
+        buildPseudoMogyoroTopping();
+        buildPseudoGumicukorTopping();
+        
         // Kavek
         buildPseudoEspresso();
         buildPseudoAmericano();
@@ -9253,6 +9471,94 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildPseudoKaramellSzirup() {
+        PseudoKaramellSzirup = ProductCategory.builder()
+                .name("Karamell Szirup_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoCsokiSzirup() {
+        PseudoCsokiSzirup = ProductCategory.builder()
+                .name("Csoki Szirup_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoIrishCremeSzirup() {
+        PseudoIrishCremeSzirup = ProductCategory.builder()
+                .name("Irish Creme Szirup_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoFranciaVanilliaSzirup() {
+        PseudoFranciaVanilliaSzirup = ProductCategory.builder()
+                .name("Francia Vanillia Szirup_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoAmarettoSzirup() {
+        PseudoAmarettoSzirup = ProductCategory.builder()
+                .name("Amaretto Szirup_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoKokuszSzirup() {
+        PseudoKokuszSzirup = ProductCategory.builder()
+                .name("Kókusz Szirup_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoTejszinhabTopping() {
+        PseudoTejszinhabTopping = ProductCategory.builder()
+                .name("Tejszinhab Topping_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoCsokiszoszTopping() {
+        PseudoCsokiszoszTopping = ProductCategory.builder()
+                .name("Csokiszósz Topping_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoEperszoszTopping() {
+        PseudoEperszoszTopping = ProductCategory.builder()
+                .name("Eperszósz Topping_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMogyoroTopping() {
+        PseudoMogyoroTopping = ProductCategory.builder()
+                .name("Mogyoró Topping_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoGumicukorTopping() {
+        PseudoGumicukorTopping = ProductCategory.builder()
+                .name("Gumicukor Topping_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+    
     private void buildPseudoEspresso() {
         PseudoEspresso = ProductCategory.builder()
                 .name("Espresso_Pseudo")
@@ -9771,6 +10077,22 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildSzirup() {
+        szirup = ProductCategory.builder()
+                .name("Szirupok")
+                .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
+                .build();
+    }
+
+    private void buildTopping() {
+        topping = ProductCategory.builder()
+                .name("Toppings")
+                .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
+                .build();
+    }
+
     private void buildAkciosItalok() {
         napiAkciok = ProductCategory.builder()
                 .name("Napi akciók")
@@ -10141,7 +10463,7 @@ public class BuildSchema  {
         uditok.setChildren(new HashSet<>(
                 Arrays.asList(uvegesUdito, limo, uditoDecire)));
         forroItalok.setChildren(new HashSet<>(
-                Arrays.asList(tea, forraltBor, kave)));
+                Arrays.asList(tea, forraltBor, kave, szirup, topping)));
         sos.setParent(ragcsak);
         edes.setParent(ragcsak);
 
@@ -10159,6 +10481,8 @@ public class BuildSchema  {
         tea.setParent(forroItalok);
         forraltBor.setParent(forroItalok);
         kave.setParent(forroItalok);
+        szirup.setParent(forroItalok);
+        topping.setParent(forroItalok);
 
         tea.setChildren(new HashSet<>(
                 Arrays.asList(filteres)));
@@ -10459,6 +10783,21 @@ public class BuildSchema  {
         pseudoAdHoc.setParent(filteres);
         pseudoGameFee.setParent(filteres);
 
+        // Szirupok
+        PseudoKaramellSzirup.setParent(szirup);
+        PseudoCsokiSzirup.setParent(szirup);
+        PseudoIrishCremeSzirup.setParent(szirup);
+        PseudoFranciaVanilliaSzirup.setParent(szirup);
+        PseudoAmarettoSzirup.setParent(szirup);
+        PseudoKokuszSzirup.setParent(szirup);
+
+        // Toppings
+        PseudoTejszinhabTopping.setParent(topping);
+        PseudoCsokiszoszTopping.setParent(topping);
+        PseudoEperszoszTopping.setParent(topping);
+        PseudoMogyoroTopping.setParent(topping);
+        PseudoGumicukorTopping.setParent(topping);
+        
         // Kavek
         PseudoEspresso.setParent(kave);
         PseudoAmericano.setParent(kave);
@@ -10793,6 +11132,25 @@ public class BuildSchema  {
                     pseudoGameFee,
                     pseudoAdHoc)));
 
+        // Szirupok
+        szirup.setChildren(new HashSet<>(
+                Arrays.asList(
+                    PseudoKaramellSzirup,
+                    PseudoCsokiSzirup,
+                    PseudoIrishCremeSzirup,
+                    PseudoFranciaVanilliaSzirup,
+                    PseudoAmarettoSzirup,
+                    PseudoKokuszSzirup)));
+
+        // Toppings
+        topping.setChildren(new HashSet<>(
+                Arrays.asList(
+                    PseudoTejszinhabTopping,
+                    PseudoCsokiszoszTopping,
+                    PseudoEperszoszTopping,
+                    PseudoMogyoroTopping,
+                    PseudoGumicukorTopping)));
+        
         // Kavek
         kave.setChildren(new HashSet<>(
                 Arrays.asList(
@@ -11135,6 +11493,22 @@ public class BuildSchema  {
         KamillaTea.setCategory(PseudoKamillaTea);
         AlpesiGyogyTea.setCategory(PseudoAlpesiGyogyTea);
         PiramisCitrusVerbena.setCategory(PseudoPiramisCitrusVerbena);
+
+        // Szirupok
+        KaramellSzirup.setCategory(PseudoKaramellSzirup);
+        CsokiSzirup.setCategory(PseudoCsokiSzirup);
+        IrishCremeSzirup.setCategory(PseudoIrishCremeSzirup);
+        FranciaVanilliaSzirup.setCategory(PseudoFranciaVanilliaSzirup);
+        AmarettoSzirup.setCategory(PseudoAmarettoSzirup);
+        KokuszSzirup.setCategory(PseudoKokuszSzirup);
+
+        // Toppings
+        TejszinhabTopping.setCategory(PseudoTejszinhabTopping);
+        CsokiszoszTopping.setCategory(PseudoCsokiszoszTopping);
+        EperszoszTopping.setCategory(PseudoEperszoszTopping);
+        MogyoroTopping.setCategory(PseudoMogyoroTopping);
+        GumicukorTopping.setCategory(PseudoGumicukorTopping);
+        
         // Kavek
         Espresso.setCategory(PseudoEspresso);
         Americano.setCategory(PseudoAmericano);
@@ -11442,6 +11816,21 @@ public class BuildSchema  {
         PseudoAlpesiGyogyTea.setProduct(AlpesiGyogyTea);
         PseudoPiramisCitrusVerbena.setProduct(PiramisCitrusVerbena);
 
+        // Szirupok
+        PseudoKaramellSzirup.setProduct(KaramellSzirup);
+        PseudoCsokiSzirup.setProduct(CsokiSzirup);
+        PseudoIrishCremeSzirup.setProduct(IrishCremeSzirup);
+        PseudoFranciaVanilliaSzirup.setProduct(FranciaVanilliaSzirup);
+        PseudoAmarettoSzirup.setProduct(AmarettoSzirup);
+        PseudoKokuszSzirup.setProduct(KokuszSzirup);
+
+        // Toppings
+        PseudoTejszinhabTopping.setProduct(TejszinhabTopping);
+        PseudoCsokiszoszTopping.setProduct(CsokiszoszTopping);
+        PseudoEperszoszTopping.setProduct(EperszoszTopping);
+        PseudoMogyoroTopping.setProduct(MogyoroTopping);
+        PseudoGumicukorTopping.setProduct(GumicukorTopping);
+        
         // Kavek
         PseudoEspresso.setProduct(Espresso);
         PseudoAmericano.setProduct(Americano);
