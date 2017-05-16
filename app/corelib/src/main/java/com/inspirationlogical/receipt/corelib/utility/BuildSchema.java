@@ -204,7 +204,6 @@ public class BuildSchema  {
     private @Getter Product MeszarosPinotNoirRoseHosszulepes;
     private @Getter Product MeszarosPinotNoirRoseSportFroccs;
     
-    
     // Pezsgok
     private @Getter Product TorleyGalaSzaraz;
     private @Getter Product TorleyCharmantEdes;
@@ -328,13 +327,20 @@ public class BuildSchema  {
     private @Getter Product MonsterRehab;
 
     // Filteres Teaak
-    private @Getter Product DallmayrFekete;
-    private @Getter Product DallmayrGyumolcs;
-    private @Getter Product DallmayrZold;
-
+    private @Getter Product ChaiTea;
+    private @Getter Product EarlGreyTea;
     private @Getter Product PiramisDarjeling;
-    private @Getter Product PiramisMangoMaracuja;
+    private @Getter Product RoibosKaramellTea;
+    private @Getter Product DallmayrGyumolcs;
+    private @Getter Product ErdeiGyumolcsTea;
+    private @Getter Product CsipkebogyoHibiszkuszTea;
     private @Getter Product PiramisAnanaszPapaja;
+    private @Getter Product PiramisMangoMaracuja;
+    private @Getter Product DallmayrZold;
+    private @Getter Product CitromosZoldTea;
+    private @Getter Product BorsmentaTea;
+    private @Getter Product KamillaTea;
+    private @Getter Product AlpesiGyogyTea;
     private @Getter Product PiramisCitrusVerbena;
 
     // Kavek
@@ -379,7 +385,6 @@ public class BuildSchema  {
     private @Getter ProductCategory forroItalok;
     private @Getter ProductCategory tea;
     private @Getter ProductCategory filteres;
-    private @Getter ProductCategory piramis;
     private @Getter ProductCategory forraltBor;
     private @Getter ProductCategory kave;
     private @Getter ProductCategory napiAkciok;
@@ -666,14 +671,21 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoMonsterRehab;
 
     // Filteres Teaak
-    private @Getter ProductCategory PseudoDallmyrFekete;
-    private @Getter ProductCategory PseudoDallmyrGyumolcs;
-    private @Getter ProductCategory PseudoDallmyrZold;
-
-    private @Getter ProductCategory PseudoPiramis1;
-    private @Getter ProductCategory PseudoPiramis2;
-    private @Getter ProductCategory PseudoPiramis3;
-    private @Getter ProductCategory PseudoPiramis4;
+    private @Getter ProductCategory PseudoChaiTea;
+    private @Getter ProductCategory PseudoEarlGreyTea;
+    private @Getter ProductCategory PseudoPiramisDarjeling;
+    private @Getter ProductCategory PseudoRoibosKaramellTea;
+    private @Getter ProductCategory PseudoDallmayrGyumolcs;
+    private @Getter ProductCategory PseudoErdeiGyumolcsTea;
+    private @Getter ProductCategory PseudoCsipkebogyoHibiszkuszTea;
+    private @Getter ProductCategory PseudoPiramisAnanaszPapaja;
+    private @Getter ProductCategory PseudoPiramisMangoMaracuja;
+    private @Getter ProductCategory PseudoDallmayrZold;
+    private @Getter ProductCategory PseudoCitromosZoldTea;
+    private @Getter ProductCategory PseudoBorsmentaTea;
+    private @Getter ProductCategory PseudoKamillaTea;
+    private @Getter ProductCategory PseudoAlpesiGyogyTea;
+    private @Getter ProductCategory PseudoPiramisCitrusVerbena;
 
     // Kavek
     private @Getter ProductCategory PseudoEspresso;
@@ -1042,7 +1054,6 @@ public class BuildSchema  {
     private @Getter Recipe MonsterRehabRecipe1;
 
     // Filteres Teaak
-    private @Getter Recipe DallmayrFeketeRecipe1;
     private @Getter Recipe DallmayrGyumolcsRecipe1;
     private @Getter Recipe DallmayrZoldRecipe1;
 
@@ -1479,13 +1490,20 @@ public class BuildSchema  {
         buildMonsterRehab();
 
         // Filteres Teaak
-        buildDallmyrFekete();
-        buildDallmyrGyumolcs();
-        buildDallmyrZold();
-
+        buildChaiTea();
+        buildEarlGreyTea();
         buildPiramisDarjeling();
-        buildPiramisMangoMaracuja();
+        buildRoibosKaramellTea();
+        buildDallmyrGyumolcs();
+        buildErdeiGyumolcsTea();
+        buildCsipkebogyoHibiszkuszTea();
         buildPiramisAnanaszPapaja();
+        buildPiramisMangoMaracuja();
+        buildDallmyrZold();
+        buildCitromosZoldTea();
+        buildBorsmentaTea();
+        buildKamillaTea();
+        buildAlpesiGyogyTea();
         buildPiramisCitrusVerbena();
 
         // Kavek
@@ -4461,11 +4479,11 @@ public class BuildSchema  {
                 .build();
     }
 
-    private void buildDallmyrFekete() {
-        DallmayrFekete = Product.builder()
-                .longName("Dallmayr Fekete")
-                .shortName("Dallmayr Fekete")
-                .orderNumber(9)
+    private void buildChaiTea() {
+        ChaiTea = Product.builder()
+                .longName("Chai Tea")
+                .shortName("Chai")
+                .orderNumber(1)
                 .salePrice(450)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -4475,25 +4493,11 @@ public class BuildSchema  {
                 .build();
     }
 
-    private void buildDallmyrGyumolcs() {
-        DallmayrGyumolcs = Product.builder()
-                .longName("Dallmayr Gyümölcs")
-                .shortName("Dallmayr Gyümölcs")
-                .orderNumber(10)
-                .salePrice(450)
-                .purchasePrice(500)
-                .status(ProductStatus.ACTIVE)
-                .quantityUnit(QuantityUnit.CENTILITER)
-                .storageMultiplier(70)
-                .type(ProductType.SELLABLE)
-                .build();
-    }
-
-    private void buildDallmyrZold() {
-        DallmayrZold = Product.builder()
-                .longName("Dallmyar Zöld")
-                .shortName("Dallmyar Zöld")
-                .orderNumber(11)
+    private void buildEarlGreyTea() {
+        EarlGreyTea = Product.builder()
+                .longName("Earl Grey")
+                .shortName("Earl Grey")
+                .orderNumber(2)
                 .salePrice(450)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -4506,8 +4510,8 @@ public class BuildSchema  {
     private void buildPiramisDarjeling() {
         PiramisDarjeling = Product.builder()
                 .longName("Piramis Darjeling")
-                .shortName("Piramis Darjeling")
-                .orderNumber(12)
+                .shortName("Darjeling")
+                .orderNumber(3)
                 .salePrice(490)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -4517,12 +4521,54 @@ public class BuildSchema  {
                 .build();
     }
 
-    private void buildPiramisMangoMaracuja() {
-        PiramisMangoMaracuja = Product.builder()
-                .longName("Piramis Mango Maracuja")
-                .shortName("Piramis Mango Mar.")
-                .orderNumber(13)
-                .salePrice(490)
+    private void buildRoibosKaramellTea() {
+        RoibosKaramellTea = Product.builder()
+                .longName("Roibos Karamell")
+                .shortName("Roibos Karamell")
+                .orderNumber(4)
+                .salePrice(450)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildDallmyrGyumolcs() {
+        DallmayrGyumolcs = Product.builder()
+                .longName("Dallmayr Gyümölcsvarázs")
+                .shortName("Gyümölcsvarázs")
+                .orderNumber(5)
+                .salePrice(450)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+    
+    private void buildErdeiGyumolcsTea() {
+        ErdeiGyumolcsTea = Product.builder()
+                .longName("Erdei Gyümölcs Tea")
+                .shortName("Erdei Gyümölcs")
+                .orderNumber(6)
+                .salePrice(450)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildCsipkebogyoHibiszkuszTea() {
+        CsipkebogyoHibiszkuszTea = Product.builder()
+                .longName("Csipkebogyó Hibiszkusz Tea")
+                .shortName("Csipkebogyó")
+                .orderNumber(7)
+                .salePrice(450)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -4535,8 +4581,92 @@ public class BuildSchema  {
         PiramisAnanaszPapaja = Product.builder()
                 .longName("Piramis Ananász Papaja")
                 .shortName("Piramis Ananász P.")
-                .orderNumber(14)
+                .orderNumber(8)
                 .salePrice(490)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+    
+    private void buildPiramisMangoMaracuja() {
+        PiramisMangoMaracuja = Product.builder()
+                .longName("Piramis Mango Maracuja")
+                .shortName("Piramis Mango Mar.")
+                .orderNumber(9)
+                .salePrice(490)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildDallmyrZold() {
+        DallmayrZold = Product.builder()
+                .longName("Dallmyar Zöld")
+                .shortName("Zöld Tea")
+                .orderNumber(10)
+                .salePrice(450)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+    
+    private void buildCitromosZoldTea() {
+        CitromosZoldTea = Product.builder()
+                .longName("Citromos Zöld Tea")
+                .shortName("C. Zöld Tea")
+                .orderNumber(11)
+                .salePrice(450)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildBorsmentaTea() {
+        BorsmentaTea = Product.builder()
+                .longName("Borsmenta Tea")
+                .shortName("Borsmenta")
+                .orderNumber(12)
+                .salePrice(450)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildKamillaTea() {
+        KamillaTea = Product.builder()
+                .longName("Kamilla Tea")
+                .shortName("Kamilla Tea")
+                .orderNumber(13)
+                .salePrice(450)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildAlpesiGyogyTea() {
+        AlpesiGyogyTea = Product.builder()
+                .longName("Alpesi Gyógy Tea")
+                .shortName("Alpesi Gyógy Tea")
+                .orderNumber(14)
+                .salePrice(450)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -4753,7 +4883,6 @@ public class BuildSchema  {
         buildForroItalok();
             buildTea();
                 buildFilteres();
-                buildPiramis();
             buildForraltBor();
             buildKave();
         buildAkciosItalok();
@@ -5041,15 +5170,22 @@ public class BuildSchema  {
         buildPseudoMonsterAssault();
         buildPseudoMonsterRehab();
 
-        // Filteres Teaak
-        buildPseudoDallmyrFekete();
+        // Filteres Teák
+        buildPseudoChaiTea();
+        buildPseudoEarlGreyTea();
+        buildPseudoPiramisDarjeling();
+        buildPseudoRoibosKaramellTea();
         buildPseudoDallmyrGyumolcs();
+        buildPseudoErdeiGyumolcsTea();
+        buildPseudoCsipkebogyoHibiszkuszTea();
+        buildPseudoPiramisAnanaszPapaja();
+        buildPseudoPiramisMangoMaracuja();
         buildPseudoDallmyrZold();
-
-        buildPseudoPiramis1();
-        buildPseudoPiramis2();
-        buildPseudoPiramis3();
-        buildPseudoPiramis4();
+        buildPseudoCitromosZoldTea();
+        buildPseudoBorsmentaTea();
+        buildPseudoKamillaTea();
+        buildPseudoAlpesiGyogyTea();
+        buildPseudoPiramisCitrusVerbena();
 
         // Kavek
         buildPseudoEspresso();
@@ -5303,7 +5439,6 @@ public class BuildSchema  {
         buildMonsterRehabRecipe1();
 
         // Filteres Teaak
-        buildDallmyrFeketeRecipe1();
         buildDallmyrGyumolcsRecipe1();
         buildDallmyrZoldRecipe1();
 
@@ -7145,15 +7280,7 @@ public class BuildSchema  {
                 .build();
     }
 
-    private void buildDallmyrFeketeRecipe1() {
-        DallmayrFeketeRecipe1 = Recipe.builder()
-                .owner(DallmayrFekete)
-                .component(DallmayrFekete)
-                .quantityMultiplier(9)
-                .build();
-    }
-
-    private void buildDallmyrGyumolcsRecipe1() {
+        private void buildDallmyrGyumolcsRecipe1() {
         DallmayrGyumolcsRecipe1 = Recipe.builder()
                 .owner(DallmayrGyumolcs)
                 .component(DallmayrGyumolcs)
@@ -9006,57 +9133,121 @@ public class BuildSchema  {
                 .build();
     }
 
-    private void buildPseudoDallmyrFekete() {
-        PseudoDallmyrFekete = ProductCategory.builder()
-                .name("Dallmyr Fekete_Pseudo")
+    private void buildPseudoChaiTea() {
+        PseudoChaiTea = ProductCategory.builder()
+                .name("Chai Tea_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoEarlGreyTea() {
+        PseudoEarlGreyTea = ProductCategory.builder()
+                .name("Earl Grey_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoPiramisDarjeling() {
+        PseudoPiramisDarjeling = ProductCategory.builder()
+                .name("Piramis Darjeling_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoRoibosKaramellTea() {
+        PseudoRoibosKaramellTea = ProductCategory.builder()
+                .name("Roibos Karamell_Pseudo")
                 .status(ProductStatus.ACTIVE)
                 .type(ProductCategoryType.PSEUDO)
                 .build();
     }
 
     private void buildPseudoDallmyrGyumolcs() {
-        PseudoDallmyrGyumolcs = ProductCategory.builder()
-                .name("Dallmyr Gyümölcs_Pseudo")
+        PseudoDallmayrGyumolcs = ProductCategory.builder()
+                .name("Dallmayr Gyümölcsvarázs_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoErdeiGyumolcsTea() {
+        PseudoErdeiGyumolcsTea = ProductCategory.builder()
+                .name("Erdei Gyümölcs Tea_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoCsipkebogyoHibiszkuszTea() {
+        PseudoCsipkebogyoHibiszkuszTea = ProductCategory.builder()
+                .name("Csipkebogyó Hibiszkusz Tea_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoPiramisAnanaszPapaja() {
+        PseudoPiramisAnanaszPapaja = ProductCategory.builder()
+                .name("Piramis Ananász Papaja_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoPiramisMangoMaracuja() {
+        PseudoPiramisMangoMaracuja = ProductCategory.builder()
+                .name("Piramis Mango Maracuja_Pseudo")
                 .status(ProductStatus.ACTIVE)
                 .type(ProductCategoryType.PSEUDO)
                 .build();
     }
 
     private void buildPseudoDallmyrZold() {
-        PseudoDallmyrZold = ProductCategory.builder()
-                .name("Dallmyr Zöld_Pseudo")
+        PseudoDallmayrZold = ProductCategory.builder()
+                .name("Dallmyar Zöld_Pseudo")
                 .status(ProductStatus.ACTIVE)
                 .type(ProductCategoryType.PSEUDO)
                 .build();
     }
 
-    private void buildPseudoPiramis1() {
-        PseudoPiramis1 = ProductCategory.builder()
-                .name("Piramis1_Pseudo")
+    private void buildPseudoCitromosZoldTea() {
+        PseudoCitromosZoldTea = ProductCategory.builder()
+                .name("Citromos Zöld Tea_Pseudo")
                 .status(ProductStatus.ACTIVE)
                 .type(ProductCategoryType.PSEUDO)
                 .build();
     }
 
-    private void buildPseudoPiramis2() {
-        PseudoPiramis2 = ProductCategory.builder()
-                .name("Piramis2_Pseudo")
+    private void buildPseudoBorsmentaTea() {
+        PseudoBorsmentaTea = ProductCategory.builder()
+                .name("Borsmenta Tea_Pseudo")
                 .status(ProductStatus.ACTIVE)
                 .type(ProductCategoryType.PSEUDO)
                 .build();
     }
 
-    private void buildPseudoPiramis3() {
-        PseudoPiramis3 = ProductCategory.builder()
-                .name("Piramis3_Pseudo")
+    private void buildPseudoKamillaTea() {
+        PseudoKamillaTea = ProductCategory.builder()
+                .name("Kamilla Tea_Pseudo")
                 .status(ProductStatus.ACTIVE)
                 .type(ProductCategoryType.PSEUDO)
                 .build();
     }
 
-    private void buildPseudoPiramis4() {
-        PseudoPiramis4 = ProductCategory.builder()
-                .name("Piramis4_Pseudo")
+    private void buildPseudoAlpesiGyogyTea() {
+        PseudoAlpesiGyogyTea = ProductCategory.builder()
+                .name("Alpesi Gyógy Tea_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoPiramisCitrusVerbena() {
+        PseudoPiramisCitrusVerbena = ProductCategory.builder()
+                .name("Piramis Citrus Verbéna_Pseudo")
                 .status(ProductStatus.ACTIVE)
                 .type(ProductCategoryType.PSEUDO)
                 .build();
@@ -9564,14 +9755,6 @@ public class BuildSchema  {
                 .build();
     }
 
-    private void buildPiramis() {
-        piramis = ProductCategory.builder()
-                .name("Piramis")
-                .type(ProductCategoryType.LEAF)
-                .status(ProductStatus.ACTIVE)
-                .build();
-    }
-
     private void buildForraltBor() {
         forraltBor = ProductCategory.builder()
                 .name("Forralt bor")
@@ -9978,9 +10161,8 @@ public class BuildSchema  {
         kave.setParent(forroItalok);
 
         tea.setChildren(new HashSet<>(
-                Arrays.asList(filteres, piramis)));
+                Arrays.asList(filteres)));
         filteres.setParent(tea);
-        piramis.setParent(tea);
     }
     
     private void leafsAndPseudos() {
@@ -10259,17 +10441,23 @@ public class BuildSchema  {
         PseudoMonsterRehab.setParent(uvegesUdito);
 
         // Filteres Teaak
-        PseudoDallmyrFekete.setParent(filteres);
-        PseudoDallmyrGyumolcs.setParent(filteres);
-        PseudoDallmyrZold.setParent(filteres);
-
-        PseudoPiramis1.setParent(piramis);
-        PseudoPiramis2.setParent(piramis);
-        PseudoPiramis3.setParent(piramis);
-        PseudoPiramis4.setParent(piramis);
-        pseudoAdHoc.setParent(piramis);
-        pseudoGameFee.setParent(piramis);
-
+        PseudoChaiTea.setParent(filteres);
+        PseudoEarlGreyTea.setParent(filteres);
+        PseudoPiramisDarjeling.setParent(filteres);
+        PseudoRoibosKaramellTea.setParent(filteres);
+        PseudoDallmayrGyumolcs.setParent(filteres);
+        PseudoErdeiGyumolcsTea.setParent(filteres);
+        PseudoCsipkebogyoHibiszkuszTea.setParent(filteres);
+        PseudoPiramisAnanaszPapaja.setParent(filteres);
+        PseudoPiramisMangoMaracuja.setParent(filteres);
+        PseudoDallmayrZold.setParent(filteres);
+        PseudoCitromosZoldTea.setParent(filteres);
+        PseudoBorsmentaTea.setParent(filteres);
+        PseudoKamillaTea.setParent(filteres);
+        PseudoAlpesiGyogyTea.setParent(filteres);
+        PseudoPiramisCitrusVerbena.setParent(filteres);
+        pseudoAdHoc.setParent(filteres);
+        pseudoGameFee.setParent(filteres);
 
         // Kavek
         PseudoEspresso.setParent(kave);
@@ -10587,16 +10775,21 @@ public class BuildSchema  {
         // Filteres Teaak
         filteres.setChildren(new HashSet<>(
                 Arrays.asList(
-                    PseudoDallmyrFekete,
-                    PseudoDallmyrGyumolcs,
-                    PseudoDallmyrZold)));
-
-        piramis.setChildren(new HashSet<>(
-                Arrays.asList(
-                    PseudoPiramis1,
-                    PseudoPiramis2,
-                    PseudoPiramis3,
-                    PseudoPiramis4,
+                    PseudoChaiTea,
+                    PseudoEarlGreyTea,
+                    PseudoPiramisDarjeling,
+                    PseudoRoibosKaramellTea,
+                    PseudoDallmayrGyumolcs,
+                    PseudoErdeiGyumolcsTea,
+                    PseudoCsipkebogyoHibiszkuszTea,
+                    PseudoPiramisAnanaszPapaja,
+                    PseudoPiramisMangoMaracuja,
+                    PseudoDallmayrZold,
+                    PseudoCitromosZoldTea,
+                    PseudoBorsmentaTea,
+                    PseudoKamillaTea,
+                    PseudoAlpesiGyogyTea,
+                    PseudoPiramisCitrusVerbena,
                     pseudoGameFee,
                     pseudoAdHoc)));
 
@@ -10926,16 +11119,22 @@ public class BuildSchema  {
         MonsterAssault.setCategory(PseudoMonsterAssault);
         MonsterRehab.setCategory(PseudoMonsterRehab);
 
-        // Filteres Teaak
-        DallmayrFekete.setCategory(PseudoDallmyrFekete);
-        DallmayrGyumolcs.setCategory(PseudoDallmyrGyumolcs);
-        DallmayrZold.setCategory(PseudoDallmyrZold);
-
-        PiramisDarjeling.setCategory(PseudoPiramis1);
-        PiramisMangoMaracuja.setCategory(PseudoPiramis2);
-        PiramisAnanaszPapaja.setCategory(PseudoPiramis3);
-        PiramisCitrusVerbena.setCategory(PseudoPiramis4);
-
+        // Filteres Teák
+        ChaiTea.setCategory(PseudoChaiTea);
+        EarlGreyTea.setCategory(PseudoEarlGreyTea);
+        PiramisDarjeling.setCategory(PseudoPiramisDarjeling);
+        RoibosKaramellTea.setCategory(PseudoRoibosKaramellTea);
+        DallmayrGyumolcs.setCategory(PseudoDallmayrGyumolcs);
+        ErdeiGyumolcsTea.setCategory(PseudoErdeiGyumolcsTea);
+        CsipkebogyoHibiszkuszTea.setCategory(PseudoCsipkebogyoHibiszkuszTea);
+        PiramisAnanaszPapaja.setCategory(PseudoPiramisAnanaszPapaja);
+        PiramisMangoMaracuja.setCategory(PseudoPiramisMangoMaracuja);
+        DallmayrZold.setCategory(PseudoDallmayrZold);
+        CitromosZoldTea.setCategory(PseudoCitromosZoldTea);
+        BorsmentaTea.setCategory(PseudoBorsmentaTea);
+        KamillaTea.setCategory(PseudoKamillaTea);
+        AlpesiGyogyTea.setCategory(PseudoAlpesiGyogyTea);
+        PiramisCitrusVerbena.setCategory(PseudoPiramisCitrusVerbena);
         // Kavek
         Espresso.setCategory(PseudoEspresso);
         Americano.setCategory(PseudoAmericano);
@@ -11227,14 +11426,21 @@ public class BuildSchema  {
         PseudoMonsterRehab.setProduct(MonsterRehab);
 
         // Filteres Teaak
-        PseudoDallmyrFekete.setProduct(DallmayrFekete);
-        PseudoDallmyrGyumolcs.setProduct(DallmayrGyumolcs);
-        PseudoDallmyrZold.setProduct(DallmayrZold);
-
-        PseudoPiramis1.setProduct(PiramisDarjeling);
-        PseudoPiramis2.setProduct(PiramisMangoMaracuja);
-        PseudoPiramis3.setProduct(PiramisAnanaszPapaja);
-        PseudoPiramis4.setProduct(PiramisCitrusVerbena);
+        PseudoChaiTea.setProduct(ChaiTea);
+        PseudoEarlGreyTea.setProduct(EarlGreyTea);
+        PseudoPiramisDarjeling.setProduct(PiramisDarjeling);
+        PseudoRoibosKaramellTea.setProduct(RoibosKaramellTea);
+        PseudoDallmayrGyumolcs.setProduct(DallmayrGyumolcs);
+        PseudoErdeiGyumolcsTea.setProduct(ErdeiGyumolcsTea);
+        PseudoCsipkebogyoHibiszkuszTea.setProduct(CsipkebogyoHibiszkuszTea);
+        PseudoPiramisAnanaszPapaja.setProduct(PiramisAnanaszPapaja);
+        PseudoPiramisMangoMaracuja.setProduct(PiramisMangoMaracuja);
+        PseudoDallmayrZold.setProduct(DallmayrZold);
+        PseudoCitromosZoldTea.setProduct(CitromosZoldTea);
+        PseudoBorsmentaTea.setProduct(BorsmentaTea);
+        PseudoKamillaTea.setProduct(KamillaTea);
+        PseudoAlpesiGyogyTea.setProduct(AlpesiGyogyTea);
+        PseudoPiramisCitrusVerbena.setProduct(PiramisCitrusVerbena);
 
         // Kavek
         PseudoEspresso.setProduct(Espresso);
@@ -11602,7 +11808,6 @@ public class BuildSchema  {
         MonsterRehab.setRecipes(Arrays.asList(MonsterRehabRecipe1));
 
         // Filteres Teaak
-        DallmayrFekete.setRecipes(Arrays.asList(DallmayrFeketeRecipe1));
         DallmayrGyumolcs.setRecipes(Arrays.asList(DallmayrGyumolcsRecipe1));
         DallmayrZold.setRecipes(Arrays.asList(DallmayrZoldRecipe1));
 
