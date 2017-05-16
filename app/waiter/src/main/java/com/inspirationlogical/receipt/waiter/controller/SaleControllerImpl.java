@@ -189,6 +189,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         }
         soldProductsView = getSoldProducts(restaurantService, tableView);
         updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+        sortSoldProductByLatestClickTime();
         updateCategories(selectedCategory);
         updateTableSummary();
         resetToggleGroups();

@@ -149,10 +149,13 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected void updateSoldProductsTable(List<SoldProductViewModel> soldProducts) {
         soldProductsModel = FXCollections.observableArrayList();
         soldProductsModel.addAll(soldProducts);
-        soldProductsModel.sort(Comparator.comparing(SoldProductViewModel::getLatestClickTime));
         soldProductsTable.setItems(soldProductsModel);
         soldProductsTable.refresh();
         updateSoldTotalPrice();
+    }
+
+    protected void sortSoldProductByLatestClickTime() {
+        soldProductsModel.sort(Comparator.comparing(SoldProductViewModel::getLatestClickTime));
     }
 
     protected void updateSoldTotalPrice() {
