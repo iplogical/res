@@ -85,6 +85,12 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
             });
             return;
         }
+        int size = adapter.getAdaptee().getCreatedList().size() - 1;
+        GuardedTransaction.delete(adapter.getAdaptee().getCreatedList().get(size), () -> {
+            adapter.getAdaptee().getCreatedList().get(size).setOwner(null);
+            adapter.getAdaptee().getCreatedList().remove(adapter.getAdaptee().getCreatedList().get(size));
+        });
+
         GuardedTransaction.run(() -> adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() - amount)));
     }
 
