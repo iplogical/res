@@ -24,6 +24,7 @@ $(document).ready(function() {
         theme: true,
         height: $(window).height() - 20,
         longPressDelay: 250,
+        eventOrder: "title",
         customButtons: {
             addReservationButton: {
                 text: 'New reservation',
@@ -174,7 +175,7 @@ function reservationToEvent(reservation, event) {
     event.id = reservation.reservationId;
     event.table = reservation.tableNumber;
     event.name = reservation.name;
-    event.title = "[" + reservation.tableNumber + "] " + reservation.name;
+    event.title = "[" + reservation.tableNumber + "] " + reservation.name + " (" + reservation.guestCount + ")";
     event.start = reservation.date + " " + reservation.startTime;
     event.end = reservation.date + " " + reservation.endTime;
     event.phone = reservation.phoneNumber;
