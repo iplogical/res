@@ -218,4 +218,9 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         soldProductsTable.setItems(soldProductsModel);
         soldProductsTable.refresh();
     }
+
+    protected void getSoldProductsAndUpdateTable() {
+        soldProductsView = getSoldProducts(restaurantService, tableView);
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+    }
 }

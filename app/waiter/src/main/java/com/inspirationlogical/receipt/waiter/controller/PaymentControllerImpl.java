@@ -148,6 +148,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             return;
         }
         getSoldProductsAndUpdateTable();
+        sortSoldProductByLatestClickTime();
         updateTableSummary();
         resetToggleGroups();
     }
@@ -419,11 +420,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             });
             return row;
         });
-    }
-
-    private void getSoldProductsAndUpdateTable() {
-        soldProductsView = getSoldProducts(restaurantService, tableView);
-        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
     }
 
     private void discardPaidRecords() {

@@ -155,15 +155,13 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void sellProduct(ProductView productView) {
         retailService.sellProduct(tableView, productView, 1, saleViewState.isTakeAway(), saleViewState.isGift());
-        soldProductsView = getSoldProducts(restaurantService, tableView);
-        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+        getSoldProductsAndUpdateTable();
     }
 
     @Override
     public void sellAdHocProduct(AdHocProductParams adHocProductParams) {
         retailService.sellAdHocProduct(tableView, adHocProductParams, saleViewState.isTakeAway());
-        soldProductsView = getSoldProducts(restaurantService, tableView);
-        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+        getSoldProductsAndUpdateTable();
         adHocProductForm.hide();
     }
 
@@ -187,8 +185,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         if(!soldProductsTableInitialized) {
             return;
         }
-        soldProductsView = getSoldProducts(restaurantService, tableView);
-        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+        getSoldProductsAndUpdateTable();
         sortSoldProductByLatestClickTime();
         updateCategories(selectedCategory);
         updateTableSummary();
@@ -303,13 +300,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                     break;
             }
         });
-    }
-
-
-    private void getSoldProductsAndUpdateTable() {
-        soldProductsView = getSoldProducts(restaurantService, tableView);
-        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
-        updateTableSummary();
     }
 
     private void updateCategories(ProductCategoryView selectedCategory) {
