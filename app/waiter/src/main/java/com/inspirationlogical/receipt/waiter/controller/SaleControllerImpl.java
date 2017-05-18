@@ -83,6 +83,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     ToggleGroup cancellationTypeToggleGroup;
 
     @FXML
+    ToggleButton sortByClickTime;
+
+    @FXML
     private TextField search;
 
     @FXML
@@ -135,7 +138,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     public void initialize(URL location, ResourceBundle resources) {
         initializeCategories();
         initializeSoldProductsTable();
-        initializeCancellationToggles();
+        initializeToggles();
         updateNode();
         initializeSoldProductsTableRowHandler();
         initializeQuickSearchAndSellHandler();
@@ -186,7 +189,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
             return;
         }
         getSoldProductsAndUpdateTable();
-        sortSoldProductByLatestClickTime();
         updateCategories(selectedCategory);
         updateTableSummary();
         resetToggleGroups();
@@ -271,11 +273,12 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         selectedCategory = childCategories.get(0);
     }
 
-    private void initializeCancellationToggles() {
+    private void initializeToggles() {
         singleCancellation.setUserData(SINGLE);
         selectiveCancellation.setUserData(SELECTIVE);
         saleViewState.setCancellationType(NONE);
         cancellationTypeToggleGroup.selectedToggleProperty().addListener(new CancellationTypeToggleListener());
+        sortByClickTime.selectedProperty().addListener(new SortByClickTimeToggleListener());
     }
 
     private void initializeQuickSearchAndSellHandler() {
@@ -413,6 +416,17 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                 return;
             }
             saleViewState.setCancellationType((SaleViewState.CancellationType)cancellationTypeToggleGroup.getSelectedToggle().getUserData());
+        }
+    }
+
+    private class SortByClickTimeToggleListener implements ChangeListener<Boolean> {
+        @Override
+        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            if(newValue) {
+                sortSoldProductByLatestClickTime();
+            } else {
+                getSoldProductsAndUpdateTable();
+            }
         }
     }
 }

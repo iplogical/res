@@ -148,7 +148,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             return;
         }
         getSoldProductsAndUpdateTable();
-        sortSoldProductByLatestClickTime();
         updateTableSummary();
         resetToggleGroups();
     }
