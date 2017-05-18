@@ -3,6 +3,8 @@ package com.inspirationlogical.receipt.corelib.model.utils;
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.entity.AbstractEntity;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
@@ -13,6 +15,7 @@ import java.util.List;
  * Created by Ferenc on 2017. 03. 10..
  */
 public class GuardedTransaction {
+    final static Logger logger = LoggerFactory.getLogger(GuardedTransaction.class);
 
     private static EntityManager manager = EntityManagerProvider.getEntityManager();
 
@@ -38,6 +41,7 @@ public class GuardedTransaction {
                 manager.getTransaction().commit();
             }
         } catch (Exception e){
+            logger.error("Exception in GuardedTransaction", e);
             if(manager.getTransaction().isActive()) {
                 manager.getTransaction().rollback();
             }

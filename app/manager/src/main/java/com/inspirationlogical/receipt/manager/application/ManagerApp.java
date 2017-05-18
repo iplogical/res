@@ -10,7 +10,6 @@ import com.inspirationlogical.receipt.corelib.frontend.application.ResourcesProv
 import com.inspirationlogical.receipt.corelib.frontend.application.StageProvider;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
-import com.inspirationlogical.receipt.corelib.utility.LogConfiguration;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.manager.controller.GoodsController;
 
@@ -31,8 +30,6 @@ public class ManagerApp extends Application implements StageProvider, ResourcesP
     public void start(Stage stage) {
         this.stage = stage;
         resources = Resources.MANAGER;
-
-        LogConfiguration.setLoggingLevel(Level.WARN);
 
         MainStage.setStageProvider(this);
         MainStage.setResourcesProvider(this);
