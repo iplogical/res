@@ -1,9 +1,30 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
+import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.NamedSubgraph;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidOwner;
@@ -18,14 +39,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Tolerate;
 
-import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
-
 @Entity
 @Builder(toBuilder = true)
 @EqualsAndHashCode(callSuper = true, exclude = {"owner", "records"})
 @javax.persistence.Table(name = "RECEIPT")
 @NamedQueries({
-    @NamedQuery(name = Receipt.GET_TEST_RECEIPTS,
+    @NamedQuery(name = Receipt.GET_RECEIPTS,
             query="FROM Receipt r"),
     @NamedQuery(name = Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
             query="SELECT r FROM Receipt r WHERE r.status=:status AND r.owner.number=:number"),
@@ -43,7 +62,7 @@ import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_
 @ValidReceipts
 public @Data class Receipt extends AbstractEntity {
 
-    public static final String GET_TEST_RECEIPTS = "Receipt.GetTestReceipts";
+    public static final String GET_RECEIPTS = "Receipt.GetReceipts";
     public static final String GET_RECEIPT_BY_STATUS_AND_OWNER = "Receipt.GetActiveReceipt";
     public static final String GET_RECEIPT_BY_CLOSURE_TIME_AND_TYPE = "Receipt.GetReceiptByClosureTime";
     public static final String GRAPH_RECEIPT_AND_RECORDS = "Receipt.GraphReceiptAndRecords";

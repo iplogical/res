@@ -50,6 +50,11 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         return newReceipt;
     }
 
+    public static List<ReceiptAdapter> getReceipts() {
+        List<Receipt> receipts = GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPTS);
+        return receipts.stream().map(ReceiptAdapter::new).collect(toList());
+    }
+
     public ReceiptAdapter(Receipt receipt) {
         super(receipt);
     }

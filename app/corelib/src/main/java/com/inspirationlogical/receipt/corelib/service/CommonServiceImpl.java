@@ -13,7 +13,6 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
@@ -21,6 +20,7 @@ import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundExce
 import com.inspirationlogical.receipt.corelib.model.adapter.PriceModifierAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.RecipeAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
@@ -35,6 +35,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
 import com.inspirationlogical.receipt.corelib.model.view.RecipeViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.StockView;
@@ -251,6 +252,9 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public List<ReceiptView> getReceipts() {
-        return null;
+        return ReceiptAdapter.getReceipts()
+                .stream()
+                .map(ReceiptViewImpl::new)
+                .collect(toList());
     }
 }

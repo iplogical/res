@@ -70,7 +70,7 @@
                </font>
             </Button>
             <Separator />
-            <Button fx:id="showGoods" mnemonicParsing="false" onAction="#onShowGoods" prefWidth="100.0" text="%Stock.GoodsView" textAlignment="CENTER">
+            <Button fx:id="showGoods" mnemonicParsing="false" onAction="#onShowGoods" prefWidth="100.0" text="%Common.GoodsView" textAlignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>

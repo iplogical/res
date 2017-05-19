@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" stylesheets="@../css/Common.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+   <top>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%Receipt.Title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" />
+         </BorderPane.margin>
+      </AnchorPane>
+   </top>
+   <right>
+      <VBox alignment="TOP_CENTER" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="showGoods" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onShowGoods" text="%Common.GoodsView">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets left="5.0" top="5.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </VBox>
+   </right>
+   <center>
+      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <TreeTableView fx:id="receiptsTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TreeTableColumn fx:id="date" prefWidth="100.0" text="%Receipt.Date" />
+                        <TreeTableColumn fx:id="type" prefWidth="100.0" text="%Receipt.Type" />
+                        <TreeTableColumn fx:id="status" prefWidth="100.0" text="%Receipt.Status" />
+                        <TreeTableColumn fx:id="paymentMethod" prefWidth="100.0" text="%Receipt.PaymentMethod" />
+                        <TreeTableColumn fx:id="openTime" prefWidth="100.0" text="%Receipt.OpenTime" />
+                        <TreeTableColumn fx:id="closureTime" prefWidth="100.0" text="%Receipt.ClosureTime" />
+                        <TreeTableColumn fx:id="userCode" prefWidth="100.0" text="%Receipt.UserCode" />
+                        <TreeTableColumn fx:id="sumPurchaseNetPrice" prefWidth="100.0" text="%Receipt.SumPurchaseNetPrice" />
+                        <TreeTableColumn fx:id="sumPurchaseGrossPrice" prefWidth="100.0" text="%Receipt.SumPurchaseGrossPrice" />
+                        <TreeTableColumn fx:id="sumSaleNetPrice" prefWidth="100.0" text="%Receipt.SumSaleNetPrice" />
+                        <TreeTableColumn fx:id="sumSaleGrossPrice" prefWidth="100.0" text="%Receipt.SumSaleGrossPrice" />
+                        <TreeTableColumn fx:id="discountPercent" prefWidth="100.0" text="%Receipt.DiscountPercent" />
+                        <TreeTableColumn fx:id="VATSerie" prefWidth="100.0" text="%Receipt.VATSerie" />
+                        <TreeTableColumn fx:id="clientName" prefWidth="100.0" text="%Receipt.ClientName" />
+                        <TreeTableColumn fx:id="clientAddress" prefWidth="100.0" text="%Receipt.ClientAddress" />
+                        <TreeTableColumn fx:id="clientTAXNumber" prefWidth="100.0" text="%Receipt.ClientTAXNumber" />
+                    </columns>
+                  </TreeTableView>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="C1" />
+                      <TableColumn prefWidth="75.0" text="C2" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+</BorderPane>

@@ -90,6 +90,8 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     private PriceModifierController priceModifierController;
 
+    private ReceiptController receiptController;
+
     private CommonService commonService;
 
     private Popup productForm;
@@ -109,12 +111,14 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     @Inject
     public GoodsControllerImpl(StockController stockController,
                                PriceModifierController priceModifierController,
+                               ReceiptController receiptController,
                                ProductFormController productFormController,
                                CategoryFormController categoryFormController,
                                RecipeFormController recipeFormController,
                                CommonService commonService) {
         this.stockController = stockController;
         this.priceModifierController = priceModifierController;
+        this.receiptController = receiptController;
         this.productFormController = productFormController;
         this.categoryFormController = categoryFormController;
         this.recipeFormController = recipeFormController;
@@ -198,7 +202,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     @FXML
     public void onShowReceipts(Event event) {
-
+        viewLoader.loadViewIntoScene(receiptController);
     }
 
     @FXML

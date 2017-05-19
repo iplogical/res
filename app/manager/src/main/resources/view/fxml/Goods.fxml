@@ -109,17 +109,17 @@
                </font>
             </Button>
             <Separator />
-            <Button fx:id="showStock" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onShowStock" text="%Goods.StockView" textAlignment="CENTER">
+            <Button fx:id="showStock" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onShowStock" text="%Common.StockView" textAlignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="showPriceModifiers" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onShowPriceModifiers" text="%Goods.PriceModifierView">
+            <Button fx:id="showPriceModifiers" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onShowPriceModifiers" text="%Common.PriceModifierView">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="showReceipts" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onShowReceipts" text="%Goods.ReceiptsView">
+            <Button fx:id="showReceipts" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onShowReceipts" text="%Common.ReceiptsView">
                <font>
                   <Font size="16.0" />
                </font>
