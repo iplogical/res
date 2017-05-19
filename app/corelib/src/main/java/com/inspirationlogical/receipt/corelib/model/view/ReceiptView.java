@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
@@ -11,7 +11,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 
 public interface ReceiptView {
 
-    Collection<ReceiptRecordView> getSoldProducts();
+    List<ReceiptRecordView> getSoldProducts();
 
     long getTotalPrice();
 

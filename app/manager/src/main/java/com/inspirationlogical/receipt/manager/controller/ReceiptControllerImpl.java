@@ -2,12 +2,14 @@ package com.inspirationlogical.receipt.manager.controller;
 
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
+import static javafx.collections.FXCollections.observableArrayList;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -22,9 +24,11 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableRow;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.BorderPane;
 
@@ -72,6 +76,22 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
 
     @FXML
     TableView<ReceiptRecordViewModel> receiptRecordsTable;
+    @FXML
+    TableColumn<ReceiptRecordViewModel, String> recordName;
+    @FXML
+    TableColumn<ReceiptRecordViewModel, String> recordType;
+    @FXML
+    TableColumn<ReceiptRecordViewModel, String> recordSoldQuantity;
+    @FXML
+    TableColumn<ReceiptRecordViewModel, String> recordAbsoluteQuantity;
+    @FXML
+    TableColumn<ReceiptRecordViewModel, String> recordPurchasePrice;
+    @FXML
+    TableColumn<ReceiptRecordViewModel, String> recordSalePrice;
+    @FXML
+    TableColumn<ReceiptRecordViewModel, String> recordVAT;
+    @FXML
+    TableColumn<ReceiptRecordViewModel, String> recordDiscountPercent;
 
     @FXML
     Button showGoods;
@@ -141,9 +161,23 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
         receiptsTable.setRoot(rootItem);
         receiptsTable.setShowRoot(false);
 
-        receiptsByDate.entrySet().forEach(receipts -> {
-            List<ReceiptView> receiptsOfDate = receipts.getValue();
-            TreeItem<ReceiptViewModel> dateItem = new TreeItem<>(new ReceiptViewModel(receipts.getKey()));
+        receiptsTable.setRowFactory(tv -> {
+            TreeTableRow<ReceiptViewModel> row = new TreeTableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(event.getClickCount() == 1 && (! row.isEmpty())) {
+                    List<ReceiptRecordViewModel> records = row.getItem().getRecords()
+                            .stream()
+                            .map(ReceiptRecordViewModel::new)
+                            .collect(Collectors.toList());
+                    receiptRecordsTable.setItems(observableArrayList(records));
+                    row.getItem();
+                }
+            });
+            return row;
+        });
+
+        receiptsByDate.forEach((date, receiptsOfDate) -> {
+            TreeItem<ReceiptViewModel> dateItem = new TreeItem<>(new ReceiptViewModel(date));
             dateItem.setExpanded(true);
             rootItem.getChildren().add(dateItem);
             receiptsOfDate.forEach(receipt -> {
@@ -154,6 +188,13 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     }
 
     private void initReceiptRecordsColumns() {
-
+        initColumn(recordName, ReceiptRecordViewModel::getName);
+        initColumn(recordType, ReceiptRecordViewModel::getType);
+        initColumn(recordSoldQuantity, ReceiptRecordViewModel::getSoldQuantity);
+        initColumn(recordAbsoluteQuantity, ReceiptRecordViewModel::getAbsoluteQuantity);
+        initColumn(recordPurchasePrice, ReceiptRecordViewModel::getPurchasePrice);
+        initColumn(recordSalePrice, ReceiptRecordViewModel::getSalePrice);
+        initColumn(recordVAT, ReceiptRecordViewModel::getVAT);
+        initColumn(recordDiscountPercent, ReceiptRecordViewModel::getDiscountPercent);
     }
 }

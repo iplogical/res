@@ -1,8 +1,8 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
@@ -20,12 +20,12 @@ public class ReceiptViewImpl extends AbstractModelViewImpl<ReceiptAdapter>
     }
 
     @Override
-    public Collection<ReceiptRecordView> getSoldProducts() {
+    public List<ReceiptRecordView> getSoldProducts() {
         if(adapter == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return adapter.getSoldProducts().stream()
-                .map(record -> new ReceiptRecordViewImpl(record))
+                .map(ReceiptRecordViewImpl::new)
                 .collect(Collectors.toList());
     }
 

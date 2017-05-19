@@ -1,16 +1,17 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
+import static java.time.LocalDateTime.now;
+import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
-import static java.time.LocalDateTime.now;
-import static java.util.stream.Collectors.toList;
+import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
 /**
  * Created by Bálint on 2017.03.15..
@@ -33,8 +34,23 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
     }
 
     @Override
+    public ReceiptRecordType getType() {
+        return adapter.getAdaptee().getType();
+    }
+
+    @Override
     public double getSoldQuantity() {
         return adapter.getAdaptee().getSoldQuantity();
+    }
+
+    @Override
+    public double getAbsoluteQuantity() {
+        return adapter.getAdaptee().getAbsoluteQuantity();
+    }
+
+    @Override
+    public int getPurchasePrice() {
+        return adapter.getAdaptee().getPurchasePrice();
     }
 
     @Override

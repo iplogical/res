@@ -4,8 +4,11 @@ import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 
 import lombok.Data;
@@ -28,6 +31,8 @@ public class ReceiptViewModel {
     private String clientName = EMPTY;
     private String clientAddress = EMPTY;
     private String clientTAXNumber = EMPTY;
+
+    private List<ReceiptRecordView> records = Collections.emptyList();
 
     public ReceiptViewModel() {
     }
@@ -56,6 +61,7 @@ public class ReceiptViewModel {
                 clientAddress = receiptView.getClient().getAddress();
                 clientTAXNumber = receiptView.getClient().getTAXNumber();
             }
+            records = receiptView.getSoldProducts();
         }
     }
 }

@@ -77,10 +77,16 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="receiptRecordsTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn fx:id="recordName" prefWidth="100.0" text="%Receipt.Record.Name" />
+                      <TableColumn fx:id="recordType" prefWidth="100.0" text="%Receipt.Record.Type" />
+                        <TableColumn fx:id="recordSoldQuantity" prefWidth="100.0" text="%Receipt.Record.SoldQuantity" />
+                        <TableColumn fx:id="recordAbsoluteQuantity" prefWidth="100.0" text="%Receipt.Record.AbsoluteQuantity" />
+                        <TableColumn fx:id="recordPurchasePrice" prefWidth="100.0" text="%Receipt.Record.PurchasePrice" />
+                        <TableColumn fx:id="recordSalePrice" prefWidth="100.0" text="%Receipt.Record.SalePrice" />
+                        <TableColumn fx:id="recordVAT" prefWidth="100.0" text="%Receipt.Record.VAT" />
+                        <TableColumn fx:id="recordDiscountPercent" prefWidth="100.0" text="%Receipt.Record.DiscountPercent" />
                     </columns>
                   </TableView>
                </children>
