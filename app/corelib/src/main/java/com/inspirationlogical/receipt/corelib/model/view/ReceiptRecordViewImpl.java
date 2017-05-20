@@ -12,12 +12,16 @@ import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Bálint on 2017.03.15..
  */
 public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAdapter>
     implements ReceiptRecordView {
+
+    private static final Logger logger = LoggerFactory.getLogger("com.inspirationlogical.receipt.corelib");
 
     public ReceiptRecordViewImpl(ReceiptRecordAdapter adapter) {
         super(adapter);
@@ -84,9 +88,12 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
     @Override
     public void increaseSoldQuantity(double amount, boolean isSale) {
         GuardedTransaction.run(() -> {
+            logger.info("Increase quantity of a receiptRecord: name: {} soldQuantity: {}, amount: {}, size {}",  adapter.getAdaptee().getName(), adapter.getAdaptee().getSoldQuantity(), amount,  adapter.getAdaptee().getCreatedList().size());
             adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() + amount));
             if(isSale) {
                 adapter.getAdaptee().getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(adapter.getAdaptee()).build());
+            } else {
+                adapter.getAdaptee().getCreatedList().add(ReceiptRecordCreated.builder().created(now().minusMinutes(25)).owner(adapter.getAdaptee()).build());
             }
         });
     }
@@ -95,13 +102,16 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
     public void decreaseSoldQuantity(double amount) {
         if(adapter.getAdaptee().getSoldQuantity() - amount <= 0)
         {
+            logger.info("Delete a receiptRecord: {}", adapter.getAdaptee().getName());
             GuardedTransaction.delete(adapter.getAdaptee(), () -> {
                 adapter.getAdaptee().getOwner().getRecords().remove(adapter.getAdaptee());
                 adapter.getAdaptee().setOwner(null);
             });
             return;
         }
+
         int size = adapter.getAdaptee().getCreatedList().size() - 1;
+        logger.info("Decrease quantity of a receiptRecord: name: {} soldQuantity: {}, amount: {}, size: {}", adapter.getAdaptee().getName(), adapter.getAdaptee().getSoldQuantity(), amount, size);
         GuardedTransaction.delete(adapter.getAdaptee().getCreatedList().get(size), () -> {
             adapter.getAdaptee().getCreatedList().get(size).setOwner(null);
             adapter.getAdaptee().getCreatedList().remove(adapter.getAdaptee().getCreatedList().get(size));
