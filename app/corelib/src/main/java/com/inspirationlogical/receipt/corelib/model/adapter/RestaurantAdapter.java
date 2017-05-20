@@ -54,32 +54,28 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     public TableAdapter addTable(Table.TableBuilder builder) {
         Table newTable = builder.build();
         if (isTableNumberAlreadyInUse(newTable.getNumber(), newTable.getType())) {
-            newTable.setHost(TableAdapter.getTableByNumber(newTable.getNumber()).getAdaptee());
-            newTable.setNumber(TableAdapter.getFirstUnusedNumber());
+            if(canBeHosted(newTable.getType())) {
+                newTable.setHost(TableAdapter.getTableByNumber(newTable.getNumber()).getAdaptee());
+                newTable.setNumber(TableAdapter.getFirstUnusedNumber());
+            } else {
+                throw new IllegalTableStateException("The table number " + newTable.getNumber() + " is already in use");
+            }
         }
-        GuardedTransaction.runWithRefresh(adaptee, () -> {
+        GuardedTransaction.run(() -> {
             adaptee.getTables().add(newTable);
             newTable.setOwner(adaptee);
         });
         return new TableAdapter(newTable);
     }
 
+
     public boolean isTableNumberAlreadyInUse(int tableNumber, TableType tableType) {
-        Wrapper<Boolean> alreadyInUse = new Wrapper<>();
-        alreadyInUse.setContent(false);
-        GuardedTransaction.runWithRefresh(adaptee, () -> {
-            for (Table table : adaptee.getTables()) {
-                if (table.getNumber() == tableNumber) {
-                    if (canBeHosted(tableType)) {
-                        alreadyInUse.setContent(true);
-                        break;
-                    } else {
-                        throw new IllegalTableStateException("The table number " + tableNumber + " is already in use");
-                    }
-                }
+        for (Table table : adaptee.getTables()) {
+            if (table.getNumber() == tableNumber) {
+                return true;
             }
-        });
-        return alreadyInUse.getContent();
+        }
+        return false;
     }
 
     public void mergeTables(TableAdapter consumer, List<TableAdapter> consumed) {

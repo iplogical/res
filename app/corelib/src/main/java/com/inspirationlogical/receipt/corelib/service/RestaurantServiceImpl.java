@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service;
 
+import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.canBeHosted;
 import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDate;
@@ -7,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
+import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
@@ -69,7 +71,11 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     @Override
     public void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant) {
         if(getRestaurantAdapter(restaurant).isTableNumberAlreadyInUse(tableNumber, tableView.getType())) {
-            getTableAdapter(tableView).setHost(tableNumber);
+            if(canBeHosted(tableView.getType())) {
+                getTableAdapter(tableView).setHost(tableNumber);
+            } else {
+                throw new IllegalTableStateException("The table number " + tableView.getNumber() + " is already in use");
+            }
             return;
         }
         getTableAdapter(tableView).setNumber(tableNumber);
