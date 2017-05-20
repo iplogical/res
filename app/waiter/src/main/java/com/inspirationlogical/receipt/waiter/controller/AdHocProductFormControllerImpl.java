@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -16,13 +17,15 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.converter.IntegerStringConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Bálint on 2017.03.21..
  */
 @Singleton
 public class AdHocProductFormControllerImpl implements AdHocProductFormController {
-
+    private static final Logger logger = LoggerFactory.getLogger(WaiterApp.class);
     public static final String AD_HOC_PRODUCT_FORM_VIEW_PATH = "/view/fxml/AdHocProductForm.fxml";
 
     @FXML
@@ -58,13 +61,18 @@ public class AdHocProductFormControllerImpl implements AdHocProductFormControlle
 
     @FXML
     public void onConfirm(MouseEvent event) {
-        adHocProductParams = AdHocProductParams.builder()
-                .name(productName.getText())
-                .quantity(Integer.valueOf(productQuantity.getText()))
-                .purchasePrice(Integer.valueOf(productPurchasePrice.getText()))
-                .salePrice(Integer.valueOf(productSalePrice.getText()))
-                .build();
-        saleController.sellAdHocProduct(adHocProductParams);
+        if(productName.getText().isEmpty()) return;
+        try {
+            adHocProductParams = AdHocProductParams.builder()
+                    .name(productName.getText())
+                    .quantity(Integer.valueOf(productQuantity.getText()))
+                    .purchasePrice(Integer.valueOf(productPurchasePrice.getText()))
+                    .salePrice(Integer.valueOf(productSalePrice.getText()))
+                    .build();
+            saleController.sellAdHocProduct(adHocProductParams);
+        } catch (NumberFormatException e) {
+            logger.error("Wrong adHocParams.", e);
+        }
     }
 
     @FXML
