@@ -263,7 +263,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private void initializeCategories() {
         rootCategory = commonService.getRootProductCategory();
-        List<ProductCategoryView> childCategories = commonService.getChildCategories(rootCategory);
+        List<ProductCategoryView> childCategories = getChildCategoriesWithSellableProduct(rootCategory);
         childCategories.sort(Comparator.comparing(ProductCategoryView::getOrderNumber));
         selectedCategory = childCategories.get(0);
     }
@@ -302,11 +302,17 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private void updateCategories(ProductCategoryView selectedCategory) {
         if(!ProductCategoryType.isLeaf(selectedCategory.getType())) {
-            selectedLevelCategories = commonService.getChildCategories(selectedCategory.getParent());
+            selectedLevelCategories = getChildCategoriesWithSellableProduct(selectedCategory.getParent());
             selectedChildrenCategories = commonService.getChildCategories(selectedCategory);
         }
         visibleProducts = commonService.getSellableProducts(selectedCategory);
         redrawCategories(selectedCategory);
+    }
+
+    private List<ProductCategoryView> getChildCategoriesWithSellableProduct(ProductCategoryView categoryView) {
+        return commonService.getChildCategories(categoryView).stream()
+                .filter(productCategoryView -> !commonService.getSellableProducts(productCategoryView).isEmpty())
+                .collect(Collectors.toList());
     }
 
     private void redrawCategories(ProductCategoryView selectedCategory) {
