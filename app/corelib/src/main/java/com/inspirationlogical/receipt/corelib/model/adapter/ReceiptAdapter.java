@@ -178,6 +178,10 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     }
 
     public void close(PaymentParams paymentParams){
+        if(adaptee.getRecords().isEmpty()) {
+            deleteReceipt();
+            return;
+        }
         GuardedTransaction.run(() -> {
             if(adaptee.getStatus() == ReceiptStatus.CLOSED) {
                 throw new IllegalReceiptStateException("Close operation is illegal for a CLOSED receipt");
@@ -336,6 +340,13 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     private void applyDiscountOnSalePrices() {
         adaptee.setSumSaleGrossPrice((int)(adaptee.getSumSaleGrossPrice() * getDiscountMultiplier(adaptee.getDiscountPercent())));
         adaptee.setSumSaleNetPrice((int)(adaptee.getSumSaleNetPrice() * getDiscountMultiplier(adaptee.getDiscountPercent())));
+    }
+
+    private void deleteReceipt() {
+        GuardedTransaction.delete(adaptee, () -> {
+            adaptee.getOwner().getReceipts().remove(adaptee);
+            adaptee.setOwner(null);
+        });
     }
 
     private static double calculatePurchaseGrossPrice(ReceiptRecord record) {

@@ -172,23 +172,11 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void payTable(PaymentParams paymentParams) {
-        GuardedTransaction.run(() -> {
-            if (!isTableOpen()) {
-                throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
-            }
-            ReceiptAdapter receiptAdapter = getActiveReceipt();
-            if(receiptAdapter.getAdaptee().getRecords().isEmpty()) {
-                GuardedTransaction.delete(receiptAdapter.getAdaptee(), () -> {});
-                return;
-            }
-            receiptAdapter.close(paymentParams);
-        });
-        if(TableType.isVirtualTable(adaptee.getType())) return;
-        GuardedTransaction.run(() -> {
-            adaptee.setName("");
-            adaptee.setGuestCount(0);
-            adaptee.setNote("");
-        });
+        if (!isTableOpen()) {
+            throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
+        }
+        getActiveReceipt().close(paymentParams);
+        setDefaultTableParams();
     }
 
     public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
@@ -222,20 +210,6 @@ public class TableAdapter extends AbstractAdapter<Table> {
             adaptee.getOwner().getTables().remove(adaptee);
             GuardedTransaction.delete(adaptee, () -> {});
         });
-    }
-
-    private List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
-        return GuardedTransaction.runNamedQuery(GET_RECEIPT_BY_STATUS_AND_OWNER, GRAPH_RECEIPT_AND_RECORDS,
-                query -> {
-                    query.setParameter("status", status);
-                    query.setParameter("number", tableNumber);
-                    return query;
-                });
-    }
-
-    private void bindReceiptToTable(ReceiptAdapter receiptAdapter) {
-        receiptAdapter.getAdaptee().setOwner(adaptee);
-        adaptee.getReceipts().add(receiptAdapter.getAdaptee());
     }
 
     public boolean isTableOpen() {
@@ -283,5 +257,28 @@ public class TableAdapter extends AbstractAdapter<Table> {
             }
             adaptee.setHost(TableAdapter.getTableByNumber(tableNumber).getAdaptee());
         });
+    }
+
+    private void setDefaultTableParams() {
+        if(TableType.isVirtualTable(adaptee.getType())) return;
+        GuardedTransaction.run(() -> {
+            adaptee.setName("");
+            adaptee.setGuestCount(0);
+            adaptee.setNote("");
+        });
+    }
+
+    private List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
+        return GuardedTransaction.runNamedQuery(GET_RECEIPT_BY_STATUS_AND_OWNER, GRAPH_RECEIPT_AND_RECORDS,
+                query -> {
+                    query.setParameter("status", status);
+                    query.setParameter("number", tableNumber);
+                    return query;
+                });
+    }
+
+    private void bindReceiptToTable(ReceiptAdapter receiptAdapter) {
+        receiptAdapter.getAdaptee().setOwner(adaptee);
+        adaptee.getReceipts().add(receiptAdapter.getAdaptee());
     }
 }
