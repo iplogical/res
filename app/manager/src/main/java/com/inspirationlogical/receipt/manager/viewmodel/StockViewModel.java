@@ -20,18 +20,42 @@ public class StockViewModel extends ProductViewModel {
 
     public StockViewModel(StockView stockView) {
         super(stockView.getProduct());
-        double available = roundToTwoDecimals(stockView.getInitialQuantity()
+        double available = stockView.getInitialQuantity()
                 - stockView.getSoldQuantity()
                 + stockView.getPurchasedQuantity()
                 + stockView.getInventoryQuantity()
-                - stockView.getDisposedQuantity());
+                - stockView.getDisposedQuantity();
         availableQuantity = valueOf(available);
-        initialQuantity = valueOf(roundToTwoDecimals(stockView.getInitialQuantity()));
-        soldQuantity = valueOf(roundToTwoDecimals(stockView.getSoldQuantity()));
-        purchasedQuantity = valueOf(roundToTwoDecimals(stockView.getPurchasedQuantity()));
-        inventoryQuantity = valueOf(roundToTwoDecimals(stockView.getInventoryQuantity()));
-        disposedQuantity = valueOf(roundToTwoDecimals(stockView.getDisposedQuantity()));
+        initialQuantity = valueOf(stockView.getInitialQuantity());
+        soldQuantity = valueOf(stockView.getSoldQuantity());
+        purchasedQuantity = valueOf(stockView.getPurchasedQuantity());
+        inventoryQuantity = valueOf(stockView.getInventoryQuantity());
+        disposedQuantity = valueOf(stockView.getDisposedQuantity());
         date = stockView.getDate().toString();
+    }
+
+    public String getAvailableQuantity() {
+        return valueOf(roundToTwoDecimals(Double.valueOf(availableQuantity)));
+    }
+
+    public String getInitialQuantity() {
+        return valueOf(roundToTwoDecimals(Double.valueOf(initialQuantity)));
+    }
+
+    public String getSoldQuantity() {
+        return valueOf(roundToTwoDecimals(Double.valueOf(soldQuantity)));
+    }
+
+    public String getPurchasedQuantity() {
+        return valueOf(roundToTwoDecimals(Double.valueOf(purchasedQuantity)));
+    }
+
+    public String getInventoryQuantity() {
+        return valueOf(roundToTwoDecimals(Double.valueOf(inventoryQuantity)));
+    }
+
+    public String getDisposedQuantity() {
+        return valueOf(roundToTwoDecimals(Double.valueOf(disposedQuantity)));
     }
 
     public String getAvailableQuantityAbsolute() {
