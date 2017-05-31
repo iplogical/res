@@ -7,13 +7,14 @@ import static java.util.stream.Collectors.toList;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Created by Bálint on 2017.03.15..
@@ -100,24 +101,23 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
 
     @Override
     public void decreaseSoldQuantity(double amount) {
-        if(adapter.getAdaptee().getSoldQuantity() - amount <= 0)
+        if(adapter.getAdaptee().getSoldQuantity() - amount <= 0 || adapter.getAdaptee().getCreatedList().isEmpty())
         {
             logger.info("Delete a receiptRecord: {}", adapter.getAdaptee().getName());
             GuardedTransaction.delete(adapter.getAdaptee(), () -> {
                 adapter.getAdaptee().getOwner().getRecords().remove(adapter.getAdaptee());
                 adapter.getAdaptee().setOwner(null);
             });
-            return;
+        } else {
+            int size = adapter.getAdaptee().getCreatedList().size() - 1;
+            logger.info("Decrease quantity of a receiptRecord: name: {} soldQuantity: {}, amount: {}, size: {}", adapter.getAdaptee().getName(), adapter.getAdaptee().getSoldQuantity(), amount, size);
+            GuardedTransaction.delete(adapter.getAdaptee().getCreatedList().get(size), () -> {
+                adapter.getAdaptee().getCreatedList().get(size).setOwner(null);
+                adapter.getAdaptee().getCreatedList().remove(adapter.getAdaptee().getCreatedList().get(size));
+            });
+
+            GuardedTransaction.run(() -> adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() - amount)));
         }
-
-        int size = adapter.getAdaptee().getCreatedList().size() - 1;
-        logger.info("Decrease quantity of a receiptRecord: name: {} soldQuantity: {}, amount: {}, size: {}", adapter.getAdaptee().getName(), adapter.getAdaptee().getSoldQuantity(), amount, size);
-        GuardedTransaction.delete(adapter.getAdaptee().getCreatedList().get(size), () -> {
-            adapter.getAdaptee().getCreatedList().get(size).setOwner(null);
-            adapter.getAdaptee().getCreatedList().remove(adapter.getAdaptee().getCreatedList().get(size));
-        });
-
-        GuardedTransaction.run(() -> adapter.getAdaptee().setSoldQuantity(roundToTwoDecimals(adapter.getAdaptee().getSoldQuantity() - amount)));
     }
 
     @Override

@@ -132,7 +132,9 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                     .discountPercent(0)
                     .createdList(new ArrayList<>())
                     .build();
-            record.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(record).build());
+            for (int i = 0; i < quantity; i++) {
+                record.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(record).build());
+            }
             record.setOwner(adaptee);
             adaptee.getRecords().add(record);
             newRecordWrapper.setContent(record);
