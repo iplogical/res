@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.manager.controller;
 
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 import static javafx.collections.FXCollections.observableArrayList;
 
 import java.net.URL;
@@ -9,12 +10,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.manager.viewmodel.ReceiptRecordViewModel;
@@ -157,34 +158,12 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
         initColumn(clientName, ReceiptViewModel::getClientName);
         initColumn(clientAddress, ReceiptViewModel::getClientAddress);
         initColumn(clientTAXNumber, ReceiptViewModel::getClientTAXNumber);
+
         TreeItem<ReceiptViewModel> rootItem = new TreeItem<>(new ReceiptViewModel());
         receiptsTable.setRoot(rootItem);
         receiptsTable.setShowRoot(false);
-
-        receiptsTable.setRowFactory(tv -> {
-            TreeTableRow<ReceiptViewModel> row = new TreeTableRow<>();
-            row.setOnMouseClicked(event -> {
-                if(event.getClickCount() == 1 && (! row.isEmpty())) {
-                    List<ReceiptRecordViewModel> records = row.getItem().getRecords()
-                            .stream()
-                            .map(ReceiptRecordViewModel::new)
-                            .collect(Collectors.toList());
-                    receiptRecordsTable.setItems(observableArrayList(records));
-                    row.getItem();
-                }
-            });
-            return row;
-        });
-
-        receiptsByDate.forEach((date, receiptsOfDate) -> {
-            TreeItem<ReceiptViewModel> dateItem = new TreeItem<>(new ReceiptViewModel(date));
-            dateItem.setExpanded(true);
-            rootItem.getChildren().add(dateItem);
-            receiptsOfDate.forEach(receipt -> {
-                TreeItem<ReceiptViewModel> receiptItem = new TreeItem<>(new ReceiptViewModel(receipt));
-                dateItem.getChildren().add(receiptItem);
-            });
-        });
+        setReceiptRowFactory();
+        populateReceiptRows(rootItem);
     }
 
     private void initReceiptRecordsColumns() {
@@ -196,5 +175,52 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
         initColumn(recordSalePrice, ReceiptRecordViewModel::getSalePrice);
         initColumn(recordVAT, ReceiptRecordViewModel::getVAT);
         initColumn(recordDiscountPercent, ReceiptRecordViewModel::getDiscountPercent);
+    }
+
+    private void setReceiptRowFactory() {
+        receiptsTable.setRowFactory(tv -> {
+            TreeTableRow<ReceiptViewModel> row = new TreeTableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(event.getClickCount() == 1 && (! row.isEmpty())) {
+                    List<ReceiptRecordViewModel> records = row.getItem().getRecords()
+                            .stream()
+                            .map(ReceiptRecordViewModel::new)
+                            .collect(toList());
+                    receiptRecordsTable.setItems(observableArrayList(records));
+                    row.getItem();
+                }
+            });
+            return row;
+        });
+    }
+
+    private void populateReceiptRows(TreeItem<ReceiptViewModel> rootItem) {
+        receiptsByDate.forEach((date, receiptsOfDate) -> {
+            TreeItem<ReceiptViewModel> dateItem = new TreeItem<>(new ReceiptViewModel(date));
+            dateItem.setExpanded(true);
+            rootItem.getChildren().add(dateItem);
+            addPaymentMethodSumRows(receiptsOfDate, dateItem);
+            addRows(receiptsOfDate, dateItem);
+        });
+    }
+
+    private void addPaymentMethodSumRows(List<ReceiptView> receiptsOfDate, TreeItem<ReceiptViewModel> dateItem) {
+        for (PaymentMethod paymentMethod : PaymentMethod.values()) {
+            List<ReceiptView> receipts = receiptsOfDate
+                    .stream()
+                    .filter(receiptView -> receiptView.getPaymentMethod().equals(paymentMethod))
+                    .collect(toList());
+            if (!receipts.isEmpty()) {
+                TreeItem<ReceiptViewModel> receiptItem = new TreeItem<>(new ReceiptViewModel(paymentMethod, receipts));
+                dateItem.getChildren().add(receiptItem);
+            }
+        }
+    }
+
+    private void addRows(List<ReceiptView> receiptsOfDate, TreeItem<ReceiptViewModel> dateItem) {
+        receiptsOfDate.forEach(receipt -> {
+            TreeItem<ReceiptViewModel> receiptItem = new TreeItem<>(new ReceiptViewModel(receipt));
+            dateItem.getChildren().add(receiptItem);
+        });
     }
 }

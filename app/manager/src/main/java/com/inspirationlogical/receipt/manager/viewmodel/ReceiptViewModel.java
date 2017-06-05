@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.manager.viewmodel;
 
 import static java.lang.String.valueOf;
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import java.time.LocalDate;
@@ -8,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 
@@ -63,5 +65,29 @@ public class ReceiptViewModel {
             }
             records = receiptView.getSoldProducts();
         }
+    }
+
+    public ReceiptViewModel(PaymentMethod paymentMethod, List<ReceiptView> receiptViews) {
+        this.paymentMethod = paymentMethod.toString();
+        records = receiptViews
+                .stream()
+                .flatMap(receiptView -> receiptView.getSoldProducts().stream())
+                .collect(toList());
+        sumPurchaseNetPrice = valueOf(receiptViews
+                .stream()
+                .mapToInt(ReceiptView::getSumPurchaseNetPrice)
+                .sum());
+        sumPurchaseGrossPrice = valueOf(receiptViews
+                .stream()
+                .mapToInt(ReceiptView::getSumPurchaseGrossPrice)
+                .sum());
+        sumSaleNetPrice = valueOf(receiptViews
+                .stream()
+                .mapToInt(ReceiptView::getSumSaleNetPrice)
+                .sum());
+        sumSaleGrossPrice = valueOf(receiptViews
+                .stream()
+                .mapToInt(ReceiptView::getSumSaleGrossPrice)
+                .sum());
     }
 }
