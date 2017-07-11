@@ -597,23 +597,23 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private void updateRestaurantSummary() {
         // TODO: Icons for the ImageViews.
-        totalTableNumber.setText(String.valueOf(tableControllers.stream()
-                        .filter(tableController -> tableController.getView().isNormal())
-                        .count()));
-        openTableNumber.setText(String.valueOf(tableControllers.stream()
-                        .filter(tableController -> tableController.getView().isNormal())
-                        .filter(tableController -> tableController.getView().isOpen())
-                        .count()));
-        totalGuests.setText(String.valueOf(tableControllers.stream()
-                        .filter(tableController -> !tableController.getView().isLoiterer())
-                        .mapToInt(controller -> controller.getView().getGuestCount()).sum()));
-        totalCapacity.setText(String.valueOf(tableControllers.stream()
-                        .filter(tableController -> !tableController.getView().isLoiterer())
-                        .mapToInt(controller -> controller.getView().getCapacity()).sum()));
-        openConsumption.setText(String.valueOf(tableControllers.stream()
-                .filter(tableController -> tableController.getView().isOpen())
-                .mapToInt(tableController -> tableController.getView().getTotalPrice()).sum()));
-        paidConsumption.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> !receipt.getPaymentMethod().equals(PaymentMethod.COUPON))));
-        totalIncome.setText(String.valueOf(Integer.valueOf(openConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
+//        totalTableNumber.setText(String.valueOf(tableControllers.stream()
+//                        .filter(tableController -> tableController.getView().isNormal())
+//                        .count()));
+//        openTableNumber.setText(String.valueOf(tableControllers.stream()
+//                        .filter(tableController -> tableController.getView().isNormal())
+//                        .filter(tableController -> tableController.getView().isOpen())
+//                        .count()));
+//        totalGuests.setText(String.valueOf(tableControllers.stream()
+//                        .filter(tableController -> !tableController.getView().isLoiterer())
+//                        .mapToInt(controller -> controller.getView().getGuestCount()).sum()));
+//        totalCapacity.setText(String.valueOf(tableControllers.stream()
+//                        .filter(tableController -> !tableController.getView().isLoiterer())
+//                        .mapToInt(controller -> controller.getView().getCapacity()).sum()));
+//        openConsumption.setText(String.valueOf(tableControllers.stream()
+//                .filter(tableController -> tableController.getView().isOpen())
+//                .mapToInt(tableController -> tableController.getView().getTotalPrice()).sum()));
+//        paidConsumption.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> !receipt.getPaymentMethod().equals(PaymentMethod.COUPON))));
+//        totalIncome.setText(String.valueOf(Integer.valueOf(openConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
     }
 }
