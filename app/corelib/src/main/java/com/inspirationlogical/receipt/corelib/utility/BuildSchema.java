@@ -3170,7 +3170,7 @@ public class BuildSchema  {
                 .longName("Mészáros Pinot Noir Rose Kisfröccs")
                 .shortName("Mészáros Kisfröccs")
                 .orderNumber(4)
-                .salePrice(2400)
+                .salePrice(400)
                 .purchasePrice(400)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
