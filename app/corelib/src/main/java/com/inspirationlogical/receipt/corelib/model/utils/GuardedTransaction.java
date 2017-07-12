@@ -28,7 +28,7 @@ public class GuardedTransaction {
      * @exception Exception in case of an exception the transaction will be rolled back, but the persistence objects
      * are going to get in DETACHED state!
      */
-    public static void run(Functor f, Functor before, Functor after) {
+    public static synchronized void run(Functor f, Functor before, Functor after) {
         boolean myTransaction = !manager.getTransaction().isActive();
         if(myTransaction){
             manager.getTransaction().begin();

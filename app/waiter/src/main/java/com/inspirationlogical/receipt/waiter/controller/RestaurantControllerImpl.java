@@ -39,6 +39,10 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Dimension2D;
@@ -54,6 +58,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import javafx.util.Duration;
+import javafx.concurrent.Worker;
+import javafx.concurrent.Task;
+import javafx.concurrent.Service;
 
 @Singleton
 public class RestaurantControllerImpl implements RestaurantController {
@@ -596,24 +603,22 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     private void updateRestaurantSummary() {
-        // TODO: Icons for the ImageViews.
-//        totalTableNumber.setText(String.valueOf(tableControllers.stream()
-//                        .filter(tableController -> tableController.getView().isNormal())
-//                        .count()));
-//        openTableNumber.setText(String.valueOf(tableControllers.stream()
-//                        .filter(tableController -> tableController.getView().isNormal())
-//                        .filter(tableController -> tableController.getView().isOpen())
-//                        .count()));
-//        totalGuests.setText(String.valueOf(tableControllers.stream()
-//                        .filter(tableController -> !tableController.getView().isLoiterer())
-//                        .mapToInt(controller -> controller.getView().getGuestCount()).sum()));
-//        totalCapacity.setText(String.valueOf(tableControllers.stream()
-//                        .filter(tableController -> !tableController.getView().isLoiterer())
-//                        .mapToInt(controller -> controller.getView().getCapacity()).sum()));
-//        openConsumption.setText(String.valueOf(tableControllers.stream()
-//                .filter(tableController -> tableController.getView().isOpen())
-//                .mapToInt(tableController -> tableController.getView().getTotalPrice()).sum()));
-//        paidConsumption.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> !receipt.getPaymentMethod().equals(PaymentMethod.COUPON))));
-//        totalIncome.setText(String.valueOf(Integer.valueOf(openConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
+        final Task task = new RestaurantSummaryController(tableControllers, restaurantView).getTask();
+
+        task.stateProperty().addListener(new ChangeListener<Worker.State>() {
+            @Override public void changed(ObservableValue<? extends Worker.State> observableValue, Worker.State oldState, Worker.State newState) {
+                if (newState == Worker.State.SUCCEEDED) {
+                    ObservableList<String> values = (ObservableList<String>)task.valueProperty().getValue();
+                    totalTableNumber.setText(values.get(0));
+                    openTableNumber.setText(values.get(1));
+                    totalGuests.setText(values.get(2));
+                    totalCapacity.setText(values.get(3));
+                    openConsumption.setText(values.get(4));
+                    paidConsumption.setText(values.get(5));
+                    totalIncome.setText(String.valueOf(Integer.valueOf(openConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
+                }
+            }
+        });
+        new Thread(task).start();
     }
 }
