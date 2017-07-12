@@ -2,15 +2,12 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
-import com.inspirationlogical.receipt.waiter.controller.ReservationController;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 
 import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_RESERVATIONS;
 import static org.junit.Assert.assertEquals;

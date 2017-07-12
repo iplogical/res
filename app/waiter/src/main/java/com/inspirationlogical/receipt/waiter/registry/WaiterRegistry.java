@@ -4,22 +4,22 @@ import com.google.inject.Provides;
 import com.inspirationlogical.receipt.corelib.frontend.registry.Registry;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.service.RetailServiceImpl;
-import com.inspirationlogical.receipt.waiter.controller.AdHocProductFormController;
-import com.inspirationlogical.receipt.waiter.controller.AdHocProductFormControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.DailySummaryController;
-import com.inspirationlogical.receipt.waiter.controller.DailySummaryControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.PaymentController;
-import com.inspirationlogical.receipt.waiter.controller.PaymentControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.ReservationController;
-import com.inspirationlogical.receipt.waiter.controller.ReservationControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.RestaurantController;
-import com.inspirationlogical.receipt.waiter.controller.RestaurantControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.SaleController;
-import com.inspirationlogical.receipt.waiter.controller.SaleControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.TableController;
-import com.inspirationlogical.receipt.waiter.controller.TableControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.TableFormController;
-import com.inspirationlogical.receipt.waiter.controller.TableFormControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.reatail.sale.AdHocProductFormController;
+import com.inspirationlogical.receipt.waiter.controller.reatail.sale.AdHocProductFormControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryController;
+import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController;
+import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationController;
+import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
+import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.table.TableController;
+import com.inspirationlogical.receipt.waiter.controller.table.TableControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.TableFormController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.TableFormControllerImpl;
 
 public class WaiterRegistry extends Registry {
 

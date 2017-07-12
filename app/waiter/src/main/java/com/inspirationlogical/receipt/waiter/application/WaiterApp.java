@@ -4,7 +4,6 @@ import static com.inspirationlogical.receipt.corelib.frontend.application.MainSt
 import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.APP_TITLE;
 import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.APP_WIDTH;
 import static com.inspirationlogical.receipt.waiter.registry.WaiterRegistry.getInstance;
-import static org.slf4j.Logger.ROOT_LOGGER_NAME;
 
 import com.inspirationlogical.receipt.corelib.frontend.application.MainStage;
 import com.inspirationlogical.receipt.corelib.frontend.application.ResourcesProvider;
@@ -12,9 +11,8 @@ import com.inspirationlogical.receipt.corelib.frontend.application.StageProvider
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
-import com.inspirationlogical.receipt.waiter.controller.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 
-import ch.qos.logback.classic.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
