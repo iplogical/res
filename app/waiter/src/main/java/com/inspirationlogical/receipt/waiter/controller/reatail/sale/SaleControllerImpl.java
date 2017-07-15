@@ -2,17 +2,17 @@ package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
-import static com.inspirationlogical.receipt.corelib.utility.Search.MATCH_HEAD_IGNORE_CASE;
-import static com.inspirationlogical.receipt.corelib.utility.Search.SPACE;
 import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.NONE;
 import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.SELECTIVE;
 import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.SINGLE;
+import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
@@ -27,7 +27,6 @@ import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
-import com.inspirationlogical.receipt.corelib.utility.Search.SearchBuilder;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
@@ -88,7 +87,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     ToggleButton sortByClickTime;
 
     @FXML
-    private TextField search;
+    private TextField searchField;
 
     @FXML
     private Button backToRestaurantView;
@@ -201,7 +200,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void clearSearch() {
-        search.clear();
+        searchField.clear();
     }
 
     @Override
@@ -247,20 +246,18 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onSearchChanged(Event event) {
-        String text = search.getText();
+        String searchText = searchField.getText();
         List<ProductView> products;
-        if (!text.isEmpty()) {
+        if (!searchText.isEmpty()) {
             try {
-                int rapidCode = Integer.parseInt(text);
+                int rapidCode = Integer.parseInt(searchText);
                 searchedProducts = allProducts.stream()
                         .filter(productView -> productView.getRapidCode() == rapidCode)
                         .collect(Collectors.toList());
             } catch (NumberFormatException e) {
-                searchedProducts = new SearchBuilder<>(allProducts)
-                        .withDelimiter(SPACE)
-                        .withPattern(text)
-                        .withFormat(MATCH_HEAD_IGNORE_CASE)
-                        .search();
+                searchedProducts = allProducts.stream()
+                        .filter(containsPattern(searchText))
+                        .collect(Collectors.toList());
             }
             products = searchedProducts;
         } else {
@@ -268,6 +265,10 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         }
         productsGrid.getChildren().clear();
         drawListOfElements(products, productsGrid);
+    }
+
+    private static <T extends AbstractView> Predicate<T> containsPattern(String pattern) {
+        return productView -> containsIgnoreCase(productView.getName(), pattern);
     }
 
     private void initializeAllProducts() {
@@ -298,15 +299,15 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                     }
                     break;
                 case DELETE:
-                    search.clear();
+                    searchField.clear();
                     updateCategories(selectedCategory);
                     break;
                 case BACK_SPACE:
-                    if (!search.getText().isEmpty()) {
-                        search.setText(search.getText(0, search.getText().length() - 1));
+                    if (!searchField.getText().isEmpty()) {
+                        searchField.setText(searchField.getText(0, searchField.getText().length() - 1));
                     }
                 default:
-                    search.appendText(keyEvent.getText());
+                    searchField.appendText(keyEvent.getText());
                     onSearchChanged(keyEvent);
                     break;
             }
