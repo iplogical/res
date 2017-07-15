@@ -21,6 +21,9 @@ dependencies {
     compile 'ch.qos.logback:logback-core:1.2.3'
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     compile 'mysql:mysql-connector-java:5.1.42'
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    compile 'org.postgresql:postgresql:42.1.1'
+
     compile 'org.hibernate:hibernate-core:5.2.10.Final'
     compile 'org.hibernate:hibernate-validator:5.4.0.Final'
     compile 'org.hibernate:hibernate-c3p0:5.2.10.Final'
