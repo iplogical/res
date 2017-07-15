@@ -14,6 +14,7 @@
 
         <script type="text/javascript" src="/assets/js/reservation.js"></script>
         <link rel="stylesheet" type="text/css" href="/assets/css/reservation.css">
+        <link rel="icon" type="image/png" href="/assets/icon/meeple.png">
     </head>
     <body>
         <#nested>
