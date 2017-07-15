@@ -45,17 +45,17 @@ public class Search {
             this.source = source;
         }
 
-        public SearchBuilder withDelimiter(String delimiter) {
+        public SearchBuilder<T> withDelimiter(String delimiter) {
             this.delimiter = delimiter;
             return this;
         }
 
-        public SearchBuilder withPattern(String pattern) {
+        public SearchBuilder<T> withPattern(String pattern) {
             this.pattern = pattern;
             return this;
         }
 
-        public SearchBuilder withFormat(String format) {
+        public SearchBuilder<T> withFormat(String format) {
             this.format = format;
             return this;
         }
