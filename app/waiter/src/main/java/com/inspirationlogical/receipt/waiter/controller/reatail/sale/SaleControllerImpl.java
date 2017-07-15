@@ -115,6 +115,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private List<ProductCategoryView> selectedChildrenCategories;
 
+    private List<ProductView> allProducts;
+
     private List<ProductView> visibleProducts;
 
     private List<ProductView> searchedProducts;
@@ -145,6 +147,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         initializeSoldProductsTableRowHandler();
         initializeQuickSearchAndSellHandler();
         initLiveTime(liveTime);
+        initializeAllProducts();
     }
 
     @Override
@@ -244,23 +247,31 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onSearchChanged(Event event) {
-        setSelectedElement(false);
-        visibleProducts = commonService.getSellableProducts();
         String text = search.getText();
-        try {
-            int rapidCode = Integer.parseInt(text);
-            searchedProducts = visibleProducts.stream()
-                    .filter(productView -> productView.getRapidCode() == rapidCode)
-                    .collect(Collectors.toList());
-        } catch (NumberFormatException e) {
-            searchedProducts = new SearchBuilder<>(visibleProducts)
-                    .withDelimiter(SPACE)
-                    .withPattern(text)
-                    .withFormat(MATCH_HEAD_IGNORE_CASE)
-                    .search();
+        List<ProductView> products;
+        if (!text.isEmpty()) {
+            try {
+                int rapidCode = Integer.parseInt(text);
+                searchedProducts = allProducts.stream()
+                        .filter(productView -> productView.getRapidCode() == rapidCode)
+                        .collect(Collectors.toList());
+            } catch (NumberFormatException e) {
+                searchedProducts = new SearchBuilder<>(allProducts)
+                        .withDelimiter(SPACE)
+                        .withPattern(text)
+                        .withFormat(MATCH_HEAD_IGNORE_CASE)
+                        .search();
+            }
+            products = searchedProducts;
+        } else {
+            products = visibleProducts;
         }
         productsGrid.getChildren().clear();
-        drawListOfElements(searchedProducts, productsGrid);
+        drawListOfElements(products, productsGrid);
+    }
+
+    private void initializeAllProducts() {
+        allProducts = commonService.getSellableProducts();
     }
 
     private void initializeCategories() {
