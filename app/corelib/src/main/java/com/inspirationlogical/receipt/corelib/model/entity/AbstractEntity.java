@@ -1,10 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +10,8 @@ import lombok.NoArgsConstructor;
 public @Data abstract class AbstractEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+    @SequenceGenerator(name="id_gen", sequenceName="a_seq", allocationSize=1)
     public Long id;
 
     @Version

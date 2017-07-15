@@ -1184,7 +1184,8 @@ public class BuildSchema  {
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ProductCategory").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.security.model.entity.AuthUser").executeUpdate();
             entityManager.createNativeQuery("DELETE FROM PRODUCT_CATEGORY_RELATIONS").executeUpdate();
-            entityManager.createNativeQuery("UPDATE hibernate_sequence SET next_val=1").executeUpdate();
+//            entityManager.createNativeQuery("DELETE FROM TABLE_CONSUMER_RELATIONS").executeUpdate();
+//            entityManager.createNativeQuery("DELETE FROM TABLE_HOST_RELATIONS").executeUpdate();
         });
         entityManager.clear();
     }
