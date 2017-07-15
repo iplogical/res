@@ -162,7 +162,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void openTable() {
-        GuardedTransaction.runWithRefresh(adaptee, () -> {
+        GuardedTransaction.run(() -> {
             if (isTableOpen()) {
                 throw new IllegalTableStateException("Open table for an open table. Table number: " + adaptee.getNumber());
             }
