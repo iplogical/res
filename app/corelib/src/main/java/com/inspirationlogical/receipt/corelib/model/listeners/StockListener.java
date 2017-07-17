@@ -5,6 +5,7 @@ import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 
 import java.util.Optional;
 
@@ -22,6 +23,10 @@ public class StockListener implements ReceiptAdapter.Listener {
 
     @Override
     public void onClose(ReceiptAdapter receipt) {
-        receipt.getSoldProductsNoRefresh().forEach(receiptRecordAdapter -> StockAdapter.updateStock(receiptRecordAdapter, Optional.of(receipt.getAdaptee().getType())));
+        BackgroundThread.execute(() -> {
+            receipt.getSoldProductsNoRefresh().forEach(receiptRecordAdapter ->
+                    StockAdapter.updateStock(receiptRecordAdapter, Optional.of(receipt.getAdaptee().getType())));
+            System.out.println(Thread.currentThread().getName() + ": StockListener executed successfully");
+        });
     }
 }

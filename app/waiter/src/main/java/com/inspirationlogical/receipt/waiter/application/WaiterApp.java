@@ -10,6 +10,7 @@ import com.inspirationlogical.receipt.corelib.frontend.application.ResourcesProv
 import com.inspirationlogical.receipt.corelib.frontend.application.StageProvider;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 
@@ -56,6 +57,7 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
     @Override
     public void stop() throws Exception {
         EntityManagerProvider.closeEntityManager();
+        BackgroundThread.shutdown();
         logger.warn("Stopping WaiterApp");
     }
 
