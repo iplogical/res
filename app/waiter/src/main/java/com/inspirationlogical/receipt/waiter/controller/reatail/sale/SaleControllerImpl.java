@@ -5,14 +5,12 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.s
 import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.NONE;
 import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.SELECTIVE;
 import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.SINGLE;
-import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
@@ -114,7 +112,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private List<ProductCategoryView> selectedChildrenCategories;
 
-    private List<ProductView> allProducts;
+    private Search productSearcher;
 
     private List<ProductView> visibleProducts;
 
@@ -146,7 +144,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         initializeSoldProductsTableRowHandler();
         initializeQuickSearchAndSellHandler();
         initLiveTime(liveTime);
-        initializeAllProducts();
+        initializeProductSearcher();
     }
 
     @Override
@@ -247,32 +245,17 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onSearchChanged(Event event) {
         String searchText = searchField.getText();
-        List<ProductView> products;
-        if (!searchText.isEmpty()) {
-            try {
-                int rapidCode = Integer.parseInt(searchText);
-                searchedProducts = allProducts.stream()
-                        .filter(productView -> productView.getRapidCode() == rapidCode)
-                        .collect(Collectors.toList());
-            } catch (NumberFormatException e) {
-                searchedProducts = allProducts.stream()
-                        .filter(containsPattern(searchText))
-                        .collect(Collectors.toList());
-            }
-            products = searchedProducts;
-        } else {
-            products = visibleProducts;
-        }
         productsGrid.getChildren().clear();
-        drawListOfElements(products, productsGrid);
+        if (!searchText.isEmpty()) {
+            searchedProducts = productSearcher.search(searchText);
+            drawListOfElements(searchedProducts, productsGrid);
+        } else {
+            drawListOfElements(visibleProducts, productsGrid);
+        }
     }
 
-    private static <T extends AbstractView> Predicate<T> containsPattern(String pattern) {
-        return productView -> containsIgnoreCase(productView.getName(), pattern);
-    }
-
-    private void initializeAllProducts() {
-        allProducts = commonService.getSellableProducts();
+    private void initializeProductSearcher() {
+        productSearcher = new SearchProduct(commonService.getSellableProducts());
     }
 
     private void initializeCategories() {
@@ -303,7 +286,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                     updateCategories(selectedCategory);
                     break;
                 case BACK_SPACE:
-                    if (!searchField.getText().isEmpty()) {
+                    if (searchFieldNotEmpty()) {
                         searchField.setText(searchField.getText(0, searchField.getText().length() - 1));
                     }
                 default:
@@ -312,6 +295,10 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                     break;
             }
         });
+    }
+
+    private boolean searchFieldNotEmpty() {
+        return !searchField.getText().isEmpty();
     }
 
     private void updateCategories(ProductCategoryView selectedCategory) {
