@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 /**
  * Created by TheDagi on 2017. 07. 17..
@@ -22,16 +23,18 @@ public class SearchProduct implements Search {
 
     @Override
     public List<ProductView> search(String pattern) {
-        try {
-            int rapidCode = Integer.parseInt(pattern);
+        if(isNumeric(pattern)) {
             return allProducts.stream()
-                    .filter(productView -> productView.getRapidCode() == rapidCode)
-                    .collect(Collectors.toList());
-        } catch (NumberFormatException e) {
-            return allProducts.stream()
-                    .filter(containsPattern(pattern))
+                    .filter(rapidCodeEquals(pattern))
                     .collect(Collectors.toList());
         }
+        return allProducts.stream()
+                .filter(containsPattern(pattern))
+                .collect(Collectors.toList());
+    }
+
+    protected Predicate<ProductView> rapidCodeEquals(String pattern) {
+        return productView -> productView.getRapidCode() == Integer.parseInt(pattern);
     }
 
     private static <T extends AbstractView> Predicate<T> containsPattern(String pattern) {
