@@ -336,7 +336,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private <T extends AbstractView> void drawListOfElements(List<T> elements, GridPane grid) {
         elements.sort(Comparator.comparing(AbstractView::getOrderNumber));
-        for(int i = 0; i < elements.size(); i++) {
+        for(int i = 0; i < Math.min(elements.size(), 32); i++) {
             drawElement(elements.get(i), grid, i);
         }
     }
