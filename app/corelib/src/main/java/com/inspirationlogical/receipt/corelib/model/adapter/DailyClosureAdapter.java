@@ -38,6 +38,8 @@ public class DailyClosureAdapter extends AbstractAdapter<DailyClosure> {
     }
 
     public void close() {
+        if(adaptee.getNumberOfReceipts() == 0)
+            return; //  Do not close a day with 0 receipt.
         GuardedTransaction.run(() -> {
             adaptee.setClosureTime(now());
             adaptee.setProfit(adaptee.getSumSaleGrossPriceTotal() - adaptee.getSumPurchaseNetPriceTotal());
