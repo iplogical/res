@@ -19,8 +19,8 @@ public class SaleCategoryControllerImpl extends SaleElementControllerImpl<Produc
     }
 
     @Override
-    public void select(boolean isSelected) {
-        this.isSelected = isSelected;
+    public void select() {
+        this.isSelected = true;
         CSSUtilities.setBorderColor(isSelected, vBox);
     }
 

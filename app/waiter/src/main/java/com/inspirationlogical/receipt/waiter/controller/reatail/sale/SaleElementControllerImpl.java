@@ -62,12 +62,8 @@ public class SaleElementControllerImpl<T extends AbstractView> implements SaleEl
     }
 
     @Override
-    public void select(boolean isSelected) {
-
-    }
+    public void select() {}
 
     @Override
-    public void onElementClicked(MouseEvent event) {
-        System.out.println("Clicked Element");
-    }
+    public void onElementClicked(MouseEvent event) {}
 }

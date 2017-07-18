@@ -127,6 +127,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initializeProductController();
         initializeSoldProductsTable();
         initializeToggles();
         updateNode();
@@ -134,6 +135,14 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         initializeQuickSearchAndSellHandler();
         initLiveTime(liveTime);
         initializeProductSearcher();
+    }
+
+    private void initializeProductController() {
+        productController.setCategoriesGrid(categoriesGrid);
+        productController.setSubCategoriesGrid(subCategoriesGrid);
+        productController.setProductsGrid(productsGrid);
+        productController.setSaleController(this);
+        productController.setViewLoader(viewLoader);
     }
 
     @Override
@@ -162,13 +171,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void selectCategory(SaleElementController saleElementController) {
         productController.selectCategory(saleElementController);
-        redrawCategories();
-    }
-
-    @Override
-    public void upWithCategories() {
-        productController.upWithCategories();
-        redrawCategories();
     }
 
     @Override
@@ -178,7 +180,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         }
         getSoldProductsAndUpdateTable();
         productController.updateCategories();
-        redrawCategories();
         updateTableSummary();
         resetToggleGroups();
     }
@@ -264,7 +265,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                 case DELETE:
                     searchField.clear();
                     productController.updateCategories();
-                    redrawCategories();
                     break;
                 case BACK_SPACE:
                     if (searchFieldNotEmpty()) {
@@ -280,24 +280,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private boolean searchFieldNotEmpty() {
         return !searchField.getText().isEmpty();
-    }
-
-    private void redrawCategories() {
-        categoriesGrid.getChildren().clear();
-        subCategoriesGrid.getChildren().clear();
-        productsGrid.getChildren().clear();
-        elementControllers = new ArrayList<>();
-        drawListOfElements(productController.getSelectedLevelCategories(), categoriesGrid);
-        drawBackButton(categoriesGrid);
-        drawListOfElements(productController.getSelectedChildrenCategories(), subCategoriesGrid);
-        drawListOfElements(productController.getVisibleProducts(), productsGrid);
-        setSelectedElement(true);
-    }
-
-    private void setSelectedElement(boolean selected) {
-        elementControllers.stream()
-                .filter(controller -> controller.getView().getName().equals(productController.getSelectedCategory().getName()))
-                .forEach(controller -> controller.select(selected));
     }
 
     private <T extends AbstractView> void drawListOfElements(List<T> elements, GridPane grid) {
@@ -319,53 +301,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         elementControllers.add(elementController);
         viewLoader.loadView(elementController);
         grid.add(elementController.getRootNode(), index % GRID_SIZE, index / GRID_SIZE);
-    }
-
-    private void drawBackButton(GridPane categoriesGrid) {
-        final int BUTTON_POSITION = GRID_SIZE - 1;
-        SaleElementController elementController = null;
-
-        elementController = new SaleProductControllerImpl(this) {
-
-            @Override
-            public void onElementClicked(MouseEvent event) {
-                productController.upWithCategories();
-                redrawCategories();
-            }
-        };
-        elementController.setView(new ProductCategoryView() {
-            @Override
-            public String getCategoryName() {
-                return null;
-            }
-
-            @Override
-            public ProductCategoryView getParent() {
-                return null;
-            }
-
-            @Override
-            public ProductView getProduct() {
-                return null;
-            }
-
-            @Override
-            public ProductCategoryType getType() {
-                return null;
-            }
-
-            @Override
-            public ProductStatus getStatus() {
-                return null;
-            }
-
-            @Override
-            public String getName() {
-                return "Vissza";
-            }
-        });
-        viewLoader.loadView(elementController);
-        categoriesGrid.add(elementController.getRootNode(), BUTTON_POSITION, BUTTON_POSITION);
     }
 
     private void setGiftProduct() {
