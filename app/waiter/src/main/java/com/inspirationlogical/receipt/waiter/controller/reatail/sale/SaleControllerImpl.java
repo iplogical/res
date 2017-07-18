@@ -7,10 +7,7 @@ import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.Sale
 import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.SINGLE;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
@@ -302,12 +299,16 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void updateCategories(ProductCategoryView selectedCategory) {
-        if(!ProductCategoryType.isLeaf(selectedCategory.getType())) {
+        if(selectedCategoryIsNotLeaf(selectedCategory)) {
             selectedLevelCategories = getChildCategoriesWithSellableProduct(selectedCategory.getParent());
             selectedChildrenCategories = commonService.getChildCategories(selectedCategory);
         }
         visibleProducts = commonService.getSellableProducts(selectedCategory);
-        redrawCategories(selectedCategory);
+        redrawCategories();
+    }
+
+    private boolean selectedCategoryIsNotLeaf(ProductCategoryView selectedCategory) {
+        return !ProductCategoryType.isLeaf(selectedCategory.getType());
     }
 
     private List<ProductCategoryView> getChildCategoriesWithSellableProduct(ProductCategoryView categoryView) {
@@ -316,7 +317,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                 .collect(Collectors.toList());
     }
 
-    private void redrawCategories(ProductCategoryView selectedCategory) {
+    private void redrawCategories() {
         categoriesGrid.getChildren().clear();
         subCategoriesGrid.getChildren().clear();
         productsGrid.getChildren().clear();
