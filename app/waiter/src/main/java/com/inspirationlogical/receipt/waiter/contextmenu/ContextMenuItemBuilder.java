@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.builder;
+package com.inspirationlogical.receipt.waiter.contextmenu;
 
 import java.util.function.Consumer;
 

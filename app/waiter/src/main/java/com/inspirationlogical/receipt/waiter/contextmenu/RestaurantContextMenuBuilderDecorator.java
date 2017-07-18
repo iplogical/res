@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.builder;
+package com.inspirationlogical.receipt.waiter.contextmenu;
 
 import com.inspirationlogical.receipt.corelib.frontend.builder.ContextMenuBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;

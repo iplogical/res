@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.builder;
+package com.inspirationlogical.receipt.waiter.contextmenu;
 
 import static javafx.stage.PopupWindow.AnchorLocation.CONTENT_BOTTOM_RIGHT;
 
