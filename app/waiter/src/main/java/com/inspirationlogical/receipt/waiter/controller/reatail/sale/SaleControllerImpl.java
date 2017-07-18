@@ -50,6 +50,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     public static final String SALE_VIEW_PATH = "/view/fxml/Sale.fxml";
 
+    private final int GRID_SIZE = 4;
+
     @FXML
     private BorderPane root;
 
@@ -101,22 +103,13 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private SaleViewState saleViewState;
 
-    private ProductCategoryView rootCategory;
-
-    private ProductCategoryView selectedCategory;
-
-    private List<ProductCategoryView> selectedLevelCategories;
-
-    private List<ProductCategoryView> selectedChildrenCategories;
-
     private Search productSearcher;
-
-    private List<ProductView> visibleProducts;
 
     private List<ProductView> searchedProducts;
 
     private List<SaleElementController> elementControllers;
 
+    private VisibleProductControllerImpl productController;
 
     @Inject
     public SaleControllerImpl(RetailService retailService,
@@ -127,14 +120,13 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         super(restaurantService, retailService, restaurantController);
         this.commonService = commonService;
         this.adHocProductFormController = adHocProductFormController;
-        this.elementControllers = new ArrayList<>();
         saleViewState = new SaleViewState();
+        productController = new VisibleProductControllerImpl(commonService);
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeCategories();
         initializeSoldProductsTable();
         initializeToggles();
         updateNode();
@@ -169,17 +161,14 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void selectCategory(SaleElementController saleElementController) {
-        selectedCategory = (ProductCategoryView) saleElementController.getView();
-        updateCategories(selectedCategory);
+        productController.selectCategory(saleElementController);
+        redrawCategories();
     }
 
     @Override
     public void upWithCategories() {
-        if(ProductCategoryType.isRoot(selectedCategory.getParent().getType())) {
-            return;
-        }
-        selectedCategory = selectedCategory.getParent();
-        updateCategories(selectedCategory);
+        productController.upWithCategories();
+        redrawCategories();
     }
 
     @Override
@@ -188,7 +177,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
             return;
         }
         getSoldProductsAndUpdateTable();
-        updateCategories(selectedCategory);
+        productController.updateCategories();
+        redrawCategories();
         updateTableSummary();
         resetToggleGroups();
     }
@@ -247,19 +237,12 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
             searchedProducts = productSearcher.search(searchText);
             drawListOfElements(searchedProducts, productsGrid);
         } else {
-            drawListOfElements(visibleProducts, productsGrid);
+            drawListOfElements(productController.getVisibleProducts(), productsGrid);
         }
     }
 
     private void initializeProductSearcher() {
         productSearcher = new SearchProduct(commonService.getSellableProducts());
-    }
-
-    private void initializeCategories() {
-        rootCategory = commonService.getRootProductCategory();
-        List<ProductCategoryView> childCategories = getChildCategoriesWithSellableProduct(rootCategory);
-        childCategories.sort(Comparator.comparing(ProductCategoryView::getOrderNumber));
-        selectedCategory = childCategories.get(0);
     }
 
     private void initializeToggles() {
@@ -280,7 +263,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                     break;
                 case DELETE:
                     searchField.clear();
-                    updateCategories(selectedCategory);
+                    productController.updateCategories();
+                    redrawCategories();
                     break;
                 case BACK_SPACE:
                     if (searchFieldNotEmpty()) {
@@ -298,40 +282,21 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         return !searchField.getText().isEmpty();
     }
 
-    private void updateCategories(ProductCategoryView selectedCategory) {
-        if(selectedCategoryIsNotLeaf(selectedCategory)) {
-            selectedLevelCategories = getChildCategoriesWithSellableProduct(selectedCategory.getParent());
-            selectedChildrenCategories = commonService.getChildCategories(selectedCategory);
-        }
-        visibleProducts = commonService.getSellableProducts(selectedCategory);
-        redrawCategories();
-    }
-
-    private boolean selectedCategoryIsNotLeaf(ProductCategoryView selectedCategory) {
-        return !ProductCategoryType.isLeaf(selectedCategory.getType());
-    }
-
-    private List<ProductCategoryView> getChildCategoriesWithSellableProduct(ProductCategoryView categoryView) {
-        return commonService.getChildCategories(categoryView).stream()
-                .filter(productCategoryView -> !commonService.getSellableProducts(productCategoryView).isEmpty())
-                .collect(Collectors.toList());
-    }
-
     private void redrawCategories() {
         categoriesGrid.getChildren().clear();
         subCategoriesGrid.getChildren().clear();
         productsGrid.getChildren().clear();
         elementControllers = new ArrayList<>();
-        drawListOfElements(selectedLevelCategories, categoriesGrid);
+        drawListOfElements(productController.getSelectedLevelCategories(), categoriesGrid);
         drawBackButton(categoriesGrid);
-        drawListOfElements(selectedChildrenCategories, subCategoriesGrid);
-        drawListOfElements(visibleProducts, productsGrid);
+        drawListOfElements(productController.getSelectedChildrenCategories(), subCategoriesGrid);
+        drawListOfElements(productController.getVisibleProducts(), productsGrid);
         setSelectedElement(true);
     }
 
     private void setSelectedElement(boolean selected) {
         elementControllers.stream()
-                .filter(controller -> controller.getView().getName().equals(selectedCategory.getName()))
+                .filter(controller -> controller.getView().getName().equals(productController.getSelectedCategory().getName()))
                 .forEach(controller -> controller.select(selected));
     }
 
@@ -343,7 +308,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     private <T extends AbstractView> void drawElement(T elementView, GridPane grid, int index) {
-
         SaleElementController elementController = null;
 
         if(elementView instanceof ProductView) {
@@ -354,17 +318,19 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         elementController.setView(elementView);
         elementControllers.add(elementController);
         viewLoader.loadView(elementController);
-        grid.add(elementController.getRootNode(), index % 4, index / 4);
+        grid.add(elementController.getRootNode(), index % GRID_SIZE, index / GRID_SIZE);
     }
 
     private void drawBackButton(GridPane categoriesGrid) {
+        final int BUTTON_POSITION = GRID_SIZE - 1;
         SaleElementController elementController = null;
 
         elementController = new SaleProductControllerImpl(this) {
 
             @Override
             public void onElementClicked(MouseEvent event) {
-                saleController.upWithCategories();
+                productController.upWithCategories();
+                redrawCategories();
             }
         };
         elementController.setView(new ProductCategoryView() {
@@ -399,7 +365,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
             }
         });
         viewLoader.loadView(elementController);
-        categoriesGrid.add(elementController.getRootNode(), 3, 3);
+        categoriesGrid.add(elementController.getRootNode(), BUTTON_POSITION, BUTTON_POSITION);
     }
 
     private void setGiftProduct() {

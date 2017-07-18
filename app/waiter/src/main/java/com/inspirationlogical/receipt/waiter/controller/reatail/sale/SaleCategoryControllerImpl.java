@@ -33,7 +33,5 @@ public class SaleCategoryControllerImpl extends SaleElementControllerImpl<Produc
             saleController.clearSearch();
             saleController.selectCategory(this);
         }
-
-
     }
 }
