@@ -37,8 +37,6 @@ public class SaleElementControllerImpl<T extends AbstractView> implements SaleEl
 
     protected @Setter @Getter T view;
 
-    protected SaleViewElementState saleViewElementState;
-
     @Inject
     public SaleElementControllerImpl(SaleController saleController) {
         this.saleController = saleController;
