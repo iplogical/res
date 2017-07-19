@@ -14,56 +14,38 @@ import lombok.Setter;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Singleton
-public class VisibleProductControllerImpl implements VisibleProductController {
+public class ProductsAndCategoriesControllerImpl implements ProductsAndCategoriesController {
 
     private final int GRID_SIZE = 4;
 
-    @Setter
-    private ViewLoader viewLoader;
-
-    @Setter
-    private SaleController saleController;
-
+    @Setter private ViewLoader viewLoader;
+    @Setter private SaleController saleController;
     private CommonService commonService;
 
     private Search productSearcher;
 
     private ProductCategoryView rootCategory;
 
-    @Setter
-    private GridPane categoriesGrid;
+    @Setter private GridPane categoriesGrid;
+    @Setter private GridPane subCategoriesGrid;
+    @Setter private GridPane productsGrid;
 
-    @Setter
-    private GridPane subCategoriesGrid;
+    @Getter private ProductCategoryView selectedCategory;
+    @Getter private List<ProductCategoryView> selectedLevelCategories;
+    @Getter private List<ProductCategoryView> selectedChildrenCategories;
 
-    @Setter
-    private GridPane productsGrid;
-
-    @Getter
-    private ProductCategoryView selectedCategory;
-
-    @Getter
-    private List<ProductCategoryView> selectedLevelCategories;
-
-    @Getter
-    private List<ProductCategoryView> selectedChildrenCategories;
-
-    @Getter
-    private List<ProductView> searchedProducts;
-
-    @Getter
-    private List<ProductView> visibleProducts;
+    @Getter private List<ProductView> searchedProducts;
+    @Getter private List<ProductView> visibleProducts;
 
     private List<SaleElementController> elementControllers;
 
     @Inject
-    public VisibleProductControllerImpl(CommonService commonService) {
+    public ProductsAndCategoriesControllerImpl(CommonService commonService) {
         this.commonService = commonService;
         this.elementControllers = new ArrayList<>();
         initializeCategories();
@@ -96,7 +78,7 @@ public class VisibleProductControllerImpl implements VisibleProductController {
     @Override
     public void initCategories() {
         updateSelectedCategories();
-        visibleProducts = Collections.EMPTY_LIST;
+        visibleProducts = new ArrayList<>();
         redrawCategoriesAndProducts();
     }
 

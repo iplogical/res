@@ -4,8 +4,7 @@ import com.google.inject.Provides;
 import com.inspirationlogical.receipt.corelib.frontend.registry.Registry;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.service.RetailServiceImpl;
-import com.inspirationlogical.receipt.waiter.controller.reatail.sale.AdHocProductFormController;
-import com.inspirationlogical.receipt.waiter.controller.reatail.sale.AdHocProductFormControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.reatail.sale.*;
 import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryController;
 import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController;
@@ -14,8 +13,6 @@ import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationC
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
-import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.TableFormController;
@@ -32,6 +29,7 @@ public class WaiterRegistry extends Registry {
         super.configure();
         bind(RestaurantController.class).to(RestaurantControllerImpl.class);
         bind(SaleController.class).to(SaleControllerImpl.class);
+        bind(ProductsAndCategoriesController.class).to(ProductsAndCategoriesControllerImpl.class);
         bind(PaymentController.class).to(PaymentControllerImpl.class);
         bind(DailySummaryController.class).to(DailySummaryControllerImpl.class);
         bind(ReservationController.class).to(ReservationControllerImpl.class);

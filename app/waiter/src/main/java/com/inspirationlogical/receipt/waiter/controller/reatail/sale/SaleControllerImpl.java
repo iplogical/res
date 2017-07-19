@@ -1,14 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
-import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.NONE;
-import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.SELECTIVE;
-import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.SINGLE;
-
-import java.net.URL;
-import java.util.*;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
@@ -22,7 +14,6 @@ import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentC
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -34,6 +25,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Popup;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
+import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.*;
 
 /**
  * Created by Bálint on 2017.03.22..
@@ -97,19 +94,20 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private SaleViewState saleViewState;
 
-    private VisibleProductControllerImpl productController;
+    private ProductsAndCategoriesController productController;
 
     @Inject
     public SaleControllerImpl(RetailService retailService,
                               RestaurantService restaurantService,
                               CommonService commonService,
                               RestaurantController restaurantController,
-                              AdHocProductFormController adHocProductFormController) {
+                              AdHocProductFormController adHocProductFormController,
+                              ProductsAndCategoriesController productController) {
         super(restaurantService, retailService, restaurantController);
         this.commonService = commonService;
         this.adHocProductFormController = adHocProductFormController;
+        this.productController = productController;
         saleViewState = new SaleViewState();
-        productController = new VisibleProductControllerImpl(commonService);
     }
 
 
