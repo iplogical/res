@@ -23,10 +23,10 @@ public class DailyClosureAdapter extends AbstractAdapter<DailyClosure> {
 
     public static LocalDateTime getLatestClosureTime() {
         List<DailyClosure> dailyClosureList = GuardedTransaction.runNamedQuery(DailyClosure.GET_LATEST_DAILY_CLOSURE);
-        if(dailyClosureList.isEmpty()) {
+        if(dailyClosureList.size() < 2) {
             return now().minusDays(1);
         }
-        return dailyClosureList.get(0).getClosureTime();
+        return dailyClosureList.get(1).getClosureTime();    // Element 0 is always the open daily closure record, which has no closure time.
     }
 
     public static DailyClosureAdapter getOpenDailyClosure() {
