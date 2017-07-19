@@ -152,6 +152,12 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         resetToggleGroups();
     }
 
+    private void resetToggleGroups() {
+        paymentMethodToggleGroup.selectToggle(paymentMethodCash);
+        paymentTypeToggleGroup.selectToggle(null);
+        discountTypeToggleGroup.selectToggle(null);
+    }
+
     @FXML
     public void onPay(Event event) {
         paymentViewState.handlePayment(isSoldProductsEmpty(), isPaidProductsEmpty());
@@ -204,13 +210,17 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         if(paymentViewState.isSelectivePayment()) {
             addRowToPaidProducts(row, removeRowFromSoldProducts(row));
         } else if(paymentViewState.isSinglePayment()) {
-            increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, 1), 1);
-        } else if(paymentViewState.isPartialPayment()) {
-            if(!isPartiallyPayable(row)) {
-                return;
+            if(isPartiallyPayable(row)) {
+                double value = Math.min(Double.valueOf(row.getProductQuantity()), 1);
+                increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, value), value);
+            } else {
+                increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, 1), 1);
             }
-            double amount = Double.valueOf(partialPaymentValue.getText());
-            increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, amount), amount);
+        } else if(paymentViewState.isPartialPayment()) {
+            if(isPartiallyPayable(row)) {
+                double amount = Double.valueOf(partialPaymentValue.getText());
+                increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, amount), amount);
+            }
         }
     }
 
@@ -241,6 +251,13 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         updatePaidProductsTable();
     }
 
+    private SoldProductViewModel createNewRow(SoldProductViewModel row, ReceiptRecordView newRecord, double amount) {
+        SoldProductViewModel newRow = new SoldProductViewModel(row);
+        newRow.setProductQuantity(String.valueOf(amount));
+        newRow.setProductTotalPrice(String.valueOf((int)(Integer.valueOf(newRow.getProductUnitPrice()) * amount)));
+        newRow.setProductId(String.valueOf(newRecord.getId()));
+        return newRow;
+    }
 
     @FXML
     public void onBackToSaleView(Event event) {
@@ -297,22 +314,19 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         paidProductsModel.add(row);
     }
 
-    private boolean decreaseRowQuantity(SoldProductViewModel row, double amount) {
+    private void decreaseRowQuantity(SoldProductViewModel row, double amount) {
         paidProductsModel.remove(row);
         if(row.decreaseProductQuantity(amount)) {
             removeRowFromPaidProducts(row);
-            return true;
         }
         addRowToPaidProducts(row);
-        return false;
     }
 
-    private ReceiptRecordView removeRowFromPaidProducts(final SoldProductViewModel row) {
+    private void removeRowFromPaidProducts(final SoldProductViewModel row) {
         paidProductsModel.remove(row);
         paidProductsTable.setItems(paidProductsModel);
         List<ReceiptRecordView> matching = findMatchingView(paidProductsView, row);
         paidProductsView.remove(matching.get(0));
-        return matching.get(0);
     }
 
     private void addRowToPaidProducts(SoldProductViewModel row) {
@@ -320,14 +334,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         paidProductsModel.sort(Comparator.comparing(SoldProductViewModel::getProductId));
         paidProductsTable.setItems(paidProductsModel);
         paidProductsTable.refresh();
-    }
-
-    private SoldProductViewModel createNewRow(SoldProductViewModel row, ReceiptRecordView newRecord, double amount) {
-        SoldProductViewModel newRow = new SoldProductViewModel(row);
-        newRow.setProductQuantity(String.valueOf(amount));
-        newRow.setProductTotalPrice(String.valueOf((int)(Integer.valueOf(newRow.getProductUnitPrice()) * amount)));
-        newRow.setProductId(String.valueOf(newRecord.getId()));
-        return newRow;
     }
 
     void paidProductsRowClickHandler(SoldProductViewModel row) {
@@ -346,12 +352,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private void addRowToSoldProducts(final SoldProductViewModel row, ReceiptRecordView toAdd) {
         soldProductsView.add(toAdd);
         addRowToSoldProducts(row);
-    }
-
-    private void resetToggleGroups() {
-        paymentMethodToggleGroup.selectToggle(paymentMethodCash);
-        paymentTypeToggleGroup.selectToggle(null);
-        discountTypeToggleGroup.selectToggle(null);
     }
 
     @Override
