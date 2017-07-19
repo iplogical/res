@@ -31,6 +31,8 @@ public class VisibleProductControllerImpl implements VisibleProductController {
 
     private CommonService commonService;
 
+    private Search productSearcher;
+
     private ProductCategoryView rootCategory;
 
     @Setter
@@ -52,9 +54,10 @@ public class VisibleProductControllerImpl implements VisibleProductController {
     private List<ProductCategoryView> selectedChildrenCategories;
 
     @Getter
-    private List<ProductView> visibleProducts;
-
     private List<ProductView> searchedProducts;
+
+    @Getter
+    private List<ProductView> visibleProducts;
 
     private List<SaleElementController> elementControllers;
 
@@ -63,6 +66,7 @@ public class VisibleProductControllerImpl implements VisibleProductController {
         this.commonService = commonService;
         this.elementControllers = new ArrayList<>();
         initializeCategories();
+        initializeProductSearcher();
     }
 
     private void initializeCategories() {
@@ -70,6 +74,10 @@ public class VisibleProductControllerImpl implements VisibleProductController {
         List<ProductCategoryView> childCategories = getChildCategoriesWithSellableProduct(rootCategory);
         childCategories.sort(Comparator.comparing(ProductCategoryView::getOrderNumber));
         selectedCategory = childCategories.get(0);
+    }
+
+    private void initializeProductSearcher() {
+        productSearcher = new SearchProduct(commonService.getSellableProducts());
     }
 
     private List<ProductCategoryView> getChildCategoriesWithSellableProduct(ProductCategoryView categoryView) {
@@ -174,5 +182,16 @@ public class VisibleProductControllerImpl implements VisibleProductController {
 
     private boolean isTopLevelCategorySelected() {
         return ProductCategoryType.isRoot(selectedCategory.getParent().getType());
+    }
+
+    @Override
+    public void search(String searchText) {
+        productsGrid.getChildren().clear();
+        if (!searchText.isEmpty()) {
+            searchedProducts = productSearcher.search(searchText);
+            drawListOfElements(searchedProducts, productsGrid);
+        } else {
+            drawListOfElements(visibleProducts, productsGrid);
+        }
     }
 }

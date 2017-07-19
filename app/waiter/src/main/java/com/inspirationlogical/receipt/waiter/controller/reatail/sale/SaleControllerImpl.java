@@ -103,12 +103,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private SaleViewState saleViewState;
 
-    private Search productSearcher;
-
-    private List<ProductView> searchedProducts;
-
-    private List<SaleElementController> elementControllers;
-
     private VisibleProductControllerImpl productController;
 
     @Inject
@@ -134,7 +128,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         initializeSoldProductsTableRowHandler();
         initializeQuickSearchAndSellHandler();
         initLiveTime(liveTime);
-        initializeProductSearcher();
     }
 
     private void initializeProductController() {
@@ -232,18 +225,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onSearchChanged(Event event) {
-        String searchText = searchField.getText();
-        productsGrid.getChildren().clear();
-        if (!searchText.isEmpty()) {
-            searchedProducts = productSearcher.search(searchText);
-            drawListOfElements(searchedProducts, productsGrid);
-        } else {
-            drawListOfElements(productController.getVisibleProducts(), productsGrid);
-        }
-    }
-
-    private void initializeProductSearcher() {
-        productSearcher = new SearchProduct(commonService.getSellableProducts());
+        productController.search(searchField.getText());
     }
 
     private void initializeToggles() {
@@ -258,8 +240,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         root.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
             switch (keyEvent.getCode()) {
                 case ENTER:
-                    if (searchedProducts.size() == 1) {
-                        sellProduct(searchedProducts.get(0));
+                    if (productController.getSearchedProducts().size() == 1) {
+                        sellProduct(productController.getSearchedProducts().get(0));
                     }
                     break;
                 case DELETE:
@@ -269,7 +251,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                 case BACK_SPACE:
                     if (searchFieldNotEmpty()) {
                         searchField.setText(searchField.getText(0, searchField.getText().length() - 1));
+                        onSearchChanged(keyEvent);
                     }
+                    break;
                 default:
                     searchField.appendText(keyEvent.getText());
                     onSearchChanged(keyEvent);
@@ -280,27 +264,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private boolean searchFieldNotEmpty() {
         return !searchField.getText().isEmpty();
-    }
-
-    private <T extends AbstractView> void drawListOfElements(List<T> elements, GridPane grid) {
-        elements.sort(Comparator.comparing(AbstractView::getOrderNumber));
-        for(int i = 0; i < Math.min(elements.size(), 32); i++) {
-            drawElement(elements.get(i), grid, i);
-        }
-    }
-
-    private <T extends AbstractView> void drawElement(T elementView, GridPane grid, int index) {
-        SaleElementController elementController = null;
-
-        if(elementView instanceof ProductView) {
-            elementController = new SaleProductControllerImpl(this);
-        } else if (elementView instanceof ProductCategoryView) {
-            elementController = new SaleCategoryControllerImpl(this);
-        }
-        elementController.setView(elementView);
-        elementControllers.add(elementController);
-        viewLoader.loadView(elementController);
-        grid.add(elementController.getRootNode(), index % GRID_SIZE, index / GRID_SIZE);
     }
 
     private void setGiftProduct() {

@@ -6,4 +6,6 @@ public interface VisibleProductController {
     void updateCategories();
 
     void selectCategory(SaleElementController saleElementController);
+
+    void search(String text);
 }
