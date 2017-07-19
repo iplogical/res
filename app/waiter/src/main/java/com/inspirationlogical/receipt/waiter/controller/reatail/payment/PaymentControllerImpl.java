@@ -138,13 +138,73 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void initialize(URL location, ResourceBundle resources) {
         initializeToggleGroups();
         initializeSoldProductsTable();
-        initializePayProductsTable();
-        getSoldProductsAndUpdateTable();
-        updateTableSummary();
+        initializePaidProductsTable();
         initializeSoldProductsTableRowHandler();
         initializePaidProductsTableRowHandler();
-        initLiveTime(liveTime);
         initializePaymentViewState();
+        initLiveTime(liveTime);
+        getSoldProductsAndUpdateTable();
+        updateTableSummary();
+    }
+
+    private void initializeToggleGroups() {
+        initializePaymentMethodToggles();
+        initializePaymentTypeToggles();
+        initializeDiscountToggles();
+    }
+
+    private void initializePaymentMethodToggles() {
+        paymentMethodCash.setUserData(PaymentMethod.CASH);
+        paymentMethodCreditCard.setUserData(PaymentMethod.CREDIT_CARD);
+        paymentMethodCoupon.setUserData(PaymentMethod.COUPON);
+        paymentMethodCash.setSelected(true);
+        paymentViewState.setPaymentMethod(PaymentMethod.CASH);
+        paymentMethodToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                paymentViewState.setPaymentMethod((PaymentMethod)paymentMethodToggleGroup.getSelectedToggle().getUserData());
+            }
+        });
+    }
+
+    private void initializePaymentTypeToggles() {
+        selectivePayment.setUserData(SELECTIVE);
+        singlePayment.setUserData(SINGLE);
+        partialPayment.setUserData(PARTIAL);
+        paymentViewState.setPaymentType(FULL);
+        paymentTypeToggleGroup.selectedToggleProperty().addListener(new PaymentTypeTogglesListener());
+    }
+
+    private void initializeDiscountToggles() {
+        discountAbsolute.setUserData(PaymentViewState.DiscountType.ABSOLUTE);
+        discountPercent.setUserData(PaymentViewState.DiscountType.PERCENT);
+        paymentViewState.setDiscountType(PaymentViewState.DiscountType.NONE);
+        discountTypeToggleGroup.selectedToggleProperty().addListener(new DiscountTypeTogglesListener());
+    }
+
+    private void initializePaidProductsTable() {
+        paidProductsTable.setEditable(true);
+        payProductName.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productName"));
+        payProductQuantity.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productQuantity"));
+        payProductUnitPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productUnitPrice"));
+        payProductTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productTotalPrice"));
+    }
+
+    private void initializePaidProductsTableRowHandler() {
+        paidProductsTable.setRowFactory(tv -> {
+            TableRow<SoldProductViewModel> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(event.getClickCount() == 1 && (! row.isEmpty())) {
+                    paidProductsRowClickHandler(row.getItem());
+                }
+            });
+            return row;
+        });
+    }
+
+    private void initializePaymentViewState() {
+        paymentViewState.setDiscountAbsoluteValue(discountAbsoluteValue);
+        paymentViewState.setDiscountPercentValue(discountPercentValue);
     }
 
     @Override
@@ -155,56 +215,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         getSoldProductsAndUpdateTable();
         updateTableSummary();
         resetToggleGroups();
-    }
-
-    @Override
-    public void onBackToRestaurantView(Event event) {
-        discardPaidRecords();
-        backToRestaurantView();
-    }
-
-    @Override
-    protected void soldProductsRowClickHandler(SoldProductViewModel row) {
-        if(paymentViewState.isSelectivePayment()) {
-            addRowToPaidProducts(row, removeRowFromSoldProducts(row));
-        } else if(paymentViewState.isSinglePayment()) {
-            increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, 1), 1);
-        } else if(paymentViewState.isPartialPayment()) {
-            if(!isPartiallyPayable(row)) {
-                return;
-            }
-            double amount = Double.valueOf(partialPaymentValue.getText());
-            increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, amount), amount);
-        }
-    }
-
-    @FXML
-    public void onBackToSaleView(Event event) {
-        discardPaidRecords();
-        retailService.mergeReceiptRecords(receiptView);
-        saleController.enterSaleView();
-        viewLoader.loadViewIntoScene(saleController);
-    }
-
-    @FXML
-    public void onAutoGameFee(Event event) {
-        ReceiptRecordView gameFee = handleAutomaticGameFee();
-        if(gameFee == null) return;
-        if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee)).size() == 0) {
-            soldProductsView.add(gameFee);
-        }
-        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
-        updateTableSummary();
-    }
-
-    @FXML
-    public void onManualGameFee(Event event) {
-        ReceiptRecordView gameFee = retailService.sellGameFee(tableView, 1);
-        if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee)).size() == 0) {
-            soldProductsView.add(gameFee);
-        }
-        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
-        updateTableSummary();
     }
 
     @FXML
@@ -232,10 +242,10 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         paidProductsModel = FXCollections.observableArrayList();
         paidProductsView = new ArrayList<>();
         previousPartialPrice.setText(payTotalPrice.getText());
-        updatePayProductsTable();
+        updatePaidProductsTable();
     }
 
-    private void updatePayProductsTable() {
+    private void updatePaidProductsTable() {
         payTotalPrice.setText(SoldProductViewModel.getTotalPrice(paidProductsModel) + " Ft");
         updateSoldTotalPrice();
         paidProductsTable.setItems(paidProductsModel);
@@ -254,39 +264,30 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         getSoldProductsAndUpdateTable();
     }
 
-    private ReceiptRecordView handleAutomaticGameFee() {
-        //TODO: Make the 2000 configurable from the manager terminal.
-        int guestCount = tableView.getGuestCount();
-        int price = (int)receiptView.getTotalPrice();
-        int requiredGameFee = (((guestCount+1) * 2000 - (price+1)) / 2000);
-        if(requiredGameFee > 0) {
-            return retailService.sellGameFee(tableView, requiredGameFee);
-        }
-        return null;
-    }
-
-    private void paidProductsRowClickHandler(SoldProductViewModel row) {
-        List<SoldProductViewModel> rowInSoldProducts = soldProductsModel.stream().filter(model -> model.getProductName().equals(row.getProductName()))
-                .collect(toList());
-        if(rowInSoldProducts.isEmpty()) {
-            ReceiptRecordView recordInPaidProducts = findEquivalentView(paidProductsView, row).get(0);
-            ReceiptRecordView recordInSoldProducts = retailService.cloneReceiptRecordView(tableView, recordInPaidProducts, 1);
-            addRowToSoldProducts(new SoldProductViewModel(recordInSoldProducts), recordInSoldProducts);
-            decreaseRowInPaidProducts(row, recordInPaidProducts, 1);
-        } else {
-            decreaseRowInPaidProducts(row, increaseRowInSoldProducts(rowInSoldProducts.get(0), 1, false), 1);
+    @Override
+    protected void soldProductsRowClickHandler(SoldProductViewModel row) {
+        if(paymentViewState.isSelectivePayment()) {
+            addRowToPaidProducts(row, removeRowFromSoldProducts(row));
+        } else if(paymentViewState.isSinglePayment()) {
+            increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, 1), 1);
+        } else if(paymentViewState.isPartialPayment()) {
+            if(!isPartiallyPayable(row)) {
+                return;
+            }
+            double amount = Double.valueOf(partialPaymentValue.getText());
+            increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, amount), amount);
         }
     }
 
     private void addRowToPaidProducts(final SoldProductViewModel row, ReceiptRecordView toAdd) {
         paidProductsView.add(toAdd);
         paidProductsModel.add(row);
-        updatePayProductsTable();
+        updatePaidProductsTable();
     }
 
-    private void addRowToSoldProducts(final SoldProductViewModel row, ReceiptRecordView toAdd) {
-        soldProductsView.add(toAdd);
-        addRowToSoldProducts(row);
+    private boolean isPartiallyPayable(SoldProductViewModel row) {
+        List<ReceiptRecordView> matchingReceiptRecordView = findMatchingView(soldProductsView, row);
+        return matchingReceiptRecordView.get(0).isPartiallyPayable();
     }
 
     private void increaseRowInPaidProducts(SoldProductViewModel row, ReceiptRecordView toAdd, double amount) {
@@ -299,10 +300,51 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             equivalentReceiptRecordView.get(0).increaseSoldQuantity(amount, false);
             List<SoldProductViewModel> matchingRows =
                     paidProductsModel.stream().filter(thisRow -> SoldProductViewModel.isEquals(thisRow, equivalentReceiptRecordView.get(0)))
-                    .collect(toList());
+                            .collect(toList());
             increaseRowQuantity(matchingRows.get(0), amount);
         }
-        updatePayProductsTable();
+        updatePaidProductsTable();
+    }
+
+
+    @FXML
+    public void onBackToSaleView(Event event) {
+        discardPaidRecords();
+        retailService.mergeReceiptRecords(receiptView);
+        saleController.enterSaleView();
+        viewLoader.loadViewIntoScene(saleController);
+    }
+
+    @FXML
+    public void onAutoGameFee(Event event) {
+        ReceiptRecordView gameFee = handleAutomaticGameFee();
+        if(gameFee == null) return;
+        if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee)).size() == 0) {
+            soldProductsView.add(gameFee);
+        }
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+        updateTableSummary();
+    }
+
+    private ReceiptRecordView handleAutomaticGameFee() {
+        //TODO: Make the 2000 configurable from the manager terminal.
+        int guestCount = tableView.getGuestCount();
+        int price = (int)receiptView.getTotalPrice();
+        int requiredGameFee = (((guestCount+1) * 2000 - (price+1)) / 2000);
+        if(requiredGameFee > 0) {
+            return retailService.sellGameFee(tableView, requiredGameFee);
+        }
+        return null;
+    }
+
+    @FXML
+    public void onManualGameFee(Event event) {
+        ReceiptRecordView gameFee = retailService.sellGameFee(tableView, 1);
+        if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee)).size() == 0) {
+            soldProductsView.add(gameFee);
+        }
+        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+        updateTableSummary();
     }
 
     private void decreaseRowInPaidProducts(SoldProductViewModel row, ReceiptRecordView toAdd, double amount) {
@@ -353,69 +395,22 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         return newRow;
     }
 
-    private boolean isPartiallyPayable(SoldProductViewModel row) {
-        List<ReceiptRecordView> matchingReceiptRecordView = findMatchingView(soldProductsView, row);
-        return matchingReceiptRecordView.get(0).isPartiallyPayable();
+    private void paidProductsRowClickHandler(SoldProductViewModel row) {
+        List<SoldProductViewModel> rowInSoldProducts = soldProductsModel.stream().filter(model -> model.getProductName().equals(row.getProductName()))
+                .collect(toList());
+        if(rowInSoldProducts.isEmpty()) {
+            ReceiptRecordView recordInPaidProducts = findEquivalentView(paidProductsView, row).get(0);
+            ReceiptRecordView recordInSoldProducts = retailService.cloneReceiptRecordView(tableView, recordInPaidProducts, 1);
+            addRowToSoldProducts(new SoldProductViewModel(recordInSoldProducts), recordInSoldProducts);
+            decreaseRowInPaidProducts(row, recordInPaidProducts, 1);
+        } else {
+            decreaseRowInPaidProducts(row, increaseRowInSoldProducts(rowInSoldProducts.get(0), 1, false), 1);
+        }
     }
 
-    private void initializeToggleGroups() {
-        initializePaymentMethodToggles();
-        initializePaymentTypeToggles();
-        initializeDiscountToggles();
-    }
-
-    private void initializePaymentMethodToggles() {
-        paymentMethodCash.setUserData(PaymentMethod.CASH);
-        paymentMethodCreditCard.setUserData(PaymentMethod.CREDIT_CARD);
-        paymentMethodCoupon.setUserData(PaymentMethod.COUPON);
-        paymentMethodCash.setSelected(true);
-        paymentViewState.setPaymentMethod(PaymentMethod.CASH);
-        paymentMethodToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-                paymentViewState.setPaymentMethod((PaymentMethod)paymentMethodToggleGroup.getSelectedToggle().getUserData());
-            }
-        });
-    }
-
-    private void initializePaymentTypeToggles() {
-        selectivePayment.setUserData(SELECTIVE);
-        singlePayment.setUserData(SINGLE);
-        partialPayment.setUserData(PARTIAL);
-        paymentViewState.setPaymentType(FULL);
-        paymentTypeToggleGroup.selectedToggleProperty().addListener(new PaymentTypeTogglesListener());
-    }
-
-    private void initializeDiscountToggles() {
-        discountAbsolute.setUserData(PaymentViewState.DiscountType.ABSOLUTE);
-        discountPercent.setUserData(PaymentViewState.DiscountType.PERCENT);
-        paymentViewState.setDiscountType(PaymentViewState.DiscountType.NONE);
-        discountTypeToggleGroup.selectedToggleProperty().addListener(new DiscountTypeTogglesListener());
-    }
-
-    private void initializePayProductsTable() {
-        paidProductsTable.setEditable(true);
-        payProductName.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productName"));
-        payProductQuantity.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productQuantity"));
-        payProductUnitPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productUnitPrice"));
-        payProductTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productTotalPrice"));
-    }
-
-    private void initializePaidProductsTableRowHandler() {
-        paidProductsTable.setRowFactory(tv -> {
-            TableRow<SoldProductViewModel> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if(event.getClickCount() == 1 && (! row.isEmpty())) {
-                    paidProductsRowClickHandler(row.getItem());
-                }
-            });
-            return row;
-        });
-    }
-
-    private void initializePaymentViewState() {
-        paymentViewState.setDiscountAbsoluteValue(discountAbsoluteValue);
-        paymentViewState.setDiscountPercentValue(discountPercentValue);
+    private void addRowToSoldProducts(final SoldProductViewModel row, ReceiptRecordView toAdd) {
+        soldProductsView.add(toAdd);
+        addRowToSoldProducts(row);
     }
 
     private void resetToggleGroups() {
@@ -423,7 +418,13 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         paymentTypeToggleGroup.selectToggle(null);
         discountTypeToggleGroup.selectToggle(null);
     }
-    
+
+    @Override
+    public void onBackToRestaurantView(Event event) {
+        discardPaidRecords();
+        backToRestaurantView();
+    }
+
     private class PaymentTypeTogglesListener implements ChangeListener<Toggle> {
         @Override
         public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {

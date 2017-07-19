@@ -215,7 +215,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected void addRowToSoldProducts(SoldProductViewModel row) {
         soldProductsModel.add(row);
-        soldProductsModel.sort(Comparator.comparing(SoldProductViewModel::getLatestClickTime));
+        soldProductsModel.sort(Comparator.comparing(SoldProductViewModel::getProductId));
         soldProductsTable.setItems(soldProductsModel);
         soldProductsTable.refresh();
     }

@@ -30,7 +30,7 @@ import lombok.experimental.Tolerate;
     @NamedQuery(name = ReceiptRecord.GET_RECEIPT_RECORDS_BY_TIMESTAMP,
             query="FROM ReceiptRecord r INNER JOIN r.createdList cl WHERE cl.created >:created AND r.name=:name ORDER BY cl.created DESC"),
     @NamedQuery(name = ReceiptRecord.GET_RECEIPT_RECORDS_BY_RECEIPT,
-            query="FROM ReceiptRecord r WHERE r.owner.id =:owner_id")
+            query="FROM ReceiptRecord r WHERE r.owner.id =:owner_id ORDER BY id")
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECEIPT_RECORD_ID"))
 @ValidProduct
