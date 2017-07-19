@@ -204,8 +204,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    public void selectCategory(SaleElementController saleElementController) {
-        productController.selectCategory(saleElementController);
+    public void selectCategory(ElementController elementController) {
+        productController.selectCategory(elementController);
     }
 
     @Override

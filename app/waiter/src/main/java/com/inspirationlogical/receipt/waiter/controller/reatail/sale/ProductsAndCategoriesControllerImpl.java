@@ -42,7 +42,7 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
     @Getter private List<ProductView> searchedProducts;
     @Getter private List<ProductView> visibleProducts;
 
-    private List<SaleElementController> elementControllers;
+    private List<ElementController> elementControllers;
 
     @Inject
     public ProductsAndCategoriesControllerImpl(CommonService commonService) {
@@ -70,8 +70,8 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
     }
 
     @Override
-    public void selectCategory(SaleElementController saleElementController) {
-        selectedCategory = (ProductCategoryView) saleElementController.getView();
+    public void selectCategory(ElementController elementController) {
+        selectedCategory = (ProductCategoryView) elementController.getView();
         updateCategories();
     }
 
@@ -138,12 +138,12 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
     }
 
     private <T extends AbstractView> void drawElement(T elementView, GridPane grid, int index) {
-        SaleElementController elementController = null;
+        ElementController elementController = null;
 
         if(elementView instanceof ProductView) {
-            elementController = new SaleProductControllerImpl(saleController);
+            elementController = new ProductControllerImpl(saleController);
         } else if (elementView instanceof ProductCategoryView) {
-            elementController = new SaleCategoryControllerImpl(saleController);
+            elementController = new CategoryControllerImpl(saleController);
         }
         elementController.setView(elementView);
         elementControllers.add(elementController);
@@ -153,7 +153,7 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
 
     private void drawBackButton(GridPane categoriesGrid) {
         final int BUTTON_POSITION = GRID_SIZE - 1;
-        SaleElementController elementController = new SaleProductControllerImpl(saleController) {
+        ElementController elementController = new ProductControllerImpl(saleController) {
 
             @Override
             public void onElementClicked(MouseEvent event) {

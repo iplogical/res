@@ -17,7 +17,7 @@ import lombok.Setter;
 /**
  * Created by Bálint on 2017.03.23..
  */
-public class SaleElementControllerImpl<T extends AbstractView> implements SaleElementController<T> {
+public class ElementControllerImpl<T extends AbstractView> implements ElementController<T> {
 
     public static final String SALE_VIEW_ELEMENT_PATH = "/view/fxml/SaleElement.fxml";
 
@@ -38,7 +38,7 @@ public class SaleElementControllerImpl<T extends AbstractView> implements SaleEl
     protected @Setter @Getter T view;
 
     @Inject
-    public SaleElementControllerImpl(SaleController saleController) {
+    public ElementControllerImpl(SaleController saleController) {
         this.saleController = saleController;
     }
 

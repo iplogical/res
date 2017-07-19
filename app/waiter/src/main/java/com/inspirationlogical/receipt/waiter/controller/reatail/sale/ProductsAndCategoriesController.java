@@ -11,7 +11,7 @@ public interface ProductsAndCategoriesController {
 
     void updateCategories();
 
-    void selectCategory(SaleElementController saleElementController);
+    void selectCategory(ElementController elementController);
 
     void search(String text);
 

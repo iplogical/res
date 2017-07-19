@@ -9,12 +9,12 @@ import javafx.scene.input.MouseEvent;
 /**
  * Created by Bálint on 2017.03.24..
  */
-public class SaleCategoryControllerImpl extends SaleElementControllerImpl<ProductCategoryView> {
+public class CategoryControllerImpl extends ElementControllerImpl<ProductCategoryView> {
 
     private boolean isSelected;
 
     @Inject
-    public SaleCategoryControllerImpl(SaleController saleController) {
+    public CategoryControllerImpl(SaleController saleController) {
         super(saleController);
     }
 
