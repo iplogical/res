@@ -212,6 +212,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private void resetToggleGroups() {
         cancellationTypeToggleGroup.selectToggle(null);
         giftProduct.setSelected(false);
+        sortByClickTime.setSelected(false);
     }
 
     ChangeListener<Toggle> cancellationTypeToggleListener = (observable, oldValue, newValue) -> {
