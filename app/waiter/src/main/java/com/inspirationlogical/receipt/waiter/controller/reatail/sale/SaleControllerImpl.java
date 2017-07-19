@@ -15,13 +15,11 @@ import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantCon
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Popup;
@@ -30,7 +28,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
-import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.*;
+import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.NONE;
 
 /**
  * Created by Bálint on 2017.03.22..
@@ -44,16 +42,16 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private final int GRID_SIZE = 4;
 
     @FXML
-    private BorderPane root;
+    BorderPane root;
 
     @FXML
-    private GridPane categoriesGrid;
+    GridPane categoriesGrid;
 
     @FXML
-    private GridPane subCategoriesGrid;
+    GridPane subCategoriesGrid;
 
     @FXML
-    private GridPane productsGrid;
+    GridPane productsGrid;
 
     @FXML
     private RadioButton takeAway;
@@ -65,26 +63,26 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private ToggleButton giftProduct;
 
     @FXML
-    private ToggleButton selectiveCancellation;
+    ToggleButton selectiveCancellation;
     @FXML
-    private ToggleButton singleCancellation;
+    ToggleButton singleCancellation;
     @FXML
-    private ToggleGroup cancellationTypeToggleGroup;
+    ToggleGroup cancellationTypeToggleGroup;
 
     @FXML
-    private ToggleButton sortByClickTime;
+    ToggleButton sortByClickTime;
 
     @FXML
-    private TextField searchField;
+    TextField searchField;
 
     @FXML
     private Button backToRestaurantView;
 
     @FXML
-    private Label liveTime;
+    Label liveTime;
 
     @Inject
-    private ViewLoader viewLoader;
+    ViewLoader viewLoader;
 
     private Popup adHocProductForm;
 
@@ -92,9 +90,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private AdHocProductFormController adHocProductFormController;
 
-    private SaleViewState saleViewState;
+    SaleViewState saleViewState;
 
-    private ProductsAndCategoriesController productController;
+    ProductsAndCategoriesController productController;
 
     @Inject
     public SaleControllerImpl(RetailService retailService,
@@ -110,63 +108,12 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         saleViewState = new SaleViewState();
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeProductController();
         initializeSoldProducts();
-        initializeToggles();
-        initializeQuickSearchAndSellHandler();
-        initLiveTime(liveTime);
+        new SaleControllerInitializer(this).initialize();
         enterSaleView();
     }
-
-    private void initializeProductController() {
-        productController.setCategoriesGrid(categoriesGrid);
-        productController.setSubCategoriesGrid(subCategoriesGrid);
-        productController.setProductsGrid(productsGrid);
-        productController.setSaleController(this);
-        productController.setViewLoader(viewLoader);
-    }
-
-    private void initializeToggles() {
-        singleCancellation.setUserData(SINGLE);
-        selectiveCancellation.setUserData(SELECTIVE);
-        saleViewState.setCancellationType(NONE);
-        cancellationTypeToggleGroup.selectedToggleProperty().addListener(new CancellationTypeToggleListener());
-        sortByClickTime.selectedProperty().addListener(new SortByClickTimeToggleListener());
-    }
-
-    private void initializeQuickSearchAndSellHandler() {
-        root.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
-            switch (keyEvent.getCode()) {
-                case ENTER:
-                    if (productController.getSearchedProducts().size() == 1) {
-                        sellProduct(productController.getSearchedProducts().get(0));
-                    }
-                    break;
-                case DELETE:
-                    searchField.clear();
-                    productController.updateCategories();
-                    break;
-                case BACK_SPACE:
-                    if (searchFieldNotEmpty()) {
-                        searchField.setText(searchField.getText(0, searchField.getText().length() - 1));
-                        onSearchChanged(keyEvent);
-                    }
-                    break;
-                default:
-                    searchField.appendText(keyEvent.getText());
-                    onSearchChanged(keyEvent);
-                    break;
-            }
-        });
-    }
-
-    private boolean searchFieldNotEmpty() {
-        return !searchField.getText().isEmpty();
-    }
-
 
     @Override
     public void enterSaleView() {
@@ -267,25 +214,19 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         giftProduct.setSelected(false);
     }
 
-    private class CancellationTypeToggleListener implements ChangeListener<Toggle> {
-        @Override
-        public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-            if(cancellationTypeToggleGroup.getSelectedToggle() == null) {
-                saleViewState.setCancellationType(NONE);
-                return;
-            }
-            saleViewState.setCancellationType((SaleViewState.CancellationType)cancellationTypeToggleGroup.getSelectedToggle().getUserData());
+    ChangeListener<Toggle> cancellationTypeToggleListener = (observable, oldValue, newValue) -> {
+        if(cancellationTypeToggleGroup.getSelectedToggle() == null) {
+            saleViewState.setCancellationType(NONE);
+            return;
         }
-    }
+        saleViewState.setCancellationType((SaleViewState.CancellationType)cancellationTypeToggleGroup.getSelectedToggle().getUserData());
+    };
 
-    private class SortByClickTimeToggleListener implements ChangeListener<Boolean> {
-        @Override
-        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-            if(newValue) {
-                sortSoldProductByLatestClickTime();
-            } else {
-                getSoldProductsAndUpdateTable();
-            }
+    ChangeListener<Boolean> sortByClickTimeToggleListener = (observable, oldValue, newValue) -> {
+        if(newValue) {
+            sortSoldProductByLatestClickTime();
+        } else {
+            getSoldProductsAndUpdateTable();
         }
-    }
+    };
 }
