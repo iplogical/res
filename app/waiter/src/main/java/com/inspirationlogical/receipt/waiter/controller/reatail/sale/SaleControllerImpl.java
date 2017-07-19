@@ -232,7 +232,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         retailService.mergeReceiptRecords(receiptView);
         PaymentController paymentController = WaiterRegistry.getInstance(PaymentController.class);
         paymentController.setTableView(tableView);
-        paymentController.updateNode();
+        paymentController.enterPaymentView();
         viewLoader.loadViewIntoScene(paymentController);
     }
 

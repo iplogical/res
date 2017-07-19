@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.payment;
 
+import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailController;
 
 /**
@@ -7,5 +8,9 @@ import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailCo
  */
 public interface PaymentController extends AbstractRetailController {
 
-    void updateNode();
+    void enterPaymentView();
+
+    void handleFullPayment(PaymentParams paymentParams);
+
+    void handleSelectivePayment(PaymentParams paymentParams);
 }

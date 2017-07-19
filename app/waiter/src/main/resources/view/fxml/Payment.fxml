@@ -155,9 +155,9 @@
                                     </AnchorPane>
                                     <AnchorPane>
                                        <children>
-                                          <Label AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <Label fx:id="previousPartialPrice" alignment="CENTER" styleClass="sub-header-label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <font>
-                                                <Font size="24.0" />
+                                                <Font size="30.0" />
                                              </font>
                                           </Label>
                                        </children>

@@ -84,6 +84,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     private Label payTotalPrice;
+    @FXML
+    private Label previousPartialPrice;
 
     @FXML
     private Label liveTime;
@@ -117,7 +119,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
                                  SaleController saleController) {
         super(restaurantService, retailService, restaurantController);
         this.saleController = saleController;
-        paymentViewState = new PaymentViewState();
+        paymentViewState = new PaymentViewState(this);
         paidProductsModel = FXCollections.observableArrayList();
         paidProductsView = new ArrayList<>();
     }
@@ -142,10 +144,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         initializeSoldProductsTableRowHandler();
         initializePaidProductsTableRowHandler();
         initLiveTime(liveTime);
+        initializePaymentViewState();
     }
 
     @Override
-    public void updateNode() {
+    public void enterPaymentView() {
         if(!soldProductsTableInitialized) {
             return;
         }
@@ -159,7 +162,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         discardPaidRecords();
         backToRestaurantView();
     }
-
 
     @Override
     protected void soldProductsRowClickHandler(SoldProductViewModel row) {
@@ -207,25 +209,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onPay(Event event) {
-        if(paymentViewState.isFullPayment()) {
-            if(!isPaidProductsEmpty()) {
-                if(isSoldProductsEmpty()) {
-                    handleFullPayment();
-                } else {
-                    handleSelectivePayment();
-                }
-            } else {
-                handleFullPayment();
-            }
-        } else {
-            if(isPaidProductsEmpty()) {
-                return;
-            } else if(isSoldProductsEmpty()) {
-                handleFullPayment();
-            } else {
-                handleSelectivePayment();
-            }
-        }
+        paymentViewState.handlePayment(isSoldProductsEmpty(), isPaidProductsEmpty());
     }
 
     private boolean isSoldProductsEmpty() {
@@ -236,15 +220,36 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         return paidProductsView.size() == 0;
     }
 
-    private void handleFullPayment() {
-        retailService.payTable(tableView, getPaymentParams());
+    @Override
+    public void handleFullPayment(PaymentParams paymentParams) {
+        retailService.payTable(tableView, paymentParams);
         getSoldProductsAndUpdateTable();
         discardPaidRecords();
         backToRestaurantView();
     }
 
-    private void handleSelectivePayment() {
-        retailService.paySelective(tableView, paidProductsView, getPaymentParams());
+    private void discardPaidRecords() {
+        paidProductsModel = FXCollections.observableArrayList();
+        paidProductsView = new ArrayList<>();
+        previousPartialPrice.setText(payTotalPrice.getText());
+        updatePayProductsTable();
+    }
+
+    private void updatePayProductsTable() {
+        payTotalPrice.setText(SoldProductViewModel.getTotalPrice(paidProductsModel) + " Ft");
+        updateSoldTotalPrice();
+        paidProductsTable.setItems(paidProductsModel);
+        paidProductsTable.refresh();
+    }
+
+    private void backToRestaurantView() {
+        restaurantController.updateRestaurant();
+        restaurantController.getTableController(tableView).updateNode();
+        viewLoader.loadViewIntoScene(restaurantController);
+    }
+    @Override
+    public void handleSelectivePayment(PaymentParams paymentParams) {
+        retailService.paySelective(tableView, paidProductsView, paymentParams);
         discardPaidRecords();
         getSoldProductsAndUpdateTable();
     }
@@ -348,24 +353,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         return newRow;
     }
 
-    private void updatePayProductsTable() {
-        payTotalPrice.setText(SoldProductViewModel.getTotalPrice(paidProductsModel) + " Ft");
-        updateSoldTotalPrice();
-        paidProductsTable.setItems(paidProductsModel);
-        paidProductsTable.refresh();
-    }
-
     private boolean isPartiallyPayable(SoldProductViewModel row) {
         List<ReceiptRecordView> matchingReceiptRecordView = findMatchingView(soldProductsView, row);
         return matchingReceiptRecordView.get(0).isPartiallyPayable();
-    }
-
-    private PaymentParams getPaymentParams() {
-        return PaymentParams.builder()
-                        .paymentMethod(paymentViewState.getPaymentMethod())
-                        .discountAbsolute(paymentViewState.isDiscountAbsolute() ? Integer.valueOf(discountAbsoluteValue.getText()) : 0)
-                        .discountPercent(paymentViewState.isDiscountPercent() ? Double.valueOf(discountPercentValue.getText()) : 0)
-                        .build();
     }
 
     private void initializeToggleGroups() {
@@ -423,16 +413,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         });
     }
 
-    private void discardPaidRecords() {
-        paidProductsModel = FXCollections.observableArrayList();
-        paidProductsView = new ArrayList<>();
-        updatePayProductsTable();
-    }
-
-    private void backToRestaurantView() {
-        restaurantController.updateRestaurant();
-        restaurantController.getTableController(tableView).updateNode();
-        viewLoader.loadViewIntoScene(restaurantController);
+    private void initializePaymentViewState() {
+        paymentViewState.setDiscountAbsoluteValue(discountAbsoluteValue);
+        paymentViewState.setDiscountPercentValue(discountPercentValue);
     }
 
     private void resetToggleGroups() {

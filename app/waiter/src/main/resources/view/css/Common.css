@@ -54,6 +54,11 @@
     -fx-cell-size: 28px;
 }
 
+.sub-header-label {
+    -fx-font-size: 18;
+    -fx-line-spacing: -5;
+}
+
 .header-label {
     -fx-font-size: 24;
     -fx-line-spacing: -5;
