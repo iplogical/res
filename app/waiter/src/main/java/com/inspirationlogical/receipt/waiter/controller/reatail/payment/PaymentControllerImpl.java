@@ -43,61 +43,61 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private BorderPane root;
 
     @FXML
-    RadioButton paymentMethodCash;
+    private RadioButton paymentMethodCash;
     @FXML
-    RadioButton paymentMethodCreditCard;
+    private RadioButton paymentMethodCreditCard;
     @FXML
-    RadioButton paymentMethodCoupon;
+    private RadioButton paymentMethodCoupon;
     @FXML
-    ToggleGroup paymentMethodToggleGroup;
+    private ToggleGroup paymentMethodToggleGroup;
 
     @FXML
-    ToggleButton selectivePayment;
+    private ToggleButton selectivePayment;
     @FXML
-    ToggleButton singlePayment;
+    private ToggleButton singlePayment;
     @FXML
-    ToggleButton partialPayment;
+    private ToggleButton partialPayment;
     @FXML
-    ToggleGroup paymentTypeToggleGroup;
+    private ToggleGroup paymentTypeToggleGroup;
     // TODO: input validation
     @FXML
-    TextField partialPaymentValue;
+    private TextField partialPaymentValue;
 
     @FXML
-    Button automaticGameFee;
+    private Button automaticGameFee;
 
     @FXML
-    Button manualGameFee;
+    private Button manualGameFee;
 
     @FXML
-    ToggleButton discountAbsolute;
+    private ToggleButton discountAbsolute;
     @FXML
-    TextField discountAbsoluteValue;
+    private TextField discountAbsoluteValue;
 
     @FXML
-    ToggleButton discountPercent;
+    private ToggleButton discountPercent;
     @FXML
-    TextField discountPercentValue;
+    private TextField discountPercentValue;
 
     @FXML
-    ToggleGroup discountTypeToggleGroup;
+    private ToggleGroup discountTypeToggleGroup;
 
     @FXML
-    Label payTotalPrice;
+    private Label payTotalPrice;
 
     @FXML
-    Label liveTime;
+    private Label liveTime;
 
     @FXML
-    protected javafx.scene.control.TableView<SoldProductViewModel> paidProductsTable;
+    private javafx.scene.control.TableView<SoldProductViewModel> paidProductsTable;
     @FXML
-    protected TableColumn payProductName;
+    private TableColumn payProductName;
     @FXML
-    protected TableColumn payProductQuantity;
+    private TableColumn payProductQuantity;
     @FXML
-    protected TableColumn payProductUnitPrice;
+    private TableColumn payProductUnitPrice;
     @FXML
-    protected TableColumn payProductTotalPrice;
+    private TableColumn payProductTotalPrice;
 
     @Inject
     private ViewLoader viewLoader;

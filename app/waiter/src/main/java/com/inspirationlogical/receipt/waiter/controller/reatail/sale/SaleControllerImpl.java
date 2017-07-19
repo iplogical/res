@@ -65,14 +65,14 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private ToggleButton giftProduct;
 
     @FXML
-    ToggleButton selectiveCancellation;
+    private ToggleButton selectiveCancellation;
     @FXML
-    ToggleButton singleCancellation;
+    private ToggleButton singleCancellation;
     @FXML
-    ToggleGroup cancellationTypeToggleGroup;
+    private ToggleGroup cancellationTypeToggleGroup;
 
     @FXML
-    ToggleButton sortByClickTime;
+    private ToggleButton sortByClickTime;
 
     @FXML
     private TextField searchField;
