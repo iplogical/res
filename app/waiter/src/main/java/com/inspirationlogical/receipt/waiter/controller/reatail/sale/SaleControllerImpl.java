@@ -114,9 +114,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeProductController();
-        initializeSoldProductsTable();
+        initializeSoldProducts();
         initializeToggles();
-        initializeSoldProductsTableRowHandler();
         initializeQuickSearchAndSellHandler();
         initLiveTime(liveTime);
         enterSaleView();

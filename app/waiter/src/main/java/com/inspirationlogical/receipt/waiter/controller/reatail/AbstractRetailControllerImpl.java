@@ -103,7 +103,21 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         updateTableSummary();
     }
 
-    protected void initializeSoldProductsTableRowHandler() {
+    protected void initializeSoldProducts() {
+        initializeSoldProductsTable();
+        initializeSoldProductsTableRowHandler();
+    }
+
+    private void initializeSoldProductsTable() {
+        soldProductsTable.setEditable(true);
+        initColumn(productName, SoldProductViewModel::getProductName);
+        initColumn(productQuantity, SoldProductViewModel::getProductQuantityWithRecent);
+        initColumn(productUnitPrice, SoldProductViewModel::getProductUnitPrice);
+        initColumn(productTotalPrice, SoldProductViewModel::getProductTotalPrice);
+        soldProductsTableInitialized = true;
+    }
+
+    private void initializeSoldProductsTableRowHandler() {
         soldProductsTable.setRowFactory(tv -> {
             TableRow<SoldProductViewModel> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -126,16 +140,6 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected String getGuestPerCapacity() {
         return " (" + String.valueOf(tableView.getGuestCount()) + "/" + String.valueOf(tableView.getCapacity()) + ")";
     }
-
-    protected void initializeSoldProductsTable() {
-        soldProductsTable.setEditable(true);
-        initColumn(productName, SoldProductViewModel::getProductName);
-        initColumn(productQuantity, SoldProductViewModel::getProductQuantityWithRecent);
-        initColumn(productUnitPrice, SoldProductViewModel::getProductUnitPrice);
-        initColumn(productTotalPrice, SoldProductViewModel::getProductTotalPrice);
-        soldProductsTableInitialized = true;
-    }
-
 
     protected Collection<ReceiptRecordView> getSoldProducts(RestaurantService restaurantService, TableView tableView) {
         receiptView = restaurantService.getActiveReceipt(tableView);

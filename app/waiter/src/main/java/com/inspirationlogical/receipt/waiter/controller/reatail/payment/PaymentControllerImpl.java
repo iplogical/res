@@ -43,22 +43,22 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private BorderPane root;
 
     @FXML
-    private RadioButton paymentMethodCash;
+    RadioButton paymentMethodCash;
     @FXML
-    private RadioButton paymentMethodCreditCard;
+    RadioButton paymentMethodCreditCard;
     @FXML
-    private RadioButton paymentMethodCoupon;
+    RadioButton paymentMethodCoupon;
     @FXML
-    private ToggleGroup paymentMethodToggleGroup;
+    ToggleGroup paymentMethodToggleGroup;
 
     @FXML
-    private ToggleButton selectivePayment;
+    ToggleButton selectivePayment;
     @FXML
-    private ToggleButton singlePayment;
+    ToggleButton singlePayment;
     @FXML
-    private ToggleButton partialPayment;
+    ToggleButton partialPayment;
     @FXML
-    private ToggleGroup paymentTypeToggleGroup;
+    ToggleGroup paymentTypeToggleGroup;
     // TODO: input validation
     @FXML
     private TextField partialPaymentValue;
@@ -70,17 +70,17 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private Button manualGameFee;
 
     @FXML
-    private ToggleButton discountAbsolute;
+    ToggleButton discountAbsolute;
     @FXML
-    private TextField discountAbsoluteValue;
+    TextField discountAbsoluteValue;
 
     @FXML
-    private ToggleButton discountPercent;
+    ToggleButton discountPercent;
     @FXML
-    private TextField discountPercentValue;
+    TextField discountPercentValue;
 
     @FXML
-    private ToggleGroup discountTypeToggleGroup;
+    ToggleGroup discountTypeToggleGroup;
 
     @FXML
     private Label payTotalPrice;
@@ -88,25 +88,25 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private Label previousPartialPrice;
 
     @FXML
-    private Label liveTime;
+    Label liveTime;
 
     @FXML
-    private javafx.scene.control.TableView<SoldProductViewModel> paidProductsTable;
+    javafx.scene.control.TableView<SoldProductViewModel> paidProductsTable;
     @FXML
-    private TableColumn payProductName;
+    TableColumn payProductName;
     @FXML
-    private TableColumn payProductQuantity;
+    TableColumn payProductQuantity;
     @FXML
-    private TableColumn payProductUnitPrice;
+    TableColumn payProductUnitPrice;
     @FXML
-    private TableColumn payProductTotalPrice;
+    TableColumn payProductTotalPrice;
 
     @Inject
     private ViewLoader viewLoader;
 
     private SaleController saleController;
 
-    private PaymentViewState paymentViewState;
+    PaymentViewState paymentViewState;
 
     private List<ReceiptRecordView> paidProductsView;
 
@@ -136,75 +136,10 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeToggleGroups();
-        initializeSoldProductsTable();
-        initializePaidProductsTable();
-        initializeSoldProductsTableRowHandler();
-        initializePaidProductsTableRowHandler();
-        initializePaymentViewState();
-        initLiveTime(liveTime);
+        initializeSoldProducts();
+        new PaymentControllerInitializer(this).initialize();
         getSoldProductsAndUpdateTable();
         updateTableSummary();
-    }
-
-    private void initializeToggleGroups() {
-        initializePaymentMethodToggles();
-        initializePaymentTypeToggles();
-        initializeDiscountToggles();
-    }
-
-    private void initializePaymentMethodToggles() {
-        paymentMethodCash.setUserData(PaymentMethod.CASH);
-        paymentMethodCreditCard.setUserData(PaymentMethod.CREDIT_CARD);
-        paymentMethodCoupon.setUserData(PaymentMethod.COUPON);
-        paymentMethodCash.setSelected(true);
-        paymentViewState.setPaymentMethod(PaymentMethod.CASH);
-        paymentMethodToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-                paymentViewState.setPaymentMethod((PaymentMethod)paymentMethodToggleGroup.getSelectedToggle().getUserData());
-            }
-        });
-    }
-
-    private void initializePaymentTypeToggles() {
-        selectivePayment.setUserData(SELECTIVE);
-        singlePayment.setUserData(SINGLE);
-        partialPayment.setUserData(PARTIAL);
-        paymentViewState.setPaymentType(FULL);
-        paymentTypeToggleGroup.selectedToggleProperty().addListener(new PaymentTypeTogglesListener());
-    }
-
-    private void initializeDiscountToggles() {
-        discountAbsolute.setUserData(PaymentViewState.DiscountType.ABSOLUTE);
-        discountPercent.setUserData(PaymentViewState.DiscountType.PERCENT);
-        paymentViewState.setDiscountType(PaymentViewState.DiscountType.NONE);
-        discountTypeToggleGroup.selectedToggleProperty().addListener(new DiscountTypeTogglesListener());
-    }
-
-    private void initializePaidProductsTable() {
-        paidProductsTable.setEditable(true);
-        payProductName.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productName"));
-        payProductQuantity.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productQuantity"));
-        payProductUnitPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productUnitPrice"));
-        payProductTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productTotalPrice"));
-    }
-
-    private void initializePaidProductsTableRowHandler() {
-        paidProductsTable.setRowFactory(tv -> {
-            TableRow<SoldProductViewModel> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if(event.getClickCount() == 1 && (! row.isEmpty())) {
-                    paidProductsRowClickHandler(row.getItem());
-                }
-            });
-            return row;
-        });
-    }
-
-    private void initializePaymentViewState() {
-        paymentViewState.setDiscountAbsoluteValue(discountAbsoluteValue);
-        paymentViewState.setDiscountPercentValue(discountPercentValue);
     }
 
     @Override
@@ -395,7 +330,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         return newRow;
     }
 
-    private void paidProductsRowClickHandler(SoldProductViewModel row) {
+    void paidProductsRowClickHandler(SoldProductViewModel row) {
         List<SoldProductViewModel> rowInSoldProducts = soldProductsModel.stream().filter(model -> model.getProductName().equals(row.getProductName()))
                 .collect(toList());
         if(rowInSoldProducts.isEmpty()) {
@@ -423,27 +358,5 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void onBackToRestaurantView(Event event) {
         discardPaidRecords();
         backToRestaurantView();
-    }
-
-    private class PaymentTypeTogglesListener implements ChangeListener<Toggle> {
-        @Override
-        public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-            if(paymentTypeToggleGroup.getSelectedToggle() == null) {
-                paymentViewState.setPaymentType(PaymentViewState.PaymentType.FULL);
-                return;
-            }
-            paymentViewState.setPaymentType((PaymentViewState.PaymentType)paymentTypeToggleGroup.getSelectedToggle().getUserData());
-        }
-    }
-
-    private class DiscountTypeTogglesListener implements ChangeListener<Toggle> {
-        @Override
-        public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-            if (discountTypeToggleGroup.getSelectedToggle() == null) {
-                paymentViewState.setDiscountType(PaymentViewState.DiscountType.NONE);
-                return;
-            }
-            paymentViewState.setDiscountType((PaymentViewState.DiscountType) discountTypeToggleGroup.getSelectedToggle().getUserData());
-        }
     }
 }
