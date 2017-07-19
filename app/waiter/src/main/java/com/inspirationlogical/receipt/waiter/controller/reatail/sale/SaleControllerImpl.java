@@ -8,15 +8,10 @@ import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.Sale
 
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
-import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
@@ -36,7 +31,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Popup;
@@ -124,10 +118,10 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         initializeProductController();
         initializeSoldProductsTable();
         initializeToggles();
-        updateNode();
         initializeSoldProductsTableRowHandler();
         initializeQuickSearchAndSellHandler();
         initLiveTime(liveTime);
+        enterSaleView();
     }
 
     private void initializeProductController() {
@@ -136,6 +130,56 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         productController.setProductsGrid(productsGrid);
         productController.setSaleController(this);
         productController.setViewLoader(viewLoader);
+    }
+
+    private void initializeToggles() {
+        singleCancellation.setUserData(SINGLE);
+        selectiveCancellation.setUserData(SELECTIVE);
+        saleViewState.setCancellationType(NONE);
+        cancellationTypeToggleGroup.selectedToggleProperty().addListener(new CancellationTypeToggleListener());
+        sortByClickTime.selectedProperty().addListener(new SortByClickTimeToggleListener());
+    }
+
+    private void initializeQuickSearchAndSellHandler() {
+        root.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
+            switch (keyEvent.getCode()) {
+                case ENTER:
+                    if (productController.getSearchedProducts().size() == 1) {
+                        sellProduct(productController.getSearchedProducts().get(0));
+                    }
+                    break;
+                case DELETE:
+                    searchField.clear();
+                    productController.updateCategories();
+                    break;
+                case BACK_SPACE:
+                    if (searchFieldNotEmpty()) {
+                        searchField.setText(searchField.getText(0, searchField.getText().length() - 1));
+                        onSearchChanged(keyEvent);
+                    }
+                    break;
+                default:
+                    searchField.appendText(keyEvent.getText());
+                    onSearchChanged(keyEvent);
+                    break;
+            }
+        });
+    }
+
+    private boolean searchFieldNotEmpty() {
+        return !searchField.getText().isEmpty();
+    }
+
+
+    @Override
+    public void enterSaleView() {
+        if(!soldProductsTableInitialized) {
+            return;
+        }
+        getSoldProductsAndUpdateTable();
+        productController.initCategories();
+        updateTableSummary();
+        resetToggleGroups();
     }
 
     @Override
@@ -164,17 +208,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void selectCategory(SaleElementController saleElementController) {
         productController.selectCategory(saleElementController);
-    }
-
-    @Override
-    public void updateNode() {
-        if(!soldProductsTableInitialized) {
-            return;
-        }
-        getSoldProductsAndUpdateTable();
-        productController.updateCategories();
-        updateTableSummary();
-        resetToggleGroups();
     }
 
     @Override
@@ -226,44 +259,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onSearchChanged(Event event) {
         productController.search(searchField.getText());
-    }
-
-    private void initializeToggles() {
-        singleCancellation.setUserData(SINGLE);
-        selectiveCancellation.setUserData(SELECTIVE);
-        saleViewState.setCancellationType(NONE);
-        cancellationTypeToggleGroup.selectedToggleProperty().addListener(new CancellationTypeToggleListener());
-        sortByClickTime.selectedProperty().addListener(new SortByClickTimeToggleListener());
-    }
-
-    private void initializeQuickSearchAndSellHandler() {
-        root.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
-            switch (keyEvent.getCode()) {
-                case ENTER:
-                    if (productController.getSearchedProducts().size() == 1) {
-                        sellProduct(productController.getSearchedProducts().get(0));
-                    }
-                    break;
-                case DELETE:
-                    searchField.clear();
-                    productController.updateCategories();
-                    break;
-                case BACK_SPACE:
-                    if (searchFieldNotEmpty()) {
-                        searchField.setText(searchField.getText(0, searchField.getText().length() - 1));
-                        onSearchChanged(keyEvent);
-                    }
-                    break;
-                default:
-                    searchField.appendText(keyEvent.getText());
-                    onSearchChanged(keyEvent);
-                    break;
-            }
-        });
-    }
-
-    private boolean searchFieldNotEmpty() {
-        return !searchField.getText().isEmpty();
     }
 
     private void setGiftProduct() {

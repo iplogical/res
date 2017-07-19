@@ -14,6 +14,7 @@ import lombok.Setter;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,14 +77,14 @@ public class VisibleProductControllerImpl implements VisibleProductController {
         selectedCategory = childCategories.get(0);
     }
 
-    private void initializeProductSearcher() {
-        productSearcher = new SearchProduct(commonService.getSellableProducts());
-    }
-
     private List<ProductCategoryView> getChildCategoriesWithSellableProduct(ProductCategoryView categoryView) {
         return commonService.getChildCategories(categoryView).stream()
                 .filter(productCategoryView -> !commonService.getSellableProducts(productCategoryView).isEmpty())
                 .collect(Collectors.toList());
+    }
+
+    private void initializeProductSearcher() {
+        productSearcher = new SearchProduct(commonService.getSellableProducts());
     }
 
     @Override
@@ -93,13 +94,25 @@ public class VisibleProductControllerImpl implements VisibleProductController {
     }
 
     @Override
+    public void initCategories() {
+        updateSelectedCategories();
+        visibleProducts = Collections.EMPTY_LIST;
+        redrawCategoriesAndProducts();
+    }
+
+    @Override
     public void updateCategories() {
+        updateSelectedCategories();
+        visibleProducts = commonService.getSellableProducts(selectedCategory);
+        redrawCategoriesAndProducts();
+        setSelectedCategory();
+    }
+
+    private void updateSelectedCategories() {
         if(selectedCategoryIsNotLeaf(selectedCategory)) {
             selectedLevelCategories = getChildCategoriesWithSellableProduct(selectedCategory.getParent());
             selectedChildrenCategories = commonService.getChildCategories(selectedCategory);
         }
-        visibleProducts = commonService.getSellableProducts(selectedCategory);
-        redrawCategoriesAndProducts();
     }
 
     private boolean selectedCategoryIsNotLeaf(ProductCategoryView selectedCategory) {
@@ -110,7 +123,6 @@ public class VisibleProductControllerImpl implements VisibleProductController {
         elementControllers.clear();
         redrawTopCategories();
         redrawSubCategories();
-        setSelectedCategory();
         redrawProducts();
     }
 
@@ -165,6 +177,7 @@ public class VisibleProductControllerImpl implements VisibleProductController {
             public void onElementClicked(MouseEvent event) {
                 upWithCategories();
                 redrawCategoriesAndProducts();
+                setSelectedCategory();
             }
         };
         elementController.setView((ProductCategoryView) () -> "Vissza");

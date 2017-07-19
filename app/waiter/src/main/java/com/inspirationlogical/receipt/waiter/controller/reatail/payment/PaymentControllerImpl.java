@@ -180,7 +180,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void onBackToSaleView(Event event) {
         discardPaidRecords();
         retailService.mergeReceiptRecords(receiptView);
-        saleController.updateNode();
+        saleController.enterSaleView();
         viewLoader.loadViewIntoScene(saleController);
     }
 

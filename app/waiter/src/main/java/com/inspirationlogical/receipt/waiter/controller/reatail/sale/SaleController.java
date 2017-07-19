@@ -15,7 +15,7 @@ public interface SaleController extends AbstractRetailController {
 
     void selectCategory(SaleElementController saleElementController);
 
-    void updateNode();
+    void enterSaleView();
 
     void clearSearch();
 }
