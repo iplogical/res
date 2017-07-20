@@ -89,6 +89,11 @@ public class BuildSchema  {
     private @Getter Product TatraTime;
     private @Getter Product SorrelAzEmberisegEllen;
 
+    private @Getter Product CoctailsNGUnsSmall;
+    private @Getter Product CoctailsNGUnsBig;
+    private @Getter Product CoctailsToRideSmall;
+    private @Getter Product CoctailsToRideBig;
+
     // Alapanyagok
     private @Getter Product Citrom;
     private @Getter Product Narancs;
@@ -373,7 +378,24 @@ public class BuildSchema  {
     private @Getter Product GinTonic;
     private @Getter Product JackAndCoke;
     private @Getter Product VodkaSzoda;
-    
+
+    // Koktélok
+    private @Getter Product Mojito;
+    private @Getter Product TequilaSunrise;
+    private @Getter Product Screwdriver;
+    private @Getter Product PinaColada;
+    private @Getter Product SwimmingPool;
+    private @Getter Product CubaLibre;
+    private @Getter Product MaiTai;
+    private @Getter Product LongIslandIceTea;
+    private @Getter Product Summertime;
+    private @Getter Product VirginPinaColada;
+
+    private @Getter Product Takenoko;
+    private @Getter Product Alhambra;
+    private @Getter Product Mangrovia;
+
+    // TERMÉK KATEGÓRIÁK
     private @Getter ProductCategory root;
 
     private @Getter ProductCategory etlap;
@@ -405,6 +427,7 @@ public class BuildSchema  {
     private @Getter ProductCategory forraltBor;
     private @Getter ProductCategory kave;
     private @Getter ProductCategory napiAkciok;
+    private @Getter ProductCategory koktelok;
 
     private @Getter ProductCategory menuk;
     private @Getter ProductCategory menukAggregate;
@@ -450,6 +473,11 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoSplendBor;
     private @Getter ProductCategory PseudoTatraTime;
     private @Getter ProductCategory PseudoSorrelAzEmberisegEllen;
+    
+    private @Getter ProductCategory PseudoCoctailsNGUnsSmall;
+    private @Getter ProductCategory PseudoCoctailsNGUnsBig;
+    private @Getter ProductCategory PseudoCoctailsToRideSmall;
+    private @Getter ProductCategory PseudoCoctailsToRideBig;
 
     // Alapanyagok
     private @Getter ProductCategory PseudoCitrom;
@@ -734,6 +762,23 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoGinTonic;
     private @Getter ProductCategory PseudoJackAndCoke;
     private @Getter ProductCategory PseudoVodkaSzoda;
+
+    // Koktélok
+    private @Getter ProductCategory PseudoMojito;
+    private @Getter ProductCategory PseudoTequilaSunrise;
+    private @Getter ProductCategory PseudoScrewdriver;
+    private @Getter ProductCategory PseudoPinaColada;
+    private @Getter ProductCategory PseudoSwimmingPool;
+    private @Getter ProductCategory PseudoCubaLibre;
+    private @Getter ProductCategory PseudoMaiTai;
+    private @Getter ProductCategory PseudoLongIslandIceTea;
+    private @Getter ProductCategory PseudoSummertime;
+    private @Getter ProductCategory PseudoVirginPinaColada;
+
+    private @Getter ProductCategory PseudoTakenoko;
+    private @Getter ProductCategory PseudoAlhambra;
+    private @Getter ProductCategory PseudoMangrovia;
+
 
     /* ----- ETLAP -----*/
     // Rágcsák
@@ -1284,6 +1329,11 @@ public class BuildSchema  {
         buildTatraTime();
         buildSorrelAzEmberisegEllen();
 
+        buildCoctailsNGUnsSmall();
+        buildCoctailsNGUnsBig();
+        buildCoctailsToRideSmall();
+        buildCoctailsToRideBig();
+
         // Alapanyagok
         buildCitrom();
         buildNarancs();
@@ -1569,6 +1619,22 @@ public class BuildSchema  {
         buildGinTonic();
         buildJackAndCoke();
         buildVodkaSzoda();
+        
+        // Koktélok
+        buildMojito();
+        buildTequilaSunrise();
+        buildScrewdriver();
+        buildPinaColada();
+        buildSwimmingPool();
+        buildCubaLibre();
+        buildMaiTai();
+        buildLongIslandIceTea();
+        buildSummertime();
+        buildVirginPinaColada();
+
+        buildTakenoko();
+        buildAlhambra();
+        buildMangrovia();
     }
 
     private void buildProductAdHoc() {
@@ -2032,6 +2098,62 @@ public class BuildSchema  {
                 .shortName("Sörrel Az Emberiség")
                 .orderNumber(5)
                 .salePrice(3990)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+    
+    private void buildCoctailsNGUnsSmall() {
+        CoctailsNGUnsSmall = Product.builder()
+                .longName("Coctails'n Guns kis menü")
+                .shortName("C N Guns Kis")
+                .orderNumber(6)
+                .salePrice(2790)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+
+    private void buildCoctailsNGUnsBig() {
+        CoctailsNGUnsBig = Product.builder()
+                .longName("Coctails'n Guns nagy menü")
+                .shortName("C N Guns Nagy")
+                .orderNumber(7)
+                .salePrice(5490)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+
+    private void buildCoctailsToRideSmall() {
+        CoctailsToRideSmall = Product.builder()
+                .longName("Coctails To Ride kis menü")
+                .shortName("C To Ride Kis")
+                .orderNumber(8)
+                .salePrice(3790)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.PARTIALLY_PAYABLE)
+                .build();
+    }
+
+    private void buildCoctailsToRideBig() {
+        CoctailsToRideBig = Product.builder()
+                .longName("Coctails To Ride nagy menü")
+                .shortName("C To Ride Nagy")
+                .orderNumber(9)
+                .salePrice(7490)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
@@ -5058,7 +5180,189 @@ public class BuildSchema  {
                 .type(ProductType.SELLABLE)
                 .build();
     }
-    
+
+    private void buildMojito() {
+        Mojito = Product.builder()
+                .longName("Mojito")
+                .shortName("Mojito")
+                .orderNumber(1)
+                .salePrice(1190)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildTequilaSunrise() {
+        TequilaSunrise = Product.builder()
+                .longName("Tequila Sunrise")
+                .shortName("Tequila Sunrise")
+                .orderNumber(2)
+                .salePrice(1190)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildScrewdriver() {
+        Screwdriver = Product.builder()
+                .longName("Screwdriver")
+                .shortName("Screwdriver")
+                .orderNumber(3)
+                .salePrice(1190)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildPinaColada() {
+        PinaColada = Product.builder()
+                .longName("Pina Colada")
+                .shortName("Pina Colada")
+                .orderNumber(4)
+                .salePrice(1190)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildSwimmingPool() {
+        SwimmingPool = Product.builder()
+                .longName("Swimming Pool")
+                .shortName("Swimming Pool")
+                .orderNumber(5)
+                .salePrice(1190)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildCubaLibre() {
+        CubaLibre = Product.builder()
+                .longName("Cuba Libre")
+                .shortName("Cuba Libre")
+                .orderNumber(6)
+                .salePrice(1190)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildMaiTai() {
+        MaiTai = Product.builder()
+                .longName("Mai Tai")
+                .shortName("Mai Tai")
+                .orderNumber(7)
+                .salePrice(1590)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildLongIslandIceTea() {
+        LongIslandIceTea = Product.builder()
+                .longName("Long Island Ice Tea")
+                .shortName("Long Island")
+                .orderNumber(8)
+                .salePrice(1590)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildSummertime() {
+        Summertime = Product.builder()
+                .longName("Summertime")
+                .shortName("Summertime")
+                .orderNumber(9)
+                .salePrice(890)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildVirginPinaColada() {
+        VirginPinaColada = Product.builder()
+                .longName("Virgin Pina Colada")
+                .shortName("V. Pina Colada")
+                .orderNumber(10)
+                .salePrice(890)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildTakenoko() {
+        Takenoko = Product.builder()
+                .longName("Takenoko")
+                .shortName("Takenoko")
+                .orderNumber(11)
+                .salePrice(890)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildAlhambra() {
+        Alhambra = Product.builder()
+                .longName("Alhambra")
+                .shortName("Alhambra")
+                .orderNumber(12)
+                .salePrice(890)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildMangrovia() {
+        Mangrovia = Product.builder()
+                .longName("Mangrovia")
+                .shortName("Mangrovia")
+                .orderNumber(13)
+                .salePrice(890)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
     private void buildProductCategories() {
         buildRoot();
         buildEtlap();
@@ -5090,6 +5394,7 @@ public class BuildSchema  {
             buildSzirup();
             buildTopping();
         buildAkciosItalok();
+        buildKoktelok();
 
         buildMenukAggregate();
             buildMenuk();
@@ -5137,6 +5442,11 @@ public class BuildSchema  {
         buildPseudoSplendBor();
         buildPseudoTatraTime();
         buildPseudoSorrelAzEmberisegEllen();
+
+        buildPseudoCoctailsNGUnsSmall();
+        buildPseudoCoctailsNGUnsBig();
+        buildPseudoCoctailsToRideSmall();
+        buildPseudoCoctailsToRideBig();
 
         // Alapanyagok
         buildPseudoCitrom();
@@ -5421,6 +5731,22 @@ public class BuildSchema  {
         buildPseudoGinTonic();
         buildPseudoJackAndCoke();
         buildPseudoVodkaSzoda();
+        
+        // Koktélok
+        buildPseudoMojito();
+        buildPseudoTequilaSunrise();
+        buildPseudoScrewdriver();
+        buildPseudoPinaColada();
+        buildPseudoSwimmingPool();
+        buildPseudoCubaLibre();
+        buildPseudoMaiTai();
+        buildPseudoLongIslandIceTea();
+        buildPseudoSummertime();
+        buildPseudoVirginPinaColada();
+
+        buildPseudoTakenoko();
+        buildPseudoAlhambra();
+        buildPseudoMangrovia();
     }
 
     private void buildPriceModifiers() {
@@ -7967,7 +8293,38 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildPseudoCoctailsNGUnsSmall() {
+        PseudoCoctailsNGUnsSmall = ProductCategory.builder()
+                .name("PseudoCoctailsNGUnsSmall_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
 
+    private void buildPseudoCoctailsNGUnsBig() {
+        PseudoCoctailsNGUnsBig = ProductCategory.builder()
+                .name("PseudoCoctailsNGUnsBig_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoCoctailsToRideSmall() {
+        PseudoCoctailsToRideSmall = ProductCategory.builder()
+                .name("PseudoCoctailsToRideSmall_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoCoctailsToRideBig() {
+        PseudoCoctailsToRideBig = ProductCategory.builder()
+                .name("PseudoCoctailsToRideBig_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+    
     private void buildPseudoCitrom() {
         PseudoCitrom = ProductCategory.builder()
                 .name("Citrom_Pseudo")
@@ -9655,6 +10012,110 @@ public class BuildSchema  {
                 .type(ProductCategoryType.PSEUDO)
                 .build();
     }
+
+    private void buildPseudoMojito() {
+        PseudoMojito = ProductCategory.builder()
+                .name("Mojito_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoTequilaSunrise() {
+        PseudoTequilaSunrise = ProductCategory.builder()
+                .name("TequilaSunrise_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoScrewdriver() {
+        PseudoScrewdriver = ProductCategory.builder()
+                .name("Screwdriver_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoPinaColada() {
+        PseudoPinaColada = ProductCategory.builder()
+                .name("PinaColada_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoSwimmingPool() {
+        PseudoSwimmingPool = ProductCategory.builder()
+                .name("SwimmingPool_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoCubaLibre() {
+        PseudoCubaLibre = ProductCategory.builder()
+                .name("CubaLibre_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMaiTai() {
+        PseudoMaiTai = ProductCategory.builder()
+                .name("MaiTai_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoLongIslandIceTea() {
+        PseudoLongIslandIceTea = ProductCategory.builder()
+                .name("LongIslandIceTea_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoSummertime() {
+        PseudoSummertime = ProductCategory.builder()
+                .name("Summertime_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoVirginPinaColada() {
+        PseudoVirginPinaColada = ProductCategory.builder()
+                .name("VirginPinaColada_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoTakenoko() {
+        PseudoTakenoko = ProductCategory.builder()
+                .name("Takenoko_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoAlhambra() {
+        PseudoAlhambra = ProductCategory.builder()
+                .name("Alhambra_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
+    private void buildPseudoMangrovia() {
+        PseudoMangrovia = ProductCategory.builder()
+                .name("Mangrovia_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
     
     private void buildReceipts() {
         buildReceiptPurchase();
@@ -10103,6 +10564,16 @@ public class BuildSchema  {
                 .build();
     }
 
+
+    private void buildKoktelok() {
+        koktelok = ProductCategory.builder()
+                .name("Koktélok")
+                .orderNumber(9)
+                .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
+                .build();
+    }
+
     private void buildPseudoAdHoc() {
         pseudoAdHoc = ProductCategory.builder()
                 .name("pseudoAdHoc")
@@ -10435,7 +10906,7 @@ public class BuildSchema  {
         etlap.setChildren(new HashSet<>(
                 Arrays.asList(ragcsak, etelek)));
         itallap.setChildren(new HashSet<>(
-                Arrays.asList(shotok, sorok, borok, rovidek, palinkak, uditok, forroItalok, napiAkciok)));
+                Arrays.asList(shotok, sorok, borok, rovidek, palinkak, uditok, forroItalok, napiAkciok, koktelok)));
         menukAggregate.setChildren(new HashSet<>(
                 Arrays.asList(menuk)));
         alapanyagokAggregate.setChildren(new HashSet<>(
@@ -10450,6 +10921,7 @@ public class BuildSchema  {
         uditok.setParent(itallap);
         forroItalok.setParent(itallap);
         napiAkciok.setParent(itallap);
+        koktelok.setParent(itallap);
         menuk.setParent(menukAggregate);
         alapanyagok.setParent(alapanyagokAggregate);
     }
@@ -10527,6 +10999,11 @@ public class BuildSchema  {
         PseudoSplendBor.setParent(menuk);
         PseudoTatraTime.setParent(menuk);
         PseudoSorrelAzEmberisegEllen.setParent(menuk);
+
+        PseudoCoctailsNGUnsSmall.setParent(menuk);
+        PseudoCoctailsNGUnsBig.setParent(menuk);
+        PseudoCoctailsToRideSmall.setParent(menuk);
+        PseudoCoctailsToRideBig.setParent(menuk);
 
         // Alapanyagok
         PseudoCitrom.setParent(alapanyagok);
@@ -10815,6 +11292,21 @@ public class BuildSchema  {
         PseudoJackAndCoke.setParent(napiAkciok);
         PseudoVodkaSzoda.setParent(napiAkciok);
 
+        // Koktélok
+        PseudoMojito.setParent(koktelok);
+        PseudoTequilaSunrise.setParent(koktelok);
+        PseudoScrewdriver.setParent(koktelok);
+        PseudoPinaColada.setParent(koktelok);
+        PseudoSwimmingPool.setParent(koktelok);
+        PseudoCubaLibre.setParent(koktelok);
+        PseudoMaiTai.setParent(koktelok);
+        PseudoLongIslandIceTea.setParent(koktelok);
+        PseudoSummertime.setParent(koktelok);
+        PseudoVirginPinaColada.setParent(koktelok);
+        PseudoTakenoko.setParent(koktelok);
+        PseudoAlhambra.setParent(koktelok);
+        PseudoMangrovia.setParent(koktelok);
+        
         // Rágcsák
         sos.setChildren(new HashSet<>(
                 Arrays.asList(
@@ -10858,7 +11350,11 @@ public class BuildSchema  {
                     PseudoLimonCept,
                     PseudoSplendBor,
                     PseudoTatraTime,
-                    PseudoSorrelAzEmberisegEllen)));
+                    PseudoSorrelAzEmberisegEllen,
+                    PseudoCoctailsNGUnsSmall,
+                    PseudoCoctailsNGUnsBig,
+                    PseudoCoctailsToRideSmall,
+                    PseudoCoctailsToRideBig)));
 
         // Alapanyagok
         alapanyagok.setChildren(new HashSet<>(
@@ -11171,6 +11667,23 @@ public class BuildSchema  {
                     PseudoGinTonic,
                     PseudoJackAndCoke,
                     PseudoVodkaSzoda)));
+
+        // Koktélok
+        koktelok.setChildren(new HashSet<>(
+                Arrays.asList(
+                    PseudoMojito,
+                    PseudoTequilaSunrise,
+                    PseudoScrewdriver,
+                    PseudoPinaColada,
+                    PseudoSwimmingPool,
+                    PseudoCubaLibre,
+                    PseudoMaiTai,
+                    PseudoLongIslandIceTea,
+                    PseudoSummertime,
+                    PseudoVirginPinaColada, 
+                    PseudoTakenoko,
+                    PseudoAlhambra,
+                    PseudoMangrovia)));
     }
 
     private void categoriesAndPriceModifiers() {
@@ -11240,6 +11753,11 @@ public class BuildSchema  {
         SplendBor.setCategory(PseudoSplendBor);
         TatraTime.setCategory(PseudoTatraTime);
         SorrelAzEmberisegEllen.setCategory(PseudoSorrelAzEmberisegEllen);
+
+        CoctailsNGUnsSmall.setCategory(PseudoCoctailsNGUnsSmall);
+        CoctailsNGUnsBig.setCategory(PseudoCoctailsNGUnsBig);
+        CoctailsToRideSmall.setCategory(PseudoCoctailsToRideSmall);
+        CoctailsToRideBig.setCategory(PseudoCoctailsToRideBig);
 
         // Alapanyagok
         Citrom.setCategory(PseudoCitrom);
@@ -11526,6 +12044,21 @@ public class BuildSchema  {
         VodkaSzoda.setCategory(PseudoVodkaSzoda);
         JackAndCoke.setCategory(PseudoJackAndCoke);
 
+        Mojito.setCategory(PseudoMojito);
+        TequilaSunrise.setCategory(PseudoTequilaSunrise);
+        Screwdriver.setCategory(PseudoScrewdriver);
+        PinaColada.setCategory(PseudoPinaColada);
+        SwimmingPool.setCategory(PseudoSwimmingPool);
+        CubaLibre.setCategory(PseudoCubaLibre);
+        MaiTai.setCategory(PseudoMaiTai);
+        LongIslandIceTea.setCategory(PseudoLongIslandIceTea);
+        Summertime.setCategory(PseudoSummertime);
+        VirginPinaColada.setCategory(PseudoVirginPinaColada);
+
+        Takenoko.setCategory(PseudoTakenoko);
+        Alhambra.setCategory(PseudoAlhambra);
+        Mangrovia.setCategory(PseudoMangrovia);
+
         /*----- ETLAP -----*/
         // Rágcsák
         PseudoSosPerec.setProduct(SosPerec);
@@ -11563,6 +12096,10 @@ public class BuildSchema  {
         PseudoTatraTime.setProduct(TatraTime);
         PseudoSorrelAzEmberisegEllen.setProduct(SorrelAzEmberisegEllen);
 
+        PseudoCoctailsNGUnsSmall.setProduct(CoctailsNGUnsSmall);
+        PseudoCoctailsNGUnsBig.setProduct(CoctailsNGUnsBig);
+        PseudoCoctailsToRideSmall.setProduct(CoctailsToRideSmall);
+        PseudoCoctailsToRideBig.setProduct(CoctailsToRideBig);
 
         // Alapanyagok
         PseudoCitrom.setProduct(Citrom);
@@ -11847,7 +12384,22 @@ public class BuildSchema  {
         PseudoCaptainAndGyomber.setProduct(CaptainAndGyomber);
         PseudoVodkaSzoda.setProduct(VodkaSzoda);
         PseudoJackAndCoke.setProduct(JackAndCoke);
-        
+
+        PseudoMojito.setProduct(Mojito);
+        PseudoTequilaSunrise.setProduct(TequilaSunrise);
+        PseudoScrewdriver.setProduct(Screwdriver);
+        PseudoPinaColada.setProduct(PinaColada);
+        PseudoSwimmingPool.setProduct(SwimmingPool);
+        PseudoCubaLibre.setProduct(CubaLibre);
+        PseudoMaiTai.setProduct(MaiTai);
+        PseudoLongIslandIceTea.setProduct(LongIslandIceTea);
+        PseudoSummertime.setProduct(Summertime);
+        PseudoVirginPinaColada.setProduct(VirginPinaColada);
+
+        PseudoTakenoko.setProduct(Takenoko);
+        PseudoAlhambra.setProduct(Alhambra);
+        PseudoMangrovia.setProduct(Mangrovia);
+
         pseudoAdHoc.setProduct(productAdHoc);
         productAdHoc.setCategory(pseudoAdHoc);
 
