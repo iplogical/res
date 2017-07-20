@@ -309,17 +309,15 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void increaseRowQuantity(SoldProductViewModel row, double amount) {
-        paidProductsModel.remove(row);
         row.increaseProductQuantity(amount);
-        paidProductsModel.add(row);
+        paidProductsTable.refresh();
     }
 
     private void decreaseRowQuantity(SoldProductViewModel row, double amount) {
-        paidProductsModel.remove(row);
         if(row.decreaseProductQuantity(amount)) {
             removeRowFromPaidProducts(row);
         }
-        addRowToPaidProducts(row);
+        paidProductsTable.refresh();
     }
 
     private void removeRowFromPaidProducts(final SoldProductViewModel row) {
@@ -327,13 +325,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         paidProductsTable.setItems(paidProductsModel);
         List<ReceiptRecordView> matching = findMatchingView(paidProductsView, row);
         paidProductsView.remove(matching.get(0));
-    }
-
-    private void addRowToPaidProducts(SoldProductViewModel row) {
-        paidProductsModel.add(row);
-        paidProductsModel.sort(Comparator.comparing(SoldProductViewModel::getProductId));
-        paidProductsTable.setItems(paidProductsModel);
-        paidProductsTable.refresh();
     }
 
     void paidProductsRowClickHandler(SoldProductViewModel row) {
