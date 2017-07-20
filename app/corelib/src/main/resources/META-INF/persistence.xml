@@ -12,6 +12,7 @@
         <class>com.inspirationlogical.receipt.corelib.model.entity.Recipe</class>
         <class>com.inspirationlogical.receipt.corelib.model.entity.Stock</class>
         <class>com.inspirationlogical.receipt.corelib.model.entity.Receipt</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptHistorical</class>
         <class>com.inspirationlogical.receipt.corelib.model.entity.Table</class>
         <class>com.inspirationlogical.receipt.corelib.model.entity.Restaurant</class>
         <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord</class>

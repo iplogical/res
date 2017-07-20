@@ -4,6 +4,7 @@ import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
+import java.security.Guard;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,10 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
+import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
@@ -203,8 +201,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             adaptee.setPaymentMethod(paymentParams.getPaymentMethod());
             applyDiscountOnSalePrices();
             ReceiptAdapterListeners.getAllListeners().forEach((l) -> {l.onClose(this);});
-        });
-    }
+        }); }
 
     public void paySelective(TableAdapter tableAdapter, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
         final ReceiptAdapter[] paidReceipt = new ReceiptAdapter[1];

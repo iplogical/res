@@ -5,26 +5,7 @@ import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedEntityGraphs;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.NamedSubgraph;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidOwner;
@@ -40,6 +21,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Tolerate;
 
 @Entity
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @Builder(toBuilder = true)
 @EqualsAndHashCode(callSuper = true, exclude = {"owner", "records"})
 @javax.persistence.Table(name = "RECEIPT")

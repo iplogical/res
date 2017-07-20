@@ -8,6 +8,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptHistorical;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 
@@ -63,4 +64,9 @@ public class ValidReceiptsValidator extends AbstractValidator
     public boolean isValid(Receipt value, ConstraintValidatorContext context) {
         return isValid(value.getOwner(),context);
     }
+
+    public boolean isValid(ReceiptHistorical value, ConstraintValidatorContext context) {
+        return isValid(value.getOwner(),context);
+    }
+
 }
