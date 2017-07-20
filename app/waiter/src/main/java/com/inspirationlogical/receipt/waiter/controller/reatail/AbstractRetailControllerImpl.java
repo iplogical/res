@@ -180,19 +180,26 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
                 .collect(Collectors.toList());
     }
 
+    protected ReceiptRecordView decreaseRowInSoldProducts(SoldProductViewModel row, double amount) {
+        List<ReceiptRecordView> matchingReceiptRecordView = findMatchingView(soldProductsView, row);
+        matchingReceiptRecordView.get(0).decreaseSoldQuantity(amount);
+        decreaseClickedRow(row, amount);
+        return matchingReceiptRecordView.get(0);
+    }
+
+    private void decreaseClickedRow(SoldProductViewModel row, double amount) {
+        if(row.decreaseProductQuantity(amount)) {
+            removeRowFromSoldProducts(row); // The whole product is paid, remove the row.
+        }
+        soldProductsTable.refresh();
+    }
+
     protected ReceiptRecordView removeRowFromSoldProducts(final SoldProductViewModel row) {
         soldProductsModel.remove(row);
         soldProductsTable.setItems(soldProductsModel);
         List<ReceiptRecordView> matching = findMatchingView(soldProductsView, row);
         soldProductsView.remove(matching.get(0));
         return matching.get(0);
-    }
-
-    protected ReceiptRecordView decreaseRowInSoldProducts(SoldProductViewModel row, double amount) {
-        List<ReceiptRecordView> matchingReceiptRecordView = findMatchingView(soldProductsView, row);
-        matchingReceiptRecordView.get(0).decreaseSoldQuantity(amount);
-        decreaseClickedRow(row, amount);
-        return matchingReceiptRecordView.get(0);
     }
 
     protected ReceiptRecordView increaseRowInSoldProducts(SoldProductViewModel row, double amount, boolean isSale) {
@@ -202,19 +209,9 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         return equivalentReceiptRecordView.get(0);
     }
 
-    private void decreaseClickedRow(SoldProductViewModel row, double amount) {
-        soldProductsModel.remove(row);
-        if(row.decreaseProductQuantity(amount)) {
-            removeRowFromSoldProducts(row); // The whole product is paid, remove the row.
-            return;
-        }
-        addRowToSoldProducts(row);
-    }
-
     private void increaseClickedRow(SoldProductViewModel row, double amount) {
-        soldProductsModel.remove(row);
         row.increaseProductQuantity(amount);
-        addRowToSoldProducts(row);
+        soldProductsTable.refresh();
     }
 
     protected void addRowToSoldProducts(SoldProductViewModel row) {
