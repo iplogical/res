@@ -372,6 +372,7 @@ public class BuildSchema  {
     private @Getter Product CaffeMelange;
     private @Getter Product ForroCsokiBarna;
     private @Getter Product ForroCsokiFeher;
+    private @Getter Product JegesKave;
 
     // Napi akciok
     private @Getter Product CaptainAndGyomber;
@@ -756,6 +757,7 @@ public class BuildSchema  {
     private @Getter ProductCategory PseudoCaffeMelange;
     private @Getter ProductCategory PseudoForroCsokiBarna;
     private @Getter ProductCategory PseudoForroCsokiFeher;
+    private @Getter ProductCategory PseudoJegesKave;
 
     // Napi akciok
     private @Getter ProductCategory PseudoCaptainAndGyomber;
@@ -1613,6 +1615,7 @@ public class BuildSchema  {
         buildCaffeMelange();
         buildForroCsokiBarna();
         buildForroCsokiFeher();
+        buildJegesKave();
 
         // Napi akciok
         buildCaptainAndGyomber();
@@ -5125,6 +5128,19 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildJegesKave() {
+        JegesKave = Product.builder()
+                .longName("Jeges Kávé")
+                .shortName("Jeges Kávé")
+                .orderNumber(9)
+                .salePrice(890)
+                .purchasePrice(500)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(70)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
     private void buildCaptainAndGyomber() {
         CaptainAndGyomber = Product.builder()
                 .longName("Captain And Gyömbér")
@@ -5725,6 +5741,7 @@ public class BuildSchema  {
         buildPseudoCaffeMelange();
         buildPseudoForroCsokiBarna();
         buildPseudoForroCsokiFeher();
+        buildPseudoJegesKave();
 
         // Napi akciok
         buildPseudoCaptainAndGyomber();
@@ -9981,6 +9998,14 @@ public class BuildSchema  {
                 .build();
     }
 
+    private void buildPseudoJegesKave() {
+        PseudoJegesKave = ProductCategory.builder()
+                .name("JegesKave_Pseudo")
+                .status(ProductStatus.ACTIVE)
+                .type(ProductCategoryType.PSEUDO)
+                .build();
+    }
+
     private void buildPseudoCaptainAndGyomber() {
         PseudoCaptainAndGyomber = ProductCategory.builder()
                 .name("CaptainAndGyomber_Pseudo")
@@ -11285,6 +11310,7 @@ public class BuildSchema  {
         PseudoCaffeMelange.setParent(kave);
         PseudoForroCsokiBarna.setParent(kave);
         PseudoForroCsokiFeher.setParent(kave);
+        PseudoJegesKave.setParent(kave);
 
         // Napi akciok
         PseudoCaptainAndGyomber.setParent(napiAkciok);
@@ -11658,7 +11684,8 @@ public class BuildSchema  {
                     PseudoLatteMacchiato,
                     PseudoCaffeMelange,
                     PseudoForroCsokiBarna,
-                    PseudoForroCsokiFeher)));
+                    PseudoForroCsokiFeher,
+                    PseudoJegesKave)));
 
         // Napi akciok
         napiAkciok.setChildren(new HashSet<>(
@@ -12037,6 +12064,7 @@ public class BuildSchema  {
         CaffeMelange.setCategory(PseudoCaffeMelange);
         ForroCsokiBarna.setCategory(PseudoForroCsokiBarna);
         ForroCsokiFeher.setCategory(PseudoForroCsokiFeher);
+        JegesKave.setCategory(PseudoJegesKave);
 
         // Akcios italok
         GinTonic.setCategory(PseudoGinTonic);
@@ -12378,6 +12406,7 @@ public class BuildSchema  {
         PseudoCaffeMelange.setProduct(CaffeMelange);
         PseudoForroCsokiBarna.setProduct(ForroCsokiBarna);
         PseudoForroCsokiFeher.setProduct(ForroCsokiFeher);
+        PseudoJegesKave.setProduct(JegesKave);
 
         // Akcios italok
         PseudoGinTonic.setProduct(GinTonic);
