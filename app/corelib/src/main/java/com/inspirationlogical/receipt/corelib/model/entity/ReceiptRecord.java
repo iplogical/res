@@ -20,6 +20,7 @@ import lombok.ToString;
 import lombok.experimental.Tolerate;
 
 @Entity
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @Builder
 @EqualsAndHashCode(callSuper = true, exclude = {"owner", "product", "createdList"})
 @ToString(exclude = {"owner", "product"})

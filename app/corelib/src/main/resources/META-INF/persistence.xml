@@ -16,6 +16,7 @@
         <class>com.inspirationlogical.receipt.corelib.model.entity.Table</class>
         <class>com.inspirationlogical.receipt.corelib.model.entity.Restaurant</class>
         <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordHistorical</class>
         <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated</class>
         <class>com.inspirationlogical.receipt.corelib.model.entity.VATSerie</class>
         <class>com.inspirationlogical.receipt.corelib.model.entity.VAT</class>
