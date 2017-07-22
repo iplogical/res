@@ -3,7 +3,7 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 >
     
-    <persistence-unit name="ProductionPersistance"  transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="Production"  transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- entities -->

@@ -13,7 +13,7 @@ public class EntityManagerProvider {
     private static EntityManager emArchive;
 
     public static synchronized EntityManager getEntityManager() {
-        return getEntityManager("ProductionPersistance");
+        return getEntityManager("Production");
     }
 
     public static synchronized EntityManager getEntityManagerArchive() {

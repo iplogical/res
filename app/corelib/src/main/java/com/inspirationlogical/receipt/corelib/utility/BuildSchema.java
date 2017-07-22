@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.entity.Address;
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
@@ -38,6 +37,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
+import com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.security.Role;
 import com.inspirationlogical.receipt.corelib.security.model.entity.AuthUser;
@@ -1209,7 +1209,7 @@ public class BuildSchema  {
     private @Getter AuthUser user;
 
     public BuildSchema(){
-        entityManager = EntityManagerProvider.getEntityManager("ProductionPersistance");
+        entityManager = EntityManagerProvider.getEntityManager("Production");
     }
 
     private void dropAll(){
