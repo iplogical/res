@@ -13,10 +13,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
+import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
@@ -53,6 +50,19 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
     public static List<ReceiptAdapter> getReceipts() {
         List<Receipt> receipts = GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPTS);
         return receipts.stream().map(ReceiptAdapter::new).collect(toList());
+    }
+
+    public static void deleteReceipts() {
+        LocalDateTime latestClosureTime = DailyClosureAdapter.getLatestClosureTime();
+        List<Receipt> receiptsToDelete = GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_CLOSURE_TIME_AND_TYPE, query -> {
+                    query.setParameter("closureTime", latestClosureTime);
+                    query.setParameter("type", ReceiptType.SALE);
+                    return query;});
+        receiptsToDelete.forEach(receipt -> {
+            receipt.getOwner().getReceipts().remove(receipt);
+            receipt.setOwner(null);
+            GuardedTransaction.delete(receipt, () -> {});
+        });
     }
 
     public ReceiptAdapter(Receipt receipt) {

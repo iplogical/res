@@ -9,11 +9,7 @@ import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
-import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.*;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
@@ -159,6 +155,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     @Override
     public void closeDay() {
         StockAdapter.closeLatestStockEntries();
+        ReceiptAdapter.deleteReceipts();
         DailyClosureAdapter.getOpenDailyClosure().close();
     }
 

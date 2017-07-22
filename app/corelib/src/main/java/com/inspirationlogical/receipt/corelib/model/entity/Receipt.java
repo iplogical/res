@@ -77,7 +77,7 @@ public @Data class Receipt extends AbstractEntity {
     @JoinColumn(name = "TABLE_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Table owner;
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH})
     private List<ReceiptRecord> records = new ArrayList<>();
 
     @NotNull

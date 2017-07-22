@@ -3,10 +3,8 @@ package com.inspirationlogical.receipt.corelib.model.listeners;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
-import com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 public class ReceiptArchiverListener implements ReceiptAdapter.Listener {
@@ -19,11 +17,11 @@ public class ReceiptArchiverListener implements ReceiptAdapter.Listener {
     @Override
     public void onClose(ReceiptAdapter receipt) {
         BackgroundThread.execute(() -> {
-            cloneAndStoreToArchive(receipt);
+            cloneReceiptAndStoreToArchive(receipt);
         });
     }
 
-    private void cloneAndStoreToArchive(ReceiptAdapter receipt) {
+    private void cloneReceiptAndStoreToArchive(ReceiptAdapter receipt) {
         Receipt newReceipt = cloneReceipt(receipt);
         cloneReceiptRecords(receipt.getAdaptee().getRecords(), newReceipt);
         GuardedTransaction.persistArchive(newReceipt);
