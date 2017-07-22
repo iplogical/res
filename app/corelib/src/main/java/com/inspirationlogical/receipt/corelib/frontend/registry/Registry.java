@@ -10,7 +10,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.FXMLLoaderProvider;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
-import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.security.service.SecurityService;
 import com.inspirationlogical.receipt.corelib.security.service.SecurityServiceImpl;
 import com.inspirationlogical.receipt.corelib.service.CommonService;

@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.corelib.model.entity;
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidReceipts;
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidTables;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import javafx.scene.control.Tab;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,6 +12,7 @@ import lombok.experimental.Tolerate;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity

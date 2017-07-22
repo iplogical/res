@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.exception.VATSerieNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
+import com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider;
 
 /**
  * Created by Bálint on 2017.03.15..

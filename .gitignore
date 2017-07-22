@@ -47,3 +47,5 @@ app/receipts/
 #duplicated resources
 #app/waiter/src/main/resources/*
 app/corelib/src/main/resources/properties/ui_hu.properties
+app/utils/schemabuilderapp/out/production/properties/waiter_hu.properties
+app/utils/schemabuilderapp/out/production/properties/manager_hu.properties

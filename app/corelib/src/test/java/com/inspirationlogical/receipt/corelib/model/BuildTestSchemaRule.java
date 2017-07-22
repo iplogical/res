@@ -16,7 +16,7 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;

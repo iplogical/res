@@ -124,4 +124,22 @@ public @Data class Receipt extends AbstractEntity {
 
     @Tolerate
     Receipt(){}
+
+    public static Receipt cloneReceipt(Receipt receipt) {
+        Receipt newReceipt = new Receipt();
+        newReceipt.setRecords(new ArrayList<>());
+        newReceipt.setType(receipt.getType());
+        newReceipt.setStatus(receipt.getStatus());
+        newReceipt.setPaymentMethod(receipt.getPaymentMethod());
+        newReceipt.setOpenTime(receipt.getOpenTime());
+        newReceipt.setClosureTime(receipt.getClosureTime());
+        newReceipt.setUserCode(receipt.getUserCode());
+        newReceipt.setSumPurchaseNetPrice(receipt.getSumPurchaseNetPrice());
+        newReceipt.setSumPurchaseGrossPrice(receipt.getSumPurchaseGrossPrice());
+        newReceipt.setSumSaleNetPrice(receipt.getSumSaleNetPrice());
+        newReceipt.setSumSaleGrossPrice(receipt.getSumSaleGrossPrice());
+        newReceipt.setDiscountPercent(receipt.getDiscountPercent());
+        return newReceipt;
+    }
+
 }

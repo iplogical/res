@@ -1,15 +1,12 @@
 package com.inspirationlogical.receipt.corelib.model.listeners;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 
 import java.util.Optional;
 
-import static com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider.getEntityManager;
+import static com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider.getEntityManager;
 
 /**
  * Created by Bálint on 2017.04.04..

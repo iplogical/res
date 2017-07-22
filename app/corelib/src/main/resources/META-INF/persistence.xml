@@ -45,4 +45,47 @@
 
         </properties>
     </persistence-unit>
+
+    <persistence-unit name="ProductionArchive"  transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- entities -->
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Product</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ProductCategory</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Recipe</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Stock</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Receipt</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Table</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Restaurant</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.VATSerie</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.VAT</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Reservation</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.PriceModifier</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.DailyClosure</class>
+        <class>com.inspirationlogical.receipt.corelib.security.model.entity.AuthUser</class>
+        <!--          -->
+
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+
+        <properties>
+            <property name="javax.persistence.jdbc.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/ReceiptArchive"/>
+            <property name="javax.persistence.jdbc.user" value="postgres"/>
+            <property name="javax.persistence.jdbc.password" value="test"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.generate_statistics" value="false"/>
+            <property name="hibernate.id.new_generator_mappings" value="true"/>
+            <property name="javax.persistence.schema-generation.database.action" value="update"/>
+
+            <property name="hibernate.c3p0.min_size" value="5"/>
+            <property name="hibernate.c3p0.max_size"  value="20"/>
+            <property name="hibernate.c3p0.timeout"  value="1800"/>
+            <property name="hibernate.c3p0.max_statements" value="50"/>
+            <property name="hibernate.c3p0.idle_test_period" value="3000"/>
+
+        </properties>
+    </persistence-unit>
 </persistence>

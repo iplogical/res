@@ -74,4 +74,18 @@ public @Data class ReceiptRecord extends AbstractEntity {
 
     @Tolerate
     ReceiptRecord(){}
+
+    public static ReceiptRecord cloneReceiptRecord(ReceiptRecord record) {
+        ReceiptRecord newRecord = new ReceiptRecord();
+        newRecord.setType(record.getType());
+        newRecord.setName(record.getName());
+        newRecord.setSoldQuantity(record.getSoldQuantity());
+        newRecord.setAbsoluteQuantity(record.getAbsoluteQuantity());
+        newRecord.setPurchasePrice(record.getPurchasePrice());
+        newRecord.setSalePrice(record.getSalePrice());
+        newRecord.setVAT(record.getVAT());
+        newRecord.setDiscountPercent(record.getDiscountPercent());
+        newRecord.setCreatedList(new ArrayList<>());
+        return newRecord;
+    }
 }

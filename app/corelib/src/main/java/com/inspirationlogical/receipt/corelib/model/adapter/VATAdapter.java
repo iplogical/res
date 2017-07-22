@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 import com.inspirationlogical.receipt.corelib.model.entity.VAT;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
+import com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider;
 
 /**
  * Created by Bálint on 2017.03.17..

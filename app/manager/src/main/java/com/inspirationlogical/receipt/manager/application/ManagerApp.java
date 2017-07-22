@@ -9,11 +9,10 @@ import com.inspirationlogical.receipt.corelib.frontend.application.MainStage;
 import com.inspirationlogical.receipt.corelib.frontend.application.ResourcesProvider;
 import com.inspirationlogical.receipt.corelib.frontend.application.StageProvider;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
-import com.inspirationlogical.receipt.corelib.model.adapter.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.manager.controller.GoodsController;
 
-import ch.qos.logback.classic.Level;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

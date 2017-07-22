@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
