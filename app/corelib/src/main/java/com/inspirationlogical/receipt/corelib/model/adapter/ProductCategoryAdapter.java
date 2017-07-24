@@ -1,14 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static java.time.LocalDateTime.now;
-import static java.util.stream.Collectors.toList;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
@@ -24,6 +15,18 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import static java.time.LocalDateTime.now;
+import static java.util.stream.Collectors.toList;
 
 public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 {

@@ -85,12 +85,6 @@ public class ProductTest {
         });
     }
 
-    @Test(expected = RollbackException.class)
-    public void testProductRecipeNull() {
-        GuardedTransaction.run(()->
-                schema.getProductOne().setRecipes(null));
-    }
-
     @Test
     public void testNumberOfElements() {
         List<Product> products = getProductList().stream().filter(p -> p.getLongName().equals("productFour"))

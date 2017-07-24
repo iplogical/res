@@ -183,7 +183,7 @@ public class BuildTestSchemaRule implements TestRule {
 
     public BuildTestSchemaRule(){
         this.testType = TestType.DROP_AND_CREATE;
-        entityManager = EntityManagerProvider.getEntityManager("TestPersistance");
+        entityManager = EntityManagerProvider.getEntityManager("TestPersistence");
     }
     public BuildTestSchemaRule(String persistenceName) {
         this.testType = TestType.DROP_AND_CREATE;
@@ -191,7 +191,7 @@ public class BuildTestSchemaRule implements TestRule {
     }
     public BuildTestSchemaRule(TestType testType){
         this.testType = testType;
-        entityManager = EntityManagerProvider.getEntityManager("TestPersistance");
+        entityManager = EntityManagerProvider.getEntityManager("TestPersistence");
     }
 
     private void dropAll(){
@@ -212,7 +212,6 @@ public class BuildTestSchemaRule implements TestRule {
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.VATSerie").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ProductCategory").executeUpdate();
             entityManager.createNativeQuery("DELETE FROM PRODUCT_CATEGORY_RELATIONS").executeUpdate();
-            entityManager.createNativeQuery("UPDATE hibernate_sequence SET next_val=1").executeUpdate();
         });
         entityManager.clear();
     }
@@ -573,6 +572,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .type(ProductType.AD_HOC_PRODUCT)
+                .recipes(new ArrayList<>())
                 .build();
     }
 
@@ -585,6 +585,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.LITER)
                 .type(ProductType.GAME_FEE_PRODUCT)
+                .recipes(new ArrayList<>())
                 .build();
     }
 
