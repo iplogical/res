@@ -50,9 +50,14 @@ public class StockAdapter extends AbstractAdapter<Stock> {
         storableProducts.forEach(productAdapter ->
             {
                 StockAdapter stock = getLatestItemByProduct(productAdapter);
-                createStockEntry(productAdapter, getInitialQuantity(stock));
+                if(stock.isStockChanged())
+                    createStockEntry(productAdapter, getInitialQuantity(stock));
             }
         );
+    }
+
+    private boolean isStockChanged() {
+        return !((adaptee.getSoldQuantity() == 0) && (adaptee.getPurchasedQuantity() == 0) && (adaptee.getInventoryQuantity() == 0) && (adaptee.getDisposedQuantity() == 0));
     }
 
     private static StockAdapter createStockEntry(ProductAdapter productAdapter, double initialQuantity) {
@@ -106,5 +111,4 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     private void increaseDisposedQuantity(double quantity) {
         GuardedTransaction.run(() -> adaptee.setDisposedQuantity(adaptee.getDisposedQuantity() + quantity / adaptee.getOwner().getStorageMultiplier()));
     }
-
 }
