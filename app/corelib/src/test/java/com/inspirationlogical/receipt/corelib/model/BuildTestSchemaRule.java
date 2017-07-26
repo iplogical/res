@@ -52,6 +52,7 @@ public class BuildTestSchemaRule implements TestRule {
     public static final int NUMBER_OF_DAILY_CLOSURES = 2;
 
     private @Getter EntityManager entityManager;
+    private @Getter EntityManager entityManagerArchive;
 
     private @Getter Product productOne;
     private @Getter Product productTwo;
@@ -179,48 +180,29 @@ public class BuildTestSchemaRule implements TestRule {
             }
         };
     }
-    private TestType testType;
 
     public BuildTestSchemaRule(){
-        this.testType = TestType.DROP_AND_CREATE;
         entityManager = EntityManagerProvider.getEntityManager("TestPersistence");
-    }
-    public BuildTestSchemaRule(String persistenceName) {
-        this.testType = TestType.DROP_AND_CREATE;
-        entityManager = EntityManagerProvider.getEntityManager(persistenceName);
-    }
-    public BuildTestSchemaRule(TestType testType){
-        this.testType = testType;
-        entityManager = EntityManagerProvider.getEntityManager("TestPersistence");
-    }
-
-    private void dropAll(){
-
-        GuardedTransaction.run(() -> {
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.PriceModifier").executeUpdate();
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Recipe").executeUpdate();
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Stock").executeUpdate();
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Product").executeUpdate();
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated").executeUpdate();
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord").executeUpdate();
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Receipt").executeUpdate();
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Reservation").executeUpdate();
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Table").executeUpdate();
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.DailyClosure").executeUpdate();
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Restaurant").executeUpdate();
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.VAT").executeUpdate();
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.VATSerie").executeUpdate();
-            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ProductCategory").executeUpdate();
-            entityManager.createNativeQuery("DELETE FROM PRODUCT_CATEGORY_RELATIONS").executeUpdate();
-        });
-        entityManager.clear();
+        entityManagerArchive = EntityManagerProvider.getEntityManagerArchive("TestPersistenceArchive");
     }
 
     private void buildTestSchema() {
-        dropAll();
+        buildAndPersistArchive();
+        buildAndPersistActual();
+    }
+
+    private void buildAndPersistActual() {
+        dropAllActual();
         buildObjects();
         setUpObjectRelationShips();
-        persistObjects();
+        persistObjectsActual();
+    }
+
+    private void buildAndPersistArchive() {
+        dropAllArchive();
+        buildObjects();
+        setUpObjectRelationShips();
+        persistObjectsArchive();
     }
 
     private void buildObjects() {
@@ -262,10 +244,6 @@ public class BuildTestSchemaRule implements TestRule {
         receiptRecordsAndProducts();
         restaurantAndTables();
         restaurantAndDailyClosures();
-    }
-
-    private void persistObjects() {
-        GuardedTransaction.run(() -> entityManager.persist(restaurant));
     }
 
     private void buildProducts() {
@@ -401,6 +379,56 @@ public class BuildTestSchemaRule implements TestRule {
         buildReservationOne();
         buildReservationTwo();
         
+    }
+
+    private void dropAllActual(){
+        GuardedTransaction.run(() -> {
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.PriceModifier").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Recipe").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Stock").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Product").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Receipt").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Reservation").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Table").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.DailyClosure").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Restaurant").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.VAT").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.VATSerie").executeUpdate();
+            entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ProductCategory").executeUpdate();
+            entityManager.createNativeQuery("DELETE FROM PRODUCT_CATEGORY_RELATIONS").executeUpdate();
+        });
+        entityManager.clear();
+    }
+
+    private void dropAllArchive(){
+        GuardedTransaction.runArchive(() -> {
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.PriceModifier").executeUpdate();
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Recipe").executeUpdate();
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Stock").executeUpdate();
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Product").executeUpdate();
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated").executeUpdate();
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord").executeUpdate();
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Receipt").executeUpdate();
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Reservation").executeUpdate();
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Table").executeUpdate();
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.DailyClosure").executeUpdate();
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Restaurant").executeUpdate();
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.VAT").executeUpdate();
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.VATSerie").executeUpdate();
+            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ProductCategory").executeUpdate();
+            entityManagerArchive.createNativeQuery("DELETE FROM PRODUCT_CATEGORY_RELATIONS").executeUpdate();
+        });
+        entityManagerArchive.clear();
+    }
+
+    private void persistObjectsActual() {
+        GuardedTransaction.run(() -> entityManager.persist(restaurant));
+    }
+
+    private void persistObjectsArchive() {
+        GuardedTransaction.runArchive(() -> entityManagerArchive.persist(restaurant));
     }
 
     private void buildRestaurant() {

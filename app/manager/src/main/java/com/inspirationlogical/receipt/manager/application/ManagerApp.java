@@ -43,6 +43,7 @@ public class ManagerApp extends Application implements StageProvider, ResourcesP
     @Override
     public void stop() throws Exception {
         EntityManagerProvider.closeEntityManager();
+        EntityManagerProvider.getEntityManagerArchive();
     }
 
     public static void main(String[] args) {

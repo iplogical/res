@@ -21,7 +21,7 @@ public class ReceiptArchiverListener implements ReceiptAdapter.Listener {
         });
     }
 
-    private void cloneReceiptAndStoreToArchive(ReceiptAdapter receipt) {
+    void cloneReceiptAndStoreToArchive(ReceiptAdapter receipt) {
         Receipt newReceipt = cloneReceipt(receipt);
         cloneReceiptRecords(receipt.getAdaptee().getRecords(), newReceipt);
         GuardedTransaction.persistArchive(newReceipt);

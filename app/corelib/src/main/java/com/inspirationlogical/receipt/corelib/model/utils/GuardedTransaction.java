@@ -58,8 +58,16 @@ public class GuardedTransaction {
         run(manager, f, before, after);
     }
 
+    public static void run(Functor f) {
+        run(f,()->{}, ()->{});
+    }
+
     public static void runArchive(Functor f, Functor before, Functor after) {
         run(managerArchive, f, before, after);
+    }
+
+    public static void runArchive(Functor f) {
+        runArchive(f, () -> {}, () -> {});
     }
 
     public static <T extends AbstractEntity> List<T> runNamedQuery(String name){
@@ -121,9 +129,5 @@ public class GuardedTransaction {
         run(f,()->{}, ()->{
             manager.remove(e);
         });
-    }
-
-    public static void run(Functor f) {
-        run(f,()->{}, ()->{});
     }
 }
