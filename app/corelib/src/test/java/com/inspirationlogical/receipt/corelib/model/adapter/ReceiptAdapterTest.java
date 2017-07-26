@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
@@ -184,6 +185,15 @@ public class ReceiptAdapterTest {
         int recordNum = receiptSaleOne.getAdaptee().getRecords().size();
         receiptSaleOne.cancelReceiptRecord(receiptRecordSaleOne);
         assertEquals(recordNum - 1, receiptSaleOne.getAdaptee().getRecords().size());
+    }
 
+    @Test
+    public void testCloneReceiptRecordAdapter() {
+        int recordNum = receiptSaleOne.getAdaptee().getRecords().size();
+        int totalReceiptRecordNum = GuardedTransaction.runNamedQuery(ReceiptRecord.GET_TEST_RECEIPT_RECORDS).size();
+        receiptSaleOne.cloneReceiptRecordAdapter(receiptRecordSaleOne, 1);
+        assertEquals(recordNum + 1, receiptSaleOne.getAdaptee().getRecords().size());
+        assertEquals(totalReceiptRecordNum + 1,
+                GuardedTransaction.runNamedQuery(ReceiptRecord.GET_TEST_RECEIPT_RECORDS).size());
     }
 }
