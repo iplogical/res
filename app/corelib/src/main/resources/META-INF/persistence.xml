@@ -29,7 +29,7 @@
         <properties>
             <property name="javax.persistence.jdbc.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/ReceiptViewTest"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/ReceiptActual"/>
             <property name="javax.persistence.jdbc.user" value="postgres"/>
             <property name="javax.persistence.jdbc.password" value="test"/>
             <property name="hibernate.show_sql" value="false"/>
