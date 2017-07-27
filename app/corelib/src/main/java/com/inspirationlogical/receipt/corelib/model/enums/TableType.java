@@ -22,6 +22,17 @@ public enum TableType {
         return type.equals(PURCHASE) || type.equals(INVENTORY) || type.equals(DISPOSAL) || type.equals(OTHER) || type.equals(ORPHANAGE);
     }
 
+    public static boolean isDisplayable(TableType type) {
+        return  type.equals(TableType.NORMAL)       ||
+                type.equals(TableType.LOITERER)     ||
+                type.equals(TableType.FREQUENTER)   ||
+                type.equals(TableType.EMPLOYEE);
+    }
+
+    public static boolean canBeHosted(TableType tableType) {
+        return tableType.equals(TableType.LOITERER) || tableType.equals(TableType.FREQUENTER);
+    }
+
     public static List<Map.Entry<TableType, Long>> specialTypes() {
         List<Map.Entry<TableType, Long>> list = Arrays.asList(
                 new AbstractMap.SimpleEntry<TableType, Long>(PURCHASE, 1L),

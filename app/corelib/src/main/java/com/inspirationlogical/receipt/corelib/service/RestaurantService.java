@@ -18,7 +18,7 @@ public interface RestaurantService {
 
     RestaurantView getActiveRestaurant();
 
-    List<TableView> getTables(RestaurantView restaurant);
+    List<TableView> getTables();
 
     int getFirstUnusedNumber();
 

@@ -46,26 +46,22 @@ public class TableAdapter extends AbstractAdapter<Table> {
         });
     }
 
+    public static List<TableAdapter> getDisplayableTables() {
+        List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_DISPLAYABLE_TABLES);
+        return tables.stream()
+                .map(TableAdapter::new)
+                .collect(toList());
+    }
+
     public static List<Table> getTablesByType(TableType tableType) {
         return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_TYPE,
                 query -> {query.setParameter("type", tableType);
                     return query;});
     }
 
-    public static boolean isDisplayable(TableType tableType) {
-        return tableType.equals(TableType.NORMAL)
-                || tableType.equals(TableType.LOITERER)
-                || tableType.equals(TableType.FREQUENTER)
-                || tableType.equals(TableType.EMPLOYEE);
-    }
-
     public static int getFirstUnusedNumber() {
         List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_FIRST_UNUSED_NUMBER, query -> query);
         return tables.stream().mapToInt(Table::getNumber).min().orElse(0) + 1;
-    }
-
-    public static boolean canBeHosted(TableType tableType) {
-        return tableType.equals(TableType.LOITERER) || tableType.equals(TableType.FREQUENTER);
     }
 
     public void updateStock(List<StockParams> paramsList, ReceiptType receiptType) {
@@ -194,7 +190,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         if (isTableConsumer()) {
             throw new IllegalTableStateException("Delete table for a consumer table. Table number: " + adaptee.getNumber());
         }
-        GuardedTransaction.runWithRefresh(adaptee, () -> {
+        GuardedTransaction.run(() -> {
             List<Table> orphanageList = getTablesByType(TableType.ORPHANAGE);
             Table orphanage = orphanageList.get(0);
             if(orphanage.getReceipts() == null)

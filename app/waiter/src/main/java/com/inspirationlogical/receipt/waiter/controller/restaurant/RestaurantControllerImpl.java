@@ -508,7 +508,7 @@ public class RestaurantControllerImpl implements RestaurantController {
                 .filter(tableController -> tableController.getView().isEmployee())
                 .map(TableController::getRoot).collect(toList()));
         tableControllers.clear();
-        List<TableView> tables = restaurantService.getTables(restaurantView);
+        List<TableView> tables = restaurantService.getTables();
         tables.sort(Comparator.comparing(TableView::isConsumed));   // Put consumed tables to the end so the consumer is loaded in advance.
         tables.stream().filter(DISPLAYABLE_TABLE).forEach(this::drawTable);
     }

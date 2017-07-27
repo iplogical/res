@@ -200,8 +200,7 @@ public class ReceiptAdapterTest {
 
     @Test
     public void testCloseWithDiscountForProduct() {
-        GuardedTransaction.runWithRefresh(receiptSaleOne.getAdaptee(),
-                () -> {
+        GuardedTransaction.run(() -> {
             schema.getReceiptSaleOneRecordTwo().setDiscountPercent(20);
             schema.getReceiptSaleOneRecordTwo().setSalePrice(240);
         });
@@ -215,10 +214,9 @@ public class ReceiptAdapterTest {
 
     @Test(expected = IllegalReceiptStateException.class)
     public void testCloseAClosedReceipt() {
-        GuardedTransaction.runWithRefresh(receiptSaleOne.getAdaptee(),
-                () -> {
+        GuardedTransaction.run(() -> {
             schema.getReceiptSaleOne().setStatus(ReceiptStatus.CLOSED);
-                    schema.getReceiptSaleOne().setClosureTime(LocalDateTime.now());
+            schema.getReceiptSaleOne().setClosureTime(LocalDateTime.now());
         });
         receiptSaleOne.close(paymentParams);
         assertEquals(850, receiptSaleOne.getAdaptee().getSumPurchaseGrossPrice());

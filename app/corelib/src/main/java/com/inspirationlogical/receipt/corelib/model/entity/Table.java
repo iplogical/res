@@ -22,6 +22,8 @@ import java.util.Collection;
 @NamedQueries({
     @NamedQuery(name = Table.GET_ALL_TABLES,
             query="FROM Table t"),
+    @NamedQuery(name = Table.GET_DISPLAYABLE_TABLES,
+            query="FROM Table t WHERE t.visible = TRUE"),
     @NamedQuery(name = Table.GET_TABLE_BY_NUMBER,
             query="FROM Table t WHERE t.number=:number"),
     @NamedQuery(name = Table.GET_TABLE_BY_TYPE,
@@ -39,6 +41,7 @@ import java.util.Collection;
 public @Data class Table extends AbstractEntity {
 
     public static final String GET_ALL_TABLES = "Table.GetAllTables";
+    public static final String GET_DISPLAYABLE_TABLES = "Table.GetDisplayableTables";
     public static final String GET_TABLE_BY_NUMBER = "Table.GetTableByNumber";
     public static final String GET_TABLE_BY_TYPE = "Table.GetTableByType";
     public static final String GET_TABLE_BY_CONSUMER = "Table.GetTableByConsumer";

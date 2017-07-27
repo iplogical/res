@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_DISPLAYABLE_TABLES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -54,6 +55,11 @@ public class TableAdapterTest {
     @Test
     public void testNormalTableHasAnActiveReceipt() {
         assertNotNull(tableNormal.getActiveReceipt());
+    }
+
+    @Test
+    public void testGetDisplayableTables() {
+        assertEquals(NUMBER_OF_DISPLAYABLE_TABLES, TableAdapter.getDisplayableTables().size());
     }
 
     @Test

@@ -73,16 +73,6 @@ public class RestaurantServiceTest {
     }
 
     @Test
-    public void testGetTables() {
-        //given
-        when(restaurantView.getAdapter()).thenReturn(restaurantAdapter);
-        //when
-        service.getTables(restaurantView);
-        //then
-        verify(restaurantAdapter).getDisplayableTables();
-    }
-
-    @Test
     public void testSetTableName() {
         //given
         when(tableView.getAdapter()).thenReturn(tableAdapter);

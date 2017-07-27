@@ -109,20 +109,12 @@ public class GuardedTransaction {
         return results.getContent();
     }
 
-    public static void runWithRefresh(AbstractEntity e, Functor f) {
-        run(f,()->manager.refresh(e), () -> {});
-    }
-
     public static void persist(AbstractEntity e) {
         run(() -> manager.persist(e), () -> {}, () -> {});
     }
 
     public static void persistArchive(AbstractEntity e) {
         runArchive(() -> managerArchive.persist(e), () -> {}, () -> {});
-    }
-
-    public static void merge(AbstractEntity e) {
-        run(() -> manager.merge(e), () -> {}, () -> {});
     }
 
     public static void delete(AbstractEntity e, Functor f) {

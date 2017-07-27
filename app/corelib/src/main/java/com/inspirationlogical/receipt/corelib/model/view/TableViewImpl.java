@@ -30,7 +30,7 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
 
     @Override
     public boolean isDisplayable() {
-        return TableAdapter.isDisplayable(adapter.getAdaptee().getType());
+        return TableType.isDisplayable(adapter.getAdaptee().getType());
     }
 
     @Override
@@ -75,7 +75,7 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
 
     @Override
     public boolean canBeHosted() {
-        return TableAdapter.canBeHosted(adapter.getAdaptee().getType());
+        return TableType.canBeHosted(adapter.getAdaptee().getType());
     }
 
     @Override

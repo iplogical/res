@@ -19,12 +19,6 @@ public class RestaurantAdapterTest {
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Test
-    public void testRestaurantHasDisplayableTables() {
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant());
-        assertEquals(NUMBER_OF_DISPLAYABLE_TABLES, restaurantAdapter.getDisplayableTables().size());
-    }
-
-    @Test
     public void testAddTableBuilder() {
         RestaurantAdapter restaurantAdapter = new RestaurantAdapter(schema.getRestaurant());
         restaurantAdapter.addTable(Table.builder()
@@ -37,6 +31,6 @@ public class RestaurantAdapterTest {
                 .capacity(5)
                 .note("Big Chocklate Cake")
                 .visible(true));
-        assertEquals(NUMBER_OF_DISPLAYABLE_TABLES + 1, restaurantAdapter.getDisplayableTables().size());
+        assertEquals(NUMBER_OF_DISPLAYABLE_TABLES + 1, TableAdapter.getDisplayableTables().size());
     }
 }

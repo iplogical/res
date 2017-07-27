@@ -46,7 +46,7 @@ public class BuildTestSchemaRule implements TestRule {
     public static final int NUMBER_OF_RECEIPT_RECORDS = 9;
     public static final int NUMBER_OF_RECEIPT_RECORD_CREATEDS = 9;
     public static final int NUMBER_OF_TABLES = 12;
-    public static final int NUMBER_OF_DISPLAYABLE_TABLES = 7;
+    public static final int NUMBER_OF_DISPLAYABLE_TABLES = 6;
     public static final int NUMBER_OF_RESERVATIONS = 2;
     public static final int NUMBER_OF_RESTAURANT = 1;
     public static final int NUMBER_OF_VAT_SERIE = 1;
@@ -1335,6 +1335,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .guestCount(4)
                 .coordinateX(100)
                 .coordinateY(50)
+                .reservations(new ArrayList<>())
                 .build();
     }
 
@@ -1348,6 +1349,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .guestCount(6)
                 .coordinateX(250)
                 .coordinateY(50)
+                .reservations(new ArrayList<>())
                 .build();
     }
 
@@ -1361,6 +1363,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .guestCount(1)
                 .coordinateX(100)
                 .coordinateY(100)
+                .reservations(new ArrayList<>())
                 .build();
     }
 
@@ -1374,6 +1377,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .guestCount(1)
                 .coordinateX(100)
                 .coordinateY(100)
+                .reservations(new ArrayList<>())
                 .build();
     }
 
@@ -1387,6 +1391,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .guestCount(1)
                 .coordinateX(100)
                 .coordinateY(100)
+                .reservations(new ArrayList<>())
                 .build();
     }
 
@@ -1400,6 +1405,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .guestCount(1)
                 .coordinateX(100)
                 .coordinateY(100)
+                .reservations(new ArrayList<>())
                 .build();
     }
 
@@ -1413,6 +1419,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .guestCount(1)
                 .coordinateX(100)
                 .coordinateY(100)
+                .reservations(new ArrayList<>())
                 .build();
     }
 

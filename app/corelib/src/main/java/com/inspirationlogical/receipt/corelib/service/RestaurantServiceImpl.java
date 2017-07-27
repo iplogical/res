@@ -45,8 +45,8 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
-    public List<TableView> getTables(RestaurantView restaurant) {
-        return createViewsFromAdapters(getRestaurantAdapter(restaurant).getDisplayableTables(), TableViewImpl::new);
+    public List<TableView> getTables() {
+        return createViewsFromAdapters(TableAdapter.getDisplayableTables(), TableViewImpl::new);
     }
 
     @Override

@@ -1,16 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter.getReceiptsByClosureTime;
-import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.canBeHosted;
-import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.isDisplayable;
-import static java.time.LocalDateTime.now;
-
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
@@ -24,6 +13,15 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
+
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import static com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter.getReceiptsByClosureTime;
+import static com.inspirationlogical.receipt.corelib.model.enums.TableType.canBeHosted;
+import static java.time.LocalDateTime.now;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -40,15 +38,6 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
             throw new RestaurantNotFoundException();
         }
         return new RestaurantAdapter(restaurantList.get(0));
-    }
-
-    public List<TableAdapter> getDisplayableTables() {
-        GuardedTransaction.runWithRefresh(adaptee, () -> {});
-        Collection<Table> tables = adaptee.getTables();
-        return tables.stream()
-                .filter(table -> isDisplayable(table.getType()))
-                .map(TableAdapter::new)
-                .collect(Collectors.toList());
     }
 
     public TableAdapter addTable(Table.TableBuilder builder) {
