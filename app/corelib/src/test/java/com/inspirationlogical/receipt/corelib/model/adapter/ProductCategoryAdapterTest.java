@@ -1,23 +1,26 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_PRODUCTS;
-import static java.util.stream.Collectors.toList;
-import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
+import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
+import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import java.util.List;
+
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_PRODUCT_CATEGORIES;
+import static com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter.getProductCategoryByName;
+import static java.util.stream.Collectors.toList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class ProductCategoryAdapterTest {
 
@@ -58,27 +61,9 @@ public class ProductCategoryAdapterTest {
     }
 
     @Test
-    public void testLeafNumberOfProductsUnderLeafOne() {
-        ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne());
-        List<ProductAdapter> products = leafOne.getAllProducts();
-        assertEquals(6, products.size());
-    }
-
-    @Test
-    public void testProductNamesUnderLeafOne() {
-        ProductCategoryAdapter leafOne = new ProductCategoryAdapter(schema.getLeafOne());
-        List<ProductAdapter> products = leafOne.getAllProducts();
-        List<ProductAdapter> list_product_one =  products.stream().filter((elem) -> (elem.getAdaptee().getLongName().equals("product"))).collect(toList());
-        List<ProductAdapter> list_product_two =  products.stream().filter((elem) -> (elem.getAdaptee().getLongName().equals("productTwo"))).collect(toList());
-        assertEquals(1,list_product_one.size());
-        assertEquals("product",list_product_one.get(0).getAdaptee().getLongName());
-        assertEquals(1,list_product_two.size());
-        assertEquals("productTwo",list_product_two.get(0).getAdaptee().getLongName());
-    }
-
-    @Test
-    public void testGetAdHocProduct() {
-
+    public void testGetProductCategories() {
+        List<ProductCategoryAdapter> categoryAdapters = ProductCategoryAdapter.getProductCategories();
+        assertEquals(NUMBER_OF_PRODUCT_CATEGORIES, categoryAdapters.size());
     }
 
     @Test
@@ -99,35 +84,16 @@ public class ProductCategoryAdapterTest {
     }
 
     @Test
-    public void testGetAllActiveProducts() {
-        List<ProductAdapter> products = root.getAllActiveProducts();
-        assertEquals(NUMBER_OF_PRODUCTS, products.size());
-    }
-
-    @Test
-    public void testGetAllStorableProducts() {
-        List<ProductAdapter> products = root.getAllStorableProducts();
-        assertEquals(8, products.size());
-        assertEquals(0, products.stream().filter(productAdapter ->
-                productAdapter.getAdaptee().getLongName().equals("productFour")).collect(toList()).size());
-    }
-
-    @Test
     public void testGetAggregateCategories() {
         assertEquals(7, ProductCategoryAdapter.getCategoriesByType(ProductCategoryType.AGGREGATE).size());
     }
 
     @Test
-    public void testGetAllCategories() {
-        assertEquals(13, ProductCategoryAdapter.getRootCategory().getAllProductCategories().size());
-    }
-
-    @Test
     public void testAddProduct() {
         leafOne.addProduct(builder);
-        assertEquals(7, leafOne.getAllProducts().size());
-        assertEquals(1, leafOne.getAllProducts().stream()
-                .filter(productAdapter -> productAdapter.getAdaptee().getLongName().equals("newProduct"))
+        assertEquals(7, leafOne.getAdaptee().getChildren().size());
+        assertEquals(1, leafOne.getAdaptee().getChildren().stream()
+                .filter(productCategory -> productCategory.getProduct().getLongName().equals("newProduct"))
                 .collect(toList()).size());
     }
 
@@ -135,11 +101,53 @@ public class ProductCategoryAdapterTest {
     public void testAddProductNameAlreadyExists() {
         builder.longName("productSix");
         leafOne.addProduct(builder);
-        assertEquals(7, leafOne.getAllProducts().size());
+        assertEquals(7, leafOne.getAdaptee().getChildren().size());
     }
 
     @Test
     public void testGetCategoryByName() {
-        assertEquals(1, ProductCategoryAdapter.getProductCategoryByName("leafOne").size());
+        assertEquals("leafOne", getProductCategoryByName("leafOne").getAdaptee().getName());
+    }
+
+    @Test
+    public void testAddChildCategory() {
+        int childNumber = aggregateOne.getAdaptee().getChildren().size();
+        aggregateOne.addChildCategory("leafSeven", ProductCategoryType.LEAF);
+        ProductCategory aggregateOneUpdated = (ProductCategory)GuardedTransaction.runNamedQuery(ProductCategory.GET_CATEGORY_BY_NAME,
+                query -> query.setParameter("name", aggregateOne.getAdaptee().getName())).get(0);
+        assertEquals(childNumber + 1, aggregateOneUpdated.getChildren().size());
+        assertEquals(1, aggregateOneUpdated.getChildren().stream()
+                .filter(productCategory -> productCategory.getName().equals("leafSeven"))
+                .count());
+
+    }
+
+    @Test(expected = IllegalProductCategoryStateException.class)
+    public void testAddChildCategoryNameUsed() {
+        aggregateOne.addChildCategory("leafOne", ProductCategoryType.LEAF);
+    }
+
+    @Test(expected = IllegalProductCategoryStateException.class)
+    public void testAddChildCategoryAlreadyHasLeafChild() {
+        aggregateOne.addChildCategory("leafSeven", ProductCategoryType.AGGREGATE);
+    }
+
+    @Test
+    public void testUpdateProductCategory() {
+        ProductCategoryAdapter.updateProductCategory("leafTwenty", "leafOne", null);
+        assertEquals("leafTwenty", getProductCategoryByName("leafTwenty").getAdaptee().getName());
+        assertNull(getProductCategoryByName("leafOne"));
+    }
+
+    @Test(expected = IllegalProductCategoryStateException.class)
+    public void testUpdateProductCategoryNameUsed() {
+        ProductCategoryAdapter.updateProductCategory("leafTwo", "leafOne", null);
+    }
+
+    @Test
+    public void testDelete() {
+        aggregateOne.deleteProductCategory();
+        ProductCategory aggregateOneUpdated = getProductCategoryByName(aggregateOne.getAdaptee().getName()).getAdaptee();
+        assertEquals(ProductStatus.DELETED, aggregateOneUpdated.getStatus());
     }
 }

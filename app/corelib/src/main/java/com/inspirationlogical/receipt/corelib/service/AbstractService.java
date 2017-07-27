@@ -26,8 +26,8 @@ public abstract class AbstractService {
 
     protected AbstractService(EntityManager manager) {
         this.manager = manager;
-        productViews = ProductAdapter.getProducts();
-        categoryViews = ProductCategoryAdapter.getProductCategories();
+        productViews = createViewsFromAdapters(ProductAdapter.getActiveProducts(), ProductViewImpl::new);
+        categoryViews = createViewsFromAdapters(ProductCategoryAdapter.getProductCategories(), ProductCategoryViewImpl::new);
     }
 
     protected RestaurantAdapter getRestaurantAdapter(RestaurantView restaurant) {

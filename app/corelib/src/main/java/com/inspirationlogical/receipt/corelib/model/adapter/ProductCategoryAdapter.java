@@ -11,18 +11,11 @@ import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
-import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.now;
@@ -30,10 +23,6 @@ import static java.util.stream.Collectors.toList;
 
 public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 {
-
-    public ProductCategoryAdapter(ProductCategory adaptee) {
-        super(adaptee);
-    }
 
     public static ProductCategoryAdapter getRootCategory() {
         List<ProductCategory> rootCategoryList = GuardedTransaction.runNamedQuery(ProductCategory.GET_CATEGORY_BY_TYPE,
@@ -45,93 +34,38 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         return new ProductCategoryAdapter(rootCategoryList.get(0));
     }
 
+    public static List<ProductCategoryAdapter> getProductCategories() {
+        List<ProductCategory> categories = GuardedTransaction.runNamedQuery(ProductCategory.GET_ALL_CATEGORIES);
+        return categories.stream()
+                .filter(productCategory -> !productCategory.getType().equals(ProductCategoryType.PSEUDO_DELETED))
+                .map(ProductCategoryAdapter::new).collect(toList());
+    }
 
     public static List<ProductCategoryAdapter> getCategoriesByType(ProductCategoryType type) {
         List<ProductCategory> aggregates = GuardedTransaction.runNamedQuery(ProductCategory.GET_CATEGORY_BY_TYPE,
-                query -> {query.setParameter("type", type);
-                    return query;});
+                query -> query.setParameter("type", type));
         return aggregates.stream().map(ProductCategoryAdapter::new)
                 .collect(toList());
     }
 
-    public static List<ProductCategory> getProductCategoryByName(String name) {
-        return GuardedTransaction.runNamedQuery(ProductCategory.GET_CATEGORY_BY_NAME,
-                query -> {
-                    query.setParameter("name", name);
-                    return query;});
+    public static ProductCategoryAdapter getProductCategoryByName(String name) {
+        List<ProductCategory> categories = GuardedTransaction.runNamedQuery(ProductCategory.GET_CATEGORY_BY_NAME,
+                query -> query.setParameter("name", name));
+        if(categories.size() == 1) {
+            return new ProductCategoryAdapter(categories.get(0));
+        }
+        return null;
      }
 
-    public static void traverseChildren(ProductCategory current, List<ProductCategory> traversal) {
-        traversal.add(current);
-        if(current.getChildren() == null) return;
-        current.getChildren().forEach((child) -> {
-            traverseChildren(child, traversal);
-        });
-    }
-
-    public static List<ProductCategoryView> getProductCategories() {
-        List<ProductCategory> categories = GuardedTransaction.runNamedQuery(ProductCategory.GET_ALL_CATEGORIES);
-        return categories.stream()
-            //.filter(productCategory -> !productCategory.getType().equals(ProductCategoryType.PSEUDO))
-            .filter(productCategory -> !productCategory.getType().equals(ProductCategoryType.PSEUDO_DELETED))
-            .map(ProductCategoryAdapter::new).map(ProductCategoryViewImpl::new).collect(toList());
-    }
-
-    public ProductAdapter getProduct() {
-        return new ProductAdapter(adaptee.getProduct());
-    }
-
-    public List<ProductAdapter> getAllProducts() {
-        List<ProductCategory> childCategories = new ArrayList<>();
-        traverseChildren(this.adaptee, childCategories);
-        return childCategories.stream()
-                .filter(elem -> elem.getType().equals(ProductCategoryType.PSEUDO))
-                .map(elem -> new ProductAdapter(elem.getProduct()))
-                .collect(toList());
-    }
-
-    public List<ProductCategoryAdapter> getAllProductCategories() {
-        List<ProductCategory> childCategories = new ArrayList<>();
-        traverseChildren(this.adaptee, childCategories);
-        return childCategories.stream()
-                .filter(elem -> !elem.getType().equals(ProductCategoryType.PSEUDO))
-                .filter(elem -> elem.getStatus().equals(ProductStatus.ACTIVE))
-                .map(elem -> new ProductCategoryAdapter(elem))
-                .collect(toList());
-    }
-
-    public List<ProductAdapter> getAllActiveProducts() {
-        return getAllProducts().stream()
-                .filter(productAdapter -> productAdapter.getAdaptee().getStatus().equals(ProductStatus.ACTIVE))
-                .collect(toList());
-    }
-
-    public List<ProductAdapter> getAllStorableProducts() {
-         return getAllActiveProducts().stream()
-                .flatMap(productAdapter -> productAdapter.getAdaptee().getRecipes().stream())
-                .map(recipe -> new ProductAdapter(recipe.getComponent()))
-                .filter(distinctByKey(productAdapter -> productAdapter.getAdaptee().getLongName()))
-                .collect(toList());
-    }
-
-    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
-        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
-    }
-
-    public ProductCategoryAdapter getParent() {
-        return new ProductCategoryAdapter(adaptee.getParent());
-    }
-
-    public ProductCategoryType getType() {
-        return adaptee.getType();
+    public ProductCategoryAdapter(ProductCategory adaptee) {
+        super(adaptee);
     }
 
     public double getDiscount(ReceiptRecordAdapter receiptRecordAdapter) {
         ProductCategory category = adaptee;
         List<PriceModifier> priceModifiers = new ArrayList<>();
         do {
-            List<PriceModifier> loopModifiers = getPriceModifiersByProductAndDates(category);
+            List<PriceModifier> loopModifiers = getPriceModifiersByOwnerAndDates(category);
             category = category.getParent();
             priceModifiers.addAll(loopModifiers);
         } while(!category.getType().equals(ProductCategoryType.ROOT));
@@ -143,100 +77,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .max(Double::compareTo).orElse(0D);
     }
 
-    public ProductCategoryAdapter addChildCategory(String name, ProductCategoryType type) {
-        final ProductCategory[] newCategory = new ProductCategory[1];
-        GuardedTransaction.runWithRefresh(adaptee, () -> {
-            newCategory[0] = ProductCategory.builder()
-                    .name(name)
-                    .type(type)
-                    .status(ProductStatus.ACTIVE)
-                    .parent(adaptee)
-                    .build();
-            getRootCategory().getAllProductCategories().stream()
-                    .filter(productCategoryAdapter -> productCategoryAdapter.getAdaptee().getName().equals(name))
-                    .map(category -> {throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed") + name);})
-                    .collect(Collectors.toList());
-            if(type.equals(ProductCategoryType.AGGREGATE)) {
-                adaptee.getChildren().stream()
-                        .filter(productCategory -> productCategory.getType().equals(ProductCategoryType.LEAF))
-                        .map(productCategory -> {throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryAlreadyHasLeaf"));})
-                        .collect(Collectors.toList());
-            }
-            adaptee.getChildren().add(newCategory[0]);
-        });
-        return new ProductCategoryAdapter(newCategory[0]);
-    }
-
-    public ProductCategoryAdapter updateChildCategory(String newName, String originalName, ProductCategoryType type) {
-        ProductCategory originalCategory = getProductCategoryByName(originalName).get(0);
-        originalCategory.setName(newName);
-        GuardedTransaction.persist(originalCategory);
-        return new ProductCategoryAdapter(originalCategory);
-    }
-
-    public ProductAdapter addProduct(ProductBuilder builder) {
-        final Product[] newProduct = new Product[1];
-        GuardedTransaction.runWithRefresh(adaptee, () -> {
-            newProduct[0] = builder.build();
-            getRootCategory().getAllProducts().stream()
-                    .filter(productAdapter -> productAdapter.getAdaptee().getLongName().equals(newProduct[0].getLongName()))
-                    .map(category -> {throw new IllegalProductStateException(Resources.CONFIG.getString("ProductNameAlreadyUsed") + newProduct[0].getLongName());})
-                    .collect(Collectors.toList());
-            getRootCategory().getAllProducts().stream()
-                    .filter(productAdapter -> productAdapter.getAdaptee().getLongName().equals(newProduct[0].getShortName()))
-                    .map(category -> {throw new IllegalProductStateException(Resources.CONFIG.getString("ProductNameAlreadyUsed") + newProduct[0].getShortName());})
-                    .collect(Collectors.toList());
-            ProductCategory pseudo = ProductCategory.builder()
-                    .name(newProduct[0].getLongName() + "pseudo")
-                    .type(ProductCategoryType.PSEUDO)
-                    .status(ProductStatus.ACTIVE)
-                    .parent(adaptee)
-                    .product(newProduct[0])
-                    .build();
-            adaptee.getChildren().add(pseudo);
-            newProduct[0].setCategory(pseudo);
-            newProduct[0].setRecipes(new ArrayList<>(Collections.singletonList(Recipe.builder()
-                    .component(newProduct[0])
-                    .quantityMultiplier(1)
-                    .owner(newProduct[0])
-                    .build())));
-        });
-        return new ProductAdapter(newProduct[0]);
-    }
-
-
-    public ProductAdapter updateProduct(Long productId, ProductBuilder builder) {
-        Wrapper<Product> productWrapper = new Wrapper<>();
-        GuardedTransaction.run(() -> {
-            List<Product> productList = GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_ID,
-                    query -> query.setParameter("id", productId));
-            Product product = productList.get(0);
-            Product productToBuild = builder.build();
-            product.setLongName(productToBuild.getLongName());
-            product.setShortName(productToBuild.getShortName());
-            product.setType(productToBuild.getType());
-            product.setStatus(productToBuild.getStatus());
-            product.setRapidCode(productToBuild.getRapidCode());
-            product.setQuantityUnit(productToBuild.getQuantityUnit());
-            product.setStorageMultiplier(productToBuild.getStorageMultiplier());
-            product.setSalePrice(productToBuild.getSalePrice());
-            product.setPurchasePrice(productToBuild.getPurchasePrice());
-            product.setMinimumStock(productToBuild.getMinimumStock());
-            product.setStockWindow(productToBuild.getStockWindow());
-            productWrapper.setContent(product);
-        });
-
-        if(isCategoryChanged(productWrapper.getContent())) {
-            movePseudoToNewParent(productWrapper.getContent());
-        }
-        return new ProductAdapter(productWrapper.getContent());
-    }
-
-    public void delete() {
-        GuardedTransaction.run(() -> getAdaptee().setStatus(ProductStatus.DELETED));
-    }
-
-    private List<PriceModifier> getPriceModifiersByProductAndDates(ProductCategory category) {
+    private List<PriceModifier> getPriceModifiersByOwnerAndDates(ProductCategory category) {
         return GuardedTransaction.runNamedQuery(PriceModifier.GET_PRICE_MODIFIERS_BY_PRODUCT_AND_DATES,
                 query -> {
                     query.setParameter("owner_id", category.getId());
@@ -244,21 +85,87 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                     return query;});
     }
 
-    private boolean isCategoryChanged(Product product) {
-        return !product.getCategory().getParent().getName().equals(adaptee.getName());
+    public ProductCategoryAdapter addChildCategory(String name, ProductCategoryType type) {
+        ProductCategory newCategory = buildNewCategory(name, type);
+        GuardedTransaction.run(() -> {
+            if(isCategoryNameUsed(newCategory.getName()))
+                throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed") + name);
+            if(type.equals(ProductCategoryType.AGGREGATE)) {
+                if(hasLeafChild())
+                    throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryAlreadyHasLeaf"));
+            }
+            adaptee.getChildren().add(newCategory);
+        });
+        return new ProductCategoryAdapter(newCategory);
     }
 
-    private void movePseudoToNewParent(Product product) {
-        GuardedTransaction.run(() -> {
-            ProductCategory originalCategory = getProductCategoryByName(product.getCategory().getParent().getName()).get(0);
-            ProductCategory pseudoCategory = getProductCategoryByName(product.getCategory().getName()).get(0);
-            originalCategory.getChildren().remove(pseudoCategory);
-            pseudoCategory.setParent(adaptee);
+    private ProductCategory buildNewCategory(String name, ProductCategoryType type) {
+        return ProductCategory.builder()
+                .name(name)
+                .type(type)
+                .status(ProductStatus.ACTIVE)
+                .parent(adaptee)
+                .build();
+    }
 
-        });
+    private static boolean isCategoryNameUsed(String name) {
+        return GuardedTransaction.runNamedQuery(ProductCategory.GET_CATEGORY_BY_NAME, query ->
+            query.setParameter("name", name)).size() != 0;
+    }
+
+    private boolean hasLeafChild() {
+        return adaptee.getChildren().stream()
+                .filter(productCategory -> productCategory.getType().equals(ProductCategoryType.LEAF))
+                .collect(Collectors.toList()).size() != 0;
+    }
+
+    public static ProductCategoryAdapter updateProductCategory(String newName, String originalName, ProductCategoryType type) {
+        if(isCategoryNameUsed(newName)) {
+            throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed") + newName);
+        }
+        ProductCategory originalCategory = getProductCategoryByName(originalName).getAdaptee();
+        originalCategory.setName(newName);
+        GuardedTransaction.persist(originalCategory);
+        return new ProductCategoryAdapter(originalCategory);
+    }
+
+    public void deleteProductCategory() {
+        GuardedTransaction.run(() -> getAdaptee().setStatus(ProductStatus.DELETED));
+    }
+
+    public ProductAdapter addProduct(ProductBuilder builder) {
+        Product newProduct = builder.build();
         GuardedTransaction.run(() -> {
-            ProductCategory pseudoCategory = getProductCategoryByName(product.getCategory().getName()).get(0);
-            adaptee.getChildren().add(pseudoCategory);
+            if(isProductNameUsed(newProduct))
+                throw new IllegalProductStateException(Resources.CONFIG.getString("ProductNameAlreadyUsed") + newProduct.getLongName());
+            ProductCategory pseudo = buildPseudoCategory(newProduct);
+            adaptee.getChildren().add(pseudo);
+            newProduct.setCategory(pseudo);
+            newProduct.setRecipes(new ArrayList<>(Collections.singletonList(buildRecipe(newProduct))));
         });
+        return new ProductAdapter(newProduct);
+    }
+
+    private boolean isProductNameUsed(Product product) {
+        return GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_NAME, query ->
+            query.setParameter("longName", product.getLongName())).size() != 0;
+    }
+
+    private ProductCategory buildPseudoCategory(Product newProduct) {
+        return ProductCategory.builder()
+                .name(newProduct.getLongName() + "pseudo")
+                .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
+                .parent(adaptee)
+                .product(newProduct)
+                .build();
+    }
+
+    private Recipe buildRecipe(Product newProduct) {
+        return Recipe.builder()
+                .component(newProduct)
+                .quantityMultiplier(1)
+                .owner(newProduct)
+                .build();
     }
 }

@@ -18,8 +18,8 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     public static List<StockAdapter> getItems() {
-        return ProductCategoryAdapter.getRootCategory().getAllStorableProducts().stream()
-                .map(productAdapter -> getLatestItemByProduct(productAdapter))
+        return ProductAdapter.getStorableProducts().stream()
+                .map(StockAdapter::getLatestItemByProduct)
                 .collect(toList());
     }
 
@@ -45,9 +45,7 @@ public class StockAdapter extends AbstractAdapter<Stock> {
 
 
     public static void closeLatestStockEntries() {
-        List<ProductAdapter> storableProducts =
-            ProductCategoryAdapter.getRootCategory().getAllStorableProducts();
-        storableProducts.forEach(productAdapter ->
+        ProductAdapter.getStorableProducts().forEach(productAdapter ->
             {
                 StockAdapter stock = getLatestItemByProduct(productAdapter);
                 if(stock.isStockChanged())

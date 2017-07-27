@@ -41,7 +41,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public RestaurantView getActiveRestaurant() {
-        return new RestaurantViewImpl(RestaurantAdapter.restaurantAdapterFactory(manager));
+        return new RestaurantViewImpl(RestaurantAdapter.getActiveRestaurant());
     }
 
     @Override

@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static java.time.LocalDate.now;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -42,9 +41,9 @@ public class PriceModifierAdapter extends AbstractAdapter<PriceModifier> {
     public static void addPriceModifier(PriceModifierParams params) {
         ProductCategory owner;
         if(params.isCategory()) {
-            owner = ProductCategoryAdapter.getProductCategoryByName(params.getOwnerName()).get(0);
+            owner = ProductCategoryAdapter.getProductCategoryByName(params.getOwnerName()).getAdaptee();
         } else {
-            owner = ProductAdapter.getProductByName(params.getOwnerName()).get(0).getCategory();
+            owner = ProductAdapter.getProductByName(params.getOwnerName()).getAdaptee().getCategory();
         }
         PriceModifier priceModifier = params.getBuilder().build();
         priceModifier.setOwner(owner);

@@ -29,18 +29,17 @@ import com.inspirationlogical.receipt.corelib.utility.Wrapper;
  */
 public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
 
-    public static RestaurantAdapter restaurantAdapterFactory(EntityManager manager) {
-        List<Restaurant> restaurantList = manager.createNamedQuery(Restaurant.GET_ACTIVE_RESTAURANT).getResultList();
+    public RestaurantAdapter(Restaurant adaptee) {
+        super(adaptee);
+    }
+
+    public static RestaurantAdapter getActiveRestaurant() {
+        List<Restaurant> restaurantList = GuardedTransaction.runNamedQuery(Restaurant.GET_ACTIVE_RESTAURANT);
         if (restaurantList.isEmpty()) {
             throw new RestaurantNotFoundException();
         }
         return new RestaurantAdapter(restaurantList.get(0));
     }
-
-    public RestaurantAdapter(Restaurant adaptee) {
-        super(adaptee);
-    }
-
 
     public List<TableAdapter> getDisplayableTables() {
         GuardedTransaction.runWithRefresh(adaptee, () -> {});

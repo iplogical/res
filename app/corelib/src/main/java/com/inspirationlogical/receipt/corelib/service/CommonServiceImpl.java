@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import static com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter.distinctByKey;
+import static com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter.distinctByKey;
 import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType.AGGREGATE;
 import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType.LEAF;
 import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType.PSEUDO;
@@ -69,12 +69,12 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public ProductView updateProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
-        return new ProductViewImpl(getProductCategoryAdapter(parent).updateProduct(productId, builder));
+        return new ProductViewImpl(ProductAdapter.getProductById(productId).updateProduct(parent.getCategoryName(), builder));
     }
 
     @Override
     public void deleteProduct(String longName) {
-        new ProductAdapter(ProductAdapter.getProductByName(longName).get(0)).delete();
+        ProductAdapter.getProductByName(longName).deleteProduct();
     }
 
     @Override
@@ -85,13 +85,13 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public ProductCategoryView updateProductCategory(ProductCategoryParams params) {
-        return new ProductCategoryViewImpl(getProductCategoryAdapter(params.getParent())
-                .updateChildCategory(params.getName(), params.getOriginalName(), params.getType()));
+        return new ProductCategoryViewImpl(ProductCategoryAdapter
+                .updateProductCategory(params.getName(), params.getOriginalName(), params.getType()));
     }
 
     @Override
     public void deleteProductCategory(String name) {
-        new ProductCategoryAdapter(ProductCategoryAdapter.getProductCategoryByName(name).get(0)).delete();
+        ProductCategoryAdapter.getProductCategoryByName(name).deleteProductCategory();
     }
 
     @Override

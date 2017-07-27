@@ -32,18 +32,18 @@ public class ProductCategoryViewImpl extends AbstractModelViewImpl<ProductCatego
 
     @Override
     public ProductCategoryView getParent() {
-        return new ProductCategoryViewImpl(adapter.getParent());
+        return new ProductCategoryViewImpl(new ProductCategoryAdapter(adapter.getAdaptee().getParent()));
     }
 
 
     @Override
     public ProductView getProduct() {
-        return new ProductViewImpl(adapter.getProduct());
+        return new ProductViewImpl(new ProductAdapter(adapter.getAdaptee().getProduct()));
     }
 
     @Override
     public ProductCategoryType getType() {
-        return adapter.getType();
+        return adapter.getAdaptee().getType();
     }
 
     @Override

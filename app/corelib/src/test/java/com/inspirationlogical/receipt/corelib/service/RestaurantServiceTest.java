@@ -64,12 +64,12 @@ public class RestaurantServiceTest {
     public void testGetActiveRestaurant() {
         //given
         mockStatic(RestaurantAdapter.class);
-        when(RestaurantAdapter.restaurantAdapterFactory(any())).thenReturn(restaurantAdapter);
+        when(RestaurantAdapter.getActiveRestaurant()).thenReturn(restaurantAdapter);
         //when
         service.getActiveRestaurant();
         //then
         verifyStatic(times(1));
-        RestaurantAdapter.restaurantAdapterFactory(eq(manager));
+        RestaurantAdapter.getActiveRestaurant();
     }
 
     @Test
