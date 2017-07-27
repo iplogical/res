@@ -24,13 +24,6 @@ public class PriceModifierAdapter extends AbstractAdapter<PriceModifier> {
         return priceModifiers.stream().map(PriceModifierAdapter::new).collect(toList());
     }
 
-    public  static PriceModifierAdapter getPriceModifierByName(String name) {
-        List<PriceModifier> priceModifiers = GuardedTransaction.runNamedQuery(PriceModifier.GET_PRICE_MODIFIERS_BY_NAME,
-                query -> {query.setParameter("name", name);
-                            return query;});
-        return priceModifiers.stream().map(PriceModifierAdapter::new).collect(toList()).get(0);
-    }
-
     public static boolean isValidNow(PriceModifierAdapter priceModifierAdapter) {
         if(priceModifierAdapter.getAdaptee().getRepeatPeriod().equals(PriceModifierRepeatPeriod.NO_REPETITION)) {
             return true;
@@ -66,10 +59,8 @@ public class PriceModifierAdapter extends AbstractAdapter<PriceModifier> {
     double getDiscountPercent(ReceiptRecordAdapter receiptRecordAdapter) {
         if(adaptee.getType().equals(PriceModifierType.SIMPLE_DISCOUNT)) {
             return adaptee.getDiscountPercent();
-        } else if(adaptee.getType().equals(PriceModifierType.QUANTITY_DISCOUNT)) {
-            return calculateDiscount((int)receiptRecordAdapter.getAdaptee().getSoldQuantity());
         }
-        return 0;
+        return calculateDiscount((int)receiptRecordAdapter.getAdaptee().getSoldQuantity());
     }
 
     private double calculateDiscount(int soldQuantity) {

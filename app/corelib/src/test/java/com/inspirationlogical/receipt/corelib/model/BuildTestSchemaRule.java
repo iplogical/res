@@ -726,6 +726,7 @@ public class BuildTestSchemaRule implements TestRule {
                 .name("leafOne")
                 .type(ProductCategoryType.LEAF)
                 .status(ProductStatus.ACTIVE)
+                .priceModifiers(new ArrayList<>())
                 .build();
     }
 

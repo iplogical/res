@@ -1,13 +1,19 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
+import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
+import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
+import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_PRICE_MODIFIERS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -17,11 +23,12 @@ import static org.junit.Assert.assertTrue;
  */
 public class PriceModifierAdapterTest {
 
-    ReceiptRecordAdapter receiptRecordAdapter;
-    PriceModifierAdapter simpleDiscount;
-    PriceModifierAdapter quantityDiscount;
-    PriceModifierAdapter weeklyDiscount;
-    PriceModifierAdapter dailyDiscount;
+    private ReceiptRecordAdapter receiptRecordAdapter;
+    private PriceModifierAdapter simpleDiscount;
+    private PriceModifierAdapter quantityDiscount;
+    private PriceModifierAdapter weeklyDiscount;
+    private PriceModifierAdapter dailyDiscount;
+    private PriceModifier.PriceModifierBuilder builder;
 
     @Rule
     public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
@@ -33,11 +40,41 @@ public class PriceModifierAdapterTest {
         quantityDiscount = new PriceModifierAdapter(schema.getPriceModifierFour());
         weeklyDiscount = new PriceModifierAdapter(schema.getPriceModifierFour());
         dailyDiscount = new PriceModifierAdapter(schema.getPriceModifierTwo());
+        builder = PriceModifier.builder()
+                .name("Test1")
+                .type(PriceModifierType.QUANTITY_DISCOUNT)
+                .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .startDate(LocalDateTime.now())
+                .endDate(LocalDateTime.now());
     }
 
     @Test
     public void testGetPriceModifiers() {
-        assertEquals(4, PriceModifierAdapter.getPriceModifiers().size());
+        assertEquals(NUMBER_OF_PRICE_MODIFIERS, PriceModifierAdapter.getPriceModifiers().size());
+    }
+
+    @Test
+    public void testAddPriceModifierForProduct() {
+        PriceModifierParams params = PriceModifierParams.builder()
+                .originalName("Test1")
+                .ownerName("product")
+                .isCategory(false)
+                .builder(builder)
+                .build();
+        PriceModifierAdapter.addPriceModifier(params);
+        assertEquals(NUMBER_OF_PRICE_MODIFIERS + 1, PriceModifierAdapter.getPriceModifiers().size());
+    }
+
+    @Test
+    public void testAddPriceModifierForCategory() {
+        PriceModifierParams params = PriceModifierParams.builder()
+                .originalName("Test1")
+                .ownerName("leafOne")
+                .isCategory(true)
+                .builder(builder)
+                .build();
+        PriceModifierAdapter.addPriceModifier(params);
+        assertEquals(NUMBER_OF_PRICE_MODIFIERS + 1, PriceModifierAdapter.getPriceModifiers().size());
     }
 
     @Test
@@ -106,5 +143,12 @@ public class PriceModifierAdapterTest {
     public void testIsValidDailyFalseByEnd() {
         dailyDiscount.getAdaptee().setEndTime(LocalTime.now().minusMinutes(1));
         assertFalse(PriceModifierAdapter.isValidNow(dailyDiscount));
+    }
+
+
+    @Test
+    public void testIsValidNoRepetition() {
+        dailyDiscount.getAdaptee().setRepeatPeriod(PriceModifierRepeatPeriod.NO_REPETITION);
+        assertTrue(PriceModifierAdapter.isValidNow(dailyDiscount));
     }
 }
