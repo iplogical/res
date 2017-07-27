@@ -35,7 +35,7 @@ public class PriceModifierAdapterTest {
 
     @Before
     public void setUp() {
-        receiptRecordAdapter = new ReceiptRecordAdapter(schema.getReceiptRecordSaleTwo());
+        receiptRecordAdapter = new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordTwo());
         simpleDiscount = new PriceModifierAdapter(schema.getPriceModifierTwo());
         quantityDiscount = new PriceModifierAdapter(schema.getPriceModifierFour());
         weeklyDiscount = new PriceModifierAdapter(schema.getPriceModifierFour());

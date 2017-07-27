@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
+import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 
 import java.util.function.Predicate;
@@ -12,6 +13,6 @@ public interface RestaurantView {
 
     String getCompanyName();
 
-    int getConsumptionOfTheDay(Predicate<Receipt> filter);
+    int getConsumptionOfTheDay(Predicate<ReceiptAdapter> filter);
 
 }

@@ -42,7 +42,9 @@ public class BuildTestSchemaRule implements TestRule {
     public static final int NUMBER_OF_RECIPES = 11;
     public static final int NUMBER_OF_STOCKS = 3;
     public static final int NUMBER_OF_RECEIPTS = 9;
-    public static final int NUMBER_OF_RECEIPT_RECORDS = 7;
+    public static final int NUMBER_OF_CLOSED_RECEIPTS = 3;
+    public static final int NUMBER_OF_RECEIPT_RECORDS = 9;
+    public static final int NUMBER_OF_RECEIPT_RECORD_CREATEDS = 9;
     public static final int NUMBER_OF_TABLES = 12;
     public static final int NUMBER_OF_DISPLAYABLE_TABLES = 7;
     public static final int NUMBER_OF_RESERVATIONS = 2;
@@ -124,12 +126,14 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter Receipt receiptDisposal;
     private @Getter Receipt receiptOther;
 
-    private @Getter ReceiptRecord receiptRecordSaleOne;
-    private @Getter ReceiptRecord receiptRecordSaleTwo;
-    private @Getter ReceiptRecord receiptRecordSaleThree;
-    private @Getter ReceiptRecord receiptRecordSaleFour;
-    private @Getter ReceiptRecord receiptRecordSaleFive;
-    private @Getter ReceiptRecord receiptRecordSaleSix;
+    private @Getter ReceiptRecord receiptSaleOneRecordOne;
+    private @Getter ReceiptRecord receiptSaleOneRecordTwo;
+    private @Getter ReceiptRecord receiptSaleTwoRecordOne;
+    private @Getter ReceiptRecord receiptSaleTwoRecordTwo;
+    private @Getter ReceiptRecord receiptSaleOneRecordThree;
+    private @Getter ReceiptRecord receiptSaleOneRecordFour;
+    private @Getter ReceiptRecord receiptSaleFourRecordOne;
+    private @Getter ReceiptRecord receiptSaleClosedTableRecordOne;
     private @Getter ReceiptRecord receiptRecordOther;
 
     private @Getter ReceiptRecordCreated receiptRecordCreatedSaleOne;
@@ -138,6 +142,8 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter ReceiptRecordCreated receiptRecordCreatedSaleFour;
     private @Getter ReceiptRecordCreated receiptRecordCreatedSaleFive;
     private @Getter ReceiptRecordCreated receiptRecordCreatedSaleSix;
+    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleFourRecordOne;
+    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleClosedTableRecordOne;
     private @Getter ReceiptRecordCreated receiptRecordCreatedOther;
     
     private @Getter Table tableNormal;
@@ -335,6 +341,8 @@ public class BuildTestSchemaRule implements TestRule {
         buildReceiptRecordSaleFour();
         buildReceiptRecordSaleFive();
         buildReceiptRecordSaleSix();
+        buildReceiptSaleFourRecordOne();
+        buildReceiptSaleClosedTableRecordOne();
         buildReceiptRecordOther();
     }
 
@@ -345,6 +353,8 @@ public class BuildTestSchemaRule implements TestRule {
         buildReceiptRecordCreatedSaleFour();
         buildReceiptRecordCreatedSaleFive();
         buildReceiptRecordCreatedSaleSix();
+        buildReceiptRecordCreatedSaleFourRecordOne();
+        buildReceiptRecordCreatedSaleClosedTableRecordOne();
         buildReceiptRecordCreatedOther();
     }
 
@@ -1112,7 +1122,7 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void buildReceiptRecordSaleOne() {
-        receiptRecordSaleOne = ReceiptRecord.builder()
+        receiptSaleOneRecordOne = ReceiptRecord.builder()
                 .name("Soproni 0,5L")
                 .type(ReceiptRecordType.HERE)
                 .VAT(27)
@@ -1124,7 +1134,7 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void buildReceiptRecordSaleTwo() {
-        receiptRecordSaleTwo = ReceiptRecord.builder()
+        receiptSaleOneRecordTwo = ReceiptRecord.builder()
                 .name("Jim Beam")
                 .type(ReceiptRecordType.HERE)
                 .VAT(27)
@@ -1137,7 +1147,7 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void buildReceiptRecordSaleThree() {
-        receiptRecordSaleThree = ReceiptRecord.builder()
+        receiptSaleTwoRecordOne = ReceiptRecord.builder()
                 .name("C")
                 .soldQuantity(1D)
                 .type(ReceiptRecordType.HERE)
@@ -1146,7 +1156,7 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void buildReceiptRecordSaleFour() {
-        receiptRecordSaleFour = ReceiptRecord.builder()
+        receiptSaleTwoRecordTwo = ReceiptRecord.builder()
                 .name("D")
                 .soldQuantity(0.5)
                 .type(ReceiptRecordType.HERE)
@@ -1156,7 +1166,7 @@ public class BuildTestSchemaRule implements TestRule {
 
 
     private void buildReceiptRecordSaleFive() {
-        receiptRecordSaleFive = ReceiptRecord.builder()
+        receiptSaleOneRecordThree = ReceiptRecord.builder()
                 .name("Edelweiss 0,5L")
                 .type(ReceiptRecordType.HERE)
                 .VAT(27)
@@ -1168,12 +1178,37 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void buildReceiptRecordSaleSix() {
-        receiptRecordSaleSix = ReceiptRecord.builder()
+        receiptSaleOneRecordFour = ReceiptRecord.builder()
                 .name("Game Up Menu")
                 .type(ReceiptRecordType.HERE)
                 .VAT(27)
                 .salePrice(4990)
                 .purchasePrice(2500)
+                .soldQuantity(2D)
+                .createdList(new ArrayList<>())
+                .build();
+    }
+
+
+    private void buildReceiptSaleFourRecordOne() {
+        receiptSaleFourRecordOne = ReceiptRecord.builder()
+                .name("receiptSaleFourRecordOne")
+                .type(ReceiptRecordType.HERE)
+                .VAT(27)
+                .salePrice(1000)
+                .purchasePrice(500)
+                .soldQuantity(2D)
+                .createdList(new ArrayList<>())
+                .build();
+    }
+
+    private void buildReceiptSaleClosedTableRecordOne() {
+        receiptSaleClosedTableRecordOne = ReceiptRecord.builder()
+                .name("receiptSaleClosedTableRecordOne")
+                .type(ReceiptRecordType.HERE)
+                .VAT(27)
+                .salePrice(2000)
+                .purchasePrice(1000)
                 .soldQuantity(2D)
                 .createdList(new ArrayList<>())
                 .build();
@@ -1223,6 +1258,20 @@ public class BuildTestSchemaRule implements TestRule {
                 .created(now())
                 .build();
     }
+
+
+    private void buildReceiptRecordCreatedSaleFourRecordOne() {
+        receiptRecordCreatedSaleFourRecordOne = ReceiptRecordCreated.builder()
+                .created(now())
+                .build();
+    }
+
+    private void buildReceiptRecordCreatedSaleClosedTableRecordOne() {
+        receiptRecordCreatedSaleClosedTableRecordOne = ReceiptRecordCreated.builder()
+                .created(now())
+                .build();
+    }
+
 
     private void buildReceiptRecordCreatedOther() {
         receiptRecordCreatedOther = ReceiptRecordCreated.builder()
@@ -1607,47 +1656,58 @@ public class BuildTestSchemaRule implements TestRule {
 
     private void receiptsAndReceiptRecords() {
         receiptSaleOne.setRecords(new ArrayList<>(
-                Arrays.asList(receiptRecordSaleOne, receiptRecordSaleTwo,
-                        receiptRecordSaleFive, receiptRecordSaleSix)));
+                Arrays.asList(receiptSaleOneRecordOne, receiptSaleOneRecordTwo,
+                        receiptSaleOneRecordThree, receiptSaleOneRecordFour)));
         receiptSaleTwo.setRecords(new ArrayList<>(
-                Arrays.asList(receiptRecordSaleThree, receiptRecordSaleFour)));
+                Arrays.asList(receiptSaleTwoRecordOne, receiptSaleTwoRecordTwo)));
+        receiptSaleFour.setRecords(new ArrayList<>(
+                Collections.singletonList(receiptSaleFourRecordOne)));
+        receiptSaleClosedTable.setRecords(new ArrayList<>(
+                Collections.singletonList(receiptSaleClosedTableRecordOne)));
         receiptOther.setRecords(new ArrayList<>(
                 Collections.singletonList(receiptRecordOther)));
-        receiptRecordSaleOne.setOwner(receiptSaleOne);
-        receiptRecordSaleTwo.setOwner(receiptSaleOne);
-        receiptRecordSaleFive.setOwner(receiptSaleOne);
-        receiptRecordSaleSix.setOwner(receiptSaleOne);
-        receiptRecordSaleThree.setOwner(receiptSaleTwo);
-        receiptRecordSaleFour.setOwner(receiptSaleTwo);
+        receiptSaleOneRecordOne.setOwner(receiptSaleOne);
+        receiptSaleOneRecordTwo.setOwner(receiptSaleOne);
+        receiptSaleOneRecordThree.setOwner(receiptSaleOne);
+        receiptSaleOneRecordFour.setOwner(receiptSaleOne);
+        receiptSaleTwoRecordOne.setOwner(receiptSaleTwo);
+        receiptSaleTwoRecordTwo.setOwner(receiptSaleTwo);
+        receiptSaleFourRecordOne.setOwner(receiptSaleFour);
+        receiptSaleClosedTableRecordOne.setOwner(receiptSaleClosedTable);
         receiptRecordOther.setOwner(receiptOther);
-        
     }
 
     private void receiptRecordsAndProducts() {
-        receiptRecordSaleOne.setProduct(productOne);
-        receiptRecordSaleTwo.setProduct(productTwo);
-        receiptRecordSaleThree.setProduct(productThree);
-        receiptRecordSaleFour.setProduct(productFour);
-        receiptRecordSaleFive.setProduct(productFive);
-        receiptRecordSaleSix.setProduct(productSix);
+        receiptSaleOneRecordOne.setProduct(productOne);
+        receiptSaleOneRecordTwo.setProduct(productTwo);
+        receiptSaleTwoRecordOne.setProduct(productThree);
+        receiptSaleTwoRecordTwo.setProduct(productFour);
+        receiptSaleOneRecordThree.setProduct(productFive);
+        receiptSaleOneRecordFour.setProduct(productSix);
+        receiptSaleFourRecordOne.setProduct(productOne);
+        receiptSaleClosedTableRecordOne.setProduct(productTwo);
     }
 
 
     private void receiptRecordsAndCreated() {
-        receiptRecordSaleOne.getCreatedList().add(receiptRecordCreatedSaleOne);
-        receiptRecordSaleTwo.getCreatedList().add(receiptRecordCreatedSaleTwo);
-        receiptRecordSaleThree.getCreatedList().add(receiptRecordCreatedSaleThree);
-        receiptRecordSaleFour.getCreatedList().add(receiptRecordCreatedSaleFour);
-        receiptRecordSaleFive.getCreatedList().add(receiptRecordCreatedSaleFive);
-        receiptRecordSaleSix.getCreatedList().add(receiptRecordCreatedOther);
+        receiptSaleOneRecordOne.getCreatedList().add(receiptRecordCreatedSaleOne);
+        receiptSaleOneRecordTwo.getCreatedList().add(receiptRecordCreatedSaleTwo);
+        receiptSaleTwoRecordOne.getCreatedList().add(receiptRecordCreatedSaleThree);
+        receiptSaleTwoRecordTwo.getCreatedList().add(receiptRecordCreatedSaleFour);
+        receiptSaleOneRecordThree.getCreatedList().add(receiptRecordCreatedSaleFive);
+        receiptSaleOneRecordFour.getCreatedList().add(receiptRecordCreatedSaleSix);
+        receiptSaleFourRecordOne.getCreatedList().add(receiptRecordCreatedSaleFourRecordOne);
+        receiptSaleClosedTableRecordOne.getCreatedList().add(receiptRecordCreatedSaleClosedTableRecordOne);
         receiptRecordOther.getCreatedList().add(receiptRecordCreatedOther);
 
-        receiptRecordCreatedSaleOne.setOwner(receiptRecordSaleOne);
-        receiptRecordCreatedSaleTwo.setOwner(receiptRecordSaleTwo);
-        receiptRecordCreatedSaleThree.setOwner(receiptRecordSaleThree);
-        receiptRecordCreatedSaleFour.setOwner(receiptRecordSaleFour);
-        receiptRecordCreatedSaleFive.setOwner(receiptRecordSaleFive);
-        receiptRecordCreatedSaleSix.setOwner(receiptRecordSaleSix);
+        receiptRecordCreatedSaleOne.setOwner(receiptSaleOneRecordOne);
+        receiptRecordCreatedSaleTwo.setOwner(receiptSaleOneRecordTwo);
+        receiptRecordCreatedSaleThree.setOwner(receiptSaleTwoRecordOne);
+        receiptRecordCreatedSaleFour.setOwner(receiptSaleTwoRecordTwo);
+        receiptRecordCreatedSaleFive.setOwner(receiptSaleOneRecordThree);
+        receiptRecordCreatedSaleSix.setOwner(receiptSaleOneRecordFour);
+        receiptRecordCreatedSaleFourRecordOne.setOwner(receiptSaleFourRecordOne);
+        receiptRecordCreatedSaleClosedTableRecordOne.setOwner(receiptSaleClosedTableRecordOne);
         receiptRecordCreatedOther.setOwner(receiptRecordOther);
     }
     

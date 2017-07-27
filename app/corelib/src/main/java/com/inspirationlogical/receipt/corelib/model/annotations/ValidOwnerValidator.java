@@ -17,6 +17,7 @@ public class ValidOwnerValidator extends AbstractValidator
 
     @Override
     public boolean isValid(Receipt value, ConstraintValidatorContext context) {
+//        if(value.getOwner() == null) return true;
         ReceiptType type = value.getType();
         TableType ownerType = value.getOwner().getType();
 

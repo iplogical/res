@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.*;
+import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDateTime;
@@ -9,6 +11,7 @@ import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
@@ -32,6 +35,7 @@ public class ReceiptAdapterTest {
     private TableAdapter tableAdapter;
     private ProductAdapter productOne;
     private ReceiptAdapter receiptSaleOne;
+    private ReceiptAdapter receiptSaleThree;
     private ReceiptAdapter receiptPurchase;
     private ReceiptRecordAdapter receiptRecordSaleOne;
     private PaymentParams paymentParams;
@@ -44,13 +48,40 @@ public class ReceiptAdapterTest {
         tableAdapter = new TableAdapter(schema.getTableNormal());
         productOne = new ProductAdapter(schema.getProductOne());
         receiptSaleOne = new ReceiptAdapter(schema.getReceiptSaleOne());
+        receiptSaleThree = new ReceiptAdapter(schema.getReceiptSaleThree());
         receiptPurchase = new ReceiptAdapter(schema.getReceiptPurchase());
-        receiptRecordSaleOne = new ReceiptRecordAdapter(schema.getReceiptRecordSaleOne());
+        receiptRecordSaleOne = new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordOne());
         paymentParams = PaymentParams.builder()
                 .paymentMethod(PaymentMethod.CASH)
                 .discountAbsolute(0)
                 .discountPercent(0D)
                 .build();
+    }
+
+    @Test
+    public void testGetReceipts() {
+        assertEquals(NUMBER_OF_RECEIPTS, ReceiptAdapter.getReceipts().size());
+    }
+
+    @Test
+    public void testGetReceiptsByClosureTimeOneHourAgo() {
+        assertEquals(NUMBER_OF_CLOSED_RECEIPTS, ReceiptAdapter.getReceiptsByClosureTime(LocalDateTime.now().minusHours(1)).size());
+    }
+
+    @Test
+    public void testGetReceiptsByClosureTimeNow() {
+        assertEquals(0, ReceiptAdapter.getReceiptsByClosureTime(LocalDateTime.now()).size());
+    }
+
+    @Test
+    public void testDeleteReceipts() {
+        List<ReceiptAdapter> closedReceipts = ReceiptAdapter.getReceiptsByClosureTime(LocalDateTime.now().minusHours(1));
+        int numberOfRecords = closedReceipts.stream()
+                .mapToInt(receiptAdapter -> receiptAdapter.getAdaptee().getRecords().size()).sum();
+        ReceiptAdapter.deleteReceipts();
+        assertEquals(0, ReceiptAdapter.getReceiptsByClosureTime(LocalDateTime.now().minusHours(1)).size());
+        assertEquals(NUMBER_OF_RECEIPT_RECORDS - numberOfRecords, GuardedTransaction.runNamedQuery(ReceiptRecord.GET_TEST_RECEIPT_RECORDS).size());
+        assertEquals(NUMBER_OF_RECEIPT_RECORD_CREATEDS - numberOfRecords, GuardedTransaction.runNamedQuery(ReceiptRecordCreated.GET_TEST_RECEIPT_RECORDS_CREATED).size());
     }
 
     @Test
@@ -60,8 +91,32 @@ public class ReceiptAdapterTest {
 
     @Test
     public void testSellProduct() {
+        receiptSaleOne.sellProduct(productOne, 3, true, false);
+        assertEquals(5, receiptSaleOne.getSoldProducts().size());
+        assertEquals(1, receiptSaleOne.getSoldProducts().stream()
+            .filter(receiptRecordAdapter -> receiptRecordAdapter.getAdaptee().getName().equals(productOne.getAdaptee().getLongName()))
+            .collect(toList()).size());
+        assertEquals(3, receiptSaleOne.getSoldProducts().stream()
+                .filter(receiptRecordAdapter -> receiptRecordAdapter.getAdaptee().getName().equals(productOne.getAdaptee().getLongName()))
+                .collect(toList()).get(0).getAdaptee().getSoldQuantity(), 0.001);
+    }
+
+    @Test
+    public void testSellProductTwiceWithinTimeLimit() {
+        receiptSaleOne.sellProduct(productOne, 3, true, false);
+        assertEquals(5, receiptSaleOne.getSoldProducts().size());
+        assertEquals(1, receiptSaleOne.getSoldProducts().stream()
+                .filter(receiptRecordAdapter -> receiptRecordAdapter.getAdaptee().getName().equals(productOne.getAdaptee().getLongName()))
+                .collect(toList()).size());
         receiptSaleOne.sellProduct(productOne, 1, true, false);
         assertEquals(5, receiptSaleOne.getSoldProducts().size());
+        assertEquals(1, receiptSaleOne.getSoldProducts().stream()
+                .filter(receiptRecordAdapter -> receiptRecordAdapter.getAdaptee().getName().equals(productOne.getAdaptee().getLongName()))
+                .collect(toList()).size());
+        assertEquals(4, receiptSaleOne.getSoldProducts().stream()
+                .filter(receiptRecordAdapter -> receiptRecordAdapter.getAdaptee().getName().equals(productOne.getAdaptee().getLongName()))
+                .collect(toList()).get(0).getAdaptee().getSoldQuantity(), 0.001);
+
     }
 
     @Test
@@ -74,6 +129,31 @@ public class ReceiptAdapterTest {
                 .build();
         receiptSaleOne.sellAdHocProduct(productParams, true);
         assertEquals(5, receiptSaleOne.getSoldProducts().size());
+    }
+
+    @Test
+    public void testSellGameFee() {
+        ReceiptRecordAdapter gameFeeRecord = receiptSaleOne.sellGameFee(2);
+        assertEquals(5, receiptSaleOne.getSoldProducts().size());
+        assertEquals(1, receiptSaleOne.getSoldProducts().stream()
+            .filter(receiptRecordAdapter -> receiptRecordAdapter.getAdaptee().getName().equals(gameFeeRecord.getAdaptee().getName()))
+            .collect(toList()).size());
+        assertEquals(2, receiptSaleOne.getSoldProducts().stream()
+                .filter(receiptRecordAdapter -> receiptRecordAdapter.getAdaptee().getName().equals(gameFeeRecord.getAdaptee().getName()))
+                .collect(toList()).get(0).getAdaptee().getCreatedList().size());
+    }
+
+    @Test
+    public void testSellGameFeeTwiceWithinTimeLimit() {
+        receiptSaleOne.sellGameFee(2);
+        ReceiptRecordAdapter gameFeeRecord = receiptSaleOne.sellGameFee(1);
+        assertEquals(5, receiptSaleOne.getSoldProducts().size());
+        assertEquals(1, receiptSaleOne.getSoldProducts().stream()
+                .filter(receiptRecordAdapter -> receiptRecordAdapter.getAdaptee().getName().equals(gameFeeRecord.getAdaptee().getName()))
+                .collect(toList()).size());
+        assertEquals(3, receiptSaleOne.getSoldProducts().stream()
+                .filter(receiptRecordAdapter -> receiptRecordAdapter.getAdaptee().getName().equals(gameFeeRecord.getAdaptee().getName()))
+                .collect(toList()).get(0).getAdaptee().getCreatedList().size());
     }
 
     /*
@@ -122,8 +202,8 @@ public class ReceiptAdapterTest {
     public void testCloseWithDiscountForProduct() {
         GuardedTransaction.runWithRefresh(receiptSaleOne.getAdaptee(),
                 () -> {
-            schema.getReceiptRecordSaleTwo().setDiscountPercent(20);
-            schema.getReceiptRecordSaleTwo().setSalePrice(240);
+            schema.getReceiptSaleOneRecordTwo().setDiscountPercent(20);
+            schema.getReceiptSaleOneRecordTwo().setSalePrice(240);
         });
         receiptSaleOne.close(paymentParams);
         assertEquals(6550, receiptSaleOne.getAdaptee().getSumPurchaseGrossPrice());
@@ -145,10 +225,17 @@ public class ReceiptAdapterTest {
     }
 
     @Test
+    public void testCloseReceiptWithoutRecords() {
+        receiptSaleThree.close(paymentParams);
+        assertEquals(NUMBER_OF_RECEIPTS - 1,
+                GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPTS).size());
+    }
+
+    @Test
     public void testPaySelective() {
-        ReceiptRecordView receiptRecordViewTwo = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptRecordSaleTwo()));
-        ReceiptRecordView receiptRecordViewFive = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptRecordSaleFive()));
-        ReceiptRecordView receiptRecordViewSix = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptRecordSaleSix()));
+        ReceiptRecordView receiptRecordViewTwo = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordTwo()));
+        ReceiptRecordView receiptRecordViewFive = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordThree()));
+        ReceiptRecordView receiptRecordViewSix = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordFour()));
         List<ReceiptRecordView> recordsToPay = new ArrayList<>(Arrays.asList(receiptRecordViewTwo, receiptRecordViewFive, receiptRecordViewSix));
         receiptSaleOne.paySelective(tableAdapter, recordsToPay, paymentParams);
         // 1 x Soproni
@@ -195,5 +282,20 @@ public class ReceiptAdapterTest {
         assertEquals(recordNum + 1, receiptSaleOne.getAdaptee().getRecords().size());
         assertEquals(totalReceiptRecordNum + 1,
                 GuardedTransaction.runNamedQuery(ReceiptRecord.GET_TEST_RECEIPT_RECORDS).size());
+    }
+
+    @Test
+    public void testMergeReceiptRecords() {
+        int numberOfRecords = receiptSaleOne.getAdaptee().getRecords().size();
+        ReceiptRecordAdapter originalRecord = new ReceiptRecordAdapter(receiptSaleOne.getAdaptee().getRecords().get(0));
+        double initialQuantity = originalRecord.getAdaptee().getSoldQuantity();
+        receiptSaleOne.cloneReceiptRecordAdapter(originalRecord, 1);
+        assertEquals(numberOfRecords + 1, receiptSaleOne.getAdaptee().getRecords().size());
+        receiptSaleOne.mergeReceiptRecords();
+        assertEquals(numberOfRecords, receiptSaleOne.getAdaptee().getRecords().size());
+        assertEquals(initialQuantity + 1, receiptSaleOne.getAdaptee().getRecords().stream()
+            .filter(record -> record.getName().equals(originalRecord.getAdaptee().getName()))
+            .collect(toList()).get(0).getSoldQuantity(), 0.001);
+
     }
 }

@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
+import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
 
@@ -26,7 +27,7 @@ public class RestaurantViewImpl extends AbstractModelViewImpl<RestaurantAdapter>
     }
 
     @Override
-    public int getConsumptionOfTheDay(Predicate<Receipt> filter) {
+    public int getConsumptionOfTheDay(Predicate<ReceiptAdapter> filter) {
         return adapter.getConsumptionOfTheDay(filter);
     }
 }

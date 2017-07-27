@@ -25,25 +25,25 @@ public class ReceiptRecordTest {
     @Test(expected = RollbackException.class)
     public void testNoType() {
         GuardedTransaction.run(()->
-            schema.getReceiptRecordSaleOne().setType(null));
+            schema.getReceiptSaleOneRecordOne().setType(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testNoOwner() {
         GuardedTransaction.run(()->
-            schema.getReceiptRecordSaleOne().setOwner(null));
+            schema.getReceiptSaleOneRecordOne().setOwner(null));
     }
 
     @Test(expected = RollbackException.class)
     public void testNoName() {
         GuardedTransaction.run(()->
-            schema.getReceiptRecordSaleOne().setName(""));
+            schema.getReceiptSaleOneRecordOne().setName(""));
     }
 
     @Test(expected = RollbackException.class)
     public void testNoProduct() {
         GuardedTransaction.run(()->
-            schema.getReceiptRecordSaleOne().setProduct(null));
+            schema.getReceiptSaleOneRecordOne().setProduct(null));
     }
 
     @Test(expected = RollbackException.class)
@@ -55,7 +55,7 @@ public class ReceiptRecordTest {
     @Test(expected = RollbackException.class)
     public void testPercentDiscountMoreThanHundred() {
         GuardedTransaction.run(()->
-            schema.getReceiptRecordSaleOne().setDiscountPercent(150D));
+            schema.getReceiptSaleOneRecordOne().setDiscountPercent(150D));
     }
 
     private List<ReceiptRecord> getReceiptRecords() {

@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter.getReceiptsByClosureTime;
 import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.canBeHosted;
 import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.isDisplayable;
 import static java.time.LocalDateTime.now;
@@ -146,21 +147,20 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         return consumed.stream().map(TableAdapter::new).collect(Collectors.toList());
     }
 
-    public int getConsumptionOfTheDay(Predicate<Receipt> filter) {
+    public int getConsumptionOfTheDay(Predicate<ReceiptAdapter> filter) {
         LocalDateTime previousClosure = DailyClosureAdapter.getLatestClosureTime();
-        List<Receipt> closedReceipts = getReceiptsByClosureTime(previousClosure);
+        List<ReceiptAdapter> closedReceipts = getReceiptsByClosureTime(previousClosure);
         if (closedReceipts.isEmpty()) {
             return 0;
         }
         return closedReceipts.stream()
                 .filter(filter)
-                .map(ReceiptAdapter::new)
                 .mapToInt(ReceiptAdapter::getTotalPrice).sum();
     }
 
     public void printDailyConsumption() {
         LocalDateTime latestClosure = DailyClosureAdapter.getLatestClosureTime();
-        List<Receipt> receipts = getReceiptsByClosureTime(latestClosure);
+        List<ReceiptAdapter> receipts = getReceiptsByClosureTime(latestClosure);
         Receipt aggregatedReceipt = Receipt.builder()
                 .openTime(latestClosure)
                 .closureTime(now())
@@ -173,7 +173,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
 
         aggregatedReceipt.setId(-1L);
         receipts.forEach(receipt -> {
-            receipt.getRecords().forEach(receiptRecord -> {
+            receipt.getAdaptee().getRecords().forEach(receiptRecord -> {
                 List<ReceiptRecord> aggregatedRecords = aggregatedReceipt.getRecords().stream()
                         .filter(aggregatedRecord -> aggregatedRecord.getName().equals(receiptRecord.getName()))
                         .filter(aggregatedRecord -> aggregatedRecord.getDiscountPercent() == receiptRecord.getDiscountPercent())
@@ -198,10 +198,5 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         aggregatedReceipt.getRecords().sort(Comparator.comparing(ReceiptRecord::getSoldQuantity).reversed());
         ReceiptAdapter adapter = new ReceiptAdapter(aggregatedReceipt);
         new ReceiptPrinter().onClose(adapter);
-    }
-
-    private List<Receipt> getReceiptsByClosureTime(LocalDateTime finalPreviousClosure) {
-        return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_CLOSURE_TIME_AND_TYPE,
-                query -> query.setParameter("closureTime", finalPreviousClosure).setParameter("type", ReceiptType.SALE));
     }
 }

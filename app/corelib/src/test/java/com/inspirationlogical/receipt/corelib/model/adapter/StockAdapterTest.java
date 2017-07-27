@@ -35,7 +35,7 @@ public class StockAdapterTest {
         stockProductTwo = StockAdapter.getLatestItemByProduct(productTwo);
         recipeElementOne = new ProductAdapter(schema.getProductRecipeElementOne());
         stockRecipeElementOne = StockAdapter.getLatestItemByProduct(recipeElementOne);
-        receiptSaleTwo = new ReceiptRecordAdapter(schema.getReceiptRecordSaleTwo());
+        receiptSaleTwo = new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordTwo());
         stockInitialSoldQuantity = stockRecipeElementOne.getAdaptee().getSoldQuantity();
         stockInitialPurchasedQuantity = stockRecipeElementOne.getAdaptee().getPurchasedQuantity();
         stockInitialInventoryQuantity = stockRecipeElementOne.getAdaptee().getInventoryQuantity();

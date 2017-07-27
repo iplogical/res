@@ -69,6 +69,6 @@ public class RestaurantSummaryController {
     }
 
     private String getPaidConsumption() {
-        return String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> !receipt.getPaymentMethod().equals(PaymentMethod.COUPON)));
+        return String.valueOf(restaurantView.getConsumptionOfTheDay(receiptAdapter -> !receiptAdapter.getAdaptee().getPaymentMethod().equals(PaymentMethod.COUPON)));
     }
 }

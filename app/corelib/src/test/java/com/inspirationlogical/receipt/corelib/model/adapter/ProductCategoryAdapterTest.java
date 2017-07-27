@@ -33,7 +33,7 @@ public class ProductCategoryAdapterTest {
 
     @Before
     public void setUp() {
-        receiptRecordAdapter = new ReceiptRecordAdapter(schema.getReceiptRecordSaleTwo());
+        receiptRecordAdapter = new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordTwo());
         root = new ProductCategoryAdapter(schema.getRoot());
         aggregateOne = new ProductCategoryAdapter(schema.getAggregateOne());
         leafOne = new ProductCategoryAdapter(schema.getLeafOne());

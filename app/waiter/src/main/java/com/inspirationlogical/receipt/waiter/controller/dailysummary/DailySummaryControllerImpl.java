@@ -94,9 +94,9 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void updatePriceFields() {
-        cashTotalPrice.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> receipt.getPaymentMethod().equals(PaymentMethod.CASH))));
-        creditCardTotalPrice.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> receipt.getPaymentMethod().equals(PaymentMethod.CREDIT_CARD))));
-        couponTotalPrice.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> receipt.getPaymentMethod().equals(PaymentMethod.COUPON))));
+        cashTotalPrice.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> receipt.getAdaptee().getPaymentMethod().equals(PaymentMethod.CASH))));
+        creditCardTotalPrice.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> receipt.getAdaptee().getPaymentMethod().equals(PaymentMethod.CREDIT_CARD))));
+        couponTotalPrice.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(receipt -> receipt.getAdaptee().getPaymentMethod().equals(PaymentMethod.COUPON))));
         openConsumption.setText(openConsumptionString);
         int totalPriceInt  = Integer.valueOf(openConsumption.getText()) +
                 + Integer.valueOf(cashTotalPrice.getText())
