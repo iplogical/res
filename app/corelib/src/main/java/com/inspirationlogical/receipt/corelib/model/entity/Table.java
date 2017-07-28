@@ -14,10 +14,11 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Builder
-@EqualsAndHashCode(callSuper = true, exclude = {"owner", "consumer", "consumed"})
+@EqualsAndHashCode(callSuper = true, exclude = {"owner", "consumer", "consumed", "host", "hosted"})
 @javax.persistence.Table(name = "_TABLE")
 @NamedQueries({
     @NamedQuery(name = Table.GET_ALL_TABLES,

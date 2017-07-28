@@ -53,15 +53,36 @@ public class TableAdapter extends AbstractAdapter<Table> {
                 .collect(toList());
     }
 
-    public static List<Table> getTablesByType(TableType tableType) {
-        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_TYPE,
-                query -> {query.setParameter("type", tableType);
-                    return query;});
+    public static List<TableAdapter> getTablesByType(TableType tableType) {
+        List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_TYPE,
+                query -> query.setParameter("type", tableType));
+        return tables.stream()
+                .map(TableAdapter::new)
+                .collect(toList());
     }
 
     public static int getFirstUnusedNumber() {
         List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_FIRST_UNUSED_NUMBER, query -> query);
         return tables.stream().mapToInt(Table::getNumber).min().orElse(0) + 1;
+    }
+
+    public ReceiptAdapter getActiveReceipt() {
+        List<Receipt> adapters = getReceiptsByStatusAndOwner(ReceiptStatus.OPEN, adaptee.getNumber());
+        if (adapters.size() == 0) {
+            return null;
+        } else if (adapters.size() > 1) {
+            throw new RuntimeException();
+        }
+        return new ReceiptAdapter(adapters.get(0));
+    }
+
+    private List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
+        return GuardedTransaction.runNamedQuery(GET_RECEIPT_BY_STATUS_AND_OWNER, GRAPH_RECEIPT_AND_RECORDS,
+                query -> {
+                    query.setParameter("status", status);
+                    query.setParameter("number", tableNumber);
+                    return query;
+                });
     }
 
     public void updateStock(List<StockParams> paramsList, ReceiptType receiptType) {
@@ -75,14 +96,9 @@ public class TableAdapter extends AbstractAdapter<Table> {
                                                     .build());
     }
 
-    public ReceiptAdapter getActiveReceipt() {
-        List<Receipt> adapters = getReceiptsByStatusAndOwner(ReceiptStatus.OPEN, adaptee.getNumber());
-        if (adapters.size() == 0) {
-            return null;
-        } else if (adapters.size() > 1) {
-            throw new RuntimeException();
-        }
-        return new ReceiptAdapter(adapters.get(0));
+    private void bindReceiptToTable(ReceiptAdapter receiptAdapter) {
+        receiptAdapter.getAdaptee().setOwner(adaptee);
+        adaptee.getReceipts().add(receiptAdapter.getAdaptee());
     }
 
     public TableAdapter getConsumer() {
@@ -96,18 +112,31 @@ public class TableAdapter extends AbstractAdapter<Table> {
         return new TableAdapter(adaptee.getHost());
     }
 
-    public void setName(String name) {
-        GuardedTransaction.run(() -> adaptee.setName(name));
+    public void setHost(int tableNumber) {
+        GuardedTransaction.run(() -> {
+            removePreviousHost();
+            setNewHost(tableNumber);
+        });
+    }
+
+    public void removePreviousHost() {
+        adaptee.setHost(null);
+    }
+
+    private void setNewHost(int tableNumber) {
+        if(tableNumber != adaptee.getNumber()) {    // Prevent a table being hosted by itself.
+            adaptee.setHost(TableAdapter.getTableByNumber(tableNumber).getAdaptee());
+        }
     }
 
     public void setNumber(int tableNumber) {
         GuardedTransaction.run(() -> {
-            if(adaptee.getHost() != null) {
-                adaptee.getHost().getHosted().remove(adaptee);
-                adaptee.setHost(null);
-            }
             adaptee.setNumber(tableNumber);
         });
+    }
+
+    public void setName(String name) {
+        GuardedTransaction.run(() -> adaptee.setName(name));
     }
 
     public void setType(TableType tableType) {
@@ -175,6 +204,15 @@ public class TableAdapter extends AbstractAdapter<Table> {
         setDefaultTableParams();
     }
 
+    private void setDefaultTableParams() {
+        if(TableType.isVirtualTable(adaptee.getType())) return;
+        GuardedTransaction.run(() -> {
+            adaptee.setName("");
+            adaptee.setGuestCount(0);
+            adaptee.setNote("");
+        });
+    }
+
     public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
         ReceiptAdapter activeReceipt = getActiveReceipt();
         if(activeReceipt == null) {
@@ -191,8 +229,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
             throw new IllegalTableStateException("Delete table for a consumer table. Table number: " + adaptee.getNumber());
         }
         GuardedTransaction.run(() -> {
-            List<Table> orphanageList = getTablesByType(TableType.ORPHANAGE);
-            Table orphanage = orphanageList.get(0);
+            Table orphanage = getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee();
             if(orphanage.getReceipts() == null)
                 orphanage.setReceipts(new ArrayList<>());
             orphanage.getReceipts().addAll(adaptee.getReceipts().stream()
@@ -229,52 +266,12 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public List<Table> getConsumedTables() {
-        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_CONSUMER, query -> {
-            query.setParameter("consumer", adaptee);
-            return query;
-        });
+        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_CONSUMER, query ->
+            query.setParameter("consumer", adaptee));
     }
 
     public List<Table> getHostedTables() {
-        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_HOST, query -> {
-            query.setParameter("host", adaptee);
-            return query;
-        });
-    }
-
-    public void setHost(int tableNumber) {
-        GuardedTransaction.run(() -> {
-            if(adaptee.getHost() != null) {
-                adaptee.getHost().getHosted().remove(adaptee);
-            }
-            if(tableNumber == adaptee.getNumber()) {
-                adaptee.setHost(null);  // Prevent a table being hosted by itself.
-                return;
-            }
-            adaptee.setHost(TableAdapter.getTableByNumber(tableNumber).getAdaptee());
-        });
-    }
-
-    private void setDefaultTableParams() {
-        if(TableType.isVirtualTable(adaptee.getType())) return;
-        GuardedTransaction.run(() -> {
-            adaptee.setName("");
-            adaptee.setGuestCount(0);
-            adaptee.setNote("");
-        });
-    }
-
-    private List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
-        return GuardedTransaction.runNamedQuery(GET_RECEIPT_BY_STATUS_AND_OWNER, GRAPH_RECEIPT_AND_RECORDS,
-                query -> {
-                    query.setParameter("status", status);
-                    query.setParameter("number", tableNumber);
-                    return query;
-                });
-    }
-
-    private void bindReceiptToTable(ReceiptAdapter receiptAdapter) {
-        receiptAdapter.getAdaptee().setOwner(adaptee);
-        adaptee.getReceipts().add(receiptAdapter.getAdaptee());
+        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_HOST, query ->
+            query.setParameter("host", adaptee));
     }
 }

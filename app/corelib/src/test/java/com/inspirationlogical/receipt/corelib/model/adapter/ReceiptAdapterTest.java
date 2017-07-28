@@ -219,7 +219,6 @@ public class ReceiptAdapterTest {
             schema.getReceiptSaleOne().setClosureTime(LocalDateTime.now());
         });
         receiptSaleOne.close(paymentParams);
-        assertEquals(850, receiptSaleOne.getAdaptee().getSumPurchaseGrossPrice());
     }
 
     @Test

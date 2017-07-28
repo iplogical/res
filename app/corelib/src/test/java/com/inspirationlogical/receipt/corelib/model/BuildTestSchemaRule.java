@@ -1647,6 +1647,7 @@ public class BuildTestSchemaRule implements TestRule {
     private void tables() {
         tableAggregate.setConsumed(Collections.singletonList(tableConsumed));
         tableConsumed.setConsumer(tableAggregate);
+        tableFrequenter.setHost(tableNormal);
     }
 
     private void tablesAndReceipts() {

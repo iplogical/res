@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.canBeHosted;
+import static com.inspirationlogical.receipt.corelib.model.enums.TableType.canBeHosted;
 import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDate;
@@ -74,6 +74,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
             }
             return;
         }
+        getTableAdapter(tableView).removePreviousHost();
         getTableAdapter(tableView).setNumber(tableNumber);
     }
 

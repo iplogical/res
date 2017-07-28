@@ -248,21 +248,8 @@ public class RestaurantControllerImpl implements RestaurantController {
         TableView previousHost = tableView.getHost();
 
         try {
-            if (tableView.getDisplayedNumber() != number) {
-                restaurantService.setTableNumber(tableView, number, restaurantView);
-            }
-
-            restaurantService.setTableType(tableView, tableView.getType());
-            restaurantService.setTableCapacity(tableView, capacity);
-            restaurantService.setTableName(tableView, name);
-            restaurantService.setGuestCount(tableView, guestCount);
-            restaurantService.addTableNote(tableView, note);
-            restaurantService.setTableDimension(tableView, dimension);
-
-            tableForm.hide();
-
-            Node node = tableController.getRoot();
-            addNodeToPane(node, restaurantViewState.getTableType());
+            setTableParams(name, guestCount, note, number, capacity, dimension, tableView);
+            addNodeToPane(tableController.getRoot(), restaurantViewState.getTableType());
             tableController.updateNode();
             updateHostNodes(tableView, previousHost);
             updateRestaurantSummary();
@@ -273,6 +260,19 @@ public class RestaurantControllerImpl implements RestaurantController {
         } catch (Exception e) {
             initRestaurant();
         }
+    }
+
+    private void setTableParams(String name, Integer guestCount, String note, Integer number, Integer capacity, Dimension2D dimension, TableView tableView) {
+        if (tableView.getDisplayedNumber() != number) {
+            restaurantService.setTableNumber(tableView, number, restaurantView);
+        }
+        restaurantService.setTableType(tableView, tableView.getType());
+        restaurantService.setTableCapacity(tableView, capacity);
+        restaurantService.setTableName(tableView, name);
+        restaurantService.setGuestCount(tableView, guestCount);
+        restaurantService.addTableNote(tableView, note);
+        restaurantService.setTableDimension(tableView, dimension);
+        tableForm.hide();
     }
 
     private void updateHostNodes(TableView tableView, TableView previousHost) {

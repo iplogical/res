@@ -6,6 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
+import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
@@ -153,7 +154,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         Receipt aggregatedReceipt = Receipt.builder()
                 .openTime(latestClosure)
                 .closureTime(now())
-                .owner(TableAdapter.getTablesByType(TableType.ORPHANAGE).get(0))
+                .owner(TableAdapter.getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee())
                 .paymentMethod(PaymentMethod.CASH) // TODO: intorduce new payment method for this purpose
                 .status(ReceiptStatus.OPEN)
                 .VATSerie(VATSerieAdapter.vatSerieAdapterFactory().getAdaptee())

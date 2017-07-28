@@ -96,10 +96,8 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public void updateStock(List<StockParams> params, ReceiptType receiptType) {
-        TableAdapter.getTablesByType(TableType.getTableType(receiptType)).stream()
-                .map(TableAdapter::new)
-                .collect(toList())
-                .get(0).updateStock(params, receiptType);
+        TableAdapter.getTablesByType(TableType.getTableType(receiptType)).get(0)
+                .updateStock(params, receiptType);
     }
 
     @Override

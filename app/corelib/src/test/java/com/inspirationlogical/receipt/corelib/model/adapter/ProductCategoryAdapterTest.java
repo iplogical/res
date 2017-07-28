@@ -101,7 +101,6 @@ public class ProductCategoryAdapterTest {
     public void testAddProductNameAlreadyExists() {
         builder.longName("productSix");
         leafOne.addProduct(builder);
-        assertEquals(7, leafOne.getAdaptee().getChildren().size());
     }
 
     @Test
