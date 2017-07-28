@@ -6,11 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
-import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
@@ -151,18 +147,13 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     public void printDailyConsumption() {
         LocalDateTime latestClosure = DailyClosureAdapter.getLatestClosureTime();
         List<ReceiptAdapter> receipts = getReceiptsByClosureTime(latestClosure);
-        Receipt aggregatedReceipt = Receipt.builder()
-                .openTime(latestClosure)
-                .closureTime(now())
-                .owner(TableAdapter.getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee())
-                .paymentMethod(PaymentMethod.CASH) // TODO: intorduce new payment method for this purpose
-                .status(ReceiptStatus.OPEN)
-                .VATSerie(VATSerieAdapter.vatSerieAdapterFactory().getAdaptee())
-                .type(ReceiptType.SALE)
-                .paymentMethod(PaymentMethod.CASH).build();
+        Receipt aggregatedReceipt = buildAggregatedReceipt(latestClosure);
+        Map<PaymentMethod, Integer> salePrices = initSalePrices();
 
         aggregatedReceipt.setId(-1L);
         receipts.forEach(receipt -> {
+            updateSalePrices(receipt, salePrices);
+            receipt.getAdaptee().getSumSaleGrossPrice();
             receipt.getAdaptee().getRecords().forEach(receiptRecord -> {
                 List<ReceiptRecord> aggregatedRecords = aggregatedReceipt.getRecords().stream()
                         .filter(aggregatedRecord -> aggregatedRecord.getName().equals(receiptRecord.getName()))
@@ -172,21 +163,72 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                             return aggregatedRecord;
                         }).collect(Collectors.toList());
                 if (aggregatedRecords.isEmpty()) {
-                    aggregatedReceipt.getRecords().add(ReceiptRecord.builder()
-                            .product(receiptRecord.getProduct())
-                            .type(receiptRecord.getType())
-                            .name(receiptRecord.getName())
-                            .soldQuantity(receiptRecord.getSoldQuantity())
-                            .purchasePrice(receiptRecord.getPurchasePrice())
-                            .salePrice(receiptRecord.getSalePrice())
-                            .VAT(receiptRecord.getVAT())
-                            .discountPercent(receiptRecord.getDiscountPercent())
-                            .build());
+                    aggregatedReceipt.getRecords().add(buildReceiptRecord(receiptRecord));
                 }
             });
         });
         aggregatedReceipt.getRecords().sort(Comparator.comparing(ReceiptRecord::getSoldQuantity).reversed());
+        addSalePrices(aggregatedReceipt, salePrices);
         ReceiptAdapter adapter = new ReceiptAdapter(aggregatedReceipt);
         new ReceiptPrinter().onClose(adapter);
     }
+
+    private Map<PaymentMethod, Integer> initSalePrices() {
+        Map<PaymentMethod, Integer> salePrices = new HashMap<>();
+        salePrices.put(PaymentMethod.CASH, 0);
+        salePrices.put(PaymentMethod.CREDIT_CARD, 0);
+        salePrices.put(PaymentMethod.COUPON, 0);
+        return salePrices;
+    }
+
+    private void updateSalePrices(ReceiptAdapter receipt, Map<PaymentMethod, Integer> salePrices) {
+        int salePrice = salePrices.get(receipt.getAdaptee().getPaymentMethod());
+        salePrices.put(receipt.getAdaptee().getPaymentMethod(), salePrice + receipt.getAdaptee().getSumSaleGrossPrice());
+    }
+
+    private Receipt buildAggregatedReceipt(LocalDateTime latestClosure) {
+        return Receipt.builder()
+                .records(new ArrayList<>())
+                .openTime(latestClosure)
+                .closureTime(now())
+                .owner(TableAdapter.getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee())
+                .paymentMethod(PaymentMethod.CASH) // TODO: intorduce new payment method for this purpose
+                .status(ReceiptStatus.OPEN)
+                .VATSerie(VATSerieAdapter.vatSerieAdapterFactory().getAdaptee())
+                .type(ReceiptType.SALE)
+                .paymentMethod(PaymentMethod.CASH).build();
+    }
+
+    private ReceiptRecord buildReceiptRecord(ReceiptRecord receiptRecord) {
+        return ReceiptRecord.builder()
+                .product(receiptRecord.getProduct())
+                .type(receiptRecord.getType())
+                .name(receiptRecord.getName())
+                .soldQuantity(receiptRecord.getSoldQuantity())
+                .purchasePrice(receiptRecord.getPurchasePrice())
+                .salePrice(receiptRecord.getSalePrice())
+                .VAT(receiptRecord.getVAT())
+                .discountPercent(receiptRecord.getDiscountPercent())
+                .build();
+    }
+
+    private void addSalePrices(Receipt aggregatedReceipt, Map<PaymentMethod, Integer> salePrices) {
+        for(PaymentMethod m : salePrices.keySet()) {
+            aggregatedReceipt.getRecords().add(buildSalePricesReceiptRecord(salePrices, m));
+        }
+    }
+
+    private ReceiptRecord buildSalePricesReceiptRecord(Map<PaymentMethod, Integer> salePrices, PaymentMethod paymentMethod) {
+        return ReceiptRecord.builder()
+                .product(null)
+                .type(ReceiptRecordType.HERE)
+                .name(paymentMethod.toString())
+                .soldQuantity(0)
+                .purchasePrice(0)
+                .salePrice(salePrices.get(paymentMethod))
+                .VAT(0)
+                .discountPercent(0)
+                .build();
+    }
+
 }
