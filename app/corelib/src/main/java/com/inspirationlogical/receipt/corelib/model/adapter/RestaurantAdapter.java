@@ -9,7 +9,6 @@ import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -65,71 +64,63 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     }
 
     public void mergeTables(TableAdapter consumer, List<TableAdapter> consumed) {
-        if (!consumer.isTableOpen() && consumed.stream().anyMatch(TableAdapter::isTableOpen)) {
+        openConsumerIfClosed(consumer);
+        GuardedTransaction.run(() -> {
+            addConsumedTablesToConsumer(consumer, consumed);
+            moveConsumedRecordsToConsumer(consumer, consumed);
+        });
+    }
+    
+    private void openConsumerIfClosed(TableAdapter consumer) {
+        if (!consumer.isTableOpen()) {
             consumer.openTable();
         }
-        // todo refactor this method into smaller ones
-        GuardedTransaction.run(() -> {
-            List<ReceiptRecord> consumedRecords = consumed.stream()
-                    .map(TableAdapter::getActiveReceipt)
-                    .filter(Objects::nonNull)
-                    .map(receiptAdapter -> {
-                        Wrapper<ReceiptAdapter> receiptAdapterWrapper = new Wrapper<>();
-                        receiptAdapterWrapper.setContent(consumer.getActiveReceipt());
-                        Collection<ReceiptRecordAdapter> receiptRecordAdapters = receiptAdapter.getSoldProducts();
-                        receiptAdapter.getAdaptee().setStatus(ReceiptStatus.CANCELED);
-                        receiptAdapter.getAdaptee().getRecords().clear();
-                        receiptRecordAdapters.forEach(receiptRecordAdapter -> receiptRecordAdapter
-                                .getAdaptee()
-                                .setOwner(receiptAdapterWrapper.getContent().getAdaptee()));
-                        return receiptRecordAdapters;
-                    })
-                    .flatMap(record -> record.stream().map(ReceiptRecordAdapter::getAdaptee))
-                    .collect(Collectors.toList());
+    }
 
-            if (consumer.isTableOpen()) {
-                consumer.getActiveReceipt().getAdaptee().getRecords().addAll(consumedRecords);
+    private void addConsumedTablesToConsumer(TableAdapter consumer, List<TableAdapter> consumed) {
+        consumed.forEach(consumedTableAdapter -> {
+            if (consumedTableAdapter.isConsumerTable()) {
+                throw new IllegalTableStateException("");
             }
-        });
-
-
-        GuardedTransaction.run(() -> {
-            consumer.getAdaptee().setConsumed(new ArrayList<>());
-            consumed.forEach(adapter -> {
-                Table table = adapter.getAdaptee();
-
-                Collection<Receipt> receipts = table.getReceipts();
-                if (receipts != null) {
-                    receipts.forEach(receipt -> receipt.setOwner(consumer.getAdaptee()));
-                    consumer.getAdaptee().getReceipts().addAll(receipts);
-                    receipts.clear();
-                }
-
-                table.setConsumer(consumer.getAdaptee());
-                consumer.getAdaptee().getConsumed().add(table);
-                if (adapter.isTableConsumer()) {
-                    for (Table t : table.getConsumed()) {
-                        t.setConsumer(consumer.getAdaptee());
-                        consumer.getAdaptee().getConsumed().add(t);
-                    }
-                }
-                adapter.hideTable();
-            });
+            consumedTableAdapter.hideTable();
+            bindConsumedToConsumer(consumer.getAdaptee(), consumedTableAdapter.getAdaptee());
         });
     }
 
+    private void bindConsumedToConsumer(Table consumer, Table consumedTable) {
+        consumedTable.setConsumer(consumer);
+        consumer.getConsumed().add(consumedTable);
+    }
+
+    private void moveConsumedRecordsToConsumer(TableAdapter consumer, List<TableAdapter> consumed) {
+        Receipt consumerReceipt = consumer.getOpenReceipt().getAdaptee();
+        List<ReceiptRecord> consumedRecords = consumed.stream()
+                .map(TableAdapter::getOpenReceipt)
+                .filter(Objects::nonNull)
+                .map(ReceiptAdapter::getAdaptee)
+                .map(receipt -> {
+                    List<ReceiptRecord> receiptRecords = new ArrayList<>();
+                    receiptRecords.addAll(receipt.getRecords());
+                    receiptRecords.forEach(receiptRecord ->
+                            receiptRecord.setOwner(consumerReceipt));
+                    receipt.setStatus(ReceiptStatus.CANCELED);
+                    receipt.getRecords().clear();
+                    return receiptRecords;
+                })
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        consumerReceipt.getRecords().addAll(consumedRecords);
+    }
+
     public List<TableAdapter> splitTables(TableAdapter consumer) {
-
         List<Table> consumed = consumer.getConsumedTables();
-
         GuardedTransaction.run(() -> {
-            consumer.getConsumedTables().clear();
+            consumer.getAdaptee().setConsumed(new ArrayList<>());
             consumed.forEach(table -> {
                 table.setConsumer(null);
                 table.setVisible(true);
             });
         });
-
         return consumed.stream().map(TableAdapter::new).collect(Collectors.toList());
     }
 
@@ -145,35 +136,43 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     }
 
     public void printDailyConsumption() {
+        ReceiptAdapter receiptAdapter = createReceiptOfDailyConsumption();
+        new ReceiptPrinter().onClose(receiptAdapter);
+    }
+
+    ReceiptAdapter createReceiptOfDailyConsumption() {
         LocalDateTime latestClosure = DailyClosureAdapter.getLatestClosureTime();
         List<ReceiptAdapter> receipts = getReceiptsByClosureTime(latestClosure);
         Receipt aggregatedReceipt = buildAggregatedReceipt(latestClosure);
-        Map<PaymentMethod, Integer> salePrices = initSalePrices();
-
-        aggregatedReceipt.setId(-1L);
+        Map<PaymentMethod, Integer> incomesByPaymentMethod = initIncomes();
         receipts.forEach(receipt -> {
-            updateSalePrices(receipt, salePrices);
-            receipt.getAdaptee().getSumSaleGrossPrice();
+            updateIncomes(receipt, incomesByPaymentMethod);
             receipt.getAdaptee().getRecords().forEach(receiptRecord -> {
-                List<ReceiptRecord> aggregatedRecords = aggregatedReceipt.getRecords().stream()
-                        .filter(aggregatedRecord -> aggregatedRecord.getName().equals(receiptRecord.getName()))
-                        .filter(aggregatedRecord -> aggregatedRecord.getDiscountPercent() == receiptRecord.getDiscountPercent())
-                        .map(aggregatedRecord -> {
-                            aggregatedRecord.setSoldQuantity(aggregatedRecord.getSoldQuantity() + receiptRecord.getSoldQuantity());
-                            return aggregatedRecord;
-                        }).collect(Collectors.toList());
-                if (aggregatedRecords.isEmpty()) {
-                    aggregatedReceipt.getRecords().add(buildReceiptRecord(receiptRecord));
-                }
+                mergeReceiptRecords(aggregatedReceipt, receiptRecord);
             });
         });
         aggregatedReceipt.getRecords().sort(Comparator.comparing(ReceiptRecord::getSoldQuantity).reversed());
-        addSalePrices(aggregatedReceipt, salePrices);
-        ReceiptAdapter adapter = new ReceiptAdapter(aggregatedReceipt);
-        new ReceiptPrinter().onClose(adapter);
+        addIncomesAsReceiptRecord(aggregatedReceipt, incomesByPaymentMethod);
+        return new ReceiptAdapter(aggregatedReceipt);
     }
 
-    private Map<PaymentMethod, Integer> initSalePrices() {
+    private Receipt buildAggregatedReceipt(LocalDateTime latestClosure) {
+        Receipt receipt = Receipt.builder()
+                .records(new ArrayList<>())
+                .openTime(latestClosure)
+                .closureTime(now())
+                .owner(TableAdapter.getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee())
+                .paymentMethod(PaymentMethod.CASH)
+                .status(ReceiptStatus.OPEN)
+                .VATSerie(VATSerieAdapter.vatSerieAdapterFactory().getAdaptee())
+                .type(ReceiptType.SALE)
+                .paymentMethod(PaymentMethod.CASH)
+                .build();
+        receipt.setId(-1L);
+        return receipt;
+    }
+
+    private Map<PaymentMethod, Integer> initIncomes() {
         Map<PaymentMethod, Integer> salePrices = new HashMap<>();
         salePrices.put(PaymentMethod.CASH, 0);
         salePrices.put(PaymentMethod.CREDIT_CARD, 0);
@@ -181,22 +180,26 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         return salePrices;
     }
 
-    private void updateSalePrices(ReceiptAdapter receipt, Map<PaymentMethod, Integer> salePrices) {
-        int salePrice = salePrices.get(receipt.getAdaptee().getPaymentMethod());
-        salePrices.put(receipt.getAdaptee().getPaymentMethod(), salePrice + receipt.getAdaptee().getSumSaleGrossPrice());
+    private void updateIncomes(ReceiptAdapter receipt, Map<PaymentMethod, Integer> incomes) {
+        int salePrice = incomes.get(receipt.getAdaptee().getPaymentMethod());
+        incomes.put(receipt.getAdaptee().getPaymentMethod(), salePrice + receipt.getAdaptee().getSumSaleGrossPrice());
     }
 
-    private Receipt buildAggregatedReceipt(LocalDateTime latestClosure) {
-        return Receipt.builder()
-                .records(new ArrayList<>())
-                .openTime(latestClosure)
-                .closureTime(now())
-                .owner(TableAdapter.getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee())
-                .paymentMethod(PaymentMethod.CASH) // TODO: intorduce new payment method for this purpose
-                .status(ReceiptStatus.OPEN)
-                .VATSerie(VATSerieAdapter.vatSerieAdapterFactory().getAdaptee())
-                .type(ReceiptType.SALE)
-                .paymentMethod(PaymentMethod.CASH).build();
+    private void mergeReceiptRecords(Receipt aggregatedReceipt, ReceiptRecord receiptRecord) {
+        List<ReceiptRecord> aggregatedRecords = aggregatedReceipt.getRecords().stream()
+                .filter(sameNameAndDiscount(receiptRecord))
+                .map(aggregatedRecord -> {
+                    aggregatedRecord.setSoldQuantity(aggregatedRecord.getSoldQuantity() + receiptRecord.getSoldQuantity());
+                    return aggregatedRecord;
+                }).collect(Collectors.toList());
+        if (aggregatedRecords.isEmpty()) {
+            aggregatedReceipt.getRecords().add(buildReceiptRecord(receiptRecord));
+        }
+    }
+
+    private Predicate<ReceiptRecord> sameNameAndDiscount(ReceiptRecord receiptRecord) {
+        return aggregatedRecord -> aggregatedRecord.getName().equals(receiptRecord.getName()) &&
+                aggregatedRecord.getDiscountPercent() == receiptRecord.getDiscountPercent();
     }
 
     private ReceiptRecord buildReceiptRecord(ReceiptRecord receiptRecord) {
@@ -212,13 +215,13 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                 .build();
     }
 
-    private void addSalePrices(Receipt aggregatedReceipt, Map<PaymentMethod, Integer> salePrices) {
+    private void addIncomesAsReceiptRecord(Receipt aggregatedReceipt, Map<PaymentMethod, Integer> salePrices) {
         for(PaymentMethod m : salePrices.keySet()) {
-            aggregatedReceipt.getRecords().add(buildSalePricesReceiptRecord(salePrices, m));
+            aggregatedReceipt.getRecords().add(buildIncomeReceiptRecord(salePrices, m));
         }
     }
 
-    private ReceiptRecord buildSalePricesReceiptRecord(Map<PaymentMethod, Integer> salePrices, PaymentMethod paymentMethod) {
+    private ReceiptRecord buildIncomeReceiptRecord(Map<PaymentMethod, Integer> salePrices, PaymentMethod paymentMethod) {
         return ReceiptRecord.builder()
                 .product(null)
                 .type(ReceiptRecordType.HERE)
@@ -230,5 +233,4 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                 .discountPercent(0)
                 .build();
     }
-
 }

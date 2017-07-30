@@ -20,8 +20,6 @@ import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
-import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
-import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 
 /**
  * Created by Bálint on 2017.03.15..
@@ -77,11 +75,11 @@ public class RetailServiceTest {
         //given
         when(tableView.getAdapter()).thenReturn(tableAdapter);
         when(productView.getAdapter()).thenReturn(productAdapter);
-        when(tableAdapter.getActiveReceipt()).thenReturn(receiptAdapter);
+        when(tableAdapter.getOpenReceipt()).thenReturn(receiptAdapter);
         //when
         service.sellProduct(tableView, productView, 1, false, false);
         //then
-        verify(tableAdapter).getActiveReceipt();
+        verify(tableAdapter).getOpenReceipt();
         verify(receiptAdapter).sellProduct(productAdapter, 1, false, false);
     }
 
@@ -90,11 +88,11 @@ public class RetailServiceTest {
         //given
         when(tableView.getAdapter()).thenReturn(tableAdapter);
         when(productView.getAdapter()).thenReturn(productAdapter);
-        when(tableAdapter.getActiveReceipt()).thenReturn(receiptAdapter);
+        when(tableAdapter.getOpenReceipt()).thenReturn(receiptAdapter);
         //when
         service.sellAdHocProduct(tableView, adHocParams, true);
         //then
-        verify(tableAdapter).getActiveReceipt();
+        verify(tableAdapter).getOpenReceipt();
         verify(receiptAdapter).sellAdHocProduct(adHocParams, true);
     }
 

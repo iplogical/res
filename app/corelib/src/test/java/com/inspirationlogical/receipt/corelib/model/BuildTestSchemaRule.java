@@ -148,7 +148,7 @@ public class BuildTestSchemaRule implements TestRule {
     
     private @Getter Table tableNormal;
     private @Getter Table tableNormalClosed;
-    private @Getter Table tableAggregate;
+    private @Getter Table tableConsumer;
     private @Getter Table tableConsumed;
     private @Getter Table tableLoiterer;
     private @Getter Table tableFrequenter;
@@ -1025,6 +1025,10 @@ public class BuildTestSchemaRule implements TestRule {
                 .paymentMethod(PaymentMethod.CREDIT_CARD)
                 .openTime(LocalDateTime.now())
                 .closureTime(LocalDateTime.now())
+                .sumPurchaseGrossPrice(2500)
+                .sumPurchaseNetPrice(2000)
+                .sumSaleGrossPrice(5000)
+                .sumSaleNetPrice(4000)
                 .client(buildDefaultClient())
                 .build();
     }
@@ -1047,6 +1051,10 @@ public class BuildTestSchemaRule implements TestRule {
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(LocalDateTime.now())
                 .closureTime(LocalDateTime.now())
+                .sumPurchaseGrossPrice(2500)
+                .sumPurchaseNetPrice(2000)
+                .sumSaleGrossPrice(5000)
+                .sumSaleNetPrice(4000)
                 .discountPercent(20)
                 .client(buildDefaultClient())
                 .build();
@@ -1060,6 +1068,10 @@ public class BuildTestSchemaRule implements TestRule {
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(LocalDateTime.now())
                 .closureTime(LocalDateTime.now())
+                .sumPurchaseGrossPrice(2500)
+                .sumPurchaseNetPrice(2000)
+                .sumSaleGrossPrice(5000)
+                .sumSaleNetPrice(4000)
                 .discountPercent(0)
                 .client(buildDefaultClient())
                 .build();
@@ -1150,6 +1162,7 @@ public class BuildTestSchemaRule implements TestRule {
         receiptSaleTwoRecordOne = ReceiptRecord.builder()
                 .name("C")
                 .soldQuantity(1D)
+                .salePrice(1000)
                 .type(ReceiptRecordType.HERE)
                 .createdList(new ArrayList<>())
                 .build();
@@ -1159,6 +1172,7 @@ public class BuildTestSchemaRule implements TestRule {
         receiptSaleTwoRecordTwo = ReceiptRecord.builder()
                 .name("D")
                 .soldQuantity(0.5)
+                .salePrice(2000)
                 .type(ReceiptRecordType.HERE)
                 .createdList(new ArrayList<>())
                 .build();
@@ -1354,7 +1368,7 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void buildTableConsumer() {
-        tableAggregate = Table.builder()
+        tableConsumer = Table.builder()
                 .number(4)
                 .name("Összetolt Ödön")
                 .type(TableType.NORMAL)
@@ -1645,8 +1659,8 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     private void tables() {
-        tableAggregate.setConsumed(Collections.singletonList(tableConsumed));
-        tableConsumed.setConsumer(tableAggregate);
+        tableConsumer.setConsumed(Collections.singletonList(tableConsumed));
+        tableConsumed.setConsumer(tableConsumer);
         tableFrequenter.setHost(tableNormal);
     }
 
@@ -1744,12 +1758,12 @@ public class BuildTestSchemaRule implements TestRule {
     private void restaurantAndTables() {
         //FIXME: Add service for building special tables in production
         restaurant.setTables(new HashSet<>(
-                Arrays.asList(tableNormal, tableNormalClosed, tableAggregate, tableConsumed, tableLoiterer,
+                Arrays.asList(tableNormal, tableNormalClosed, tableConsumer, tableConsumed, tableLoiterer,
                         tableFrequenter, tableEmployee, tablePurchase, tableInventory, tableDisposal, tableOther,
                         tableOrphanage)));
         tableNormal.setOwner(restaurant);
         tableNormalClosed.setOwner(restaurant);
-        tableAggregate.setOwner(restaurant);
+        tableConsumer.setOwner(restaurant);
         tableConsumed.setOwner(restaurant);
         tableLoiterer.setOwner(restaurant);
         tableFrequenter.setOwner(restaurant);

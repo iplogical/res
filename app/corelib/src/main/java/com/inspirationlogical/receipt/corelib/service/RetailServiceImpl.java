@@ -22,17 +22,17 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
 
     @Override
     public void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {
-        getTableAdapter(tableView).getActiveReceipt().sellProduct(getProductAdapter(productView), amount, isTakeAway, isGift);
+        getTableAdapter(tableView).getOpenReceipt().sellProduct(getProductAdapter(productView), amount, isTakeAway, isGift);
     }
 
     @Override
     public void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean takeAway) {
-        getTableAdapter(tableView).getActiveReceipt().sellAdHocProduct(adHocProductParams, takeAway);
+        getTableAdapter(tableView).getOpenReceipt().sellAdHocProduct(adHocProductParams, takeAway);
     }
 
     @Override
     public ReceiptRecordView sellGameFee(TableView tableView, int quantity) {
-        return new ReceiptRecordViewImpl(getTableAdapter(tableView).getActiveReceipt().sellGameFee(quantity));
+        return new ReceiptRecordViewImpl(getTableAdapter(tableView).getOpenReceipt().sellGameFee(quantity));
     }
 
     @Override
@@ -47,13 +47,12 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
 
     @Override
     public ReceiptRecordView cloneReceiptRecordView(TableView tableView, ReceiptRecordView receiptRecordView, double amount) {
-        //TODO: Write test!
-        return new ReceiptRecordViewImpl(getTableAdapter(tableView).getActiveReceipt().cloneReceiptRecordAdapter(getReceiptRecordAdapter(receiptRecordView), amount));
+        return new ReceiptRecordViewImpl(getTableAdapter(tableView).getOpenReceipt().cloneReceiptRecordAdapter(getReceiptRecordAdapter(receiptRecordView), amount));
     }
 
     @Override
     public void cancelReceiptRecord(TableView tableView, ReceiptRecordView receiptRecordView) {
-        getTableAdapter(tableView).getActiveReceipt().cancelReceiptRecord(getReceiptRecordAdapter(receiptRecordView));
+        getTableAdapter(tableView).getOpenReceipt().cancelReceiptRecord(getReceiptRecordAdapter(receiptRecordView));
     }
 
     @Override

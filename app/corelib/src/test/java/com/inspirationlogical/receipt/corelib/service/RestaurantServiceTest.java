@@ -190,6 +190,6 @@ public class RestaurantServiceTest {
         //when
         service.getActiveReceipt(tableView);
         //then
-        verify(tableAdapter).getActiveReceipt();
+        verify(tableAdapter).getOpenReceipt();
     }
 }

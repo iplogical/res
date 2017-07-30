@@ -52,7 +52,7 @@ public class TableAdapterTest {
         tableNormalClosed = new TableAdapter(schema.getTableNormalClosed());
         tableFrequenter = new TableAdapter(schema.getTableFrequenter());
         tableLoiterer = new TableAdapter(schema.getTableLoiterer());
-        tableAggregate = new TableAdapter(schema.getTableAggregate());
+        tableAggregate = new TableAdapter(schema.getTableConsumer());
         tableConsumed = new TableAdapter(schema.getTableConsumed());
         tablePurchase = new TableAdapter(schema.getTablePurchase());
         paymentParams = PaymentParams.builder()
@@ -65,7 +65,7 @@ public class TableAdapterTest {
 
     @Test
     public void testNormalTableHasAnActiveReceipt() {
-        assertNotNull(tableNormal.getActiveReceipt());
+        assertNotNull(tableNormal.getOpenReceipt());
     }
 
     @Test
@@ -168,7 +168,7 @@ public class TableAdapterTest {
     @Test
     public void testOpenTable() {
         tableNormalClosed.openTable();
-        assertNotNull(tableNormalClosed.getActiveReceipt());
+        assertNotNull(tableNormalClosed.getOpenReceipt());
     }
 
     @Test(expected = IllegalTableStateException.class)
@@ -179,7 +179,7 @@ public class TableAdapterTest {
     @Test
     public void testPayTable() {
         tableNormal.payTable(paymentParams);
-        assertNull(tableNormal.getActiveReceipt());
+        assertNull(tableNormal.getOpenReceipt());
     }
 
     @Test(expected = IllegalTableStateException.class)
@@ -218,8 +218,8 @@ public class TableAdapterTest {
 
     @Test
     public void testIsTableConsumer() {
-        assertTrue(tableAggregate.isTableConsumer());
-        assertFalse(tableNormalClosed.isTableConsumer());
+        assertTrue(tableAggregate.isConsumerTable());
+        assertFalse(tableNormalClosed.isConsumerTable());
     }
 
     @Test

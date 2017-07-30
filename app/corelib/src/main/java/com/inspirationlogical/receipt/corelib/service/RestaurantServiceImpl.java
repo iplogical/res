@@ -61,7 +61,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public ReceiptView getActiveReceipt(TableView tableView) {
-        return new ReceiptViewImpl(getTableAdapter(tableView).getActiveReceipt());
+        return new ReceiptViewImpl(getTableAdapter(tableView).getOpenReceipt());
     }
 
     @Override

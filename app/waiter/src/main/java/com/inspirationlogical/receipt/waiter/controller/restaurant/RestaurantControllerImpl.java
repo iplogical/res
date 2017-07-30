@@ -372,13 +372,12 @@ public class RestaurantControllerImpl implements RestaurantController {
         if (selectedTables.size() > 1) {
             TableController firstSelected = selectedTables.iterator().next();
             TableView consumer = firstSelected.getView();
-            List<TableView> consumed = new ArrayList<>();
 
-            selectedTables.stream()
-                    .filter(tableController -> !tableController.equals(firstSelected))
-                    .forEach(tableController -> consumed.add(tableController.getView()));
-
-            restaurantService.mergeTables(consumer, consumed);
+            try {
+                restaurantService.mergeTables(consumer, getConsumedTables(firstSelected));
+            } catch (IllegalTableStateException e) {
+                ErrorMessage.showErrorMessage(tablesControl, Resources.WAITER.getString("ConsumerSelectedForMerge"));
+            }
 
             firstSelected.consumeTables();
             firstSelected.updateNode();
@@ -395,6 +394,15 @@ public class RestaurantControllerImpl implements RestaurantController {
         } else {
             ErrorMessage.showErrorMessage(tablesControl, Resources.WAITER.getString("InsufficientSelection"));
         }
+    }
+
+    private List<TableView> getConsumedTables(TableController firstSelected) {
+        List<TableView> consumed = new ArrayList<>();
+
+        selectedTables.stream()
+                .filter(tableController -> !tableController.equals(firstSelected))
+                .forEach(tableController -> consumed.add(tableController.getView()));
+        return consumed;
     }
 
     @Override

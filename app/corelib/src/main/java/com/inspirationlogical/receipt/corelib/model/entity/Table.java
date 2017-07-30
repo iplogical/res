@@ -99,7 +99,7 @@ public @Data class Table extends AbstractEntity {
             name = "_table_consumer_relations",
             joinColumns = @JoinColumn(name = "consumer", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)),
             inverseJoinColumns = @JoinColumn(name = "consumed", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)))
-    private Collection<Table> consumed = new ArrayList<>();
+    private List<Table> consumed = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))

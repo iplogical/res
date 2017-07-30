@@ -20,7 +20,7 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
 
     @Override
     public boolean isOpen() {
-        return adapter.getActiveReceipt() != null;
+        return adapter.getOpenReceipt() != null;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
 
     @Override
     public boolean isConsumer() {
-        return adapter.isTableConsumer();
+        return adapter.isConsumerTable();
     }
 
     @Override
@@ -111,7 +111,7 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
         if(adapter == null ) {
             return 0;
         }
-        return adapter.getActiveReceipt().getTotalPrice();
+        return adapter.getOpenReceipt().getTotalPrice();
     }
 
     @Override

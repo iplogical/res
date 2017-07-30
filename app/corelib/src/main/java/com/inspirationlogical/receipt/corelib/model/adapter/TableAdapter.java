@@ -4,7 +4,6 @@ import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RE
 import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
 import static java.util.stream.Collectors.toList;
 
-import java.security.Guard;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -66,7 +65,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         return tables.stream().mapToInt(Table::getNumber).min().orElse(0) + 1;
     }
 
-    public ReceiptAdapter getActiveReceipt() {
+    public ReceiptAdapter getOpenReceipt() {
         List<Receipt> adapters = getReceiptsByStatusAndOwner(ReceiptStatus.OPEN, adaptee.getNumber());
         if (adapters.size() == 0) {
             return null;
@@ -200,7 +199,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         if (!isTableOpen()) {
             throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
         }
-        getActiveReceipt().close(paymentParams);
+        getOpenReceipt().close(paymentParams);
         setDefaultTableParams();
     }
 
@@ -214,7 +213,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-        ReceiptAdapter activeReceipt = getActiveReceipt();
+        ReceiptAdapter activeReceipt = getOpenReceipt();
         if(activeReceipt == null) {
             throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
         }
@@ -225,7 +224,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         if (isTableOpen()) {
             throw new IllegalTableStateException("Delete table for an open table. Table number: " + adaptee.getNumber());
         }
-        if (isTableConsumer()) {
+        if (isConsumerTable()) {
             throw new IllegalTableStateException("Delete table for a consumer table. Table number: " + adaptee.getNumber());
         }
         GuardedTransaction.run(() -> {
@@ -246,10 +245,10 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public boolean isTableOpen() {
-        return this.getActiveReceipt() != null;
+        return this.getOpenReceipt() != null;
     }
 
-    public boolean isTableConsumer() {
+    public boolean isConsumerTable() {
         return !this.getConsumedTables().isEmpty();
     }
 
