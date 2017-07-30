@@ -39,7 +39,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
 
     public TableAdapter addTable(Table.TableBuilder builder) {
         Table newTable = builder.build();
-        if (isTableNumberAlreadyInUse(newTable.getNumber(), newTable.getType())) {
+        if (isTableNumberAlreadyInUse(newTable.getNumber())) {
             if(canBeHosted(newTable.getType())) {
                 newTable.setHost(TableAdapter.getTableByNumber(newTable.getNumber()).getAdaptee());
                 newTable.setNumber(TableAdapter.getFirstUnusedNumber());
@@ -55,7 +55,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     }
 
 
-    public boolean isTableNumberAlreadyInUse(int tableNumber, TableType tableType) {
+    public boolean isTableNumberAlreadyInUse(int tableNumber) {
         for (Table table : adaptee.getTables()) {
             if (table.getNumber() == tableNumber) {
                 return true;
