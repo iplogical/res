@@ -36,7 +36,7 @@ public class SaleControllerInitializer {
     }
 
     private void initializeQuickSearchAndSellHandler() {
-        s.root.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
+        s.rootSale.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
             switch (keyEvent.getCode()) {
                 case ENTER:
                     if (s.productController.getSearchedProducts().size() == 1) {

@@ -28,4 +28,10 @@ public class JavaFXIds {
     public final static String GUEST_MINUS = "#guestMinus";
     public final static String TABLE_NUMBER = "#tableNumber";
 
+    public final static String SOLD_PRODUCTS_TABLE = "#soldProductsTable";
+    public final static String PRODUCT_NAME = "#productName";
+    public final static String PRODUCT_QUANTITY = "#productQuantity";
+    public final static String PRODUCT_UNIT_PRICE = "#productUnitPrice";
+    public final static String PRODUCT_TOTAL_PRICE = "#productTotalPrice";
+
 }

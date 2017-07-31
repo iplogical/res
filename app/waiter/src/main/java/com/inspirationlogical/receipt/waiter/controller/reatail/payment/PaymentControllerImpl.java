@@ -32,7 +32,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public static final String PAYMENT_VIEW_PATH = "/view/fxml/Payment.fxml";
 
     @FXML
-    private BorderPane root;
+    private BorderPane rootPayment;
 
     @FXML
     RadioButton paymentMethodCash;
@@ -123,7 +123,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public Node getRootNode() {
-        return root;
+        return rootPayment;
     }
 
     @Override

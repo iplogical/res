@@ -42,7 +42,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private final int GRID_SIZE = 4;
 
     @FXML
-    BorderPane root;
+    BorderPane rootSale;
 
     @FXML
     GridPane categoriesGrid;
@@ -133,7 +133,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public Node getRootNode() {
-        return root;
+        return rootSale;
     }
 
     @Override
@@ -192,7 +192,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         adHocProductForm = new Popup();
         adHocProductForm.getContent().add(viewLoader.loadView(adHocProductFormController));
         adHocProductFormController.loadAdHocProductForm(this);
-        showPopup(adHocProductForm, adHocProductFormController, root, new Point2D(520, 200));
+        showPopup(adHocProductForm, adHocProductFormController, rootSale, new Point2D(520, 200));
     }
 
     @FXML

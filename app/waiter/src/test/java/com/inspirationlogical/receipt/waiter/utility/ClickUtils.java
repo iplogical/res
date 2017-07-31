@@ -1,11 +1,15 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
 import com.inspirationlogical.receipt.corelib.model.utils.Functor;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.StackPane;
+import org.testfx.api.FxRobotException;
 
+import static com.inspirationlogical.receipt.waiter.utility.CSSUtilities.BACKGROUND_OPEN;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.CONFIGURATION_ID;
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.fail;
@@ -42,6 +46,11 @@ public class ClickUtils {
         robot.sleep(milliseconds);
     }
 
+    public static void clickOnThenWait(Point2D point, int milliseconds) {
+        robot.clickOn(point);
+        robot.sleep(milliseconds);
+    }
+
     public static void verifyThatVisible(String nodeQuery) {
         verifyThat(nodeQuery, Node::isVisible);
     }
@@ -51,5 +60,10 @@ public class ClickUtils {
             verifyThat(nodeQuery, Node::isVisible);
             fail("Should not find the node");
         } catch (NullPointerException e) {}
+    }
+
+    public static void openTable(String tableNumber) {
+        longClickOn(tableNumber);
+        clickOnThenWait(Resources.WAITER.getString("ContextMenu.OpenTable"), 500);
     }
 }

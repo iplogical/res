@@ -36,7 +36,7 @@ public class TableControllerImpl implements TableController {
     private static final String CONSUMED_VIEW_PATH = "/view/fxml/ConsumedTable.fxml";
 
     @FXML
-    Label root;
+    Label rootTable;
     @FXML
     AnchorPane container;
     @FXML
@@ -80,7 +80,7 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(root, tableViewState.getRestaurantViewState().getMotionViewState());
+        addDragAndDrop(rootTable, tableViewState.getRestaurantViewState().getMotionViewState());
         setPrefferedSize();
         updateNode();
         if (tableView.isConsumer()) {
@@ -130,7 +130,7 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public Control getRoot() {
-        return root;
+        return rootTable;
     }
 
     @Override
@@ -164,12 +164,12 @@ public class TableControllerImpl implements TableController {
 
             updateNote();
             CSSUtilities.setBackgroundColor(tableViewState.isOpen(), host);
-            showNode(root, tableView.getPosition());
+            showNode(rootTable, tableView.getPosition());
         } else {
             if (tableView.isConsumed()) {
                 restaurantController.getTableController(tableView.getConsumer()).updateNode();
             }
-            hideNode(root);
+            hideNode(rootTable);
         }
     }
 
@@ -218,7 +218,7 @@ public class TableControllerImpl implements TableController {
     public void onTableClicked(MouseEvent event) {
         if (isContextMenuOpen() || tableViewState.getRestaurantViewState().getMotionViewState().getMovableProperty().getValue()) {
             for (TableView view : tableView.getConsumedTables()) {
-                Point2D delta = new Point2D(root.getLayoutX(), root.getLayoutY()).subtract(tableView.getPosition());
+                Point2D delta = new Point2D(rootTable.getLayoutX(), rootTable.getLayoutY()).subtract(tableView.getPosition());
                 restaurantController.moveTable(view, view.getPosition().add(delta));
             }
             restaurantController.moveTable(this);
@@ -241,7 +241,7 @@ public class TableControllerImpl implements TableController {
     }
 
     private boolean isContextMenuOpen() {
-        return root.getContextMenu() != null && root.getContextMenu().isShowing();
+        return rootTable.getContextMenu() != null && rootTable.getContextMenu().isShowing();
     }
 
     @Override
@@ -251,6 +251,6 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public Node getRootNode() {
-        return root;
+        return rootTable;
     }
 }

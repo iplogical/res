@@ -43,7 +43,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -68,7 +67,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     private static Predicate<TableView> DISPLAYABLE_TABLE = TableView::isDisplayable;
 
     @FXML
-    AnchorPane root;
+    AnchorPane rootRestaurant;
 
     @FXML
     Button dailySummary;
@@ -609,7 +608,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public Node getRootNode() {
-        return root;
+        return rootRestaurant;
     }
 
     private void updateRestaurantSummary() {

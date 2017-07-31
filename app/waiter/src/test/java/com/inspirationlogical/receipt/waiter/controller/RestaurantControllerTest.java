@@ -17,7 +17,7 @@ public class RestaurantControllerTest extends TestFXBase {
 
     @Test
     public void testContextMenu() {
-        longClickOn("TestTable8");
+        longClickOn("11");
         verifyThatVisible(Resources.WAITER.getString("ContextMenu.OpenTable"));
         verifyThatVisible(Resources.WAITER.getString("ContextMenu.EditTable"));
         sleep(1500);
@@ -26,7 +26,7 @@ public class RestaurantControllerTest extends TestFXBase {
     @Test
     public void testContextMenuConfiguration() {
         runInConfigurationMode(() -> {
-            longClickOn("TestTable8");
+            longClickOn("11");
             verifyThatVisible(Resources.WAITER.getString("ContextMenu.DeleteTable"));
             verifyThatVisible(Resources.WAITER.getString("ContextMenu.RotateTable"));
             verifyThatVisible(Resources.WAITER.getString("ContextMenu.EditTable"));
@@ -61,10 +61,6 @@ public class RestaurantControllerTest extends TestFXBase {
         closeTable(tableNumber);
     }
 
-    private void openTable(String tableNumber) {
-        longClickOn(tableNumber);
-        clickOnThenWait(Resources.WAITER.getString("ContextMenu.OpenTable"), 500);
-    }
 
     private void closeTable(String tableNumber) {
         clickOnThenWait(tableNumber, 500);
@@ -151,7 +147,7 @@ public class RestaurantControllerTest extends TestFXBase {
     public void testMergeTables() {
         runInConfigurationMode(() -> {
             clickOnThenWait("1", 100);
-            clickOnThenWait("2", 100);
+            clickOnThenWait("3", 100);
             longClickOn(new Point2D(150, 150));
             clickOnThenWait(Resources.WAITER.getString("ContextMenu.MergeTable"), 100);
             longClickOn("1");
