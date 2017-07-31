@@ -17,9 +17,11 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
+import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
@@ -203,75 +205,72 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
-    public void createTable(String name, Integer number, String note, Integer guestCount, Integer capacity, Dimension2D dimension) {
-        TableType tableType = restaurantViewState.getTableType();
-        Point2D position = calculateTablePosition(tableFormController.getRootNode(), getActiveTab());
-        TableView tableView;
-
+    public void createTable(TableParams tableParams) {
         try {
-            tableView = restaurantService.addTable(restaurantView, restaurantService
-                    .tableBuilder()
-                    .type(tableType)
-                    .name(name)
-                    .number(number)
-                    .note(note)
-                    .guestCount(guestCount)
-                    .capacity(capacity)
-                    .visible(true)
-                    .coordinateX((int) position.getX())
-                    .coordinateY((int) position.getY())
-                    .dimensionX((int) dimension.getWidth())
-                    .dimensionY((int) dimension.getHeight()));
-
+            TableView tableView = restaurantService.addTable(restaurantView, buildTable(tableParams));
             tableForm.hide();
-
             drawTable(tableView);
-
             if (tableView.isHosted()) {
                 getTableController(tableView.getHost()).updateNode();
             }
-
             updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(getActiveTab(),
-                    Resources.WAITER.getString("TableAlreadyUsed") + number);
+                    Resources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
             initRestaurant();
         } catch (Exception e) {
             initRestaurant();
         }
     }
 
+    private Table.TableBuilder buildTable(TableParams params) {
+        TableType tableType = restaurantViewState.getTableType();
+        Point2D position = calculateTablePosition(tableFormController.getRootNode(), getActiveTab());
+        return restaurantService
+                .tableBuilder()
+                .type(tableType)
+                .name(params.getName())
+                .number(params.getNumber())
+                .note(params.getNote())
+                .guestCount(params.getGuestCount())
+                .capacity(params.getCapacity())
+                .visible(true)
+                .coordinateX((int) position.getX())
+                .coordinateY((int) position.getY())
+                .dimensionX((int) params.getDimension().getWidth())
+                .dimensionY((int) params.getDimension().getHeight());
+    }
+
     @Override
-    public void editTable(TableController tableController, String name, Integer guestCount, String note,
-                          Integer number, Integer capacity, Dimension2D dimension) {
+    public void editTable(TableController tableController, TableParams tableParams) {
         TableView tableView = tableController.getView();
         TableView previousHost = tableView.getHost();
 
         try {
-            setTableParams(name, guestCount, note, number, capacity, dimension, tableView);
+            setTableParams(tableParams, tableView);
             addNodeToPane(tableController.getRoot(), restaurantViewState.getTableType());
             tableController.updateNode();
             updateHostNodes(tableView, previousHost);
             updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(getActiveTab(),
-                    Resources.WAITER.getString("TableAlreadyUsed") + number);
+                    Resources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
             initRestaurant();
         } catch (Exception e) {
             initRestaurant();
         }
     }
 
-    private void setTableParams(String name, Integer guestCount, String note, Integer number, Integer capacity, Dimension2D dimension, TableView tableView) {
-        if (tableView.getDisplayedNumber() != number) {
-            restaurantService.setTableNumber(tableView, number, restaurantView);
+    private void setTableParams(TableParams tableParams,  TableView tableView) {
+        if (tableView.getDisplayedNumber() != tableParams.getNumber()) {
+            restaurantService.setTableNumber(tableView, tableParams.getNumber(), restaurantView);
         }
+        restaurantService.setTableName(tableView, tableParams.getName());
         restaurantService.setTableType(tableView, tableView.getType());
-        restaurantService.setTableCapacity(tableView, capacity);
-        restaurantService.setTableName(tableView, name);
-        restaurantService.setGuestCount(tableView, guestCount);
-        restaurantService.addTableNote(tableView, note);
-        restaurantService.setTableDimension(tableView, dimension);
+        restaurantService.setGuestCount(tableView, tableParams.getGuestCount());
+        restaurantService.setTableCapacity(tableView, tableParams.getCapacity());
+        restaurantService.addTableNote(tableView, tableParams.getNote());
+        restaurantService.setTableDimension(tableView, tableParams.getDimension());
         tableForm.hide();
     }
 
@@ -302,7 +301,15 @@ public class RestaurantControllerImpl implements RestaurantController {
             ErrorMessage.showErrorMessage(getActiveTab(), Resources.WAITER.getString("TableIsOpenReservation") + tableView.getNumber());
             return;
         }
-        editTable(tableController, name, guestCount, note, number, tableView.getCapacity(), tableView.getDimension());
+        TableParams tableParams = TableParams.builder()
+                .name(name)
+                .number(number)
+                .note(note)
+                .guestCount(guestCount)
+                .capacity(tableView.getCapacity())
+                .dimension(tableView.getDimension())
+                .build();
+        editTable(tableController, tableParams);
         tableController.openTable(null);
         viewLoader.loadViewIntoScene(this);
     }

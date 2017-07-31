@@ -58,7 +58,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <TextArea fx:id="note" maxWidth="205.0" prefHeight="121.0" promptText="%TableForm.Note" wrapText="true">
+                        <TextArea fx:id="tableNote" maxWidth="205.0" prefHeight="121.0" promptText="%TableForm.Note" wrapText="true">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -76,7 +76,7 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="number" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Number">
+                        <TextField fx:id="tableNumber" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Number">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -90,7 +90,7 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="capacity" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Capacity">
+                        <TextField fx:id="tableCapacity" alignment="CENTER" prefWidth="100.0" promptText="%TableForm.Capacity">
                            <font>
                               <Font size="16.0" />
                            </font>

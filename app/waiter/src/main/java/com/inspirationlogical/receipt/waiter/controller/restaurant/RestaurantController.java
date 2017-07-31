@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.waiter.controller.restaurant;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
+import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 
 import javafx.geometry.Dimension2D;
@@ -13,9 +14,8 @@ public interface RestaurantController extends Controller {
     int getFirstUnusedTableNumber();
     void showCreateTableForm(Point2D position);
     void showEditTableForm(Control control);
-    void createTable(String name, Integer number, String note, Integer guestCount, Integer capacity, Dimension2D dimension);
-    void editTable(TableController tableController, String name, Integer guestCount, String note,
-                   Integer number, Integer capacity, Dimension2D dimensions);
+    void createTable(TableParams params);
+    void editTable(TableController tableController, TableParams params);
     void openTable(Integer number, String name, Integer guestCount, String note);
     void deleteTable(Node node);
     void rotateTable(Node node);

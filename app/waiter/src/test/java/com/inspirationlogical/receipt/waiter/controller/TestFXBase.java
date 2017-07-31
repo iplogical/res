@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.waiter.controller;
 import com.inspirationlogical.receipt.corelib.frontend.application.MainStage;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
+import com.inspirationlogical.receipt.waiter.utility.ClickUtils;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
@@ -26,6 +27,7 @@ public abstract class TestFXBase extends ApplicationTest {
     @Before
     public void setUpClass() throws Exception {
         ApplicationTest.launch(WaiterApp.class);
+        ClickUtils.setRobot(this);
     }
 
     @Override

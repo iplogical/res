@@ -81,14 +81,14 @@ public class TableControllerImpl implements TableController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addDragAndDrop(root, tableViewState.getRestaurantViewState().getMotionViewState());
-        initVisual();
+        setPrefferedSize();
         updateNode();
         if (tableView.isConsumer()) {
             consumeTables();
         }
     }
 
-    private void initVisual() {
+    private void setPrefferedSize() {
         host.setPrefWidth(tableView.getDimension().getWidth());
         host.setPrefHeight(tableView.getDimension().getHeight());
     }
@@ -141,36 +141,20 @@ public class TableControllerImpl implements TableController {
     @Override
     public void updateNode() {
         if (tableView.isVisible()) {
-            initVisual();
+            setPrefferedSize();
 
             name.setText(tableView.getName());
 
-            if (tableView.isHost()) {
-                meeple.setVisible(true);
-                hosted.setText(valueOf(tableView.getHostedTables().size()));
-            } else {
-                meeple.setVisible(false);
-                hosted.setText(EMPTY);
-            }
-
-            if (tableView.isHosted()) {
-                number.setText(valueOf(tableView.getHost().getNumber()));
-            } else {
-                number.setText(valueOf(tableView.getNumber()));
-            }
+            updateHostInfo();
 
             if (tableView.isConsumer()) {
-
                 consumeTables();
-
                 Integer tableGuests = tableView.getGuestCount();
                 Integer tableCapacity = tableView.getCapacity();
-
                 for(TableView consumed : tableView.getConsumedTables()) {
                     tableGuests += consumed.getGuestCount();
                     tableCapacity += consumed.getCapacity();
                 }
-
                 guests.setText(valueOf(tableGuests));
                 capacity.setText(valueOf(tableCapacity));
             } else {
@@ -178,21 +162,37 @@ public class TableControllerImpl implements TableController {
                 capacity.setText(valueOf(tableView.getCapacity()));
             }
 
-            if (isEmpty(tableView.getNote())) {
-                note.setVisible(false);
-            } else {
-                note.setVisible(true);
-            }
-
+            updateNote();
             CSSUtilities.setBackgroundColor(tableViewState.isOpen(), host);
-
             showNode(root, tableView.getPosition());
         } else {
             if (tableView.isConsumed()) {
                 restaurantController.getTableController(tableView.getConsumer()).updateNode();
             }
-            
             hideNode(root);
+        }
+    }
+
+    private void updateHostInfo() {
+        if (tableView.isHost()) {
+            meeple.setVisible(true);
+            hosted.setText(valueOf(tableView.getHostedTables().size()));
+        } else {
+            meeple.setVisible(false);
+            hosted.setText(EMPTY);
+        }
+        if (tableView.isHosted()) {
+            number.setText(valueOf(tableView.getHost().getNumber()));
+        } else {
+            number.setText(valueOf(tableView.getNumber()));
+        }
+    }
+
+    private void updateNote() {
+        if (isEmpty(tableView.getNote())) {
+            note.setVisible(false);
+        } else {
+            note.setVisible(true);
         }
     }
 

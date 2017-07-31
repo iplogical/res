@@ -51,3 +51,4 @@ app/utils/schemabuilderapp/out/production/properties/waiter_hu.properties
 app/utils/schemabuilderapp/out/production/properties/manager_hu.properties
 app/corelib/out/test/resources/META-INF/persistence.xml
 app/corelib/log/logFile.log
+app/waiter/log/logFile.log
