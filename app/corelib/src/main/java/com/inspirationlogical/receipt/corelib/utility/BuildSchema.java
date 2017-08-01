@@ -1208,8 +1208,8 @@ public class BuildSchema  {
     private @Getter AuthUser admin;
     private @Getter AuthUser user;
 
-    public BuildSchema(){
-        entityManager = EntityManagerProvider.getEntityManager("Production");
+    public BuildSchema(String persistenceUnit){
+        entityManager = EntityManagerProvider.getEntityManager(persistenceUnit);
     }
 
     private void dropAll(){

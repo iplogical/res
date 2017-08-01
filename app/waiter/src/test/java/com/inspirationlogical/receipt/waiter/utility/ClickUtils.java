@@ -6,12 +6,8 @@ import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.StackPane;
-import org.testfx.api.FxRobotException;
 
-import static com.inspirationlogical.receipt.waiter.utility.CSSUtilities.BACKGROUND_OPEN;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.CONFIGURATION_ID;
-import static java.lang.Thread.sleep;
 import static org.junit.Assert.fail;
 import static org.testfx.api.FxAssert.verifyThat;
 

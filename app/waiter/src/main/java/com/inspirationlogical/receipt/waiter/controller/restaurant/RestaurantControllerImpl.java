@@ -246,7 +246,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         TableView previousHost = tableView.getHost();
 
         try {
-            setTableParams(tableParams, tableView);
+            setTableParams(tableView, tableParams);
             addNodeToPane(tableController.getRoot(), restaurantViewState.getTableType());
             tableController.updateNode();
             updateHostNodes(tableView, previousHost);
@@ -260,16 +260,11 @@ public class RestaurantControllerImpl implements RestaurantController {
         }
     }
 
-    private void setTableParams(TableParams tableParams,  TableView tableView) {
+    private void setTableParams(TableView tableView, TableParams tableParams) {
         if (tableView.getDisplayedNumber() != tableParams.getNumber()) {
             restaurantService.setTableNumber(tableView, tableParams.getNumber(), restaurantView);
         }
-        restaurantService.setTableName(tableView, tableParams.getName());
-        restaurantService.setTableType(tableView, tableView.getType());
-        restaurantService.setGuestCount(tableView, tableParams.getGuestCount());
-        restaurantService.setTableCapacity(tableView, tableParams.getCapacity());
-        restaurantService.addTableNote(tableView, tableParams.getNote());
-        restaurantService.setTableDimension(tableView, tableParams.getDimension());
+        restaurantService.setTableParams(tableView, tableParams);
         tableForm.hide();
     }
 
@@ -361,15 +356,12 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void moveTable(TableController tableController) {
         Node view = tableController.getRoot();
         Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
-
         restaurantService.setTablePosition(tableController.getView(), position);
-
         tableController.updateNode();
     }
 
     @Override
     public void moveTable(TableView tableView, Point2D position) {
-
         restaurantService.setTablePosition(tableView, position);
     }
 

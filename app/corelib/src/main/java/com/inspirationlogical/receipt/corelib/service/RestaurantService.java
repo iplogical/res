@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
+import com.inspirationlogical.receipt.corelib.params.TableParams;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 
@@ -14,9 +15,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface RestaurantService {
-    TableBuilder tableBuilder();
 
     RestaurantView getActiveRestaurant();
+
+    ReceiptView getOpenReceipt(TableView tableView);
 
     List<TableView> getTables();
 
@@ -24,35 +26,23 @@ public interface RestaurantService {
 
     TableView addTable(RestaurantView restaurant, TableBuilder builder);
 
-    ReceiptView getActiveReceipt(TableView tableView);
-
-    void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant);
-
-    void setTableType(TableView tableView, TableType tableType);
-
-    void setTableName(TableView tableView, String name);
-
-    void setGuestCount(TableView tableView, int guestCount);
-
-    void setTableCapacity(TableView tableView, int tableCapacity);
-
-    void addTableNote(TableView tableView, String note);
-
-    void displayTable(TableView tableView);
-
-    void hideTable(TableView tableView);
-
-    void setTablePosition(TableView tableView, Point2D position);
-
-    void setTableDimension(TableView tableView,Dimension2D dimension);
+    void deleteTable(TableView tableView);
 
     void rotateTable(TableView tableView);
-
-    void deleteTable(TableView tableView);
 
     void mergeTables(TableView consumer, List<TableView> consumed);
 
     List<TableView> splitTables(TableView consumer);
+
+    TableBuilder tableBuilder();
+
+    void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant);
+
+    void setTableParams(TableView tableView, TableParams tableParams);
+
+    void setGuestCount(TableView tableView, int guestCount);
+
+    void setTablePosition(TableView tableView, Point2D position);
 
     void closeDay();
 

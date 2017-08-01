@@ -4,7 +4,6 @@ import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RE
 import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
 import static java.util.stream.Collectors.toList;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,7 +19,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 
-import javafx.geometry.Dimension2D;
+import com.inspirationlogical.receipt.corelib.params.TableParams;
 import javafx.geometry.Point2D;
 import lombok.NonNull;
 public class TableAdapter extends AbstractAdapter<Table> {
@@ -29,20 +28,31 @@ public class TableAdapter extends AbstractAdapter<Table> {
         super(adaptee);
     }
 
-    public static TableAdapter getTableByNumber(int number) {
+    static TableAdapter getTableFromActual(int number) {
+        return getTableByNumber(number, true);
+    }
+
+    static TableAdapter getTableFromArchive(int number) {
+        return getTableByNumber(number, false);
+    }
+
+    private static TableAdapter getTableByNumber(int number, boolean actual) {
         @SuppressWarnings("unchecked")
-        List<Table> tables = getTablesByNumber(number);
+        List<Table> tables = getTablesByNumber(number, actual);
         if (tables.isEmpty()) {
             return null;
         }
         return new TableAdapter(tables.get(0));
     }
 
-    private static List<Table> getTablesByNumber(int number) {
-        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_NUMBER, query -> {
-            query.setParameter("number", number);
-            return query;
-        });
+    private static List<Table> getTablesByNumber(int number, boolean actual) {
+        if(actual) {
+            return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_NUMBER, query ->
+                    query.setParameter("number", number));
+        } else {
+            return GuardedTransaction.runNamedQueryArchive(Table.GET_TABLE_BY_NUMBER, query ->
+                    query.setParameter("number", number));
+        }
     }
 
     public static List<TableAdapter> getDisplayableTables() {
@@ -124,34 +134,34 @@ public class TableAdapter extends AbstractAdapter<Table> {
 
     private void setNewHost(int tableNumber) {
         if(tableNumber != adaptee.getNumber()) {    // Prevent a table being hosted by itself.
-            adaptee.setHost(TableAdapter.getTableByNumber(tableNumber).getAdaptee());
+            adaptee.setHost(TableAdapter.getTableFromActual(tableNumber).getAdaptee());
         }
     }
 
     public void setNumber(int tableNumber) {
+        int originalNumber = adaptee.getNumber();
         GuardedTransaction.run(() -> {
             adaptee.setNumber(tableNumber);
         });
+        GuardedTransaction.runArchive(() -> {
+            Table tableArchive = getTableFromArchive(originalNumber).getAdaptee();
+            tableArchive.setNumber(tableNumber);
+        });
     }
 
-    public void setName(String name) {
-        GuardedTransaction.run(() -> adaptee.setName(name));
-    }
-
-    public void setType(TableType tableType) {
-        GuardedTransaction.run(() -> adaptee.setType(tableType));
-    }
-
-    public void setCapacity(int capacity) {
-        GuardedTransaction.run(() -> adaptee.setCapacity(capacity));
+    public void setTableParams(TableParams tableParams) {
+        GuardedTransaction.run(() -> {
+            adaptee.setName(tableParams.getName());
+            adaptee.setGuestCount(tableParams.getGuestCount());
+            adaptee.setCapacity(tableParams.getCapacity());
+            adaptee.setNote(tableParams.getNote());
+            adaptee.setDimensionX((int)tableParams.getDimension().getWidth());
+            adaptee.setDimensionY((int)tableParams.getDimension().getHeight());
+        });
     }
 
     public void setGuestCount(int guestCount) {
         GuardedTransaction.run(() -> adaptee.setGuestCount(guestCount));
-    }
-
-    public void setNote(String note) {
-        GuardedTransaction.run(() -> adaptee.setNote(note));
     }
 
     public void displayTable() {
@@ -166,13 +176,6 @@ public class TableAdapter extends AbstractAdapter<Table> {
         GuardedTransaction.run(() -> {
             adaptee.setCoordinateX((int) position.getX());
             adaptee.setCoordinateY((int) position.getY());
-        });
-    }
-
-    public void setDimension(Dimension2D dimension) {
-        GuardedTransaction.run(() -> {
-            adaptee.setDimensionX((int) dimension.getWidth());
-            adaptee.setDimensionY((int) dimension.getHeight());
         });
     }
 
@@ -227,21 +230,40 @@ public class TableAdapter extends AbstractAdapter<Table> {
         if (isConsumerTable()) {
             throw new IllegalTableStateException("Delete table for a consumer table. Table number: " + adaptee.getNumber());
         }
+        deleteTableFromActual();
+        deleteTableFromArchive();
+    }
+
+    private void deleteTableFromActual() {
         GuardedTransaction.run(() -> {
             Table orphanage = getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee();
-            if(orphanage.getReceipts() == null)
-                orphanage.setReceipts(new ArrayList<>());
-            orphanage.getReceipts().addAll(adaptee.getReceipts().stream()
-                    .map(receipt -> {
-                        receipt.setOwner(orphanage);
-                        return receipt;
-                    }).collect(toList()));
+            moveReceiptsToOrphanageTable(adaptee, orphanage);
             adaptee.getReceipts().clear();
             adaptee.getReservations().forEach(reservation -> GuardedTransaction.delete(reservation, () -> {}));
             adaptee.getReservations().clear();
             adaptee.getOwner().getTables().remove(adaptee);
             GuardedTransaction.delete(adaptee, () -> {});
         });
+    }
+
+    private void deleteTableFromArchive() {
+        GuardedTransaction.runArchive(() -> {
+            Table archiveTable = getTableFromArchive(adaptee.getNumber()).getAdaptee();
+            Table orphanageArchive = (Table)GuardedTransaction.runNamedQueryArchive(Table.GET_TABLE_BY_TYPE,
+                    query -> query.setParameter("type", TableType.ORPHANAGE)).get(0);
+            moveReceiptsToOrphanageTable(archiveTable, orphanageArchive);
+            archiveTable.getReceipts().clear();
+            archiveTable.getOwner().getTables().remove(archiveTable);
+            GuardedTransaction.deleteArchive(archiveTable, () -> {});
+        });
+    }
+
+    private void moveReceiptsToOrphanageTable(Table archiveTable, Table orphanage) {
+        orphanage.getReceipts().addAll(archiveTable.getReceipts().stream()
+                .map(receipt -> {
+                    receipt.setOwner(orphanage);
+                    return receipt;
+                }).collect(toList()));
     }
 
     public boolean isTableOpen() {

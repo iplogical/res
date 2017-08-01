@@ -40,19 +40,16 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         Table newTable = builder.build();
         if (isTableNumberAlreadyInUse(newTable.getNumber())) {
             if(canBeHosted(newTable.getType())) {
-                newTable.setHost(TableAdapter.getTableByNumber(newTable.getNumber()).getAdaptee());
+                newTable.setHost(TableAdapter.getTableFromActual(newTable.getNumber()).getAdaptee());
                 newTable.setNumber(TableAdapter.getFirstUnusedNumber());
             } else {
                 throw new IllegalTableStateException("The table number " + newTable.getNumber() + " is already in use");
             }
         }
-        GuardedTransaction.run(() -> {
-            adaptee.getTables().add(newTable);
-            newTable.setOwner(adaptee);
-        });
+        addTableToActual(newTable);
+        addTableToArchive(newTable);
         return new TableAdapter(newTable);
     }
-
 
     public boolean isTableNumberAlreadyInUse(int tableNumber) {
         for (Table table : adaptee.getTables()) {
@@ -61,6 +58,23 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
             }
         }
         return false;
+    }
+
+    private void addTableToActual(Table newTable) {
+        GuardedTransaction.run(() -> {
+            adaptee.getTables().add(newTable);
+            newTable.setOwner(adaptee);
+        });
+    }
+
+    private void addTableToArchive(Table newTable) {
+        GuardedTransaction.runArchive(() -> {
+            List<Restaurant> restaurants = GuardedTransaction.runNamedQueryArchive(Restaurant.GET_ACTIVE_RESTAURANT);
+            Restaurant restaurant = restaurants.get(0);
+            Table newArchiveTable = Table.cloneTable(newTable);
+            newArchiveTable.setOwner(restaurant);
+            restaurant.getTables().add(newArchiveTable);
+        });
     }
 
     public void mergeTables(TableAdapter consumer, List<TableAdapter> consumed) {
