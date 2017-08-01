@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -7,6 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
 <VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" style="-fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-color: #FFFFFF; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%AdHocProductForm.Title" textAlignment="CENTER">
@@ -21,7 +27,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="productName" alignment="CENTER" prefWidth="155.0" promptText="%AdHocProductForm.NamePrompt">
+            <TextField fx:id="adHocProductName" alignment="CENTER" prefWidth="155.0" promptText="%AdHocProductForm.NamePrompt">
                <font>
                   <Font size="16.0" />
                </font>
@@ -38,7 +44,7 @@
                   <Insets top="5.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="productQuantity" alignment="CENTER" prefWidth="100.0" promptText="%AdHocProductForm.QuantityPrompt">
+            <TextField fx:id="adHocProductQuantity" alignment="CENTER" prefWidth="100.0" promptText="%AdHocProductForm.QuantityPrompt">
                <font>
                   <Font size="16.0" />
                </font>
@@ -55,7 +61,7 @@
                   <Insets top="5.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="productSalePrice" alignment="CENTER" prefWidth="100.0" promptText="%AdHocProductForm.SalePricePrompt">
+            <TextField fx:id="adHocProductSalePrice" alignment="CENTER" prefWidth="100.0" promptText="%AdHocProductForm.SalePricePrompt">
                <font>
                   <Font size="16.0" />
                </font>
@@ -72,7 +78,7 @@
                   <Insets top="5.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="productPurchasePrice" alignment="CENTER" prefWidth="100.0" promptText="%AdHocProductForm.PurchasePricePrompt">
+            <TextField fx:id="adHocProductPurchasePrice" alignment="CENTER" prefWidth="100.0" promptText="%AdHocProductForm.PurchasePricePrompt">
                <font>
                   <Font size="16.0" />
                </font>

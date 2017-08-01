@@ -32,16 +32,16 @@ public class AdHocProductFormControllerImpl implements AdHocProductFormControlle
     private VBox root;
 
     @FXML
-    private TextField productName;
+    private TextField adHocProductName;
 
     @FXML
-    private TextField productQuantity;
+    private TextField adHocProductQuantity;
 
     @FXML
-    private TextField productSalePrice;
+    private TextField adHocProductSalePrice;
 
     @FXML
-    private TextField productPurchasePrice;
+    private TextField adHocProductPurchasePrice;
 
     private SaleController saleController;
 
@@ -50,8 +50,8 @@ public class AdHocProductFormControllerImpl implements AdHocProductFormControlle
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addDragAndDrop(root);
-        productQuantity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
-        productSalePrice.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        adHocProductQuantity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        adHocProductSalePrice.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
     }
 
     @Override
@@ -61,13 +61,13 @@ public class AdHocProductFormControllerImpl implements AdHocProductFormControlle
 
     @FXML
     public void onConfirm(MouseEvent event) {
-        if(productName.getText().isEmpty()) return;
+        if(adHocProductName.getText().isEmpty()) return;
         try {
             adHocProductParams = AdHocProductParams.builder()
-                    .name(productName.getText())
-                    .quantity(Integer.valueOf(productQuantity.getText()))
-                    .purchasePrice(Integer.valueOf(productPurchasePrice.getText()))
-                    .salePrice(Integer.valueOf(productSalePrice.getText()))
+                    .name(adHocProductName.getText())
+                    .quantity(Integer.valueOf(adHocProductQuantity.getText()))
+                    .purchasePrice(Integer.valueOf(adHocProductPurchasePrice.getText()))
+                    .salePrice(Integer.valueOf(adHocProductSalePrice.getText()))
                     .build();
             saleController.sellAdHocProduct(adHocProductParams);
         } catch (NumberFormatException e) {

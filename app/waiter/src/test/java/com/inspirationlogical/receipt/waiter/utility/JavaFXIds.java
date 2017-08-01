@@ -26,7 +26,7 @@ public class JavaFXIds {
     // Sale.fxml
     public final static String GUEST_PLUS = "#guestPlus";
     public final static String GUEST_MINUS = "#guestMinus";
-    public final static String TABLE_NUMBER = "#tableNumber";
+    public final static String SALE_TABLE_NUMBER = "#tableNumber";
 
     public final static String SOLD_PRODUCTS_TABLE = "#soldProductsTable";
     public final static String PRODUCT_NAME = "#productName";
@@ -34,4 +34,19 @@ public class JavaFXIds {
     public final static String PRODUCT_UNIT_PRICE = "#productUnitPrice";
     public final static String PRODUCT_TOTAL_PRICE = "#productTotalPrice";
 
+    public final static String SELL_ADHOC_PRODUCT = "#sellAdHocProduct";
+    public final static String GIFT_PRODUCT = "#giftProduct";
+    public final static String SELECTIVE_CANCELLATION = "#selectiveCancellation";
+    public final static String SINGLE_CANCELLATION = "#singleCancellation";
+
+    public final static String SEARCH_FIELD = "#searchField";
+
+    public final static String TO_PAYMENT = "#toPaymentView";
+    public final static String TO_RESTAURANT = "#backToRestaurantView";
+
+    // AdHocProductForm.fxml
+    public final static String ADHOC_PRODUCT_NAME = "#adHocProductName";
+    public final static String ADHOC_PRODUCT_QUANTITY = "#adHocProductQuantity";
+    public final static String ADHOC_PRODUCT_SALE_PRICE = "#adHocProductSalePrice";
+    public final static String ADHOC_PRODUCT_PURCHASE_PRICE = "#adHocProductPurchasePrice";
 }

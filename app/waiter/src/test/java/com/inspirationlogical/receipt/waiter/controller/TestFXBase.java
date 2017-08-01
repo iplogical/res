@@ -11,6 +11,7 @@ import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 
@@ -24,9 +25,13 @@ import static com.inspirationlogical.receipt.waiter.registry.WaiterRegistry.getI
  */
 public abstract class TestFXBase extends ApplicationTest {
 
+    @BeforeClass
+    public static void launchApplication() throws Exception {
+        ApplicationTest.launch(WaiterApp.class);
+    }
+
     @Before
     public void setUpClass() throws Exception {
-        ApplicationTest.launch(WaiterApp.class);
         ClickUtils.setRobot(this);
     }
 

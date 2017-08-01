@@ -79,7 +79,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                 ReceiptRecord record = ((ReceiptRecord)records.get(0)[0]);
                 record.setSoldQuantity(record.getSoldQuantity() + 1);
                 record.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(record).build());
-                record.setDiscountPercent(isGift ? 100 : productAdapter.getCategoryAdapter().getDiscount(new ReceiptRecordAdapter(record)));
+                record.setDiscountPercent(record.getDiscountPercent() == 100 ? 100 : productAdapter.getCategoryAdapter().getDiscount(new ReceiptRecordAdapter(record)));
                 applyDiscountOnRecordSalePrice(record);
                 return;
             }
@@ -109,7 +109,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         GuardedTransaction.run(() -> {
             ProductAdapter adHocProduct = ProductAdapter.getAdHocProduct();
             ReceiptRecord record = buildReceiptRecord(adHocProductParams, takeAway, adHocProduct);
-            record.getCreatedList().add(ReceiptRecordCreated.builder().owner(record).created(now()).build());
+            addCreatedListEntries(adHocProductParams.getQuantity(), record);
             record.setOwner(adaptee);
             adaptee.getRecords().add(record);
         });

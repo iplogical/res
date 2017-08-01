@@ -5,9 +5,13 @@ import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 
-import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.CONFIGURATION_ID;
+import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
+import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TABLEFORM_CAPACITY;
+import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TABLEFORM_CONFIRM;
 import static org.junit.Assert.fail;
 import static org.testfx.api.FxAssert.verifyThat;
 
@@ -47,6 +51,22 @@ public class ClickUtils {
         robot.sleep(milliseconds);
     }
 
+    public static void clickButtonThenWait(String buttonName, int milliSec) {
+        clickOnThenWait(Resources.WAITER.getString(buttonName), milliSec);
+    }
+
+    public static void clickMenuThenWait(String buttonName, int milliSec) {
+        clickOnThenWait(Resources.WAITER.getString(buttonName), milliSec);
+    }
+
+    public static void setTextField(String fxId, String text) {
+        ((TextField)robot.find(fxId)).setText(text);
+    }
+
+    public static void setTextArea(String fxId, String text) {
+        ((TextArea)robot.find(fxId)).setText(text);
+    }
+
     public static void verifyThatVisible(String nodeQuery) {
         verifyThat(nodeQuery, Node::isVisible);
     }
@@ -62,4 +82,29 @@ public class ClickUtils {
         longClickOn(tableNumber);
         clickOnThenWait(Resources.WAITER.getString("ContextMenu.OpenTable"), 500);
     }
+
+    public static void addTable(String tableName, String number, String guestCount, String capacity) {
+        runInConfigurationMode(() -> {
+            longClickOn(new Point2D(150, 150));
+            clickOnThenWait(Resources.WAITER.getString("ContextMenu.AddTable"), 100);
+            ((TextField)robot.find(TABLEFORM_NAME)).setText(tableName);
+            ((TextField)robot.find(TABLEFORM_NUMBER)).setText(number);
+            ((TextField)robot.find(TABLEFORM_GUEST_COUNT)).setText(guestCount);
+            ((TextField)robot.find(TABLEFORM_CAPACITY)).setText(capacity);
+            clickOnThenWait(TABLEFORM_CONFIRM, 100);
+            verifyThatVisible(tableName);
+            verifyThatVisible(number);
+            verifyThatVisible(guestCount);
+            verifyThatVisible(capacity);
+        });
+    }
+
+    public static void deleteTable(String tableNumber) {
+        runInConfigurationMode(() -> {
+            longClickOn(tableNumber);
+            robot.clickOn(Resources.WAITER.getString("ContextMenu.DeleteTable"));
+            verifyThatNotVisible(tableNumber);
+        });
+    }
+
 }
