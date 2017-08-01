@@ -73,16 +73,6 @@ public class RestaurantServiceTest {
     }
 
     @Test
-    public void testSetTableName() {
-        //given
-        when(tableView.getAdapter()).thenReturn(tableAdapter);
-        //when
-        service.setTableName(tableView, "TestName");
-        //then
-        verify(tableAdapter).setName(eq("TestName"));
-    }
-
-    @Test
     public void testSetTableNumber() {
         //given
         when(tableView.getAdapter()).thenReturn(tableAdapter);
@@ -91,56 +81,6 @@ public class RestaurantServiceTest {
         service.setTableNumber(tableView, 8, restaurantView);
         //then
         verify(tableAdapter).setNumber(eq(8));
-    }
-
-    @Test
-    public void testSetTableType() {
-        //given
-        when(tableView.getAdapter()).thenReturn(tableAdapter);
-        //when
-        service.setTableType(tableView, TableType.LOITERER);
-        //then
-        verify(tableAdapter).setType(eq(TableType.LOITERER));
-    }
-
-    @Test
-    public void testSetTableCapacity() {
-        //given
-        when(tableView.getAdapter()).thenReturn(tableAdapter);
-        //when
-        service.setTableCapacity(tableView, 10);
-        //then
-        verify(tableAdapter).setCapacity(eq(10));
-    }
-
-    @Test
-    public void testAddTableNote() {
-        //given
-        when(tableView.getAdapter()).thenReturn(tableAdapter);
-        //when
-        service.addTableNote(tableView, "Note");
-        //then
-        verify(tableAdapter).setNote(eq("Note"));
-    }
-
-    @Test
-    public void testDisplayTable() {
-        //given
-        when(tableView.getAdapter()).thenReturn(tableAdapter);
-        //when
-        service.displayTable(tableView);
-        //then
-        verify(tableAdapter).displayTable();
-    }
-
-    @Test
-    public void testHideTable() {
-        //given
-        when(tableView.getAdapter()).thenReturn(tableAdapter);
-        //when
-        service.hideTable(tableView);
-        //then
-        verify(tableAdapter).hideTable();
     }
 
     @Test
@@ -188,7 +128,7 @@ public class RestaurantServiceTest {
         //given
         when(tableView.getAdapter()).thenReturn(tableAdapter);
         //when
-        service.getActiveReceipt(tableView);
+        service.getOpenReceipt(tableView);
         //then
         verify(tableAdapter).getOpenReceipt();
     }

@@ -142,7 +142,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     }
 
     protected Collection<ReceiptRecordView> getSoldProducts(RestaurantService restaurantService, TableView tableView) {
-        receiptView = restaurantService.getActiveReceipt(tableView);
+        receiptView = restaurantService.getOpenReceipt(tableView);
         return receiptView.getSoldProducts();
     }
 

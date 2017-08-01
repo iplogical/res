@@ -117,9 +117,17 @@ public class GuardedTransaction {
         runArchive(() -> managerArchive.persist(e), () -> {}, () -> {});
     }
 
-    public static void delete(AbstractEntity e, Functor f) {
+    private static void delete(EntityManager em, AbstractEntity e, Functor f) {
         run(f,()->{}, ()->{
-            manager.remove(e);
+            em.remove(e);
         });
+    }
+
+    public static void delete(AbstractEntity e, Functor f) {
+        delete(manager, e, f);
+    }
+
+    public static void deleteArchive(AbstractEntity e, Functor f) {
+        delete(managerArchive, e, f);
     }
 }

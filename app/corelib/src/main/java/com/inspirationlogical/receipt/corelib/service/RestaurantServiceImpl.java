@@ -23,6 +23,7 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 
+import com.inspirationlogical.receipt.corelib.params.TableParams;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 
@@ -35,13 +36,13 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
-    public TableBuilder tableBuilder() {
-        return Table.builder();
+    public RestaurantView getActiveRestaurant() {
+        return new RestaurantViewImpl(RestaurantAdapter.getActiveRestaurant());
     }
 
     @Override
-    public RestaurantView getActiveRestaurant() {
-        return new RestaurantViewImpl(RestaurantAdapter.getActiveRestaurant());
+    public ReceiptView getOpenReceipt(TableView tableView) {
+        return new ReceiptViewImpl(getTableAdapter(tableView).getOpenReceipt());
     }
 
     @Override
@@ -57,75 +58,6 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     @Override
     public TableView addTable(RestaurantView restaurant, TableBuilder builder) {
         return new TableViewImpl(getRestaurantAdapter(restaurant).addTable(builder));
-    }
-
-    @Override
-    public ReceiptView getActiveReceipt(TableView tableView) {
-        return new ReceiptViewImpl(getTableAdapter(tableView).getOpenReceipt());
-    }
-
-    @Override
-    public void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant) {
-        if(getRestaurantAdapter(restaurant).isTableNumberAlreadyInUse(tableNumber)) {
-            if(canBeHosted(tableView.getType())) {
-                getTableAdapter(tableView).setHost(tableNumber);
-            } else {
-                throw new IllegalTableStateException("The table number " + tableView.getNumber() + " is already in use");
-            }
-            return;
-        }
-        getTableAdapter(tableView).removePreviousHost();
-        getTableAdapter(tableView).setNumber(tableNumber);
-    }
-
-    @Override
-    public void setTableType(TableView tableView, TableType tableType) {
-        getTableAdapter(tableView).setType(tableType);
-    }
-
-    @Override
-    public void setTableName(TableView tableView, String name) {
-        getTableAdapter(tableView).setName(name);
-    }
-
-    @Override
-    public void setTableCapacity(TableView tableView, int tableCapacity) {
-        getTableAdapter(tableView).setCapacity(tableCapacity);
-    }
-
-    @Override
-    public void setGuestCount(TableView tableView, int guestCount) {
-        getTableAdapter(tableView).setGuestCount(guestCount);
-    }
-
-    @Override
-    public void addTableNote(TableView tableView, String note) {
-        getTableAdapter(tableView).setNote(note);
-    }
-
-    @Override
-    public void displayTable(TableView tableView) {
-        getTableAdapter(tableView).displayTable();
-    }
-
-    @Override
-    public void hideTable(TableView tableView) {
-        getTableAdapter(tableView).hideTable();
-    }
-
-    @Override
-    public void setTablePosition(TableView tableView, Point2D position) {
-        getTableAdapter(tableView).setPosition(position);
-    }
-
-    @Override
-    public void rotateTable(TableView tableView) {
-        getTableAdapter(tableView).rotateTable();
-    }
-
-    @Override
-    public void setTableDimension(TableView tableView,Dimension2D dimension) {
-        getTableAdapter(tableView).setDimension(dimension);
     }
 
     @Override
@@ -151,6 +83,46 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
                 .stream()
                 .map(TableViewImpl::new)
                 .collect(toList());
+    }
+
+    @Override
+    public TableBuilder tableBuilder() {
+        return Table.builder();
+    }
+
+    @Override
+    public void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant) {
+        TableAdapter tableAdapter = getTableAdapter(tableView);
+        if(getRestaurantAdapter(restaurant).isTableNumberAlreadyInUse(tableNumber)) {
+            if(canBeHosted(tableView.getType())) {
+                tableAdapter.setHost(tableNumber);
+            } else {
+                throw new IllegalTableStateException("The table number " + tableView.getNumber() + " is already in use");
+            }
+            return;
+        }
+        tableAdapter.removePreviousHost();
+        tableAdapter.setNumber(tableNumber);
+    }
+
+    @Override
+    public void setTableParams(TableView tableView, TableParams tableParams) {
+        getTableAdapter(tableView).setTableParams(tableParams);
+    }
+
+    @Override
+    public void setGuestCount(TableView tableView, int guestCount) {
+        getTableAdapter(tableView).setGuestCount(guestCount);
+    }
+
+    @Override
+    public void setTablePosition(TableView tableView, Point2D position) {
+        getTableAdapter(tableView).setPosition(position);
+    }
+
+    @Override
+    public void rotateTable(TableView tableView) {
+        getTableAdapter(tableView).rotateTable();
     }
 
     @Override
