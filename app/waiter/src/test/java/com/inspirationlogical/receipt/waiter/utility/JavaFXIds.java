@@ -49,4 +49,12 @@ public class JavaFXIds {
     public final static String ADHOC_PRODUCT_QUANTITY = "#adHocProductQuantity";
     public final static String ADHOC_PRODUCT_SALE_PRICE = "#adHocProductSalePrice";
     public final static String ADHOC_PRODUCT_PURCHASE_PRICE = "#adHocProductPurchasePrice";
+
+    // Payment.fxml
+    public final static String SELECTIVE_PAYMENT = "#selectivePayment";
+    public final static String SINGLE_PAYMENT = "#singlePayment";
+    public final static String PARTIAL_PAYMENT = "#partialPayment";
+    public final static String PARTIAL_PAYMENT_VALUE = "#partialPaymentValue";
+
+    public final static String PAY = "#pay";
 }

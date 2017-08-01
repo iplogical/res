@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
+import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -23,9 +24,6 @@ public class SaleControllerTest extends TestFXBase {
     private static final String TABLE_NUMBER = "20";
     private static final String TABLE_GUESTS = "0";
     private static final String TABLE_CAPACITY = "4";
-
-    private static final String BEER = "Sörök";
-    private static final String SOPRONI = "Sop 0,5L";
 
     @Before
     public void setUpSaleControllerTest() throws Exception {
@@ -57,31 +55,6 @@ public class SaleControllerTest extends TestFXBase {
         assertEquals("440", getProductUnitPrice(1));
         assertEquals("440", getProductTotalPrice(1));
         selectiveCancellation("Soproni 0,5L");
-    }
-
-    private void selectCategory(String categoryName) {
-        clickOnThenWait(categoryName, 50);
-    }
-
-    private void sellProduct(String productName) {
-        clickOnThenWait(productName, 50);
-    }
-
-    private void sellProduct(String productName, int quantity) {
-        for(int i = 0; i < quantity; i++)
-            sellProduct(productName);
-    }
-
-    private void selectiveCancellation(String productName) {
-        clickButtonThenWait(SELECTIVE_CANCELLATION, 30);
-        clickOnThenWait(productName, 30);
-        clickButtonThenWait(SELECTIVE_CANCELLATION, 30);
-    }
-
-    private void singleCancellation(String productName) {
-        clickButtonThenWait(SINGLE_CANCELLATION, 30);
-        clickOnThenWait(productName, 30);
-        clickButtonThenWait(SINGLE_CANCELLATION, 30);
     }
 
     @Test
@@ -200,27 +173,6 @@ public class SaleControllerTest extends TestFXBase {
         assertEquals("0", getProductUnitPrice(1));
         assertEquals("0", getProductTotalPrice(1));
         selectiveCancellation("Soproni 0,5L *");
-    }
-
-    private String getProductName(int row) {
-        return getSoldProducts().get(row - 1).getProductName();
-    }
-
-    private String getProductQuantity(int row) {
-        return getSoldProducts().get(row - 1).getProductQuantity();
-    }
-
-    private String getProductUnitPrice(int row) {
-        return getSoldProducts().get(row - 1).getProductUnitPrice();
-    }
-
-    private String getProductTotalPrice(int row) {
-        return getSoldProducts().get(row - 1).getProductTotalPrice();
-    }
-
-    private ObservableList<SoldProductViewModel> getSoldProducts() {
-        TableView<SoldProductViewModel> tableView = find(SOLD_PRODUCTS_TABLE);
-        return tableView.getItems();
     }
 
     @After
