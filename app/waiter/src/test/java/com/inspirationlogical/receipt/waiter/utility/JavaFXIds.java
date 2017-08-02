@@ -27,6 +27,8 @@ public class JavaFXIds {
     public final static String GUEST_PLUS = "#guestPlus";
     public final static String GUEST_MINUS = "#guestMinus";
     public final static String SALE_TABLE_NUMBER = "#tableNumber";
+    public final static String TOTAL_PRICE = "#totalPrice";
+    public final static String SORT_BY_CLICK_TIME = "#sortByClickTime";
 
     public final static String SOLD_PRODUCTS_TABLE = "#soldProductsTable";
     public final static String PRODUCT_NAME = "#productName";

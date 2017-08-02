@@ -1,5 +1,6 @@
-package com.inspirationlogical.receipt.waiter.controller;
+package com.inspirationlogical.receipt.waiter.controller.retail.payment;
 
+import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.openTable
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.PAY;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.SELECTIVE_PAYMENT;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TO_PAYMENT;
+import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 
 public class PaymentControllerTest  extends TestFXBase {

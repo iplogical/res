@@ -1,6 +1,7 @@
-package com.inspirationlogical.receipt.waiter.controller;
+package com.inspirationlogical.receipt.waiter.controller.restaurant;
 
 import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import javafx.geometry.Point2D;
 import org.junit.Test;
 

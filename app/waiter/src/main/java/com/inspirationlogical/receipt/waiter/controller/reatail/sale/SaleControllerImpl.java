@@ -119,6 +119,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         productController.initCategoriesAndProducts();
         updateTableSummary();
         resetToggleGroups();
+        clearSearch();
     }
 
     @Override
@@ -203,6 +204,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         cancellationTypeToggleGroup.selectToggle(null);
         giftProduct.setSelected(false);
         sortByClickTime.setSelected(false);
+        sortByClickTime.requestFocus();
     }
 
     ChangeListener<Toggle> cancellationTypeToggleListener = (observable, oldValue, newValue) -> {

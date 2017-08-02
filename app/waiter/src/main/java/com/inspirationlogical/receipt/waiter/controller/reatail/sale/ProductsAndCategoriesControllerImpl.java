@@ -195,11 +195,11 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
     @Override
     public void search(String searchText) {
         productsGrid.getChildren().clear();
-        if (!searchText.isEmpty()) {
+        if (searchText.isEmpty()) {
+            drawListOfElements(visibleProducts, productsGrid);
+        } else {
             searchedProducts = productSearcher.search(searchText);
             drawListOfElements(searchedProducts, productsGrid);
-        } else {
-            drawListOfElements(visibleProducts, productsGrid);
         }
     }
 }

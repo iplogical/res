@@ -97,6 +97,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     @FXML
     public void onGuestMinus(Event event) {
+        if(tableView.getGuestCount() == 0) return;
         restaurantService.setGuestCount(tableView, tableView.getGuestCount() - 1);
         updateTableSummary();
     }
@@ -134,13 +135,8 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         note.setText(tableView.getNote());
     }
 
-    protected String getGuestPerCapacity() {
+     private String getGuestPerCapacity() {
         return " (" + String.valueOf(tableView.getGuestCount()) + "/" + String.valueOf(tableView.getCapacity()) + ")";
-    }
-
-    protected Collection<ReceiptRecordView> getSoldProducts(RestaurantService restaurantService, TableView tableView) {
-        receiptView = restaurantService.getOpenReceipt(tableView);
-        return receiptView.getSoldProducts();
     }
 
     protected ObservableList<SoldProductViewModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
@@ -168,12 +164,6 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected List<ReceiptRecordView> findMatchingView(Collection<ReceiptRecordView> productsView, SoldProductViewModel row) {
         return productsView.stream()
                 .filter(receiptRecordView -> SoldProductViewModel.isEquals(row, receiptRecordView))
-                .collect(Collectors.toList());
-    }
-
-    protected List<ReceiptRecordView> findEquivalentView(Collection<ReceiptRecordView> productsView, SoldProductViewModel row) {
-        return productsView.stream()
-                .filter(receiptRecordView -> SoldProductViewModel.isEquivalent(row, receiptRecordView))
                 .collect(Collectors.toList());
     }
 
@@ -206,6 +196,12 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         return equivalentReceiptRecordView.get(0);
     }
 
+    protected List<ReceiptRecordView> findEquivalentView(Collection<ReceiptRecordView> productsView, SoldProductViewModel row) {
+        return productsView.stream()
+                .filter(receiptRecordView -> SoldProductViewModel.isEquivalent(row, receiptRecordView))
+                .collect(Collectors.toList());
+    }
+
     private void increaseClickedRow(SoldProductViewModel row, double amount) {
         row.increaseProductQuantity(amount);
         soldProductsTable.refresh();
@@ -221,5 +217,10 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected void getSoldProductsAndUpdateTable() {
         soldProductsView = getSoldProducts(restaurantService, tableView);
         updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+    }
+
+    private Collection<ReceiptRecordView> getSoldProducts(RestaurantService restaurantService, TableView tableView) {
+        receiptView = restaurantService.getOpenReceipt(tableView);
+        return receiptView.getSoldProducts();
     }
 }

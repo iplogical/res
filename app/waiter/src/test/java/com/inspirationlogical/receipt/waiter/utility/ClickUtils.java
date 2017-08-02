@@ -5,9 +5,12 @@ import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import org.testfx.api.FxRobotInterface;
 
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TABLEFORM_CAPACITY;
@@ -63,6 +66,14 @@ public class ClickUtils {
         ((TextField)robot.find(fxId)).setText(text);
     }
 
+    public static String getTextField(String fxId) {
+        return ((TextField)robot.find(fxId)).getText();
+    }
+
+    public static String getLabel(String fxId) {
+        return ((Label)robot.find(fxId)).getText();
+    }
+
     public static void setTextArea(String fxId, String text) {
         ((TextArea)robot.find(fxId)).setText(text);
     }
@@ -105,6 +116,20 @@ public class ClickUtils {
             robot.clickOn(Resources.WAITER.getString("ContextMenu.DeleteTable"));
             verifyThatNotVisible(tableNumber);
         });
+    }
+
+    public static FxRobotInterface type(String text) {
+        FxRobotInterface robotInterface = robot;
+        for(Character c : text.toCharArray()) {
+            KeyCode current = KeyCode.getKeyCode(c.toString().toUpperCase());
+            if(c == ' ') {
+                current = KeyCode.SPACE;
+            } else if(c == ',') {
+                current = KeyCode.COMMA;
+            }
+            robotInterface = robotInterface.type(current);
+        }
+        return robotInterface;
     }
 
 }
