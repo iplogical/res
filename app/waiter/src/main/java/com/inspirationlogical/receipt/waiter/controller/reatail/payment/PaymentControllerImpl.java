@@ -12,6 +12,8 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
@@ -75,9 +77,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     ToggleGroup discountTypeToggleGroup;
 
     @FXML
-    private Label payTotalPrice;
+    Label paidTotalPrice;
     @FXML
-    private Label previousPartialPrice;
+    Label previousPartialPrice;
 
     @FXML
     Label liveTime;
@@ -169,15 +171,19 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private void discardPaidRecords() {
         paidProductsModel = FXCollections.observableArrayList();
         paidProductsView = new ArrayList<>();
-        previousPartialPrice.setText(payTotalPrice.getText());
+        previousPartialPrice.setText(paidTotalPrice.getText());
         updatePaidProductsTable();
     }
 
     private void updatePaidProductsTable() {
-        payTotalPrice.setText(SoldProductViewModel.getTotalPrice(paidProductsModel) + " Ft");
+        updatePaidTotalPrice();
         updateSoldTotalPrice();
         paidProductsTable.setItems(paidProductsModel);
         paidProductsTable.refresh();
+    }
+
+    private void updatePaidTotalPrice() {
+        paidTotalPrice.setText(SoldProductViewModel.getTotalPrice(paidProductsModel) + " Ft");
     }
 
     private void backToRestaurantView() {
@@ -205,8 +211,14 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             }
         } else if(paymentViewState.isPartialPayment()) {
             if(isPartiallyPayable(row)) {
-                double amount = Double.valueOf(partialPaymentValue.getText());
-                increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, amount), amount);
+                double amount = 0;
+                try {
+                    amount = Double.valueOf(partialPaymentValue.getText());
+                    increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, amount), amount);
+                } catch (NumberFormatException e) {
+                    ErrorMessage.showErrorMessage(rootPayment,
+                            Resources.WAITER.getString("PaymentView.PartialPayNumberError"));
+                }
             }
         }
     }

@@ -7,9 +7,11 @@ import javafx.scene.control.TableView;
 
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickButtonThenWait;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickOnThenWait;
-import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.SELECTIVE_CANCELLATION;
-import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.SINGLE_CANCELLATION;
-import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.SOLD_PRODUCTS_TABLE;
+import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.getLabel;
+import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
+import static com.inspirationlogical.receipt.waiter.utility.NameUtils.GERE_LONG;
+import static com.inspirationlogical.receipt.waiter.utility.NameUtils.SOPRONI_LONG;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SaleUtils {
@@ -45,28 +47,55 @@ public class SaleUtils {
         clickButtonThenWait(SINGLE_CANCELLATION, 30);
     }
 
-    public static String getProductName(int row) {
+    public static String getSoldProductName(int row) {
         return getSoldProducts().get(row - 1).getProductName();
     }
 
-    public static String getProductQuantity(int row) {
+    public static String getSoldProductQuantity(int row) {
         return getSoldProducts().get(row - 1).getProductQuantity();
     }
 
-    public static String getProductUnitPrice(int row) {
+    public static String getSoldProductUnitPrice(int row) {
         return getSoldProducts().get(row - 1).getProductUnitPrice();
     }
 
-    public static String getProductTotalPrice(int row) {
+    public static String getSoldProductTotalPrice(int row) {
         return getSoldProducts().get(row - 1).getProductTotalPrice();
     }
-
+    
+    public static void assertNoSoldProduct() {
+        assertTrue(getSoldProducts().isEmpty());
+    }
+    
     public static ObservableList<SoldProductViewModel> getSoldProducts() {
         TableView<SoldProductViewModel> tableView = robot.find(SOLD_PRODUCTS_TABLE);
         return tableView.getItems();
     }
 
-    public static void assertSoldProductsEmpty() {
-        assertTrue(getSoldProducts().isEmpty());
+    public static void assertSoldProduct(int row, String name, double quantity, int unitPrice, int totalPrice) {
+        assertEquals(name, getSoldProductName(row));
+        assertEquals(Double.toString(quantity), getSoldProductQuantity(row));
+        assertEquals(Integer.toString(unitPrice), getSoldProductUnitPrice(row));
+        assertEquals(Integer.toString(totalPrice), getSoldProductTotalPrice(row));
+    }
+
+    public static void assertSoldSoproni(int row, double quantity) {
+        assertSoldProduct(row, SOPRONI_LONG, quantity, 440, (int)(quantity * 440));
+    }
+
+    public static void assertSoldGere(int row, double quantity) {
+        assertSoldProduct(row, GERE_LONG, quantity, 2900, (int)(quantity * 2900));
+    }
+
+    public static void assertSoldTotalPrice(int price) {
+        assertEquals(intToForint(price), getSoldTotalPrice());
+    }
+
+    private static String getSoldTotalPrice() {
+        return getLabel(SOLD_TOTAL_PRICE);
+    }
+
+    public static String intToForint(int price) {
+        return Integer.toString(price) + " Ft";
     }
 }

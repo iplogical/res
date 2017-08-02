@@ -107,10 +107,7 @@ public class ProductsAndCategoriesControllerTest extends SaleViewTest {
     public void testSearchFieldSellByName() {
         ClickUtils.type(KRUSO);
         type(ENTER, 3);
-        assertEquals(KRUSO_LONG, getProductName(1));
-        assertEquals("3.0", getProductQuantity(1));
-        assertEquals("480", getProductUnitPrice(1));
-        assertEquals("1440", getProductTotalPrice(1));
+        assertSoldProduct(1, KRUSO_LONG, 3, 480, 1440);
         selectiveCancellation(KRUSO_LONG);
     }
 
@@ -118,10 +115,7 @@ public class ProductsAndCategoriesControllerTest extends SaleViewTest {
     public void testSearchFieldSellByRapidCode() {
         ClickUtils.type(KRUSO_RAPID_CODE);
         type(ENTER, 3);
-        assertEquals(KRUSO_LONG, getProductName(1));
-        assertEquals("3.0", getProductQuantity(1));
-        assertEquals("480", getProductUnitPrice(1));
-        assertEquals("1440", getProductTotalPrice(1));
+        assertSoldProduct(1, KRUSO_LONG, 3, 480, 1440);
         selectiveCancellation(KRUSO_LONG);
     }
 
@@ -139,7 +133,7 @@ public class ProductsAndCategoriesControllerTest extends SaleViewTest {
         verifyThatVisible(SOPRONI);
         verifyThatVisible(SOPRONI_SMALL);
         type(ENTER);
-        assertSoldProductsEmpty();
+        assertNoSoldProduct();
     }
 
     @Test

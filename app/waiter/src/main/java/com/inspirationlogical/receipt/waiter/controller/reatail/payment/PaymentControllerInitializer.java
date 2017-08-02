@@ -23,6 +23,7 @@ public class PaymentControllerInitializer {
         initializePaidProductsTable();
         initializePaidProductsTableRowHandler();
         initializePaymentViewState();
+        initializePaidTotalPrices();
         p.initLiveTime(p.liveTime);
     }
 
@@ -85,6 +86,11 @@ public class PaymentControllerInitializer {
     private void initializePaymentViewState() {
         p.paymentViewState.setDiscountAbsoluteValue(p.discountAbsoluteValue);
         p.paymentViewState.setDiscountPercentValue(p.discountPercentValue);
+    }
+
+    private void initializePaidTotalPrices() {
+        p.paidTotalPrice.setText("0 Ft");
+        p.previousPartialPrice.setText("0 Ft");
     }
 
     private class PaymentTypeTogglesListener implements ChangeListener<Toggle> {

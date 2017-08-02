@@ -33,28 +33,28 @@ public class SaleControllerTest extends SaleViewTest {
 
     @Test
     public void testTableSummaryTotalPrice() {
-        assertEquals("0 Ft", getLabel(TOTAL_PRICE));
+        assertSoldTotalPrice(0);
         selectCategory(BEERS);
         sellProduct(SOPRONI);
-        assertEquals("440 Ft", getLabel(TOTAL_PRICE));
+        assertSoldTotalPrice(440);
         sellProduct(SOPRONI);
-        assertEquals("880 Ft", getLabel(TOTAL_PRICE));
+        assertSoldTotalPrice(880);
         sellProduct(KRUSO);
-        assertEquals("1360 Ft", getLabel(TOTAL_PRICE));
+        assertSoldTotalPrice(1360);
         clickOnThenWait(KRUSO_LONG, 50);
-        assertEquals("1840 Ft", getLabel(TOTAL_PRICE));
+        assertSoldTotalPrice(1840);
         selectiveCancellation(SOPRONI_LONG);
-        assertEquals("960 Ft", getLabel(TOTAL_PRICE));
+        assertSoldTotalPrice(960);
         selectiveCancellation(KRUSO_LONG);
-        assertEquals("0 Ft", getLabel(TOTAL_PRICE));
+        assertSoldTotalPrice(0);
         sellProduct(SOPRONI, 3);
-        assertEquals("1320 Ft", getLabel(TOTAL_PRICE));
+        assertSoldTotalPrice(1320);
         singleCancellation(SOPRONI_LONG);
-        assertEquals("880 Ft", getLabel(TOTAL_PRICE));
+        assertSoldTotalPrice(880);
         singleCancellation(SOPRONI_LONG);
-        assertEquals("440 Ft", getLabel(TOTAL_PRICE));
+        assertSoldTotalPrice(440);
         singleCancellation(SOPRONI_LONG);
-        assertEquals("0 Ft", getLabel(TOTAL_PRICE));
+        assertSoldTotalPrice(0);
     }
 
     @Test
@@ -63,22 +63,22 @@ public class SaleControllerTest extends SaleViewTest {
         sellProduct(SOPRONI);
         sellProduct(KRUSO);
         sellProduct(EDELWEISS);
-        assertEquals(SOPRONI_LONG, getProductName(1));
-        assertEquals(KRUSO_LONG, getProductName(2));
-        assertEquals(EDELWEISS_LONG, getProductName(3));
+        assertEquals(SOPRONI_LONG, getSoldProductName(1));
+        assertEquals(KRUSO_LONG, getSoldProductName(2));
+        assertEquals(EDELWEISS_LONG, getSoldProductName(3));
 
         clickOnThenWait(SOPRONI_LONG, 50);
         clickButtonThenWait(SORT_BY_CLICK_TIME, 50);
-        assertEquals(KRUSO_LONG, getProductName(1));
-        assertEquals(EDELWEISS_LONG, getProductName(2));
-        assertEquals(SOPRONI_LONG, getProductName(3));
+        assertEquals(KRUSO_LONG, getSoldProductName(1));
+        assertEquals(EDELWEISS_LONG, getSoldProductName(2));
+        assertEquals(SOPRONI_LONG, getSoldProductName(3));
         clickButtonThenWait(SORT_BY_CLICK_TIME, 50);
 
         clickOnThenWait(KRUSO_LONG, 50);
         clickButtonThenWait(SORT_BY_CLICK_TIME, 50);
-        assertEquals(EDELWEISS_LONG, getProductName(1));
-        assertEquals(SOPRONI_LONG, getProductName(2));
-        assertEquals(KRUSO_LONG, getProductName(3));
+        assertEquals(EDELWEISS_LONG, getSoldProductName(1));
+        assertEquals(SOPRONI_LONG, getSoldProductName(2));
+        assertEquals(KRUSO_LONG, getSoldProductName(3));
 
         selectiveCancellation(EDELWEISS_LONG);
         selectiveCancellation(SOPRONI_LONG);
@@ -89,26 +89,24 @@ public class SaleControllerTest extends SaleViewTest {
     public void testSellProduct() {
         selectCategory(BEERS);
         sellProduct(SOPRONI);
-        assertEquals(SOPRONI_LONG, getProductName(1));
-        assertEquals("1.0", getProductQuantity(1));
-        assertEquals("440", getProductUnitPrice(1));
-        assertEquals("440", getProductTotalPrice(1));
+        assertSoldSoproni(1, 1);
         selectiveCancellation(SOPRONI_LONG);
     }
 
     @Test
     public void testSellAdHocProduct() {
         clickButtonThenWait(SELL_ADHOC_PRODUCT, 100);
+        fillAdHocFormAndConfirm();
+        assertSoldProduct(1, "TestAdHocProductName", 2, 400, 800);
+        selectiveCancellation("TestAdHocProductName");
+    }
+
+    private void fillAdHocFormAndConfirm() {
         setTextField(ADHOC_PRODUCT_NAME, "TestAdHocProductName");
         setTextField(ADHOC_PRODUCT_QUANTITY, "2");
         setTextField(ADHOC_PRODUCT_PURCHASE_PRICE, "200");
         setTextField(ADHOC_PRODUCT_SALE_PRICE, "400");
         clickButtonThenWait("Form.Confirm", 100);
-        assertEquals("TestAdHocProductName", getProductName(1));
-        assertEquals("2.0", getProductQuantity(1));
-        assertEquals("400", getProductUnitPrice(1));
-        assertEquals("800", getProductTotalPrice(1));
-        selectiveCancellation("TestAdHocProductName");
     }
 
     @Test
@@ -116,10 +114,7 @@ public class SaleControllerTest extends SaleViewTest {
         clickButtonThenWait(GIFT_PRODUCT, 20);
         selectCategory(BEERS);
         sellProduct(SOPRONI);
-        assertEquals(SOPRONI_LONG + " *", getProductName(1));
-        assertEquals("1.0", getProductQuantity(1));
-        assertEquals("0", getProductUnitPrice(1));
-        assertEquals("0", getProductTotalPrice(1));
+        assertSoldProduct(1, SOPRONI_LONG + " *", 1, 0, 0);
         clickButtonThenWait(GIFT_PRODUCT, 20);
         selectiveCancellation(SOPRONI_LONG + " *");
     }
@@ -131,68 +126,8 @@ public class SaleControllerTest extends SaleViewTest {
         sellProduct(SOPRONI);
         clickButtonThenWait(GIFT_PRODUCT, 20);
         sellProduct(SOPRONI);
-        assertEquals(SOPRONI_LONG + " *", getProductName(1));
-        assertEquals("2.0", getProductQuantity(1));
-        assertEquals("0", getProductUnitPrice(1));
-        assertEquals("0", getProductTotalPrice(1));
+        assertSoldProduct(1, SOPRONI_LONG + " *", 2, 0, 0);
         selectiveCancellation(SOPRONI_LONG + " *");
-    }
-
-    @Test
-    public void testSellGiftProductThenNormalProduct() {
-        clickButtonThenWait(GIFT_PRODUCT, 20);
-        selectCategory(BEERS);
-        sellProduct(SOPRONI);
-        clickButtonThenWait(GIFT_PRODUCT, 5100);
-        sellProduct(SOPRONI);
-        assertEquals(SOPRONI_LONG + " *", getProductName(1));
-        assertEquals("1.0", getProductQuantity(1));
-        assertEquals("0", getProductUnitPrice(1));
-        assertEquals("0", getProductTotalPrice(1));
-        assertEquals(SOPRONI_LONG, getProductName(2));
-        assertEquals("1.0", getProductQuantity(2));
-        assertEquals("440", getProductUnitPrice(2));
-        assertEquals("440", getProductTotalPrice(2));
-        selectiveCancellation(SOPRONI_LONG + " *");
-        selectiveCancellation(SOPRONI_LONG);
-    }
-
-    @Test
-    public void testSelectiveCancellation() {
-        selectCategory(BEERS);
-        sellProduct(SOPRONI, 5);
-        assertEquals(SOPRONI_LONG, getProductName(1));
-        assertEquals("5.0", getProductQuantity(1));
-        assertEquals("440", getProductUnitPrice(1));
-        assertEquals("2200", getProductTotalPrice(1));
-
-        selectiveCancellation(SOPRONI_LONG);
-        assertSoldProductsEmpty();
-    }
-
-    @Test
-    public void testSingleCancellation() {
-        selectCategory(BEERS);
-        sellProduct(SOPRONI, 3);
-        assertEquals(SOPRONI_LONG, getProductName(1));
-        assertEquals("3.0", getProductQuantity(1));
-        assertEquals("440", getProductUnitPrice(1));
-        assertEquals("1320", getProductTotalPrice(1));
-
-        singleCancellation(SOPRONI_LONG);
-        assertEquals(SOPRONI_LONG, getProductName(1));
-        assertEquals("2.0", getProductQuantity(1));
-        assertEquals("440", getProductUnitPrice(1));
-        assertEquals("880", getProductTotalPrice(1));
-
-        singleCancellation(SOPRONI_LONG);
-        assertEquals(SOPRONI_LONG, getProductName(1));
-        assertEquals("1.0", getProductQuantity(1));
-        assertEquals("440", getProductUnitPrice(1));
-        assertEquals("440", getProductTotalPrice(1));
-
-        singleCancellation(SOPRONI_LONG);
-        assertSoldProductsEmpty();
     }
 
     @Test
@@ -203,10 +138,42 @@ public class SaleControllerTest extends SaleViewTest {
         clickOnThenWait(SOPRONI_LONG + " *", 20);
         clickButtonThenWait(GIFT_PRODUCT, 20);
         clickOnThenWait(SOPRONI_LONG + " *", 20);
-        assertEquals(SOPRONI_LONG + " *", getProductName(1));
-        assertEquals("3.0", getProductQuantity(1));
-        assertEquals("0", getProductUnitPrice(1));
-        assertEquals("0", getProductTotalPrice(1));
+        assertSoldProduct(1, SOPRONI_LONG + " *", 3, 0, 0);
         selectiveCancellation(SOPRONI_LONG + " *");
+    }
+
+    @Test
+    public void testSellGiftProductThenNormalProduct() {
+        clickButtonThenWait(GIFT_PRODUCT, 20);
+        selectCategory(BEERS);
+        sellProduct(SOPRONI);
+        clickButtonThenWait(GIFT_PRODUCT, 5100);
+        sellProduct(SOPRONI);
+        assertSoldProduct(1, SOPRONI_LONG + " *", 1, 0, 0);
+        assertSoldSoproni(2, 1);
+        selectiveCancellation(SOPRONI_LONG + " *");
+        selectiveCancellation(SOPRONI_LONG);
+    }
+
+    @Test
+    public void testSelectiveCancellation() {
+        selectCategory(BEERS);
+        sellProduct(SOPRONI, 5);
+        assertSoldSoproni(1, 5);
+        selectiveCancellation(SOPRONI_LONG);
+        assertNoSoldProduct();
+    }
+
+    @Test
+    public void testSingleCancellation() {
+        selectCategory(BEERS);
+        sellProduct(SOPRONI, 3);
+        assertSoldSoproni(1, 3);
+        singleCancellation(SOPRONI_LONG);
+        assertSoldSoproni(1, 2);
+        singleCancellation(SOPRONI_LONG);
+        assertSoldSoproni(1, 1);
+        singleCancellation(SOPRONI_LONG);
+        assertNoSoldProduct();
     }
 }

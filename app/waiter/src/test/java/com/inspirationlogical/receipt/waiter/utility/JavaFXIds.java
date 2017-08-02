@@ -27,7 +27,7 @@ public class JavaFXIds {
     public final static String GUEST_PLUS = "#guestPlus";
     public final static String GUEST_MINUS = "#guestMinus";
     public final static String SALE_TABLE_NUMBER = "#tableNumber";
-    public final static String TOTAL_PRICE = "#totalPrice";
+    public final static String SOLD_TOTAL_PRICE = "#totalPrice";
     public final static String SORT_BY_CLICK_TIME = "#sortByClickTime";
 
     public final static String SOLD_PRODUCTS_TABLE = "#soldProductsTable";
@@ -57,6 +57,11 @@ public class JavaFXIds {
     public final static String SINGLE_PAYMENT = "#singlePayment";
     public final static String PARTIAL_PAYMENT = "#partialPayment";
     public final static String PARTIAL_PAYMENT_VALUE = "#partialPaymentValue";
+
+    public final static String PAID_TOTAL_PRICE = "#paidTotalPrice";
+    public final static String PREVIOUS_PARTIAL_PRICE = "#previousPartialPrice";
+
+    public final static String PAID_PRODUCTS_TABLE = "#paidProductsTable";
 
     public final static String PAY = "#pay";
 }
