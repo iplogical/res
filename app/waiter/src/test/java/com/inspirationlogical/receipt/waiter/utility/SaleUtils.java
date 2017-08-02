@@ -15,9 +15,19 @@ public class SaleUtils {
 
     private static TestFXBase robot;
 
-    public static final String BEER = "Sörök";
+    public static final String DRINKS = "Itallap";
+    public static final String COCKTAILS = "Koktélok";
+    public static final String BEERS = "Sörök";
+    public static final String TAP_BEER = "Csapolt";
+    public static final String BOTTLE_BEER = "Üveges";
+    public static final String BACK = "Vissza";
+
+    public static final String FOOD = "Étlap";
+    public static final String FOODS = "Ételek";
+
     public static final String WINE = "Borok";
     public static final String SOPRONI = "Sop 0,5L";
+    public static final String KRUSO = "Kruso";
     public static final String GERE = "Gere";
 
     public static void setRobot(TestFXBase robot) {

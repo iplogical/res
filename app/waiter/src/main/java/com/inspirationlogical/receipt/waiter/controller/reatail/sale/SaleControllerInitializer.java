@@ -45,7 +45,7 @@ public class SaleControllerInitializer {
                     break;
                 case DELETE:
                     s.searchField.clear();
-                    s.productController.updateCategories();
+                    s.productController.updateCategoriesAndProducts();
                     break;
                 case BACK_SPACE:
                     if (searchFieldNotEmpty()) {

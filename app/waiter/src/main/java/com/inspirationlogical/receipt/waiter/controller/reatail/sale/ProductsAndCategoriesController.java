@@ -1,17 +1,18 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import javafx.scene.layout.GridPane;
 
 import java.util.List;
 
 public interface ProductsAndCategoriesController {
-    void initCategories();
+    void initCategoriesAndProducts();
 
-    void updateCategories();
+    void updateCategoriesAndProducts();
 
-    void selectCategory(ElementController elementController);
+    void selectCategory(ProductCategoryView selected);
 
     void search(String text);
 

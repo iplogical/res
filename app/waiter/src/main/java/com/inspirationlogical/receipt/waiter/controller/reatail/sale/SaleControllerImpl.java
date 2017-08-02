@@ -4,6 +4,7 @@ package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
@@ -121,7 +122,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
             return;
         }
         getSoldProductsAndUpdateTable();
-        productController.initCategories();
+        productController.initCategoriesAndProducts();
         updateTableSummary();
         resetToggleGroups();
     }
@@ -150,8 +151,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    public void selectCategory(ElementController elementController) {
-        productController.selectCategory(elementController);
+    public void selectCategory(ProductCategoryView selected) {
+        productController.selectCategory(selected);
     }
 
     @Override

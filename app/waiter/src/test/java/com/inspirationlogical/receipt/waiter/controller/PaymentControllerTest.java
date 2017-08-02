@@ -23,7 +23,7 @@ public class PaymentControllerTest  extends TestFXBase {
 //        addTable(TABLE_NAME, TABLE_NUMBER, TABLE_GUESTS, TABLE_CAPACITY);
         openTable(TABLE_NUMBER);
         clickOnThenWait(TABLE_NUMBER, 200);
-        selectCategory(BEER);
+        selectCategory(BEERS);
         sellProduct(SOPRONI, 3);
         selectCategory(WINE);
         sellProduct(GERE, 2);

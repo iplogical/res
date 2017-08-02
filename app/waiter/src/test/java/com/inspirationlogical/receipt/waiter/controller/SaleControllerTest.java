@@ -1,10 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import com.inspirationlogical.receipt.corelib.utility.Resources;
-import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,13 +38,96 @@ public class SaleControllerTest extends TestFXBase {
 
     @Test
     public void testSelectCategory() {
-        selectCategory(BEER);
+        verifyThatVisible(DRINKS);
+        verifyThatVisible(FOOD);
+
+        selectCategory(BEERS);
         verifyThatVisible(SOPRONI);
+        verifyThatVisible(KRUSO);
+        verifyThatVisible(TAP_BEER);
+        verifyThatVisible(BOTTLE_BEER);
+        verifyThatNotVisible(DRINKS);
+
+        selectCategory(TAP_BEER);
+        verifyThatVisible(SOPRONI);
+        verifyThatNotVisible(KRUSO);
+        verifyThatVisible(TAP_BEER);
+        verifyThatVisible(BOTTLE_BEER);
+        verifyThatNotVisible(DRINKS);
+
+        selectCategory(BACK);
+        verifyThatVisible(SOPRONI);
+        verifyThatVisible(KRUSO);
+        verifyThatVisible(TAP_BEER);
+        verifyThatVisible(BOTTLE_BEER);
+        verifyThatNotVisible(DRINKS);
+
+        selectCategory(BACK);
+        verifyThatNotVisible(TAP_BEER);
+        verifyThatNotVisible(BOTTLE_BEER);
+        verifyThatVisible(DRINKS);
+
+        selectCategory(FOOD);
+        verifyThatVisible(DRINKS);
+        verifyThatVisible(FOOD);
+        verifyThatVisible(FOODS);
+        verifyThatNotVisible(BEERS);
+
+        selectCategory(DRINKS);
+        verifyThatVisible(DRINKS);
+        verifyThatVisible(FOOD);
+        verifyThatNotVisible(FOODS);
+        verifyThatVisible(BEERS);
+    }
+
+    @Test
+    public void initialCategoryVisibleWhenEnterTheSaleView() {
+        verifyThatVisible(DRINKS);
+
+        selectCategory(BEERS);
+        selectCategory(TAP_BEER);
+        verifyThatNotVisible(DRINKS);
+
+        clickButtonThenWait(TO_RESTAURANT, 500);
+        clickOnThenWait(TABLE_NUMBER, 200);
+        verifyThatVisible(DRINKS);
+    }
+    @Test
+    public void testChildrenCategoriesCleared() {
+        selectCategory(BEERS);
+        verifyThatVisible(COCKTAILS);
+        verifyThatVisible(BEERS);
+        verifyThatVisible(TAP_BEER);
+        verifyThatVisible(BOTTLE_BEER);
+
+        selectCategory(TAP_BEER);
+        verifyThatVisible(COCKTAILS);
+        verifyThatVisible(BEERS);
+        verifyThatVisible(TAP_BEER);
+        verifyThatVisible(BOTTLE_BEER);
+
+        selectCategory(BOTTLE_BEER);
+        verifyThatVisible(COCKTAILS);
+        verifyThatVisible(BEERS);
+        verifyThatVisible(TAP_BEER);
+        verifyThatVisible(BOTTLE_BEER);
+
+        selectCategory(COCKTAILS);
+        verifyThatVisible(COCKTAILS);
+        verifyThatVisible(BEERS);
+        verifyThatNotVisible(TAP_BEER);
+        verifyThatNotVisible(BOTTLE_BEER);
+
+        selectCategory(BEERS);
+        verifyThatVisible(COCKTAILS);
+        verifyThatVisible(BEERS);
+        verifyThatVisible(TAP_BEER);
+        verifyThatVisible(BOTTLE_BEER);
     }
 
     @Test
     public void testSellProduct() {
-        selectCategory(BEER);
+        selectCategory(BEERS);
         sellProduct(SOPRONI);
         assertEquals("Soproni 0,5L", getProductName(1));
         assertEquals("1.0", getProductQuantity(1));
@@ -75,7 +154,7 @@ public class SaleControllerTest extends TestFXBase {
     @Test
     public void testSellGiftProduct() {
         clickButtonThenWait(GIFT_PRODUCT, 20);
-        selectCategory(BEER);
+        selectCategory(BEERS);
         sellProduct(SOPRONI);
         assertEquals("Soproni 0,5L *", getProductName(1));
         assertEquals("1.0", getProductQuantity(1));
@@ -88,7 +167,7 @@ public class SaleControllerTest extends TestFXBase {
     @Test
     public void testSellMultipleGiftProductsWithin5Seconds() {
         clickButtonThenWait(GIFT_PRODUCT, 20);
-        selectCategory(BEER);
+        selectCategory(BEERS);
         sellProduct(SOPRONI);
         clickButtonThenWait(GIFT_PRODUCT, 20);
         sellProduct(SOPRONI);
@@ -102,7 +181,7 @@ public class SaleControllerTest extends TestFXBase {
     @Test
     public void testSellGiftProductThenNormalProduct() {
         clickButtonThenWait(GIFT_PRODUCT, 20);
-        selectCategory(BEER);
+        selectCategory(BEERS);
         sellProduct(SOPRONI);
         clickButtonThenWait(GIFT_PRODUCT, 5100);
         sellProduct(SOPRONI);
@@ -120,7 +199,7 @@ public class SaleControllerTest extends TestFXBase {
 
     @Test
     public void testSelectiveCancellation() {
-        selectCategory(BEER);
+        selectCategory(BEERS);
         sellProduct(SOPRONI, 5);
         assertEquals("Soproni 0,5L", getProductName(1));
         assertEquals("5.0", getProductQuantity(1));
@@ -133,7 +212,7 @@ public class SaleControllerTest extends TestFXBase {
 
     @Test
     public void testSingleCancellation() {
-        selectCategory(BEER);
+        selectCategory(BEERS);
         sellProduct(SOPRONI, 3);
         assertEquals("Soproni 0,5L", getProductName(1));
         assertEquals("3.0", getProductQuantity(1));
@@ -163,7 +242,7 @@ public class SaleControllerTest extends TestFXBase {
     @Test
     public void testIncreaseGiftProduct() {
         clickButtonThenWait(GIFT_PRODUCT, 20);
-        selectCategory(BEER);
+        selectCategory(BEERS);
         sellProduct(SOPRONI);
         clickOnThenWait("Soproni 0,5L *", 20);
         clickButtonThenWait(GIFT_PRODUCT, 20);

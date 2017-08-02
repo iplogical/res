@@ -31,7 +31,7 @@ public class CategoryControllerImpl extends ElementControllerImpl<ProductCategor
         } else {
             root.requestFocus();
             saleController.clearSearch();
-            saleController.selectCategory(this);
+            saleController.selectCategory(this.getView());
         }
     }
 }

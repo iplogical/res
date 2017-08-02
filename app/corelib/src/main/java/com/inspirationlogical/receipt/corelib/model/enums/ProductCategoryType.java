@@ -12,6 +12,10 @@ public enum ProductCategoryType {
         return type.equals(ROOT);
     }
 
+    public static boolean isAggregate(ProductCategoryType type) {
+        return type.equals(AGGREGATE);
+    }
+
     public static boolean isLeaf(ProductCategoryType type) {
         return type.equals(LEAF);
     }

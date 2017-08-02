@@ -50,15 +50,11 @@ public interface CommonService {
 
     List<ProductView> getActiveProducts();
 
-    List<ProductView> getActiveProducts(ProductCategoryView productCategoryView);
-
     List<ProductView> getSellableProducts();
 
     List<ProductView> getSellableProducts(ProductCategoryView productCategoryView);
 
     List<ProductView> getStorableProducts();
-
-    List<ProductView> getStorableProducts(ProductCategoryView productCategoryView);
 
     List<StockView> getStockItems();
 

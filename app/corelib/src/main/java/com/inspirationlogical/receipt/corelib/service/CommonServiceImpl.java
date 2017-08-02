@@ -181,14 +181,6 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
-    public List<ProductView> getActiveProducts(ProductCategoryView productCategoryView) {
-        return getChildPseudoCategories(productCategoryView).stream()
-                .map(ProductCategoryView::getProduct)
-                .filter(productView -> productView.getStatus().equals(ACTIVE))
-                .collect(toList());
-    }
-
-    @Override
     public List<ProductView> getSellableProducts() {
         return getActiveProducts().stream()
                 .filter(productView -> !productView.getType().equals(AD_HOC_PRODUCT))
@@ -219,16 +211,6 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
                 .collect(toList());
         productsAsRecipe.addAll(storableProducts);
         return productsAsRecipe.stream()
-                .filter(distinctByKey(ProductView::getLongName))
-                .collect(toList());
-    }
-
-    @Override
-    public List<ProductView> getStorableProducts(ProductCategoryView productCategoryView) {
-        return getChildPseudoCategories(productCategoryView).stream()
-                .map(ProductCategoryView::getProduct)
-                .flatMap(productView -> productView.getRecipes().stream())
-                .map(RecipeView::getComponent)
                 .filter(distinctByKey(ProductView::getLongName))
                 .collect(toList());
     }

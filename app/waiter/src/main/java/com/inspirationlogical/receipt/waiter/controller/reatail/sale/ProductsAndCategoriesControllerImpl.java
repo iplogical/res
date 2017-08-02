@@ -36,6 +36,7 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
     @Setter private GridPane productsGrid;
 
     @Getter private ProductCategoryView selectedCategory;
+    @Getter private ProductCategoryView initialSelectedCategory;
     @Getter private List<ProductCategoryView> selectedLevelCategories;
     @Getter private List<ProductCategoryView> selectedChildrenCategories;
 
@@ -56,7 +57,7 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
         rootCategory = commonService.getRootProductCategory();
         List<ProductCategoryView> childCategories = getChildCategoriesWithSellableProduct(rootCategory);
         childCategories.sort(Comparator.comparing(ProductCategoryView::getOrderNumber));
-        selectedCategory = childCategories.get(0);
+        initialSelectedCategory = selectedCategory = childCategories.get(0);
     }
 
     private List<ProductCategoryView> getChildCategoriesWithSellableProduct(ProductCategoryView categoryView) {
@@ -70,35 +71,47 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
     }
 
     @Override
-    public void selectCategory(ElementController elementController) {
-        selectedCategory = (ProductCategoryView) elementController.getView();
-        updateCategories();
+    public void selectCategory(ProductCategoryView selected) {
+        selectedCategory = selected;
+        updateCategoriesAndProducts();
     }
 
     @Override
-    public void initCategories() {
-        updateSelectedCategories();
+    public void initCategoriesAndProducts() {
+        selectedCategory = initialSelectedCategory;
         visibleProducts = new ArrayList<>();
-        redrawCategoriesAndProducts();
+        updateAndRedrawSelectedCategoriesAndProducts();
     }
 
     @Override
-    public void updateCategories() {
-        updateSelectedCategories();
+    public void updateCategoriesAndProducts() {
         visibleProducts = commonService.getSellableProducts(selectedCategory);
+        updateAndRedrawSelectedCategoriesAndProducts();
+    }
+
+    private void updateAndRedrawSelectedCategoriesAndProducts() {
+        updateSelectedCategories();
         redrawCategoriesAndProducts();
         setSelectedCategory();
     }
 
     private void updateSelectedCategories() {
-        if(selectedCategoryIsNotLeaf(selectedCategory)) {
+        if(selectedCategoryIsAggregate(selectedCategory)) {
             selectedLevelCategories = getChildCategoriesWithSellableProduct(selectedCategory.getParent());
             selectedChildrenCategories = commonService.getChildCategories(selectedCategory);
+        } else if(selectedCategoryIsSameLevel(selectedCategory)){
+            selectedChildrenCategories.clear();
         }
     }
 
-    private boolean selectedCategoryIsNotLeaf(ProductCategoryView selectedCategory) {
-        return !ProductCategoryType.isLeaf(selectedCategory.getType());
+    private boolean selectedCategoryIsAggregate(ProductCategoryView selectedCategory) {
+        return ProductCategoryType.isAggregate(selectedCategory.getType());
+    }
+
+    private boolean selectedCategoryIsSameLevel(ProductCategoryView selectedCategory) {
+        return selectedLevelCategories.stream().filter(category ->
+                category.getCategoryName().equals(selectedCategory.getCategoryName()))
+                .count() == 1;
     }
 
     private void redrawCategoriesAndProducts() {
@@ -127,7 +140,7 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
     private void setSelectedCategory() {
         elementControllers.stream()
                 .filter(controller -> controller.getView().getName().equals(selectedCategory.getName()))
-                .forEach(controller -> controller.select());
+                .forEach(ElementController::select);
     }
 
     private <T extends AbstractView> void drawListOfElements(List<T> elements, GridPane grid) {
@@ -172,7 +185,7 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
             return;
         }
         selectedCategory = selectedCategory.getParent();
-        updateCategories();
+        updateCategoriesAndProducts();
     }
 
     private boolean isTopLevelCategorySelected() {
