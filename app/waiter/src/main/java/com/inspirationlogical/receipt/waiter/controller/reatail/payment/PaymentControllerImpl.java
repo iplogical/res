@@ -130,15 +130,10 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void initialize(URL location, ResourceBundle resources) {
         initializeSoldProducts();
         new PaymentControllerInitializer(this).initialize();
-        getSoldProductsAndUpdateTable();
-        updateTableSummary();
     }
 
     @Override
     public void enterPaymentView() {
-        if(!soldProductsTableInitialized) {
-            return;
-        }
         getSoldProductsAndUpdateTable();
         updateTableSummary();
         resetToggleGroups();

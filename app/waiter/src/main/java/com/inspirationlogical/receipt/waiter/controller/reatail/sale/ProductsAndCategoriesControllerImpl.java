@@ -156,7 +156,7 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
         if(elementView instanceof ProductView) {
             elementController = new ProductControllerImpl(saleController);
         } else if (elementView instanceof ProductCategoryView) {
-            elementController = new CategoryControllerImpl(saleController);
+            elementController = new CategoryControllerImpl(saleController, this);
         }
         elementController.setView(elementView);
         elementControllers.add(elementController);

@@ -12,10 +12,13 @@ import javafx.scene.input.MouseEvent;
 public class CategoryControllerImpl extends ElementControllerImpl<ProductCategoryView> {
 
     private boolean isSelected;
+    private ProductsAndCategoriesController productsAndCategoriesController;
 
     @Inject
-    public CategoryControllerImpl(SaleController saleController) {
+    public CategoryControllerImpl(SaleController saleController,
+                                  ProductsAndCategoriesController productsAndCategoriesController) {
         super(saleController);
+        this.productsAndCategoriesController = productsAndCategoriesController;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class CategoryControllerImpl extends ElementControllerImpl<ProductCategor
         } else {
             root.requestFocus();
             saleController.clearSearch();
-            saleController.selectCategory(this.getView());
+            productsAndCategoriesController.selectCategory(this.getView());
         }
     }
 }

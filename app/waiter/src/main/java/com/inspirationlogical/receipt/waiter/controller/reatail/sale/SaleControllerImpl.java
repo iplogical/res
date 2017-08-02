@@ -40,8 +40,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     public static final String SALE_VIEW_PATH = "/view/fxml/Sale.fxml";
 
-    private final int GRID_SIZE = 4;
-
     @FXML
     BorderPane rootSale;
 
@@ -113,14 +111,10 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     public void initialize(URL location, ResourceBundle resources) {
         initializeSoldProducts();
         new SaleControllerInitializer(this).initialize();
-        enterSaleView();
     }
 
     @Override
     public void enterSaleView() {
-        if(!soldProductsTableInitialized) {
-            return;
-        }
         getSoldProductsAndUpdateTable();
         productController.initCategoriesAndProducts();
         updateTableSummary();
@@ -151,11 +145,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    public void selectCategory(ProductCategoryView selected) {
-        productController.selectCategory(selected);
-    }
-
-    @Override
     public void clearSearch() {
         searchField.clear();
     }
@@ -179,8 +168,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         retailService.mergeReceiptRecords(receiptView);
         PaymentController paymentController = WaiterRegistry.getInstance(PaymentController.class);
         paymentController.setTableView(tableView);
-        paymentController.enterPaymentView();
         viewLoader.loadViewIntoScene(paymentController);
+        paymentController.enterPaymentView();
     }
 
     @FXML

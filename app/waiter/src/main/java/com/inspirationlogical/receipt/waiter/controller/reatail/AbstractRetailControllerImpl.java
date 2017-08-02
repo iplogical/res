@@ -72,8 +72,6 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected ObservableList<SoldProductViewModel> soldProductsModel;
 
-    protected boolean soldProductsTableInitialized = false;
-
     public AbstractRetailControllerImpl(RestaurantService restaurantService,
                                         RetailService retailService,
                                         RestaurantController restaurantController) {
@@ -114,7 +112,6 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         initColumn(productQuantity, SoldProductViewModel::getProductQuantityWithRecent);
         initColumn(productUnitPrice, SoldProductViewModel::getProductUnitPrice);
         initColumn(productTotalPrice, SoldProductViewModel::getProductTotalPrice);
-        soldProductsTableInitialized = true;
     }
 
     private void initializeSoldProductsTableRowHandler() {

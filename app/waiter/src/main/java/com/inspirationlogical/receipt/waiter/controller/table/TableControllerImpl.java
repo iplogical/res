@@ -235,8 +235,8 @@ public class TableControllerImpl implements TableController {
             }
             SaleController saleController = WaiterRegistry.getInstance(SaleController.class);
             saleController.setTableView(tableView);
-            saleController.enterSaleView();
             viewLoader.loadViewIntoScene(saleController);
+            saleController.enterSaleView();
         }
     }
 
