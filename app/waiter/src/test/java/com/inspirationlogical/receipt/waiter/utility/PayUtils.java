@@ -85,7 +85,7 @@ public class PayUtils {
     }
 
     public static void putBackToSold(int row) {
-        clickOnThenWait(PAID_POINTS.get(row - 1), 50);
+        clickOnThenWait(PAID_POINTS.get(row - 1), 500);
     }
 
     public static String getPaidTotalPrice() {

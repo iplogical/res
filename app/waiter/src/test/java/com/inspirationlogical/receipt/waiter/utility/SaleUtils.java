@@ -87,6 +87,11 @@ public class SaleUtils {
         assertSoldProduct(row, GERE_LONG, quantity, 2900, (int)(quantity * 2900));
     }
 
+
+    public static void assertNumberOfSoldProducts(int expected) {
+        assertEquals(expected, getSoldProducts().size());
+    }
+
     public static void assertSoldTotalPrice(int price) {
         assertEquals(intToForint(price), getSoldTotalPrice());
     }

@@ -28,7 +28,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Builder(toBuilder = true)
-//@EqualsAndHashCode(callSuper = true)
 @javax.persistence.Table(name = "RESTAURANT")
 @NamedQueries({
         @NamedQuery(name = Restaurant.GET_TEST_RESTAURANTS,
@@ -157,5 +156,22 @@ public @Data class Restaurant extends AbstractEntity {
             result = Hash.combine(result ,t);
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "restaurantName='" + restaurantName + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", companyTaxPayerId='" + companyTaxPayerId + '\'' +
+                ", restaurantAddress=" + restaurantAddress +
+                ", companyAddress=" + companyAddress +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", webSite='" + webSite + '\'' +
+                ", socialMediaInfo='" + socialMediaInfo + '\'' +
+                ", receiptNote='" + receiptNote + '\'' +
+                ", receiptDisclaimer='" + receiptDisclaimer + '\'' +
+                ", receiptGreet='" + receiptGreet + '\'' +
+                '}';
     }
 }

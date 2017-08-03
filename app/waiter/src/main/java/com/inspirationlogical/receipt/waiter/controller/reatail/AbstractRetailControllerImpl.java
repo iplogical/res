@@ -144,9 +144,9 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         return FXCollections.observableArrayList(list);
     }
 
-    protected void updateSoldProductsTable(List<SoldProductViewModel> soldProducts) {
-        soldProductsModel = FXCollections.observableArrayList();
-        soldProductsModel.addAll(soldProducts);
+    protected void refreshSoldProductsTable() {
+        soldProductsModel.clear();
+        soldProductsModel.addAll(convertReceiptRecordViewsToModel(soldProductsView));
         soldProductsTable.setItems(soldProductsModel);
         soldProductsTable.refresh();
         updateSoldTotalPrice();
@@ -192,7 +192,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected ReceiptRecordView increaseRowInSoldProducts(SoldProductViewModel row, double amount, boolean isSale) {
         List<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentView(soldProductsView, row);
         equivalentReceiptRecordView.get(0).increaseSoldQuantity(amount, isSale);
-        increaseClickedRow(row, amount);
+        row.increaseProductQuantity(amount);
         return equivalentReceiptRecordView.get(0);
     }
 
@@ -202,11 +202,6 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
                 .collect(Collectors.toList());
     }
 
-    private void increaseClickedRow(SoldProductViewModel row, double amount) {
-        row.increaseProductQuantity(amount);
-        soldProductsTable.refresh();
-    }
-
     protected void addRowToSoldProducts(SoldProductViewModel row) {
         soldProductsModel.add(row);
         soldProductsModel.sort(Comparator.comparing(SoldProductViewModel::getProductId));
@@ -214,9 +209,9 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         soldProductsTable.refresh();
     }
 
-    protected void getSoldProductsAndUpdateTable() {
+    protected void getSoldProductsAndRefreshTable() {
         soldProductsView = getSoldProducts(restaurantService, tableView);
-        updateSoldProductsTable(convertReceiptRecordViewsToModel(soldProductsView));
+        refreshSoldProductsTable();
     }
 
     private Collection<ReceiptRecordView> getSoldProducts(RestaurantService restaurantService, TableView tableView) {

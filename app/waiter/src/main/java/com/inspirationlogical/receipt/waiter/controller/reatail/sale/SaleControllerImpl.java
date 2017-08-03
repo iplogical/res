@@ -4,7 +4,6 @@ package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
@@ -115,7 +114,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void enterSaleView() {
-        getSoldProductsAndUpdateTable();
+        getSoldProductsAndRefreshTable();
         productController.initCategoriesAndProducts();
         updateTableSummary();
         resetToggleGroups();
@@ -135,13 +134,13 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void sellProduct(ProductView productView) {
         retailService.sellProduct(tableView, productView, 1, saleViewState.isTakeAway(), saleViewState.isGift());
-        getSoldProductsAndUpdateTable();
+        getSoldProductsAndRefreshTable();
     }
 
     @Override
     public void sellAdHocProduct(AdHocProductParams adHocProductParams) {
         retailService.sellAdHocProduct(tableView, adHocProductParams, saleViewState.isTakeAway());
-        getSoldProductsAndUpdateTable();
+        getSoldProductsAndRefreshTable();
         adHocProductForm.hide();
     }
 
@@ -154,13 +153,13 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     protected void soldProductsRowClickHandler(SoldProductViewModel row) {
         if(saleViewState.isSelectiveCancellation()) {
             retailService.cancelReceiptRecord(tableView, removeRowFromSoldProducts(row));
-            getSoldProductsAndUpdateTable();
+            getSoldProductsAndRefreshTable();
         } else if(saleViewState.isSingleCancellation()) {
             decreaseRowInSoldProducts(row, 1);
-            getSoldProductsAndUpdateTable();
+            getSoldProductsAndRefreshTable();
         } else {
             increaseRowInSoldProducts(row, 1, true);
-            getSoldProductsAndUpdateTable();
+            getSoldProductsAndRefreshTable();
         }
     }
 
@@ -219,7 +218,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         if(newValue) {
             sortSoldProductByLatestClickTime();
         } else {
-            getSoldProductsAndUpdateTable();
+            getSoldProductsAndRefreshTable();
         }
     };
 }

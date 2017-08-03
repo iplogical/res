@@ -37,7 +37,7 @@ public class PaymentControllerTest  extends TestFXBase {
     private void assertInitialState() {
         assertSoldSoproni(1, 3);
         assertSoldGere(2, 2);
-        assertEquals(2, getSoldProducts().size());
+        assertNumberOfSoldProducts(2);
         assertSoldTotalPrice(7120);
 
         assertPaidTotalPrice(0);
@@ -54,7 +54,7 @@ public class PaymentControllerTest  extends TestFXBase {
         pay();
 
         assertSoldGere(1, 2);
-        assertEquals(1, getSoldProducts().size());
+        assertNumberOfSoldProducts(1);
         assertNoPaidProduct();
         assertPaidTotalPrice(0);
         assertPreviousPartialPrice(1320);
@@ -168,6 +168,7 @@ public class PaymentControllerTest  extends TestFXBase {
 
     @Test
     public void testPartialPaymentAllOfTheRow() {
+        System.out.println("In the test: " + Thread.currentThread().getName());
         payPartialOneAndHalf();
         pay();
         payPartial(2, 0.5);
@@ -200,6 +201,58 @@ public class PaymentControllerTest  extends TestFXBase {
         assertPaidTotalPrice(1450);
         assertPreviousPartialPrice(4350);
         pay();
+    }
+
+    @Test
+    public void testMovePaidProductBackToSoldProducts() {
+        paySingle(1);
+        assertSoldSoproni(1, 2);
+        assertSoldTotalPrice(6680);
+        assertPaidSoproni(1, 1);
+        assertPaidTotalPrice(440);
+
+        paySingle(1);
+        assertSoldSoproni(1, 1);
+        assertSoldTotalPrice(6240);
+        assertPaidSoproni(1, 2);
+        assertPaidTotalPrice(880);
+
+        paySingle(1);
+        assertSoldGere(1, 2);
+        assertNumberOfSoldProducts(1);
+        assertSoldTotalPrice(5800);
+        assertPaidSoproni(1, 3);
+        assertPaidTotalPrice(1320);
+
+        putBackToSold(1);
+        assertSoldSoproni(2, 1);
+        assertSoldTotalPrice(6240);
+        assertPaidSoproni(1, 2);
+        assertPaidTotalPrice(880);
+
+        putBackToSold(1);
+        assertSoldSoproni(2, 2);
+        assertSoldTotalPrice(6680);
+        assertPaidSoproni(1, 1);
+        assertPaidTotalPrice(440);
+
+        putBackToSold(1);
+        assertSoldSoproni(2, 3);
+        assertSoldTotalPrice(7120);
+        assertNoPaidProduct();
+        assertPaidTotalPrice(0);
+
+        paySelective(2);
+        assertSoldGere(1, 2);
+        assertNumberOfSoldProducts(1);
+        assertSoldTotalPrice(5800);
+        assertPaidSoproni(1, 3);
+        assertPaidTotalPrice(1320);
+
+        pay();
+        assertNoPaidProduct();
+        assertPaidTotalPrice(0);
+        assertPreviousPartialPrice(1320);
     }
 
     @After
