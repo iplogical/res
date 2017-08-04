@@ -16,7 +16,7 @@ public interface RestaurantController extends Controller {
     void showEditTableForm(Control control);
     void createTable(TableParams params);
     void editTable(TableController tableController, TableParams params);
-    void openTable(Integer number, String name, Integer guestCount, String note);
+    void openTableOfReservation(Integer number, String name, Integer guestCount, String note);
     void deleteTable(Node node);
     void rotateTable(Node node);
 

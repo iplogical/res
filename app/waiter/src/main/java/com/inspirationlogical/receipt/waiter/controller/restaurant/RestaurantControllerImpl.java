@@ -62,31 +62,27 @@ import javafx.concurrent.Task;
 public class RestaurantControllerImpl implements RestaurantController {
 
     public static final String RESTAURANT_VIEW_PATH = "/view/fxml/Restaurant.fxml";
-    private static final int HOLD_DURATION_MILLIS = 200;
-    private static final int INITIAL_GRID_SIZE = 10;
-    private static Predicate<TableView> DISPLAYABLE_TABLE = TableView::isDisplayable;
+    static final int HOLD_DURATION_MILLIS = 200;
+    static final int INITIAL_GRID_SIZE = 10;
+   static Predicate<TableView> DISPLAYABLE_TABLE = TableView::isDisplayable;
 
     @FXML
-    AnchorPane rootRestaurant;
+    private AnchorPane rootRestaurant;
 
     @FXML
-    Button dailySummary;
+    private Button dailySummary;
 
     @FXML
-    Button reservation;
+    private Button reservation;
 
     @FXML
     ToggleButton configuration;
-
     @FXML
     ToggleButton motion;
-
     @FXML
     CheckBox snapToGrid;
-
     @FXML
     Slider setGridSize;
-
     @FXML
     Label getGridSize;
 
@@ -115,50 +111,48 @@ public class RestaurantControllerImpl implements RestaurantController {
     Label employeesControl;
 
     @FXML
-    Label openTableNumber;
+    private Label openTableNumber;
 
     @FXML
-    Label totalTableNumber;
+    private Label totalTableNumber;
 
     @FXML
-    Label totalGuests;
+    private Label totalGuests;
 
     @FXML
-    Label totalCapacity;
+    private Label totalCapacity;
 
     @FXML
-    Label openConsumption;
+    private Label openConsumption;
 
     @FXML
-    Label paidConsumption;
+    private Label paidConsumption;
 
     @FXML
-    Label totalIncome;
+    private Label totalIncome;
 
     @FXML
     Label liveTime;
 
     @Inject
-    private ViewLoader viewLoader;
+    ViewLoader viewLoader;
 
-    private Popup tableForm;
+    Popup tableForm;
 
-    private TableFormController tableFormController;
+    TableFormController tableFormController;
 
-    private Set<TableController> tableControllers;
+    Set<TableController> tableControllers;
 
     private Set<TableController> selectedTables;
 
-    private RestaurantService restaurantService;
+    RestaurantService restaurantService;
 
-    private RestaurantView restaurantView;
+    RestaurantView restaurantView;
 
-    private RestaurantViewState restaurantViewState;
+    RestaurantViewState restaurantViewState;
 
     @Inject
     public RestaurantControllerImpl(RestaurantService restaurantService,
-                                    RetailService retailService,
-                                    CommonService commonService,
                                     TableFormController tableFormController) {
         this.restaurantService = restaurantService;
         this.tableFormController = tableFormController;
@@ -169,13 +163,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initContextMenu(tablesControl);
-        initContextMenu(loiterersControl);
-        initContextMenu(frequentersControl);
-        initContextMenu(employeesControl);
-        initTableForm();
-        initControls();
-        initRestaurant();
+        new RestaurantControllerInitializer(this).initialize();
         initLiveTime(liveTime);
         updateRestaurantSummary();
     }
@@ -188,18 +176,14 @@ public class RestaurantControllerImpl implements RestaurantController {
     @Override
     public void showCreateTableForm(Point2D position) {
         tableFormController.loadTable(null, restaurantViewState.getTableType());
-
         showPopup(tableForm, tableFormController, getActiveTab(), position);
     }
 
     @Override
     public void showEditTableForm(Control control) {
         TableController tableController = getTableController(control);
-
         tableFormController.loadTable(tableController, restaurantViewState.getTableType());
-
         Point2D position = calculatePopupPosition(control, getActiveTab());
-
         showPopup(tableForm, tableFormController, getActiveTab(), position);
     }
 
@@ -216,9 +200,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(getActiveTab(),
                     Resources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
-            initRestaurant();
-        } catch (Exception e) {
-            initRestaurant();
+//            initRestaurant();
         }
     }
 
@@ -254,18 +236,20 @@ public class RestaurantControllerImpl implements RestaurantController {
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(getActiveTab(),
                     Resources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
-            initRestaurant();
-        } catch (Exception e) {
-            initRestaurant();
+//            initRestaurant();
         }
     }
 
     private void setTableParams(TableView tableView, TableParams tableParams) {
-        if (tableView.getDisplayedNumber() != tableParams.getNumber()) {
+        if (notOwnNumberIsDisplayed(tableView, tableParams)) {
             restaurantService.setTableNumber(tableView, tableParams.getNumber(), restaurantView);
         }
         restaurantService.setTableParams(tableView, tableParams);
         tableForm.hide();
+    }
+
+    private boolean notOwnNumberIsDisplayed(TableView tableView, TableParams tableParams) {
+        return tableView.getDisplayedNumber() != tableParams.getNumber();
     }
 
     private void updateHostNodes(TableView tableView, TableView previousHost) {
@@ -278,7 +262,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
-    public void openTable(Integer number, String name, Integer guestCount, String note) {
+    public void openTableOfReservation(Integer number, String name, Integer guestCount, String note) {
         List<TableController> filteredControllers = tableControllers.stream()
                 .filter(controller -> controller.getView().getNumber() == number)
                 .limit(1)
@@ -295,7 +279,14 @@ public class RestaurantControllerImpl implements RestaurantController {
             ErrorMessage.showErrorMessage(getActiveTab(), Resources.WAITER.getString("TableIsOpenReservation") + tableView.getNumber());
             return;
         }
-        TableParams tableParams = TableParams.builder()
+        TableParams tableParams = buildTableParams(number, name, guestCount, note, tableView);
+        editTable(tableController, tableParams);
+        tableController.openTable(null);
+        viewLoader.loadViewIntoScene(this);
+    }
+
+    public TableParams buildTableParams(Integer number, String name, Integer guestCount, String note, TableView tableView) {
+        return TableParams.builder()
                 .name(name)
                 .number(number)
                 .note(note)
@@ -303,52 +294,49 @@ public class RestaurantControllerImpl implements RestaurantController {
                 .capacity(tableView.getCapacity())
                 .dimension(tableView.getDimension())
                 .build();
-        editTable(tableController, tableParams);
-        tableController.openTable(null);
-        viewLoader.loadViewIntoScene(this);
     }
 
     @Override
     public void deleteTable(Node node) {
         TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
-        TableController hostController = null;
-
-        if (tableView.isHosted()) {
-            hostController = getTableController(tableView.getHost());
-        }
-
         try {
             restaurantService.deleteTable(tableView);
             removeNode((Pane) node.getParent(), node);
             tableControllers.remove(tableController);
-
-            if (hostController != null) {
-                hostController.updateTable();
-            }
+            updateHostTable(tableView);
         } catch (IllegalTableStateException e) {
-            String errorMessage = EMPTY;
-            if (tableView.isOpen()) {
-                errorMessage = Resources.WAITER.getString("TableIsOpen");
-            }
-            if (tableView.isConsumer()) {
-                errorMessage = Resources.WAITER.getString("TableIsConsumer");
-            }
-            if (tableView.isHost()) {
-                errorMessage = Resources.WAITER.getString("TableIsHost");
-            }
-            ErrorMessage.showErrorMessage(getActiveTab(), errorMessage + tableView.getNumber());
-            initRestaurant();
+            showDeleteTableErrorMessage(tableView);
+//            initRestaurant();
         }
+    }
+
+    private void updateHostTable(TableView tableView) {
+        if (tableView.isHosted()) {
+            TableController hostController = getTableController(tableView.getHost());
+            hostController.updateTable();
+        }
+    }
+
+    private void showDeleteTableErrorMessage(TableView tableView) {
+        String errorMessage = EMPTY;
+        if (tableView.isOpen()) {
+            errorMessage = Resources.WAITER.getString("TableIsOpen");
+        }
+        if (tableView.isConsumer()) {
+            errorMessage = Resources.WAITER.getString("TableIsConsumer");
+        }
+        if (tableView.isHost()) {
+            errorMessage = Resources.WAITER.getString("TableIsHost");
+        }
+        ErrorMessage.showErrorMessage(getActiveTab(), errorMessage + tableView.getNumber());
     }
 
     @Override
     public void rotateTable(Node node) {
         TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
-
         restaurantService.rotateTable(tableView);
-
         tableController.updateTable();
     }
 
@@ -367,51 +355,50 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void mergeTables() {
-        if (selectedTables.size() > 1) {
-            TableController firstSelected = selectedTables.iterator().next();
-            TableView consumer = firstSelected.getView();
-
-            try {
-                restaurantService.mergeTables(consumer, getConsumedTables(firstSelected));
-            } catch (IllegalTableStateException e) {
-                ErrorMessage.showErrorMessage(tablesControl, Resources.WAITER.getString("ConsumerSelectedForMerge"));
-            }
-
-            firstSelected.consumeTables();
-            firstSelected.updateTable();
-
-            firstSelected.deselectTable();
-            selectedTables.remove(firstSelected);
-
-            selectedTables.forEach(tableController -> {
-                tableControllers.remove(tableController);
-                tablesTab.getChildren().remove(tableController.getRoot());
-            });
-
-            selectedTables.clear();
-        } else {
+        if(selectedTables.size() < 2) {
             ErrorMessage.showErrorMessage(tablesControl, Resources.WAITER.getString("InsufficientSelection"));
+            return;
+        }
+        TableController consumerController = selectedTables.iterator().next();
+        TableView consumer = consumerController.getView();
+        try {
+            restaurantService.mergeTables(consumer, getConsumedTables(consumerController));
+            updateConsumer(consumerController);
+            updateConsumed();
+        } catch (IllegalTableStateException e) {
+            ErrorMessage.showErrorMessage(tablesControl, Resources.WAITER.getString("ConsumerSelectedForMerge"));
         }
     }
 
     private List<TableView> getConsumedTables(TableController firstSelected) {
         List<TableView> consumed = new ArrayList<>();
-
         selectedTables.stream()
                 .filter(tableController -> !tableController.equals(firstSelected))
                 .forEach(tableController -> consumed.add(tableController.getView()));
         return consumed;
     }
 
+    public void updateConsumer(TableController consumerController) {
+        consumerController.consumeTables();
+        consumerController.updateTable();
+        consumerController.deselectTable();
+        selectedTables.remove(consumerController);
+    }
+
+    public void updateConsumed() {
+        selectedTables.forEach(tableController -> {
+            tableControllers.remove(tableController);
+            tablesTab.getChildren().remove(tableController.getRoot());
+        });
+        selectedTables.clear();
+    }
+
     @Override
     public void splitTables(Node node) {
         TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
-
         List<TableView> tables = restaurantService.splitTables(tableView);
-
         tables.forEach(this::drawTable);
-
         tableController.releaseConsumedTables();
         tableController.updateTable();
     }
@@ -484,52 +471,6 @@ public class RestaurantControllerImpl implements RestaurantController {
         restaurantViewState.setTableType(TableType.EMPLOYEE);
     }
 
-    private void initControls() {
-        restaurantViewState.setConfigurable(configuration.selectedProperty());
-        restaurantViewState.getMotionViewState().setMovableProperty(motion.selectedProperty());
-        restaurantViewState.getMotionViewState().setSnapToGridProperty(snapToGrid.selectedProperty());
-        restaurantViewState.getMotionViewState().setGridSizeProperty(setGridSize.valueProperty());
-        snapToGrid.disableProperty().bind(motion.selectedProperty().not());
-        setGridSize.disableProperty().bind(motion.selectedProperty().not());
-        getGridSize.textProperty().bind(Bindings.format("%.0f", setGridSize.valueProperty()));
-        setGridSize.setValue(INITIAL_GRID_SIZE);
-    }
-
-    private void initRestaurant() {
-        restaurantView = restaurantService.getActiveRestaurant();
-        initTables();
-    }
-
-    private void initTables() {
-        tablesTab.getChildren().removeAll(tableControllers.stream()
-                .filter(tableController -> tableController.getView().isNormal() || tableController.getView().isConsumer())
-                .map(TableController::getRoot).collect(toList()));
-        loiterersTab.getChildren().removeAll(tableControllers.stream()
-                .filter(tableController -> tableController.getView().isLoiterer())
-                .map(TableController::getRoot).collect(toList()));
-        frequentersTab.getChildren().removeAll(tableControllers.stream()
-                .filter(tableController -> tableController.getView().isFrequenter())
-                .map(TableController::getRoot).collect(toList()));
-        employeesTab.getChildren().removeAll(tableControllers.stream()
-                .filter(tableController -> tableController.getView().isEmployee())
-                .map(TableController::getRoot).collect(toList()));
-        tableControllers.clear();
-        List<TableView> tables = restaurantService.getTables();
-        tables.sort(Comparator.comparing(TableView::isConsumed));   // Put consumed tables to the end so the consumer is loaded in advance.
-        tables.stream().filter(DISPLAYABLE_TABLE).forEach(this::drawTable);
-    }
-
-    private void initContextMenu(Control control) {
-        addPressAndHold(restaurantViewState, control,
-                new RestaurantContextMenuBuilderDecorator(this, new BaseContextMenuBuilder()),
-                Duration.millis(HOLD_DURATION_MILLIS));
-    }
-
-    private void initTableForm() {
-        tableForm = new Popup();
-        tableForm.getContent().add(viewLoader.loadView(tableFormController));
-    }
-
     private void addNodeToPane(Node node, TableType tableType) {
         switch (tableType) {
             case NORMAL:
@@ -578,18 +519,14 @@ public class RestaurantControllerImpl implements RestaurantController {
                 .orElseThrow(() -> new ViewNotFoundException("Table view could not be found"));
     }
 
-    private void drawTable(TableView tableView) {
+    void drawTable(TableView tableView) {
         TableController tableController = WaiterRegistry.getInstance(TableController.class);
         tableController.setView(tableView);
-
         tableControllers.add(tableController);
-
         viewLoader.loadView(tableController);
-
         addPressAndHold(tableController.getViewState(), tableController.getRoot(),
                 new TableContextMenuBuilderDecorator(this, tableController, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
-
         addNodeToPane(tableController.getRoot(), tableView.getType());
     }
 

@@ -8,7 +8,7 @@ public class SaleControllerInitializer {
 
     private SaleControllerImpl s;
 
-    public SaleControllerInitializer(SaleControllerImpl s) {
+    SaleControllerInitializer(SaleControllerImpl s) {
         this.s = s;
     }
 

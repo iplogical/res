@@ -186,7 +186,7 @@ public class ReservationControllerImpl extends AbstractController
     @FXML
     public void onOpenTable(Event event) {
         try{
-            restaurantController.openTable(Integer.valueOf(tableNumber.getText()), name.getText(), Integer.valueOf(guestCount.getText()), note.getText());
+            restaurantController.openTableOfReservation(Integer.valueOf(tableNumber.getText()), name.getText(), Integer.valueOf(guestCount.getText()), note.getText());
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
         }
