@@ -8,6 +8,7 @@ import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.SEARCH_FIE
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TO_RESTAURANT;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
+import static javafx.scene.input.KeyCode.BACK_SPACE;
 import static javafx.scene.input.KeyCode.DELETE;
 import static javafx.scene.input.KeyCode.ENTER;
 import static org.junit.Assert.assertEquals;
@@ -141,6 +142,15 @@ public class ProductsAndCategoriesControllerTest extends SaleViewTest {
         ClickUtils.type("ThereIsNoProductMatchThisString");
         verifyThatNotVisible(SOPRONI);
         type(DELETE);
+        verifyThatVisible(SOPRONI);
+    }
+
+    @Test
+    public void testSearchFieldVisibleProductsUpdatedWhenSearchFieldEmpty() {
+        selectCategory(BEERS);
+        ClickUtils.type("T");
+        verifyThatNotVisible(SOPRONI);
+        type(BACK_SPACE);
         verifyThatVisible(SOPRONI);
     }
 

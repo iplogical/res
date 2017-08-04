@@ -6,6 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import lombok.Getter;
@@ -35,13 +36,13 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
     @Setter private GridPane subCategoriesGrid;
     @Setter private GridPane productsGrid;
 
-    @Getter private ProductCategoryView selectedCategory;
-    @Getter private ProductCategoryView initialSelectedCategory;
-    @Getter private List<ProductCategoryView> selectedLevelCategories;
-    @Getter private List<ProductCategoryView> selectedChildrenCategories;
+    private ProductCategoryView selectedCategory;
+    private ProductCategoryView initialSelectedCategory;
+    private List<ProductCategoryView> selectedLevelCategories;
+    private List<ProductCategoryView> selectedChildrenCategories;
 
     @Getter private List<ProductView> searchedProducts;
-    @Getter private List<ProductView> visibleProducts;
+    private List<ProductView> visibleProducts;
 
     private List<ElementController> elementControllers;
 
@@ -175,21 +176,20 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
                 setSelectedCategory();
             }
         };
-        elementController.setView((ProductCategoryView) () -> "Vissza");
+        elementController.setView((ProductCategoryView) () -> Resources.WAITER.getString("SaleView.BackButton"));
         viewLoader.loadView(elementController);
         categoriesGrid.add(elementController.getRootNode(), BUTTON_POSITION, BUTTON_POSITION);
     }
 
     private void upWithCategories() {
-        if(isTopLevelCategorySelected()) {
-            return;
+        if(isSubLevelCategorySelected()) {
+            selectedCategory = selectedCategory.getParent();
+            updateCategoriesAndProducts();
         }
-        selectedCategory = selectedCategory.getParent();
-        updateCategoriesAndProducts();
     }
 
-    private boolean isTopLevelCategorySelected() {
-        return ProductCategoryType.isRoot(selectedCategory.getParent().getType());
+    private boolean isSubLevelCategorySelected() {
+        return !ProductCategoryType.isRoot(selectedCategory.getParent().getType());
     }
 
     @Override

@@ -142,6 +142,11 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
+    public void hideAdHocProductForm() {
+        adHocProductForm.hide();
+    }
+
+    @Override
     public void clearSearch() {
         searchField.clear();
     }

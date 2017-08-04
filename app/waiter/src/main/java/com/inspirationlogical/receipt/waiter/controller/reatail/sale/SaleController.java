@@ -14,6 +14,8 @@ public interface SaleController extends AbstractRetailController {
 
     void sellAdHocProduct(AdHocProductParams adHocProductParams);
 
+    void hideAdHocProductForm();
+
     void enterSaleView();
 
     void clearSearch();

@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -72,12 +74,14 @@ public class AdHocProductFormControllerImpl implements AdHocProductFormControlle
             saleController.sellAdHocProduct(adHocProductParams);
         } catch (NumberFormatException e) {
             logger.error("Wrong adHocParams.", e);
+            ErrorMessage.showErrorMessage(saleController.getRootNode(),
+                    Resources.WAITER.getString("AdHocProductForm.NumberFormatError"));
         }
     }
 
     @FXML
     public void onCancel(MouseEvent event) {
-        hideNode(root);
+        saleController.hideAdHocProductForm();
     }
 
     @Override

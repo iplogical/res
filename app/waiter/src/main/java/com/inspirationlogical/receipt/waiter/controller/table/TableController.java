@@ -18,9 +18,9 @@ public interface TableController extends Controller {
 
     ViewState getViewState();
 
-    void updateNode();
+    void updateTable();
 
-    void releaseConsumed();
+    void releaseConsumedTables();
 
     void openTable(Control control);
 

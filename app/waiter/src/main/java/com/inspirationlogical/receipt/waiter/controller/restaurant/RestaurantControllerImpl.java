@@ -210,7 +210,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             tableForm.hide();
             drawTable(tableView);
             if (tableView.isHosted()) {
-                getTableController(tableView.getHost()).updateNode();
+                getTableController(tableView.getHost()).updateTable();
             }
             updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
@@ -248,7 +248,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         try {
             setTableParams(tableView, tableParams);
             addNodeToPane(tableController.getRoot(), restaurantViewState.getTableType());
-            tableController.updateNode();
+            tableController.updateTable();
             updateHostNodes(tableView, previousHost);
             updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
@@ -270,10 +270,10 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private void updateHostNodes(TableView tableView, TableView previousHost) {
         if(tableView.getHost() != null) {
-            getTableController(tableView.getHost()).updateNode();
+            getTableController(tableView.getHost()).updateTable();
         }
         if(previousHost != null) {
-            getTableController(previousHost).updateNode();
+            getTableController(previousHost).updateTable();
         }
     }
 
@@ -324,7 +324,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             tableControllers.remove(tableController);
 
             if (hostController != null) {
-                hostController.updateNode();
+                hostController.updateTable();
             }
         } catch (IllegalTableStateException e) {
             String errorMessage = EMPTY;
@@ -349,7 +349,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
         restaurantService.rotateTable(tableView);
 
-        tableController.updateNode();
+        tableController.updateTable();
     }
 
     @Override
@@ -357,7 +357,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         Node view = tableController.getRoot();
         Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
         restaurantService.setTablePosition(tableController.getView(), position);
-        tableController.updateNode();
+        tableController.updateTable();
     }
 
     @Override
@@ -378,7 +378,7 @@ public class RestaurantControllerImpl implements RestaurantController {
             }
 
             firstSelected.consumeTables();
-            firstSelected.updateNode();
+            firstSelected.updateTable();
 
             firstSelected.deselectTable();
             selectedTables.remove(firstSelected);
@@ -412,8 +412,8 @@ public class RestaurantControllerImpl implements RestaurantController {
 
         tables.forEach(this::drawTable);
 
-        tableController.releaseConsumed();
-        tableController.updateNode();
+        tableController.releaseConsumedTables();
+        tableController.updateTable();
     }
 
     @Override

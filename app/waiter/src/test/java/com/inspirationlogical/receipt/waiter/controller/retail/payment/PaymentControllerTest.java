@@ -16,10 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 public class PaymentControllerTest  extends TestFXBase {
 
-    private static final String TABLE_NAME = "TestName21";
-    private static final String TABLE_NUMBER = "20";
-    private static final String TABLE_GUESTS = "0";
-    private static final String TABLE_CAPACITY = "4";
+    private static final String TABLE_NUMBER = "21";
 
     @Before
     public void setUpPaymentControllerTest() throws Exception {

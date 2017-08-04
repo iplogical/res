@@ -90,7 +90,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected void backToRestaurantView() {
         restaurantController.updateRestaurant();
-        restaurantController.getTableController(tableView).updateNode();
+        restaurantController.getTableController(tableView).updateTable();
         viewLoader.loadViewIntoScene(restaurantController);
     }
 

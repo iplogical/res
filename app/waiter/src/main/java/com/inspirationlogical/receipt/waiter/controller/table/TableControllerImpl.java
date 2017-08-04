@@ -38,9 +38,9 @@ public class TableControllerImpl implements TableController {
     @FXML
     Label rootTable;
     @FXML
-    AnchorPane container;
+    AnchorPane tableContainer;
     @FXML
-    StackPane host;
+    StackPane tableStackPane;
     @FXML
     Label name;
     @FXML
@@ -81,46 +81,57 @@ public class TableControllerImpl implements TableController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addDragAndDrop(rootTable, tableViewState.getRestaurantViewState().getMotionViewState());
-        setPrefferedSize();
-        updateNode();
-        if (tableView.isConsumer()) {
-            consumeTables();
-        }
+        setPreferredSize();
+        updateTable();
     }
 
-    private void setPrefferedSize() {
-        host.setPrefWidth(tableView.getDimension().getWidth());
-        host.setPrefHeight(tableView.getDimension().getHeight());
+    private void setPreferredSize() {
+        tableStackPane.setPrefWidth(tableView.getDimension().getWidth());
+        tableStackPane.setPrefHeight(tableView.getDimension().getHeight());
     }
 
     @Override
     public void consumeTables() {
-        releaseConsumed();
+        releaseConsumedTables();
         tableView.getConsumedTables().forEach(view -> {
-            StackPane consumedRoot = (StackPane) viewLoader.loadView(CONSUMED_VIEW_PATH);
-            consumedRoot.setPrefWidth((int) view.getDimension().getWidth());
-            consumedRoot.setPrefHeight((int) view.getDimension().getHeight());
-            Point2D position = view.getPosition().subtract(tableView.getPosition());
-            consumedRoot.setLayoutX((int) position.getX());
-            consumedRoot.setLayoutY((int) position.getY());
-
-            Label consumedNumber = (Label) consumedRoot.lookup("#number");
-            Label consumedHosted = (Label) consumedRoot.lookup("#hosted");
-            ImageView consumedMeeple = (ImageView) consumedRoot.lookup("#meeple");
-
-            consumedNumber.setText(valueOf(view.getNumber()));
-
-            int hostedSize = view.getHostedTables().size();
-            if (hostedSize > 0) {
-                consumedMeeple.setVisible(true);
-                consumedHosted.setVisible(true);
-                consumedHosted.setText(valueOf(hostedSize));
-            } else {
-                consumedMeeple.setVisible(false);
-                consumedHosted.setVisible(false);
-            }
-            container.getChildren().add(consumedRoot);
+            StackPane consumedTable = buildConsumedTable(view);
+            tableContainer.getChildren().add(consumedTable);
         });
+    }
+
+    private StackPane buildConsumedTable(TableView view) {
+        StackPane consumedTable = (StackPane) viewLoader.loadView(CONSUMED_VIEW_PATH);
+        setConsumedTableNumber(view, consumedTable);
+        setConsumedTableSize(view, consumedTable);
+        setConsumedTableHostInfo(view, consumedTable);
+        return consumedTable;
+    }
+
+    private void setConsumedTableNumber(TableView view, StackPane consumedRoot) {
+        Label consumedNumber = (Label) consumedRoot.lookup("#number");
+        consumedNumber.setText(valueOf(view.getNumber()));
+    }
+
+    private void setConsumedTableSize(TableView view, StackPane consumedRoot) {
+        consumedRoot.setPrefWidth((int) view.getDimension().getWidth());
+        consumedRoot.setPrefHeight((int) view.getDimension().getHeight());
+        Point2D position = view.getPosition().subtract(tableView.getPosition());
+        consumedRoot.setLayoutX((int) position.getX());
+        consumedRoot.setLayoutY((int) position.getY());
+    }
+
+    private void setConsumedTableHostInfo(TableView view, StackPane consumedRoot) {
+        Label consumedHosted = (Label) consumedRoot.lookup("#hosted");
+        ImageView consumedMeeple = (ImageView) consumedRoot.lookup("#meeple");
+        int numberOfHostedTable = view.getHostedTables().size();
+        if (numberOfHostedTable > 0) {
+            consumedMeeple.setVisible(true);
+            consumedHosted.setVisible(true);
+            consumedHosted.setText(valueOf(numberOfHostedTable));
+        } else {
+            consumedMeeple.setVisible(false);
+            consumedHosted.setVisible(false);
+        }
     }
 
     @Override
@@ -139,38 +150,48 @@ public class TableControllerImpl implements TableController {
     }
 
     @Override
-    public void updateNode() {
+    public void updateTable() {
         if (tableView.isVisible()) {
-            setPrefferedSize();
-
-            name.setText(tableView.getName());
-
-            updateHostInfo();
-
-            if (tableView.isConsumer()) {
+            if(tableView.isConsumer()) {
                 consumeTables();
-                Integer tableGuests = tableView.getGuestCount();
-                Integer tableCapacity = tableView.getCapacity();
-                for(TableView consumed : tableView.getConsumedTables()) {
-                    tableGuests += consumed.getGuestCount();
-                    tableCapacity += consumed.getCapacity();
-                }
-                guests.setText(valueOf(tableGuests));
-                capacity.setText(valueOf(tableCapacity));
-            } else {
-                guests.setText(valueOf(tableView.getGuestCount()));
-                capacity.setText(valueOf(tableView.getCapacity()));
             }
-
-            updateNote();
-            CSSUtilities.setBackgroundColor(tableViewState.isOpen(), host);
+            updateTableParams();
+            CSSUtilities.setBackgroundColor(tableViewState.isOpen(), tableStackPane);
             showNode(rootTable, tableView.getPosition());
         } else {
-            if (tableView.isConsumed()) {
-                restaurantController.getTableController(tableView.getConsumer()).updateNode();
-            }
             hideNode(rootTable);
+            if (tableView.isConsumed()) {
+                restaurantController.getTableController(tableView.getConsumer()).updateTable();
+            }
         }
+    }
+
+    public void updateTableParams() {
+        setPreferredSize();
+        name.setText(tableView.getName());
+        updateHostInfo();
+        updateGuestCountAndCapacity();
+        updateNote();
+    }
+
+    public void updateGuestCountAndCapacity() {
+        if (tableView.isConsumer()) {
+            setAggregateGuestCountAndCapacity();
+        } else {
+            guests.setText(valueOf(tableView.getGuestCount()));
+            capacity.setText(valueOf(tableView.getCapacity()));
+        }
+    }
+
+    public void setAggregateGuestCountAndCapacity() {
+        Integer tableGuests = tableView.getGuestCount();
+        Integer tableCapacity = tableView.getCapacity();
+        for(TableView consumed : tableView.getConsumedTables()) {
+            tableGuests += consumed.getGuestCount();
+            tableCapacity += consumed.getCapacity();
+        }
+        guests.setText(valueOf(tableGuests));
+        capacity.setText(valueOf(tableCapacity));
     }
 
     private void updateHostInfo() {
@@ -197,47 +218,67 @@ public class TableControllerImpl implements TableController {
     }
 
     @Override
-    public void releaseConsumed() {
-        container.getChildren().clear();
-        container.getChildren().add(host);
+    public void releaseConsumedTables() {
+        tableContainer.getChildren().clear();
+        tableContainer.getChildren().add(tableStackPane);
     }
 
     @Override
     public void openTable(Control control) {
         retailService.openTable(tableView);
-        updateNode();
+        updateTable();
     }
 
     @Override
     public void deselectTable() {
         tableViewState.setSelected(false);
-        CSSUtilities.setBorderColor(tableViewState.isSelected(), host);
+        CSSUtilities.setBorderColor(tableViewState.isSelected(), tableStackPane);
     }
 
     @FXML
     public void onTableClicked(MouseEvent event) {
-        if (isContextMenuOpen() || tableViewState.getRestaurantViewState().getMotionViewState().getMovableProperty().getValue()) {
-            for (TableView view : tableView.getConsumedTables()) {
-                Point2D delta = new Point2D(rootTable.getLayoutX(), rootTable.getLayoutY()).subtract(tableView.getPosition());
-                restaurantController.moveTable(view, view.getPosition().add(delta));
-            }
-            restaurantController.moveTable(this);
-            return;
-        }
-
-        if(tableViewState.getRestaurantViewState().getConfigurable().getValue()) {
-            tableViewState.setSelected(!tableViewState.isSelected());
-            restaurantController.selectTable(this, tableViewState.isSelected());
-            CSSUtilities.setBorderColor(tableViewState.isSelected(), host);
+        if(isContextMenuOpen() || isMotionMode()) {
+            moveTables();
+        } else if(isConfigurationMode()) {
+            invertSelectionState();
         } else {
-            if(!tableView.isOpen()) {
-                return;
+            if(tableView.isOpen()) {
+                enterSaleView();
             }
-            SaleController saleController = WaiterRegistry.getInstance(SaleController.class);
-            saleController.setTableView(tableView);
-            viewLoader.loadViewIntoScene(saleController);
-            saleController.enterSaleView();
         }
+    }
+
+    private void moveTables() {
+        moveConsumedTables();
+        restaurantController.moveTable(this);
+    }
+
+    private void moveConsumedTables() {
+        for (TableView view : tableView.getConsumedTables()) {
+            Point2D delta = new Point2D(rootTable.getLayoutX(), rootTable.getLayoutY()).subtract(tableView.getPosition());
+            restaurantController.moveTable(view, view.getPosition().add(delta));
+        }
+    }
+
+    private void invertSelectionState() {
+        tableViewState.setSelected(!tableViewState.isSelected());
+        restaurantController.selectTable(this, tableViewState.isSelected());
+        CSSUtilities.setBorderColor(tableViewState.isSelected(), tableStackPane);
+    }
+
+    private void enterSaleView() {
+        SaleController saleController = WaiterRegistry.getInstance(SaleController.class);
+        saleController.setTableView(tableView);
+        viewLoader.loadViewIntoScene(saleController);
+        saleController.enterSaleView();
+    }
+
+    private Boolean isMotionMode() {
+        return tableViewState.getRestaurantViewState().getMotionViewState().getMovableProperty().getValue();
+    }
+
+    private Boolean isConfigurationMode() {
+        return tableViewState.getRestaurantViewState().getConfigurable().getValue();
     }
 
     private boolean isContextMenuOpen() {
