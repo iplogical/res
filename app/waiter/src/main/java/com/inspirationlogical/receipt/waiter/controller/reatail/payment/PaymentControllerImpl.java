@@ -96,9 +96,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     TableColumn payProductTotalPrice;
 
-    @Inject
-    private ViewLoader viewLoader;
-
     private SaleController saleController;
 
     PaymentViewState paymentViewState;
@@ -196,12 +193,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private void updatePaidTotalPrice() {
         paidTotalPrice.setText(SoldProductViewModel.getTotalPrice(paidProductsModel) + " Ft");
-    }
-
-    private void backToRestaurantView() {
-        restaurantController.updateRestaurant();
-        restaurantController.getTableController(tableView).updateNode();
-        viewLoader.loadViewIntoScene(restaurantController);
     }
 
     @Override
@@ -349,6 +340,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void onBackToRestaurantView(Event event) {
         discardPaidRecords();
+        retailService.mergeReceiptRecords(receiptView);
         backToRestaurantView();
     }
 

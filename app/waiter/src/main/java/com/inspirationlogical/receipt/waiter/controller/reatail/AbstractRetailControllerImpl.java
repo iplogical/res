@@ -24,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
+import lombok.Getter;
 import lombok.Setter;
 
 /**
@@ -56,7 +57,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected TableColumn<SoldProductViewModel, String> productTotalPrice;
 
     @Inject
-    protected ViewLoader viewLoader;
+    protected @Getter ViewLoader viewLoader;
 
     protected RestaurantService restaurantService;
 
@@ -84,6 +85,10 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     @FXML
     public void onBackToRestaurantView(Event event) {
         retailService.mergeReceiptRecords(receiptView);
+        backToRestaurantView();
+    }
+
+    protected void backToRestaurantView() {
         restaurantController.updateRestaurant();
         restaurantController.getTableController(tableView).updateNode();
         viewLoader.loadViewIntoScene(restaurantController);

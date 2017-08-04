@@ -79,9 +79,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     Label liveTime;
 
-    @Inject
-    ViewLoader viewLoader;
-
     private Popup adHocProductForm;
 
     private CommonService commonService;
