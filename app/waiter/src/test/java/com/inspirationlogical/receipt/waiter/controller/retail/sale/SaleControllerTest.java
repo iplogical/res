@@ -17,17 +17,17 @@ public class SaleControllerTest extends SaleViewTest {
 
     @Test
     public void testClickOnGuestPlusThenGuestMinus() {
-        clickOnThenWait(GUEST_PLUS, 100);
+        guestPlus();
         assertEquals(TABLE_NUMBER + " (" + (Integer.valueOf(TABLE_GUESTS) + 1) + "/" + TABLE_CAPACITY + ")", ((Label)find(SALE_TABLE_NUMBER)).getText());
-        clickOnThenWait(GUEST_MINUS, 100);
+        guestMinus();
         assertEquals(TABLE_NUMBER + " (" + TABLE_GUESTS + "/" + TABLE_CAPACITY + ")", ((Label)find(SALE_TABLE_NUMBER)).getText());
     }
 
     @Test
     public void testClickOnGuestMinusNegativeNotAllowed() {
-        clickOnThenWait(GUEST_MINUS, 100);
-        clickOnThenWait(GUEST_MINUS, 100);
-        clickOnThenWait(GUEST_MINUS, 100);
+        guestMinus();
+        guestMinus();
+        guestMinus();
         assertEquals(TABLE_NUMBER + " (" + TABLE_GUESTS + "/" + TABLE_CAPACITY + ")", ((Label)find(SALE_TABLE_NUMBER)).getText());
     }
 
@@ -95,18 +95,9 @@ public class SaleControllerTest extends SaleViewTest {
 
     @Test
     public void testSellAdHocProduct() {
-        clickButtonThenWait(SELL_ADHOC_PRODUCT, 100);
-        fillAdHocFormAndConfirm();
+        sellAdHocProduct("TestAdHocProductName", 2, 200, 400);
         assertSoldProduct(1, "TestAdHocProductName", 2, 400, 800);
         selectiveCancellation("TestAdHocProductName");
-    }
-
-    private void fillAdHocFormAndConfirm() {
-        setTextField(ADHOC_PRODUCT_NAME, "TestAdHocProductName");
-        setTextField(ADHOC_PRODUCT_QUANTITY, "2");
-        setTextField(ADHOC_PRODUCT_PURCHASE_PRICE, "200");
-        setTextField(ADHOC_PRODUCT_SALE_PRICE, "400");
-        clickButtonThenWait("Form.Confirm", 100);
     }
 
     @Test

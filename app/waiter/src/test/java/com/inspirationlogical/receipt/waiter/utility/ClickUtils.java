@@ -58,8 +58,8 @@ public class ClickUtils {
         clickOnThenWait(Resources.WAITER.getString(buttonName), milliSec);
     }
 
-    public static void clickMenuThenWait(String buttonName, int milliSec) {
-        clickOnThenWait(Resources.WAITER.getString(buttonName), milliSec);
+    public static void clickMenuThenWait(String menuName, int milliSec) {
+        clickOnThenWait(Resources.WAITER.getString(menuName), milliSec);
     }
 
     public static void setTextField(String fxId, String text) {

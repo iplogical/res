@@ -23,4 +23,6 @@ public class NameUtils {
     public static final String EDELWEISS_LONG = "Edelweiss 0,5L";
     public static final String GERE = "Gere";
     public static final String GERE_LONG = "Gere Attila Olaszrizling";
+
+    public static final String GAME_FEE = "Játékdíj";
 }

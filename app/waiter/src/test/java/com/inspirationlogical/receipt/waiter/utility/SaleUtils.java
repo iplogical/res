@@ -5,9 +5,8 @@ import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
-import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickButtonThenWait;
-import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickOnThenWait;
-import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.getLabel;
+import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
+import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.setTextField;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.GERE_LONG;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.SOPRONI_LONG;
@@ -35,16 +34,29 @@ public class SaleUtils {
             sellProduct(productName);
     }
 
+    public static void sellAdHocProduct(String name, int quantity, int purchasePrice, int salePrice) {
+        clickButtonThenWait(SELL_ADHOC_PRODUCT, 100);
+        fillAdHocFormAndConfirm(name, quantity, purchasePrice, salePrice);
+    }
+
+    private static void fillAdHocFormAndConfirm(String name, int quantity, int purchasePrice, int salePrice) {
+        setTextField(ADHOC_PRODUCT_NAME, name);
+        setTextField(ADHOC_PRODUCT_QUANTITY, Integer.toString(quantity));
+        setTextField(ADHOC_PRODUCT_PURCHASE_PRICE, Integer.toString(purchasePrice));
+        setTextField(ADHOC_PRODUCT_SALE_PRICE, Integer.toString(salePrice));
+        clickButtonThenWait("Form.Confirm", 100);
+    }
+
     public static void selectiveCancellation(String productName) {
-        clickButtonThenWait(SELECTIVE_CANCELLATION, 30);
-        clickOnThenWait(productName, 30);
-        clickButtonThenWait(SELECTIVE_CANCELLATION, 30);
+        clickButtonThenWait(SELECTIVE_CANCELLATION, 50);
+        clickOnThenWait(productName, 50);
+        clickButtonThenWait(SELECTIVE_CANCELLATION, 50);
     }
 
     public static void singleCancellation(String productName) {
-        clickButtonThenWait(SINGLE_CANCELLATION, 30);
-        clickOnThenWait(productName, 30);
-        clickButtonThenWait(SINGLE_CANCELLATION, 30);
+        clickButtonThenWait(SINGLE_CANCELLATION, 50);
+        clickOnThenWait(productName, 50);
+        clickButtonThenWait(SINGLE_CANCELLATION, 50);
     }
 
     public static String getSoldProductName(int row) {
@@ -102,5 +114,14 @@ public class SaleUtils {
 
     public static String intToForint(int price) {
         return Integer.toString(price) + " Ft";
+    }
+
+
+    public static void guestMinus() {
+        clickOnThenWait(GUEST_MINUS, 100);
+    }
+
+    public static void guestPlus() {
+        clickOnThenWait(GUEST_PLUS, 100);
     }
 }

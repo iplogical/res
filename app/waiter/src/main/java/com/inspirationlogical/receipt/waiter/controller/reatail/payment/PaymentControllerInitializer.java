@@ -39,13 +39,7 @@ public class PaymentControllerInitializer {
         p.paymentMethodCoupon.setUserData(PaymentMethod.COUPON);
         p.paymentMethodCash.setSelected(true);
         p.paymentViewState.setPaymentMethod(PaymentMethod.CASH);
-        p.paymentMethodToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-                p.paymentViewState.setPaymentMethod(
-                        (PaymentMethod) p.paymentMethodToggleGroup.getSelectedToggle().getUserData());
-            }
-        });
+        p.paymentMethodToggleGroup.selectedToggleProperty().addListener(new PaymentMethodToggleListener());
     }
 
     private void initializePaymentTypeToggles() {
@@ -114,6 +108,14 @@ public class PaymentControllerInitializer {
             }
             p.paymentViewState.setDiscountType(
                     (PaymentViewState.DiscountType) p.discountTypeToggleGroup.getSelectedToggle().getUserData());
+        }
+    }
+
+    private class PaymentMethodToggleListener implements ChangeListener<Toggle> {
+        @Override
+        public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+            p.paymentViewState.setPaymentMethod(
+                    (PaymentMethod) p.paymentMethodToggleGroup.getSelectedToggle().getUserData());
         }
     }
 }

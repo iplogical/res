@@ -58,10 +58,17 @@ public class JavaFXIds {
     public final static String PARTIAL_PAYMENT = "#partialPayment";
     public final static String PARTIAL_PAYMENT_VALUE = "#partialPaymentValue";
 
+    public final static String DISCOUNT_ABSOLUTE = "#discountAbsolute";
+    public final static String DISCOUNT_PERCENT = "#discountPercent";
+
+    public final static String DISCOUNT_ABSOLUTE_VALUE = "#discountAbsoluteValue";
+    public final static String DISCOUNT_PERCENT_VALUE = "#discountPercentValue";
+
     public final static String PAID_TOTAL_PRICE = "#paidTotalPrice";
     public final static String PREVIOUS_PARTIAL_PRICE = "#previousPartialPrice";
 
     public final static String PAID_PRODUCTS_TABLE = "#paidProductsTable";
 
+    public final static String TO_SALE = "#backToSaleView";
     public final static String PAY = "#pay";
 }

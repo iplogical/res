@@ -44,7 +44,7 @@
                                  <children>
                                     <VBox spacing="5.0">
                                        <children>
-                                          <Button fx:id="guestPlus1" mnemonicParsing="false" onAction="#onGuestPlus" style="-fx-background-color: #ffffff;">
+                                          <Button fx:id="guestPlus" mnemonicParsing="false" onAction="#onGuestPlus" style="-fx-background-color: #ffffff;">
                                              <graphic>
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <effect>
@@ -63,7 +63,7 @@
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </padding>
                                           </Button>
-                                          <Button fx:id="guestMinus1" mnemonicParsing="false" onAction="#onGuestMinus" style="-fx-background-color: #ffffff;">
+                                          <Button fx:id="guestMinus" mnemonicParsing="false" onAction="#onGuestMinus" style="-fx-background-color: #ffffff;">
                                              <graphic>
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <effect>

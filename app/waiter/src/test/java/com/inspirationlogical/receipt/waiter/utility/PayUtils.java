@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.collections.ObservableList;
@@ -42,22 +43,10 @@ public class PayUtils {
         clickButtonThenWait(PAY, 2000);
     }
 
-    public static void paySelective(String product) {
-        clickButtonThenWait(SELECTIVE_PAYMENT, 50);
-        clickOnThenWait(product, 50);
-        clickButtonThenWait(SELECTIVE_PAYMENT, 50);
-    }
-
     public static void paySelective(int row) {
         clickButtonThenWait(SELECTIVE_PAYMENT, 50);
         clickOnThenWait(SOLD_POINTS.get(row - 1), 50);
         clickButtonThenWait(SELECTIVE_PAYMENT, 50);
-    }
-
-    public static void paySingle(String product) {
-        clickButtonThenWait(SINGLE_PAYMENT, 50);
-        clickOnThenWait(product, 50);
-        clickButtonThenWait(SINGLE_PAYMENT, 50);
     }
 
     public static void paySingle(int row) {
@@ -66,16 +55,13 @@ public class PayUtils {
         clickButtonThenWait(SINGLE_PAYMENT, 50);
     }
 
-    public static void payPartial(String product, double value) {
-        setTextField(PARTIAL_PAYMENT_VALUE, String.valueOf(value));
-        clickButtonThenWait(PARTIAL_PAYMENT, 50);
-        clickOnThenWait(product, 50);
-        clickButtonThenWait(PARTIAL_PAYMENT, 50);
+    public static void payPartial(int row, double value) {
+        setPartialPaymentValue(value);
+        payPartial(row);
     }
 
-    public static void payPartial(int row, double value) {
+    public static void setPartialPaymentValue(double value) {
         setTextField(PARTIAL_PAYMENT_VALUE, String.valueOf(value));
-        payPartial(row);
     }
 
     public static void payPartial(int row) {
@@ -142,5 +128,21 @@ public class PayUtils {
 
     public static void assertPreviousPartialPrice(int price) {
         assertEquals(intToForint(price), getPreviousPartialPrice());
+    }
+
+    public static void sellGameFee() {
+        clickOnThenWait(Resources.WAITER.getString("PaymentView.ManualGameFee"), 50);
+    }
+
+    public static void autoGameFee() {
+        clickOnThenWait(Resources.WAITER.getString("PaymentView.AutomaticGameFee"), 50);
+    }
+
+    public static void setDiscountAbsolute(String text) {
+        setTextField(DISCOUNT_ABSOLUTE_VALUE, text);
+    }
+
+    public static void setDiscountPercent(String text) {
+        setTextField(DISCOUNT_PERCENT_VALUE, text);
     }
 }

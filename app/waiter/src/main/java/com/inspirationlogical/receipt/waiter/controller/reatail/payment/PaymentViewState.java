@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import javafx.scene.control.TextField;
 import lombok.Data;
 
@@ -19,6 +21,8 @@ public @Data class PaymentViewState {
 
     private PaymentMethod paymentMethod;
 
+    private PaymentParams paymentParams;
+
     private PaymentType paymentType;
 
     private DiscountType discountType;
@@ -32,36 +36,48 @@ public @Data class PaymentViewState {
     }
 
     void handlePayment(boolean soldProductsEmpty, boolean paidProductsEmpty) {
-        if(isFullPayment()) {
-            handleFullPayment(soldProductsEmpty, paidProductsEmpty);
-        } else {
-            handleSelectivePayment(soldProductsEmpty, paidProductsEmpty);
+        try {
+            paymentParams = getPaymentParams();
+            if(isFullPayment()) {
+                handleFullPayment(soldProductsEmpty, paidProductsEmpty);
+            } else {
+                handleSelectivePayment(soldProductsEmpty, paidProductsEmpty);
+            }
+        } catch (NumberFormatException e) {
+            showErrorMessage();
         }
     }
 
     private void handleFullPayment(boolean soldProductsEmpty, boolean paidProductsEmpty) {
         if(paidProductsEmpty) {
-            paymentController.handleFullPayment(getPaymentParams());
+            paymentController.handleFullPayment(paymentParams);
         } else {
             if(soldProductsEmpty) {
-                paymentController.handleFullPayment(getPaymentParams());
+                paymentController.handleFullPayment(paymentParams);
             } else {
-                paymentController.handleSelectivePayment(getPaymentParams());
+                paymentController.handleSelectivePayment(paymentParams);
             }
         }
     }
 
     private void handleSelectivePayment(boolean soldProductsEmpty, boolean paidProductsEmpty) {
         if(paidProductsEmpty) {
-            return;
+            ErrorMessage.showErrorMessage(paymentController.getRootNode(),
+                    Resources.WAITER.getString("PaymentView.SelectivePaymentNoPaidProduct"));
         } else if(soldProductsEmpty) {
-            paymentController.handleFullPayment(getPaymentParams());
+            paymentController.handleFullPayment(paymentParams);
         } else {
-            paymentController.handleSelectivePayment(getPaymentParams());
+            paymentController.handleSelectivePayment(paymentParams);
         }
     }
 
     private PaymentParams getPaymentParams() {
+        if(isDiscountPercent()) {
+            double discountPercent = Double.valueOf(discountPercentValue.getText());
+            if(discountPercent < 1 || discountPercent > 100) {
+                throw new NumberFormatException();
+            }
+        }
         return PaymentParams.builder()
                 .paymentMethod(paymentMethod)
                 .discountAbsolute(isDiscountAbsolute() ? Integer.valueOf(discountAbsoluteValue.getText()) : 0)
@@ -85,12 +101,23 @@ public @Data class PaymentViewState {
         return paymentType == PARTIAL;
     }
 
-    private boolean isDiscountAbsolute() {
+    boolean isDiscountAbsolute() {
         return discountType == ABSOLUTE;
     }
 
-    private boolean isDiscountPercent() {
+    boolean isDiscountPercent() {
         return discountType == PERCENT;
+    }
+
+    private void showErrorMessage() {
+        if(isDiscountAbsolute()) {
+            ErrorMessage.showErrorMessage(paymentController.getRootNode(),
+                    Resources.WAITER.getString("PaymentView.DiscountAbsoluteNumberFormatError"));
+
+        } else if(isDiscountPercent()) {
+            ErrorMessage.showErrorMessage(paymentController.getRootNode(),
+                    Resources.WAITER.getString("PaymentView.DiscountPercentNumberFormatError"));
+        }
     }
 
     public enum PaymentType {

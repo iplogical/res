@@ -1,10 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.payment;
 
-import static java.util.stream.Collectors.toList;
-
-import java.net.URL;
-import java.util.*;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
@@ -14,11 +9,10 @@ import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
-import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -26,6 +20,13 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import static java.util.stream.Collectors.toList;
 
 @Singleton
 public class PaymentControllerImpl extends AbstractRetailControllerImpl
@@ -53,7 +54,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     ToggleButton partialPayment;
     @FXML
     ToggleGroup paymentTypeToggleGroup;
-    // TODO: input validation
+
     @FXML
     private TextField partialPaymentValue;
 
@@ -139,12 +140,19 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         getSoldProductsAndRefreshTable();
         updateTableSummary();
         resetToggleGroups();
+        clearInputFields();
     }
 
     private void resetToggleGroups() {
         paymentMethodToggleGroup.selectToggle(paymentMethodCash);
         paymentTypeToggleGroup.selectToggle(null);
         discountTypeToggleGroup.selectToggle(null);
+    }
+
+    private void clearInputFields() {
+        partialPaymentValue.clear();
+        discountAbsoluteValue.clear();
+        discountPercentValue.clear();
     }
 
     @FXML
@@ -165,14 +173,18 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         retailService.payTable(tableView, paymentParams);
         getSoldProductsAndRefreshTable();
         discardPaidRecords();
+        clearPreviousPartialPrice();
         backToRestaurantView();
     }
 
     private void discardPaidRecords() {
-        paidProductsModel = FXCollections.observableArrayList();
-        paidProductsView = new ArrayList<>();
-        previousPartialPrice.setText(paidTotalPrice.getText());
+        paidProductsModel.clear();
+        paidProductsView.clear();
         refreshPaidProductsTable();
+    }
+
+    private void clearPreviousPartialPrice() {
+        previousPartialPrice.setText("0 Ft");
     }
 
     private void refreshPaidProductsTable() {
@@ -191,11 +203,28 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         restaurantController.getTableController(tableView).updateNode();
         viewLoader.loadViewIntoScene(restaurantController);
     }
+
     @Override
     public void handleSelectivePayment(PaymentParams paymentParams) {
         retailService.paySelective(tableView, paidProductsView, paymentParams);
+        updatePreviousPartialPrice();
         discardPaidRecords();
         getSoldProductsAndRefreshTable();
+    }
+
+    private void updatePreviousPartialPrice() {
+        int totalPrice = Integer.valueOf(paidTotalPrice.getText().split(" ")[0]);
+        previousPartialPrice.setText(applyDiscountOnTotalPrice(totalPrice) + " Ft");
+    }
+
+    private int applyDiscountOnTotalPrice(int totalPrice) {
+        if(paymentViewState.isDiscountAbsolute()) {
+            totalPrice -= Integer.valueOf(discountAbsoluteValue.getText());
+        } else if(paymentViewState.isDiscountPercent()) {
+            double discountPercent = Double.valueOf(discountPercentValue.getText());
+            totalPrice = (int)Math.round((double)totalPrice * ((100 - discountPercent) / 100));
+        }
+        return totalPrice;
     }
 
     @Override
@@ -327,6 +356,10 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void onBackToSaleView(Event event) {
         discardPaidRecords();
         retailService.mergeReceiptRecords(receiptView);
+        enterSaleView();
+    }
+
+    private void enterSaleView() {
         saleController.enterSaleView();
         viewLoader.loadViewIntoScene(saleController);
     }
@@ -339,7 +372,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             soldProductsView.add(gameFee);
         }
         refreshSoldProductsTable();
-        updateTableSummary();
     }
 
     private ReceiptRecordView handleAutomaticGameFee() {
@@ -360,6 +392,5 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             soldProductsView.add(gameFee);
         }
         refreshSoldProductsTable();
-        updateTableSummary();
     }
 }
