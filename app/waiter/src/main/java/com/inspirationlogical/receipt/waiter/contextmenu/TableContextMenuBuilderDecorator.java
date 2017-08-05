@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.waiter.contextmenu;
 import com.inspirationlogical.receipt.corelib.frontend.builder.ContextMenuBuilder;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableViewState;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
@@ -13,11 +14,16 @@ import javafx.scene.control.MenuItem;
 public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorator {
 
     private RestaurantController restaurantController;
+    TableConfigurationController tableConfigurationController;
     private TableController tableController;
 
-    public TableContextMenuBuilderDecorator(RestaurantController restaurantController, TableController tableController, ContextMenuBuilder contextMenuBuilder) {
+    public TableContextMenuBuilderDecorator(RestaurantController restaurantController,
+                                            TableConfigurationController tableConfigurationController,
+                                            TableController tableController,
+                                            ContextMenuBuilder contextMenuBuilder) {
         super(contextMenuBuilder);
         this.restaurantController = restaurantController;
+        this.tableConfigurationController = tableConfigurationController;
         this.tableController = tableController;
     }
 
@@ -32,7 +38,8 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
 
         MenuItem editTable = new ContextMenuItemBuilder()
                 .withLabel(Resources.WAITER.getString("ContextMenu.EditTable"))
-                .withClickHandlerControl(restaurantController::showEditTableForm)
+//                .withClickHandlerControl(restaurantController::showEditTableForm)
+                .withClickHandlerControl(tableConfigurationController::showEditTableForm)
                 .build();
         contextMenu.getItems().add(editTable);
 

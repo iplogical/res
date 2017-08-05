@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantCon
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantViewState;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
+import com.inspirationlogical.receipt.waiter.controller.restaurant.TableConfigurationController;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 
@@ -14,9 +15,14 @@ public class RestaurantContextMenuBuilderDecorator extends ContextMenuBuilderDec
 
     private RestaurantController restaurantController;
 
-    public RestaurantContextMenuBuilderDecorator(RestaurantController restaurantController, ContextMenuBuilder contextMenuBuilder) {
+    private TableConfigurationController tableConfigurationController;
+
+    public RestaurantContextMenuBuilderDecorator(RestaurantController restaurantController,
+                                                 TableConfigurationController tableConfigurationController,
+                                                 ContextMenuBuilder contextMenuBuilder) {
         super(contextMenuBuilder);
         this.restaurantController = restaurantController;
+        this.tableConfigurationController = tableConfigurationController;
     }
 
     @Override
@@ -26,7 +32,8 @@ public class RestaurantContextMenuBuilderDecorator extends ContextMenuBuilderDec
         if (restaurantViewState.getConfigurable().getValue()) {
             MenuItem addTable = new ContextMenuItemBuilder()
                     .withLabel(Resources.WAITER.getString("ContextMenu.AddTable"))
-                    .withClickHandlerPoint2D(restaurantController::showCreateTableForm)
+ //                   .withClickHandlerPoint2D(restaurantController::showCreateTableForm)
+                    .withClickHandlerPoint2D(tableConfigurationController::showCreateTableForm)
                     .build();
             contextMenu.getItems().addAll(addTable);
             if (restaurantViewState.getTableType().equals(TableType.NORMAL) && restaurantViewState.hasSelection()) {

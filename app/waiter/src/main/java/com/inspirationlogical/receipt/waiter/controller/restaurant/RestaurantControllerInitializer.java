@@ -33,12 +33,13 @@ public class RestaurantControllerInitializer {
         initTableForm();
         initControls();
         initRestaurant();
+        initTableConfigurationController();
         r.initLiveTime(r.liveTime);
     }
 
     private void initContextMenu(Label control) {
         addPressAndHold(r.restaurantViewState, control,
-                new RestaurantContextMenuBuilderDecorator(r, new BaseContextMenuBuilder()),
+                new RestaurantContextMenuBuilderDecorator(r, r.tableConfigurationController, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
     }
 
@@ -80,5 +81,13 @@ public class RestaurantControllerInitializer {
         List<TableView> tables = r.restaurantService.getTables();
         tables.sort(Comparator.comparing(TableView::isConsumed));   // Put consumed tables to the end so the consumer is loaded in advance.
         tables.stream().filter(DISPLAYABLE_TABLE).forEach(r::drawTable);
+    }
+
+
+    private void initTableConfigurationController() {
+        r.tableConfigurationController.setRestaurantController(r);
+        r.tableConfigurationController.setViewLoader(r.viewLoader);
+        r.tableConfigurationController.setRestaurantViewState(r.restaurantViewState);
+        r.tableConfigurationController.initialize();
     }
 }

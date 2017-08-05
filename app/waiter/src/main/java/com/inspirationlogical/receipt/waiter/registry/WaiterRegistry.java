@@ -11,12 +11,9 @@ import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentC
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationController;
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.*;
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.TableFormController;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.TableFormControllerImpl;
 
 public class WaiterRegistry extends Registry {
 
@@ -28,6 +25,7 @@ public class WaiterRegistry extends Registry {
     protected void configure() {
         super.configure();
         bind(RestaurantController.class).to(RestaurantControllerImpl.class);
+        bind(TableConfigurationController.class).to(TableConfigurationControllerImpl.class);
         bind(SaleController.class).to(SaleControllerImpl.class);
         bind(ProductsAndCategoriesController.class).to(ProductsAndCategoriesControllerImpl.class);
         bind(PaymentController.class).to(PaymentControllerImpl.class);

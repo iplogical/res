@@ -151,11 +151,15 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     RestaurantViewState restaurantViewState;
 
+    TableConfigurationController tableConfigurationController;
+
     @Inject
     public RestaurantControllerImpl(RestaurantService restaurantService,
-                                    TableFormController tableFormController) {
+                                    TableFormController tableFormController,
+                                    TableConfigurationController tableConfigurationController) {
         this.restaurantService = restaurantService;
         this.tableFormController = tableFormController;
+        this.tableConfigurationController = tableConfigurationController;
         tableControllers = new HashSet<>();
         selectedTables = new LinkedHashSet<>();
         restaurantViewState = new RestaurantViewState(selectedTables);
@@ -189,112 +193,79 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void createTable(TableParams tableParams) {
-        try {
-            TableView tableView = restaurantService.addTable(restaurantView, buildTable(tableParams));
-            tableForm.hide();
-            drawTable(tableView);
-            if (tableView.isHosted()) {
-                getTableController(tableView.getHost()).updateTable();
-            }
-            updateRestaurantSummary();
-        } catch (IllegalTableStateException e) {
-            ErrorMessage.showErrorMessage(getActiveTab(),
-                    Resources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
-//            initRestaurant();
-        }
+        tableConfigurationController.createTable(tableParams);
+//        try {
+//            TableView tableView = restaurantService.addTable(restaurantView, buildTable(tableParams));
+//            tableForm.hide();
+//            drawTable(tableView);
+//            if (tableView.isHosted()) {
+//                getTableController(tableView.getHost()).updateTable();
+//            }
+//            updateRestaurantSummary();
+//        } catch (IllegalTableStateException e) {
+//            ErrorMessage.showErrorMessage(getActiveTab(),
+//                    Resources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
+////            initRestaurant();
+//        }
     }
-
-    private Table.TableBuilder buildTable(TableParams params) {
-        TableType tableType = restaurantViewState.getTableType();
-        Point2D position = calculateTablePosition(tableFormController.getRootNode(), getActiveTab());
-        return restaurantService
-                .tableBuilder()
-                .type(tableType)
-                .name(params.getName())
-                .number(params.getNumber())
-                .note(params.getNote())
-                .guestCount(params.getGuestCount())
-                .capacity(params.getCapacity())
-                .visible(true)
-                .coordinateX((int) position.getX())
-                .coordinateY((int) position.getY())
-                .dimensionX((int) params.getDimension().getWidth())
-                .dimensionY((int) params.getDimension().getHeight());
-    }
+//
+//    private Table.TableBuilder buildTable(TableParams params) {
+//        TableType tableType = restaurantViewState.getTableType();
+//        Point2D position = calculateTablePosition(tableFormController.getRootNode(), getActiveTab());
+//        return restaurantService
+//                .tableBuilder()
+//                .type(tableType)
+//                .name(params.getName())
+//                .number(params.getNumber())
+//                .note(params.getNote())
+//                .guestCount(params.getGuestCount())
+//                .capacity(params.getCapacity())
+//                .visible(true)
+//                .coordinateX((int) position.getX())
+//                .coordinateY((int) position.getY())
+//                .dimensionX((int) params.getDimension().getWidth())
+//                .dimensionY((int) params.getDimension().getHeight());
+//    }
 
     @Override
     public void editTable(TableController tableController, TableParams tableParams) {
-        TableView tableView = tableController.getView();
-        TableView previousHost = tableView.getHost();
-
-        try {
-            setTableParams(tableView, tableParams);
-            addNodeToPane(tableController.getRoot(), restaurantViewState.getTableType());
-            tableController.updateTable();
-            updateHostNodes(tableView, previousHost);
-            updateRestaurantSummary();
-        } catch (IllegalTableStateException e) {
-            ErrorMessage.showErrorMessage(getActiveTab(),
-                    Resources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
-//            initRestaurant();
-        }
+        tableConfigurationController.editTable(tableController, tableParams);
+//        TableView tableView = tableController.getView();
+//        TableView previousHost = tableView.getHost();
+//
+//        try {
+//            setTableParams(tableView, tableParams);
+//            addNodeToPane(tableController.getRoot(), restaurantViewState.getTableType());
+//            tableController.updateTable();
+//            updateHostNodes(tableView, previousHost);
+//            updateRestaurantSummary();
+//        } catch (IllegalTableStateException e) {
+//            ErrorMessage.showErrorMessage(getActiveTab(),
+//                    Resources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
+////            initRestaurant();
+//        }
     }
 
-    private void setTableParams(TableView tableView, TableParams tableParams) {
-        if (notOwnNumberIsDisplayed(tableView, tableParams)) {
-            restaurantService.setTableNumber(tableView, tableParams.getNumber(), restaurantView);
-        }
-        restaurantService.setTableParams(tableView, tableParams);
-        tableForm.hide();
-    }
+//    private void setTableParams(TableView tableView, TableParams tableParams) {
+//        if (notOwnNumberIsDisplayed(tableView, tableParams)) {
+//            restaurantService.setTableNumber(tableView, tableParams.getNumber(), restaurantView);
+//        }
+//        restaurantService.setTableParams(tableView, tableParams);
+//        tableForm.hide();
+//    }
 
-    private boolean notOwnNumberIsDisplayed(TableView tableView, TableParams tableParams) {
-        return tableView.getDisplayedNumber() != tableParams.getNumber();
-    }
-
-    private void updateHostNodes(TableView tableView, TableView previousHost) {
-        if(tableView.getHost() != null) {
-            getTableController(tableView.getHost()).updateTable();
-        }
-        if(previousHost != null) {
-            getTableController(previousHost).updateTable();
-        }
-    }
-
-    @Override
-    public void openTableOfReservation(Integer number, String name, Integer guestCount, String note) {
-        List<TableController> filteredControllers = tableControllers.stream()
-                .filter(controller -> controller.getView().getNumber() == number)
-                .limit(1)
-                .collect(toList());
-        if(filteredControllers.isEmpty()) {
-            viewLoader.loadViewIntoScene(this);
-            ErrorMessage.showErrorMessage(getActiveTab(), Resources.WAITER.getString("TableDoesNotExist") + number);
-            return;
-        }
-        TableController tableController = filteredControllers.get(0);
-        TableView tableView = tableController.getView();
-        if(tableView.isOpen()) {
-            viewLoader.loadViewIntoScene(this);
-            ErrorMessage.showErrorMessage(getActiveTab(), Resources.WAITER.getString("TableIsOpenReservation") + tableView.getNumber());
-            return;
-        }
-        TableParams tableParams = buildTableParams(number, name, guestCount, note, tableView);
-        editTable(tableController, tableParams);
-        tableController.openTable(null);
-        viewLoader.loadViewIntoScene(this);
-    }
-
-    public TableParams buildTableParams(Integer number, String name, Integer guestCount, String note, TableView tableView) {
-        return TableParams.builder()
-                .name(name)
-                .number(number)
-                .note(note)
-                .guestCount(guestCount)
-                .capacity(tableView.getCapacity())
-                .dimension(tableView.getDimension())
-                .build();
-    }
+//    private boolean notOwnNumberIsDisplayed(TableView tableView, TableParams tableParams) {
+//        return tableView.getDisplayedNumber() != tableParams.getNumber();
+//    }
+//
+//    private void updateHostNodes(TableView tableView, TableView previousHost) {
+//        if(tableView.getHost() != null) {
+//            getTableController(tableView.getHost()).updateTable();
+//        }
+//        if(previousHost != null) {
+//            getTableController(previousHost).updateTable();
+//        }
+//    }
 
     @Override
     public void deleteTable(Node node) {
@@ -413,6 +384,41 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
+    public void openTableOfReservation(Integer number, String name, Integer guestCount, String note) {
+        List<TableController> filteredControllers = tableControllers.stream()
+                .filter(controller -> controller.getView().getNumber() == number)
+                .limit(1)
+                .collect(toList());
+        if(filteredControllers.isEmpty()) {
+            viewLoader.loadViewIntoScene(this);
+            ErrorMessage.showErrorMessage(getActiveTab(), Resources.WAITER.getString("TableDoesNotExist") + number);
+            return;
+        }
+        TableController tableController = filteredControllers.get(0);
+        TableView tableView = tableController.getView();
+        if(tableView.isOpen()) {
+            viewLoader.loadViewIntoScene(this);
+            ErrorMessage.showErrorMessage(getActiveTab(), Resources.WAITER.getString("TableIsOpenReservation") + tableView.getNumber());
+            return;
+        }
+        TableParams tableParams = buildTableParams(number, name, guestCount, note, tableView);
+        editTable(tableController, tableParams);
+        tableController.openTable(null);
+        viewLoader.loadViewIntoScene(this);
+    }
+
+    private TableParams buildTableParams(Integer number, String name, Integer guestCount, String note, TableView tableView) {
+        return TableParams.builder()
+                .name(name)
+                .number(number)
+                .note(note)
+                .guestCount(guestCount)
+                .capacity(tableView.getCapacity())
+                .dimension(tableView.getDimension())
+                .build();
+    }
+
+    @Override
     public void updateRestaurant() {
         updateRestaurantSummary();
     }
@@ -471,7 +477,8 @@ public class RestaurantControllerImpl implements RestaurantController {
         restaurantViewState.setTableType(TableType.EMPLOYEE);
     }
 
-    private void addNodeToPane(Node node, TableType tableType) {
+    @Override
+    public void addNodeToPane(Node node, TableType tableType) {
         switch (tableType) {
             case NORMAL:
                 moveNode(node, tablesTab);
@@ -488,7 +495,8 @@ public class RestaurantControllerImpl implements RestaurantController {
         }
     }
 
-    private Pane getActiveTab() {
+    @Override
+    public Pane getActiveTab() {
         switch (restaurantViewState.getTableType()) {
             case NORMAL:
                 return tablesTab;
@@ -503,7 +511,8 @@ public class RestaurantControllerImpl implements RestaurantController {
         }
     }
 
-    private TableController getTableController(Node node) {
+    @Override
+    public TableController getTableController(Node node) {
         return tableControllers
                 .stream()
                 .filter(tableController -> tableController.getRoot().equals(node))
@@ -511,6 +520,7 @@ public class RestaurantControllerImpl implements RestaurantController {
                 .orElseThrow(() -> new ViewNotFoundException("Table root could not be found"));
     }
 
+    @Override
     public TableController getTableController(TableView tableView) {
         return tableControllers
                 .stream()
@@ -519,13 +529,14 @@ public class RestaurantControllerImpl implements RestaurantController {
                 .orElseThrow(() -> new ViewNotFoundException("Table view could not be found"));
     }
 
-    void drawTable(TableView tableView) {
+    @Override
+    public void drawTable(TableView tableView) {
         TableController tableController = WaiterRegistry.getInstance(TableController.class);
         tableController.setView(tableView);
         tableControllers.add(tableController);
         viewLoader.loadView(tableController);
         addPressAndHold(tableController.getViewState(), tableController.getRoot(),
-                new TableContextMenuBuilderDecorator(this, tableController, new BaseContextMenuBuilder()),
+                new TableContextMenuBuilderDecorator(this, tableConfigurationController, tableController, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
         addNodeToPane(tableController.getRoot(), tableView.getType());
     }
@@ -540,7 +551,8 @@ public class RestaurantControllerImpl implements RestaurantController {
         return rootRestaurant;
     }
 
-    private void updateRestaurantSummary() {
+    @Override
+    public void updateRestaurantSummary() {
         final Task task = new RestaurantSummaryController(tableControllers, restaurantView).getTask();
 
         task.stateProperty().addListener(new ChangeListener<Worker.State>() {
