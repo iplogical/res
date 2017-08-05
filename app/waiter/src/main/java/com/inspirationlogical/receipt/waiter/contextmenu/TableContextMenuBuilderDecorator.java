@@ -46,24 +46,28 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
         if (tableViewState.getRestaurantViewState().getConfigurable().getValue()) {
             MenuItem rotateTable = new ContextMenuItemBuilder()
                     .withLabel(Resources.WAITER.getString("ContextMenu.RotateTable"))
-                    .withClickHandlerControl(restaurantController::rotateTable)
+//                    .withClickHandlerControl(restaurantController::rotateTable)
+                    .withClickHandlerControl(tableConfigurationController::rotateTable)
                     .build();
             MenuItem deleteTable = new ContextMenuItemBuilder()
                     .withLabel(Resources.WAITER.getString("ContextMenu.DeleteTable"))
-                    .withClickHandlerControl(restaurantController::deleteTable)
+//                    .withClickHandlerControl(restaurantController::deleteTable)
+                    .withClickHandlerControl(tableConfigurationController::deleteTable)
                     .build();
             contextMenu.getItems().addAll(rotateTable, deleteTable);
             if (tableViewState.isSelected()) {
                 MenuItem mergeTables = new ContextMenuItemBuilder()
                         .withLabel(Resources.WAITER.getString("ContextMenu.MergeTable"))
-                        .withClickHandler(restaurantController::mergeTables)
+//                        .withClickHandler(restaurantController::mergeTables)
+                        .withClickHandler(tableConfigurationController::mergeTables)
                         .build();
                 contextMenu.getItems().add(mergeTables);
             }
             if (tableViewState.isAggregate()) {
                 MenuItem splitTables = new ContextMenuItemBuilder()
                         .withLabel(Resources.WAITER.getString("ContextMenu.SplitTable"))
-                        .withClickHandlerControl(restaurantController::splitTables)
+//                        .withClickHandlerControl(restaurantController::splitTables)
+                        .withClickHandlerControl(tableConfigurationController::splitTables)
                         .build();
                 contextMenu.getItems().add(splitTables);
             }
@@ -71,6 +75,7 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
             if(!tableViewState.isOpen()) {
                 MenuItem openTable = new ContextMenuItemBuilder()
                         .withLabel(Resources.WAITER.getString("ContextMenu.OpenTable"))
+                        .withClickHandlerControl(tableController::openTable)
                         .withClickHandlerControl(tableController::openTable)
                         .build();
                 contextMenu.getItems().add(openTable);

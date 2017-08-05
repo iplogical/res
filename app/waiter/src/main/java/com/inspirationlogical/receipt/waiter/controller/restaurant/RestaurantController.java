@@ -13,22 +13,23 @@ import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
 
 public interface RestaurantController extends Controller {
-    int getFirstUnusedTableNumber();
-    void showCreateTableForm(Point2D position);
-    void showEditTableForm(Control control);
-    void createTable(TableParams params);
-    void editTable(TableController tableController, TableParams params);
+//    int getFirstUnusedTableNumber();
+//    void showCreateTableForm(Point2D position);
+//    void showEditTableForm(Control control);
+//    void createTable(TableParams params);
+//    void editTable(TableController tableController, TableParams params);
     void openTableOfReservation(Integer number, String name, Integer guestCount, String note);
-    void deleteTable(Node node);
-    void rotateTable(Node node);
+//    void deleteTable(Node node);
+//    void rotateTable(Node node);
 
-    void moveTable(TableController tableController);
+//    void moveTable(TableController tableController);
 
-    void moveTable(TableView tableView, Point2D position);
+//    void moveTable(TableView tableView, Point2D position);
 
-    void mergeTables();
-    void splitTables(Node node);
-    void selectTable(TableController tableController, boolean selected);
+//    void mergeTables();
+//    void splitTables(Node node);
+//    void selectTable(TableController tableController, boolean selected);
+
     void updateRestaurant();
     RestaurantViewState getViewState();
 
@@ -39,6 +40,8 @@ public interface RestaurantController extends Controller {
     TableController getTableController(Node node);
 
     TableController getTableController(TableView tableView);
+
+//    void drawTable(TableView tableView);
 
     void drawTable(TableView tableView);
 

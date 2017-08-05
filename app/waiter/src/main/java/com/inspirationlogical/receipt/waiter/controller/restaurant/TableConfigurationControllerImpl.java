@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller.restaurant;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
@@ -11,19 +12,27 @@ import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
+import com.inspirationlogical.receipt.waiter.contextmenu.TableContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
+import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.control.Control;
+import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
+import javafx.util.Duration;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.*;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculatePopupPosition;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.calculateTablePosition;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.*;
+import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
+import static com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl.HOLD_DURATION_MILLIS;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
+@Singleton
 public class TableConfigurationControllerImpl implements TableConfigurationController {
 
     @Setter private ViewLoader viewLoader;
@@ -45,6 +54,8 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         this.tableFormController = tableFormController;
         this.restaurantService = restaurantService;
         restaurantView = restaurantService.getActiveRestaurant();
+        tableControllers = new HashSet<>();
+        selectedTables = new LinkedHashSet<>();
     }
 
     @Override
@@ -72,7 +83,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         try {
             TableView tableView = restaurantService.addTable(restaurantView, buildTable(tableParams));
             tableForm.hide();
-            restaurantController.drawTable(tableView);
+            drawTable(tableView);
             if (tableView.isHosted()) {
                 restaurantController.getTableController(tableView.getHost()).updateTable();
             }
@@ -141,4 +152,136 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         }
     }
 
+    @Override
+    public void deleteTable(Node node) {
+        TableController tableController = restaurantController.getTableController(node);
+        TableView tableView = tableController.getView();
+        try {
+            restaurantService.deleteTable(tableView);
+            removeNode((Pane) node.getParent(), node);
+            tableControllers.remove(tableController);
+            updateHostTable(tableView);
+        } catch (IllegalTableStateException e) {
+            showDeleteTableErrorMessage(tableView);
+//            initRestaurant();
+        }
+    }
+
+    private void updateHostTable(TableView tableView) {
+        if (tableView.isHosted()) {
+            TableController hostController = restaurantController.getTableController(tableView.getHost());
+            hostController.updateTable();
+        }
+    }
+
+    private void showDeleteTableErrorMessage(TableView tableView) {
+        String errorMessage = EMPTY;
+        if (tableView.isOpen()) {
+            errorMessage = Resources.WAITER.getString("TableIsOpen");
+        }
+        if (tableView.isConsumer()) {
+            errorMessage = Resources.WAITER.getString("TableIsConsumer");
+        }
+        if (tableView.isHost()) {
+            errorMessage = Resources.WAITER.getString("TableIsHost");
+        }
+        ErrorMessage.showErrorMessage(restaurantController.getActiveTab(), errorMessage + tableView.getNumber());
+    }
+
+    @Override
+    public void rotateTable(Node node) {
+        TableController tableController = restaurantController.getTableController(node);
+        TableView tableView = tableController.getView();
+        restaurantService.rotateTable(tableView);
+        tableController.updateTable();
+    }
+
+    @Override
+    public void moveTable(TableController tableController) {
+        Node view = tableController.getRoot();
+        Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
+        restaurantService.setTablePosition(tableController.getView(), position);
+        tableController.updateTable();
+    }
+
+    @Override
+    public void moveTable(TableView tableView, Point2D position) {
+        restaurantService.setTablePosition(tableView, position);
+    }
+
+    @Override
+    public void mergeTables() {
+        if(selectedTables.size() < 2) {
+            ErrorMessage.showErrorMessage(restaurantController.getActiveTab(), Resources.WAITER.getString("InsufficientSelection"));
+            return;
+        }
+        TableController consumerController = selectedTables.iterator().next();
+        TableView consumer = consumerController.getView();
+        try {
+            restaurantService.mergeTables(consumer, getConsumedTables(consumerController));
+            updateConsumer(consumerController);
+            updateConsumed();
+        } catch (IllegalTableStateException e) {
+            ErrorMessage.showErrorMessage(restaurantController.getActiveTab(), Resources.WAITER.getString("ConsumerSelectedForMerge"));
+        }
+    }
+
+    private List<TableView> getConsumedTables(TableController firstSelected) {
+        List<TableView> consumed = new ArrayList<>();
+        selectedTables.stream()
+                .filter(tableController -> !tableController.equals(firstSelected))
+                .forEach(tableController -> consumed.add(tableController.getView()));
+        return consumed;
+    }
+
+    private void updateConsumer(TableController consumerController) {
+        consumerController.consumeTables();
+        consumerController.updateTable();
+        consumerController.deselectTable();
+        selectedTables.remove(consumerController);
+    }
+
+    private void updateConsumed() {
+        selectedTables.forEach(tableController -> {
+            tableControllers.remove(tableController);
+            restaurantController.getActiveTab().getChildren().remove(tableController.getRoot());
+        });
+        selectedTables.clear();
+    }
+
+    @Override
+    public void splitTables(Node node) {
+        TableController tableController = restaurantController.getTableController(node);
+        TableView tableView = tableController.getView();
+        List<TableView> tables = restaurantService.splitTables(tableView);
+        tables.forEach(this::drawTable);
+        tableController.releaseConsumedTables();
+        tableController.updateTable();
+    }
+
+    @Override
+    public void selectTable(TableController tableController, boolean selected) {
+        if (selected) {
+            selectedTables.add(tableController);
+        } else {
+            selectedTables.remove(tableController);
+        }
+    }
+
+    @Override
+    public void drawTable(TableView tableView) {
+        TableController tableController = WaiterRegistry.getInstance(TableController.class);
+        tableController.setView(tableView);
+        tableControllers.add(tableController);
+        viewLoader.loadView(tableController);
+        addPressAndHold(tableController.getViewState(), tableController.getRoot(),
+                new TableContextMenuBuilderDecorator(restaurantController, this, tableController, new BaseContextMenuBuilder()),
+                Duration.millis(HOLD_DURATION_MILLIS));
+        restaurantController.addNodeToPane(tableController.getRoot(), tableView.getType());
+    }
+
+    @Override
+    public int getFirstUnusedTableNumber() {
+        return restaurantService.getFirstUnusedNumber();
+    }
 }

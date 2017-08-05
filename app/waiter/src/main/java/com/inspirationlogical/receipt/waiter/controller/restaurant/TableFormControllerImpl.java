@@ -66,11 +66,15 @@ public class TableFormControllerImpl implements TableFormController {
 
     private RestaurantController restaurantController;
 
+    private TableConfigurationController tableConfigurationController;
+
     private ResourceBundle resourceBundle;
 
     @Inject
-    public TableFormControllerImpl(RestaurantController restaurantController) {
+    public TableFormControllerImpl(RestaurantController restaurantController,
+                                   TableConfigurationController tableConfigurationController) {
         this.restaurantController = restaurantController;
+        this.tableConfigurationController = tableConfigurationController;
     }
 
     @Override
@@ -89,9 +93,9 @@ public class TableFormControllerImpl implements TableFormController {
         try {
             TableParams tableParams = buildTableParams();
             if (creation) {
-                restaurantController.createTable(tableParams);
+                tableConfigurationController.createTable(tableParams);
             } else {
-                restaurantController.editTable(tableController, tableParams);
+                tableConfigurationController.editTable(tableController, tableParams);
             }
         } catch (NumberFormatException e) {}
     }
@@ -137,7 +141,7 @@ public class TableFormControllerImpl implements TableFormController {
         } else {
             creation = true;
             title.setText(resourceBundle.getString("TableForm.Create"));
-            tableNumber.setText(String.valueOf(restaurantController.getFirstUnusedTableNumber()));
+            tableNumber.setText(String.valueOf(tableConfigurationController.getFirstUnusedTableNumber()));
             guestCount.setText(tableType == TableType.NORMAL ? "0" : "1");
             tableCapacity.setText(tableType == TableType.NORMAL ? NORMAL_TABLE_DEFAULT_CAPACITY.toString() : VIRTUAL_TABLE_DEFAULT_CAPACITY.toString());
             tableName.clear();

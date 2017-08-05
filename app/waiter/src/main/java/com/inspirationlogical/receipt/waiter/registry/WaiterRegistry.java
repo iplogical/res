@@ -37,8 +37,10 @@ public class WaiterRegistry extends Registry {
     }
 
     @Provides
-    TableController provideTableController(RestaurantController restaurantController, RetailService retailService) {
-        TableController tableController = new TableControllerImpl(restaurantController, retailService);
+    TableController provideTableController(RestaurantController restaurantController,
+                                           TableConfigurationController tableConfigurationController,
+                                           RetailService retailService) {
+        TableController tableController = new TableControllerImpl(restaurantController, tableConfigurationController, retailService);
         injector.injectMembers(tableController);
         return tableController;
     }

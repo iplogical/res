@@ -17,6 +17,7 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 
@@ -61,6 +62,8 @@ public class TableControllerImpl implements TableController {
 
     private RestaurantController restaurantController;
 
+    private TableConfigurationController tableConfigurationController;
+
     private RetailService retailService;
 
     private TableView tableView;
@@ -68,8 +71,11 @@ public class TableControllerImpl implements TableController {
     private TableViewState tableViewState;
 
     @Inject
-    public TableControllerImpl(RestaurantController restaurantController, RetailService retailService) {
+    public TableControllerImpl(RestaurantController restaurantController,
+                               TableConfigurationController tableConfigurationController,
+                               RetailService retailService) {
         this.restaurantController = restaurantController;
+        this.tableConfigurationController = tableConfigurationController;
         this.retailService = retailService;
     }
 
@@ -250,19 +256,19 @@ public class TableControllerImpl implements TableController {
 
     private void moveTables() {
         moveConsumedTables();
-        restaurantController.moveTable(this);
+        tableConfigurationController.moveTable(this);
     }
 
     private void moveConsumedTables() {
         for (TableView view : tableView.getConsumedTables()) {
             Point2D delta = new Point2D(rootTable.getLayoutX(), rootTable.getLayoutY()).subtract(tableView.getPosition());
-            restaurantController.moveTable(view, view.getPosition().add(delta));
+            tableConfigurationController.moveTable(view, view.getPosition().add(delta));
         }
     }
 
     private void invertSelectionState() {
         tableViewState.setSelected(!tableViewState.isSelected());
-        restaurantController.selectTable(this, tableViewState.isSelected());
+        tableConfigurationController.selectTable(this, tableViewState.isSelected());
         CSSUtilities.setBorderColor(tableViewState.isSelected(), tableStackPane);
     }
 
