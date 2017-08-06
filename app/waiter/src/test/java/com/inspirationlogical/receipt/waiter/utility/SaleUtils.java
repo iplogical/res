@@ -13,13 +13,7 @@ import static com.inspirationlogical.receipt.waiter.utility.NameUtils.SOPRONI_LO
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SaleUtils {
-
-    private static TestFXBase robot;
-
-    public static void setRobot(TestFXBase robot) {
-        SaleUtils.robot = robot;
-    }
+public class SaleUtils  extends AbstractUtils {
 
     public static void selectCategory(String categoryName) {
         clickOnThenWait(categoryName, 50);
@@ -116,12 +110,20 @@ public class SaleUtils {
         return Integer.toString(price) + " Ft";
     }
 
-
     public static void guestMinus() {
         clickOnThenWait(GUEST_MINUS, 100);
     }
 
     public static void guestPlus() {
         clickOnThenWait(GUEST_PLUS, 100);
+    }
+
+    public static void enterPaymentView() {
+        clickButtonThenWait(TO_PAYMENT, 200);
+    }
+
+
+    public static void backToRestaurantView() {
+        clickButtonThenWait("Common.BackToRestaurantView", 500);
     }
 }

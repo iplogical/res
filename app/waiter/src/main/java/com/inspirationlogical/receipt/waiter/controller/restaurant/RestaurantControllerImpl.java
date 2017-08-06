@@ -165,7 +165,6 @@ public class RestaurantControllerImpl implements RestaurantController {
         initContextMenu(employeesControl);
         initControls();
         initRestaurant();
-        new RestaurantControllerInitializer(this).initTableConfigurationController();
         tableConfigurationController.initialize();
         initLiveTime(liveTime);
         updateRestaurantSummary();
@@ -342,22 +341,22 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public void updateRestaurantSummary() {
-//        final Task task = new RestaurantSummaryController(tableControllers, restaurantView).getTask();
-//
-//        task.stateProperty().addListener(new ChangeListener<Worker.State>() {
-//            @Override public void changed(ObservableValue<? extends Worker.State> observableValue, Worker.State oldState, Worker.State newState) {
-//                if (newState == Worker.State.SUCCEEDED) {
-//                    ObservableList<String> values = (ObservableList<String>)task.valueProperty().getValue();
-//                    totalTableNumber.setText(values.get(0));
-//                    openTableNumber.setText(values.get(1));
-//                    totalGuests.setText(values.get(2));
-//                    totalCapacity.setText(values.get(3));
-//                    openConsumption.setText(values.get(4));
-//                    paidConsumption.setText(values.get(5));
-//                    totalIncome.setText(String.valueOf(Integer.valueOf(openConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
-//                }
-//            }
-//        });
-//        new Thread(task).start();
+        final Task task = new RestaurantSummaryController(tableConfigurationController.getTableControllers(), restaurantView).getTask();
+
+        task.stateProperty().addListener(new ChangeListener<Worker.State>() {
+            @Override public void changed(ObservableValue<? extends Worker.State> observableValue, Worker.State oldState, Worker.State newState) {
+                if (newState == Worker.State.SUCCEEDED) {
+                    ObservableList<String> values = (ObservableList<String>)task.valueProperty().getValue();
+                    totalTableNumber.setText(values.get(0));
+                    openTableNumber.setText(values.get(1));
+                    totalGuests.setText(values.get(2));
+                    totalCapacity.setText(values.get(3));
+                    openConsumption.setText(values.get(4));
+                    paidConsumption.setText(values.get(5));
+                    totalIncome.setText(String.valueOf(Integer.valueOf(openConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
+                }
+            }
+        });
+        new Thread(task).start();
     }
 }

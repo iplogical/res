@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
+import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
 
 /**
  * Created by TheDagi on 2017. 05. 09..
@@ -48,13 +49,6 @@ public class RestaurantControllerTest extends TestFXBase {
     private void openThenCloseTable(String tableNumber) {
         openTable(tableNumber);
         closeTable(tableNumber);
-    }
-
-
-    private void closeTable(String tableNumber) {
-        clickOnThenWait(tableNumber, 500);
-        clickButtonThenWait("SaleView.ToPaymentView", 500);
-        clickButtonThenWait("PaymentView.Pay", 500);
     }
 
     @Test

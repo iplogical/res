@@ -7,6 +7,7 @@ import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.SEARCH_FIELD;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TO_RESTAURANT;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
+import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.enterSaleView;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 import static javafx.scene.input.KeyCode.BACK_SPACE;
 import static javafx.scene.input.KeyCode.DELETE;
@@ -158,8 +159,8 @@ public class ProductsAndCategoriesControllerTest extends SaleViewTest {
     public void testSearchFieldClearedWhenEnterTheSaleView() {
         ClickUtils.type("TestText");
         assertEquals("TestText".toLowerCase(), getTextField(SEARCH_FIELD));
-        clickButtonThenWait(TO_RESTAURANT, 500);
-        clickOnThenWait(TABLE_NUMBER, 200);
+        backToRestaurantView();
+        enterSaleView(TABLE_NUMBER);
         assertEquals("", getTextField(SEARCH_FIELD));
     }
 }

@@ -11,6 +11,8 @@ import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.PayUtils.*;
+import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.enterSaleView;
+import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.openTable;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 import static org.junit.Assert.assertEquals;
 
@@ -402,9 +404,9 @@ public class PaymentControllerTest  extends TestFXBase {
 
     @Test
     public void testBackToRestaurantView() {
-        clickButtonThenWait(TO_RESTAURANT, 500);
-        clickOnThenWait(TABLE_NUMBER, 200);
-        clickButtonThenWait(TO_PAYMENT, 200);
+        backToRestaurantView();
+        enterSaleView(TABLE_NUMBER);
+        enterPaymentView();
     }
 
     @Test
@@ -412,9 +414,9 @@ public class PaymentControllerTest  extends TestFXBase {
         setDiscountPercent("50");
         setDiscountAbsolute("5000");
         setPartialPaymentValue(1.5);
-        clickButtonThenWait(TO_RESTAURANT, 500);
-        clickOnThenWait(TABLE_NUMBER, 200);
-        clickButtonThenWait(TO_PAYMENT, 200);
+        backToRestaurantView();
+        enterSaleView(TABLE_NUMBER);
+        enterPaymentView();
         assertEquals("", getTextField(DISCOUNT_PERCENT_VALUE));
         assertEquals("", getTextField(DISCOUNT_ABSOLUTE_VALUE));
         assertEquals("", getTextField(PARTIAL_PAYMENT_VALUE));

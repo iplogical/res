@@ -18,13 +18,7 @@ import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TABLEFORM_
 import static org.junit.Assert.fail;
 import static org.testfx.api.FxAssert.verifyThat;
 
-public class ClickUtils {
-
-    static private TestFXBase robot;
-
-    public static void setRobot(TestFXBase robot) {
-        ClickUtils.robot = robot;
-    }
+public class ClickUtils extends AbstractUtils {
 
     public static void runInConfigurationMode(Functor f) {
         robot.clickOn(CONFIGURATION_ID);
@@ -87,35 +81,6 @@ public class ClickUtils {
             verifyThat(nodeQuery, Node::isVisible);
             fail("Should not find the node");
         } catch (NullPointerException e) {}
-    }
-
-    public static void openTable(String tableNumber) {
-        longClickOn(tableNumber);
-        clickOnThenWait(Resources.WAITER.getString("ContextMenu.OpenTable"), 500);
-    }
-
-    public static void addTable(String tableName, String number, String guestCount, String capacity) {
-        runInConfigurationMode(() -> {
-            longClickOn(new Point2D(150, 150));
-            clickOnThenWait(Resources.WAITER.getString("ContextMenu.AddTable"), 100);
-            ((TextField)robot.find(TABLEFORM_NAME)).setText(tableName);
-            ((TextField)robot.find(TABLEFORM_NUMBER)).setText(number);
-            ((TextField)robot.find(TABLEFORM_GUEST_COUNT)).setText(guestCount);
-            ((TextField)robot.find(TABLEFORM_CAPACITY)).setText(capacity);
-            clickOnThenWait(TABLEFORM_CONFIRM, 100);
-            verifyThatVisible(tableName);
-            verifyThatVisible(number);
-            verifyThatVisible(guestCount);
-            verifyThatVisible(capacity);
-        });
-    }
-
-    public static void deleteTable(String tableNumber) {
-        runInConfigurationMode(() -> {
-            longClickOn(tableNumber);
-            robot.clickOn(Resources.WAITER.getString("ContextMenu.DeleteTable"));
-            verifyThatNotVisible(tableNumber);
-        });
     }
 
     public static FxRobotInterface type(String text) {

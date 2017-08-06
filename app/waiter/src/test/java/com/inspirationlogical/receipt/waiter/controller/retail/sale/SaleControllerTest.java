@@ -103,7 +103,7 @@ public class SaleControllerTest extends SaleViewTest {
         assertSoldTotalPrice(880);
         sellProduct(KRUSO);
         assertSoldTotalPrice(1360);
-        clickOnThenWait(KRUSO_LONG, 50);
+        sellProduct(KRUSO_LONG);
         assertSoldTotalPrice(1840);
         selectiveCancellation(SOPRONI_LONG);
         assertSoldTotalPrice(960);

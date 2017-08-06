@@ -24,6 +24,7 @@ import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import javafx.util.Duration;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.*;
@@ -38,15 +39,20 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 @Singleton
 public class TableConfigurationControllerImpl implements TableConfigurationController {
 
-    @Setter private ViewLoader viewLoader;
-    @Setter private RestaurantController restaurantController;
-    @Setter private RestaurantViewState restaurantViewState;
+    @Inject
+    private ViewLoader viewLoader;
+
+    private RestaurantController restaurantController;
+
+    private RestaurantViewState restaurantViewState;
+
     private static Predicate<TableView> DISPLAYABLE_TABLE = TableView::isDisplayable;
 
 
     private TableFormController tableFormController;
     private RestaurantService restaurantService;
 
+    @Getter
     private Set<TableController> tableControllers;
     private Set<TableController> selectedTables;
 
@@ -54,8 +60,10 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     private Popup tableForm;
 
     @Inject
-    public TableConfigurationControllerImpl(TableFormController tableFormController,
+    public TableConfigurationControllerImpl(RestaurantController restaurantController,
+                                            TableFormController tableFormController,
                                             RestaurantService restaurantService) {
+        this.restaurantController = restaurantController;
         this.tableFormController = tableFormController;
         this.restaurantService = restaurantService;
         restaurantView = restaurantService.getActiveRestaurant();
@@ -65,9 +73,9 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void initialize() {
+        restaurantViewState = restaurantController.getViewState();
         initTables();
-        tableForm = new Popup();
-        tableForm.getContent().add(viewLoader.loadView(tableFormController));
+        initTableForm();
     }
 
     private void initTables() {
@@ -87,6 +95,11 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         List<TableView> tables = restaurantService.getTables();
         tables.sort(Comparator.comparing(TableView::isConsumed));   // Put consumed tables to the end so the consumer is loaded in advance.
         tables.stream().filter(DISPLAYABLE_TABLE).forEach(this::drawTable);
+    }
+
+    private void initTableForm() {
+        tableForm = new Popup();
+        tableForm.getContent().add(viewLoader.loadView(tableFormController));
     }
 
     @Override

@@ -9,6 +9,14 @@ public class JavaFXIds {
     public final static String MOTION_ID = "#motion";
     public final static String CONFIGURATION_ID = "#configuration";
 
+    public final static String OPEN_TABLE_NUMBER = "#openTableNumber";
+    public final static String TOTAL_TABLE_NUMBER = "#totalTableNumber";
+    public final static String TOTAL_GUESTS = "#totalGuests";
+    public final static String TOTL_CAPACITY = "#totalCapacity";
+    public final static String OPEN_CONSUMPTION = "#openConsumption";
+    public final static String PAID_CONSUMPTION = "#paidConsumption";
+    public final static String TOTAL_INCOME = "#totalIncome";
+
     // TableForm.fxml
     public final static String TABLEFORM_NAME = "#tableName";
     public final static String TABLEFORM_NUMBER = "#tableNumber";

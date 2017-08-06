@@ -7,21 +7,19 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
 
+import java.util.Set;
+
 public interface TableConfigurationController {
+
+    void initialize();
 
     void showCreateTableForm(Point2D position);
 
     void showEditTableForm(Control control);
 
-    void setViewLoader(com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader viewLoader);
-    void setRestaurantController(RestaurantController restaurantController);
-    void setRestaurantViewState(RestaurantViewState restaurantViewState);
-
     void createTable(TableParams tableParams);
 
     void editTable(TableController tableController, TableParams tableParams);
-
-    void initialize();
 
     void deleteTable(Node node);
 
@@ -37,6 +35,8 @@ public interface TableConfigurationController {
 
     void selectTable(TableController tableController, boolean selected);
 
+    void clearSelections();
+
     boolean hasSelection();
 
     void drawTable(TableView tableView);
@@ -45,5 +45,5 @@ public interface TableConfigurationController {
 
     TableController getTableController(TableView tableView);
 
-    void clearSelections();
+    Set<TableController> getTableControllers();
 }

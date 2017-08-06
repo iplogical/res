@@ -172,7 +172,7 @@ public class TableControllerImpl implements TableController {
         }
     }
 
-    public void updateTableParams() {
+    private void updateTableParams() {
         setPreferredSize();
         name.setText(tableView.getName());
         updateHostInfo();
@@ -180,7 +180,7 @@ public class TableControllerImpl implements TableController {
         updateNote();
     }
 
-    public void updateGuestCountAndCapacity() {
+    private void updateGuestCountAndCapacity() {
         if (tableView.isConsumer()) {
             setAggregateGuestCountAndCapacity();
         } else {
@@ -189,7 +189,7 @@ public class TableControllerImpl implements TableController {
         }
     }
 
-    public void setAggregateGuestCountAndCapacity() {
+    private void setAggregateGuestCountAndCapacity() {
         Integer tableGuests = tableView.getGuestCount();
         Integer tableCapacity = tableView.getCapacity();
         for(TableView consumed : tableView.getConsumedTables()) {
@@ -232,6 +232,7 @@ public class TableControllerImpl implements TableController {
     @Override
     public void openTable(Control control) {
         retailService.openTable(tableView);
+        restaurantController.updateRestaurantSummary();
         updateTable();
     }
 
