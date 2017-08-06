@@ -3,17 +3,37 @@ package com.inspirationlogical.receipt.waiter.contextmenu;
 import com.inspirationlogical.receipt.corelib.frontend.builder.ContextMenuBuilder;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
+import com.inspirationlogical.receipt.corelib.utility.Resources;
+import javafx.geometry.Point2D;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Control;
+import javafx.scene.control.MenuItem;
+
+import java.util.function.Consumer;
 
 public abstract class ContextMenuBuilderDecorator implements ContextMenuBuilder {
-    protected ContextMenuBuilder contextMenuBuilder;
+    private ContextMenuBuilder contextMenuBuilder;
 
-    public ContextMenuBuilderDecorator(ContextMenuBuilder contextMenuBuilder) {
+    ContextMenuBuilderDecorator(ContextMenuBuilder contextMenuBuilder) {
         this.contextMenuBuilder = contextMenuBuilder;
     }
 
     @Override
     public ContextMenu build(ViewState viewState) {
         return contextMenuBuilder.build(viewState);
+    }
+
+    MenuItem buildMenuItem(String name, Consumer<Control> handler) {
+        return new ContextMenuItemBuilder()
+                .withLabel(Resources.WAITER.getString(name))
+                .withClickHandlerControl(handler)
+                .build();
+    }
+
+    MenuItem buildMenuItem(String name, Runnable handler) {
+        return new ContextMenuItemBuilder()
+                .withLabel(Resources.WAITER.getString(name))
+                .withClickHandler(handler)
+                .build();
     }
 }

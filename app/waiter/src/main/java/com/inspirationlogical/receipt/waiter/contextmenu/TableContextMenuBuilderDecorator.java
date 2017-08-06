@@ -9,20 +9,21 @@ import com.inspirationlogical.receipt.waiter.controller.table.TableViewState;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Control;
 import javafx.scene.control.MenuItem;
+
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorator {
 
-    private RestaurantController restaurantController;
-    TableConfigurationController tableConfigurationController;
+    private TableConfigurationController tableConfigurationController;
     private TableController tableController;
 
-    public TableContextMenuBuilderDecorator(RestaurantController restaurantController,
-                                            TableConfigurationController tableConfigurationController,
+    public TableContextMenuBuilderDecorator(TableConfigurationController tableConfigurationController,
                                             TableController tableController,
                                             ContextMenuBuilder contextMenuBuilder) {
         super(contextMenuBuilder);
-        this.restaurantController = restaurantController;
         this.tableConfigurationController = tableConfigurationController;
         this.tableController = tableController;
     }
@@ -36,51 +37,31 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
             return contextMenu;
         }
 
-        MenuItem editTable = new ContextMenuItemBuilder()
-                .withLabel(Resources.WAITER.getString("ContextMenu.EditTable"))
-//                .withClickHandlerControl(restaurantController::showEditTableForm)
-                .withClickHandlerControl(tableConfigurationController::showEditTableForm)
-                .build();
+        MenuItem editTable = buildMenuItem("ContextMenu.EditTable", tableConfigurationController::showEditTableForm);
         contextMenu.getItems().add(editTable);
 
-        if (tableViewState.getRestaurantViewState().getConfigurable().getValue()) {
-            MenuItem rotateTable = new ContextMenuItemBuilder()
-                    .withLabel(Resources.WAITER.getString("ContextMenu.RotateTable"))
-//                    .withClickHandlerControl(restaurantController::rotateTable)
-                    .withClickHandlerControl(tableConfigurationController::rotateTable)
-                    .build();
-            MenuItem deleteTable = new ContextMenuItemBuilder()
-                    .withLabel(Resources.WAITER.getString("ContextMenu.DeleteTable"))
-//                    .withClickHandlerControl(restaurantController::deleteTable)
-                    .withClickHandlerControl(tableConfigurationController::deleteTable)
-                    .build();
+        if (isConfigurationMode(tableViewState)) {
+            MenuItem rotateTable = buildMenuItem("ContextMenu.RotateTable", tableConfigurationController::rotateTable);
+            MenuItem deleteTable = buildMenuItem("ContextMenu.DeleteTable", tableConfigurationController::deleteTable);
             contextMenu.getItems().addAll(rotateTable, deleteTable);
             if (tableViewState.isSelected()) {
-                MenuItem mergeTables = new ContextMenuItemBuilder()
-                        .withLabel(Resources.WAITER.getString("ContextMenu.MergeTable"))
-//                        .withClickHandler(restaurantController::mergeTables)
-                        .withClickHandler(tableConfigurationController::mergeTables)
-                        .build();
+                MenuItem mergeTables = buildMenuItem("ContextMenu.MergeTable",tableConfigurationController::mergeTables);
                 contextMenu.getItems().add(mergeTables);
             }
             if (tableViewState.isAggregate()) {
-                MenuItem splitTables = new ContextMenuItemBuilder()
-                        .withLabel(Resources.WAITER.getString("ContextMenu.SplitTable"))
-//                        .withClickHandlerControl(restaurantController::splitTables)
-                        .withClickHandlerControl(tableConfigurationController::splitTables)
-                        .build();
+                MenuItem splitTables = buildMenuItem("ContextMenu.SplitTable", tableConfigurationController::splitTables);
                 contextMenu.getItems().add(splitTables);
             }
         } else {
             if(!tableViewState.isOpen()) {
-                MenuItem openTable = new ContextMenuItemBuilder()
-                        .withLabel(Resources.WAITER.getString("ContextMenu.OpenTable"))
-                        .withClickHandlerControl(tableController::openTable)
-                        .withClickHandlerControl(tableController::openTable)
-                        .build();
+                MenuItem openTable = buildMenuItem("ContextMenu.OpenTable", tableController::openTable);
                 contextMenu.getItems().add(openTable);
             }
         }
         return contextMenu;
+    }
+
+    private Boolean isConfigurationMode(TableViewState tableViewState) {
+        return tableViewState.getRestaurantViewState().getConfigurable().getValue();
     }
 }

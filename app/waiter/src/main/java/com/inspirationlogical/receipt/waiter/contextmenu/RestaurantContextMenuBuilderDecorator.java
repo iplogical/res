@@ -13,15 +13,11 @@ import javafx.scene.control.MenuItem;
 
 public class RestaurantContextMenuBuilderDecorator extends ContextMenuBuilderDecorator {
 
-    private RestaurantController restaurantController;
-
     private TableConfigurationController tableConfigurationController;
 
-    public RestaurantContextMenuBuilderDecorator(RestaurantController restaurantController,
-                                                 TableConfigurationController tableConfigurationController,
+    public RestaurantContextMenuBuilderDecorator(TableConfigurationController tableConfigurationController,
                                                  ContextMenuBuilder contextMenuBuilder) {
         super(contextMenuBuilder);
-        this.restaurantController = restaurantController;
         this.tableConfigurationController = tableConfigurationController;
     }
 
@@ -32,17 +28,12 @@ public class RestaurantContextMenuBuilderDecorator extends ContextMenuBuilderDec
         if (restaurantViewState.getConfigurable().getValue()) {
             MenuItem addTable = new ContextMenuItemBuilder()
                     .withLabel(Resources.WAITER.getString("ContextMenu.AddTable"))
- //                   .withClickHandlerPoint2D(restaurantController::showCreateTableForm)
                     .withClickHandlerPoint2D(tableConfigurationController::showCreateTableForm)
                     .build();
-            contextMenu.getItems().addAll(addTable);
+            contextMenu.getItems().add(addTable);
             if (restaurantViewState.getTableType().equals(TableType.NORMAL) && tableConfigurationController.hasSelection()) {
-                MenuItem mergeTables = new ContextMenuItemBuilder()
-                        .withLabel(Resources.WAITER.getString("ContextMenu.MergeTable"))
-//                        .withClickHandler(restaurantController::mergeTables)
-                        .withClickHandler(tableConfigurationController::mergeTables)
-                        .build();
-                contextMenu.getItems().addAll(mergeTables);
+                MenuItem mergeTables = buildMenuItem("ContextMenu.MergeTable", tableConfigurationController::mergeTables);
+                contextMenu.getItems().add(mergeTables);
             }
         }
         return contextMenu;

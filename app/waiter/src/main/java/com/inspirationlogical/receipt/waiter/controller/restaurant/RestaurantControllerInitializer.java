@@ -36,7 +36,7 @@ public class RestaurantControllerInitializer {
 
     private void initContextMenu(Label control) {
         addPressAndHold(r.restaurantViewState, control,
-                new RestaurantContextMenuBuilderDecorator(r, r.tableConfigurationController, new BaseContextMenuBuilder()),
+                new RestaurantContextMenuBuilderDecorator(r.tableConfigurationController, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
     }
 

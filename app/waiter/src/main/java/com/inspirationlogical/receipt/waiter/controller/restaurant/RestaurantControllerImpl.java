@@ -173,7 +173,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private void initContextMenu(Label control) {
         addPressAndHold(restaurantViewState, control,
-                new RestaurantContextMenuBuilderDecorator(this, tableConfigurationController, new BaseContextMenuBuilder()),
+                new RestaurantContextMenuBuilderDecorator(tableConfigurationController, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
     }
 

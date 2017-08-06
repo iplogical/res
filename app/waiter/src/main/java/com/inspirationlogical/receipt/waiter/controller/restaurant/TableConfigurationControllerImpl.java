@@ -310,7 +310,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         tableControllers.add(tableController);
         viewLoader.loadView(tableController);
         addPressAndHold(tableController.getViewState(), tableController.getRoot(),
-                new TableContextMenuBuilderDecorator(restaurantController, this, tableController, new BaseContextMenuBuilder()),
+                new TableContextMenuBuilderDecorator(this, tableController, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
         restaurantController.addNodeToPane(tableController.getRoot(), tableView.getType());
     }

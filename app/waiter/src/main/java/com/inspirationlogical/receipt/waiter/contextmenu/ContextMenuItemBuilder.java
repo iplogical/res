@@ -9,31 +9,31 @@ import javafx.scene.control.MenuItem;
 public class ContextMenuItemBuilder {
     private MenuItem menuItem;
 
-    public ContextMenuItemBuilder() {
+    ContextMenuItemBuilder() {
         menuItem = new MenuItem();
         menuItem.setStyle("-fx-font-size: 16px");
     }
 
-    public ContextMenuItemBuilder withLabel(String text) {
+    ContextMenuItemBuilder withLabel(String text) {
         menuItem.setText(text);
         return this;
     }
 
-    public ContextMenuItemBuilder withClickHandler(Runnable runnable) {
+    ContextMenuItemBuilder withClickHandler(Runnable runnable) {
         menuItem.setOnAction(event -> {
             runnable.run();
         });
         return this;
     }
 
-    public ContextMenuItemBuilder withClickHandlerPoint2D(Consumer<Point2D> consumer) {
+    ContextMenuItemBuilder withClickHandlerPoint2D(Consumer<Point2D> consumer) {
         menuItem.setOnAction(event -> {
             consumer.accept(new Point2D(menuItem.getParentPopup().getAnchorX(), menuItem.getParentPopup().getAnchorY()));
         });
         return this;
     }
 
-    public ContextMenuItemBuilder withClickHandlerControl(Consumer<Control> consumer) {
+    ContextMenuItemBuilder withClickHandlerControl(Consumer<Control> consumer) {
         menuItem.setOnAction(event -> {
             Control control = (Control) menuItem.getParentPopup().getUserData();
             consumer.accept(control);
