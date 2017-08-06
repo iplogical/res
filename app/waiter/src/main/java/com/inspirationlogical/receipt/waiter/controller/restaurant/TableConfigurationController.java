@@ -37,7 +37,13 @@ public interface TableConfigurationController {
 
     void selectTable(TableController tableController, boolean selected);
 
+    boolean hasSelection();
+
     void drawTable(TableView tableView);
 
     int getFirstUnusedTableNumber();
+
+    TableController getTableController(TableView tableView);
+
+    void clearSelections();
 }

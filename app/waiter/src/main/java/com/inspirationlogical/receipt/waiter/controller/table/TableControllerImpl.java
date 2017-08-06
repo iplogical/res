@@ -167,7 +167,7 @@ public class TableControllerImpl implements TableController {
         } else {
             hideNode(rootTable);
             if (tableView.isConsumed()) {
-                restaurantController.getTableController(tableView.getConsumer()).updateTable();
+                tableConfigurationController.getTableController(tableView.getConsumer()).updateTable();
             }
         }
     }

@@ -13,7 +13,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
-import static com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl.DISPLAYABLE_TABLE;
 import static com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl.HOLD_DURATION_MILLIS;
 import static com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl.INITIAL_GRID_SIZE;
 import static java.util.stream.Collectors.toList;
@@ -30,10 +29,8 @@ public class RestaurantControllerInitializer {
         initContextMenu(r.loiterersControl);
         initContextMenu(r.frequentersControl);
         initContextMenu(r.employeesControl);
-        initTableForm();
         initControls();
         initRestaurant();
-        initTableConfigurationController();
         r.initLiveTime(r.liveTime);
     }
 
@@ -41,11 +38,6 @@ public class RestaurantControllerInitializer {
         addPressAndHold(r.restaurantViewState, control,
                 new RestaurantContextMenuBuilderDecorator(r, r.tableConfigurationController, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
-    }
-
-    private void initTableForm() {
-        r.tableForm = new Popup();
-        r.tableForm.getContent().add(r.viewLoader.loadView(r.tableFormController));
     }
 
     private void initControls() {
@@ -61,33 +53,33 @@ public class RestaurantControllerInitializer {
 
     private void initRestaurant() {
         r.restaurantView = r.restaurantService.getActiveRestaurant();
-        initTables();
+//        initTables();
     }
 
-    private void initTables() {
-        r.tablesTab.getChildren().removeAll(r.tableControllers.stream()
-                .filter(tableController -> tableController.getView().isNormal() || tableController.getView().isConsumer())
-                .map(TableController::getRoot).collect(toList()));
-        r.loiterersTab.getChildren().removeAll(r.tableControllers.stream()
-                .filter(tableController -> tableController.getView().isLoiterer())
-                .map(TableController::getRoot).collect(toList()));
-        r.frequentersTab.getChildren().removeAll(r.tableControllers.stream()
-                .filter(tableController -> tableController.getView().isFrequenter())
-                .map(TableController::getRoot).collect(toList()));
-        r.employeesTab.getChildren().removeAll(r.tableControllers.stream()
-                .filter(tableController -> tableController.getView().isEmployee())
-                .map(TableController::getRoot).collect(toList()));
-        r.tableControllers.clear();
-        List<TableView> tables = r.restaurantService.getTables();
-        tables.sort(Comparator.comparing(TableView::isConsumed));   // Put consumed tables to the end so the consumer is loaded in advance.
-        tables.stream().filter(DISPLAYABLE_TABLE).forEach(r::drawTable);
-    }
+//    private void initTables() {
+//        r.tablesTab.getChildren().removeAll(r.tableControllers.stream()
+//                .filter(tableController -> tableController.getView().isNormal() || tableController.getView().isConsumer())
+//                .map(TableController::getRoot).collect(toList()));
+//        r.loiterersTab.getChildren().removeAll(r.tableControllers.stream()
+//                .filter(tableController -> tableController.getView().isLoiterer())
+//                .map(TableController::getRoot).collect(toList()));
+//        r.frequentersTab.getChildren().removeAll(r.tableControllers.stream()
+//                .filter(tableController -> tableController.getView().isFrequenter())
+//                .map(TableController::getRoot).collect(toList()));
+//        r.employeesTab.getChildren().removeAll(r.tableControllers.stream()
+//                .filter(tableController -> tableController.getView().isEmployee())
+//                .map(TableController::getRoot).collect(toList()));
+//        r.tableControllers.clear();
+//        List<TableView> tables = r.restaurantService.getTables();
+//        tables.sort(Comparator.comparing(TableView::isConsumed));   // Put consumed tables to the end so the consumer is loaded in advance.
+//        tables.stream().filter(DISPLAYABLE_TABLE).forEach(r::drawTable);
+//    }
 
 
-    private void initTableConfigurationController() {
+    public void initTableConfigurationController() {
         r.tableConfigurationController.setRestaurantController(r);
         r.tableConfigurationController.setViewLoader(r.viewLoader);
         r.tableConfigurationController.setRestaurantViewState(r.restaurantViewState);
-        r.tableConfigurationController.initialize();
+//        r.tableConfigurationController.initialize();
     }
 }

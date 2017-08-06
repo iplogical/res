@@ -36,7 +36,7 @@ public class RestaurantContextMenuBuilderDecorator extends ContextMenuBuilderDec
                     .withClickHandlerPoint2D(tableConfigurationController::showCreateTableForm)
                     .build();
             contextMenu.getItems().addAll(addTable);
-            if (restaurantViewState.getTableType().equals(TableType.NORMAL) && restaurantViewState.hasSelection()) {
+            if (restaurantViewState.getTableType().equals(TableType.NORMAL) && tableConfigurationController.hasSelection()) {
                 MenuItem mergeTables = new ContextMenuItemBuilder()
                         .withLabel(Resources.WAITER.getString("ContextMenu.MergeTable"))
 //                        .withClickHandler(restaurantController::mergeTables)

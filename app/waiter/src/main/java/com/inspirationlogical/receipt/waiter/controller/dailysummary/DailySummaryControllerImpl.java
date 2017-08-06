@@ -6,6 +6,7 @@ import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -52,8 +53,11 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     private String openConsumptionString;
 
     @Inject
-    public DailySummaryControllerImpl(RestaurantService restaurantService, RetailService retailService, RestaurantController restaurantController) {
-        super(restaurantService, retailService, restaurantController);
+    public DailySummaryControllerImpl(RestaurantService restaurantService,
+                                      RetailService retailService,
+                                      RestaurantController restaurantController,
+                                      TableConfigurationController tableConfigurationController) {
+        super(restaurantService, retailService, restaurantController, tableConfigurationController);
     }
 
     @Override

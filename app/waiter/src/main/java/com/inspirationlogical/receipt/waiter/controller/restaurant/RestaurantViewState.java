@@ -15,14 +15,14 @@ public class RestaurantViewState implements ViewState {
     private TableType tableType;
     private BooleanProperty configurable;
     private MotionViewState motionViewState;
-    private Set<TableController> selectedTables;
+//    private Set<TableController> selectedTables;
 
     public RestaurantViewState(Set<TableController> selectedTables) {
-        this.selectedTables = selectedTables;
+//        this.selectedTables = selectedTables;
         motionViewState = new MotionViewState();
     }
 
-    public boolean hasSelection() {
-        return selectedTables.size() > 1;
-    }
+//    public boolean hasSelection() {
+//        return selectedTables.size() > 1;
+//    }
 }

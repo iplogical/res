@@ -14,6 +14,7 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 
 import javafx.collections.FXCollections;
@@ -65,6 +66,8 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected RestaurantController restaurantController;
 
+    protected TableConfigurationController tableConfigurationController;
+
     protected @Setter TableView tableView;
 
     protected ReceiptView receiptView;
@@ -75,10 +78,12 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     public AbstractRetailControllerImpl(RestaurantService restaurantService,
                                         RetailService retailService,
-                                        RestaurantController restaurantController) {
+                                        RestaurantController restaurantController,
+                                        TableConfigurationController tableConfigurationController) {
         this.restaurantService = restaurantService;
         this.retailService = retailService;
         this.restaurantController = restaurantController;
+        this.tableConfigurationController = tableConfigurationController;
         soldProductsModel = FXCollections.observableArrayList();
     }
 
@@ -90,7 +95,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected void backToRestaurantView() {
         restaurantController.updateRestaurant();
-        restaurantController.getTableController(tableView).updateTable();
+        tableConfigurationController.getTableController(tableView).updateTable();
         viewLoader.loadViewIntoScene(restaurantController);
     }
 

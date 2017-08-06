@@ -12,6 +12,7 @@ import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -108,8 +109,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public PaymentControllerImpl(RetailService retailService,
                                  RestaurantService restaurantService,
                                  RestaurantController restaurantController,
-                                 SaleController saleController) {
-        super(restaurantService, retailService, restaurantController);
+                                 SaleController saleController,
+                                 TableConfigurationController tableConfigurationController) {
+        super(restaurantService, retailService, restaurantController, tableConfigurationController);
         this.saleController = saleController;
         paymentViewState = new PaymentViewState(this);
         paidProductsModel = FXCollections.observableArrayList();

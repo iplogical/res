@@ -16,6 +16,7 @@ import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.contextmenu.TableContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
+import com.inspirationlogical.receipt.waiter.exception.ViewNotFoundException;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -26,10 +27,12 @@ import javafx.util.Duration;
 import lombok.Setter;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.*;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 import static com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl.HOLD_DURATION_MILLIS;
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @Singleton
@@ -38,15 +41,17 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @Setter private ViewLoader viewLoader;
     @Setter private RestaurantController restaurantController;
     @Setter private RestaurantViewState restaurantViewState;
+    private static Predicate<TableView> DISPLAYABLE_TABLE = TableView::isDisplayable;
+
 
     private TableFormController tableFormController;
     private RestaurantService restaurantService;
 
-    Set<TableController> tableControllers;
+    private Set<TableController> tableControllers;
     private Set<TableController> selectedTables;
 
     private RestaurantView restaurantView;
-    Popup tableForm;
+    private Popup tableForm;
 
     @Inject
     public TableConfigurationControllerImpl(TableFormController tableFormController,
@@ -60,8 +65,28 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void initialize() {
+        initTables();
         tableForm = new Popup();
         tableForm.getContent().add(viewLoader.loadView(tableFormController));
+    }
+
+    private void initTables() {
+        restaurantController.getTab(TableType.NORMAL).getChildren().removeAll(tableControllers.stream()
+                .filter(tableController -> tableController.getView().isNormal() || tableController.getView().isConsumer())
+                .map(TableController::getRoot).collect(toList()));
+        restaurantController.getTab(TableType.LOITERER).getChildren().removeAll(tableControllers.stream()
+                .filter(tableController -> tableController.getView().isLoiterer())
+                .map(TableController::getRoot).collect(toList()));
+        restaurantController.getTab(TableType.FREQUENTER).getChildren().removeAll(tableControllers.stream()
+                .filter(tableController -> tableController.getView().isFrequenter())
+                .map(TableController::getRoot).collect(toList()));
+        restaurantController.getTab(TableType.EMPLOYEE).getChildren().removeAll(tableControllers.stream()
+                .filter(tableController -> tableController.getView().isEmployee())
+                .map(TableController::getRoot).collect(toList()));
+        tableControllers.clear();
+        List<TableView> tables = restaurantService.getTables();
+        tables.sort(Comparator.comparing(TableView::isConsumed));   // Put consumed tables to the end so the consumer is loaded in advance.
+        tables.stream().filter(DISPLAYABLE_TABLE).forEach(this::drawTable);
     }
 
     @Override
@@ -72,7 +97,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void showEditTableForm(Control control) {
-        TableController tableController = restaurantController.getTableController(control);
+        TableController tableController = getTableController(control);
         tableFormController.loadTable(tableController, restaurantViewState.getTableType());
         Point2D position = calculatePopupPosition(control, restaurantController.getActiveTab());
         showPopup(tableForm, tableFormController, restaurantController.getActiveTab(), position);
@@ -85,7 +110,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
             tableForm.hide();
             drawTable(tableView);
             if (tableView.isHosted()) {
-                restaurantController.getTableController(tableView.getHost()).updateTable();
+                getTableController(tableView.getHost()).updateTable();
             }
             restaurantController.updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
@@ -145,16 +170,16 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     private void updateHostNodes(TableView tableView, TableView previousHost) {
         if(tableView.getHost() != null) {
-            restaurantController.getTableController(tableView.getHost()).updateTable();
+            getTableController(tableView.getHost()).updateTable();
         }
         if(previousHost != null) {
-            restaurantController.getTableController(previousHost).updateTable();
+            getTableController(previousHost).updateTable();
         }
     }
 
     @Override
     public void deleteTable(Node node) {
-        TableController tableController = restaurantController.getTableController(node);
+        TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
         try {
             restaurantService.deleteTable(tableView);
@@ -169,7 +194,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     private void updateHostTable(TableView tableView) {
         if (tableView.isHosted()) {
-            TableController hostController = restaurantController.getTableController(tableView.getHost());
+            TableController hostController = getTableController(tableView.getHost());
             hostController.updateTable();
         }
     }
@@ -190,7 +215,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void rotateTable(Node node) {
-        TableController tableController = restaurantController.getTableController(node);
+        TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
         restaurantService.rotateTable(tableView);
         tableController.updateTable();
@@ -251,7 +276,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void splitTables(Node node) {
-        TableController tableController = restaurantController.getTableController(node);
+        TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
         List<TableView> tables = restaurantService.splitTables(tableView);
         tables.forEach(this::drawTable);
@@ -266,6 +291,16 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         } else {
             selectedTables.remove(tableController);
         }
+    }
+
+    @Override
+    public boolean hasSelection() {
+        return selectedTables.size() > 1;
+    }
+
+    @Override
+    public void clearSelections() {
+        tableControllers.forEach(TableController::deselectTable);
     }
 
     @Override
@@ -284,4 +319,22 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     public int getFirstUnusedTableNumber() {
         return restaurantService.getFirstUnusedNumber();
     }
+
+    @Override
+    public TableController getTableController(TableView tableView) {
+        return tableControllers
+                .stream()
+                .filter(tableController -> tableController.getView().getNumber() == tableView.getNumber())
+                .findFirst()
+                .orElseThrow(() -> new ViewNotFoundException("Table view could not be found"));
+    }
+
+    private TableController getTableController(Node node) {
+        return tableControllers
+                .stream()
+                .filter(tableController -> tableController.getRoot().equals(node))
+                .findFirst()
+                .orElseThrow(() -> new ViewNotFoundException("Table root could not be found"));
+    }
+
 }

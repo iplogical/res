@@ -31,19 +31,22 @@ public interface RestaurantController extends Controller {
 //    void selectTable(TableController tableController, boolean selected);
 
     void updateRestaurant();
+
     RestaurantViewState getViewState();
 
     void addNodeToPane(Node node, TableType tableType);
 
     Pane getActiveTab();
 
-    TableController getTableController(Node node);
+    Pane getTab(TableType tableType);
 
-    TableController getTableController(TableView tableView);
+//    TableController getTableController(Node node);
+
+//    TableController getTableController(TableView tableView);
 
 //    void drawTable(TableView tableView);
 
-    void drawTable(TableView tableView);
+//    void drawTable(TableView tableView);
 
     void updateRestaurantSummary();
 }

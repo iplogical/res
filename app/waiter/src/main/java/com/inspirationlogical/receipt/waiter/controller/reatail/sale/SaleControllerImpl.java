@@ -4,6 +4,7 @@ package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
@@ -12,6 +13,7 @@ import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.beans.value.ChangeListener;
@@ -95,8 +97,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
                               CommonService commonService,
                               RestaurantController restaurantController,
                               AdHocProductFormController adHocProductFormController,
-                              ProductsAndCategoriesController productController) {
-        super(restaurantService, retailService, restaurantController);
+                              ProductsAndCategoriesController productController,
+                              TableConfigurationController tableConfigurationController) {
+        super(restaurantService, retailService, restaurantController, tableConfigurationController );
         this.commonService = commonService;
         this.adHocProductFormController = adHocProductFormController;
         this.productController = productController;
