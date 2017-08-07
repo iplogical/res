@@ -79,19 +79,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     }
 
     private void initTables() {
-        restaurantController.getTab(TableType.NORMAL).getChildren().removeAll(tableControllers.stream()
-                .filter(tableController -> tableController.getView().isNormal() || tableController.getView().isConsumer())
-                .map(TableController::getRoot).collect(toList()));
-        restaurantController.getTab(TableType.LOITERER).getChildren().removeAll(tableControllers.stream()
-                .filter(tableController -> tableController.getView().isLoiterer())
-                .map(TableController::getRoot).collect(toList()));
-        restaurantController.getTab(TableType.FREQUENTER).getChildren().removeAll(tableControllers.stream()
-                .filter(tableController -> tableController.getView().isFrequenter())
-                .map(TableController::getRoot).collect(toList()));
-        restaurantController.getTab(TableType.EMPLOYEE).getChildren().removeAll(tableControllers.stream()
-                .filter(tableController -> tableController.getView().isEmployee())
-                .map(TableController::getRoot).collect(toList()));
-        tableControllers.clear();
         List<TableView> tables = restaurantService.getTables();
         tables.sort(Comparator.comparing(TableView::isConsumed));   // Put consumed tables to the end so the consumer is loaded in advance.
         tables.stream().filter(DISPLAYABLE_TABLE).forEach(this::drawTable);
@@ -117,19 +104,16 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     }
 
     @Override
-    public void createTable(TableParams tableParams) {
+    public void addTable(TableParams tableParams) {
         try {
             TableView tableView = restaurantService.addTable(restaurantView, buildTable(tableParams));
             tableForm.hide();
             drawTable(tableView);
-            if (tableView.isHosted()) {
-                getTableController(tableView.getHost()).updateTable();
-            }
+            updateHostTable(tableView);
             restaurantController.updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
                     Resources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
-//            initRestaurant();
         }
     }
 
@@ -151,6 +135,12 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
                 .dimensionY((int) params.getDimension().getHeight());
     }
 
+    private void updateHostTable(TableView tableView) {
+        if (tableView.isHosted()) {
+            getTableController(tableView.getHost()).updateTable();
+        }
+    }
+
     @Override
     public void editTable(TableController tableController, TableParams tableParams) {
         TableView tableView = tableController.getView();
@@ -166,7 +156,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
                     Resources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
-//            initRestaurant();
         }
     }
 
@@ -200,12 +189,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         updateHostTable(tableView);
     }
 
-    private void updateHostTable(TableView tableView) {
-        if (tableView.isHosted()) {
-            getTableController(tableView.getHost()).updateTable();
-        }
-    }
-
     @Override
     public void rotateTable(Node node) {
         TableController tableController = getTableController(node);
@@ -236,7 +219,8 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         TableController consumerController = selectedTables.iterator().next();
         TableView consumer = consumerController.getView();
         try {
-            restaurantService.mergeTables(consumer, getConsumedTables(consumerController));
+            List<TableView> consumedTables = getConsumedTables(consumerController);
+            restaurantService.mergeTables(consumer, consumedTables);
             updateConsumer(consumerController);
             updateConsumed();
         } catch (IllegalTableStateException e) {
@@ -329,5 +313,4 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
                 .findFirst()
                 .orElseThrow(() -> new ViewNotFoundException("Table root could not be found"));
     }
-
 }

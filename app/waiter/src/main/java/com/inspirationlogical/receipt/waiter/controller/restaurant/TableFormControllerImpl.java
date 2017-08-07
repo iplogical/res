@@ -93,7 +93,7 @@ public class TableFormControllerImpl implements TableFormController {
         try {
             TableParams tableParams = buildTableParams();
             if (creation) {
-                tableConfigurationController.createTable(tableParams);
+                tableConfigurationController.addTable(tableParams);
             } else {
                 tableConfigurationController.editTable(tableController, tableParams);
             }

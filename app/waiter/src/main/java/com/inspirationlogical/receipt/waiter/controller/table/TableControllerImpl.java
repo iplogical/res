@@ -55,7 +55,7 @@ public class TableControllerImpl implements TableController {
     @FXML
     ImageView meeple;
     @FXML
-    Label hosted;
+    private Label hostedCount;
 
     @Inject
     private ViewLoader viewLoader;
@@ -127,7 +127,7 @@ public class TableControllerImpl implements TableController {
     }
 
     private void setConsumedTableHostInfo(TableView view, StackPane consumedRoot) {
-        Label consumedHosted = (Label) consumedRoot.lookup("#hosted");
+        Label consumedHosted = (Label) consumedRoot.lookup("#hostedCount");
         ImageView consumedMeeple = (ImageView) consumedRoot.lookup("#meeple");
         int numberOfHostedTable = view.getHostedTables().size();
         if (numberOfHostedTable > 0) {
@@ -203,10 +203,12 @@ public class TableControllerImpl implements TableController {
     private void updateHostInfo() {
         if (tableView.isHost()) {
             meeple.setVisible(true);
-            hosted.setText(valueOf(tableView.getHostedTables().size()));
+            hostedCount.setVisible(true);
+            hostedCount.setText(valueOf(tableView.getHostedTables().size()));
         } else {
             meeple.setVisible(false);
-            hosted.setText(EMPTY);
+            hostedCount.setVisible(false);
+            hostedCount.setText(EMPTY);
         }
         if (tableView.isHosted()) {
             number.setText(valueOf(tableView.getHost().getNumber()));

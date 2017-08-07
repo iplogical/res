@@ -12,28 +12,36 @@ public class EntityManagerProvider {
     private static EntityManagerFactory emfArchive;
     private static EntityManager emArchive;
 
-    public static synchronized EntityManager getEntityManager(String persistenceUnit) {
+    public static synchronized EntityManager getEntityManager() {
         if(emf == null) {
-            emf = Persistence.createEntityManagerFactory(persistenceUnit);
+            emf = Persistence.createEntityManagerFactory("Production");
             em = emf.createEntityManager();
         }
         return em;
     }
 
-    public static synchronized EntityManager getEntityManager() {
-        return getEntityManager("Production");
-    }
-
-    public static synchronized EntityManager getEntityManagerArchive(String persistenceUnit) {
+    public static synchronized EntityManager getEntityManagerArchive() {
         if(emfArchive == null) {
-            emfArchive = Persistence.createEntityManagerFactory(persistenceUnit);
+            emfArchive = Persistence.createEntityManagerFactory("ProductionArchive");
             emArchive = emfArchive.createEntityManager();
         }
         return emArchive;
     }
 
-    public static synchronized EntityManager getEntityManagerArchive() {
-        return getEntityManagerArchive("ProductionArchive");
+    public static EntityManager getTestEntityManager() {
+        if(emf == null) {
+            emf = Persistence.createEntityManagerFactory("TestPersistence");
+            em = emf.createEntityManager();
+        }
+        return em;
+    }
+
+    public static EntityManager getTestEntityManagerArchive() {
+        if(emfArchive == null) {
+            emfArchive = Persistence.createEntityManagerFactory("TestPersistenceArchive");
+            emArchive = emfArchive.createEntityManager();
+        }
+        return emArchive;
     }
 
     public static synchronized void closeEntityManager() {

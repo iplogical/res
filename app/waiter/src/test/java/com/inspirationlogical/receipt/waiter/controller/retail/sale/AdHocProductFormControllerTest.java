@@ -31,7 +31,7 @@ public class AdHocProductFormControllerTest extends SaleViewTest {
         setTextField(ADHOC_PRODUCT_PURCHASE_PRICE, Integer.toString(500));
         setTextField(ADHOC_PRODUCT_SALE_PRICE, Integer.toString(500));
         clickButtonThenWait("Form.Confirm", 100);
-        verifyThatVisible(Resources.WAITER.getString("AdHocProductForm.NumberFormatError"));
+        verifyErrorMessage("AdHocProductForm.NumberFormatError");
         sleep(5100);
         clickButtonThenWait("Form.Cancel", 100);
         verifyThatNotVisible(Resources.WAITER.getString("AdHocProductForm.Title"));

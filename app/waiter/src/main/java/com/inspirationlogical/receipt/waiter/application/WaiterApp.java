@@ -57,7 +57,7 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
     @Override
     public void stop() throws Exception {
         EntityManagerProvider.closeEntityManager();
-        EntityManagerProvider.getEntityManagerArchive();
+        EntityManagerProvider.closeEntityManagerArchive();
         BackgroundThread.shutdown();
         logger.warn("Stopping WaiterApp");
     }

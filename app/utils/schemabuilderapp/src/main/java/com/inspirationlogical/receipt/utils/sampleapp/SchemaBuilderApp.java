@@ -6,9 +6,9 @@ import com.inspirationlogical.receipt.corelib.utility.BuildSchema;
 public class SchemaBuilderApp {
 
     public static void main(String[] args) {
-        BuildSchema buildSchema = new BuildSchema("Production");
+        BuildSchema buildSchema = new BuildSchema(true);
         buildSchema.buildTestSchema();
-        buildSchema = new BuildSchema("ProductionArchive");
+        buildSchema = new BuildSchema(false);
         buildSchema.buildTestSchema();
     }
 }

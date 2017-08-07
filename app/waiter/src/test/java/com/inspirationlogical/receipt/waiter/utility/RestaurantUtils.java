@@ -50,6 +50,22 @@ public class RestaurantUtils  extends AbstractUtils {
         });
     }
 
+    public static void selectTab(String tab) {
+        robot.clickOn(Resources.WAITER.getString(tab));
+    }
+
+    public static void addTableToTab(String tableName, String tab) {
+        selectTab(tab);
+        addTable(tableName, "11", "1", "1");
+        selectTab("Restaurant.Tables");
+    }
+
+    public static void deleteTableFromTab(String tableName, String tab) {
+        selectTab(tab);
+        deleteTable(tableName);
+        selectTab("Restaurant.Tables");
+    }
+
     public static void splitTables(String table) {
         runInConfigurationMode(() -> {
             longClickOn(table);
@@ -64,10 +80,6 @@ public class RestaurantUtils  extends AbstractUtils {
             longClickOn(new Point2D(150, 150));
             clickMenuThenWait("ContextMenu.MergeTable", 100);
         });
-    }
-
-    public static void selectTab(String tab) {
-        robot.clickOn(Resources.WAITER.getString(tab));
     }
 
     public static int getOpenTableNumber() {

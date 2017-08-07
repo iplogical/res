@@ -83,6 +83,14 @@ public class ClickUtils extends AbstractUtils {
         } catch (NullPointerException e) {}
     }
 
+    public static void verifyErrorMessage(String error) {
+        verifyThatVisible(Resources.WAITER.getString(error));
+    }
+
+    public static void verifyErrorMessageWithParam(String error, String param) {
+        verifyThatVisible(Resources.WAITER.getString(error) + param);
+    }
+
     public static FxRobotInterface type(String text) {
         FxRobotInterface robotInterface = robot;
         for(Character c : text.toCharArray()) {

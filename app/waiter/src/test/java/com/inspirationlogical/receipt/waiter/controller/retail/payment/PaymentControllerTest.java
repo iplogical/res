@@ -159,7 +159,7 @@ public class PaymentControllerTest  extends TestFXBase {
     public void testPartialPaymentIllegalInput() {
         setTextField(PARTIAL_PAYMENT_VALUE, "NotDouble");
         payPartial(2);
-        verifyThatVisible(Resources.WAITER.getString("PaymentView.PartialPayNumberError"));
+        verifyErrorMessage("PaymentView.PartialPayNumberError");
         assertSoldSoproni(1, 3);
         assertSoldGere(2, 2);
         assertNoPaidProduct();
@@ -256,7 +256,7 @@ public class PaymentControllerTest  extends TestFXBase {
     public void testSelectivePaymentWithoutPaidProduct() {
         clickOnThenWait(SINGLE_PAYMENT, 100);
         pay();
-        verifyThatVisible(Resources.WAITER.getString("PaymentView.SelectivePaymentNoPaidProduct"));
+        verifyErrorMessage("PaymentView.SelectivePaymentNoPaidProduct");
         clickOnThenWait(SINGLE_PAYMENT, 100);
     }
 
@@ -373,7 +373,7 @@ public class PaymentControllerTest  extends TestFXBase {
         clickButtonThenWait(DISCOUNT_ABSOLUTE, 100);
         setDiscountAbsolute("Invalid");
         pay();
-        verifyThatVisible(Resources.WAITER.getString("PaymentView.DiscountAbsoluteNumberFormatError"));
+        verifyErrorMessage("PaymentView.DiscountAbsoluteNumberFormatError");
         clickButtonThenWait(DISCOUNT_ABSOLUTE, 100);
     }
 
@@ -382,17 +382,17 @@ public class PaymentControllerTest  extends TestFXBase {
         clickButtonThenWait(DISCOUNT_PERCENT, 100);
         setDiscountPercent("Invalid");
         pay();
-        verifyThatVisible(Resources.WAITER.getString("PaymentView.DiscountPercentNumberFormatError"));
+        verifyErrorMessage("PaymentView.DiscountPercentNumberFormatError");
         sleep(5000);
 
         setDiscountPercent("120");
         pay();
-        verifyThatVisible(Resources.WAITER.getString("PaymentView.DiscountPercentNumberFormatError"));
+        verifyErrorMessage("PaymentView.DiscountPercentNumberFormatError");
         sleep(5000);
 
         setDiscountPercent("-5");
         pay();
-        verifyThatVisible(Resources.WAITER.getString("PaymentView.DiscountPercentNumberFormatError"));
+        verifyErrorMessage("PaymentView.DiscountPercentNumberFormatError");
         clickButtonThenWait(DISCOUNT_PERCENT, 100);
     }
 

@@ -30,6 +30,8 @@ public class JavaFXIds {
 
     //Table.fxml
     public final static String TABLE_NOTE = "#note";
+    public final static String TABLE_MEEPLE = "#meeple";
+    public final static String TABLE_HOSTED_COUNT = "#hostedCount";
 
     // Sale.fxml
     public final static String GUEST_PLUS = "#guestPlus";

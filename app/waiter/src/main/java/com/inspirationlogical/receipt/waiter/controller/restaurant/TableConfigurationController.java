@@ -17,7 +17,7 @@ public interface TableConfigurationController {
 
     void showEditTableForm(Control control);
 
-    void createTable(TableParams tableParams);
+    void addTable(TableParams tableParams);
 
     void editTable(TableController tableController, TableParams tableParams);
 

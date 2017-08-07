@@ -64,18 +64,14 @@ public class RestaurantControllerTest extends TestFXBase {
 
     @Test
     public void testContextMenuNoDeleteForHostTable() {
-        selectTab("Restaurant.Frequenters");
-        addTable("TestTableOne", "11", "1", "1");
-        selectTab("Restaurant.Tables");
+        addTableToTab("TestTableOne", "Restaurant.Frequenters");
         runInConfigurationMode(() -> {
             longClickOn("11");
             verifyThatNotVisible(Resources.WAITER.getString("ContextMenu.DeleteTable"));
             verifyThatVisible(Resources.WAITER.getString("ContextMenu.RotateTable"));
             verifyThatVisible(Resources.WAITER.getString("ContextMenu.EditTable"));
         });
-        selectTab("Restaurant.Frequenters");
-        deleteTable("TestTableOne");
-        selectTab("Restaurant.Tables");
+        deleteTableFromTab("TestTableOne", "Restaurant.Frequenters");
     }
 
     @Test

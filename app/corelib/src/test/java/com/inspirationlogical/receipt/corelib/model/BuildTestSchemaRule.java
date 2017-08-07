@@ -188,8 +188,8 @@ public class BuildTestSchemaRule implements TestRule {
     }
 
     public BuildTestSchemaRule(){
-        entityManager = EntityManagerProvider.getEntityManager("TestPersistence");
-        entityManagerArchive = EntityManagerProvider.getEntityManagerArchive("TestPersistenceArchive");
+        entityManager = EntityManagerProvider.getTestEntityManager();
+        entityManagerArchive = EntityManagerProvider.getTestEntityManagerArchive();
     }
 
     private void buildTestSchema() {

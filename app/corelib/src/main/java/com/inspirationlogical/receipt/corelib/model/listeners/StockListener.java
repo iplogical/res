@@ -6,8 +6,6 @@ import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 
 import java.util.Optional;
 
-import static com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider.getEntityManager;
-
 /**
  * Created by Bálint on 2017.04.04..
  */
