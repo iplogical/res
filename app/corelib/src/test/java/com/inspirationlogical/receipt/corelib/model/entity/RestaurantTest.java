@@ -1,24 +1,20 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_RESTAURANT;
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_TABLES;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_RESTAURANT;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_TABLES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import java.util.List;
 import javax.persistence.RollbackException;
 
-import org.junit.Rule;
+import com.inspirationlogical.receipt.corelib.model.AbstractTest;
 import org.junit.Test;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
-public class RestaurantTest {
-
-    @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
+public class RestaurantTest extends AbstractTest {
 
     @Test
     public void testRestaurantCreation() {

@@ -1,19 +1,18 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.AbstractTest;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_PRICE_MODIFIERS;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_PRICE_MODIFIERS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -21,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Bálint on 2017.04.04..
  */
-public class PriceModifierAdapterTest {
+public class PriceModifierAdapterTest extends AbstractTest {
 
     private ReceiptRecordAdapter receiptRecordAdapter;
     private PriceModifierAdapter simpleDiscount;
@@ -29,9 +28,6 @@ public class PriceModifierAdapterTest {
     private PriceModifierAdapter weeklyDiscount;
     private PriceModifierAdapter dailyDiscount;
     private PriceModifier.PriceModifierBuilder builder;
-
-    @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Before
     public void setUp() {

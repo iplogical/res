@@ -1,23 +1,19 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.AbstractTest;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-import org.junit.Rule;
 import org.junit.Test;
 
 import javax.persistence.RollbackException;
 import java.util.List;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_DAILY_CLOSURES;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_DAILY_CLOSURES;
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by TheDagi on 2017. 04. 17..
  */
-public class DailyClosureTest {
-
-    @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
+public class DailyClosureTest extends AbstractTest {
 
     @Test
     public void testDailyClosureCreation() {

@@ -1,10 +1,8 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
-import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
+import com.inspirationlogical.receipt.corelib.model.AbstractTest;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -14,13 +12,10 @@ import static org.junit.Assert.assertNull;
 /**
  * Created by TheDagi on 2017. 04. 17..
  */
-public class DailyClosureAdapterTest {
+public class DailyClosureAdapterTest extends AbstractTest {
 
     private DailyClosureAdapter openDailyClosure;
     private ReceiptAdapter receipt;
-
-    @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Before
     public void setUp() {

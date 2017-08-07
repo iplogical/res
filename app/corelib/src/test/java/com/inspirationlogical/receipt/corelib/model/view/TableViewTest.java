@@ -3,11 +3,11 @@ package com.inspirationlogical.receipt.corelib.model.view;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.inspirationlogical.receipt.corelib.model.BuildTestSchema;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
@@ -20,7 +20,7 @@ public class TableViewTest {
     private TableView tableView;
 
     @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
+    public final BuildTestSchema schema = new BuildTestSchema();
 
     @Before
     public void createTableView() {

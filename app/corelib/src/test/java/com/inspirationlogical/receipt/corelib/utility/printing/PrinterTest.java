@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.utility.printing;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.BuildTestSchema;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.utility.ReceiptToXML;
 import org.junit.Before;
@@ -8,7 +8,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.*;
-import java.util.Arrays;
 
 /**
  * Created by Ferenc on 2017. 03. 11..
@@ -16,7 +15,7 @@ import java.util.Arrays;
 public class PrinterTest {
 
     @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
+    public final BuildTestSchema schema = new BuildTestSchema();
 
     private InputStream pdf;
 

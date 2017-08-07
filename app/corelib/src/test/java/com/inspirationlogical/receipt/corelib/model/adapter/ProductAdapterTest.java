@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.AbstractTest;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
@@ -10,14 +10,13 @@ import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_PRODUCTS;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_PRODUCTS;
 import static com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter.getProductById;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
@@ -26,7 +25,7 @@ import static org.junit.Assert.assertNull;
 /**
  * Created by Bálint on 2017.03.20..
  */
-public class ProductAdapterTest {
+public class ProductAdapterTest extends AbstractTest {
 
     private ProductAdapter productFour;
     private RecipeParams recipeParamOne;
@@ -34,9 +33,6 @@ public class ProductAdapterTest {
     private RecipeParams recipeParamThree;
     private List<RecipeParams> recipeParams;
     private Product.ProductBuilder builder;
-
-    @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Before
     public void setUp() {

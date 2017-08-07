@@ -4,20 +4,14 @@ import static junit.framework.TestCase.assertEquals;
 
 import java.util.List;
 
+import com.inspirationlogical.receipt.corelib.model.AbstractTest;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
-
-public class RecipeAdapterTest {
+public class RecipeAdapterTest extends AbstractTest {
 
     private ProductAdapter product;
     private ProductAdapter productFour;
-
-    @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Before
     public void setUp() {

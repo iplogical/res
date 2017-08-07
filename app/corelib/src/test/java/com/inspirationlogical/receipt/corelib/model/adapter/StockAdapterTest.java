@@ -1,9 +1,8 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.AbstractTest;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Optional;
@@ -13,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by Bálint on 2017.04.04..
  */
-public class StockAdapterTest {
+public class StockAdapterTest extends AbstractTest {
 
     private ProductAdapter productTwo;
     private ProductAdapter recipeElementOne;
@@ -26,8 +25,6 @@ public class StockAdapterTest {
     private double stockInitialDisposedQuantity;
     private double stockInitialInitialQuantity;
     private double storageMultiplier;
-    @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Before
     public void setUp() {

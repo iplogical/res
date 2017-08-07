@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.*;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.*;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.inspirationlogical.receipt.corelib.model.AbstractTest;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
@@ -19,18 +20,16 @@ import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 
 /**
  * Created by Bálint on 2017.03.13..
  */
-public class ReceiptAdapterTest {
+public class ReceiptAdapterTest extends AbstractTest {
 
     private TableAdapter tableAdapter;
     private ProductAdapter productOne;
@@ -39,9 +38,6 @@ public class ReceiptAdapterTest {
     private ReceiptAdapter receiptPurchase;
     private ReceiptRecordAdapter receiptRecordSaleOne;
     private PaymentParams paymentParams;
-
-    @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Before
     public void createAdapters() {

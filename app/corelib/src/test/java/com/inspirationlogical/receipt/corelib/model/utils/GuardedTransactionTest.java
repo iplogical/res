@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.BuildTestSchema;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 
 /**
@@ -14,7 +14,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Table;
 public class GuardedTransactionTest {
 
     @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
+    public final BuildTestSchema schema = new BuildTestSchema();
     
     @Test
     public void test_if_exception_happens_inside_a_guarded_transaction_modifications_wont_be_visible() {

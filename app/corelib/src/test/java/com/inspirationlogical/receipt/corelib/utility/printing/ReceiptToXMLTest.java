@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.corelib.utility.printing;
 import static org.junit.Assert.*;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
@@ -10,7 +9,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.BuildTestSchema;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 
 import com.inspirationlogical.receipt.corelib.utility.ReceiptToXML;
@@ -20,7 +19,7 @@ import org.junit.Test;
 public class ReceiptToXMLTest {
 
     @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
+    public final BuildTestSchema schema = new BuildTestSchema();
 
 
     @Test

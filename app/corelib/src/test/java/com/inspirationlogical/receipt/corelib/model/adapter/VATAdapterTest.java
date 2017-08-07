@@ -2,10 +2,9 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import static junit.framework.TestCase.assertEquals;
 
-import org.junit.Rule;
+import com.inspirationlogical.receipt.corelib.model.AbstractTest;
 import org.junit.Test;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
@@ -13,10 +12,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
 /**
  * Created by Bálint on 2017.03.17..
  */
-public class VATAdapterTest {
-
-    @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
+public class VATAdapterTest extends AbstractTest {
 
     @Test
     public void testGetVatByReceiptRecordTypeHere() {

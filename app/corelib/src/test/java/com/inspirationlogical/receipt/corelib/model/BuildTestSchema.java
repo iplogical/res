@@ -34,7 +34,7 @@ import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
 import lombok.Getter;
 
-public class BuildTestSchemaRule implements TestRule {
+public class BuildTestSchema {
 
     public static final int NUMBER_OF_PRODUCTS = 11;
     public static final int NUMBER_OF_PRODUCT_CATEGORIES = 24;
@@ -175,24 +175,12 @@ public class BuildTestSchemaRule implements TestRule {
     private @Getter DailyClosure dailyClosureOne;
     private @Getter DailyClosure dailyClosureTwo;
 
-    @Override
-    public Statement apply(Statement base, Description description) {
-        return new Statement() {
-            
-            @Override
-            public void evaluate() throws Throwable {
-                buildTestSchema();
-                base.evaluate();
-            }
-        };
-    }
-
-    public BuildTestSchemaRule(){
+    public BuildTestSchema(){
         entityManager = EntityManagerProvider.getTestEntityManager();
         entityManagerArchive = EntityManagerProvider.getTestEntityManagerArchive();
     }
 
-    private void buildTestSchema() {
+    public void buildTestSchema() {
         buildAndPersistArchive();
         buildAndPersistActual();
     }

@@ -2,7 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.AbstractTest;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
@@ -11,25 +11,21 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.List;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_PRODUCT_CATEGORIES;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_PRODUCT_CATEGORIES;
 import static com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter.getProductCategoryByName;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class ProductCategoryAdapterTest {
+public class ProductCategoryAdapterTest extends AbstractTest {
 
     ReceiptRecordAdapter receiptRecordAdapter;
     ProductCategoryAdapter root, aggregateOne, leafOne, pseudoTwo, pseudoFour;
     Product.ProductBuilder builder;
-
-    @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Before
     public void setUp() {

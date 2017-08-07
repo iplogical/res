@@ -1,25 +1,22 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
+import com.inspirationlogical.receipt.corelib.model.AbstractTest;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_RESERVATIONS;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_RESERVATIONS;
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by TheDagi on 2017. 04. 26..
  */
-public class ReservationAdapterTest {
+public class ReservationAdapterTest extends AbstractTest {
 
     private ReservationParams params;
-    @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Before
     public void setUp() {

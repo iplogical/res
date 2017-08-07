@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule.NUMBER_OF_DISPLAYABLE_TABLES;
+import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_DISPLAYABLE_TABLES;
 import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.getTableFromActual;
 import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.getTableFromArchive;
 import static org.junit.Assert.assertEquals;
@@ -14,15 +14,14 @@ import java.util.Arrays;
 import java.util.List;
 import javax.persistence.RollbackException;
 
+import com.inspirationlogical.receipt.corelib.model.AbstractTest;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import javafx.geometry.Dimension2D;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchemaRule;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
@@ -34,7 +33,7 @@ import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 import javafx.geometry.Point2D;
 
-public class TableAdapterTest {
+public class TableAdapterTest extends AbstractTest {
 
     private TableAdapter tableNormal;
     private TableAdapter tableNormalClosed;
@@ -44,9 +43,6 @@ public class TableAdapterTest {
     private TableAdapter tableConsumed;
     private TableAdapter tablePurchase;
     private PaymentParams paymentParams;
-
-    @Rule
-    public final BuildTestSchemaRule schema = new BuildTestSchemaRule();
 
     @Before
     public void setUp() {
