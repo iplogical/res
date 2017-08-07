@@ -54,4 +54,8 @@ public class TableViewState implements ViewState {
     public boolean isEmployee() {
         return tableView.isEmployee();
     }
+
+    public boolean isHost() {
+        return tableView.isHost();
+    }
 }

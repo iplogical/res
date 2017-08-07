@@ -1,19 +1,13 @@
 package com.inspirationlogical.receipt.waiter.contextmenu;
 
-import com.inspirationlogical.receipt.corelib.frontend.builder.ContextMenuBuilder;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.corelib.frontend.contextmenu.ContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableViewState;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Control;
 import javafx.scene.control.MenuItem;
-
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorator {
 
@@ -42,8 +36,7 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
 
         if (isConfigurationMode(tableViewState)) {
             MenuItem rotateTable = buildMenuItem("ContextMenu.RotateTable", tableConfigurationController::rotateTable);
-            MenuItem deleteTable = buildMenuItem("ContextMenu.DeleteTable", tableConfigurationController::deleteTable);
-            contextMenu.getItems().addAll(rotateTable, deleteTable);
+            contextMenu.getItems().add(rotateTable);
             if (tableViewState.isSelected()) {
                 MenuItem mergeTables = buildMenuItem("ContextMenu.MergeTable",tableConfigurationController::mergeTables);
                 contextMenu.getItems().add(mergeTables);
@@ -51,6 +44,11 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
             if (tableViewState.isAggregate()) {
                 MenuItem splitTables = buildMenuItem("ContextMenu.SplitTable", tableConfigurationController::splitTables);
                 contextMenu.getItems().add(splitTables);
+            } else if(tableViewState.isOpen() || tableViewState.isHost()) {
+                // Delete is not allowed for open and host tables.
+            } else {
+                MenuItem deleteTable = buildMenuItem("ContextMenu.DeleteTable", tableConfigurationController::deleteTable);
+                contextMenu.getItems().add(deleteTable);
             }
         } else {
             if(!tableViewState.isOpen()) {

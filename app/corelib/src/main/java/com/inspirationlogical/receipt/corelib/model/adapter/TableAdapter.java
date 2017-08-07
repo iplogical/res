@@ -224,12 +224,6 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void deleteTable() {
-        if (isTableOpen()) {
-            throw new IllegalTableStateException("Delete table for an open table. Table number: " + adaptee.getNumber());
-        }
-        if (isConsumerTable()) {
-            throw new IllegalTableStateException("Delete table for a consumer table. Table number: " + adaptee.getNumber());
-        }
         deleteTableFromActual();
         deleteTableFromArchive();
     }

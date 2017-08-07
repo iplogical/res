@@ -151,11 +151,6 @@ public class TableAdapterTest {
                 tableNormal.getAdaptee().getDimensionY());
     }
 
-    @Test(expected = IllegalTableStateException.class)
-    public void testOpenTableAlreadyOpen() {
-        tableNormal.openTable();
-    }
-
     @Test
     public void testOpenTable() {
         tableNormalClosed.openTable();
@@ -163,7 +158,7 @@ public class TableAdapterTest {
     }
 
     @Test(expected = IllegalTableStateException.class)
-    public void testOpenTableForOpen() {
+    public void testOpenTableAlreadyOpen() {
         tableNormal.openTable();
     }
 
@@ -193,21 +188,8 @@ public class TableAdapterTest {
     @Test
     public void testDeleteTable() {
         tableNormalClosed.deleteTable();
-        assertNull(getTableFromActual(
-                tableNormalClosed.getAdaptee().getNumber()));
-        List<Table> archiveTables = GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_NUMBER, query ->
-                query.setParameter("number", tableNormalClosed.getAdaptee().getNumber()));
-        assertEquals(0, archiveTables.size());
-    }
-
-    @Test(expected = IllegalTableStateException.class)
-    public void testDeleteTableWithOpenTable() {
-        tableNormal.deleteTable();
-    }
-
-    @Test(expected = IllegalTableStateException.class)
-    public void testDeleteTableWithConsumer() {
-        tableAggregate.deleteTable();
+        assertNull(getTableFromActual(tableNormalClosed.getAdaptee().getNumber()));
+        assertNull(getTableFromArchive(tableNormalClosed.getAdaptee().getNumber()));
     }
 
     @Test

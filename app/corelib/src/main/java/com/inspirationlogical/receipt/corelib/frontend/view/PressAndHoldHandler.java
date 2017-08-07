@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.corelib.frontend.view;
 
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
-import com.inspirationlogical.receipt.corelib.frontend.builder.ContextMenuBuilder;
+import com.inspirationlogical.receipt.corelib.frontend.contextmenu.ContextMenuBuilder;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
 import javafx.animation.PauseTransition;

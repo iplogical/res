@@ -194,36 +194,16 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     public void deleteTable(Node node) {
         TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
-        try {
-            restaurantService.deleteTable(tableView);
-            removeNode((Pane) node.getParent(), node);
-            tableControllers.remove(tableController);
-            updateHostTable(tableView);
-        } catch (IllegalTableStateException e) {
-            showDeleteTableErrorMessage(tableView);
-//            initRestaurant();
-        }
+        restaurantService.deleteTable(tableView);
+        removeNode((Pane) node.getParent(), node);
+        tableControllers.remove(tableController);
+        updateHostTable(tableView);
     }
 
     private void updateHostTable(TableView tableView) {
         if (tableView.isHosted()) {
-            TableController hostController = getTableController(tableView.getHost());
-            hostController.updateTable();
+            getTableController(tableView.getHost()).updateTable();
         }
-    }
-
-    private void showDeleteTableErrorMessage(TableView tableView) {
-        String errorMessage = EMPTY;
-        if (tableView.isOpen()) {
-            errorMessage = Resources.WAITER.getString("TableIsOpen");
-        }
-        if (tableView.isConsumer()) {
-            errorMessage = Resources.WAITER.getString("TableIsConsumer");
-        }
-        if (tableView.isHost()) {
-            errorMessage = Resources.WAITER.getString("TableIsHost");
-        }
-        ErrorMessage.showErrorMessage(restaurantController.getActiveTab(), errorMessage + tableView.getNumber());
     }
 
     @Override

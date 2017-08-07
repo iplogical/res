@@ -1,10 +1,9 @@
 package com.inspirationlogical.receipt.waiter.contextmenu;
 
-import com.inspirationlogical.receipt.corelib.frontend.builder.ContextMenuBuilder;
+import com.inspirationlogical.receipt.corelib.frontend.contextmenu.ContextMenuBuilder;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
 import com.inspirationlogical.receipt.corelib.utility.Resources;
-import javafx.geometry.Point2D;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Control;
 import javafx.scene.control.MenuItem;

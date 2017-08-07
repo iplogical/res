@@ -47,7 +47,7 @@ public class RestaurantSummaryControllerTest extends TestFXBase {
     }
 
     @Test
-    public void testOpenConsumption() {
+    public void testIncomeValues() {
         openTableAndSellThreeSoproni();
         backToRestaurantView();
         assertEquals(1320, getOpenConsumption());

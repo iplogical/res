@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.frontend.builder;
+package com.inspirationlogical.receipt.corelib.frontend.contextmenu;
 
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 

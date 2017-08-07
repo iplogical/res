@@ -2,7 +2,7 @@ package com.inspirationlogical.receipt.waiter.contextmenu;
 
 import static javafx.stage.PopupWindow.AnchorLocation.CONTENT_BOTTOM_RIGHT;
 
-import com.inspirationlogical.receipt.corelib.frontend.builder.ContextMenuBuilder;
+import com.inspirationlogical.receipt.corelib.frontend.contextmenu.ContextMenuBuilder;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
 import javafx.scene.control.ContextMenu;
