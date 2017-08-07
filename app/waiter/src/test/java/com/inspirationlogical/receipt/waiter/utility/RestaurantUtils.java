@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
 import com.inspirationlogical.receipt.corelib.utility.Resources;
-import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import javafx.geometry.Point2D;
 import javafx.scene.control.TextField;
 
@@ -13,6 +12,10 @@ public class RestaurantUtils  extends AbstractUtils {
 
     public static void enterSaleView(String table) {
         clickOnThenWait(table, 200);
+    }
+
+    public static void enterReservations() {
+        clickButtonThenWait("Restaurant.Reservation", 500);
     }
 
     public static void openTable(String tableNumber) {

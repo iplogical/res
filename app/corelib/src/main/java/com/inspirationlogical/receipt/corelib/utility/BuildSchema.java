@@ -1270,7 +1270,7 @@ public class BuildSchema  {
         buildVatSeries();
         BuildVATs();
         buildTables();
-        buildReservations();
+//        buildReservations();
         buildRestaurant();
         buildDailyClosures();
         buildAuthUsers();
@@ -1293,7 +1293,7 @@ public class BuildSchema  {
         productsAndRecipes();
         vatSerieAndVatValues();
         restaurantAndTables();
-        tablesAndReservations();
+//        tablesAndReservations();
         restaurantAndDailyClosures();
     }
 

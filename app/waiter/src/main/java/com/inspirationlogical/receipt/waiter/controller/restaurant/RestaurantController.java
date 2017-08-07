@@ -14,8 +14,6 @@ import javafx.scene.layout.Pane;
 
 public interface RestaurantController extends Controller {
 
-    void openTableOfReservation(Integer number, String name, Integer guestCount, String note);
-
     void updateRestaurant();
 
     RestaurantViewState getViewState();

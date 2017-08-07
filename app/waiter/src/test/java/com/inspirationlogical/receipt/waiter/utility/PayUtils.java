@@ -22,18 +22,6 @@ import static org.junit.Assert.assertTrue;
 
 public class PayUtils  extends AbstractUtils {
 
-    private static final List<Point2D> SOLD_POINTS = new ArrayList<>(Arrays.asList(
-            new Point2D(150, 175),
-            new Point2D(150, 205),
-            new Point2D(150, 235),
-            new Point2D(150, 265)));
-
-    private static final List<Point2D> PAID_POINTS = new ArrayList<>(Arrays.asList(
-            new Point2D(700, 175),
-            new Point2D(700, 205),
-            new Point2D(700, 235),
-            new Point2D(700, 265)));
-
     public static void pay() {
         clickButtonThenWait(PAY, 2000);
     }

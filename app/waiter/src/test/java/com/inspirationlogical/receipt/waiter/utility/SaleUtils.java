@@ -57,15 +57,15 @@ public class SaleUtils  extends AbstractUtils {
         return getSoldProducts().get(row - 1).getProductName();
     }
 
-    public static String getSoldProductQuantity(int row) {
+    private static String getSoldProductQuantity(int row) {
         return getSoldProducts().get(row - 1).getProductQuantity();
     }
 
-    public static String getSoldProductUnitPrice(int row) {
+    private static String getSoldProductUnitPrice(int row) {
         return getSoldProducts().get(row - 1).getProductUnitPrice();
     }
 
-    public static String getSoldProductTotalPrice(int row) {
+    private static String getSoldProductTotalPrice(int row) {
         return getSoldProducts().get(row - 1).getProductTotalPrice();
     }
     
@@ -73,7 +73,7 @@ public class SaleUtils  extends AbstractUtils {
         assertTrue(getSoldProducts().isEmpty());
     }
     
-    public static ObservableList<SoldProductViewModel> getSoldProducts() {
+    private static ObservableList<SoldProductViewModel> getSoldProducts() {
         TableView<SoldProductViewModel> tableView = robot.find(SOLD_PRODUCTS_TABLE);
         return tableView.getItems();
     }

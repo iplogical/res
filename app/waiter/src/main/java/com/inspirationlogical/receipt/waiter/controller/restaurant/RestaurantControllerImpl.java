@@ -175,41 +175,6 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
-    public void openTableOfReservation(Integer number, String name, Integer guestCount, String note) {
-//        List<TableController> filteredControllers = tableControllers.stream()
-//                .filter(controller -> controller.getView().getNumber() == number)
-//                .limit(1)
-//                .collect(toList());
-//        if(filteredControllers.isEmpty()) {
-//            viewLoader.loadViewIntoScene(this);
-//            ErrorMessage.showErrorMessage(getActiveTab(), Resources.WAITER.getString("TableDoesNotExist") + number);
-//            return;
-//        }
-//        TableController tableController = filteredControllers.get(0);
-//        TableView tableView = tableController.getView();
-//        if(tableView.isOpen()) {
-//            viewLoader.loadViewIntoScene(this);
-//            ErrorMessage.showErrorMessage(getActiveTab(), Resources.WAITER.getString("TableIsOpenReservation") + tableView.getNumber());
-//            return;
-//        }
-//        TableParams tableParams = buildTableParams(number, name, guestCount, note, tableView);
-//        tableConfigurationController.editTable(tableController, tableParams);
-//        tableController.openTable(null);
-//        viewLoader.loadViewIntoScene(this);
-    }
-
-    private TableParams buildTableParams(Integer number, String name, Integer guestCount, String note, TableView tableView) {
-        return TableParams.builder()
-                .name(name)
-                .number(number)
-                .note(note)
-                .guestCount(guestCount)
-                .capacity(tableView.getCapacity())
-                .dimension(tableView.getDimension())
-                .build();
-    }
-
-    @Override
     public void updateRestaurant() {
         updateRestaurantSummary();
     }

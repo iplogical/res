@@ -45,7 +45,7 @@
                                        <children>
                                           <AnchorPane>
                                              <children>
-                                                <Label alignment="CENTER" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label alignment="CENTER" prefHeight="70.0" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <font>
                                                       <Font name="System Bold" size="16.0" />
                                                    </font>
@@ -74,7 +74,7 @@
                                     </VBox>
                                  </children>
                               </AnchorPane>
-                              <TableView fx:id="reservationsTable" prefHeight="640.0" prefWidth="458.0">
+                              <TableView fx:id="reservationsTable" prefHeight="671.0" prefWidth="488.0">
                                 <columns>
                                   <TableColumn fx:id="reservationName" prefWidth="182.0" text="%Reservation.Name" />
                                   <TableColumn fx:id="reservationTableNumber" minWidth="0.0" prefWidth="75.0" text="%Reservation.TableNumber" />
@@ -137,6 +137,7 @@
                                  <children>
                                     <Button fx:id="confirm" mnemonicParsing="false" onAction="#onConfirm" prefWidth="100.0" text="%Reservation.Confirm" />
                                     <Button fx:id="update" mnemonicParsing="false" onAction="#onUpdate" prefWidth="100.0" text="%Reservation.Update" />
+                                    <Button fx:id="delete" mnemonicParsing="false" onAction="#onDelete" text="%Reservation.Delete" />
                                     <Button fx:id="openTable" mnemonicParsing="false" onAction="#onOpenTable" prefWidth="100.0" text="%Reservation.OpenTable" />
                                  </children>
                                  <padding>

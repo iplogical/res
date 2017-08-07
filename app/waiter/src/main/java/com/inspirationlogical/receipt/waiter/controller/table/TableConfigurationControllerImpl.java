@@ -32,6 +32,7 @@ import java.util.function.Predicate;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.*;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.HOLD_DURATION_MILLIS;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
+import static java.util.stream.Collectors.toList;
 
 @Singleton
 public class TableConfigurationControllerImpl implements TableConfigurationController {
@@ -275,6 +276,43 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @Override
     public void clearSelections() {
         tableControllers.forEach(TableController::deselectTable);
+    }
+
+    @Override
+    public void openTableOfReservation(Integer number, String name, Integer guestCount, String note) {
+        List<TableController> filteredControllers = tableControllers.stream()
+                .filter(controller -> controller.getView().getNumber() == number)
+                .limit(1)
+                .collect(toList());
+        if(filteredControllers.isEmpty()) {
+            viewLoader.loadViewIntoScene(restaurantController);
+            ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
+                    Resources.WAITER.getString("TableDoesNotExist") + number);
+            return;
+        }
+        TableController tableController = filteredControllers.get(0);
+        TableView tableView = tableController.getView();
+        if(tableView.isOpen()) {
+            viewLoader.loadViewIntoScene(restaurantController);
+            ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
+                    Resources.WAITER.getString("TableIsOpenReservation") + tableView.getNumber());
+            return;
+        }
+        TableParams tableParams = buildTableParams(number, name, guestCount, note, tableView);
+        editTable(tableController, tableParams);
+        tableController.openTable(null);
+        viewLoader.loadViewIntoScene(restaurantController);
+    }
+
+    private TableParams buildTableParams(Integer number, String name, Integer guestCount, String note, TableView tableView) {
+        return TableParams.builder()
+                .name(name)
+                .number(number)
+                .note(note)
+                .guestCount(guestCount)
+                .capacity(tableView.getCapacity())
+                .dimension(tableView.getDimension())
+                .build();
     }
 
     @Override

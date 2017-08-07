@@ -39,6 +39,8 @@ public interface TableConfigurationController {
 
     boolean hasSelection();
 
+    void openTableOfReservation(Integer number, String name, Integer guestCount, String note);
+
     void drawTable(TableView tableView);
 
     TableController getTableController(TableView tableView);

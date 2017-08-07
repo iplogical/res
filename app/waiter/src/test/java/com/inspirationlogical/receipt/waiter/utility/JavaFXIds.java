@@ -81,4 +81,21 @@ public class JavaFXIds {
 
     public final static String TO_SALE = "#backToSaleView";
     public final static String PAY = "#pay";
+
+    // Reservation.fxml
+    public final static String RESERVATIONS_TABLE = "#reservationsTable";
+    public final static String RESERVATIONS_NAME = "#name";
+    public final static String RESERVATIONS_TABLE_NUMBER = "#tableNumber";
+    public final static String RESERVATIONS_GUEST_COUNT = "#guestCount";
+    public final static String RESERVATIONS_PHONE_NUMBER = "#phoneNumber";
+    public final static String RESERVATIONS_DATE_CONTAINER = "#dateContainer";
+    public final static String RESERVATIONS_START_TIME_CONTAINER = "#startTimeContainer";
+    public final static String RESERVATIONS_END_TIME_CONTAINER = "#endTimeContainer";
+
+    public final static String RESERVATIONS_CONFIRM = "#confirm";
+    public final static String RESERVATIONS_UPDATE = "#update";
+    public final static String RESERVATIONS_DELETE = "#delete";
+    public final static String RESERVATIONS_OPEN_TABLE = "#openTable";
+
+
 }

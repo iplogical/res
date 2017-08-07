@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
+import static com.inspirationlogical.receipt.waiter.utility.ReservationUtils.backToRestaurantView;
 import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
 
 /**
@@ -83,15 +84,15 @@ public class RestaurantControllerTest extends TestFXBase {
     }
 
     @Test
-    public void testEnterDailySummary() {
+    public void testEnterDailyConsumption() {
         clickButtonThenWait("Restaurant.Consumption", 500);
-        clickButtonThenWait("Common.BackToRestaurantView", 500);
+        backToRestaurantView();
     }
 
     @Test
     public void testEnterReservations() {
-        clickButtonThenWait("Restaurant.Reservation", 500);
-        clickButtonThenWait("Common.BackToRestaurantView", 500);
+        enterReservations();
+        backToRestaurantView();
     }
 
     @Test
