@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.controller.restaurant;
+package com.inspirationlogical.receipt.waiter.controller.table;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
@@ -12,7 +12,9 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import com.inspirationlogical.receipt.corelib.params.TableParams;
-import com.inspirationlogical.receipt.waiter.controller.table.TableController;
+import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import javafx.fxml.FXML;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
@@ -33,54 +35,39 @@ public class TableFormControllerImpl implements TableFormController {
     private static final Integer TABLE_DEFAULT_WIDTH = 80;
     private static final Integer TABLE_DEFAULT_HEIGHT = 80;
 
-    @FXML
-    VBox root;
+    @FXML private VBox root;
+    @FXML private Label title;
+    @FXML private TextField tableName;
+    @FXML private TextField guestCount;
+    @FXML private TextArea tableNote;
+    @FXML private TextField tableNumber;
+    @FXML private TextField tableCapacity;
+    @FXML private TextField width;
+    @FXML private TextField height;
 
-    @FXML
-    Label title;
-
-    @FXML
-    private TextField tableName;
-
-    @FXML
-    private TextField guestCount;
-
-    @FXML
-    private TextArea tableNote;
-
-    @FXML
-    TextField tableNumber;
-
-    @FXML
-    TextField tableCapacity;
-
-    @FXML
-    TextField width;
-
-    @FXML
-    TextField height;
-
-    private boolean creation;
-
-    private TableController tableController;
-
-    private RestaurantController restaurantController;
+    private TableController tableController = null;
 
     private TableConfigurationController tableConfigurationController;
+
+    private RestaurantService restaurantService;
 
     private ResourceBundle resourceBundle;
 
     @Inject
-    public TableFormControllerImpl(RestaurantController restaurantController,
-                                   TableConfigurationController tableConfigurationController) {
-        this.restaurantController = restaurantController;
+    public TableFormControllerImpl(TableConfigurationController tableConfigurationController,
+                                   RestaurantService restaurantService) {
         this.tableConfigurationController = tableConfigurationController;
+        this.restaurantService = restaurantService;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         resourceBundle = resources;
+        initInputTextFormatters();
         addDragAndDrop(root);
+    }
+
+    private void initInputTextFormatters() {
         guestCount.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         tableNumber.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         tableCapacity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
@@ -90,14 +77,13 @@ public class TableFormControllerImpl implements TableFormController {
 
     @FXML
     public void onConfirm(MouseEvent event) {
-        try {
-            TableParams tableParams = buildTableParams();
-            if (creation) {
-                tableConfigurationController.addTable(tableParams);
-            } else {
-                tableConfigurationController.editTable(tableController, tableParams);
-            }
-        } catch (NumberFormatException e) {}
+        TableParams tableParams = buildTableParams();
+        if (tableController == null) {
+            tableConfigurationController.addTable(tableParams);
+        } else {
+            tableConfigurationController.editTable(tableController, tableParams);
+            tableController = null;
+        }
     }
 
     private TableParams buildTableParams() throws NumberFormatException {
@@ -121,34 +107,33 @@ public class TableFormControllerImpl implements TableFormController {
     }
 
     @Override
-    public void loadTable(TableController tableController, TableType tableType) {
+    public void createTableForm(TableType tableType) {
+        title.setText(resourceBundle.getString("TableForm.Create"));
+        tableNumber.setText(String.valueOf(restaurantService.getFirstUnusedNumber()));
+        guestCount.setText(tableType == TableType.NORMAL ? "0" : "1");
+        tableCapacity.setText(tableType == TableType.NORMAL ? NORMAL_TABLE_DEFAULT_CAPACITY.toString() : VIRTUAL_TABLE_DEFAULT_CAPACITY.toString());
+        tableName.clear();
+        tableNote.clear();
+        width.setText(TABLE_DEFAULT_WIDTH.toString());
+        height.setText(TABLE_DEFAULT_HEIGHT.toString());
+    }
+
+    @Override
+    public void loadTableForm(TableController tableController, TableType tableType) {
         this.tableController = tableController;
-        if (tableController != null) {
-            creation = false;
-            title.setText(resourceBundle.getString("TableForm.Edit"));
-            TableView tableView = tableController.getView();
-            if (tableView.canBeHosted() && tableView.isHosted()) {
-                tableNumber.setText(String.valueOf(tableView.getHost().getNumber()));
-            } else {
-                tableNumber.setText(String.valueOf(tableView.getNumber()));
-            }
-            tableCapacity.setText(String.valueOf(tableView.getCapacity()));
-            tableName.setText(tableView.getName());
-            guestCount.setText(String.valueOf(tableView.getGuestCount()));
-            tableNote.setText(tableView.getNote());
-            width.setText(String.valueOf((int) tableView.getDimension().getWidth()));
-            height.setText(String.valueOf((int) tableView.getDimension().getHeight()));
+        title.setText(resourceBundle.getString("TableForm.Edit"));
+        TableView tableView = tableController.getView();
+        if (tableView.canBeHosted() && tableView.isHosted()) {
+            tableNumber.setText(String.valueOf(tableView.getHost().getNumber()));
         } else {
-            creation = true;
-            title.setText(resourceBundle.getString("TableForm.Create"));
-            tableNumber.setText(String.valueOf(tableConfigurationController.getFirstUnusedTableNumber()));
-            guestCount.setText(tableType == TableType.NORMAL ? "0" : "1");
-            tableCapacity.setText(tableType == TableType.NORMAL ? NORMAL_TABLE_DEFAULT_CAPACITY.toString() : VIRTUAL_TABLE_DEFAULT_CAPACITY.toString());
-            tableName.clear();
-            tableNote.clear();
-            width.setText(TABLE_DEFAULT_WIDTH.toString());
-            height.setText(TABLE_DEFAULT_HEIGHT.toString());
+            tableNumber.setText(String.valueOf(tableView.getNumber()));
         }
+        tableCapacity.setText(String.valueOf(tableView.getCapacity()));
+        tableName.setText(tableView.getName());
+        guestCount.setText(String.valueOf(tableView.getGuestCount()));
+        tableNote.setText(tableView.getNote());
+        width.setText(String.valueOf((int) tableView.getDimension().getWidth()));
+        height.setText(String.valueOf((int) tableView.getDimension().getHeight()));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.controller.restaurant;
+package com.inspirationlogical.receipt.waiter.controller.table;
 
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
@@ -40,8 +40,6 @@ public interface TableConfigurationController {
     boolean hasSelection();
 
     void drawTable(TableView tableView);
-
-    int getFirstUnusedTableNumber();
 
     TableController getTableController(TableView tableView);
 

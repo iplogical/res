@@ -13,6 +13,7 @@ import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.contextmenu.RestaurantContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryController;
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationController;
+import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.ConfirmMessage;
@@ -37,13 +38,13 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.moveNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.HOLD_DURATION_MILLIS;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 
 @Singleton
 public class RestaurantControllerImpl implements RestaurantController {
 
     public static final String RESTAURANT_VIEW_PATH = "/view/fxml/Restaurant.fxml";
-    static final int HOLD_DURATION_MILLIS = 200;
     static final int INITIAL_GRID_SIZE = 10;
 
     @FXML

@@ -6,7 +6,7 @@ import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantViewState;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
-import com.inspirationlogical.receipt.waiter.controller.restaurant.TableConfigurationController;
+import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 

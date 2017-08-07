@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.controller.restaurant;
+package com.inspirationlogical.receipt.waiter.controller.table;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -14,8 +14,8 @@ import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.contextmenu.TableContextMenuBuilderDecorator;
-import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
-import com.inspirationlogical.receipt.waiter.controller.table.TableController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantViewState;
 import com.inspirationlogical.receipt.waiter.exception.ViewNotFoundException;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import javafx.geometry.Point2D;
@@ -25,16 +25,13 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import javafx.util.Duration;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.*;
 import java.util.function.Predicate;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.*;
+import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.HOLD_DURATION_MILLIS;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
-import static com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl.HOLD_DURATION_MILLIS;
-import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @Singleton
 public class TableConfigurationControllerImpl implements TableConfigurationController {
@@ -91,14 +88,14 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void showCreateTableForm(Point2D position) {
-        tableFormController.loadTable(null, restaurantViewState.getTableType());
+        tableFormController.createTableForm(restaurantViewState.getTableType());
         showPopup(tableForm, tableFormController, restaurantController.getActiveTab(), position);
     }
 
     @Override
     public void showEditTableForm(Control control) {
         TableController tableController = getTableController(control);
-        tableFormController.loadTable(tableController, restaurantViewState.getTableType());
+        tableFormController.loadTableForm(tableController, restaurantViewState.getTableType());
         Point2D position = calculatePopupPosition(control, restaurantController.getActiveTab());
         showPopup(tableForm, tableFormController, restaurantController.getActiveTab(), position);
     }
@@ -290,11 +287,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
                 new TableContextMenuBuilderDecorator(this, tableController, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
         restaurantController.addNodeToPane(tableController.getRoot(), tableView.getType());
-    }
-
-    @Override
-    public int getFirstUnusedTableNumber() {
-        return restaurantService.getFirstUnusedNumber();
     }
 
     @Override

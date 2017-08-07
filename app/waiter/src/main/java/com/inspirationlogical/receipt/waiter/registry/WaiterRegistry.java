@@ -12,8 +12,7 @@ import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentC
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationController;
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.*;
-import com.inspirationlogical.receipt.waiter.controller.table.TableController;
-import com.inspirationlogical.receipt.waiter.controller.table.TableControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.table.*;
 
 public class WaiterRegistry extends Registry {
 

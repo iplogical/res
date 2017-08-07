@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 public class PressAndHoldHandler {
+    public static final int HOLD_DURATION_MILLIS = 200;
 
     public static void addPressAndHold(ViewState viewState, Control control, ContextMenuBuilder contextMenuBuilder, Duration holdTime) {
         Wrapper<MouseEvent> mouseEventWrapper = new Wrapper<>();
