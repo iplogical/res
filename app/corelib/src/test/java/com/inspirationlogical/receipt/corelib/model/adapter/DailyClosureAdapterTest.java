@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import com.inspirationlogical.receipt.corelib.model.AbstractTest;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNull;
 /**
  * Created by TheDagi on 2017. 04. 17..
  */
-public class DailyClosureAdapterTest extends AbstractTest {
+public class DailyClosureAdapterTest extends TestBase {
 
     private DailyClosureAdapter openDailyClosure;
     private ReceiptAdapter receipt;

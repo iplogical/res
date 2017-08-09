@@ -1,22 +1,18 @@
 package com.inspirationlogical.receipt.corelib.model.listeners;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchema;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class ReceiptArchiverListenerTest {
+public class ReceiptArchiverListenerTest extends TestBase {
 
     private ReceiptAdapter receiptSaleOne;
-
-    @Rule
-    public final BuildTestSchema schema = new BuildTestSchema();
 
     @Before
     public void createAdapters() {

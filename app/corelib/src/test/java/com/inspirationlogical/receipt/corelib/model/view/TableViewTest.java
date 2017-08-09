@@ -3,9 +3,9 @@ package com.inspirationlogical.receipt.corelib.model.view;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchema;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
+
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
@@ -16,11 +16,8 @@ import javafx.geometry.Point2D;
 /**
  * Created by Bálint on 2017.03.13..
  */
-public class TableViewTest {
+public class TableViewTest extends TestBase {
     private TableView tableView;
-
-    @Rule
-    public final BuildTestSchema schema = new BuildTestSchema();
 
     @Before
     public void createTableView() {

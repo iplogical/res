@@ -4,6 +4,7 @@ import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.RESTAURANT_TEST_TABLE;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickButtonThenWait;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickOnThenWait;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
@@ -13,12 +14,14 @@ import static org.junit.Assert.assertEquals;
 
 public class RestaurantSummaryControllerTest extends TestFXBase {
 
-    private static final String TABLE_NUMBER = "21";
+    private static final String TABLE_NUMBER = RESTAURANT_TEST_TABLE;
+    private static final int OPEN_CONSUMPTION = 13100;
 
     @Before
     public void closeDay() {
         clickButtonThenWait("Restaurant.DailyClosure", 500);
         clickOnThenWait("Yes", 2000);
+        sleep(2500);
     }
 
     @Test
@@ -50,34 +53,34 @@ public class RestaurantSummaryControllerTest extends TestFXBase {
     public void testIncomeValues() {
         openTableAndSellThreeSoproni();
         backToRestaurantView();
-        assertEquals(1320, getOpenConsumption());
+        assertEquals(OPEN_CONSUMPTION + 1320, getOpenConsumption());
         assertEquals(0, getPaidConsumption());
-        assertEquals(1320, getTotalIncome());
+        assertEquals(OPEN_CONSUMPTION + 1320, getTotalIncome());
         enterSaleView(TABLE_NUMBER);
-        singleCancellation(SOPRONI_LONG);
+        singleCancellation(PRODUCT_FIVE_LONG);
         backToRestaurantView();
-        assertEquals(880, getOpenConsumption());
+        assertEquals(OPEN_CONSUMPTION + 880, getOpenConsumption());
         assertEquals(0, getPaidConsumption());
-        assertEquals(880, getTotalIncome());
+        assertEquals(OPEN_CONSUMPTION + 880, getTotalIncome());
         closeTable(TABLE_NUMBER);
-        assertEquals(0, getOpenConsumption());
+        assertEquals(OPEN_CONSUMPTION , getOpenConsumption());
         assertEquals(880, getPaidConsumption());
-        assertEquals(880, getTotalIncome());
+        assertEquals(OPEN_CONSUMPTION + 880, getTotalIncome());
         openTableAndSellThreeSoproni();
         backToRestaurantView();
-        assertEquals(1320, getOpenConsumption());
+        assertEquals(OPEN_CONSUMPTION + 1320, getOpenConsumption());
         assertEquals(880, getPaidConsumption());
-        assertEquals(2200, getTotalIncome());
+        assertEquals(OPEN_CONSUMPTION + 2200, getTotalIncome());
         closeTable(TABLE_NUMBER);
-        assertEquals(0, getOpenConsumption());
+        assertEquals(OPEN_CONSUMPTION, getOpenConsumption());
         assertEquals(2200, getPaidConsumption());
-        assertEquals(2200, getTotalIncome());
+        assertEquals(OPEN_CONSUMPTION + 2200, getTotalIncome());
     }
 
     private void openTableAndSellThreeSoproni() {
         openTable(TABLE_NUMBER);
         enterSaleView(TABLE_NUMBER);
-        selectCategory(BEERS);
-        sellProduct(SOPRONI, 3);
+        selectCategory(AGGREGATE_ONE);
+        sellProduct(PRODUCT_FIVE, 3);
     }
 }

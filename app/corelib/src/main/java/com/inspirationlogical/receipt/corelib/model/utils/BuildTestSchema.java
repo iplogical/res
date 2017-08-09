@@ -1,7 +1,10 @@
-package com.inspirationlogical.receipt.corelib.model;
+package com.inspirationlogical.receipt.corelib.model.utils;
 
-import static java.time.LocalDateTime.now;
+import com.inspirationlogical.receipt.corelib.model.entity.*;
+import com.inspirationlogical.receipt.corelib.model.enums.*;
+import lombok.Getter;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -9,49 +12,37 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.corelib.model.entity.*;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
-
-import com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
-import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.enums.VATName;
-import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
-
-import lombok.Getter;
+import static java.time.LocalDateTime.now;
 
 public class BuildTestSchema {
 
-    public static final int NUMBER_OF_PRODUCTS = 11;
-    public static final int NUMBER_OF_PRODUCT_CATEGORIES = 24;
+    public static final int NUMBER_OF_PRODUCTS = 13;
+    public static final int NUMBER_OF_PRODUCT_CATEGORIES = 28;
     public static final int NUMBER_OF_PRICE_MODIFIERS = 4;
-    public static final int NUMBER_OF_RECIPES = 11;
+    public static final int NUMBER_OF_RECIPES = 13;
     public static final int NUMBER_OF_STOCKS = 3;
-    public static final int NUMBER_OF_RECEIPTS = 9;
+    public static final int NUMBER_OF_RECEIPTS = 10;
     public static final int NUMBER_OF_CLOSED_RECEIPTS = 3;
     public static final int NUMBER_OF_RECEIPT_RECORDS = 9;
     public static final int NUMBER_OF_RECEIPT_RECORD_CREATEDS = 9;
-    public static final int NUMBER_OF_TABLES = 12;
-    public static final int NUMBER_OF_DISPLAYABLE_TABLES = 6;
+    public static final int NUMBER_OF_TABLES = 20;
+    public static final int NUMBER_OF_DISPLAYABLE_TABLES = 14;
     public static final int NUMBER_OF_RESERVATIONS = 2;
     public static final int NUMBER_OF_RESTAURANT = 1;
     public static final int NUMBER_OF_VAT_SERIE = 1;
     public static final int NUMBER_OF_VAT_RECORDS = 5;
     public static final int NUMBER_OF_DAILY_CLOSURES = 2;
+
+    public static final String RESERVATION_TEST_TABLE = "20";
+    public static final String RESTAURANT_TEST_TABLE = "21";
+    public static final String CONSUMER_TEST_TABLE = "22";
+    public static final String CONSUMED_TEST_TABLE_ONE = "23";
+    public static final String CONSUMED_TEST_TABLE_TWO = "24";
+    public static final String SALE_TEST_TABLE = "25";
+    public static final String PAYMENT_TEST_TABLE = "26";
+    public static final String TABLE_TEST_TABLE = "27";
+    public static final String TABLE_TEST_TABLE_NAME = "tableTableTest";
 
     private @Getter EntityManager entityManager;
     private @Getter EntityManager entityManagerArchive;
@@ -62,6 +53,8 @@ public class BuildTestSchema {
     private @Getter Product productFour;
     private @Getter Product productFive;
     private @Getter Product productSix;
+    private @Getter Product productSeven;
+    private @Getter Product productEight;
     private @Getter Product productAdHoc;
     private @Getter Product productGameFee;
 
@@ -81,6 +74,8 @@ public class BuildTestSchema {
     private @Getter ProductCategory leafTwo;
     private @Getter ProductCategory leafThree;
     private @Getter ProductCategory leafFour;
+    private @Getter ProductCategory leafFive;
+    private @Getter ProductCategory leafSix;
     private @Getter ProductCategory leafRecipeElements;
     private @Getter ProductCategory pseudoOne;
     private @Getter ProductCategory pseudoTwo;
@@ -88,6 +83,8 @@ public class BuildTestSchema {
     private @Getter ProductCategory pseudoFour;
     private @Getter ProductCategory pseudoFive;
     private @Getter ProductCategory pseudoSix;
+    private @Getter ProductCategory pseudoSeven;
+    private @Getter ProductCategory pseudoEight;
     private @Getter ProductCategory pseudoAdHoc;
     private @Getter ProductCategory pseudoGameFee;
 
@@ -108,6 +105,8 @@ public class BuildTestSchema {
     private @Getter Recipe productFourPartThree;
     private @Getter Recipe productFivePartOne;
     private @Getter Recipe productSixPartOne;
+    private @Getter Recipe productSevenPartOne;
+    private @Getter Recipe productEightPartOne;
     private @Getter Recipe productRecipeElementOnePartOne;
     private @Getter Recipe productRecipeElementTwoPartOne;
     private @Getter Recipe productRecipeElementThreePartOne;
@@ -121,6 +120,7 @@ public class BuildTestSchema {
     private @Getter Receipt receiptSaleThree;
     private @Getter Receipt receiptSaleFour;
     private @Getter Receipt receiptSaleClosedTable;
+    private @Getter Receipt receiptTableSaleTest;
     private @Getter Receipt receiptPurchase;
     private @Getter Receipt receiptInventory;
     private @Getter Receipt receiptDisposal;
@@ -153,6 +153,16 @@ public class BuildTestSchema {
     private @Getter Table tableLoiterer;
     private @Getter Table tableFrequenter;
     private @Getter Table tableEmployee;
+
+    private @Getter Table tableReservationTest;
+    private @Getter Table tableRestaurantTest;
+    private @Getter Table tableConsumerTest;
+    private @Getter Table tableConsumedOneTest;
+    private @Getter Table tableConsumedTwoTest;
+    private @Getter Table tableSaleTest;
+    private @Getter Table tablePaymentTest;
+    private @Getter Table tableTableTest;
+    
     private @Getter Table tablePurchase;
     private @Getter Table tableInventory;
     private @Getter Table tableDisposal;
@@ -247,6 +257,8 @@ public class BuildTestSchema {
         buildProductFour();
         buildProductFive();
         buildProductSix();
+        buildProductSeven();
+        buildProductEight();
         buildProductAdHoc();
         buildProductGameFee();
         buildProductRecipeElementOne();
@@ -267,6 +279,8 @@ public class BuildTestSchema {
         buildLeafTwo();
         buildLeafThree();
         buildLeafFour();
+        buildLeafFive();
+        buildLeafSix();
         buildLeafRecipeElements();
         buildPseudoOne();
         buildPseudoTwo();
@@ -274,6 +288,8 @@ public class BuildTestSchema {
         buildPseudoFour();
         buildPseudoFive();
         buildPseudoSix();
+        buildPseudoSeven();
+        buildPseudoEight();
         buildPseudoAdHoc();
         buildPseudoGameFee();
         buildPseudoRecipeElementOne();
@@ -298,6 +314,8 @@ public class BuildTestSchema {
         buildProductFourPartThree();
         buildProductFivePartOne();
         buildProductSixPartOne();
+        buildProductSevenPartOne();
+        buildProductEightPartOne();
         buildProductRecipeElementOnePartOne();
         buildProductRecipeElementOnePartTwo();
         buildProductRecipeElementOnePartThree();
@@ -316,6 +334,7 @@ public class BuildTestSchema {
         buildReceiptSaleThree();
         buildReceiptSaleFour();
         buildReceiptSaleClosedTable();
+        buildReceiptTableSaleTest();
         buildReceiptPurchase();
         buildReceiptInventory();
         buildReceiptDisposal();
@@ -366,6 +385,16 @@ public class BuildTestSchema {
         buildTableLoiterer();
         buildTableFrequenter();
         buildTableEmployee();
+
+        buildTableReservationTest();
+        buildTableRestaurantTest();
+        buildTableConsumerTest();
+        buildTableConsumedOneTest();
+        buildTableConsumedTwoTest();
+        buildTableSaleTest();
+        buildTablePaymentTest();
+        buildTableTableTest();
+        
         buildTablePurchase();
         buildTableInventory();
         buildTableDisposal();
@@ -515,10 +544,11 @@ public class BuildTestSchema {
 
     private void buildProduct() {
         productOne = Product.builder()
-                .longName("product")
-                .shortName("product")
-                .salePrice(1000)
+                .longName("productOne")
+                .shortName("product1")
+                .salePrice(440)
                 .purchasePrice(500)
+                .rapidCode(11)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
@@ -529,9 +559,10 @@ public class BuildTestSchema {
     private void buildProductTwo() {
         productTwo = Product.builder()
                 .longName("productTwo")
-                .shortName("productTwo")
+                .shortName("product2")
                 .salePrice(200)
                 .purchasePrice(100)
+                .rapidCode(12)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.LITER)
                 .storageMultiplier(50)
@@ -542,20 +573,20 @@ public class BuildTestSchema {
     private void buildProductThree() {
         productThree = Product.builder()
                 .longName("productThree")
-                .shortName("productThree")
-                .salePrice(790)
+                .shortName("product3")
+                .salePrice(2900)
                 .purchasePrice(400)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.GRAM)
                 .storageMultiplier(1000)
-                .type(ProductType.SELLABLE)
+                .type(ProductType.PARTIALLY_PAYABLE)
                 .build();
     }
 
     private void buildProductFour() {
         productFour = Product.builder()
                 .longName("productFour")
-                .shortName("productFour")
+                .shortName("product4")
                 .salePrice(990)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
@@ -568,9 +599,10 @@ public class BuildTestSchema {
     private void buildProductFive() {
         productFive = Product.builder()
                 .longName("productFive")
-                .shortName("productFive")
-                .salePrice(780)
+                .shortName("product5")
+                .salePrice(440)
                 .purchasePrice(450)
+                .rapidCode(13)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.LITER)
                 .storageMultiplier(2)
@@ -581,9 +613,9 @@ public class BuildTestSchema {
     private void buildProductSix() {
         productSix = Product.builder()
                 .longName("productSix")
-                .shortName("productSix")
-                .salePrice(4990)
-                .purchasePrice(2500)
+                .shortName("product6")
+                .salePrice(480)
+                .purchasePrice(200)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(100)
@@ -591,6 +623,33 @@ public class BuildTestSchema {
                 .build();
     }
 
+
+    private void buildProductSeven() {
+        productSeven = Product.builder()
+                .longName("productSeven")
+                .shortName("product7")
+                .salePrice(780)
+                .purchasePrice(400)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(100)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+
+    private void buildProductEight() {
+        productEight = Product.builder()
+                .longName("productEight")
+                .shortName("product8")
+                .salePrice(500)
+                .purchasePrice(200)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.CENTILITER)
+                .storageMultiplier(100)
+                .type(ProductType.SELLABLE)
+                .build();
+    }
+    
     private void buildProductAdHoc() {
         productAdHoc = Product.builder()
                 .longName("productAdHoc")
@@ -752,6 +811,23 @@ public class BuildTestSchema {
                 .build();
     }
 
+    private void buildLeafFive() {
+        leafFive = ProductCategory.builder()
+                .name("leafFive")
+                .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
+                .build();
+    }
+
+    private void buildLeafSix() {
+        leafSix = ProductCategory.builder()
+                .name("leafSix")
+                .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
+                .build();
+    }
+
+
     private void buildLeafRecipeElements() {
         leafRecipeElements = ProductCategory.builder()
                 .name("leafRecipeElements")
@@ -809,6 +885,24 @@ public class BuildTestSchema {
                 .build();
     }
 
+
+    private void buildPseudoSeven() {
+        pseudoSeven = ProductCategory.builder()
+                .name("pseudoSeven")
+                .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
+                .build();
+    }
+
+    private void buildPseudoEight() {
+        pseudoEight = ProductCategory.builder()
+                .name("pseudoEight")
+                .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
+                .build();
+    }
+
+    
     private void buildPseudoAdHoc() {
         pseudoAdHoc = ProductCategory.builder()
                 .name("pseudoAdHoc")
@@ -947,6 +1041,17 @@ public class BuildTestSchema {
                 .build();
     }
 
+    private void buildProductSevenPartOne() {
+        productSevenPartOne = Recipe.builder()
+                .quantityMultiplier(2)
+                .build();
+    }
+
+    private void buildProductEightPartOne() {
+        productEightPartOne = Recipe.builder()
+                .quantityMultiplier(2)
+                .build();
+    }
 
     private void buildProductRecipeElementOnePartOne() {
         productRecipeElementOnePartOne = Recipe.builder()
@@ -1060,6 +1165,21 @@ public class BuildTestSchema {
                 .sumPurchaseNetPrice(2000)
                 .sumSaleGrossPrice(5000)
                 .sumSaleNetPrice(4000)
+                .discountPercent(0)
+                .client(buildDefaultClient())
+                .build();
+    }
+
+    private void buildReceiptTableSaleTest() {
+        receiptTableSaleTest = Receipt.builder()
+                .type(ReceiptType.SALE)
+                .status(ReceiptStatus.OPEN)
+                .paymentMethod(PaymentMethod.CASH)
+                .openTime(LocalDateTime.now())
+                .sumPurchaseGrossPrice(0)
+                .sumPurchaseNetPrice(0)
+                .sumSaleGrossPrice(0)
+                .sumSaleNetPrice(0)
                 .discountPercent(0)
                 .client(buildDefaultClient())
                 .build();
@@ -1364,7 +1484,7 @@ public class BuildTestSchema {
                 .capacity(1)
                 .guestCount(1)
                 .coordinateX(100)
-                .coordinateY(100)
+                .coordinateY(250)
                 .reservations(new ArrayList<>())
                 .build();
     }
@@ -1377,8 +1497,8 @@ public class BuildTestSchema {
                 .visible(false)
                 .capacity(1)
                 .guestCount(1)
-                .coordinateX(100)
-                .coordinateY(100)
+                .coordinateX(250)
+                .coordinateY(250)
                 .reservations(new ArrayList<>())
                 .build();
     }
@@ -1391,8 +1511,8 @@ public class BuildTestSchema {
                 .visible(true)
                 .capacity(1)
                 .guestCount(1)
-                .coordinateX(100)
-                .coordinateY(100)
+                .coordinateX(400)
+                .coordinateY(50)
                 .reservations(new ArrayList<>())
                 .build();
     }
@@ -1421,6 +1541,118 @@ public class BuildTestSchema {
                 .guestCount(1)
                 .coordinateX(100)
                 .coordinateY(100)
+                .reservations(new ArrayList<>())
+                .build();
+    }
+
+    private void buildTableReservationTest() {
+        tableReservationTest = Table.builder()
+                .number(Integer.valueOf(RESERVATION_TEST_TABLE))
+                .name("tableReservationTest")
+                .type(TableType.NORMAL)
+                .visible(true)
+                .capacity(6)
+                .guestCount(0)
+                .coordinateX(600)
+                .coordinateY(200)
+                .reservations(new ArrayList<>())
+                .build();
+    }
+
+    private void buildTableRestaurantTest() {
+        tableRestaurantTest = Table.builder()
+                .number(Integer.valueOf(RESTAURANT_TEST_TABLE))
+                .name("tableRestaurantTest")
+                .type(TableType.NORMAL)
+                .visible(true)
+                .capacity(6)
+                .guestCount(0)
+                .coordinateX(700)
+                .coordinateY(200)
+                .reservations(new ArrayList<>())
+                .build();
+    }
+
+    private void buildTableConsumerTest() {
+        tableConsumerTest = Table.builder()
+                .number(Integer.valueOf(CONSUMER_TEST_TABLE))
+                .name("tableConsumerTest")
+                .type(TableType.NORMAL)
+                .visible(true)
+                .capacity(6)
+                .guestCount(0)
+                .coordinateX(800)
+                .coordinateY(200)
+                .reservations(new ArrayList<>())
+                .build();
+    }
+
+    private void buildTableConsumedOneTest() {
+        tableConsumedOneTest = Table.builder()
+                .number(Integer.valueOf(CONSUMED_TEST_TABLE_ONE))
+                .name("tableConsumedOneTest")
+                .type(TableType.NORMAL)
+                .visible(true)
+                .capacity(6)
+                .guestCount(0)
+                .coordinateX(900)
+                .coordinateY(200)
+                .reservations(new ArrayList<>())
+                .build();
+    }
+
+    private void buildTableConsumedTwoTest() {
+        tableConsumedTwoTest= Table.builder()
+                .number(Integer.valueOf(CONSUMED_TEST_TABLE_TWO))
+                .name("tableConsumedTwoTest")
+                .type(TableType.NORMAL)
+                .visible(true)
+                .capacity(6)
+                .guestCount(0)
+                .coordinateX(600)
+                .coordinateY(400)
+                .reservations(new ArrayList<>())
+                .build();
+    }
+
+    private void buildTableSaleTest() {
+        tableSaleTest = Table.builder()
+                .number(Integer.valueOf(SALE_TEST_TABLE))
+                .name("tableSaleTest")
+                .type(TableType.NORMAL)
+                .visible(true)
+                .capacity(6)
+                .guestCount(0)
+                .coordinateX(700)
+                .coordinateY(400)
+                .reservations(new ArrayList<>())
+                .build();
+    }
+
+    private void buildTablePaymentTest() {
+        tablePaymentTest = Table.builder()
+                .number(Integer.valueOf(PAYMENT_TEST_TABLE))
+                .name("tablePaymentTest")
+                .type(TableType.NORMAL)
+                .visible(true)
+                .capacity(6)
+                .guestCount(0)
+                .coordinateX(800)
+                .coordinateY(400)
+                .reservations(new ArrayList<>())
+                .build();
+    }
+
+    private void buildTableTableTest() {
+        tableTableTest = Table.builder()
+                .number(Integer.valueOf(TABLE_TEST_TABLE))
+                .name(TABLE_TEST_TABLE_NAME)
+                .type(TableType.NORMAL)
+                .visible(true)
+                .capacity(6)
+                .guestCount(0)
+                .coordinateX(900)
+                .coordinateY(400)
                 .reservations(new ArrayList<>())
                 .build();
     }
@@ -1513,31 +1745,46 @@ public class BuildTestSchema {
         leafThree.setParent(aggregateOne);
         leafTwo.setParent(aggregateTwo);
         leafFour.setParent(aggregateTwo);
+        leafFive.setParent(aggregateTopOne);
+        leafSix.setParent(aggregateFour);
         leafRecipeElements.setParent(aggregateRecipeElements);
+        aggregateTopOne.setChildren(new HashSet<>(
+                Collections.singletonList(leafFive)));
         aggregateOne.setChildren(new HashSet<>(
                 Arrays.asList(leafOne, leafThree)));
         aggregateTwo.setChildren(new HashSet<>(
                 Arrays.asList(leafTwo, leafFour)));
+        aggregateFour.setChildren(new HashSet<>(
+                Collections.singletonList(leafSix)));
         aggregateRecipeElements.setChildren(new HashSet<>(
-                Arrays.asList(leafRecipeElements)));
+                Collections.singletonList(leafRecipeElements)));
 
     }
     
     private void leafsAndPseudos() {
         leafOne.setChildren(new HashSet<>(
-                Arrays.asList(pseudoOne, pseudoTwo, pseudoFive, pseudoSix, pseudoAdHoc, pseudoGameFee)));
+                Arrays.asList(pseudoOne, pseudoFive, pseudoSix, pseudoAdHoc, pseudoGameFee)));
         leafTwo.setChildren(new HashSet<>(
                 Arrays.asList(pseudoThree, pseudoFour)));
+        leafThree.setChildren(new HashSet<>(
+                Collections.singletonList(pseudoTwo)));
+        leafFive.setChildren(new HashSet<>(
+                Collections.singletonList(pseudoSeven)));
+        leafSix.setChildren(new HashSet<>(
+                Collections.singletonList(pseudoEight)));
+
         leafRecipeElements.setChildren(new HashSet<>(
                 Arrays.asList(pseudoRecipeElementOne, pseudoRecipeElementTwo, pseudoRecipeElementThree)));
         pseudoOne.setParent(leafOne);
-        pseudoTwo.setParent(leafOne);
+        pseudoTwo.setParent(leafThree);
         pseudoFive.setParent(leafOne);
         pseudoSix.setParent(leafOne);
         pseudoAdHoc.setParent(leafOne);
         pseudoGameFee.setParent(leafOne);
         pseudoThree.setParent(leafTwo);
         pseudoFour.setParent(leafTwo);
+        pseudoSeven.setParent(leafFive);
+        pseudoEight.setParent(leafSix);
         pseudoRecipeElementOne.setParent(leafRecipeElements);
         pseudoRecipeElementTwo.setParent(leafRecipeElements);
         pseudoRecipeElementThree.setParent(leafRecipeElements);
@@ -1575,6 +1822,12 @@ public class BuildTestSchema {
         pseudoSix.setProduct(productSix);
         productSix.setCategory(pseudoSix);
 
+        pseudoSeven.setProduct(productSeven);
+        productSeven.setCategory(pseudoSeven);
+
+        pseudoEight.setProduct(productEight);
+        productEight.setCategory(pseudoEight);
+
         pseudoAdHoc.setProduct(productAdHoc);
         productAdHoc.setCategory(pseudoAdHoc);
 
@@ -1605,6 +1858,10 @@ public class BuildTestSchema {
                 Collections.singletonList(productFivePartOne)));
         productSix.setRecipes(new HashSet<>(
                 Collections.singletonList(productSixPartOne)));
+        productSeven.setRecipes(new HashSet<>(
+                Collections.singletonList(productSevenPartOne)));
+        productEight.setRecipes(new HashSet<>(
+                Collections.singletonList(productEightPartOne)));
         productRecipeElementOne.setRecipes(new HashSet<>(
                 Collections.singletonList(productRecipeElementOnePartOne)));
         productRecipeElementTwo.setRecipes(new HashSet<>(
@@ -1619,6 +1876,8 @@ public class BuildTestSchema {
         productFourPartThree.setOwner(productFour);
         productFivePartOne.setOwner(productFive);
         productSixPartOne.setOwner(productSix);
+        productSevenPartOne.setOwner(productSeven);
+        productEightPartOne.setOwner(productEight);
         productRecipeElementOnePartOne.setOwner(productRecipeElementOne);
         productRecipeElementTwoPartOne.setOwner(productRecipeElementTwo);
         productRecipeElementThreePartOne.setOwner(productRecipeElementThree);
@@ -1633,6 +1892,8 @@ public class BuildTestSchema {
         productFourPartThree.setComponent(productRecipeElementThree);
         productFivePartOne.setComponent(productFive);
         productSixPartOne.setComponent(productSix);
+        productSevenPartOne.setComponent(productSeven);
+        productEightPartOne.setComponent(productEight);
         productRecipeElementOnePartOne.setComponent(productRecipeElementOne);
         productRecipeElementTwoPartOne.setComponent(productRecipeElementTwo);
         productRecipeElementThreePartOne.setComponent(productRecipeElementThree);
@@ -1727,6 +1988,7 @@ public class BuildTestSchema {
         receiptSaleThree.setVATSerie(vatSerie);
         receiptSaleFour.setVATSerie(vatSerie);
         receiptSaleClosedTable.setVATSerie(vatSerie);
+        receiptTableSaleTest.setVATSerie(vatSerie);
         receiptPurchase.setVATSerie(vatSerie);
         receiptInventory.setVATSerie(vatSerie);
         receiptDisposal.setVATSerie(vatSerie);
@@ -1747,8 +2009,12 @@ public class BuildTestSchema {
         //FIXME: Add service for building special tables in production
         restaurant.setTables(new HashSet<>(
                 Arrays.asList(tableNormal, tableNormalClosed, tableConsumer, tableConsumed, tableLoiterer,
-                        tableFrequenter, tableEmployee, tablePurchase, tableInventory, tableDisposal, tableOther,
+                        tableFrequenter, tableEmployee,
+                        tableReservationTest, tableRestaurantTest, tableConsumerTest, tableConsumedOneTest,
+                        tableConsumedTwoTest, tableSaleTest, tablePaymentTest, tableTableTest,
+                        tablePurchase, tableInventory, tableDisposal, tableOther,
                         tableOrphanage)));
+
         tableNormal.setOwner(restaurant);
         tableNormalClosed.setOwner(restaurant);
         tableConsumer.setOwner(restaurant);
@@ -1756,6 +2022,16 @@ public class BuildTestSchema {
         tableLoiterer.setOwner(restaurant);
         tableFrequenter.setOwner(restaurant);
         tableEmployee.setOwner(restaurant);
+
+        tableReservationTest.setOwner(restaurant);
+        tableRestaurantTest.setOwner(restaurant);
+        tableConsumerTest.setOwner(restaurant);
+        tableConsumedOneTest.setOwner(restaurant);
+        tableConsumedTwoTest.setOwner(restaurant);
+        tableSaleTest.setOwner(restaurant);
+        tablePaymentTest.setOwner(restaurant);
+        tableTableTest.setOwner(restaurant);
+        
         tablePurchase.setOwner(restaurant);
         tableInventory.setOwner(restaurant);
         tableDisposal.setOwner(restaurant);
@@ -1776,6 +2052,7 @@ public class BuildTestSchema {
         receiptSaleThree.setOwner(tableLoiterer);
         receiptSaleFour.setOwner(tableLoiterer);
         receiptSaleClosedTable.setOwner(tableNormalClosed);
+        receiptTableSaleTest.setOwner(tableSaleTest);
         receiptPurchase.setOwner(tablePurchase);
         receiptInventory.setOwner(tableInventory);
         receiptDisposal.setOwner(tableDisposal);
@@ -1787,6 +2064,8 @@ public class BuildTestSchema {
                 Arrays.asList(receiptSaleOne, receiptSaleTwo)));
         tableNormalClosed.setReceipts(new HashSet<>(
                 Collections.singletonList(receiptSaleClosedTable)));
+        tableSaleTest.setReceipts(new HashSet<>(
+                Collections.singletonList(receiptTableSaleTest)));
         tableLoiterer.setReceipts(new HashSet<>(
                 Arrays.asList(receiptSaleThree, receiptSaleFour)));
         tablePurchase.setReceipts(new HashSet<>(

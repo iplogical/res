@@ -18,122 +18,122 @@ public class ProductsAndCategoriesControllerTest extends SaleViewTest {
 
     @Test
     public void testSelectCategory() {
-        verifyThatVisible(DRINKS);
-        verifyThatVisible(FOOD);
+        verifyThatVisible(AGGREGATE_TOP_ONE);
+        verifyThatVisible(AGGREGATE_TOP_TWO);
 
-        selectCategory(BEERS);
-        verifyThatVisible(SOPRONI);
-        verifyThatVisible(KRUSO);
-        verifyThatVisible(TAP_BEER);
-        verifyThatVisible(BOTTLE_BEER);
-        verifyThatNotVisible(DRINKS);
+        selectCategory(AGGREGATE_ONE);
+        verifyThatVisible(PRODUCT_TWO);
+        verifyThatVisible(PRODUCT_FIVE);
+        verifyThatVisible(LEAF_ONE);
+        verifyThatVisible(LEAF_THREE);
+        verifyThatNotVisible(AGGREGATE_TOP_ONE);
 
-        selectCategory(TAP_BEER);
-        verifyThatVisible(SOPRONI);
-        verifyThatNotVisible(KRUSO);
-        verifyThatVisible(TAP_BEER);
-        verifyThatVisible(BOTTLE_BEER);
-        verifyThatNotVisible(DRINKS);
-
-        selectCategory(BACK);
-        verifyThatVisible(SOPRONI);
-        verifyThatVisible(KRUSO);
-        verifyThatVisible(TAP_BEER);
-        verifyThatVisible(BOTTLE_BEER);
-        verifyThatNotVisible(DRINKS);
+        selectCategory(LEAF_ONE);
+        verifyThatNotVisible(PRODUCT_TWO);
+        verifyThatVisible(PRODUCT_FIVE);
+        verifyThatVisible(LEAF_ONE);
+        verifyThatVisible(LEAF_THREE);
+        verifyThatNotVisible(AGGREGATE_TOP_ONE);
 
         selectCategory(BACK);
-        verifyThatNotVisible(TAP_BEER);
-        verifyThatNotVisible(BOTTLE_BEER);
-        verifyThatVisible(DRINKS);
+        verifyThatVisible(PRODUCT_FIVE);
+        verifyThatVisible(PRODUCT_TWO);
+        verifyThatVisible(LEAF_ONE);
+        verifyThatVisible(LEAF_THREE);
+        verifyThatNotVisible(AGGREGATE_TOP_ONE);
 
-        selectCategory(FOOD);
-        verifyThatVisible(DRINKS);
-        verifyThatVisible(FOOD);
-        verifyThatVisible(FOODS);
-        verifyThatNotVisible(BEERS);
+        selectCategory(BACK);
+        verifyThatNotVisible(LEAF_ONE);
+        verifyThatNotVisible(LEAF_THREE);
+        verifyThatVisible(AGGREGATE_TOP_ONE);
 
-        selectCategory(DRINKS);
-        verifyThatVisible(DRINKS);
-        verifyThatVisible(FOOD);
-        verifyThatNotVisible(FOODS);
-        verifyThatVisible(BEERS);
+        selectCategory(AGGREGATE_TOP_TWO);
+        verifyThatVisible(AGGREGATE_TOP_ONE);
+        verifyThatVisible(AGGREGATE_TOP_TWO);
+        verifyThatVisible(AGGREGATE_FOUR);
+        verifyThatNotVisible(AGGREGATE_ONE);
+
+        selectCategory(AGGREGATE_TOP_ONE);
+        verifyThatVisible(AGGREGATE_TOP_ONE);
+        verifyThatVisible(AGGREGATE_TOP_TWO);
+        verifyThatNotVisible(AGGREGATE_FOUR);
+        verifyThatVisible(AGGREGATE_ONE);
     }
 
     @Test
     public void initialCategoryVisibleWhenEnterTheSaleView() {
-        verifyThatVisible(DRINKS);
+        verifyThatVisible(AGGREGATE_TOP_ONE);
 
-        selectCategory(BEERS);
-        selectCategory(TAP_BEER);
-        verifyThatNotVisible(DRINKS);
+        selectCategory(AGGREGATE_ONE);
+        selectCategory(LEAF_ONE);
+        verifyThatNotVisible(AGGREGATE_TOP_ONE);
 
         clickButtonThenWait(TO_RESTAURANT, 500);
         clickOnThenWait(TABLE_NUMBER, 200);
-        verifyThatVisible(DRINKS);
+        verifyThatVisible(AGGREGATE_TOP_ONE);
     }
     @Test
     public void testChildrenCategoriesCleared() {
-        selectCategory(BEERS);
-        verifyThatVisible(COCKTAILS);
-        verifyThatVisible(BEERS);
-        verifyThatVisible(TAP_BEER);
-        verifyThatVisible(BOTTLE_BEER);
+        selectCategory(AGGREGATE_ONE);
+        verifyThatVisible(LEAF_FIVE);
+        verifyThatVisible(AGGREGATE_ONE);
+        verifyThatVisible(LEAF_ONE);
+        verifyThatVisible(LEAF_THREE);
 
-        selectCategory(TAP_BEER);
-        verifyThatVisible(COCKTAILS);
-        verifyThatVisible(BEERS);
-        verifyThatVisible(TAP_BEER);
-        verifyThatVisible(BOTTLE_BEER);
+        selectCategory(LEAF_ONE);
+        verifyThatVisible(LEAF_FIVE);
+        verifyThatVisible(AGGREGATE_ONE);
+        verifyThatVisible(LEAF_ONE);
+        verifyThatVisible(LEAF_THREE);
 
-        selectCategory(BOTTLE_BEER);
-        verifyThatVisible(COCKTAILS);
-        verifyThatVisible(BEERS);
-        verifyThatVisible(TAP_BEER);
-        verifyThatVisible(BOTTLE_BEER);
+        selectCategory(LEAF_THREE);
+        verifyThatVisible(LEAF_FIVE);
+        verifyThatVisible(AGGREGATE_ONE);
+        verifyThatVisible(LEAF_ONE);
+        verifyThatVisible(LEAF_THREE);
 
-        selectCategory(COCKTAILS);
-        verifyThatVisible(COCKTAILS);
-        verifyThatVisible(BEERS);
-        verifyThatNotVisible(TAP_BEER);
-        verifyThatNotVisible(BOTTLE_BEER);
+        selectCategory(LEAF_FIVE);
+        verifyThatVisible(LEAF_FIVE);
+        verifyThatVisible(AGGREGATE_ONE);
+        verifyThatNotVisible(LEAF_ONE);
+        verifyThatNotVisible(LEAF_THREE);
 
-        selectCategory(BEERS);
-        verifyThatVisible(COCKTAILS);
-        verifyThatVisible(BEERS);
-        verifyThatVisible(TAP_BEER);
-        verifyThatVisible(BOTTLE_BEER);
+        selectCategory(AGGREGATE_ONE);
+        verifyThatVisible(LEAF_FIVE);
+        verifyThatVisible(AGGREGATE_ONE);
+        verifyThatVisible(LEAF_ONE);
+        verifyThatVisible(LEAF_THREE);
     }
 
     @Test
     public void testSearchFieldSellByName() {
-        ClickUtils.type(KRUSO);
+        ClickUtils.type(PRODUCT_FIVE);
         type(ENTER, 3);
-        assertSoldProduct(1, KRUSO_LONG, 3, 480, 1440);
-        selectiveCancellation(KRUSO_LONG);
+        assertSoldProduct(1, PRODUCT_FIVE_LONG, 3, 440, 1320);
+        selectiveCancellation(PRODUCT_FIVE_LONG);
     }
 
     @Test
     public void testSearchFieldSellByRapidCode() {
-        ClickUtils.type(KRUSO_RAPID_CODE);
+        ClickUtils.type(PRODUCT_FIVE_RAPID_CODE);
         type(ENTER, 3);
-        assertSoldProduct(1, KRUSO_LONG, 3, 480, 1440);
-        selectiveCancellation(KRUSO_LONG);
+        assertSoldProduct(1, PRODUCT_FIVE_LONG, 3, 440, 1320);
+        selectiveCancellation(PRODUCT_FIVE_LONG);
     }
 
     @Test
     public void testSearchFieldClearedWithDelete() {
-        ClickUtils.type(KRUSO);
-        assertEquals(KRUSO.toLowerCase(), getTextField(SEARCH_FIELD));
+        ClickUtils.type(PRODUCT_FIVE);
+        assertEquals(PRODUCT_FIVE.toLowerCase(), getTextField(SEARCH_FIELD));
         type(DELETE);
         assertEquals("", getTextField(SEARCH_FIELD));
     }
 
     @Test
     public void testSearchFieldNothingSoldWhenMultipleSelected() {
-        ClickUtils.type("Sop");
-        verifyThatVisible(SOPRONI);
-        verifyThatVisible(SOPRONI_SMALL);
+        ClickUtils.type("prod");
+        verifyThatVisible(PRODUCT_FIVE);
+        verifyThatVisible(PRODUCT_TWO);
         type(ENTER);
         assertNoSoldProduct();
     }
@@ -141,18 +141,18 @@ public class ProductsAndCategoriesControllerTest extends SaleViewTest {
     @Test
     public void testSearchFieldVisibleProductsUpdatedWhenCleared() {
         ClickUtils.type("ThereIsNoProductMatchThisString");
-        verifyThatNotVisible(SOPRONI);
+        verifyThatNotVisible(PRODUCT_FIVE);
         type(DELETE);
-        verifyThatVisible(SOPRONI);
+        verifyThatVisible(PRODUCT_FIVE);
     }
 
     @Test
     public void testSearchFieldVisibleProductsUpdatedWhenSearchFieldEmpty() {
-        selectCategory(BEERS);
-        ClickUtils.type("T");
-        verifyThatNotVisible(SOPRONI);
+        selectCategory(AGGREGATE_ONE);
+        ClickUtils.type("N");
+        verifyThatNotVisible(PRODUCT_FIVE);
         type(BACK_SPACE);
-        verifyThatVisible(SOPRONI);
+        verifyThatVisible(PRODUCT_FIVE);
     }
 
     @Test

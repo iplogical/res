@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.*;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.inspirationlogical.receipt.corelib.model.AbstractTest;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
@@ -29,7 +29,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 /**
  * Created by Bálint on 2017.03.13..
  */
-public class ReceiptAdapterTest extends AbstractTest {
+public class ReceiptAdapterTest extends TestBase {
 
     private TableAdapter tableAdapter;
     private ProductAdapter productOne;

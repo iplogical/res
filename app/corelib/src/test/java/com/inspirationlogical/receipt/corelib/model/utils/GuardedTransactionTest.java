@@ -2,20 +2,18 @@ package com.inspirationlogical.receipt.corelib.model.utils;
 
 import static org.junit.Assert.assertEquals;
 
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchema;
+import com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 
 /**
  * Created by Ferenc on 2017. 03. 11..
  */
-public class GuardedTransactionTest {
+public class GuardedTransactionTest extends TestBase{
 
-    @Rule
-    public final BuildTestSchema schema = new BuildTestSchema();
-    
     @Test
     public void test_if_exception_happens_inside_a_guarded_transaction_modifications_wont_be_visible() {
         int old_capacity = schema.getTableNormal().getCapacity();

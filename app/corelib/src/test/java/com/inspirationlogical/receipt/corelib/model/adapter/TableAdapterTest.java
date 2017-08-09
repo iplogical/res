@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_DISPLAYABLE_TABLES;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_DISPLAYABLE_TABLES;
 import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.getTableFromActual;
 import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.getTableFromArchive;
 import static org.junit.Assert.assertEquals;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.persistence.RollbackException;
 
-import com.inspirationlogical.receipt.corelib.model.AbstractTest;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import javafx.geometry.Dimension2D;
@@ -33,7 +33,7 @@ import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 import javafx.geometry.Point2D;
 
-public class TableAdapterTest extends AbstractTest {
+public class TableAdapterTest extends TestBase {
 
     private TableAdapter tableNormal;
     private TableAdapter tableNormalClosed;
@@ -234,7 +234,7 @@ public class TableAdapterTest extends AbstractTest {
 
     @Test
     public void testGetTablesByType() {
-        assertEquals(4, TableAdapter.getTablesByType(TableType.NORMAL).size());
+        assertEquals(12, TableAdapter.getTablesByType(TableType.NORMAL).size());
         assertEquals(1, TableAdapter.getTablesByType(TableType.LOITERER).size());
         assertEquals(1, TableAdapter.getTablesByType(TableType.DISPOSAL).size());
     }
@@ -243,7 +243,7 @@ public class TableAdapterTest extends AbstractTest {
     public void testGetFirstUnusedNumber() {
         assertEquals(8, TableAdapter.getFirstUnusedNumber());
         int newFirstUnused = tableNormalClosed.getAdaptee().getNumber();
-        tableNormalClosed.setNumber(20);
+        tableNormalClosed.setNumber(40);
         assertEquals(newFirstUnused, TableAdapter.getFirstUnusedNumber());
     }
 

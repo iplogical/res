@@ -14,6 +14,8 @@ import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,11 +27,23 @@ import javafx.stage.Stage;
 
 public class WaiterApp extends Application implements StageProvider, ResourcesProvider {
 
+    @Setter
+    private static boolean testApplication = false;
+
     final static Logger logger = LoggerFactory.getLogger(WaiterApp.class);
 
     private Stage stage;
 
     private Resources resources;
+
+    @Override
+    public void init() {
+        if(testApplication) {
+            EntityManagerProvider.getTestEntityManager();
+            EntityManagerProvider.getTestEntityManagerArchive();
+        }
+    }
+
 
     @Override
     public void start(Stage stage) {

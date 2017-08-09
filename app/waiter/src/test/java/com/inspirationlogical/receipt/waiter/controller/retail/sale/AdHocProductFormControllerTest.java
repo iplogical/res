@@ -27,7 +27,7 @@ public class AdHocProductFormControllerTest extends SaleViewTest {
         clickButtonThenWait(SELL_ADHOC_PRODUCT, 100);
         verifyThatVisible(Resources.WAITER.getString("AdHocProductForm.Title"));
         setTextField(ADHOC_PRODUCT_NAME, "TestAdHocProductName");
-        setTextField(ADHOC_PRODUCT_QUANTITY, "Invalid");
+        setTextField(ADHOC_PRODUCT_QUANTITY, "");
         setTextField(ADHOC_PRODUCT_PURCHASE_PRICE, Integer.toString(500));
         setTextField(ADHOC_PRODUCT_SALE_PRICE, Integer.toString(500));
         clickButtonThenWait("Form.Confirm", 100);

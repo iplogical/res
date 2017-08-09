@@ -9,7 +9,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import com.inspirationlogical.receipt.corelib.model.BuildTestSchema;
+import com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 
 import com.inspirationlogical.receipt.corelib.utility.ReceiptToXML;

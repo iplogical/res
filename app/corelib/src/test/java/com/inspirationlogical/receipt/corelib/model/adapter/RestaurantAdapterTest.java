@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_DISPLAYABLE_TABLES;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_DISPLAYABLE_TABLES;
 import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.getTableFromActual;
 import static java.util.stream.Collectors.toList;
 import static junit.framework.TestCase.assertNotNull;
@@ -9,7 +9,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
-import com.inspirationlogical.receipt.corelib.model.AbstractTest;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
@@ -24,7 +24,7 @@ import java.util.Arrays;
 /**
  * Created by Bálint on 2017.03.13..
  */
-public class RestaurantAdapterTest extends AbstractTest {
+public class RestaurantAdapterTest extends TestBase {
 
     private RestaurantAdapter restaurantAdapter;
     private Table.TableBuilder tableBuilder;

@@ -31,7 +31,7 @@ public class RestaurantUtils  extends AbstractUtils {
 
     public static void addTable(String tableName, String number, String guestCount, String capacity) {
         runInConfigurationMode(() -> {
-            longClickOn(new Point2D(150, 150));
+            longClickOn(new Point2D(600, 150));
             clickOnThenWait(Resources.WAITER.getString("ContextMenu.AddTable"), 100);
             ((TextField)robot.find(TABLEFORM_NAME)).setText(tableName);
             ((TextField)robot.find(TABLEFORM_NUMBER)).setText(number);
@@ -57,9 +57,9 @@ public class RestaurantUtils  extends AbstractUtils {
         robot.clickOn(Resources.WAITER.getString(tab));
     }
 
-    public static void addTableToTab(String tableName, String tab) {
+    public static void addTableToTab(String tableName, String number, String tab) {
         selectTab(tab);
-        addTable(tableName, "11", "1", "1");
+        addTable(tableName, number, "1", "1");
         selectTab("Restaurant.Tables");
     }
 

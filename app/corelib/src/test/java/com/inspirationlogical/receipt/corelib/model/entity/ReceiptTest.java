@@ -1,18 +1,18 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_RECEIPTS;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_RECEIPTS;
 import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.RollbackException;
 
-import com.inspirationlogical.receipt.corelib.model.AbstractTest;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
-public class ReceiptTest extends AbstractTest {
+public class ReceiptTest extends TestBase {
 
     @Test
     public void testReceiptCreation() {

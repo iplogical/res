@@ -1,19 +1,19 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import com.inspirationlogical.receipt.corelib.model.AbstractTest;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 import org.junit.Test;
 
 import javax.persistence.RollbackException;
 import java.util.List;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_DAILY_CLOSURES;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_DAILY_CLOSURES;
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by TheDagi on 2017. 04. 17..
  */
-public class DailyClosureTest extends AbstractTest {
+public class DailyClosureTest extends TestBase {
 
     @Test
     public void testDailyClosureCreation() {

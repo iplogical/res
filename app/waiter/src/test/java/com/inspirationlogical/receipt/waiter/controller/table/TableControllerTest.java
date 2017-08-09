@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import org.junit.Test;
 
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.TABLE_TEST_TABLE;
 import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -13,23 +14,24 @@ import static org.junit.Assert.assertTrue;
 
 public class TableControllerTest extends TestFXBase {
 
+    public static final String TABLE_TEST_TABLE_NAME = "tableTableTest";
     @Test
     public void testMeepleVisible() {
-        addTableToTab("TestTableOne", "Restaurant.Frequenters");
-        assertTrue(findMeepleOfTable("Table11").isVisible());
-        assertEquals("1", findHostedCountOfTable("Table11").getText());
+        addTableToTab("TestTableOne", TABLE_TEST_TABLE, "Restaurant.Frequenters");
+        assertTrue(findMeepleOfTable(TABLE_TEST_TABLE_NAME).isVisible());
+        assertEquals("1", findHostedCountOfTable(TABLE_TEST_TABLE_NAME).getText());
 
-        addTableToTab("TestTableTwo", "Restaurant.Loiterers");
-        assertTrue(findMeepleOfTable("Table11").isVisible());
-        assertEquals("2", findHostedCountOfTable("Table11").getText());
+        addTableToTab("TestTableTwo", TABLE_TEST_TABLE, "Restaurant.Loiterers");
+        assertTrue(findMeepleOfTable(TABLE_TEST_TABLE_NAME).isVisible());
+        assertEquals("2", findHostedCountOfTable(TABLE_TEST_TABLE_NAME).getText());
 
         deleteTableFromTab("TestTableOne", "Restaurant.Frequenters");
-        assertTrue(findMeepleOfTable("Table11").isVisible());
-        assertEquals("1", findHostedCountOfTable("Table11").getText());
+        assertTrue(findMeepleOfTable(TABLE_TEST_TABLE_NAME).isVisible());
+        assertEquals("1", findHostedCountOfTable(TABLE_TEST_TABLE_NAME).getText());
 
         deleteTableFromTab("TestTableTwo", "Restaurant.Loiterers");
-        assertFalse(findMeepleOfTable("Table11").isVisible());
-        assertEquals("", findHostedCountOfTable("Table11").getText());
+        assertFalse(findMeepleOfTable(TABLE_TEST_TABLE_NAME).isVisible());
+        assertEquals("", findHostedCountOfTable(TABLE_TEST_TABLE_NAME).getText());
     }
 
     private ImageView findMeepleOfTable(String table) {

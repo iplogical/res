@@ -1,20 +1,20 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_RESERVATIONS;
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_TABLES;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_RESERVATIONS;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_TABLES;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.RollbackException;
 
-import com.inspirationlogical.receipt.corelib.model.AbstractTest;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
-public class TableTest extends AbstractTest {
+public class TableTest extends TestBase {
 
     @Test
     public void testTableCreation() {

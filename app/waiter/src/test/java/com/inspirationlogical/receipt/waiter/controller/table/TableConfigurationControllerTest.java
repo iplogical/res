@@ -6,6 +6,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.TextField;
 import org.junit.Test;
 
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.verifyThatVisible;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
@@ -23,8 +24,8 @@ public class TableConfigurationControllerTest extends TestFXBase {
 
     @Test
     public void testAddNewTableNumberAlreadyUsed() {
-        addTable("NumberUsed", "1", "26", "36");
-        verifyErrorMessageWithParam("TableAlreadyUsed", "1");
+        addTable("NumberUsed", TABLE_TEST_TABLE, "26", "36");
+        verifyErrorMessageWithParam("TableAlreadyUsed", TABLE_TEST_TABLE);
     }
 
     @Test
@@ -72,12 +73,12 @@ public class TableConfigurationControllerTest extends TestFXBase {
 
     @Test
     public void testOpenThenCloseTable() {
-        openThenCloseTable("1");
+        openThenCloseTable(TABLE_TEST_TABLE);
     }
 
     @Test
     public void testEditTable() {
-        longClickOn("1");
+        longClickOn(TABLE_TEST_TABLE);
         clickMenuThenWait("ContextMenu.EditTable", 500);
         setTextField(TABLEFORM_NAME, "MyNewName");
         setTextField(TABLEFORM_GUEST_COUNT, "26");
@@ -87,24 +88,24 @@ public class TableConfigurationControllerTest extends TestFXBase {
         verifyThatVisible("MyNewName");
         verifyThatVisible("26");
         verifyThatVisible("36");
-        openThenCloseTable("1");
+        openThenCloseTable(TABLE_TEST_TABLE);
         verifyThatNotVisible("MyNewName");
     }
 
     @Test
     public void testEditTableNumberAlreadyUsed() {
-        longClickOn("1");
+        longClickOn(TABLE_TEST_TABLE);
         clickMenuThenWait("ContextMenu.EditTable", 500);
-        setTextField(TABLEFORM_NUMBER, "3");
+        setTextField(TABLEFORM_NUMBER, SALE_TEST_TABLE);
         clickOn(TABLEFORM_CONFIRM);
-        verifyErrorMessageWithParam("TableAlreadyUsed", "3");
+        verifyErrorMessageWithParam("TableAlreadyUsed", SALE_TEST_TABLE);
     }
 
     @Test
     public void testMergeAndSplitTables() {
-        mergeTables("1", "3");
-        splitTables("1");
-        closeTable("1");
+        mergeTables(CONSUMER_TEST_TABLE, CONSUMED_TEST_TABLE_ONE);
+        splitTables(CONSUMER_TEST_TABLE);
+        closeTable(CONSUMER_TEST_TABLE);
     }
 
 }

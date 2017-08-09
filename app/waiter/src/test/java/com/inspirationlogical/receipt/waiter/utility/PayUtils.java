@@ -14,8 +14,7 @@ import java.util.List;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.SELECTIVE_PAYMENT;
-import static com.inspirationlogical.receipt.waiter.utility.NameUtils.GERE_LONG;
-import static com.inspirationlogical.receipt.waiter.utility.NameUtils.SOPRONI_LONG;
+import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.intToForint;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -97,12 +96,12 @@ public class PayUtils  extends AbstractUtils {
         assertEquals(Integer.toString(totalPrice), getPaidProductTotalPrice(row));
     }
 
-    public static void assertPaidSoproni(int row, double quantity) {
-        assertPaidProduct(row, SOPRONI_LONG, quantity, 440, (int)(quantity * 440));
+    public static void assertPaidProductFive(int row, double quantity) {
+        assertPaidProduct(row, PRODUCT_FIVE_LONG, quantity, 440, (int)(quantity * 440));
     }
 
-    public static void assertPaidGere(int row, double quantity) {
-        assertPaidProduct(row, GERE_LONG, quantity, 2900, (int)(quantity * 2900));
+    public static void assertPaidProductThree(int row, double quantity) {
+        assertPaidProduct(row, PRODUCT_THREE_LONG, quantity, 2900, (int)(quantity * 2900));
     }
 
     public static void assertPaidTotalPrice(int price) {

@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_PRODUCT_CATEGORIES;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_PRODUCT_CATEGORIES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.RollbackException;
 
-import com.inspirationlogical.receipt.corelib.model.AbstractTest;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
 
-public class ProductCategoryTest extends AbstractTest {
+public class ProductCategoryTest extends TestBase {
 
     @Test
     public void testProductCategoryCreation() {

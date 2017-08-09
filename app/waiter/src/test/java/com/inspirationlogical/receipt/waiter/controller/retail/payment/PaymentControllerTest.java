@@ -1,12 +1,11 @@
 package com.inspirationlogical.receipt.waiter.controller.retail.payment;
 
-import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.PAYMENT_TEST_TABLE;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
@@ -18,25 +17,24 @@ import static org.junit.Assert.assertEquals;
 
 public class PaymentControllerTest  extends TestFXBase {
 
-    private static final String TABLE_NUMBER = "21";
+    private static final String TABLE_NUMBER = PAYMENT_TEST_TABLE;
 
     @Before
     public void setUpPaymentControllerTest() throws Exception {
 //        addTable(TABLE_NAME, TABLE_NUMBER, TABLE_GUESTS, TABLE_CAPACITY);
         openTable(TABLE_NUMBER);
         clickOnThenWait(TABLE_NUMBER, 200);
-        selectCategory(BEERS);
-        sellProduct(SOPRONI, 3);
-        selectCategory(WINE);
-        sellProduct(GERE, 2);
+        selectCategory(AGGREGATE_ONE);
+        sellProduct(PRODUCT_FIVE, 3);
+        selectCategory(AGGREGATE_TWO);
+        sellProduct(PRODUCT_THREE, 2);
         clickButtonThenWait(TO_PAYMENT, 200);
         assertInitialState();
-
     }
 
     private void assertInitialState() {
-        assertSoldSoproni(1, 3);
-        assertSoldGere(2, 2);
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 2);
         assertNumberOfSoldProducts(2);
         assertSoldTotalPrice(7120);
 
@@ -48,12 +46,12 @@ public class PaymentControllerTest  extends TestFXBase {
     @Test
     public void testSelectivePayment() {
         paySelective(1);
-        assertPaidSoproni(1, 3);
+        assertPaidProductFive(1, 3);
         assertPaidTotalPrice(1320);
         assertPreviousPartialPrice(0);
         pay();
 
-        assertSoldGere(1, 2);
+        assertSoldProductThree(1, 2);
         assertNumberOfSoldProducts(1);
         assertNoPaidProduct();
         assertPaidTotalPrice(0);
@@ -76,26 +74,26 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     private void testSinglePaymentSoldProductsAssertions$$1() {
-        assertSoldSoproni(1, 2);
-        assertSoldGere(2, 2);
+        assertSoldProductFive(1, 2);
+        assertSoldProductThree(2, 2);
         assertSoldTotalPrice(6680);
     }
 
     private void testSinglePaymentPaidProductsAssertions$$1() {
-        assertPaidSoproni(1,1);
+        assertPaidProductFive(1,1);
         assertPaidTotalPrice(440);
         assertPreviousPartialPrice(0);
     }
 
     private void testSinglePaymentSoldProductsAssertions$$2() {
-        assertSoldSoproni(1, 1);
-        assertSoldGere(2, 2);
+        assertSoldProductFive(1, 1);
+        assertSoldProductThree(2, 2);
         assertSoldTotalPrice(6240);
 
     }
 
     private void testSinglePaymentPaidProductsAssertions$$2() {
-        assertPaidSoproni(1,2);
+        assertPaidProductFive(1,2);
         assertPaidTotalPrice(880);
         assertPreviousPartialPrice(0);
     }
@@ -127,8 +125,8 @@ public class PaymentControllerTest  extends TestFXBase {
         clickButtonThenWait(DISCOUNT_ABSOLUTE, 100);
         setDiscountAbsolute("1000");
         pay();
-        assertSoldSoproni(1, 3);
-        assertSoldGere(2, 1);
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 1);
         assertNoPaidProduct();
         assertPaidTotalPrice(0);
         assertPreviousPartialPrice(1900);
@@ -140,8 +138,8 @@ public class PaymentControllerTest  extends TestFXBase {
         clickButtonThenWait(DISCOUNT_PERCENT, 100);
         setDiscountPercent("30");
         pay();
-        assertSoldSoproni(1, 3);
-        assertSoldGere(2, 1);
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 1);
         assertNoPaidProduct();
         assertPaidTotalPrice(0);
         assertPreviousPartialPrice(2030);
@@ -150,8 +148,8 @@ public class PaymentControllerTest  extends TestFXBase {
     @Test
     public void testPartialPaymentNotAllowed() {
         payPartial(1, 0.5);
-        assertSoldSoproni(1, 3);
-        assertSoldGere(2, 2);
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 2);
         assertNoPaidProduct();
     }
 
@@ -160,18 +158,18 @@ public class PaymentControllerTest  extends TestFXBase {
         setTextField(PARTIAL_PAYMENT_VALUE, "NotDouble");
         payPartial(2);
         verifyErrorMessage("PaymentView.PartialPayNumberError");
-        assertSoldSoproni(1, 3);
-        assertSoldGere(2, 2);
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 2);
         assertNoPaidProduct();
     }
 
     private void testSinglePaymentSoldProductsAssertions$$3() {
-        assertSoldGere(1, 2);
+        assertSoldProductThree(1, 2);
         assertSoldTotalPrice(5800);
     }
 
     private void testSinglePaymentPaidProductsAssertions$$3() {
-        assertPaidSoproni(1, 3);
+        assertPaidProductFive(1, 3);
         assertPaidTotalPrice(1320);
         assertPreviousPartialPrice(0);
     }
@@ -185,10 +183,10 @@ public class PaymentControllerTest  extends TestFXBase {
     @Test
     public void testPartialPayment() {
         payPartial(2, 0.5);
-        assertSoldSoproni(1, 3);
-        assertSoldGere(2, 1.5);
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 1.5);
         assertSoldTotalPrice(5670);
-        assertPaidGere(1, 0.5);
+        assertPaidProductThree(1, 0.5);
         assertPaidTotalPrice(1450);
         assertPreviousPartialPrice(0);
         pay();
@@ -200,9 +198,9 @@ public class PaymentControllerTest  extends TestFXBase {
         payPartialOneAndHalf();
         pay();
         payPartial(2, 0.5);
-        assertSoldSoproni(1, 3);
+        assertSoldProductFive(1, 3);
         assertSoldTotalPrice(1320);
-        assertPaidGere(1, 0.5);
+        assertPaidProductThree(1, 0.5);
         assertPaidTotalPrice(1450);
         assertPreviousPartialPrice(4350);
         pay();
@@ -210,10 +208,10 @@ public class PaymentControllerTest  extends TestFXBase {
 
     private void payPartialOneAndHalf() {
         payPartial(2, 1.5);
-        assertSoldSoproni(1, 3);
-        assertSoldGere(2, 0.5);
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 0.5);
         assertSoldTotalPrice(2770);
-        assertPaidGere(1, 1.5);
+        assertPaidProductThree(1, 1.5);
         assertPaidTotalPrice(4350);
         assertPreviousPartialPrice(0);
     }
@@ -223,9 +221,9 @@ public class PaymentControllerTest  extends TestFXBase {
         payPartialOneAndHalf();
         pay();
         paySingle(2);
-        assertSoldSoproni(1, 3);
+        assertSoldProductFive(1, 3);
         assertSoldTotalPrice(1320);
-        assertPaidGere(1, 0.5);
+        assertPaidProductThree(1, 0.5);
         assertPaidTotalPrice(1450);
         assertPreviousPartialPrice(4350);
         pay();
@@ -263,46 +261,46 @@ public class PaymentControllerTest  extends TestFXBase {
     @Test
     public void testMovePaidProductBackToSoldProducts() {
         paySingle(1);
-        assertSoldSoproni(1, 2);
+        assertSoldProductFive(1, 2);
         assertSoldTotalPrice(6680);
-        assertPaidSoproni(1, 1);
+        assertPaidProductFive(1, 1);
         assertPaidTotalPrice(440);
 
         paySingle(1);
-        assertSoldSoproni(1, 1);
+        assertSoldProductFive(1, 1);
         assertSoldTotalPrice(6240);
-        assertPaidSoproni(1, 2);
+        assertPaidProductFive(1, 2);
         assertPaidTotalPrice(880);
 
         paySingle(1);
-        assertSoldGere(1, 2);
+        assertSoldProductThree(1, 2);
         assertNumberOfSoldProducts(1);
         assertSoldTotalPrice(5800);
-        assertPaidSoproni(1, 3);
+        assertPaidProductFive(1, 3);
         assertPaidTotalPrice(1320);
 
         putBackToSold(1);
-        assertSoldSoproni(2, 1);
+        assertSoldProductFive(2, 1);
         assertSoldTotalPrice(6240);
-        assertPaidSoproni(1, 2);
+        assertPaidProductFive(1, 2);
         assertPaidTotalPrice(880);
 
         putBackToSold(1);
-        assertSoldSoproni(2, 2);
+        assertSoldProductFive(2, 2);
         assertSoldTotalPrice(6680);
-        assertPaidSoproni(1, 1);
+        assertPaidProductFive(1, 1);
         assertPaidTotalPrice(440);
         putBackToSold(1);
-        assertSoldSoproni(2, 3);
+        assertSoldProductFive(2, 3);
         assertSoldTotalPrice(7120);
         assertNoPaidProduct();
         assertPaidTotalPrice(0);
 
         paySelective(2);
-        assertSoldGere(1, 2);
+        assertSoldProductThree(1, 2);
         assertNumberOfSoldProducts(1);
         assertSoldTotalPrice(5800);
-        assertPaidSoproni(1, 3);
+        assertPaidProductFive(1, 3);
         assertPaidTotalPrice(1320);
 
         pay();

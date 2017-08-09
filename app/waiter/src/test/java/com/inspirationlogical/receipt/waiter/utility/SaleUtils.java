@@ -8,8 +8,7 @@ import javafx.scene.control.TableView;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.setTextField;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
-import static com.inspirationlogical.receipt.waiter.utility.NameUtils.GERE_LONG;
-import static com.inspirationlogical.receipt.waiter.utility.NameUtils.SOPRONI_LONG;
+import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -85,12 +84,12 @@ public class SaleUtils  extends AbstractUtils {
         assertEquals(Integer.toString(totalPrice), getSoldProductTotalPrice(row));
     }
 
-    public static void assertSoldSoproni(int row, double quantity) {
-        assertSoldProduct(row, SOPRONI_LONG, quantity, 440, (int)(quantity * 440));
+    public static void assertSoldProductFive(int row, double quantity) {
+        assertSoldProduct(row, PRODUCT_FIVE_LONG, quantity, 440, (int)(quantity * 440));
     }
 
-    public static void assertSoldGere(int row, double quantity) {
-        assertSoldProduct(row, GERE_LONG, quantity, 2900, (int)(quantity * 2900));
+    public static void assertSoldProductThree(int row, double quantity) {
+        assertSoldProduct(row, PRODUCT_THREE_LONG, quantity, 2900, (int)(quantity * 2900));
     }
 
 

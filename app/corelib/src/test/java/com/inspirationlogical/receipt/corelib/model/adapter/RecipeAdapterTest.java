@@ -4,11 +4,11 @@ import static junit.framework.TestCase.assertEquals;
 
 import java.util.List;
 
-import com.inspirationlogical.receipt.corelib.model.AbstractTest;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import org.junit.Before;
 import org.junit.Test;
 
-public class RecipeAdapterTest extends AbstractTest {
+public class RecipeAdapterTest extends TestBase {
 
     private ProductAdapter product;
     private ProductAdapter productFour;

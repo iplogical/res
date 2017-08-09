@@ -5,8 +5,9 @@ import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import javafx.geometry.Point2D;
 import org.junit.Test;
 
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.CONSUMED_TEST_TABLE_ONE;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.RESTAURANT_TEST_TABLE;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
-import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 import static com.inspirationlogical.receipt.waiter.utility.ReservationUtils.backToRestaurantView;
 import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
 
@@ -17,60 +18,60 @@ public class RestaurantControllerTest extends TestFXBase {
 
     @Test
     public void testContextMenu() {
-        longClickOn("11");
-        verifyThatVisible(Resources.WAITER.getString("ContextMenu.OpenTable"));
-        verifyThatVisible(Resources.WAITER.getString("ContextMenu.EditTable"));
+        longClickOn(RESTAURANT_TEST_TABLE);
+        verifyMenuItemVisible("ContextMenu.OpenTable");
+        verifyMenuItemVisible("ContextMenu.EditTable");
     }
 
     @Test
     public void testContextMenuConfiguration() {
         runInConfigurationMode(() -> {
-            longClickOn("11");
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.DeleteTable"));
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.RotateTable"));
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.EditTable"));
+            longClickOn(RESTAURANT_TEST_TABLE);
+            verifyMenuItemVisible("ContextMenu.DeleteTable");
+            verifyMenuItemVisible("ContextMenu.RotateTable");
+            verifyMenuItemVisible("ContextMenu.EditTable");
         });
     }
 
     @Test
     public void testContextMenuNoDeleteForOpenTable() {
-        openTable("11");
+        openTable(RESTAURANT_TEST_TABLE);
         runInConfigurationMode(() -> {
-            longClickOn("11");
-            verifyThatNotVisible(Resources.WAITER.getString("ContextMenu.DeleteTable"));
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.RotateTable"));
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.EditTable"));
+            longClickOn(RESTAURANT_TEST_TABLE);
+            verifyMenuItemNotVisible("ContextMenu.DeleteTable");
+            verifyMenuItemVisible("ContextMenu.RotateTable");
+            verifyMenuItemVisible("ContextMenu.EditTable");
         });
-        closeTable("11");
+        closeTable(RESTAURANT_TEST_TABLE);
     }
 
     @Test
     public void testContextMenuNoDeleteForMergedTable() {
-        mergeTables("11", "3");
+        mergeTables(RESTAURANT_TEST_TABLE, CONSUMED_TEST_TABLE_ONE);
         runInConfigurationMode(() -> {
-            longClickOn("11");
-            verifyThatNotVisible(Resources.WAITER.getString("ContextMenu.DeleteTable"));
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.RotateTable"));
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.SplitTable"));
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.EditTable"));
-            longClickOn("3");
-            verifyThatNotVisible(Resources.WAITER.getString("ContextMenu.DeleteTable"));
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.RotateTable"));
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.SplitTable"));
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.EditTable"));
+            longClickOn(RESTAURANT_TEST_TABLE);
+            verifyMenuItemNotVisible("ContextMenu.DeleteTable");
+            verifyMenuItemVisible("ContextMenu.RotateTable");
+            verifyMenuItemVisible("ContextMenu.SplitTable");
+            verifyMenuItemVisible("ContextMenu.EditTable");
+            longClickOn(CONSUMED_TEST_TABLE_ONE);
+            verifyMenuItemNotVisible("ContextMenu.DeleteTable");
+            verifyMenuItemVisible("ContextMenu.RotateTable");
+            verifyMenuItemVisible("ContextMenu.SplitTable");
+            verifyMenuItemVisible("ContextMenu.EditTable");
         });
-        splitTables("11");
-        closeTable("11");
+        splitTables(RESTAURANT_TEST_TABLE);
+        closeTable(RESTAURANT_TEST_TABLE);
     }
 
     @Test
     public void testContextMenuNoDeleteForHostTable() {
-        addTableToTab("TestTableOne", "Restaurant.Frequenters");
+        addTableToTab("TestTableOne", RESTAURANT_TEST_TABLE, "Restaurant.Frequenters");
         runInConfigurationMode(() -> {
-            longClickOn("11");
-            verifyThatNotVisible(Resources.WAITER.getString("ContextMenu.DeleteTable"));
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.RotateTable"));
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.EditTable"));
+            longClickOn(RESTAURANT_TEST_TABLE);
+            verifyMenuItemNotVisible("ContextMenu.DeleteTable");
+            verifyMenuItemVisible("ContextMenu.RotateTable");
+            verifyMenuItemVisible("ContextMenu.EditTable");
         });
         deleteTableFromTab("TestTableOne", "Restaurant.Frequenters");
     }
@@ -79,7 +80,7 @@ public class RestaurantControllerTest extends TestFXBase {
     public void testContextMenuAddNewTable() {
         runInConfigurationMode(() -> {
             longClickOn(new Point2D(150, 150));
-            verifyThatVisible(Resources.WAITER.getString("ContextMenu.AddTable"));
+            verifyMenuItemVisible("ContextMenu.AddTable");
         });
     }
 
@@ -99,5 +100,14 @@ public class RestaurantControllerTest extends TestFXBase {
     public void testDailyClosure() {
         clickButtonThenWait("Restaurant.DailyClosure", 500);
         clickOnThenWait("No", 500);
+    }
+
+    private void verifyMenuItemVisible(String menuItem) {
+        verifyThatVisible(Resources.WAITER.getString(menuItem));
+    }
+
+
+    private void verifyMenuItemNotVisible(String menuItem) {
+        verifyThatNotVisible(Resources.WAITER.getString(menuItem));
     }
 }

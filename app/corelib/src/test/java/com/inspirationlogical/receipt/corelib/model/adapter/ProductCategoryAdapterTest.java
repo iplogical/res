@@ -2,7 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
-import com.inspirationlogical.receipt.corelib.model.AbstractTest;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
@@ -15,13 +15,13 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_PRODUCT_CATEGORIES;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_PRODUCT_CATEGORIES;
 import static com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter.getProductCategoryByName;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class ProductCategoryAdapterTest extends AbstractTest {
+public class ProductCategoryAdapterTest extends TestBase {
 
     ReceiptRecordAdapter receiptRecordAdapter;
     ProductCategoryAdapter root, aggregateOne, leafOne, pseudoTwo, pseudoFour;
@@ -87,7 +87,7 @@ public class ProductCategoryAdapterTest extends AbstractTest {
     @Test
     public void testAddProduct() {
         leafOne.addProduct(builder);
-        assertEquals(7, leafOne.getAdaptee().getChildren().size());
+        assertEquals(6, leafOne.getAdaptee().getChildren().size());
         assertEquals(1, leafOne.getAdaptee().getChildren().stream()
                 .filter(productCategory -> productCategory.getProduct().getLongName().equals("newProduct"))
                 .collect(toList()).size());

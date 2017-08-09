@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import com.inspirationlogical.receipt.corelib.model.AbstractTest;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by Bálint on 2017.04.04..
  */
-public class StockAdapterTest extends AbstractTest {
+public class StockAdapterTest extends TestBase {
 
     private ProductAdapter productTwo;
     private ProductAdapter recipeElementOne;

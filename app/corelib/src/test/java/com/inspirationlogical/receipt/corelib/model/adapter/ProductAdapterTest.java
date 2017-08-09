@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
-import com.inspirationlogical.receipt.corelib.model.AbstractTest;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_PRODUCTS;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_PRODUCTS;
 import static com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter.getProductById;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
@@ -25,7 +25,7 @@ import static org.junit.Assert.assertNull;
 /**
  * Created by Bálint on 2017.03.20..
  */
-public class ProductAdapterTest extends AbstractTest {
+public class ProductAdapterTest extends TestBase {
 
     private ProductAdapter productFour;
     private RecipeParams recipeParamOne;
@@ -65,7 +65,7 @@ public class ProductAdapterTest extends AbstractTest {
     @Test
     public void testGetStorableProducts() {
         List<ProductAdapter> products = ProductAdapter.getStorableProducts();
-        assertEquals(8, products.size());
+        assertEquals(10, products.size());
         assertEquals(0, products.stream().filter(productAdapter ->
                 productAdapter.getAdaptee().getLongName().equals("productFour")).collect(toList()).size());
     }
@@ -84,7 +84,7 @@ public class ProductAdapterTest extends AbstractTest {
 
     @Test
     public void testGetProductByName() {
-        assertEquals("product", ProductAdapter.getProductByName("product").getAdaptee().getLongName());
+        assertEquals("productOne", ProductAdapter.getProductByName("productOne").getAdaptee().getLongName());
     }
 
     @Test
@@ -166,7 +166,7 @@ public class ProductAdapterTest extends AbstractTest {
 
     @Test(expected = IllegalProductStateException.class)
     public void testUpdateProductNameAlreadyUsed() {
-        builder.longName("product");
+        builder.longName("productOne");
         productFour.updateProduct(productFour.getAdaptee().getCategory().getParent().getName(), builder);
     }
 }

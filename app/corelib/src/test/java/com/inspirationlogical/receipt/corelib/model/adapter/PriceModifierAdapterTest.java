@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import com.inspirationlogical.receipt.corelib.model.AbstractTest;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static com.inspirationlogical.receipt.corelib.model.BuildTestSchema.NUMBER_OF_PRICE_MODIFIERS;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_PRICE_MODIFIERS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Bálint on 2017.04.04..
  */
-public class PriceModifierAdapterTest extends AbstractTest {
+public class PriceModifierAdapterTest extends TestBase {
 
     private ReceiptRecordAdapter receiptRecordAdapter;
     private PriceModifierAdapter simpleDiscount;
@@ -53,7 +53,7 @@ public class PriceModifierAdapterTest extends AbstractTest {
     public void testAddPriceModifierForProduct() {
         PriceModifierParams params = PriceModifierParams.builder()
                 .originalName("Test1")
-                .ownerName("product")
+                .ownerName("productOne")
                 .isCategory(false)
                 .builder(builder)
                 .build();
