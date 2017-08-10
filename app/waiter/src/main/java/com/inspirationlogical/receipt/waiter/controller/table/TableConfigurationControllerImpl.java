@@ -53,7 +53,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Getter
     private Set<TableController> tableControllers;
-    private Set<TableController> selectedTables;
+    private List<TableController> selectedTables;
 
     private RestaurantView restaurantView;
     private Popup tableForm;
@@ -67,7 +67,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         this.restaurantService = restaurantService;
         restaurantView = restaurantService.getActiveRestaurant();
         tableControllers = new HashSet<>();
-        selectedTables = new LinkedHashSet<>();
+        selectedTables = new ArrayList<>();
     }
 
     @Override
@@ -216,7 +216,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(), Resources.WAITER.getString("InsufficientSelection"));
             return;
         }
-        TableController consumerController = selectedTables.iterator().next();
+        TableController consumerController = selectedTables.get(0);
         try {
             List<TableView> consumedTables = getConsumedTables(consumerController);
             restaurantService.mergeTables(consumerController.getView(), consumedTables);
@@ -234,7 +234,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     private void filterNormalSelectedTables() {
         selectedTables = selectedTables.stream()
                 .filter(tableController -> tableController.getView().getType().equals(TableType.NORMAL))
-                .collect(toSet());
+                .collect(toList());
     }
 
     private List<TableView> getConsumedTables(TableController consumerController) {

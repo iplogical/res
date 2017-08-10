@@ -77,12 +77,17 @@ public class TableFormControllerImpl implements TableFormController {
 
     @FXML
     public void onConfirm(MouseEvent event) {
-        TableParams tableParams = buildTableParams();
-        if (tableController == null) {
-            tableConfigurationController.addTable(tableParams);
-        } else {
-            tableConfigurationController.editTable(tableController, tableParams);
-            tableController = null;
+        try {
+            TableParams tableParams = buildTableParams();
+            if (tableController == null) {
+                tableConfigurationController.addTable(tableParams);
+            } else {
+                tableConfigurationController.editTable(tableController, tableParams);
+                tableController = null;
+            }
+        } catch (NumberFormatException e) {
+            ErrorMessage.showErrorMessage(getRootNode(),
+                    Resources.WAITER.getString("TableForm.NumberFormatError"));
         }
     }
 
@@ -103,6 +108,7 @@ public class TableFormControllerImpl implements TableFormController {
 
     @FXML
     public void onCancel(MouseEvent event) {
+        tableController = null;
         hideNode(root);
     }
 

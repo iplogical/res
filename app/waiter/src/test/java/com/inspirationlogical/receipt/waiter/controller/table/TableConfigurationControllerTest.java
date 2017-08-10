@@ -26,6 +26,7 @@ public class TableConfigurationControllerTest extends TestFXBase {
     public void testAddNewTableNumberAlreadyUsed() {
         addTable("NumberUsed", TABLE_TEST_TABLE, "26", "36");
         verifyErrorMessageWithParam("TableAlreadyUsed", TABLE_TEST_TABLE);
+        clickOn(TABLEFORM_CANCEL);
     }
 
     @Test
@@ -102,6 +103,16 @@ public class TableConfigurationControllerTest extends TestFXBase {
     }
 
     @Test
+    public void testEditTableInvalidInput() {
+        longClickOn(TABLE_TEST_TABLE);
+        clickMenuThenWait("ContextMenu.EditTable", 500);
+        setTextField(TABLEFORM_NUMBER, "");
+        clickOn(TABLEFORM_CONFIRM);
+        verifyErrorMessage("TableForm.NumberFormatError");
+        clickOn(TABLEFORM_CANCEL);
+    }
+
+    @Test
     public void testMergeAndSplitTables() {
         mergeTables(CONSUMER_TEST_TABLE, CONSUMED_TEST_TABLE_ONE);
         splitTables(CONSUMER_TEST_TABLE);
@@ -120,5 +131,6 @@ public class TableConfigurationControllerTest extends TestFXBase {
             clickMenuThenWait("ContextMenu.MergeTable", 100);
             verifyErrorMessage("InsufficientSelection");
         });
+        deleteTableFromTab("TestTable", "Restaurant.Frequenters");
     }
 }
