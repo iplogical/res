@@ -8,10 +8,13 @@ import org.junit.Test;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
+import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.longClickOn;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.verifyThatVisible;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TABLEFORM_CONFIRM;
+import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
+import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 
 public class TableConfigurationControllerTest extends TestFXBase {
 
@@ -133,4 +136,71 @@ public class TableConfigurationControllerTest extends TestFXBase {
         });
         deleteTableFromTab("TestTable", "Restaurant.Frequenters");
     }
+
+    @Test
+    public void testExchangeTableInsufficientSelection() {
+        runInConfigurationMode(() -> {
+            clickOnThenWait(CONSUMED_TEST_TABLE_ONE, 100);
+            longClickOn(CONSUMED_TEST_TABLE_ONE);
+            clickMenuThenWait("ContextMenu.ExchangeTable", 100);
+            verifyErrorMessage("TableConfiguration.InsufficientForExchange");
+        });
+    }
+
+    @Test
+    public void testExchangeTableTooManySelection() {
+        runInConfigurationMode(() -> {
+            clickOnThenWait(CONSUMED_TEST_TABLE_ONE, 100);
+            clickOnThenWait(CONSUMED_TEST_TABLE_TWO, 100);
+            clickOnThenWait(TABLE_TEST_TABLE, 100);
+            longClickOn(CONSUMED_TEST_TABLE_ONE);
+            clickMenuThenWait("ContextMenu.ExchangeTable", 100);
+            verifyErrorMessage("TableConfiguration.InsufficientForExchange");
+        });
+    }
+
+    @Test
+    public void testExchangeTableOneIsOpen() {
+        openTableAndSellProducts(TABLE_TEST_TABLE, PRODUCT_FIVE);
+        exchangeTables(TABLE_TEST_TABLE, CONSUMED_TEST_TABLE_ONE);
+        enterSaleView(CONSUMED_TEST_TABLE_ONE);
+        assertSoldProductFive(1, 5);
+        backToRestaurantView();
+        closeTable(CONSUMED_TEST_TABLE_ONE);
+    }
+
+    @Test
+    public void testExchangeTableBothAreOpen() {
+        openTableAndSellProducts(TABLE_TEST_TABLE, PRODUCT_FIVE);
+        openTableAndSellProducts(CONSUMED_TEST_TABLE_ONE, PRODUCT_TWO);
+        exchangeTables(TABLE_TEST_TABLE, CONSUMED_TEST_TABLE_ONE);
+
+        enterSaleView(CONSUMED_TEST_TABLE_ONE);
+        assertSoldProductFive(1, 5);
+        backToRestaurantView();
+        closeTable(CONSUMED_TEST_TABLE_ONE);
+
+        enterSaleView(TABLE_TEST_TABLE);
+        assertSoldProduct(1, PRODUCT_TWO_LONG + " *", 5, 160, 800);
+        backToRestaurantView();
+        closeTable(TABLE_TEST_TABLE);
+   }
+
+    public void exchangeTables(String firstTable, String secondTable) {
+        runInConfigurationMode(() -> {
+            clickOnThenWait(firstTable, 100);
+            clickOnThenWait(secondTable, 100);
+            longClickOn(secondTable);
+            clickMenuThenWait("ContextMenu.ExchangeTable", 100);
+        });
+    }
+
+    private void openTableAndSellProducts(String tableName, String product) {
+        openTable(tableName);
+        enterSaleView(tableName);
+        selectCategory(AGGREGATE_ONE);
+        sellProduct(product, 5);
+        backToRestaurantView();
+    }
+
 }

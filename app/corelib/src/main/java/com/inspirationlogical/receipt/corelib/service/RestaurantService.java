@@ -34,6 +34,8 @@ public interface RestaurantService {
 
     List<TableView> splitTables(TableView consumer);
 
+    void exchangeTables(List<TableView> tables);
+
     TableBuilder tableBuilder();
 
     void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant);

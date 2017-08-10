@@ -39,7 +39,8 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
             contextMenu.getItems().add(rotateTable);
             if (tableViewState.isSelected()) {
                 MenuItem mergeTables = buildMenuItem("ContextMenu.MergeTable",tableConfigurationController::mergeTables);
-                contextMenu.getItems().add(mergeTables);
+                MenuItem exchangeTables = buildMenuItem("ContextMenu.ExchangeTable",tableConfigurationController::exchangeTables);
+                contextMenu.getItems().addAll(mergeTables, exchangeTables);
             }
             if (tableViewState.isAggregate()) {
                 MenuItem splitTables = buildMenuItem("ContextMenu.SplitTable", tableConfigurationController::splitTables);

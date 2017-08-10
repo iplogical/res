@@ -33,6 +33,8 @@ public interface TableConfigurationController {
 
     void splitTables(Node node);
 
+    void exchangeTables();
+
     void selectTable(TableController tableController, boolean selected);
 
     void clearSelections();

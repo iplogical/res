@@ -272,4 +272,28 @@ public class TableAdapterTest extends TestBase {
         assertEquals(tableFrequenterUpdated.getNumber(), tableNormalClosed.getHostedTables().get(0).getNumber());
         assertEquals(0, tableNormal.getHostedTables().size());
     }
+
+    @Test
+    public void testExchangeTablesOneIsOpen() {
+        ReceiptAdapter openReceipt = tableNormal.getOpenReceipt();
+        tableNormal.exchangeTables(tableNormalClosed);
+        assertNull(tableNormal.getOpenReceipt());
+        assertEquals(openReceipt.getAdaptee(), tableNormalClosed.getOpenReceipt().getAdaptee());
+    }
+
+    @Test
+    public void testExchangeTablesBothAreOpen() {
+        GuardedTransaction.run(() -> {
+            tableNormalClosed.getAdaptee().getReceipts().forEach(receipt -> {
+                receipt.setStatus(ReceiptStatus.OPEN);
+                receipt.setClosureTime(null);
+            });
+        });
+        ReceiptAdapter receiptOfTableNormal = tableNormal.getOpenReceipt();
+        ReceiptAdapter receiptOfTableNormalClosed = tableNormalClosed.getOpenReceipt();
+        tableNormal.exchangeTables(tableNormalClosed);
+        assertEquals(receiptOfTableNormal.getAdaptee(), tableNormalClosed.getOpenReceipt().getAdaptee());
+        assertEquals(receiptOfTableNormalClosed.getAdaptee(), tableNormal.getOpenReceipt().getAdaptee());
+
+    }
 }

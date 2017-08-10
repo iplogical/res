@@ -271,6 +271,22 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     }
 
     @Override
+    public void exchangeTables() {
+        List<TableView> tablesToExchange = selectedTables.stream()
+                .map(TableController::getView)
+                .collect(toList());
+        if(selectedTables.size() != 2) {
+            ErrorMessage.showErrorMessage(restaurantController.getRootNode(),
+                    Resources.WAITER.getString("TableConfiguration.InsufficientForExchange"));
+            selectedTables.clear();
+            return;
+        }
+        restaurantService.exchangeTables(tablesToExchange);
+        selectedTables.forEach(TableController::updateTable);
+        selectedTables.clear();
+    }
+
+    @Override
     public void selectTable(TableController tableController, boolean selected) {
         if (selected) {
             selectedTables.add(tableController);
@@ -286,6 +302,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void clearSelections() {
+        selectedTables.clear();
         tableControllers.forEach(TableController::deselectTable);
     }
 

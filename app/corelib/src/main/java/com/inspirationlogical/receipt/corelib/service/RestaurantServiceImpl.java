@@ -78,11 +78,16 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     @Override
     public List<TableView> splitTables(TableView consumer) {
         TableAdapter consumerTableAdapter = getTableAdapter(consumer);
-
         return getRestaurantAdapter(getActiveRestaurant()).splitTables(consumerTableAdapter)
                 .stream()
                 .map(TableViewImpl::new)
                 .collect(toList());
+    }
+
+    @Override
+    public void exchangeTables(List<TableView> tables) {
+        TableAdapter firstTable = getTableAdapter(tables.get(0));
+        firstTable.exchangeTables(getTableAdapter(tables.get(1)));
     }
 
     @Override

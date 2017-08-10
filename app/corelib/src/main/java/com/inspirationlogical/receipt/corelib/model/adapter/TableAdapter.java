@@ -289,4 +289,59 @@ public class TableAdapter extends AbstractAdapter<Table> {
         return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_HOST, query ->
             query.setParameter("host", adaptee));
     }
+
+    public void exchangeTables(TableAdapter other) {
+        GuardedTransaction.run(() -> {
+            ReceiptAdapter receiptOfThis =  getOpenReceipt();
+            ReceiptAdapter receiptOfOther = other.getOpenReceipt();
+            if(bothAreOpen(receiptOfThis, receiptOfOther)) {
+                exchangeOwners(other, receiptOfThis, receiptOfOther);
+            } else if(oneIsOpen(receiptOfThis, receiptOfOther)) {
+                ReceiptAdapter openReceipt = getTheOpenReceipt(receiptOfThis, receiptOfOther);
+                changeOwner(openReceipt, other);
+            }
+        });
+    }
+
+    private boolean bothAreOpen(ReceiptAdapter receiptOfThis, ReceiptAdapter receiptOfOther) {
+        return receiptOfThis != null && receiptOfOther != null;
+    }
+
+    private void exchangeOwners(TableAdapter other, ReceiptAdapter receiptOfThis, ReceiptAdapter receiptOfOther) {
+        removeFromThisAndAddToOther(other, receiptOfThis);
+        receiptOfThis.getAdaptee().setOwner(other.getAdaptee());
+        removeFromOtherAndAddToThis(other, receiptOfOther);
+        receiptOfOther.getAdaptee().setOwner(adaptee);
+    }
+
+    private void removeFromThisAndAddToOther(TableAdapter other, ReceiptAdapter receiptOfThis) {
+        adaptee.getReceipts().remove(receiptOfThis.getAdaptee());
+        other.getAdaptee().getReceipts().add(receiptOfThis.getAdaptee());
+    }
+
+    private void removeFromOtherAndAddToThis(TableAdapter other, ReceiptAdapter receiptOfOther) {
+        other.getAdaptee().getReceipts().remove(receiptOfOther.getAdaptee());
+        adaptee.getReceipts().add(receiptOfOther.getAdaptee());
+    }
+
+    private boolean oneIsOpen(ReceiptAdapter receiptOfThis, ReceiptAdapter receiptOfOther) {
+        return receiptOfThis != null || receiptOfOther != null;
+    }
+
+    private void changeOwner(ReceiptAdapter openReceipt, TableAdapter other) {
+        if(openReceipt.getAdaptee().getOwner().equals(adaptee)) {
+            removeFromThisAndAddToOther(other, openReceipt);
+            openReceipt.getAdaptee().setOwner(other.getAdaptee());
+        } else {
+            removeFromOtherAndAddToThis(other, openReceipt);
+            openReceipt.getAdaptee().setOwner(adaptee);
+        }
+    }
+
+    private ReceiptAdapter getTheOpenReceipt(ReceiptAdapter receiptOfThis, ReceiptAdapter receiptOfOther) {
+        if(receiptOfThis != null) {
+            return receiptOfThis;
+        }
+        return receiptOfOther;
+    }
 }
