@@ -108,4 +108,17 @@ public class TableConfigurationControllerTest extends TestFXBase {
         closeTable(CONSUMER_TEST_TABLE);
     }
 
+    @Test
+    public void testVirtualTableNotAllowedForMerge() {
+        addTableToTab("TestTable", "100", "Restaurant.Frequenters");
+        selectTab("Restaurant.Frequenters");
+        runInConfigurationMode(() -> {
+            clickOnThenWait("TestTable", 100);
+            selectTab("Restaurant.Tables");
+            clickOnThenWait(CONSUMED_TEST_TABLE_ONE, 100);
+            longClickOn(new Point2D(150, 150));
+            clickMenuThenWait("ContextMenu.MergeTable", 100);
+            verifyErrorMessage("InsufficientSelection");
+        });
+    }
 }

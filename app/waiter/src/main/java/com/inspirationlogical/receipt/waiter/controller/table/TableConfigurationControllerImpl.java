@@ -33,6 +33,7 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.*
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.HOLD_DURATION_MILLIS;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 @Singleton
 public class TableConfigurationControllerImpl implements TableConfigurationController {
@@ -210,15 +211,15 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void mergeTables() {
-        if(selectedTables.size() < 2) {
+        filterNormalSelectedTables();
+        if(insufficientSelection()) {
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(), Resources.WAITER.getString("InsufficientSelection"));
             return;
         }
         TableController consumerController = selectedTables.iterator().next();
-        TableView consumer = consumerController.getView();
         try {
             List<TableView> consumedTables = getConsumedTables(consumerController);
-            restaurantService.mergeTables(consumer, consumedTables);
+            restaurantService.mergeTables(consumerController.getView(), consumedTables);
             updateConsumer(consumerController);
             updateConsumed();
         } catch (IllegalTableStateException e) {
@@ -226,10 +227,20 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         }
     }
 
-    private List<TableView> getConsumedTables(TableController firstSelected) {
+    public boolean insufficientSelection() {
+        return selectedTables.size() < 2;
+    }
+
+    private void filterNormalSelectedTables() {
+        selectedTables = selectedTables.stream()
+                .filter(tableController -> tableController.getView().getType().equals(TableType.NORMAL))
+                .collect(toSet());
+    }
+
+    private List<TableView> getConsumedTables(TableController consumerController) {
         List<TableView> consumed = new ArrayList<>();
         selectedTables.stream()
-                .filter(tableController -> !tableController.equals(firstSelected))
+                .filter(tableController -> !tableController.equals(consumerController))
                 .forEach(tableController -> consumed.add(tableController.getView()));
         return consumed;
     }
