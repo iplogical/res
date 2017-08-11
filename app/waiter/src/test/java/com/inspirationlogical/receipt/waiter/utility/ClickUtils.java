@@ -64,12 +64,16 @@ public class ClickUtils extends AbstractUtils {
         return ((TextField)robot.find(fxId)).getText();
     }
 
-    public static String getLabel(String fxId) {
-        return ((Label)robot.find(fxId)).getText();
-    }
-
     public static void setTextArea(String fxId, String text) {
         ((TextArea)robot.find(fxId)).setText(text);
+    }
+
+    public static String getTextArea(String fxId) {
+        return ((TextArea)robot.find(fxId)).getText();
+    }
+
+    public static String getLabel(String fxId) {
+        return ((Label)robot.find(fxId)).getText();
     }
 
     public static void verifyThatVisible(String nodeQuery) {

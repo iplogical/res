@@ -1,8 +1,8 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
+import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
-import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
@@ -41,7 +41,7 @@ public interface TableConfigurationController {
 
     boolean hasSelection();
 
-    void openTableOfReservation(Integer number, String name, Integer guestCount, String note);
+    void openTableOfReservation(ReservationView reservation);
 
     void drawTable(TableView tableView);
 

@@ -6,6 +6,7 @@ import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateExcepti
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
@@ -33,7 +34,6 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.*
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.HOLD_DURATION_MILLIS;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 @Singleton
 public class TableConfigurationControllerImpl implements TableConfigurationController {
@@ -307,15 +307,15 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     }
 
     @Override
-    public void openTableOfReservation(Integer number, String name, Integer guestCount, String note) {
+    public void openTableOfReservation(ReservationView reservation) {
         List<TableController> filteredControllers = tableControllers.stream()
-                .filter(controller -> controller.getView().getNumber() == number)
+                .filter(controller -> controller.getView().getNumber() == Integer.valueOf(reservation.getTableNumber()))
                 .limit(1)
                 .collect(toList());
         if(filteredControllers.isEmpty()) {
             viewLoader.loadViewIntoScene(restaurantController);
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
-                    Resources.WAITER.getString("TableDoesNotExist") + number);
+                    Resources.WAITER.getString("TableDoesNotExist") + reservation.getTableNumber());
             return;
         }
         TableController tableController = filteredControllers.get(0);
@@ -326,18 +326,18 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
                     Resources.WAITER.getString("TableIsOpenReservation") + tableView.getNumber());
             return;
         }
-        TableParams tableParams = buildTableParams(number, name, guestCount, note, tableView);
+        TableParams tableParams = buildTableParams(reservation, tableView);
         editTable(tableController, tableParams);
         tableController.openTable(null);
         viewLoader.loadViewIntoScene(restaurantController);
     }
 
-    private TableParams buildTableParams(Integer number, String name, Integer guestCount, String note, TableView tableView) {
+    private TableParams buildTableParams(ReservationView reservation, TableView tableView) {
         return TableParams.builder()
-                .name(name)
-                .number(number)
-                .note(note)
-                .guestCount(guestCount)
+                .name(reservation.getName())
+                .number(Integer.valueOf(reservation.getTableNumber()))
+                .note(reservation.getNote())
+                .guestCount(Integer.valueOf(reservation.getGuestCount()))
                 .capacity(tableView.getCapacity())
                 .dimension(tableView.getDimension())
                 .build();

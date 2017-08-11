@@ -24,6 +24,8 @@ import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import javafx.collections.FXCollections;
@@ -45,7 +47,7 @@ import lombok.SneakyThrows;
 public class ReservationControllerImpl extends AbstractController
         implements ReservationController {
 
-    public static final String RESERVATION_VIEW_PATH = "/view/fxml/Reservation.fxml";
+    private static final String RESERVATION_VIEW_PATH = "/view/fxml/Reservation.fxml";
 
     @FXML
     private BorderPane root;
@@ -57,7 +59,7 @@ public class ReservationControllerImpl extends AbstractController
     @FXML
     private TableColumn<ReservationViewModel, String> reservationTableNumber;
     @FXML
-    private TableColumn<ReservationViewModel, String> reservationDate;
+    private TableColumn<ReservationViewModel, String> reservationGuestCount;
     @FXML
     private TableColumn<ReservationViewModel, String> reservationStartTime;
     @FXML
@@ -72,7 +74,7 @@ public class ReservationControllerImpl extends AbstractController
     @FXML
     private TextField phoneNumber;
     @FXML
-    private TextArea note;
+    private TextArea reservationNote;
 
     @FXML
     private HBox dateContainer;
@@ -184,7 +186,7 @@ public class ReservationControllerImpl extends AbstractController
     private void initColumns() {
         initColumn(reservationName, ReservationViewModel::getName);
         initColumn(reservationTableNumber, ReservationViewModel::getTableNumber);
-        initColumn(reservationDate, ReservationViewModel::getDate);
+        initColumn(reservationGuestCount, ReservationViewModel::getGuestCount);
         initColumn(reservationStartTime, ReservationViewModel::getStartTime);
         initColumn(reservationEndTime, ReservationViewModel::getEndTime);
     }
@@ -217,7 +219,7 @@ public class ReservationControllerImpl extends AbstractController
         tableNumber.setText(row.getTableNumber());
         guestCount.setText(row.getGuestCount());
         phoneNumber.setText(row.getPhoneNumber());
-        note.setText(row.getNote());
+        reservationNote.setText(row.getNote());
         setTimes(row);
         reservationId = row.getReservationId();
     }
@@ -229,6 +231,16 @@ public class ReservationControllerImpl extends AbstractController
         startTime.setCalendar(calendar);
         calendar.setTime(dateFormat.parse(row.getEndTime()));
         endTime.setCalendar(calendar);
+    }
+
+    private void clearForm() {
+        name.clear();
+        tableNumber.clear();
+        guestCount.clear();
+        phoneNumber.clear();
+        reservationNote.clear();
+        startTime.setCalendar(Calendar.getInstance());
+        endTime.setCalendar(Calendar.getInstance());
     }
 
     @Override
@@ -248,8 +260,37 @@ public class ReservationControllerImpl extends AbstractController
             initReservations();
             clearForm();
         } catch (NumberFormatException e) {
-            System.out.println(e.getMessage());
+            showNumberFormatErrorMessage();
         }
+    }
+
+    private void showNumberFormatErrorMessage() {
+        ErrorMessage.showErrorMessage(getRootNode(), Resources.WAITER.getString("Reservation.NumberFormatError"));
+    }
+
+    private ReservationParams initReservationParams() {
+        int startHour = getLocalTimeWithZoneId(startTime).getHour();
+        int startMinute = getLocalTimeWithZoneId(startTime).getMinute();
+        int endHour = getLocalTimeWithZoneId(endTime).getHour();
+        int endMinute = getLocalTimeWithZoneId(endTime).getMinute();
+        return buildReservationParams(startHour, startMinute, endHour, endMinute);
+    }
+
+    private ReservationParams buildReservationParams(int startHour, int startMinute, int endHour, int endMinute) throws NumberFormatException{
+        return ReservationParams.builder()
+                .name(name.getText())
+                .note(reservationNote.getText())
+                .tableNumber(Integer.valueOf(tableNumber.getText()))
+                .guestCount(Integer.valueOf(guestCount.getText()))
+                .phoneNumber(phoneNumber.getText())
+                .date(LocalDateTime.ofInstant(date.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalDate())
+                .startTime(LocalTime.of(startHour, startMinute))
+                .endTime(LocalTime.of(endHour, endMinute))
+                .build();
+    }
+
+    private LocalTime getLocalTimeWithZoneId(CalendarTimePicker picker) {
+        return LocalDateTime.ofInstant(picker.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime();
     }
 
     @FXML
@@ -261,11 +302,11 @@ public class ReservationControllerImpl extends AbstractController
             initReservations();
             clearForm();
         } catch (NumberFormatException e) {
-
+            showNumberFormatErrorMessage();
         }
     }
 
-    public List<ReservationView> getSelectedReservation() {
+    private List<ReservationView> getSelectedReservation() {
         return reservationViews.stream()
                 .filter(reservationView -> reservationView.getId() == reservationId)
                 .collect(toList());
@@ -283,44 +324,11 @@ public class ReservationControllerImpl extends AbstractController
     @FXML
     public void onOpenTable(Event event) {
         try{
-            tableConfigurationController.openTableOfReservation(Integer.valueOf(tableNumber.getText()), name.getText(), Integer.valueOf(guestCount.getText()), note.getText());
+            List<ReservationView> selectedReservations = getSelectedReservation();
+            if(selectedReservations.size() == 0) return;
+            tableConfigurationController.openTableOfReservation(selectedReservations.get(0));
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    private ReservationParams initReservationParams() {
-        int startHour = getLocalTimeWithZoneId(startTime).getHour();
-        int startMinute = getLocalTimeWithZoneId(startTime).getMinute();
-        int endHour = getLocalTimeWithZoneId(endTime).getHour();
-        int endMinute = getLocalTimeWithZoneId(endTime).getMinute();
-        return buildReservationParams(startHour, startMinute, endHour, endMinute);
-    }
-
-    private LocalTime getLocalTimeWithZoneId(CalendarTimePicker picker) {
-        return LocalDateTime.ofInstant(picker.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalTime();
-    }
-
-    private ReservationParams buildReservationParams(int startHour, int startMinute, int endHour, int endMinute) throws NumberFormatException{
-        return ReservationParams.builder()
-                .name(name.getText())
-                .note(note.getText())
-                .tableNumber(Integer.valueOf(tableNumber.getText()))
-                .guestCount(Integer.valueOf(guestCount.getText()))
-                .phoneNumber(phoneNumber.getText())
-                .date(LocalDateTime.ofInstant(date.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalDate())
-                .startTime(LocalTime.of(startHour, startMinute))
-                .endTime(LocalTime.of(endHour, endMinute))
-                .build();
-    }
-
-    private void clearForm() {
-        name.clear();
-        tableNumber.clear();
-        guestCount.clear();
-        phoneNumber.clear();
-        note.clear();
-        startTime.setCalendar(Calendar.getInstance());
-        endTime.setCalendar(Calendar.getInstance());
     }
 }

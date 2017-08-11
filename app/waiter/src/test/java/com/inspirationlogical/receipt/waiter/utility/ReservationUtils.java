@@ -5,9 +5,7 @@ import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
-import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickButtonThenWait;
-import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickOnThenWait;
-import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.setTextField;
+import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 import static org.junit.Assert.assertEquals;
 
@@ -17,18 +15,45 @@ public class ReservationUtils extends AbstractUtils {
         clickButtonThenWait("Common.BackToRestaurantView", 500);
     }
 
+    public static void addReservation(String name, int tableNumber, int guestCount) {
+        setReservationName(name);
+        setReservationTableNumber(tableNumber);
+        setReservationGuestCount(guestCount);
+        setReservationPhoneNumber("+36307654321");
+        clickOnConfirm();
+    }
+
     public static void setReservationName(String text) {
         setTextField(RESERVATIONS_NAME, text);
+    }
+
+    public static String getReservationName() {
+        return getTextField(RESERVATIONS_NAME);
     }
 
     public static void setReservationTableNumber(int number) {
         setTextField(RESERVATIONS_TABLE_NUMBER, Integer.toString(number));
     }
 
+    public static int getReservationTableNumber() {
+        return Integer.valueOf(getTextField(RESERVATIONS_TABLE_NUMBER));
+    }
+
     public static void setReservationGuestCount(int guestCount) {
         setTextField(RESERVATIONS_GUEST_COUNT, Integer.toString(guestCount));
     }
 
+    public static String getReservationGuestCount() {
+        return getTextField(RESERVATIONS_GUEST_COUNT);
+    }
+
+    public static void setReservationNote(String text) {
+        setTextArea(RESERVATIONS_NOTE, text);
+    }
+
+    public static String getReservationNote() {
+        return getTextArea(RESERVATIONS_NOTE);
+    }
     public static void setReservationPhoneNumber(String text) {
         setTextField(RESERVATIONS_PHONE_NUMBER, text);
     }
@@ -61,8 +86,8 @@ public class ReservationUtils extends AbstractUtils {
         return getReservations().get(row - 1).getTableNumberAsInt();
     }
 
-    public static String getReservationDate(int row) {
-        return getReservations().get(row - 1).getDate();
+    public static int getReservationGuestCount(int row) {
+        return getReservations().get(row - 1).getGuestCountAsInt();
     }
 
     public static String getReservationStartTime(int row) {

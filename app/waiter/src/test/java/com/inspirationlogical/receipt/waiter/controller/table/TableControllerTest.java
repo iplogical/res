@@ -7,6 +7,7 @@ import javafx.scene.layout.StackPane;
 import org.junit.Test;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.TABLE_TEST_TABLE;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.TABLE_TEST_TABLE_NAME;
 import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -14,7 +15,6 @@ import static org.junit.Assert.assertTrue;
 
 public class TableControllerTest extends TestFXBase {
 
-    public static final String TABLE_TEST_TABLE_NAME = "tableTableTest";
     @Test
     public void testMeepleVisible() {
         addTableToTab("TestTableOne", TABLE_TEST_TABLE, "Restaurant.Frequenters");

@@ -9,7 +9,6 @@ import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 
 public class RestaurantUtils  extends AbstractUtils {
 
-
     public static void enterSaleView(String table) {
         clickOnThenWait(table, 200);
     }

@@ -44,6 +44,11 @@ public class BuildTestSchema {
     public static final String TABLE_TEST_TABLE = "27";
     public static final String TABLE_TEST_TABLE_NAME = "tableTableTest";
 
+    public static final int RESERVATION_ONE_TABLE_NUMBER = 1;
+    public static final String RESERVATION_ONE_NAME = "TestName1";
+    public static final String RESERVATION_ONE_NOTE = "TestNote1";
+
+
     private @Getter EntityManager entityManager;
     private @Getter EntityManager entityManagerArchive;
 
@@ -1694,12 +1699,12 @@ public class BuildTestSchema {
 
     private void buildReservationOne() {
         reservationOne = Reservation.builder()
-                .tableNumber(1)
+                .tableNumber(RESERVATION_ONE_TABLE_NUMBER)
                 .date(LocalDate.now())
                 .startTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(14, 0)))
                 .endTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)))
-                .name("TestName1")
-                .note("TestNote1")
+                .name(RESERVATION_ONE_NAME)
+                .note(RESERVATION_ONE_NOTE)
                 .build();
     }
 

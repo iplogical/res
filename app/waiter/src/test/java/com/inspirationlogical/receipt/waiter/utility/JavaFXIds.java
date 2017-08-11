@@ -91,6 +91,7 @@ public class JavaFXIds {
     public final static String RESERVATIONS_DATE_CONTAINER = "#dateContainer";
     public final static String RESERVATIONS_START_TIME_CONTAINER = "#startTimeContainer";
     public final static String RESERVATIONS_END_TIME_CONTAINER = "#endTimeContainer";
+    public final static String RESERVATIONS_NOTE = "#reservationNote";
 
     public final static String RESERVATIONS_CONFIRM = "#confirm";
     public final static String RESERVATIONS_UPDATE = "#update";

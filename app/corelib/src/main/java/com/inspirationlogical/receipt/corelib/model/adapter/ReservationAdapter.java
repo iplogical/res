@@ -74,7 +74,10 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
     }
 
     public void deleteReservation() {
-        GuardedTransaction.delete(adaptee, () -> {});
+        GuardedTransaction.delete(adaptee, () -> {
+            adaptee.getOwner().getReservations().remove(adaptee);
+            adaptee.setOwner(null);
+        });
     }
 
     private static void bindReservationToTableOrOrphanage(List<Table> tables, Reservation reservation) {
