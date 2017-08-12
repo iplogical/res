@@ -12,14 +12,22 @@ import javafx.util.Duration;
  */
 public class ErrorMessage {
 
-    public static void showErrorMessage(Object owner, String text) {
+    private static void showErrorMessage(Object owner, String text, int seconds) {
         Notifications.create()
                 .title(Resources.CONFIG.getString("ErrorMessage"))
                 .text(text)
                 .position(Pos.CENTER)
-                .hideAfter(Duration.seconds(5))
+                .hideAfter(Duration.seconds(seconds))
                 .owner(owner)
                 .darkStyle()
                 .show();
+    }
+
+    public static void showErrorMessage(Object owner, String text) {
+        showErrorMessage(owner, text, 5);
+    }
+
+    public static void showErrorMessageLong(Object owner, String text) {
+        showErrorMessage(owner, text, 300);
     }
 }

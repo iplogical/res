@@ -11,6 +11,7 @@ import com.inspirationlogical.receipt.corelib.frontend.application.StageProvider
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 
@@ -32,7 +33,7 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
 
     final static Logger logger = LoggerFactory.getLogger(WaiterApp.class);
 
-    private Stage stage;
+    private static Stage stage;
 
     private Resources resources;
 
@@ -91,7 +92,8 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
     }
 
     private static void defaultExceptionHandler(Thread t, Throwable e) {
-        logger.error("Error in WaiterApp.", e);
+        logger.error("Unhandled exception in WaiterApp.", e);
+        ErrorMessage.showErrorMessageLong(stage.getScene().getRoot(), Resources.WAITER.getString("UnhandledException"));
     }
 }
 
