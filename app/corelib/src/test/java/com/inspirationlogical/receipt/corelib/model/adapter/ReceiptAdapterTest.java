@@ -1,13 +1,11 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import static com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter.getReceiptsByClosureTime;
-import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RECEIPT_BY_CLOSURE_TIME_AND_TYPE;
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -234,7 +232,7 @@ public class ReceiptAdapterTest extends TestBase {
         ReceiptRecordView receiptRecordViewFive = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordThree()));
         ReceiptRecordView receiptRecordViewSix = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordFour()));
         List<ReceiptRecordView> recordsToPay = new ArrayList<>(Arrays.asList(receiptRecordViewTwo, receiptRecordViewFive, receiptRecordViewSix));
-        receiptSaleOne.paySelective(tableAdapter, recordsToPay, paymentParams);
+        receiptSaleOne.paySelective(recordsToPay, paymentParams);
         // 1 x Soproni
         assertEquals(440, receiptSaleOne.getAdaptee().getRecords().stream()
                 .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum());

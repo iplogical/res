@@ -229,9 +229,8 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         });
     }
 
-    public void paySelective(TableAdapter tableAdapter, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-        final ReceiptAdapter[] paidReceipt = new ReceiptAdapter[1];
-
+    public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
+        ReceiptAdapter paidReceipt = receiptAdapterFactory(ReceiptType.SALE);
         GuardedTransaction.run(() -> {
             Map<Long, ReceiptRecordView> recordsToPay = records.stream()
                     .collect(Collectors.toMap(ReceiptRecordView::getId, Function.identity()));
@@ -244,15 +243,14 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             notPaidRecords.forEach(record -> record.setOwner(adaptee));
             adaptee.setRecords(notPaidRecords);
 
-            paidReceipt[0] = receiptAdapterFactory(ReceiptType.SALE);
-            paidReceipt[0].getAdaptee().setRecords(paidRecords);
-            paidRecords.forEach(record -> record.setOwner(paidReceipt[0].getAdaptee()));
-            paidReceipt[0].getAdaptee().setStatus(ReceiptStatus.PENDING);
-            paidReceipt[0].getAdaptee().setOwner(tableAdapter.getAdaptee());
-            tableAdapter.getAdaptee().getReceipts().add(paidReceipt[0].getAdaptee());
-            GuardedTransaction.persist(paidReceipt[0].adaptee);
+            paidReceipt.getAdaptee().setRecords(paidRecords);
+            paidRecords.forEach(record -> record.setOwner(paidReceipt.getAdaptee()));
+            paidReceipt.getAdaptee().setStatus(ReceiptStatus.PENDING);
+            paidReceipt.getAdaptee().setOwner(adaptee.getOwner());
+            adaptee.getOwner().getReceipts().add(paidReceipt.getAdaptee());
+            GuardedTransaction.persist(paidReceipt.adaptee);
         });
-        paidReceipt[0].close(paymentParams);
+        paidReceipt.close(paymentParams);
     }
 
     public void payPartial(double partialValue, PaymentParams paymentParams) {

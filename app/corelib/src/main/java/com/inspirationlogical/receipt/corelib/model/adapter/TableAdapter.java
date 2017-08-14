@@ -220,7 +220,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         if(activeReceipt == null) {
             throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
         }
-        activeReceipt.paySelective(this, records, paymentParams);
+        activeReceipt.paySelective(records, paymentParams);
     }
 
     public void payPartial(double partialValue, PaymentParams paymentParams) {
