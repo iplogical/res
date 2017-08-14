@@ -223,6 +223,14 @@ public class TableAdapter extends AbstractAdapter<Table> {
         activeReceipt.paySelective(this, records, paymentParams);
     }
 
+    public void payPartial(double partialValue, PaymentParams paymentParams) {
+        ReceiptAdapter activeReceipt = getOpenReceipt();
+        if(activeReceipt == null) {
+            throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
+        }
+        activeReceipt.payPartial(partialValue, paymentParams);
+    }
+
     public void deleteTable() {
         deleteTableFromActual();
         deleteTableFromArchive();

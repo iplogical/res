@@ -42,6 +42,13 @@ public class PayUtils  extends AbstractUtils {
         payPartial(row);
     }
 
+    public static void payPartial(double value) {
+        setPartialPaymentValue(value);
+        clickButtonThenWait(PARTIAL_PAYMENT, 50);
+        pay();
+        clickButtonThenWait(PARTIAL_PAYMENT, 50);
+    }
+
     public static void setPartialPaymentValue(double value) {
         setTextField(PARTIAL_PAYMENT_VALUE, String.valueOf(value));
     }
@@ -124,7 +131,15 @@ public class PayUtils  extends AbstractUtils {
         setTextField(DISCOUNT_ABSOLUTE_VALUE, text);
     }
 
+    public static void clickOnDiscountAbsolute() {
+        clickButtonThenWait(DISCOUNT_ABSOLUTE, 100);
+    }
+
     public static void setDiscountPercent(String text) {
         setTextField(DISCOUNT_PERCENT_VALUE, text);
+    }
+
+    public static void clickOnDiscountPercent() {
+        clickButtonThenWait(DISCOUNT_PERCENT, 100);
     }
 }

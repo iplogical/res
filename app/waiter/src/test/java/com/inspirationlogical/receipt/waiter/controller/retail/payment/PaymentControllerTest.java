@@ -122,7 +122,7 @@ public class PaymentControllerTest  extends TestFXBase {
     @Test
     public void testSinglePaymentWithDiscountAbsolute() {
         paySingle(2);
-        clickButtonThenWait(DISCOUNT_ABSOLUTE, 100);
+        clickOnDiscountAbsolute();
         setDiscountAbsolute("1000");
         pay();
         assertSoldProductFive(1, 3);
@@ -135,7 +135,7 @@ public class PaymentControllerTest  extends TestFXBase {
     @Test
     public void testSinglePaymentWithDiscountPercent() {
         paySingle(2);
-        clickButtonThenWait(DISCOUNT_PERCENT, 100);
+        clickOnDiscountPercent();
         setDiscountPercent("30");
         pay();
         assertSoldProductFive(1, 3);
@@ -181,7 +181,7 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    public void testPartialPayment() {
+    public void testPartialPaymentOfAProduct() {
         payPartial(2, 0.5);
         assertSoldProductFive(1, 3);
         assertSoldProductThree(2, 1.5);
@@ -248,6 +248,64 @@ public class PaymentControllerTest  extends TestFXBase {
         openTable(TABLE_NUMBER);
         clickOnThenWait(TABLE_NUMBER, 200);
         clickOnThenWait(TO_PAYMENT, 200);
+    }
+
+    @Test
+    public void testPartialPaymentInvalidRange() {
+        payPartial(1.01);
+        verifyErrorMessage("PaymentView.PartialPayNumberErrorRange");
+    }
+
+    @Test
+    public void testPartialPaymentInvalidInput() {
+        setTextField(PARTIAL_PAYMENT_VALUE, String.valueOf("Invalid"));
+        clickButtonThenWait(PARTIAL_PAYMENT, 50);
+        pay();
+        verifyErrorMessage("PaymentView.PartialPayNumberErrorRange");
+        clickButtonThenWait(PARTIAL_PAYMENT, 50);
+    }
+
+    @Test
+    public void testPartialPaymentOfTheTable() {
+        payPartial(0.43);
+        assertSoldProductFive(1, 0.57 * 3);
+        assertSoldProductThree(2, 0.57 * 2);
+        assertSoldTotalPrice((int)Math.round(0.57 * 7120));
+        assertPreviousPartialPrice((int)Math.round(0.43 * 7120));
+    }
+
+    @Test
+    public void testPartialPaymentWithPaidProductsNotEmpty() {
+        payPartial(2, 0.5);
+        payPartial(0.5);
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 1.5);
+        assertPreviousPartialPrice(1450);
+    }
+
+    @Test
+    public void testPartialPaymentOfTheTableWithDiscountAbsolute() {
+        setDiscountAbsolute("1000");
+        clickOnDiscountAbsolute();
+        payPartial(0.43);
+        clickOnDiscountAbsolute();
+        assertSoldProductFive(1, 0.57 * 3);
+        assertSoldProductThree(2, 0.57 * 2);
+        assertSoldTotalPrice((int)Math.round(0.57 * 7120));
+        assertPreviousPartialPrice((int)Math.round(0.43 * 7120) - 1000);
+    }
+
+    @Test
+    public void testPartialPaymentOfTheTableWithDiscountPercent() {
+        setDiscountPercent("20");
+        clickOnDiscountPercent();
+        payPartial(0.43);
+        clickOnDiscountPercent();
+        assertSoldProductFive(1, 0.57 * 3);
+        assertSoldProductThree(2, 0.57 * 2);
+        assertSoldTotalPrice((int)Math.round(0.57 * 7120));
+        int round = (int) Math.round(0.43 * 7120);
+        assertPreviousPartialPrice((int)Math.round(round * 0.80));
     }
 
     @Test
@@ -368,16 +426,16 @@ public class PaymentControllerTest  extends TestFXBase {
 
     @Test
     public void testDiscountAbsoluteInvalidInput() {
-        clickButtonThenWait(DISCOUNT_ABSOLUTE, 100);
+        clickOnDiscountAbsolute();
         setDiscountAbsolute("Invalid");
         pay();
         verifyErrorMessage("PaymentView.DiscountAbsoluteNumberFormatError");
-        clickButtonThenWait(DISCOUNT_ABSOLUTE, 100);
+        clickOnDiscountAbsolute();
     }
 
     @Test
     public void testDiscountPercentInvalidInput() {
-        clickButtonThenWait(DISCOUNT_PERCENT, 100);
+        clickOnDiscountPercent();
         setDiscountPercent("Invalid");
         pay();
         verifyErrorMessage("PaymentView.DiscountPercentNumberFormatError");
@@ -391,7 +449,7 @@ public class PaymentControllerTest  extends TestFXBase {
         setDiscountPercent("-5");
         pay();
         verifyErrorMessage("PaymentView.DiscountPercentNumberFormatError");
-        clickButtonThenWait(DISCOUNT_PERCENT, 100);
+        clickOnDiscountPercent();
     }
 
     @Test

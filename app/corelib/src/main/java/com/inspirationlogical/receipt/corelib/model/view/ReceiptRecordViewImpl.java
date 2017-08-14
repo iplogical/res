@@ -65,7 +65,7 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
 
     @Override
     public int getTotalPrice() {
-        return (int)(adapter.getAdaptee().getSalePrice() * adapter.getAdaptee().getSoldQuantity());
+        return (int)Math.round(adapter.getAdaptee().getSalePrice() * adapter.getAdaptee().getSoldQuantity());
     }
 
     @Override

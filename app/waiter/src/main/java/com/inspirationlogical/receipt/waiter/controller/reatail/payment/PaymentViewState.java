@@ -40,6 +40,8 @@ public @Data class PaymentViewState {
             paymentParams = getPaymentParams();
             if(isFullPayment()) {
                 handleFullPayment(soldProductsEmpty, paidProductsEmpty);
+            } else if(isPartialPayment()) {
+                handlePartialPayment(soldProductsEmpty, paidProductsEmpty);
             } else {
                 handleSelectivePayment(soldProductsEmpty, paidProductsEmpty);
             }
@@ -48,15 +50,19 @@ public @Data class PaymentViewState {
         }
     }
 
+    private void handlePartialPayment(boolean soldProductsEmpty, boolean paidProductsEmpty) {
+        if(paidProductsEmpty) {
+            paymentController.handlePartialPayment(paymentParams);
+        } else {
+            decideFullOrSelectivePayment(soldProductsEmpty);
+        }
+    }
+
     private void handleFullPayment(boolean soldProductsEmpty, boolean paidProductsEmpty) {
         if(paidProductsEmpty) {
             paymentController.handleFullPayment(paymentParams);
         } else {
-            if(soldProductsEmpty) {
-                paymentController.handleFullPayment(paymentParams);
-            } else {
-                paymentController.handleSelectivePayment(paymentParams);
-            }
+            decideFullOrSelectivePayment(soldProductsEmpty);
         }
     }
 
@@ -64,7 +70,11 @@ public @Data class PaymentViewState {
         if(paidProductsEmpty) {
             ErrorMessage.showErrorMessage(paymentController.getRootNode(),
                     Resources.WAITER.getString("PaymentView.SelectivePaymentNoPaidProduct"));
-        } else if(soldProductsEmpty) {
+        } else decideFullOrSelectivePayment(soldProductsEmpty);
+    }
+
+    private void decideFullOrSelectivePayment(boolean soldProductsEmpty) {
+        if(soldProductsEmpty) {
             paymentController.handleFullPayment(paymentParams);
         } else {
             paymentController.handleSelectivePayment(paymentParams);

@@ -204,6 +204,27 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         getSoldProductsAndRefreshTable();
     }
 
+    @Override
+    public void handlePartialPayment(PaymentParams paymentParams) {
+        try {
+            retailService.payPartial(tableView, getPartialValue(), paymentParams);
+            int totalPrice = SoldProductViewModel.getTotalPrice(soldProductsModel);
+            getSoldProductsAndRefreshTable();
+            int paidPartialPrice = totalPrice - SoldProductViewModel.getTotalPrice(soldProductsModel);
+            previousPartialPrice.setText(applyDiscountOnTotalPrice(paidPartialPrice) + " Ft");
+        } catch (NumberFormatException e) {
+            ErrorMessage.showErrorMessage(getRootNode(), Resources.WAITER.getString("PaymentView.PartialPayNumberErrorRange"));
+        }
+    }
+
+    private double getPartialValue() throws NumberFormatException {
+        double partialValue = Double.valueOf(partialPaymentValue.getText());
+        if(partialValue > 1.00 || partialValue < 0.01) {
+            throw new NumberFormatException();
+        }
+        return partialValue;
+    }
+
     private void updatePreviousPartialPrice() {
         int totalPrice = Integer.valueOf(paidTotalPrice.getText().split(" ")[0]);
         previousPartialPrice.setText(applyDiscountOnTotalPrice(totalPrice) + " Ft");

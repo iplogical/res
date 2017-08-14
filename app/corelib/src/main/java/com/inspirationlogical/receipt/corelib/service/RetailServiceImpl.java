@@ -46,6 +46,11 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     }
 
     @Override
+    public void payPartial(TableView tableView, double partialValue, PaymentParams paymentParams) {
+        getTableAdapter(tableView).payPartial(partialValue, paymentParams);
+    }
+
+    @Override
     public ReceiptRecordView cloneReceiptRecordView(TableView tableView, ReceiptRecordView receiptRecordView, double amount) {
         return new ReceiptRecordViewImpl(getTableAdapter(tableView).getOpenReceipt().cloneReceiptRecordAdapter(getReceiptRecordAdapter(receiptRecordView), amount));
     }

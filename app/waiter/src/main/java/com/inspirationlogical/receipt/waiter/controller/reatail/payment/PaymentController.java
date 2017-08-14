@@ -13,4 +13,7 @@ public interface PaymentController extends AbstractRetailController {
     void handleFullPayment(PaymentParams paymentParams);
 
     void handleSelectivePayment(PaymentParams paymentParams);
+
+    void handlePartialPayment(PaymentParams paymentParams);
+
 }

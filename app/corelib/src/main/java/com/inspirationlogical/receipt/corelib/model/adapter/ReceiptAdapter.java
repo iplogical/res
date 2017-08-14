@@ -25,6 +25,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+import com.inspirationlogical.receipt.corelib.utility.Round;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 
 public class ReceiptAdapter extends AbstractAdapter<Receipt> {
@@ -252,6 +253,29 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             GuardedTransaction.persist(paidReceipt[0].adaptee);
         });
         paidReceipt[0].close(paymentParams);
+    }
+
+    public void payPartial(double partialValue, PaymentParams paymentParams) {
+        ReceiptAdapter partialReceipt = receiptAdapterFactory(ReceiptType.SALE);
+        GuardedTransaction.run(() -> {
+            cloneReceiptRecords(partialReceipt.getAdaptee(), partialValue);
+            adaptee.getRecords().forEach(record -> record.setSoldQuantity(Round.roundToTwoDecimals(record.getSoldQuantity() * (1 - partialValue))));
+            partialReceipt.getAdaptee().setOwner(adaptee.getOwner());
+            GuardedTransaction.persist(partialReceipt.getAdaptee());
+        });
+        partialReceipt.close(paymentParams);
+    }
+
+    private void cloneReceiptRecords(Receipt newReceipt, double partialValue) {
+        adaptee.getRecords().forEach(record -> {
+            ReceiptRecord newRecord = ReceiptRecord.cloneReceiptRecord(record);
+            newRecord.setSoldQuantity(Round.roundToTwoDecimals(newRecord.getSoldQuantity() * partialValue));
+            newRecord.setOwner(newReceipt);
+            newReceipt.getRecords().add(newRecord);
+            List<Product> products = GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_NAME, query ->
+                    query.setParameter("longName", record.getProduct().getLongName()));
+            newRecord.setProduct(products.get(0));
+        });
     }
 
     public ReceiptRecordAdapter cloneReceiptRecordAdapter(ReceiptRecordAdapter record, double amount) {

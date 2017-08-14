@@ -20,6 +20,8 @@ public interface RetailService {
 
     void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams);
 
+    void payPartial(TableView tableView, double partialValue, PaymentParams paymentParams);
+
     ReceiptRecordView cloneReceiptRecordView(TableView tableView, ReceiptRecordView receiptRecordView, double amount);
 
     void cancelReceiptRecord(TableView tableView, ReceiptRecordView receiptRecordView);

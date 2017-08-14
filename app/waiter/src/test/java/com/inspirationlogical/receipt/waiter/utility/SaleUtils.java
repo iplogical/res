@@ -85,11 +85,11 @@ public class SaleUtils  extends AbstractUtils {
     }
 
     public static void assertSoldProductFive(int row, double quantity) {
-        assertSoldProduct(row, PRODUCT_FIVE_LONG, quantity, 440, (int)(quantity * 440));
+        assertSoldProduct(row, PRODUCT_FIVE_LONG, quantity, 440, (int)Math.round(quantity * 440));
     }
 
     public static void assertSoldProductThree(int row, double quantity) {
-        assertSoldProduct(row, PRODUCT_THREE_LONG, quantity, 2900, (int)(quantity * 2900));
+        assertSoldProduct(row, PRODUCT_THREE_LONG, quantity, 2900, (int)Math.round(quantity * 2900));
     }
 
 

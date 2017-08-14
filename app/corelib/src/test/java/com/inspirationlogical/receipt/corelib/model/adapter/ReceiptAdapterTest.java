@@ -1,12 +1,16 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter.getReceiptsByClosureTime;
+import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RECEIPT_BY_CLOSURE_TIME_AND_TYPE;
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;
+import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
@@ -61,21 +65,21 @@ public class ReceiptAdapterTest extends TestBase {
 
     @Test
     public void testGetReceiptsByClosureTimeOneHourAgo() {
-        assertEquals(NUMBER_OF_CLOSED_RECEIPTS, ReceiptAdapter.getReceiptsByClosureTime(LocalDateTime.now().minusHours(1)).size());
+        assertEquals(NUMBER_OF_CLOSED_RECEIPTS, getReceiptsByClosureTime(now().minusHours(1)).size());
     }
 
     @Test
     public void testGetReceiptsByClosureTimeNow() {
-        assertEquals(0, ReceiptAdapter.getReceiptsByClosureTime(LocalDateTime.now()).size());
+        assertEquals(0, getReceiptsByClosureTime(now()).size());
     }
 
     @Test
     public void testDeleteReceipts() {
-        List<ReceiptAdapter> closedReceipts = ReceiptAdapter.getReceiptsByClosureTime(LocalDateTime.now().minusHours(1));
+        List<ReceiptAdapter> closedReceipts = getReceiptsByClosureTime(now().minusHours(1));
         int numberOfRecords = closedReceipts.stream()
                 .mapToInt(receiptAdapter -> receiptAdapter.getAdaptee().getRecords().size()).sum();
         ReceiptAdapter.deleteReceipts();
-        assertEquals(0, ReceiptAdapter.getReceiptsByClosureTime(LocalDateTime.now().minusHours(1)).size());
+        assertEquals(0, getReceiptsByClosureTime(now().minusHours(1)).size());
         assertEquals(NUMBER_OF_RECEIPT_RECORDS - numberOfRecords, GuardedTransaction.runNamedQuery(ReceiptRecord.GET_TEST_RECEIPT_RECORDS).size());
         assertEquals(NUMBER_OF_RECEIPT_RECORD_CREATEDS - numberOfRecords, GuardedTransaction.runNamedQuery(ReceiptRecordCreated.GET_TEST_RECEIPT_RECORDS_CREATED).size());
     }
@@ -212,7 +216,7 @@ public class ReceiptAdapterTest extends TestBase {
     public void testCloseAClosedReceipt() {
         GuardedTransaction.run(() -> {
             schema.getReceiptSaleOne().setStatus(ReceiptStatus.CLOSED);
-            schema.getReceiptSaleOne().setClosureTime(LocalDateTime.now());
+            schema.getReceiptSaleOne().setClosureTime(now());
         });
         receiptSaleOne.close(paymentParams);
     }
@@ -234,14 +238,40 @@ public class ReceiptAdapterTest extends TestBase {
         // 1 x Soproni
         assertEquals(440, receiptSaleOne.getAdaptee().getRecords().stream()
                 .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum());
-        List<Receipt> closedReceipts = GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
-                query -> {query.setParameter("status", ReceiptStatus.CLOSED);
-                                query.setParameter("number", tableAdapter.getAdaptee().getNumber());
-                                return query;});
+        List<Receipt> closedReceipts = getClosedReceipts();
         assertEquals(2, closedReceipts.size());
         // 2 x Jim Beam, 2 x Edelweiss, 2 x Game Up Menu
         assertEquals(12660, closedReceipts.get(1).getRecords().stream()
                         .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum());
+    }
+
+    private List<Receipt> getClosedReceipts() {
+        return GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
+                query -> query.setParameter("status", ReceiptStatus.CLOSED).setParameter("number", tableAdapter.getAdaptee().getNumber()));
+    }
+
+
+    @Test
+    public void testPayPartialHalf() {
+        int closedReceiptsNumber = getClosedReceipts().size();
+        double soldQuantityOne = receiptSaleOne.getAdaptee().getRecords().get(0).getSoldQuantity();
+        double soldQuantityTwo = receiptSaleOne.getAdaptee().getRecords().get(1).getSoldQuantity();
+        double soldQuantityThree = receiptSaleOne.getAdaptee().getRecords().get(2).getSoldQuantity();
+        double soldQuantityFour = receiptSaleOne.getAdaptee().getRecords().get(3).getSoldQuantity();
+        receiptSaleOne.payPartial(0.33, paymentParams);
+        assertEquals(soldQuantityOne * (1 - 0.33), receiptSaleOne.getAdaptee().getRecords().get(0).getSoldQuantity(), 0.001);
+        assertEquals(soldQuantityTwo * (1 - 0.33), receiptSaleOne.getAdaptee().getRecords().get(1).getSoldQuantity(), 0.001);
+        assertEquals(soldQuantityThree * (1 - 0.33), receiptSaleOne.getAdaptee().getRecords().get(2).getSoldQuantity(), 0.001);
+        assertEquals(soldQuantityFour * (1 - 0.33), receiptSaleOne.getAdaptee().getRecords().get(3).getSoldQuantity(), 0.001);
+        List<ReceiptAdapter> closedReceipts = getReceiptsByClosureTime(now().minusSeconds(2));
+        closedReceipts.sort(Comparator.comparing(receiptAdapter -> ((ReceiptAdapter)receiptAdapter).getAdaptee().getClosureTime()).reversed());
+        ReceiptAdapter newClosedReceipt = closedReceipts.get(0);
+        assertEquals(soldQuantityOne * 0.33, newClosedReceipt.getAdaptee().getRecords().get(0).getSoldQuantity(), 0.001);
+        assertEquals(soldQuantityTwo * 0.33, newClosedReceipt.getAdaptee().getRecords().get(1).getSoldQuantity(), 0.001);
+        assertEquals(soldQuantityThree * 0.33, newClosedReceipt.getAdaptee().getRecords().get(2).getSoldQuantity(), 0.001);
+        assertEquals(soldQuantityFour * 0.33, newClosedReceipt.getAdaptee().getRecords().get(3).getSoldQuantity(), 0.001);
+        assertEquals(closedReceiptsNumber + 1, getClosedReceipts().size());
+
     }
 
     @Test
