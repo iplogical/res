@@ -74,7 +74,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     public void initialize() {
         restaurantViewState = restaurantController.getViewState();
         initTables();
-        initTableForm();
     }
 
     private void initTables() {
@@ -83,23 +82,31 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         tables.stream().filter(DISPLAYABLE_TABLE).forEach(this::drawTable);
     }
 
-    private void initTableForm() {
-        tableForm = new Popup();
-        tableForm.getContent().add(viewLoader.loadView(tableFormController));
-    }
-
     @Override
     public void showCreateTableForm(Point2D position) {
+        initTableForm();
         tableFormController.createTableForm(restaurantViewState.getTableType());
         showPopup(tableForm, tableFormController, restaurantController.getActiveTab(), position);
     }
 
     @Override
     public void showEditTableForm(Control control) {
+        initTableForm();
         TableController tableController = getTableController(control);
         tableFormController.loadTableForm(tableController, restaurantViewState.getTableType());
         Point2D position = calculatePopupPosition(control, restaurantController.getActiveTab());
         showPopup(tableForm, tableFormController, restaurantController.getActiveTab(), position);
+    }
+
+    private void initTableForm() {
+        tableForm = new Popup();
+        tableForm.getContent().add(viewLoader.loadView(tableFormController));
+    }
+
+    @Override
+    public void hideTableForm() {
+        tableForm.hide();
+        tableForm = null;
     }
 
     @Override

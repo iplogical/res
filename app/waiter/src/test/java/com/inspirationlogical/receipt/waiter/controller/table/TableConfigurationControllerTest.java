@@ -109,7 +109,7 @@ public class TableConfigurationControllerTest extends TestFXBase {
     public void testEditTableInvalidInput() {
         longClickOn(TABLE_TEST_TABLE);
         clickMenuThenWait("ContextMenu.EditTable", 500);
-        setTextField(TABLEFORM_NUMBER, "");
+        setTextField(TABLEFORM_NUMBER, "Invalid");
         clickOn(TABLEFORM_CONFIRM);
         verifyErrorMessage("TableForm.NumberFormatError");
         clickOn(TABLEFORM_CANCEL);

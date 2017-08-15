@@ -63,16 +63,7 @@ public class TableFormControllerImpl implements TableFormController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         resourceBundle = resources;
-        initInputTextFormatters();
         addDragAndDrop(root);
-    }
-
-    private void initInputTextFormatters() {
-        guestCount.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
-        tableNumber.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
-        tableCapacity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
-        width.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
-        height.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
     }
 
     @FXML
@@ -109,7 +100,7 @@ public class TableFormControllerImpl implements TableFormController {
     @FXML
     public void onCancel(MouseEvent event) {
         tableController = null;
-        hideNode(root);
+        tableConfigurationController.hideTableForm();
     }
 
     @Override
