@@ -14,7 +14,7 @@ import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 
 /**
  * Created by Bálint on 2017.03.15..

@@ -20,7 +20,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptAdapterListeners;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;

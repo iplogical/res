@@ -37,8 +37,9 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
-import com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 import com.inspirationlogical.receipt.corelib.security.Role;
 import com.inspirationlogical.receipt.corelib.security.model.entity.AuthUser;
 
@@ -1224,7 +1225,7 @@ public class BuildSchema  {
                 dropFromAllTables();
             });            
         } else {
-            GuardedTransaction.runArchive(() -> {
+            GuardedTransactionArchive.run(() -> {
                 dropFromAllTables();
             });
         }
@@ -1305,11 +1306,11 @@ public class BuildSchema  {
             GuardedTransaction.run(() -> entityManager.persist(admin));
             GuardedTransaction.run(() -> entityManager.persist(user));
         } else {
-            GuardedTransaction.runArchive(() -> entityManager.persist(restaurant));
-            GuardedTransaction.runArchive(() -> entityManager.persist(root));
-            GuardedTransaction.runArchive(() -> entityManager.persist(vatSerie));
-            GuardedTransaction.runArchive(() -> entityManager.persist(admin));
-            GuardedTransaction.runArchive(() -> entityManager.persist(user));
+            GuardedTransactionArchive.run(() -> entityManager.persist(restaurant));
+            GuardedTransactionArchive.run(() -> entityManager.persist(root));
+            GuardedTransactionArchive.run(() -> entityManager.persist(vatSerie));
+            GuardedTransactionArchive.run(() -> entityManager.persist(admin));
+            GuardedTransactionArchive.run(() -> entityManager.persist(user));
         }
     }
 

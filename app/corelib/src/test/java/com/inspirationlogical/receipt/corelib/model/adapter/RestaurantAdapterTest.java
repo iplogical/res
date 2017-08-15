@@ -12,7 +12,8 @@ import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateExcepti
 import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -75,7 +76,7 @@ public class RestaurantAdapterTest extends TestBase {
         restaurantAdapter.addTable(tableBuilder);
         assertEquals(NUMBER_OF_DISPLAYABLE_TABLES + 1, TableAdapter.getDisplayableTables().size());
         assertEquals(NUMBER_OF_DISPLAYABLE_TABLES + 1,
-                GuardedTransaction.runNamedQueryArchive(Table.GET_DISPLAYABLE_TABLES).size());
+                GuardedTransactionArchive.runNamedQuery(Table.GET_DISPLAYABLE_TABLES).size());
     }
 
     @Test(expected = IllegalTableStateException.class)
@@ -94,7 +95,7 @@ public class RestaurantAdapterTest extends TestBase {
         assertTrue(getTableFromActual(schema.getTableNormal().getNumber()).isTableHost());
         assertEquals(NUMBER_OF_DISPLAYABLE_TABLES + 1, TableAdapter.getDisplayableTables().size());
         assertEquals(NUMBER_OF_DISPLAYABLE_TABLES + 1,
-                GuardedTransaction.runNamedQueryArchive(Table.GET_DISPLAYABLE_TABLES).size());
+                GuardedTransactionArchive.runNamedQuery(Table.GET_DISPLAYABLE_TABLES).size());
     }
 
     @Test

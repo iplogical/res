@@ -12,7 +12,7 @@ import com.inspirationlogical.receipt.corelib.model.TestBase;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 
 public class RestaurantTest extends TestBase {
 

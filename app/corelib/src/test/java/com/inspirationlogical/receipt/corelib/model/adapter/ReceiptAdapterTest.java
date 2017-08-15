@@ -15,7 +15,7 @@ import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;

@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import org.junit.Test;
 
 import javax.persistence.RollbackException;

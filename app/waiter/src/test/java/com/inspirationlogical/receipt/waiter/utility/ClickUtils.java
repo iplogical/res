@@ -1,8 +1,7 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
-import com.inspirationlogical.receipt.corelib.model.utils.Functor;
+import com.inspirationlogical.receipt.corelib.model.transaction.Functor;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
-import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -13,8 +12,6 @@ import javafx.scene.input.MouseButton;
 import org.testfx.api.FxRobotInterface;
 
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
-import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TABLEFORM_CAPACITY;
-import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TABLEFORM_CONFIRM;
 import static org.junit.Assert.fail;
 import static org.testfx.api.FxAssert.verifyThat;
 

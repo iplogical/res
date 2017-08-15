@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
-import com.inspirationlogical.receipt.corelib.model.utils.Functor;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.model.transaction.Functor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 

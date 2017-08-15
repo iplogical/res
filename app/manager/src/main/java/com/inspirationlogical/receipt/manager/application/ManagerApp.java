@@ -9,7 +9,7 @@ import com.inspirationlogical.receipt.corelib.frontend.application.MainStage;
 import com.inspirationlogical.receipt.corelib.frontend.application.ResourcesProvider;
 import com.inspirationlogical.receipt.corelib.frontend.application.StageProvider;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
-import com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.manager.controller.GoodsController;
 

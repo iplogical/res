@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.model.utils;
+package com.inspirationlogical.receipt.corelib.model.transaction;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

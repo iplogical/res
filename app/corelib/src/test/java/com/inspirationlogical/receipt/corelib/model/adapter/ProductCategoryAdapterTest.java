@@ -9,7 +9,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import org.junit.Before;
 import org.junit.Test;
 

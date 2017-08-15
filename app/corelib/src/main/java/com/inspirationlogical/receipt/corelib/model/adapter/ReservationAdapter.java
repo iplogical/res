@@ -4,7 +4,7 @@ import com.inspirationlogical.receipt.corelib.exception.ReservationNotFoundExcep
 import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 
 import java.time.LocalDate;

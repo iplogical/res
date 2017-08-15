@@ -3,10 +3,9 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 
 import java.time.LocalDateTime;
-import java.util.ArrayDeque;
 import java.util.List;
 
 import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;

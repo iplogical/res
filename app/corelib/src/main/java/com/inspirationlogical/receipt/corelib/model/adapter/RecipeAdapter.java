@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import lombok.NonNull;
 
 import static java.util.stream.Collectors.toList;

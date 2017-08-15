@@ -14,7 +14,8 @@ import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
@@ -50,7 +51,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
             return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_NUMBER, query ->
                     query.setParameter("number", number));
         } else {
-            return GuardedTransaction.runNamedQueryArchive(Table.GET_TABLE_BY_NUMBER, query ->
+            return GuardedTransactionArchive.runNamedQuery(Table.GET_TABLE_BY_NUMBER, query ->
                     query.setParameter("number", number));
         }
     }
@@ -143,7 +144,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         GuardedTransaction.run(() -> {
             adaptee.setNumber(tableNumber);
         });
-        GuardedTransaction.runArchive(() -> {
+        GuardedTransactionArchive.run(() -> {
             Table tableArchive = getTableFromArchive(originalNumber).getAdaptee();
             tableArchive.setNumber(tableNumber);
         });
@@ -249,14 +250,14 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     private void deleteTableFromArchive() {
-        GuardedTransaction.runArchive(() -> {
+        GuardedTransactionArchive.run(() -> {
             Table archiveTable = getTableFromArchive(adaptee.getNumber()).getAdaptee();
-            Table orphanageArchive = (Table)GuardedTransaction.runNamedQueryArchive(Table.GET_TABLE_BY_TYPE,
+            Table orphanageArchive = (Table)GuardedTransactionArchive.runNamedQuery(Table.GET_TABLE_BY_TYPE,
                     query -> query.setParameter("type", TableType.ORPHANAGE)).get(0);
             moveReceiptsToOrphanageTable(archiveTable, orphanageArchive);
             archiveTable.getReceipts().clear();
             archiveTable.getOwner().getTables().remove(archiveTable);
-            GuardedTransaction.deleteArchive(archiveTable, () -> {});
+            GuardedTransactionArchive.delete(archiveTable, () -> {});
         });
     }
 

@@ -8,7 +8,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 

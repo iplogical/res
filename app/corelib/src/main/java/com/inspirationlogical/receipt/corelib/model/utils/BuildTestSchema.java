@@ -2,6 +2,9 @@ package com.inspirationlogical.receipt.corelib.model.utils;
 
 import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
+import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 import lombok.Getter;
 
 import javax.persistence.EntityManager;
@@ -435,7 +438,7 @@ public class BuildTestSchema {
     }
 
     private void dropAllArchive(){
-        GuardedTransaction.runArchive(() -> {
+        GuardedTransactionArchive.run(() -> {
             entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.PriceModifier").executeUpdate();
             entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Recipe").executeUpdate();
             entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Stock").executeUpdate();
@@ -460,7 +463,7 @@ public class BuildTestSchema {
     }
 
     private void persistObjectsArchive() {
-        GuardedTransaction.runArchive(() -> entityManagerArchive.persist(restaurant));
+        GuardedTransactionArchive.run(() -> entityManagerArchive.persist(restaurant));
     }
 
     private void buildRestaurant() {

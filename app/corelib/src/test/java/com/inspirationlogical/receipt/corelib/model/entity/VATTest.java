@@ -9,7 +9,7 @@ import javax.persistence.RollbackException;
 import com.inspirationlogical.receipt.corelib.model.TestBase;
 import org.junit.Test;
 
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 
 public class VATTest extends TestBase {
 

@@ -3,10 +3,9 @@ package com.inspirationlogical.receipt.corelib.model.utils;
 import static org.junit.Assert.assertEquals;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
-import org.junit.Rule;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import org.junit.Test;
 
-import com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 
 /**

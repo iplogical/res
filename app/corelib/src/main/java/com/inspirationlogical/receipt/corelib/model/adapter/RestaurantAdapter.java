@@ -8,7 +8,8 @@ import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -68,8 +69,8 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     }
 
     private void addTableToArchive(Table newTable) {
-        GuardedTransaction.runArchive(() -> {
-            List<Restaurant> restaurants = GuardedTransaction.runNamedQueryArchive(Restaurant.GET_ACTIVE_RESTAURANT);
+        GuardedTransactionArchive.run(() -> {
+            List<Restaurant> restaurants = GuardedTransactionArchive.runNamedQuery(Restaurant.GET_ACTIVE_RESTAURANT);
             Restaurant restaurant = restaurants.get(0);
             Table newArchiveTable = Table.cloneTable(newTable);
             newArchiveTable.setOwner(restaurant);

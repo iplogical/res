@@ -2,7 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Stock;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 
 import java.util.List;
 import java.util.Optional;

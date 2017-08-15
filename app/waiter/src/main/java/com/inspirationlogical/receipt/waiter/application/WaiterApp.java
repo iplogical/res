@@ -9,13 +9,12 @@ import com.inspirationlogical.receipt.corelib.frontend.application.MainStage;
 import com.inspirationlogical.receipt.corelib.frontend.application.ResourcesProvider;
 import com.inspirationlogical.receipt.corelib.frontend.application.StageProvider;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
-import com.inspirationlogical.receipt.corelib.model.utils.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

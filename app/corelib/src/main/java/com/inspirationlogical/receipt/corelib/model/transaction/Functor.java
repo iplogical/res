@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.model.utils;
+package com.inspirationlogical.receipt.corelib.model.transaction;
 
 /**
  * Created by Bálint on 2017.04.06..

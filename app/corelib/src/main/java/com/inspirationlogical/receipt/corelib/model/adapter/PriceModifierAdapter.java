@@ -4,7 +4,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
-import com.inspirationlogical.receipt.corelib.model.utils.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 
 import java.time.LocalDate;
