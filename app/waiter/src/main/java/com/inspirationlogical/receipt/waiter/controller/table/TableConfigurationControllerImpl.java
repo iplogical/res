@@ -74,6 +74,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     public void initialize() {
         restaurantViewState = restaurantController.getViewState();
         initTables();
+        initTableForm();
     }
 
     private void initTables() {
@@ -84,14 +85,12 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void showCreateTableForm(Point2D position) {
-        initTableForm();
         tableFormController.createTableForm(restaurantViewState.getTableType());
         showPopup(tableForm, tableFormController, restaurantController.getActiveTab(), position);
     }
 
     @Override
     public void showEditTableForm(Control control) {
-        initTableForm();
         TableController tableController = getTableController(control);
         tableFormController.loadTableForm(tableController, restaurantViewState.getTableType());
         Point2D position = calculatePopupPosition(control, restaurantController.getActiveTab());
@@ -106,14 +105,13 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @Override
     public void hideTableForm() {
         tableForm.hide();
-        tableForm = null;
     }
 
     @Override
     public void addTable(TableParams tableParams) {
         try {
             TableView tableView = restaurantService.addTable(restaurantView, buildTable(tableParams));
-            tableForm.hide();
+            hideTableForm();
             drawTable(tableView);
             updateHostTable(tableView);
             restaurantController.updateRestaurantSummary();
@@ -154,7 +152,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
         try {
             setTableParams(tableView, tableParams);
-            tableForm.hide();
+            hideTableForm();
             restaurantController.addNodeToPane(tableController.getRoot(), restaurantViewState.getTableType());
             tableController.updateTable();
             updateHostNodes(tableView, previousHost);
@@ -234,7 +232,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         }
     }
 
-    public boolean insufficientSelection() {
+    private boolean insufficientSelection() {
         return selectedTables.size() < 2;
     }
 

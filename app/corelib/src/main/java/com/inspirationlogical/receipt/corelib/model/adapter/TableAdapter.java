@@ -190,13 +190,12 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void openTable() {
-        GuardedTransaction.run(() -> {
-            if (isTableOpen()) {
-                throw new IllegalTableStateException("Open table for an open table. Table number: " + adaptee.getNumber());
-            }
-            ReceiptAdapter receiptAdapter = ReceiptAdapter.receiptAdapterFactory(ReceiptType.SALE);
-            bindReceiptToTable(receiptAdapter);
-        });
+        if (isTableOpen()) {
+            throw new IllegalTableStateException("Open table for an open table. Table number: " + adaptee.getNumber());
+        }
+        ReceiptAdapter receiptAdapter = ReceiptAdapter.receiptAdapterFactory(ReceiptType.SALE);
+        bindReceiptToTable(receiptAdapter);
+        GuardedTransaction.persist(receiptAdapter.getAdaptee());
     }
 
     public void payTable(PaymentParams paymentParams) {

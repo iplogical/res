@@ -8,7 +8,6 @@ import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by TheDagi on 2017. 05. 09..
@@ -22,7 +21,6 @@ public class SaleControllerTest extends SaleViewTest {
         assertSoldProductFive(1, 1);
         selectiveCancellation(PRODUCT_FIVE_LONG);
     }
-
 
     @Test
     public void testSellGiftProduct() {

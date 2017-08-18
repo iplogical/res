@@ -41,7 +41,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                                         .status(ReceiptStatus.OPEN)
                                         .paymentMethod(PaymentMethod.CASH)
                                         .openTime(now())
-                                        .VATSerie(VATSerieAdapter.vatSerieAdapterFactory().getAdaptee())
+                                        .VATSerie(VATSerieAdapter.getActiveVATSerieAdapter().getAdaptee())
                                         .records(new ArrayList<>())
                                         .build());
         ReceiptAdapterListeners.getAllListeners().forEach((l) -> {l.onOpen(newReceipt);});
@@ -59,6 +59,7 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
                         .setParameter("type", ReceiptType.SALE));
         return receipts.stream().map(ReceiptAdapter::new).collect(toList());
     }
+
     public static void deleteReceipts() {
         LocalDateTime latestClosureTime = DailyClosureAdapter.getLatestClosureTime();
         List<ReceiptAdapter> receiptsToDelete = getReceiptsByClosureTime(latestClosureTime);
@@ -91,6 +92,11 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
             record.setOwner(adaptee);
             adaptee.getRecords().add(record);
         });
+    }
+
+    private void applyDiscountOnRecordSalePrice(ReceiptRecord receiptRecord) {
+        receiptRecord.setSalePrice(receiptRecord.getProduct().getSalePrice());
+        receiptRecord.setSalePrice((int)Math.round(receiptRecord.getSalePrice() * getDiscountMultiplier(receiptRecord.getDiscountPercent())));
     }
 
     private ReceiptRecord buildReceiptRecord(Product product, int amount, boolean isTakeAway) {
@@ -362,11 +368,6 @@ public class ReceiptAdapter extends AbstractAdapter<Receipt> {
         return GuardedTransaction.runNamedQueryWithJoin(ReceiptRecord.GET_RECEIPT_RECORDS_BY_TIMESTAMP,
                 query -> query.setParameter("created", dateTime)
                         .setParameter("name", productAdapter.getAdaptee().getLongName()));
-    }
-
-    private void applyDiscountOnRecordSalePrice(ReceiptRecord receiptRecord) {
-        receiptRecord.setSalePrice(receiptRecord.getProduct().getSalePrice());
-        receiptRecord.setSalePrice((int)Math.round(receiptRecord.getSalePrice() * getDiscountMultiplier(receiptRecord.getDiscountPercent())));
     }
 
     private List<ReceiptRecord> getReceiptRecords() {

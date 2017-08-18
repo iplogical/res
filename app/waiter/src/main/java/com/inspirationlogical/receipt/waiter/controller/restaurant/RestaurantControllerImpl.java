@@ -202,6 +202,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         logger.info("The Daily Closure was pressed in the RestaurantView.");
         ConfirmMessage.showConfirmDialog(Resources.WAITER.getString("Restaurant.DailyClosureConfirm"), () -> restaurantService.closeDay());
         updateRestaurantSummary();
+        updateRestaurantSummary();
     }
 
     @FXML

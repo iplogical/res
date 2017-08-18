@@ -12,7 +12,6 @@ import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateExcepti
 import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 import org.junit.Before;
 import org.junit.Test;
@@ -137,12 +136,10 @@ public class RestaurantAdapterTest extends TestBase {
 
     @Test
     public void testGetConsumptionOfTheDay() {
-        assertEquals(6000, restaurantAdapter.getConsumptionOfTheDay(receipt ->
-                receipt.getAdaptee().getPaymentMethod().equals(PaymentMethod.CASH)));
-        assertEquals(2000, restaurantAdapter.getConsumptionOfTheDay(receipt ->
-                receipt.getAdaptee().getPaymentMethod().equals(PaymentMethod.CREDIT_CARD)));
-        assertEquals(0, restaurantAdapter.getConsumptionOfTheDay(receipt ->
-                receipt.getAdaptee().getPaymentMethod().equals(PaymentMethod.COUPON)));
+        assertEquals(0, restaurantAdapter.getConsumptionOfTheDay(null));
+        assertEquals(0, restaurantAdapter.getConsumptionOfTheDay(PaymentMethod.CASH));
+        assertEquals(0, restaurantAdapter.getConsumptionOfTheDay(PaymentMethod.CREDIT_CARD));
+        assertEquals(0, restaurantAdapter.getConsumptionOfTheDay(PaymentMethod.COUPON));
     }
 
     @Test

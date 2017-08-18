@@ -5,14 +5,15 @@ import java.util.List;
 import com.inspirationlogical.receipt.corelib.exception.VATSerieNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
 import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 
 /**
  * Created by Bálint on 2017.03.15..
  */
 public class VATSerieAdapter extends AbstractAdapter<VATSerie> {
 
-    public static VATSerieAdapter vatSerieAdapterFactory() {
-        List<VATSerie> vatSerieList = EntityManagerProvider.getEntityManager().createNamedQuery(VATSerie.GET_VAT_SERIE).getResultList();
+    public static VATSerieAdapter getActiveVATSerieAdapter() {
+        List<VATSerie> vatSerieList = GuardedTransaction.runNamedQuery(VATSerie.GET_VAT_SERIE);
         if (vatSerieList.isEmpty()) {
             throw new VATSerieNotFoundException();
         }

@@ -51,8 +51,11 @@ public class GuardedTransaction extends AbstractGuardedTransaction {
         run(() -> manager.persist(e), () -> {}, () -> {});
     }
 
+    public static synchronized void detach(AbstractEntity e) {
+        manager.detach(e);
+    }
+
     public static synchronized void delete(AbstractEntity e, Functor f) {
         delete(manager, e, f);
     }
-
 }

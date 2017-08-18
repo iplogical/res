@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.listeners;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.*;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 
@@ -18,6 +19,7 @@ public class ReceiptArchiverListener implements ReceiptAdapter.Listener {
     public void onClose(ReceiptAdapter receipt) {
         BackgroundThread.execute(() -> {
             cloneReceiptAndStoreToArchive(receipt);
+            GuardedTransaction.detach(receipt.getAdaptee());
         });
     }
 

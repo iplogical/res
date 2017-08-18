@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.waiter.controller.restaurant;
 
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.CONSUMED_TEST_TABLE_ONE;
@@ -87,6 +88,7 @@ public class RestaurantSummaryControllerTest extends TestFXBase {
         sellProduct(PRODUCT_FIVE, 3);
     }
 
+    @Ignore
     @Test
     public void testPayTableAThousandTimes() {
         for (int i = 0; i < 500; i++) {
@@ -97,7 +99,7 @@ public class RestaurantSummaryControllerTest extends TestFXBase {
             enterPaymentView();
             pay();
             System.out.println("Iteration: " + i);
-            if(i == 5) {
+            if(i  % 50 == 0) {
                 System.out.println("Iteation: " + i);
             }
         }

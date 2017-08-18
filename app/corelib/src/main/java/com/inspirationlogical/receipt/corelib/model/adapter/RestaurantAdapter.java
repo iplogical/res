@@ -139,15 +139,18 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         return consumed.stream().map(TableAdapter::new).collect(Collectors.toList());
     }
 
-    public int getConsumptionOfTheDay(Predicate<ReceiptAdapter> filter) {
-        LocalDateTime previousClosure = DailyClosureAdapter.getLatestClosureTime();
-        List<ReceiptAdapter> closedReceipts = getReceiptsByClosureTime(previousClosure);
-        if (closedReceipts.isEmpty()) {
+    public int getConsumptionOfTheDay(PaymentMethod paymentMethod) {
+        DailyClosureAdapter openDailyClosure = DailyClosureAdapter.getOpenDailyClosure();
+        if(paymentMethod == null)
+            return openDailyClosure.getAdaptee().getSumSaleGrossPriceCash() + openDailyClosure.getAdaptee().getSumSaleGrossPriceCreditCard();
+        if(paymentMethod.equals(PaymentMethod.CASH))
+            return openDailyClosure.getAdaptee().getSumSaleGrossPriceCash();
+        if(paymentMethod.equals(PaymentMethod.CREDIT_CARD))
+            return openDailyClosure.getAdaptee().getSumSaleGrossPriceCreditCard();
+        if(paymentMethod.equals(PaymentMethod.COUPON))
+            return openDailyClosure.getAdaptee().getSumSaleGrossPriceCoupon();
+        else
             return 0;
-        }
-        return closedReceipts.stream()
-                .filter(filter)
-                .mapToInt(ReceiptAdapter::getTotalPrice).sum();
     }
 
     public void printDailyConsumption() {
@@ -168,6 +171,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         });
         aggregatedReceipt.getRecords().sort(Comparator.comparing(ReceiptRecord::getSoldQuantity).reversed());
         addIncomesAsReceiptRecord(aggregatedReceipt, incomesByPaymentMethod);
+        receipts.forEach(receiptAdapter -> GuardedTransaction.detach(receiptAdapter.getAdaptee()));
         return new ReceiptAdapter(aggregatedReceipt);
     }
 
@@ -179,7 +183,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                 .owner(TableAdapter.getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee())
                 .paymentMethod(PaymentMethod.CASH)
                 .status(ReceiptStatus.OPEN)
-                .VATSerie(VATSerieAdapter.vatSerieAdapterFactory().getAdaptee())
+                .VATSerie(VATSerieAdapter.getActiveVATSerieAdapter().getAdaptee())
                 .type(ReceiptType.SALE)
                 .paymentMethod(PaymentMethod.CASH)
                 .build();

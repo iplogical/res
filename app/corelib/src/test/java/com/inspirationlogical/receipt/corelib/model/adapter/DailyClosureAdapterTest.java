@@ -5,6 +5,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;

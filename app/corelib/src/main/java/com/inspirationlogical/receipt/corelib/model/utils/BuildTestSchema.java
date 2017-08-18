@@ -51,7 +51,6 @@ public class BuildTestSchema {
     public static final String RESERVATION_ONE_NAME = "TestName1";
     public static final String RESERVATION_ONE_NOTE = "TestNote1";
 
-
     private @Getter EntityManager entityManager;
     private @Getter EntityManager entityManagerArchive;
 
@@ -459,11 +458,39 @@ public class BuildTestSchema {
     }
 
     private void persistObjectsActual() {
-        GuardedTransaction.run(() -> entityManager.persist(restaurant));
+        GuardedTransaction.persist(restaurant);
+        persistReceipts();
+    }
+
+    private void persistReceipts() {
+        GuardedTransaction.persist(receiptSaleOne);
+        GuardedTransaction.persist(receiptSaleTwo);
+        GuardedTransaction.persist(receiptSaleThree);
+        GuardedTransaction.persist(receiptSaleFour);
+        GuardedTransaction.persist(receiptSaleClosedTable);
+        GuardedTransaction.persist(receiptTableSaleTest);
+        GuardedTransaction.persist(receiptPurchase);
+        GuardedTransaction.persist(receiptInventory);
+        GuardedTransaction.persist(receiptDisposal);
+        GuardedTransaction.persist(receiptOther);
     }
 
     private void persistObjectsArchive() {
-        GuardedTransactionArchive.run(() -> entityManagerArchive.persist(restaurant));
+        GuardedTransactionArchive.persist(restaurant);
+        persistArchiveReceipts();
+    }
+
+    private void persistArchiveReceipts() {
+        GuardedTransactionArchive.persist(receiptSaleOne);
+        GuardedTransactionArchive.persist(receiptSaleTwo);
+        GuardedTransactionArchive.persist(receiptSaleThree);
+        GuardedTransactionArchive.persist(receiptSaleFour);
+        GuardedTransactionArchive.persist(receiptSaleClosedTable);
+        GuardedTransactionArchive.persist(receiptTableSaleTest);
+        GuardedTransactionArchive.persist(receiptPurchase);
+        GuardedTransactionArchive.persist(receiptInventory);
+        GuardedTransactionArchive.persist(receiptDisposal);
+        GuardedTransactionArchive.persist(receiptOther);
     }
 
     private void buildRestaurant() {
@@ -541,7 +568,6 @@ public class BuildTestSchema {
                 .sumSaleGrossPriceCreditCard(0)
                 .sumSaleGrossPriceCoupon(0)
                 .sumSaleGrossPriceTotal(0)
-
                 .profit(0)
                 .markup(0)
                 .receiptAverage(0)

@@ -48,6 +48,9 @@ public @Data class ReceiptRecord extends AbstractEntity {
     @JoinColumn(name = "PRODUCT_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Product product;
 
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ReceiptRecordCreated> createdList;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private ReceiptRecordType type;
@@ -67,9 +70,6 @@ public @Data class ReceiptRecord extends AbstractEntity {
 
     @Max(100)
     private double discountPercent;
-
-    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST , CascadeType.REFRESH, CascadeType.REMOVE})
-    private List<ReceiptRecordCreated> createdList;
 
     @Tolerate
     ReceiptRecord(){}

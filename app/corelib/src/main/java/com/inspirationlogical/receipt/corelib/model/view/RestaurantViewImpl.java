@@ -1,10 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
-
-import java.util.function.Predicate;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -27,7 +24,7 @@ public class RestaurantViewImpl extends AbstractModelViewImpl<RestaurantAdapter>
     }
 
     @Override
-    public int getConsumptionOfTheDay(Predicate<ReceiptAdapter> filter) {
-        return adapter.getConsumptionOfTheDay(filter);
+    public int getConsumptionOfTheDay(PaymentMethod paymentMethod) {
+        return adapter.getConsumptionOfTheDay(paymentMethod);
     }
 }

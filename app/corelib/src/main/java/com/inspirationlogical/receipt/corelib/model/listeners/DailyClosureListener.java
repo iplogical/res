@@ -18,9 +18,6 @@ public class DailyClosureListener implements ReceiptAdapter.Listener {
 
     @Override
     public void onClose(ReceiptAdapter receipt) {
-        BackgroundThread.execute(() -> {
-            DailyClosureAdapter.getOpenDailyClosure().update(receipt);
-            System.out.println(Thread.currentThread().getName() + ": DailyClosureListener executed successfully");
-        });
+        DailyClosureAdapter.getOpenDailyClosure().update(receipt);
     }
 }
