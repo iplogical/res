@@ -4,10 +4,13 @@ import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.CONSUMED_TEST_TABLE_ONE;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.RESERVATION_TEST_TABLE;
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.RESTAURANT_TEST_TABLE;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickButtonThenWait;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickOnThenWait;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
+import static com.inspirationlogical.receipt.waiter.utility.PayUtils.pay;
 import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 import static org.junit.Assert.assertEquals;
@@ -82,5 +85,21 @@ public class RestaurantSummaryControllerTest extends TestFXBase {
         enterSaleView(TABLE_NUMBER);
         selectCategory(AGGREGATE_ONE);
         sellProduct(PRODUCT_FIVE, 3);
+    }
+
+    @Test
+    public void testPayTableAThousandTimes() {
+        for (int i = 0; i < 500; i++) {
+            openTable(RESERVATION_TEST_TABLE);
+            enterSaleView(RESERVATION_TEST_TABLE);
+            selectCategory(AGGREGATE_ONE);
+            sellProduct(PRODUCT_FIVE, 3);
+            enterPaymentView();
+            pay();
+            System.out.println("Iteration: " + i);
+            if(i == 5) {
+                System.out.println("Iteation: " + i);
+            }
+        }
     }
 }

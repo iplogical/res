@@ -124,4 +124,9 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
     public boolean isPartiallyPayable() {
         return adapter.getAdaptee().getProduct().getType().equals(ProductType.PARTIALLY_PAYABLE);
     }
+
+    @Override
+    public String toString() {
+        return adapter.toString();
+    }
 }

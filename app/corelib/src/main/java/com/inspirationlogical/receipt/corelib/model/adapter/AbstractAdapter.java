@@ -15,4 +15,9 @@ public abstract class AbstractAdapter<T extends AbstractEntity>
     public AbstractAdapter(T adaptee) {
         this.adaptee = adaptee;
     }
+
+    @Override
+    public String toString() {
+        return adaptee.toString();
+    }
 }

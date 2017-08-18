@@ -22,7 +22,6 @@ import lombok.experimental.Tolerate;
 @Entity
 @Builder
 @EqualsAndHashCode(callSuper = true, exclude = {"owner", "product", "createdList"})
-@ToString(exclude = {"owner", "product"})
 @Table(name = "RECEIPT_RECORD")
 @NamedQueries({
     @NamedQuery(name = ReceiptRecord.GET_TEST_RECEIPT_RECORDS,
@@ -87,5 +86,19 @@ public @Data class ReceiptRecord extends AbstractEntity {
         newRecord.setDiscountPercent(record.getDiscountPercent());
         newRecord.setCreatedList(new ArrayList<>());
         return newRecord;
+    }
+
+    @Override
+    public String toString() {
+        return "ReceiptRecord{" +
+                "type=" + type +
+                ", name='" + name + '\'' +
+                ", soldQuantity=" + soldQuantity +
+                ", absoluteQuantity=" + absoluteQuantity +
+                ", purchasePrice=" + purchasePrice +
+                ", salePrice=" + salePrice +
+                ", VAT=" + VAT +
+                ", discountPercent=" + discountPercent +
+                '}';
     }
 }

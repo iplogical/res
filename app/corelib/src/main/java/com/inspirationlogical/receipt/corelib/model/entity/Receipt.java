@@ -142,4 +142,21 @@ public @Data class Receipt extends AbstractEntity {
         return newReceipt;
     }
 
+    @Override
+    public String toString() {
+        return "Receipt{" +
+                "table=" + owner.toString() +
+                ", type=" + type +
+                ", status=" + status +
+                ", paymentMethod=" + paymentMethod +
+                ", openTime=" + openTime +
+                ", closureTime=" + closureTime +
+                ", userCode=" + userCode +
+                ", sumPurchaseNetPrice=" + sumPurchaseNetPrice +
+                ", sumPurchaseGrossPrice=" + sumPurchaseGrossPrice +
+                ", sumSaleNetPrice=" + sumSaleNetPrice +
+                ", sumSaleGrossPrice=" + sumSaleGrossPrice +
+                ", discountPercent=" + discountPercent +
+                '}';
+    }
 }

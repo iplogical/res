@@ -120,6 +120,7 @@ public @Data class Product extends AbstractEntity {
                 ", status=" + status.toString() +
                 ", salePrice=" + salePrice +
                 ", purchasePrice=" + purchasePrice +
+                ", rapidCode=" + rapidCode +
                 ", VATLocal=" + VATLocal +
                 ", VATTakeAway=" + VATTakeAway;
     }

@@ -30,7 +30,7 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
     @Setter
     private static boolean testApplication = false;
 
-    final static Logger logger = LoggerFactory.getLogger(WaiterApp.class);
+    final private static Logger logger = LoggerFactory.getLogger(WaiterApp.class);
 
     private static Stage stage;
 

@@ -140,4 +140,9 @@ public class ReceiptViewImpl extends AbstractModelViewImpl<ReceiptAdapter>
         }
         return adapter.getAdaptee().getClient();
     }
+
+    @Override
+    public String toString() {
+        return adapter.toString();
+    }
 }

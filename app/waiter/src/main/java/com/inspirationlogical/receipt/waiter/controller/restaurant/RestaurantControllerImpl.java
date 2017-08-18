@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.corelib.service.RetailServiceImpl;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.contextmenu.RestaurantContextMenuBuilderDecorator;
@@ -31,6 +32,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import javafx.util.Duration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.LinkedHashSet;
@@ -43,6 +46,8 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldH
 
 @Singleton
 public class RestaurantControllerImpl implements RestaurantController {
+
+    final private static Logger logger = LoggerFactory.getLogger(RestaurantControllerImpl.class);
 
     public static final String RESTAURANT_VIEW_PATH = "/view/fxml/Restaurant.fxml";
     static final int INITIAL_GRID_SIZE = 10;
@@ -186,6 +191,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     public void onConfigurationToggle(Event event) {
+        logger.info("The configuration mode was toggled: is config mode: " + configuration.isSelected());
         if (!configuration.isSelected()) {
             tableConfigurationController.clearSelections();
         }
@@ -193,6 +199,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     public void onDailyClosure(Event event) {
+        logger.info("The Daily Closure was pressed in the RestaurantView.");
         ConfirmMessage.showConfirmDialog(Resources.WAITER.getString("Restaurant.DailyClosureConfirm"), () -> restaurantService.closeDay());
         updateRestaurantSummary();
     }
@@ -204,6 +211,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         dailySummaryController.setOpenConsumption(openConsumption.getText());
         viewLoader.loadViewIntoScene(dailySummaryController);
         dailySummaryController.updatePriceFields();
+        logger.info("Entering the Daily Summary.");
     }
 
     @FXML
@@ -211,6 +219,7 @@ public class RestaurantControllerImpl implements RestaurantController {
         ReservationController reservationController = WaiterRegistry.getInstance(ReservationController.class);
         reservationController.setRestaurantView(restaurantView);
         viewLoader.loadViewIntoScene(reservationController);
+        logger.info("Entering the Reservations.");
     }
 
     @FXML
@@ -301,6 +310,9 @@ public class RestaurantControllerImpl implements RestaurantController {
                     openConsumption.setText(values.get(4));
                     paidConsumption.setText(values.get(5));
                     totalIncome.setText(String.valueOf(Integer.valueOf(openConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
+                    logger.info("The restaurant summary was updated. Tables: " + openTableNumber.getText() + "/" + totalTableNumber.getText() +
+                                ", Guests: " + totalGuests.getText() + "/" + totalCapacity.getText() +
+                                ", Income:" + openConsumption.getText() + " / " + paidConsumption.getText() + " / " + totalIncome.getText());
                 }
             }
         });

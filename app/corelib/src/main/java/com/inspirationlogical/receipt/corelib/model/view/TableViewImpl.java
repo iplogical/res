@@ -161,4 +161,9 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
                 .map(TableViewImpl::new)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public String toString() {
+        return adapter.toString();
+    }
 }

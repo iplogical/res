@@ -26,9 +26,13 @@ import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class RestaurantServiceImpl extends AbstractService implements RestaurantService {
+
+    final private static Logger logger = LoggerFactory.getLogger(RestaurantServiceImpl.class);
 
     @Inject
     public RestaurantServiceImpl(EntityManager manager) {
@@ -57,7 +61,9 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public TableView addTable(RestaurantView restaurant, TableBuilder builder) {
+        logger.info("A table was added: " + builder.build());
         return new TableViewImpl(getRestaurantAdapter(restaurant).addTable(builder));
+
     }
 
     @Override
@@ -71,7 +77,6 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
         List<TableAdapter> consumedTableAdapters = consumed.stream()
                 .map(this::getTableAdapter)
                 .collect(toList());
-
         getRestaurantAdapter(getActiveRestaurant()).mergeTables(consumerTableAdapter, consumedTableAdapters);
     }
 

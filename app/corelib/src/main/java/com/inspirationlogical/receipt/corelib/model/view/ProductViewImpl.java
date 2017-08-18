@@ -103,4 +103,9 @@ public class ProductViewImpl extends AbstractModelViewImpl<ProductAdapter>
                 .map(RecipeViewImpl::new)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public String toString() {
+        return adapter.toString();
+    }
 }
