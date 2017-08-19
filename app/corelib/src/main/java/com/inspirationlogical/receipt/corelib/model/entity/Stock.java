@@ -35,7 +35,7 @@ public @Data class Stock extends AbstractEntity {
     public static final String STOCK_GET_ITEMS = "Stock.GetStockItems";
     public static final String STOCK_GET_LATEST_ITEM_BY_PRODUCT = "Stock.GetStockItemByProduct";
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_ID",foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     @NotNull
     private Product owner;

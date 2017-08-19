@@ -1,5 +1,8 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import com.inspirationlogical.receipt.corelib.model.entity.Product;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
+import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.entity.Stock;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
@@ -23,18 +26,24 @@ public class StockAdapter extends AbstractAdapter<Stock> {
                 .collect(toList());
     }
 
-    public static void updateStock(ReceiptRecordAdapter receiptRecordAdapter, Optional<ReceiptType> receiptType) {
-        receiptRecordAdapter.getAdaptee().getProduct().getRecipes().forEach(recipe ->
+    public static void updateStock(ReceiptRecord receiptRecord, Optional<ReceiptType> receiptType) {
+        receiptRecord.getProduct().getRecipes().forEach(recipe ->
         {
             StockAdapter stockAdapter = StockAdapter.getLatestItemByProduct(new ProductAdapter(recipe.getComponent()));
-            double quantity = receiptType.filter(type -> type.equals(ReceiptType.SALE))
-                    .map(type -> recipe.getQuantityMultiplier() * receiptRecordAdapter.getAdaptee().getSoldQuantity())
-                    .orElse(receiptRecordAdapter.getAdaptee().getAbsoluteQuantity());
+            double quantity = calculateStockQuantity(receiptRecord, receiptType, recipe);
             stockAdapter.updateStockAdapter(roundToTwoDecimals(quantity), receiptType.get());
+            GuardedTransaction.detach(stockAdapter.getAdaptee());
+            GuardedTransaction.detach(recipe);
         });
     }
 
-    public static StockAdapter getLatestItemByProduct(ProductAdapter productAdapter) {
+    private static Double calculateStockQuantity(ReceiptRecord receiptRecord, Optional<ReceiptType> receiptType, Recipe recipe) {
+        return receiptType.filter(type -> type.equals(ReceiptType.SALE))
+                .map(type -> recipe.getQuantityMultiplier() * receiptRecord.getSoldQuantity())
+                .orElse(receiptRecord.getAbsoluteQuantity());
+    }
+
+    static StockAdapter getLatestItemByProduct(ProductAdapter productAdapter) {
         List<Stock> stockList = GuardedTransaction.runNamedQuery(Stock.STOCK_GET_LATEST_ITEM_BY_PRODUCT,
                 query -> query.setParameter("product", productAdapter.getAdaptee()).setMaxResults(1));
         if(stockList.isEmpty()) {

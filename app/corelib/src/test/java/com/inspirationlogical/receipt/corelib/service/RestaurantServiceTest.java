@@ -35,7 +35,7 @@ public class RestaurantServiceTest {
     private RestaurantService service;
 
     @Mock
-    private EntityManager manager;
+    private EntityViews entityViews;
 
     @Mock
     private RestaurantViewImpl restaurantView;
@@ -57,7 +57,7 @@ public class RestaurantServiceTest {
 
     @Before
     public void createService() {
-        service = new RestaurantServiceImpl(manager);
+        service = new RestaurantServiceImpl(entityViews);
     }
 
     @Test

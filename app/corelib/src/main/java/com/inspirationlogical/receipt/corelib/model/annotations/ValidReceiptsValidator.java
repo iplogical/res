@@ -41,7 +41,7 @@ public class ValidReceiptsValidator extends AbstractValidator
             Method isValidMethod = this.getClass().
                     getDeclaredMethod("isValid", value.getClass(), ConstraintValidatorContext.class);
             return (boolean)isValidMethod.invoke(this,value,context);
-        }catch (NoSuchMethodException | InvocationTargetException |IllegalAccessException e){
+        }catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e){
             throw new RuntimeException(e);
         }
     }

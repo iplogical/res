@@ -1221,13 +1221,9 @@ public class BuildSchema  {
 
     private void dropAll(boolean isActual){
         if(isActual) {
-            GuardedTransaction.run(() -> {
-                dropFromAllTables();
-            });            
+            GuardedTransaction.run(this::dropFromAllTables);            
         } else {
-            GuardedTransactionArchive.run(() -> {
-                dropFromAllTables();
-            });
+            GuardedTransactionArchive.run(this::dropFromAllTables);
         }
         entityManager.clear();
     }
@@ -1295,6 +1291,8 @@ public class BuildSchema  {
         vatSerieAndVatValues();
         restaurantAndTables();
 //        tablesAndReservations();
+        tablesAndReceipt();
+        receiptsAndVatSerie();
         restaurantAndDailyClosures();
     }
 
@@ -1305,15 +1303,401 @@ public class BuildSchema  {
             GuardedTransaction.run(() -> entityManager.persist(vatSerie));
             GuardedTransaction.run(() -> entityManager.persist(admin));
             GuardedTransaction.run(() -> entityManager.persist(user));
+            GuardedTransaction.run(this::persistReceipts);
+            GuardedTransaction.run(this::persistRecipes);
         } else {
             GuardedTransactionArchive.run(() -> entityManager.persist(restaurant));
             GuardedTransactionArchive.run(() -> entityManager.persist(root));
             GuardedTransactionArchive.run(() -> entityManager.persist(vatSerie));
             GuardedTransactionArchive.run(() -> entityManager.persist(admin));
             GuardedTransactionArchive.run(() -> entityManager.persist(user));
+            GuardedTransactionArchive.run(this::persistReceipts);
+            GuardedTransactionArchive.run(this::persistRecipes);
         }
     }
 
+    private void persistReceipts() {
+        entityManager.persist(receiptPurchase);
+        entityManager.persist(receiptInventory);
+        entityManager.persist(receiptDisposal);
+        entityManager.persist(receiptOther);
+    }
+    
+    private void persistRecipes() {
+        entityManager.persist(SosPerecRecipe1);
+        entityManager.persist(MogyoroRecipe1);
+
+        entityManager.persist(RagcsaMix1Perec2MogyiRecipe1);
+        entityManager.persist(RagcsaMix1Perec2MogyiRecipe2);
+
+        entityManager.persist(RagcsaMix2Perec1MogyiRecipe1);
+        entityManager.persist(RagcsaMix2Perec1MogyiRecipe2);
+
+        entityManager.persist(RagcsaMix3PerecRecipe1);
+
+        entityManager.persist(NachosSosSajtRecipe1);
+        entityManager.persist(NachosSosSajtRecipe2);
+
+        entityManager.persist(NachosSosChiliRecipe1);
+        entityManager.persist(NachosSosChiliRecipe2);
+
+        entityManager.persist(NachosBBQSajtRecipe1);
+        entityManager.persist(NachosBBQSajtRecipe2);
+
+        entityManager.persist(NachosBBQChiliRecipe1);
+        entityManager.persist(NachosBBQChiliRecipe2);
+
+        entityManager.persist(ChipsRecipe1);
+        entityManager.persist(PopcornRecipe1);
+        entityManager.persist(GumicukorRecipe1);
+        entityManager.persist(BalatonszeletRecipe1);
+        entityManager.persist(CsokiRecipe1);
+
+        // Ételek
+        entityManager.persist(MelegszendivcsSonkasRecipe1);
+        entityManager.persist(MelegszendivcsSonkasRecipe2);
+        entityManager.persist(MelegszendivcsSonkasRecipe3);
+        entityManager.persist(MelegszendivcsSonkasRecipe4);
+        entityManager.persist(MelegszendivcsSonkasRecipe5);
+        entityManager.persist(MelegszendivcsSonkasRecipe6);
+
+        entityManager.persist(MelegszendivcsSzalamisRecipe1);
+        entityManager.persist(MelegszendivcsSzalamisRecipe2);
+        entityManager.persist(MelegszendivcsSzalamisRecipe3);
+        entityManager.persist(MelegszendivcsSzalamisRecipe4);
+        entityManager.persist(MelegszendivcsSzalamisRecipe5);
+        entityManager.persist(MelegszendivcsSzalamisRecipe6);
+
+        entityManager.persist(MelegszendivcsVegaRecipe1);
+        entityManager.persist(MelegszendivcsVegaRecipe2);
+        entityManager.persist(MelegszendivcsVegaRecipe3);
+        entityManager.persist(MelegszendivcsVegaRecipe4);
+        entityManager.persist(MelegszendivcsVegaRecipe5);
+        entityManager.persist(MelegszendivcsVegaRecipe6);
+
+        entityManager.persist(SajtosCsikokRecipe1);
+        entityManager.persist(SajtosCsikokRecipe2);
+        entityManager.persist(SajtosCsikokRecipe3);
+        entityManager.persist(SajtosCsikokRecipe4);
+        entityManager.persist(SajtosCsikokRecipe5);
+
+        entityManager.persist(ZsirosDeszkaRecipe1);
+        entityManager.persist(ZsirosDeszkaRecipe2);
+        entityManager.persist(ZsirosDeszkaRecipe3);
+        entityManager.persist(ZsirosDeszkaRecipe4);
+
+        entityManager.persist(WrapRecipe1);
+        entityManager.persist(WrapRecipe2);
+        entityManager.persist(WrapRecipe3);
+        entityManager.persist(WrapRecipe4);
+        entityManager.persist(WrapRecipe5);
+        entityManager.persist(WrapRecipe6);
+        entityManager.persist(WrapRecipe7);
+        entityManager.persist(WrapRecipe8);
+
+        entityManager.persist(SpecialisFeltetekPiritossalTonhalRecipe1);
+        entityManager.persist(SpecialisFeltetekPiritossalTonhalRecipe2);
+        entityManager.persist(SpecialisFeltetekPiritossalTonhalRecipe3);
+        entityManager.persist(SpecialisFeltetekPiritossalTonhalRecipe4);
+
+        entityManager.persist(SpecialisFeltetekPiritossalPadlizsanRecipe1);
+        entityManager.persist(SpecialisFeltetekPiritossalPadlizsanRecipe2);
+        entityManager.persist(SpecialisFeltetekPiritossalPadlizsanRecipe3);
+
+        entityManager.persist(SajttalRecipe1);
+        entityManager.persist(SajttalRecipe2);
+        entityManager.persist(SajttalRecipe3);
+        entityManager.persist(SajttalRecipe4);
+
+        entityManager.persist(GameUpTalRecipe1);
+        entityManager.persist(GameUpTalRecipe2);
+        entityManager.persist(GameUpTalRecipe3);
+        entityManager.persist(GameUpTalRecipe4);
+        entityManager.persist(GameUpTalRecipe5);
+        entityManager.persist(GameUpTalRecipe6);
+
+        entityManager.persist(GameUpFalankTalRecipe1);
+        entityManager.persist(GameUpFalankTalRecipe2);
+        entityManager.persist(GameUpFalankTalRecipe3);
+        entityManager.persist(GameUpFalankTalRecipe4);
+        entityManager.persist(GameUpFalankTalRecipe5);
+        entityManager.persist(GameUpFalankTalRecipe6);
+        entityManager.persist(GameUpFalankTalRecipe7);
+        entityManager.persist(GameUpFalankTalRecipe8);
+        entityManager.persist(GameUpFalankTalRecipe9);
+
+        // Menuk
+        entityManager.persist(AgentShotCoverRecipe1);
+        entityManager.persist(LimonCeptRecipe1);
+        entityManager.persist(SplendBorRecipe1);
+        entityManager.persist(TatraTimeRecipe1);
+        entityManager.persist(SorrelAzEmberisegEllenRecipe1);
+
+    /* ----- ITALLAP -----*/
+        // Csapolt sorok
+        entityManager.persist(Soproni03Recipe1);
+        entityManager.persist(Soproni05Recipe1);
+        entityManager.persist(Edelweiss03Recipe1);
+        entityManager.persist(Edelweiss05Recipe1);
+
+        // Uveges sorok
+        entityManager.persist(KrusoviceSvetleRecipe1);
+        entityManager.persist(SoproniDemonRecipe1);
+        entityManager.persist(SoproniMaxxRecipe1);
+        entityManager.persist(HeinekenRecipe1);
+        entityManager.persist(GosserNaturRadlerRecipe1);
+        entityManager.persist(GosserNaturRadler00Recipe1);
+        entityManager.persist(BekesSzentandrasiMeggyesRecipe1);
+        entityManager.persist(StrongbowDarkfruitRecipe1);
+        entityManager.persist(StrongbowGoldAppleCiderRecipe1);
+        entityManager.persist(EdelweissRecipe1);
+
+        // Borok
+        entityManager.persist(HazBoraNagyEsNagyRecipe1);
+        entityManager.persist(HilltopIrsaiOliverRecipe1);
+        entityManager.persist(HilltopIrsaiOliverDecireRecipe1);
+        entityManager.persist(GereAttilaOlaszrizlingRecipe1);
+
+        entityManager.persist(HazBoraLisiczaRoseCuveeRecipe1);
+        entityManager.persist(MeszarosPinotNoirRoseRecipe1);
+        entityManager.persist(MeszarosPinotNoirRoseDecireRecipe1);
+
+        entityManager.persist(HazBoraPolgarSerumVeritasRecipe1);
+        entityManager.persist(VinczeMerlotRecipe1);
+        entityManager.persist(VylyanCabernetSauvignonRecipe1);
+        entityManager.persist(MeszarosHidasptereCabernetFrancReserveRecipe1);
+
+        // Pezsgok
+        entityManager.persist(TorleyGalaSzarazRecipe1);
+        entityManager.persist(TorleyCharmantEdesRecipe1);
+
+        // Fröccsok
+        entityManager.persist(HazBoraNagyEsNagyKisfroccsRecipe1);
+        entityManager.persist(HazBoraNagyEsNagyNagyfroccsRecipe1);
+        entityManager.persist(HazBoraNagyEsNagyVicehazmesterRecipe1);
+        entityManager.persist(HazBoraNagyEsNagyHazmesterRecipe1);
+        entityManager.persist(HazBoraNagyEsNagyHosszulepesRecipe1);
+        entityManager.persist(HazBoraNagyEsNagySportFroccsRecipe1);
+
+        entityManager.persist(HilltopIrsaiOliverKisfroccsRecipe1);
+        entityManager.persist(HilltopIrsaiOliverNagyfroccsRecipe1);
+        entityManager.persist(HilltopIrsaiOliverVicehazmesterRecipe1);
+        entityManager.persist(HilltopIrsaiOliverHazmesterRecipe1);
+        entityManager.persist(HilltopIrsaiOliverHosszulepesRecipe1);
+        entityManager.persist(HilltopIrsaiOliverSportFroccsRecipe1);
+
+        entityManager.persist(HazBoraLisiczaRoseCuveeKisfroccsRecipe1);
+        entityManager.persist(HazBoraLisiczaRoseCuveeNagyfroccsRecipe1);
+        entityManager.persist(HazBoraLisiczaRoseCuveeVicehazmesterRecipe1);
+        entityManager.persist(HazBoraLisiczaRoseCuveeHazmesterRecipe1);
+        entityManager.persist(HazBoraLisiczaRoseCuveeHosszulepesRecipe1);
+        entityManager.persist(HazBoraLisiczaRoseCuveeSportFroccsRecipe1);
+
+        entityManager.persist(MeszarosPinotNoirRoseKisfroccsRecipe1);
+        entityManager.persist(MeszarosPinotNoirRoseNagyfroccsRecipe1);
+        entityManager.persist(MeszarosPinotNoirRoseVicehazmesterRecipe1);
+        entityManager.persist(MeszarosPinotNoirRoseHazmesterRecipe1);
+        entityManager.persist(MeszarosPinotNoirRoseHosszulepesRecipe1);
+        entityManager.persist(MeszarosPinotNoirRoseSportFroccsRecipe1);
+
+        // Roviditalok
+        entityManager.persist(JimBeam04Recipe1);
+        entityManager.persist(JohnnieWalkerRedLabel04Recipe1);
+        entityManager.persist(JackDaniels04Recipe1);
+        entityManager.persist(TullamoreDew04Recipe1);
+
+        entityManager.persist(Royal04Recipe1);
+        entityManager.persist(Finlandia04Recipe1);
+
+        entityManager.persist(BacardiSuperior04Recipe1);
+        entityManager.persist(CaptainMorganSpicedRum04Recipe1);
+
+        entityManager.persist(Beefeater04Recipe1);
+
+        entityManager.persist(TequilaSierraReposadoGold04Recipe1);
+        entityManager.persist(TequilaSierraSilver04Recipe1);
+
+        entityManager.persist(Unicum04Recipe1);
+        entityManager.persist(Jagermeister04Recipe1);
+        entityManager.persist(Baileys08Recipe1);
+
+        entityManager.persist(JimBeam02Recipe1);
+        entityManager.persist(JohnnieWalkerRedLabel02Recipe1);
+        entityManager.persist(JackDaniels02Recipe1);
+        entityManager.persist(TullamoreDew02Recipe1);
+
+        entityManager.persist(Royal02Recipe1);
+        entityManager.persist(Finlandia02Recipe1);
+
+        entityManager.persist(BacardiSuperior02Recipe1);
+        entityManager.persist(CaptainMorganSpicedRum02Recipe1);
+
+        entityManager.persist(Beefeater02Recipe1);
+
+        entityManager.persist(TequilaSierraReposadoGold02Recipe1);
+        entityManager.persist(TequilaSierraSilver02Recipe1);
+
+        entityManager.persist(Unicum02Recipe1);
+        entityManager.persist(Jagermeister02Recipe1);
+        entityManager.persist(Baileys04Recipe1);
+
+        // Palinkak/
+        entityManager.persist(_22KokuszTatratea04Recipe1);
+        entityManager.persist(_32CitrusTatratea04Recipe1);
+        entityManager.persist(_42BarackTatratea04Recipe1);
+        entityManager.persist(_52EredetiTatratea04Recipe1);
+        entityManager.persist(_62ErdeiGyumolcsTatratea04Recipe1);
+        entityManager.persist(_72OutlawBetyarTatratea04Recipe1);
+
+        entityManager.persist(CseresznyePalinka04Recipe1);
+        entityManager.persist(KajszibarackPalinka04Recipe1);
+        entityManager.persist(Szilvapalinka04Recipe1);
+
+        entityManager.persist(_22KokuszTatratea02Recipe1);
+        entityManager.persist(_32CitrusTatratea02Recipe1);
+        entityManager.persist(_42BarackTatratea02Recipe1);
+        entityManager.persist(_52EredetiTatratea02Recipe1);
+        entityManager.persist(_62ErdeiGyumolcsTatratea02Recipe1);
+        entityManager.persist(_72OutlawBetyarTatratea02Recipe1);
+
+        entityManager.persist(CseresznyePalinka02Recipe1);
+        entityManager.persist(KajszibarackPalinka02Recipe1);
+        entityManager.persist(Szilvapalinka02Recipe1);
+
+        // Shotok
+        entityManager.persist(Finca1Recipe1);
+        entityManager.persist(Finca1Recipe2);
+        entityManager.persist(Finca1Recipe3);
+
+        entityManager.persist(Bang1Recipe1);
+        entityManager.persist(Bang1Recipe2);
+
+        entityManager.persist(Imagine1Recipe1);
+        entityManager.persist(Imagine1Recipe2);
+
+        entityManager.persist(Finca6Recipe1);
+        entityManager.persist(Finca6Recipe2);
+        entityManager.persist(Finca6Recipe3);
+
+        entityManager.persist(Bang6Recipe1);
+        entityManager.persist(Bang6Recipe2);
+
+        entityManager.persist(Imagine6Recipe1);
+        entityManager.persist(Imagine6Recipe2);
+
+        entityManager.persist(RiffRaff6Recipe1);
+        entityManager.persist(RiffRaff6Recipe2);
+        entityManager.persist(RiffRaff6Recipe3);
+
+        entityManager.persist(Finca12Recipe1);
+        entityManager.persist(Finca12Recipe2);
+        entityManager.persist(Finca12Recipe3);
+
+        entityManager.persist(Bang12Recipe1);
+        entityManager.persist(Bang12Recipe2);
+
+        entityManager.persist(Imagine12Recipe1);
+        entityManager.persist(Imagine12Recipe2);
+
+        entityManager.persist(RiffRaff12Recipe1);
+        entityManager.persist(RiffRaff12Recipe2);
+        entityManager.persist(RiffRaff12Recipe3);
+
+        // Uveges uditok
+        entityManager.persist(CocaColaRecipe1);
+        entityManager.persist(CocaColaZeroRecipe1);
+        entityManager.persist(FantaNarancsRecipe1);
+        entityManager.persist(SpriteRecipe1);
+        entityManager.persist(KinleyGyomberRecipe1);
+        entityManager.persist(KinleyTonicRecipe1);
+        entityManager.persist(NesteaCitromRecipe1);
+        entityManager.persist(NesteaBarackRecipe1);
+
+        // Kimert uditok
+        entityManager.persist(CappyAlmaRecipe1);
+        entityManager.persist(CappyNarancsRecipe1);
+        entityManager.persist(CappyBarackRecipe1);
+        entityManager.persist(CappyAnanaszRecipe1);
+
+        // Limonadek
+        entityManager.persist(LimonadeMalna05Recipe1);
+        entityManager.persist(LimonadeMalna05Recipe2);
+        entityManager.persist(LimonadeMalna05Recipe3);
+        entityManager.persist(LimonadeMalna05Recipe4);
+
+        entityManager.persist(LimonadeMeggy05Recipe1);
+        entityManager.persist(LimonadeMeggy05Recipe2);
+        entityManager.persist(LimonadeMeggy05Recipe3);
+        entityManager.persist(LimonadeMeggy05Recipe4);
+
+        entityManager.persist(LimonadeEperNarancs05Recipe1);
+        entityManager.persist(LimonadeEperNarancs05Recipe2);
+        entityManager.persist(LimonadeEperNarancs05Recipe3);
+        entityManager.persist(LimonadeEperNarancs05Recipe4);
+
+        entityManager.persist(LimonadeCitrus05Recipe1);
+        entityManager.persist(LimonadeCitrus05Recipe2);
+        entityManager.persist(LimonadeCitrus05Recipe3);
+        entityManager.persist(LimonadeCitrus05Recipe4);
+
+        entityManager.persist(LimonadeMalna10Recipe1);
+        entityManager.persist(LimonadeMalna10Recipe2);
+        entityManager.persist(LimonadeMalna10Recipe3);
+        entityManager.persist(LimonadeMalna10Recipe4);
+
+        entityManager.persist(LimonadeMeggy10Recipe1);
+        entityManager.persist(LimonadeMeggy10Recipe2);
+        entityManager.persist(LimonadeMeggy10Recipe3);
+        entityManager.persist(LimonadeMeggy10Recipe4);
+
+        entityManager.persist(LimonadeEperNarancs10Recipe1);
+        entityManager.persist(LimonadeEperNarancs10Recipe2);
+        entityManager.persist(LimonadeEperNarancs10Recipe3);
+        entityManager.persist(LimonadeEperNarancs10Recipe4);
+
+        entityManager.persist(LimonadeCitrus10Recipe1);
+        entityManager.persist(LimonadeCitrus10Recipe2);
+        entityManager.persist(LimonadeCitrus10Recipe3);
+        entityManager.persist(LimonadeCitrus10Recipe4);
+
+        // Asvanyviz
+        entityManager.persist(NaturaquaSzensavasRecipe1);
+        entityManager.persist(NaturaquaSzensavmentesRecipe1);
+        entityManager.persist(SzodaRecipe1);
+
+        // Energiaitalok
+        entityManager.persist(BurnOriginalRecipe1);
+        entityManager.persist(BurnZeroRecipe1);
+        entityManager.persist(MonsterEnergyRecipe1);
+        entityManager.persist(MonsterAssaultRecipe1);
+        entityManager.persist(MonsterRehabRecipe1);
+
+        // Filteres Teaak
+        entityManager.persist(DallmayrGyumolcsRecipe1);
+        entityManager.persist(DallmayrZoldRecipe1);
+
+        entityManager.persist(PiramisDarjelingRecipe1);
+        entityManager.persist(PiramisMangoMaracujaRecipe1);
+        entityManager.persist(PiramisAnanaszPapajaRecipe1);
+        entityManager.persist(PiramisCitrusVerbenaRecipe1);
+
+        // Kavek
+        entityManager.persist(EspressoRecipe1);
+        entityManager.persist(AmericanoRecipe1);
+        entityManager.persist(CappuccinoRecipe1);
+        entityManager.persist(CaffeLatteRecipe1);
+        entityManager.persist(LatteMacchiatoRecipe1);
+        entityManager.persist(CaffeMelangeRecipe1);
+        entityManager.persist(ForroCsokiBarnaRecipe1);
+        entityManager.persist(ForroCsokiFeherRecipe1);
+
+        // Napi akciok
+        entityManager.persist(CaptainAndGyomberRecipe1);
+        entityManager.persist(GinTonicRecipe1);
+        entityManager.persist(JackAndCokeRecipe1);
+        entityManager.persist(VodkaSzodaRecipe1);
+    }
+    
     private void buildProducts() {
         buildProductAdHoc();
         buildProductGameFee();
@@ -12874,6 +13258,27 @@ public class BuildSchema  {
         tableOther.setOwner(restaurant);
         tableOrphanage.setOwner(restaurant);
    }
+
+    private void tablesAndReceipt() {
+        receiptPurchase.setOwner(tablePurchase);
+        receiptInventory.setOwner(tableInventory);
+        receiptDisposal.setOwner(tableDisposal);
+        receiptOther.setOwner(tableOther);
+
+        tablePurchase.setReceipts(Arrays.asList(receiptPurchase));
+        tableInventory.setReceipts(Arrays.asList(receiptInventory));
+        tableDisposal.setReceipts(Arrays.asList(receiptDisposal));
+        tableOther.setReceipts(Arrays.asList(receiptOther));
+    }
+
+    private void receiptsAndVatSerie() {
+        receiptPurchase.setVATSerie(vatSerie);
+        receiptInventory.setVATSerie(vatSerie);
+        receiptDisposal.setVATSerie(vatSerie);
+        receiptOther.setVATSerie(vatSerie);
+
+    }
+
 
     private void tablesAndReservations() {
 

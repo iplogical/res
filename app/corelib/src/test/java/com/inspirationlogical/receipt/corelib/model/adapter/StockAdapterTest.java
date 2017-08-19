@@ -1,12 +1,14 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Optional;
 
+import static com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter.updateStock;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -18,7 +20,7 @@ public class StockAdapterTest extends TestBase {
     private ProductAdapter recipeElementOne;
     private StockAdapter stockProductTwo;
     private StockAdapter stockRecipeElementOne;
-    private ReceiptRecordAdapter receiptSaleTwo;
+    private ReceiptRecord receiptSaleTwo;
     private double stockInitialSoldQuantity;
     private double stockInitialPurchasedQuantity;
     private double stockInitialInventoryQuantity;
@@ -32,7 +34,7 @@ public class StockAdapterTest extends TestBase {
         stockProductTwo = StockAdapter.getLatestItemByProduct(productTwo);
         recipeElementOne = new ProductAdapter(schema.getProductRecipeElementOne());
         stockRecipeElementOne = StockAdapter.getLatestItemByProduct(recipeElementOne);
-        receiptSaleTwo = new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordTwo());
+        receiptSaleTwo = schema.getReceiptSaleOneRecordTwo();
         stockInitialSoldQuantity = stockRecipeElementOne.getAdaptee().getSoldQuantity();
         stockInitialPurchasedQuantity = stockRecipeElementOne.getAdaptee().getPurchasedQuantity();
         stockInitialInventoryQuantity = stockRecipeElementOne.getAdaptee().getInventoryQuantity();
@@ -47,39 +49,39 @@ public class StockAdapterTest extends TestBase {
 
     @Test
     public void testUpdateStockSale() {
-        stockProductTwo.updateStock(receiptSaleTwo, Optional.of(ReceiptType.SALE));
+        updateStock(receiptSaleTwo, Optional.of(ReceiptType.SALE));
         // 0.5 is the quantityMultiplier
-        assertEquals(receiptSaleTwo.getAdaptee().getSoldQuantity() * 0.5 / productTwo.getAdaptee().getStorageMultiplier(), stockProductTwo.getAdaptee().getSoldQuantity(), 0.001);
+        assertEquals(receiptSaleTwo.getSoldQuantity() * 0.5 / productTwo.getAdaptee().getStorageMultiplier(), stockProductTwo.getAdaptee().getSoldQuantity(), 0.001);
         assertEquals(0, stockProductTwo.getAdaptee().getPurchasedQuantity(), 0.001);
     }
 
     @Test
     public void testUpdateStockPurchase() {
-        stockProductTwo.updateStock(receiptSaleTwo, Optional.of(ReceiptType.PURCHASE));
+        updateStock(receiptSaleTwo, Optional.of(ReceiptType.PURCHASE));
         assertEquals(0, stockProductTwo.getAdaptee().getSoldQuantity(), 0.001);
-        assertEquals(receiptSaleTwo.getAdaptee().getSoldQuantity() / productTwo.getAdaptee().getStorageMultiplier(), stockProductTwo.getAdaptee().getPurchasedQuantity(), 0.001);
+        assertEquals(receiptSaleTwo.getSoldQuantity() / productTwo.getAdaptee().getStorageMultiplier(), stockProductTwo.getAdaptee().getPurchasedQuantity(), 0.001);
     }
 
     @Test
     public void testUpdateStockDisposal() {
-        stockProductTwo.updateStock(receiptSaleTwo, Optional.of(ReceiptType.DISPOSAL));
-        assertEquals(receiptSaleTwo.getAdaptee().getAbsoluteQuantity() / productTwo.getAdaptee().getStorageMultiplier(), stockProductTwo.getAdaptee().getDisposedQuantity(), 0.001);
+        updateStock(receiptSaleTwo, Optional.of(ReceiptType.DISPOSAL));
+        assertEquals(receiptSaleTwo.getAbsoluteQuantity() / productTwo.getAdaptee().getStorageMultiplier(), stockProductTwo.getAdaptee().getDisposedQuantity(), 0.001);
         assertEquals(0, stockProductTwo.getAdaptee().getPurchasedQuantity(), 0.001);
     }
 
     @Test
     public void testUpdateStockInventoryPositive() {
-        stockProductTwo.updateStock(receiptSaleTwo, Optional.of(ReceiptType.INVENTORY));
-        assertEquals(receiptSaleTwo.getAdaptee().getSoldQuantity() / productTwo.getAdaptee().getStorageMultiplier(), stockProductTwo.getAdaptee().getInventoryQuantity(), 0.001);
+        updateStock(receiptSaleTwo, Optional.of(ReceiptType.INVENTORY));
+        assertEquals(receiptSaleTwo.getSoldQuantity() / productTwo.getAdaptee().getStorageMultiplier(), stockProductTwo.getAdaptee().getInventoryQuantity(), 0.001);
         assertEquals(0, stockProductTwo.getAdaptee().getPurchasedQuantity(), 0.001);
     }
 
     @Test
     public void testUpdateStockInventoryNegative() {
-        receiptSaleTwo.getAdaptee().setAbsoluteQuantity(-2);
-        stockProductTwo.updateStock(receiptSaleTwo, Optional.of(ReceiptType.INVENTORY));
+        receiptSaleTwo.setAbsoluteQuantity(-2);
+        updateStock(receiptSaleTwo, Optional.of(ReceiptType.INVENTORY));
         assertEquals(0, stockProductTwo.getAdaptee().getSoldQuantity(), 0.001);
-        assertEquals((receiptSaleTwo.getAdaptee().getSoldQuantity() / productTwo.getAdaptee().getStorageMultiplier()) * -1, stockProductTwo.getAdaptee().getInventoryQuantity(), 0.001);
+        assertEquals((receiptSaleTwo.getSoldQuantity() / productTwo.getAdaptee().getStorageMultiplier()) * -1, stockProductTwo.getAdaptee().getInventoryQuantity(), 0.001);
     }
 
     @Test

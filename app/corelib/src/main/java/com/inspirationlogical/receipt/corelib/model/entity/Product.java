@@ -64,10 +64,10 @@ public @Data class Product extends AbstractEntity {
     @NotNull
     private ProductCategory category;
 
-    @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY)
     private Collection<Recipe> recipes;
 
-    @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY)
     private Collection<Stock> stocks;
 
     @Enumerated(EnumType.STRING)

@@ -460,7 +460,11 @@ public class BuildTestSchema {
     private void persistObjectsActual() {
         GuardedTransaction.persist(restaurant);
         persistReceipts();
+        persistRecipes();
+        persistStocks();
     }
+
+
 
     private void persistReceipts() {
         GuardedTransaction.persist(receiptSaleOne);
@@ -473,6 +477,28 @@ public class BuildTestSchema {
         GuardedTransaction.persist(receiptInventory);
         GuardedTransaction.persist(receiptDisposal);
         GuardedTransaction.persist(receiptOther);
+    }
+
+    private void persistRecipes() {
+        GuardedTransaction.persist(productOnePartOne);
+        GuardedTransaction.persist(productTwoPartOne);
+        GuardedTransaction.persist(productThreePartOne);
+        GuardedTransaction.persist(productFourPartOne);
+        GuardedTransaction.persist(productFourPartTwo);
+        GuardedTransaction.persist(productFourPartThree);
+        GuardedTransaction.persist(productFivePartOne);
+        GuardedTransaction.persist(productSixPartOne);
+        GuardedTransaction.persist(productSevenPartOne);
+        GuardedTransaction.persist(productEightPartOne);
+        GuardedTransaction.persist(productRecipeElementOnePartOne);
+        GuardedTransaction.persist(productRecipeElementTwoPartOne);
+        GuardedTransaction.persist(productRecipeElementThreePartOne);
+    }
+
+    private void persistStocks() {
+        GuardedTransaction.persist(stockOne);
+        GuardedTransaction.persist(stockTwo);
+        GuardedTransaction.persist(stockThree);
     }
 
     private void persistObjectsArchive() {

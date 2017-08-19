@@ -29,7 +29,7 @@ public class RetailServiceTest {
     private RetailService service;
 
     @Mock
-    private EntityManager manager;
+    private EntityViews entityViews;
 
     @Mock
     private TableViewImpl tableView;
@@ -57,7 +57,7 @@ public class RetailServiceTest {
 
     @Before
     public void createService() {
-        service = new RetailServiceImpl(manager);
+        service = new RetailServiceImpl(entityViews);
     }
 
     @Test
