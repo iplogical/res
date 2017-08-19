@@ -21,7 +21,6 @@ public class PaymentControllerTest  extends TestFXBase {
 
     @Before
     public void setUpPaymentControllerTest() throws Exception {
-//        addTable(TABLE_NAME, TABLE_NUMBER, TABLE_GUESTS, TABLE_CAPACITY);
         openTable(TABLE_NUMBER);
         clickOnThenWait(TABLE_NUMBER, 200);
         selectCategory(AGGREGATE_ONE);
@@ -480,6 +479,6 @@ public class PaymentControllerTest  extends TestFXBase {
 
     @After
     public void payTable() {
-        clickButtonThenWait(PAY, 2000);
+        pay();
     }
 }

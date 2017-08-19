@@ -19,7 +19,7 @@ public class SaleUtils  extends AbstractUtils {
     }
 
     public static void sellProduct(String productName) {
-        clickOnThenWait(productName, 50);
+        clickOnThenWait(productName, 30);
     }
 
     public static void sellProduct(String productName, int quantity) {

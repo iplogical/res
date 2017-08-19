@@ -10,6 +10,7 @@ import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransacti
 import java.util.List;
 import java.util.Optional;
 
+import static com.inspirationlogical.receipt.corelib.model.entity.Recipe.GET_RECIPES_OF_PRODUCT;
 import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
@@ -27,7 +28,8 @@ public class StockAdapter extends AbstractAdapter<Stock> {
     }
 
     public static void updateStock(ReceiptRecord receiptRecord, Optional<ReceiptType> receiptType) {
-        receiptRecord.getProduct().getRecipes().forEach(recipe ->
+        List<Recipe> recipes = GuardedTransaction.runNamedQuery(GET_RECIPES_OF_PRODUCT, query -> query.setParameter("owner", receiptRecord.getProduct()));
+        recipes.forEach(recipe ->
         {
             StockAdapter stockAdapter = StockAdapter.getLatestItemByProduct(new ProductAdapter(recipe.getComponent()));
             double quantity = calculateStockQuantity(receiptRecord, receiptType, recipe);
@@ -57,10 +59,16 @@ public class StockAdapter extends AbstractAdapter<Stock> {
         ProductAdapter.getStorableProducts().forEach(productAdapter ->
             {
                 StockAdapter stock = getLatestItemByProduct(productAdapter);
-                if(stock.isStockChanged())
-                    createStockEntry(productAdapter, getInitialQuantity(stock));
+                StockAdapter newStock;
+                if(stock.isStockChanged()) {
+                    newStock = createStockEntry(productAdapter, getInitialQuantity(stock));
+                    GuardedTransaction.detach(newStock.getAdaptee());
+                }
+                GuardedTransaction.detach(stock.getAdaptee());
             }
         );
+        List<Recipe> recipes = GuardedTransaction.runNamedQuery(Recipe.GET_TEST_RECIPES);
+        recipes.forEach(GuardedTransaction::detach);
     }
 
     private boolean isStockChanged() {

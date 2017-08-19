@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 public class PayUtils  extends AbstractUtils {
 
     public static void pay() {
-        clickButtonThenWait(PAY, 2000);
+        clickButtonThenWait(PAY, 1000);
     }
 
     public static void paySelective(int row) {

@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 public class RestaurantSummaryControllerTest extends TestFXBase {
 
     private static final String TABLE_NUMBER = RESTAURANT_TEST_TABLE;
-    private static final int OPEN_CONSUMPTION = 13100;
+    static final int OPEN_CONSUMPTION = 13100;
 
     @Before
     public void closeDay() {
