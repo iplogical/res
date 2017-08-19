@@ -16,6 +16,11 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
 
     final private static Logger logger = LoggerFactory.getLogger(RetailServiceImpl.class);
 
+    @Inject
+    RetailServiceImpl(EntityViews entityViews) {
+        super(entityViews);
+    }
+
     @Override
     public void openTable(TableView tableView) {
         getTableAdapter(tableView).openTable();

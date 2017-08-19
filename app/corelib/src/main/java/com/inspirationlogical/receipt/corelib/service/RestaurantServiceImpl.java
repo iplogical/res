@@ -35,6 +35,11 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     final private static Logger logger = LoggerFactory.getLogger(RestaurantServiceImpl.class);
 
+    @Inject
+    RestaurantServiceImpl(EntityViews entityViews) {
+        super(entityViews);
+    }
+
     @Override
     public RestaurantView getActiveRestaurant() {
         return new RestaurantViewImpl(RestaurantAdapter.getActiveRestaurant());

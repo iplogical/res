@@ -13,10 +13,7 @@ import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.security.service.SecurityService;
 import com.inspirationlogical.receipt.corelib.security.service.SecurityServiceImpl;
-import com.inspirationlogical.receipt.corelib.service.CommonService;
-import com.inspirationlogical.receipt.corelib.service.CommonServiceImpl;
-import com.inspirationlogical.receipt.corelib.service.RestaurantService;
-import com.inspirationlogical.receipt.corelib.service.RestaurantServiceImpl;
+import com.inspirationlogical.receipt.corelib.service.*;
 
 import lombok.SneakyThrows;
 
@@ -29,6 +26,7 @@ public abstract class Registry extends AbstractModule {
         bind(RestaurantService.class).to(RestaurantServiceImpl.class);
         bind(CommonService.class).to(CommonServiceImpl.class);
         bind(SecurityService.class).to(SecurityServiceImpl.class);
+        bind(EntityViews.class).to(EntityViewsImpl.class);
     }
 
     @SneakyThrows

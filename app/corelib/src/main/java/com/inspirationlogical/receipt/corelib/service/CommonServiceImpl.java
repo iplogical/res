@@ -49,6 +49,11 @@ import com.inspirationlogical.receipt.corelib.params.StockParams;
 @Singleton
 public class CommonServiceImpl extends AbstractService implements CommonService {
 
+    @Inject
+    public CommonServiceImpl(EntityViews entityViews) {
+        super(entityViews);
+    }
+
     @Override
     public Product.ProductBuilder productBuilder() {
         return Product.builder();
@@ -112,33 +117,33 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public ProductCategoryView getRootProductCategory() {
-        return categoryViews.stream()
+        return entityViews.getCategoryViews().stream()
                 .filter(productCategoryView -> productCategoryView.getType().equals(ROOT))
                 .findFirst().orElseThrow(RootCategoryNotFoundException::new);
     }
 
     @Override
     public List<ProductCategoryView> getAllCategories() {
-        return categoryViews;
+        return entityViews.getCategoryViews();
     }
 
     @Override
     public List<ProductCategoryView> getAggregateCategories() {
-        return categoryViews.stream()
+        return entityViews.getCategoryViews().stream()
                 .filter(productCategoryView -> productCategoryView.getType().equals(AGGREGATE))
                 .collect(toList());
     }
 
     @Override
     public List<ProductCategoryView> getLeafCategories() {
-        return categoryViews.stream()
+        return entityViews.getCategoryViews().stream()
                 .filter(productCategoryView -> productCategoryView.getType().equals(LEAF))
                 .collect(toList());
     }
 
     @Override
     public List<ProductCategoryView> getChildCategories(ProductCategoryView productCategoryView) {
-        return categoryViews.stream()
+        return entityViews.getCategoryViews().stream()
                 .filter(categoryView -> {
                     if (!categoryView.getType().equals(ROOT)) {
                         return categoryView.getParent().getCategoryName().equals(productCategoryView.getCategoryName());
@@ -151,7 +156,7 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     @Override
     public void getChildCategoriesRecursively(ProductCategoryView current, List<ProductCategoryView> traversal) {
         traversal.add(current);
-        categoryViews.stream()
+        entityViews.getCategoryViews().stream()
                 .filter(categoryView -> {
                     if (!categoryView.getType().equals(ROOT)) {
                         return categoryView.getParent().getCategoryName().equals(current.getCategoryName());
@@ -172,7 +177,7 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public List<ProductView> getActiveProducts() {
-        return productViews.stream()
+        return entityViews.getProductViews().stream()
                 .filter(productView -> productView.getStatus().equals(ACTIVE))
                 .collect(toList());
     }

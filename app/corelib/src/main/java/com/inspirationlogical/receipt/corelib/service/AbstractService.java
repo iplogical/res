@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import javax.persistence.EntityManager;
-
+import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.adapter.*;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 
@@ -11,9 +10,7 @@ import java.util.stream.Collectors;
 
 abstract class AbstractService {
 
-    List<ProductView> productViews;
-
-    List<ProductCategoryView> categoryViews;
+    EntityViews entityViews;
 
     static <View, Adapter> List<View> createViewsFromAdapters(List<Adapter> adapters, Function<Adapter, View> constructor) {
         return adapters.stream()
@@ -21,9 +18,8 @@ abstract class AbstractService {
                 .collect(Collectors.toList());
     }
 
-    AbstractService() {
-        productViews = createViewsFromAdapters(ProductAdapter.getActiveProducts(), ProductViewImpl::new);
-        categoryViews = createViewsFromAdapters(ProductCategoryAdapter.getProductCategories(), ProductCategoryViewImpl::new);
+    AbstractService(EntityViews entityViews) {
+        this.entityViews = entityViews;
     }
 
     RestaurantAdapter getRestaurantAdapter(RestaurantView restaurant) {
