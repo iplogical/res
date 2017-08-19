@@ -17,13 +17,29 @@ import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ManagerApp extends Application implements StageProvider, ResourcesProvider {
 
+    @Setter
+    private static boolean testApplication = false;
+
+    final private static Logger logger = LoggerFactory.getLogger(ManagerApp.class);
+
     private Stage stage;
 
     private Resources resources;
+
+    @Override
+    public void init() {
+        if(testApplication) {
+            EntityManagerProvider.getTestEntityManager();
+            EntityManagerProvider.getTestEntityManagerArchive();
+        }
+    }
 
     @Override
     public void start(Stage stage) {

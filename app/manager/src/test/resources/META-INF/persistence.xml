@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+    
+    <persistence-unit name="TestPersistence"  transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- entities -->
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Product</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ProductCategory</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Recipe</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Stock</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Receipt</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Table</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Restaurant</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.VATSerie</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.VAT</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Reservation</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.PriceModifier</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.DailyClosure</class>
+        <class>com.inspirationlogical.receipt.corelib.security.model.entity.AuthUser</class>
+        <!--          -->
+
+        <properties>
+            <property name="javax.persistence.jdbc.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/TestReceiptActual"/>
+            <property name="javax.persistence.jdbc.user" value="postgres"/>
+            <property name="javax.persistence.jdbc.password" value="test"/>
+            <property name="javax.persistence.jdbc.show_sql" value="true"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="TestPersistenceArchive"  transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- entities -->
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Product</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ProductCategory</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Recipe</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Stock</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Receipt</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Table</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Restaurant</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.VATSerie</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.VAT</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Reservation</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.PriceModifier</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.DailyClosure</class>
+        <class>com.inspirationlogical.receipt.corelib.security.model.entity.AuthUser</class>
+        <!--          -->
+
+        <properties>
+            <property name="javax.persistence.jdbc.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/TestReceiptArchive"/>
+            <property name="javax.persistence.jdbc.user" value="postgres"/>
+            <property name="javax.persistence.jdbc.password" value="test"/>
+            <property name="javax.persistence.jdbc.show_sql" value="true"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="TestViewPersistence"  transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- entities -->
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Product</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ProductCategory</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Recipe</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Stock</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Receipt</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Table</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Restaurant</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.VATSerie</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.VAT</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.Reservation</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.PriceModifier</class>
+        <class>com.inspirationlogical.receipt.corelib.model.entity.DailyClosure</class>
+        <class>com.inspirationlogical.receipt.corelib.security.model.entity.AuthUser</class>
+        <!--          -->
+
+        <properties>
+            <property name="javax.persistence.jdbc.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ReceiptViewTest"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="test"/>
+            <property name="javax.persistence.jdbc.show_sql" value="true"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+        </properties>
+    </persistence-unit>
+</persistence>

@@ -69,13 +69,13 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     @FXML
     TreeTableColumn<CategoryViewModel, String> productStockWindow;
     @FXML
-    Button createCategory;
+    Button addCategory;
     @FXML
     Button modifyCategory;
     @FXML
     Button deleteCategory;
     @FXML
-    Button createProduct;
+    Button addProduct;
     @FXML
     Button modifyProduct;
     @FXML

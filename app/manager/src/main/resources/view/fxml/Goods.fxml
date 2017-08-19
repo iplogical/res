@@ -61,7 +61,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button fx:id="createCategory" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateCategory" text="%Common.Add" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="addCategory" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateCategory" text="%Common.Add" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
@@ -82,7 +82,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button fx:id="createProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateProduct" text="%Common.Add" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="addProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateProduct" text="%Common.Add" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>

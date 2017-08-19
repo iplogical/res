@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.manager.controller.goods;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
-import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 
 /**
