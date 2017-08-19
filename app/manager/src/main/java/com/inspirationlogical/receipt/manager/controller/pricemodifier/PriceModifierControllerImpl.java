@@ -1,9 +1,10 @@
-package com.inspirationlogical.receipt.manager.controller;
+package com.inspirationlogical.receipt.manager.controller.pricemodifier;
 
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
+import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
 import com.inspirationlogical.receipt.manager.viewmodel.PriceModifierViewModel;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.Event;

@@ -1,7 +1,15 @@
 package com.inspirationlogical.receipt.manager.registry;
 
 import com.inspirationlogical.receipt.corelib.frontend.registry.Registry;
-import com.inspirationlogical.receipt.manager.controller.*;
+import com.inspirationlogical.receipt.manager.controller.goods.*;
+import com.inspirationlogical.receipt.manager.controller.pricemodifier.PriceModifierController;
+import com.inspirationlogical.receipt.manager.controller.pricemodifier.PriceModifierControllerImpl;
+import com.inspirationlogical.receipt.manager.controller.pricemodifier.PriceModifierFormController;
+import com.inspirationlogical.receipt.manager.controller.pricemodifier.PriceModifierFormControllerImpl;
+import com.inspirationlogical.receipt.manager.controller.receipt.ReceiptController;
+import com.inspirationlogical.receipt.manager.controller.receipt.ReceiptControllerImpl;
+import com.inspirationlogical.receipt.manager.controller.stock.StockController;
+import com.inspirationlogical.receipt.manager.controller.stock.StockControllerImpl;
 
 public class ManagerRegistry extends Registry {
 

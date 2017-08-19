@@ -11,7 +11,7 @@ import com.inspirationlogical.receipt.corelib.frontend.application.StageProvider
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
-import com.inspirationlogical.receipt.manager.controller.GoodsController;
+import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
 
 import javafx.application.Application;
 import javafx.scene.Parent;

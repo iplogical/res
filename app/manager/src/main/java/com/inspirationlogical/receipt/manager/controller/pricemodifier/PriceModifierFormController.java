@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.manager.controller;
+package com.inspirationlogical.receipt.manager.controller.pricemodifier;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
 

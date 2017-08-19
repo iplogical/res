@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.manager.controller;
+package com.inspirationlogical.receipt.manager.controller.receipt;
 
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
@@ -18,6 +18,7 @@ import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
 import com.inspirationlogical.receipt.manager.viewmodel.ReceiptRecordViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ReceiptViewModel;
 
@@ -36,7 +37,7 @@ import javafx.scene.layout.BorderPane;
 @Singleton
 public class ReceiptControllerImpl extends AbstractController implements ReceiptController {
 
-    public static final String RECEIPT_VIEW_PATH = "/view/fxml/Receipt.fxml";
+    private static final String RECEIPT_VIEW_PATH = "/view/fxml/Receipt.fxml";
 
     @FXML
     private BorderPane root;

@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.manager.controller;
+package com.inspirationlogical.receipt.manager.controller.goods;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
 
@@ -14,9 +14,13 @@ import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.manager.controller.pricemodifier.PriceModifierController;
+import com.inspirationlogical.receipt.manager.controller.receipt.ReceiptController;
+import com.inspirationlogical.receipt.manager.controller.stock.StockController;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 
 import com.inspirationlogical.receipt.manager.viewmodel.ProductViewModel;
@@ -125,12 +129,59 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         this.commonService = commonService;
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initColumns();
         initCategories();
         initForms();
+    }
+
+    private void initColumns() {
+        initColumn(categoryName, CategoryViewModel::getName);
+        initColumn(productShortName, CategoryViewModel::getShortName);
+        initColumn(productRapidCode, CategoryViewModel::getRapidCode);
+        initColumn(productPurchasePrice, CategoryViewModel::getPurchasePrice);
+        initColumn(productSalePrice, CategoryViewModel::getSalePrice);
+        initColumn(productStorageMultiplier, CategoryViewModel::getStorageMultiplier);
+        initColumn(productQuantityUnit, CategoryViewModel::getQuantityUnit);
+        initColumn(productQuantityMultiplier, CategoryViewModel::getQuantityMultiplier);
+        initColumn(productMinimumStock, CategoryViewModel::getMinimumStock);
+        initColumn(productStockWindow, CategoryViewModel::getStockWindow);
+        initColumn(productType, CategoryViewModel::getType);
+        initColumn(productStatus, CategoryViewModel::getStatus);
+    }
+
+    private void initCategories() {
+        rootCategory = commonService.getRootProductCategory();
+        TreeItem<CategoryViewModel> rootItem = new TreeItem<>(new CategoryViewModel(rootCategory));
+        goodsTable.setRoot(rootItem);
+        goodsTable.setShowRoot(false);
+        updateCategory(rootCategory, rootItem);
+    }
+
+    private void initForms() {
+        initCategoryForm();
+        initProductForm();
+        initRecipeForm();
+    }
+
+    private void initCategoryForm() {
+        categoryForm = new Popup();
+        categoryForm.getContent().add(viewLoader.loadView(categoryFormController));
+        categoryFormController.loadCategoryForm(this);
+    }
+
+    private void initProductForm() {
+        productForm = new Popup();
+        productForm.getContent().add(viewLoader.loadView(productFormController));
+        productFormController.loadProductForm(this);
+    }
+
+    @FXML
+    public void initRecipeForm() {
+        recipeForm = new Popup();
+        recipeForm.getContent().add(viewLoader.loadView(recipeFormController));
+        recipeFormController.loadRecipeForm(this);
     }
 
     @Override
@@ -146,12 +197,14 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     @Override
     public void addProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
         try {
+            ProductView product;
             if(productId == 0) {
-                commonService.addProduct(parent, builder);
+                product = commonService.addProduct(parent, builder);
             } else {
-                commonService.updateProduct(productId, parent, builder);
+                product = commonService.updateProduct(productId, parent, builder);
             }
             productForm.hide();
+            goodsTable.refresh();
         } catch (IllegalProductStateException e ) {
             ErrorMessage.showErrorMessage(root, e.getMessage());
             initColumns();
@@ -264,37 +317,6 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         showPopup(recipeForm, recipeFormController, root, new Point2D(520, 200));
     }
 
-    @FXML
-    public void initRecipeForm() {
-        recipeForm = new Popup();
-        recipeForm.getContent().add(viewLoader.loadView(recipeFormController));
-        recipeFormController.loadRecipeForm(this);
-    }
-
-    private void initColumns() {
-        initColumn(categoryName, CategoryViewModel::getName);
-        initColumn(productShortName, CategoryViewModel::getShortName);
-        initColumn(productRapidCode, CategoryViewModel::getRapidCode);
-        initColumn(productPurchasePrice, CategoryViewModel::getPurchasePrice);
-        initColumn(productSalePrice, CategoryViewModel::getSalePrice);
-        initColumn(productStorageMultiplier, CategoryViewModel::getStorageMultiplier);
-        initColumn(productQuantityUnit, CategoryViewModel::getQuantityUnit);
-        initColumn(productQuantityMultiplier, CategoryViewModel::getQuantityMultiplier);
-        initColumn(productMinimumStock, CategoryViewModel::getMinimumStock);
-        initColumn(productStockWindow, CategoryViewModel::getStockWindow);
-        initColumn(productType, CategoryViewModel::getType);
-        initColumn(productStatus, CategoryViewModel::getStatus);
-    }
-
-    private void initCategories() {
-        rootCategory = commonService.getRootProductCategory();
-        TreeItem<CategoryViewModel> rootItem = new TreeItem<>(new CategoryViewModel(rootCategory));
-        goodsTable.setRoot(rootItem);
-        goodsTable.setShowRoot(false);
-
-        updateCategory(rootCategory, rootItem);
-    }
-
     private void updateCategory(ProductCategoryView productCategoryView, TreeItem<CategoryViewModel> treeItem) {
         treeItem.setExpanded(true);
         commonService.getChildCategories(productCategoryView).forEach(child -> {
@@ -304,7 +326,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
                 treeItem.getChildren().add(childItem);
                 updateProduct(categoryViewModel, childItem);
                 updateCategory(child, childItem);
-                childItem.setExpanded(false);
+//                childItem.setExpanded(false);
             }
         });
     }
@@ -314,24 +336,6 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
             TreeItem<CategoryViewModel> recipeItem = new TreeItem<>(new CategoryViewModel(recipe.getComponent()));
             productItem.getChildren().add(recipeItem);
         });
-    }
-
-    private void initForms() {
-        initCategoryForm();
-        initProductForm();
-        initRecipeForm();
-    }
-
-    private void initCategoryForm() {
-        categoryForm = new Popup();
-        categoryForm.getContent().add(viewLoader.loadView(categoryFormController));
-        categoryFormController.loadCategoryForm(this);
-    }
-
-    private void initProductForm() {
-        productForm = new Popup();
-        productForm.getContent().add(viewLoader.loadView(productFormController));
-        productFormController.loadProductForm(this);
     }
 
     private boolean isSelectionNull() {

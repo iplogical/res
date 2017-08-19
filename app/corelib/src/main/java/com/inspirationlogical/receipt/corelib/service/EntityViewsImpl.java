@@ -18,9 +18,15 @@ public class EntityViewsImpl implements EntityViews {
     private static List<ProductCategoryView> categoryViews;
 
     @Override
+    public void initEntityViews() {
+        productViews = createViewsFromAdapters(ProductAdapter.getActiveProducts(), ProductViewImpl::new);
+        categoryViews = createViewsFromAdapters(ProductCategoryAdapter.getProductCategories(), ProductCategoryViewImpl::new);
+    }
+
+    @Override
     public List<ProductView> getProductViews() {
         if(productViews == null) {
-            productViews = createViewsFromAdapters(ProductAdapter.getActiveProducts(), ProductViewImpl::new);
+            initEntityViews();
         }
         return productViews;
     }
@@ -28,7 +34,7 @@ public class EntityViewsImpl implements EntityViews {
     @Override
     public List<ProductCategoryView> getCategoryViews() {
         if(categoryViews == null) {
-            categoryViews = createViewsFromAdapters(ProductCategoryAdapter.getProductCategories(), ProductCategoryViewImpl::new);
+            initEntityViews();
         }
         return categoryViews;
     }

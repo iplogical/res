@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.manager.controller;
+package com.inspirationlogical.receipt.manager.controller.goods;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;

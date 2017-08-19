@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.manager.controller;
+package com.inspirationlogical.receipt.manager.controller.goods;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;

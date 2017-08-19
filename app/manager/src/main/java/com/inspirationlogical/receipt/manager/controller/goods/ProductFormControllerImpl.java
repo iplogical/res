@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.manager.controller;
+package com.inspirationlogical.receipt.manager.controller.goods;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
@@ -151,21 +152,25 @@ public class ProductFormControllerImpl implements ProductFormController {
     @FXML
     public void onConfirm(Event event) {
         try {
-            goodsController.addProduct(productId, category.getValue(), commonService.productBuilder()
-                .longName(longName.getText())
-                .shortName(shortName.getText().equals("") ? longName.getText() : shortName.getText())
-                .type(type.getValue())
-                .status(status.getValue())
-                .rapidCode(Integer.valueOf(rapidCode.getText()))
-                .quantityUnit(quantityUnit.getValue())
-                .storageMultiplier(Double.valueOf(storageMultiplier.getText()))
-                .purchasePrice(Integer.valueOf(purchasePrice.getText()))
-                .salePrice(Integer.valueOf(salePrice.getText()))
-                .minimumStock(Integer.valueOf(minimumStock.getText()))
-                .stockWindow(Integer.valueOf(stockWindow.getText())));
+            goodsController.addProduct(productId, category.getValue(), buildProduct());
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private Product.ProductBuilder buildProduct() {
+        return commonService.productBuilder()
+            .longName(longName.getText())
+            .shortName(shortName.getText().equals("") ? longName.getText() : shortName.getText())
+            .type(type.getValue())
+            .status(status.getValue())
+            .rapidCode(Integer.valueOf(rapidCode.getText()))
+            .quantityUnit(quantityUnit.getValue())
+            .storageMultiplier(Double.valueOf(storageMultiplier.getText()))
+            .purchasePrice(Integer.valueOf(purchasePrice.getText()))
+            .salePrice(Integer.valueOf(salePrice.getText()))
+            .minimumStock(Integer.valueOf(minimumStock.getText()))
+            .stockWindow(Integer.valueOf(stockWindow.getText()));
     }
 
     @FXML

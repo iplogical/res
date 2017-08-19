@@ -13,7 +13,6 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -66,7 +65,9 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public ProductView addProduct(ProductCategoryView parent, Product.ProductBuilder builder) {
-        return new ProductViewImpl(getProductCategoryAdapter(parent).addProduct(builder));
+        ProductView newProduct =  new ProductViewImpl(getProductCategoryAdapter(parent).addProduct(builder));
+        entityViews.initEntityViews();
+        return newProduct;
     }
 
     @Override
@@ -144,25 +145,23 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     @Override
     public List<ProductCategoryView> getChildCategories(ProductCategoryView productCategoryView) {
         return entityViews.getCategoryViews().stream()
-                .filter(categoryView -> {
-                    if (!categoryView.getType().equals(ROOT)) {
-                        return categoryView.getParent().getCategoryName().equals(productCategoryView.getCategoryName());
-                    }
-                    return false;
-                })
+                .filter(categoryView -> isNotRootCategory(categoryView) && isMyChild(productCategoryView, categoryView))
                 .collect(toList());
+    }
+
+    private boolean isMyChild(ProductCategoryView productCategoryView, ProductCategoryView categoryView) {
+        return categoryView.getParent().getCategoryName().equals(productCategoryView.getCategoryName());
+    }
+
+    private boolean isNotRootCategory(ProductCategoryView categoryView) {
+        return !categoryView.getType().equals(ROOT);
     }
 
     @Override
     public void getChildCategoriesRecursively(ProductCategoryView current, List<ProductCategoryView> traversal) {
         traversal.add(current);
         entityViews.getCategoryViews().stream()
-                .filter(categoryView -> {
-                    if (!categoryView.getType().equals(ROOT)) {
-                        return categoryView.getParent().getCategoryName().equals(current.getCategoryName());
-                    }
-                    return false;
-                })
+                .filter(categoryView -> isNotRootCategory(categoryView) && isMyChild(current, categoryView))
                 .forEach(categoryView -> getChildCategoriesRecursively(categoryView, traversal));
     }
 
