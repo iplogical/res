@@ -16,6 +16,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.adapter.PriceModifierAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
@@ -45,12 +46,8 @@ import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 
+@Singleton
 public class CommonServiceImpl extends AbstractService implements CommonService {
-
-    @Inject
-    public CommonServiceImpl(EntityManager manager) {
-        super(manager);
-    }
 
     @Override
     public Product.ProductBuilder productBuilder() {

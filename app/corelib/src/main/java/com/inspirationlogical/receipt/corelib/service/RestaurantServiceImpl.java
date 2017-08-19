@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.adapter.*;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
@@ -29,15 +30,10 @@ import javafx.geometry.Point2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+@Singleton
 public class RestaurantServiceImpl extends AbstractService implements RestaurantService {
 
     final private static Logger logger = LoggerFactory.getLogger(RestaurantServiceImpl.class);
-
-    @Inject
-    public RestaurantServiceImpl(EntityManager manager) {
-        super(manager);
-    }
 
     @Override
     public RestaurantView getActiveRestaurant() {

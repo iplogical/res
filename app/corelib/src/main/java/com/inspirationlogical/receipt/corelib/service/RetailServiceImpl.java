@@ -4,20 +4,17 @@ import java.util.Collection;
 import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 public class RetailServiceImpl extends AbstractService implements RetailService {
 
     final private static Logger logger = LoggerFactory.getLogger(RetailServiceImpl.class);
-
-    @Inject
-    public RetailServiceImpl(EntityManager manager) {
-        super(manager);
-    }
 
     @Override
     public void openTable(TableView tableView) {
