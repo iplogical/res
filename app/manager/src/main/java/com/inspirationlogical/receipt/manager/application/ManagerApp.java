@@ -10,6 +10,7 @@ import com.inspirationlogical.receipt.corelib.frontend.application.ResourcesProv
 import com.inspirationlogical.receipt.corelib.frontend.application.StageProvider;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
 
@@ -29,7 +30,7 @@ public class ManagerApp extends Application implements StageProvider, ResourcesP
 
     final private static Logger logger = LoggerFactory.getLogger(ManagerApp.class);
 
-    private Stage stage;
+    private static Stage stage;
 
     private Resources resources;
 
@@ -43,8 +44,11 @@ public class ManagerApp extends Application implements StageProvider, ResourcesP
 
     @Override
     public void start(Stage stage) {
+        logger.warn("Entering ManagerApp");
         this.stage = stage;
         resources = Resources.MANAGER;
+
+        Thread.setDefaultUncaughtExceptionHandler(ManagerApp::defaultExceptionHandler);
 
         MainStage.setStageProvider(this);
         MainStage.setResourcesProvider(this);
@@ -75,5 +79,11 @@ public class ManagerApp extends Application implements StageProvider, ResourcesP
     public Resources getResources() {
         return resources;
     }
+
+    private static void defaultExceptionHandler(Thread t, Throwable e) {
+        logger.error("Unhandled exception in WaiterApp.", e);
+        ErrorMessage.showErrorMessageLong(stage.getScene().getRoot(), Resources.MANAGER.getString("UnhandledException"));
+    }
+
 }
 

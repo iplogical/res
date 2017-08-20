@@ -53,3 +53,4 @@ app/corelib/out/test/resources/META-INF/persistence.xml
 app/corelib/log/logFile.log
 app/waiter/log/logFile.log
 app/waiter/out/test/resources/META-INF/persistence.xml
+app/manager/log/logFile.log

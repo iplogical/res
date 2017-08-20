@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.manager.exception.InvalidProductFormException;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductViewModel;
@@ -169,10 +170,15 @@ public class ProductFormControllerImpl implements ProductFormController {
         } catch (NumberFormatException e) {
             ErrorMessage.showErrorMessage(getRootNode(),
                     Resources.MANAGER.getString("ProductForm.NumberFormatException"));
+        } catch (InvalidProductFormException e) {
+            ErrorMessage.showErrorMessage(getRootNode(),
+                    Resources.MANAGER.getString("ProductForm.EmptyLongNameOrChoiceBox"));
         }
     }
 
-    private Product.ProductBuilder buildProduct() throws NumberFormatException {
+    private Product.ProductBuilder buildProduct() throws NumberFormatException, InvalidProductFormException {
+        if(isChoiceBoxEmpty() || isLongNameEmpty())
+            throw new RuntimeException();
         return commonService.productBuilder()
             .longName(longName.getText())
             .shortName(shortName.getText().equals("") ? longName.getText() : shortName.getText())
@@ -185,6 +191,14 @@ public class ProductFormControllerImpl implements ProductFormController {
             .salePrice(Integer.valueOf(salePrice.getText()))
             .minimumStock(Integer.valueOf(minimumStock.getText()))
             .stockWindow(Integer.valueOf(stockWindow.getText()));
+    }
+
+    private boolean isChoiceBoxEmpty() {
+        return type.getValue() == null || category.getValue() == null || status.getValue() == null || quantityUnit.getValue() ==null;
+    }
+
+    private boolean isLongNameEmpty() {
+        return longName.getText().isEmpty();
     }
 
     @FXML
@@ -206,7 +220,7 @@ public class ProductFormControllerImpl implements ProductFormController {
 
         @Override
         public ProductType fromString(String string) {
-            return productTypes.stream().filter(productType -> productType.toString().equals(string))
+            return productTypes.stream().filter(productType -> productType.toI18nString().equals(string))
                     .collect(toList()).get(0);
         }
     }
@@ -225,7 +239,7 @@ public class ProductFormControllerImpl implements ProductFormController {
 
         @Override
         public ProductStatus fromString(String string) {
-            return productStatus.stream().filter(productStatus -> productStatus.toString().equals(string))
+            return productStatus.stream().filter(productStatus -> productStatus.toI18nString().equals(string))
                     .collect(toList()).get(0);
         }
     }
@@ -244,7 +258,7 @@ public class ProductFormControllerImpl implements ProductFormController {
 
         @Override
         public QuantityUnit fromString(String string) {
-            return quantityUnit.stream().filter(QuantityUnit -> QuantityUnit.toString().equals(string))
+            return quantityUnit.stream().filter(QuantityUnit -> QuantityUnit.toI18nString().equals(string))
                     .collect(toList()).get(0);
         }
     }

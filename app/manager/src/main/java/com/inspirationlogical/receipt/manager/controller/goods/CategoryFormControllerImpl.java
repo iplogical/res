@@ -2,14 +2,17 @@ package com.inspirationlogical.receipt.manager.controller.goods;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
+import static java.util.stream.Collectors.toList;
 
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
@@ -26,6 +29,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 /**
  * Created by régiDAGi on 2017. 04. 10..
@@ -72,15 +76,29 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addDragAndDrop(root);
+        initParentCategories();
+        initAllCategories();
+        initCategoryTypes();
+    }
+
+    private void initParentCategories() {
         rootCategory = commonService.getRootProductCategory();
         parentCategories = FXCollections.observableArrayList(commonService.getAggregateCategories());
+        parentCategories.sort(Comparator.comparing(ProductCategoryView::getCategoryName));
         parentCategories.add(rootCategory);
+        parent.setItems(parentCategories);
+        parent.setConverter(new CategoryStringConverter(parentCategories));
+    }
+
+    private void initAllCategories() {
         allCategories = FXCollections.observableArrayList(commonService.getLeafCategories());
         allCategories.addAll(parentCategories);
-        parent.setItems(parentCategories);
-        parent.setConverter(new CategoryStringConverter(allCategories));
+    }
+
+    private void initCategoryTypes() {
         categoryTypes = FXCollections.observableArrayList(Arrays.asList(ProductCategoryType.AGGREGATE, ProductCategoryType.LEAF));
         type.setItems(categoryTypes);
+        type.setConverter(new ProductCategoryTypeStringConverter(categoryTypes));
     }
 
     @Override
@@ -119,17 +137,39 @@ public class CategoryFormControllerImpl implements CategoryFormController {
             ErrorMessage.showErrorMessage(root, Resources.MANAGER.getString("ProductCategoryNameEmpty"));
             return;
         }
-        goodsController.addCategory(
-                ProductCategoryParams.builder()
-                    .parent(parent.getValue())
-                    .name(name.getText())
-                    .originalName(originalCategoryName)
-                    .type(type.getValue())
-                    .build());
+        goodsController.addCategory(buildProductCategoryParams());
+    }
+
+    private ProductCategoryParams buildProductCategoryParams() {
+        return ProductCategoryParams.builder()
+            .parent(parent.getValue())
+            .name(name.getText())
+            .originalName(originalCategoryName)
+            .type(type.getValue())
+            .build();
     }
 
     @FXML
     public void onCancel(Event event) {
         hideNode(root);
+    }
+
+    private class ProductCategoryTypeStringConverter extends StringConverter<ProductCategoryType> {
+        private ObservableList<ProductCategoryType> productCategoryTypes;
+
+        ProductCategoryTypeStringConverter(ObservableList<ProductCategoryType> productCategoryTypes) {
+            this.productCategoryTypes = productCategoryTypes;
+        }
+
+        @Override
+        public String toString(ProductCategoryType productCategoryType) {
+            return productCategoryType.toI18nString();
+        }
+
+        @Override
+        public ProductCategoryType fromString(String string) {
+            return productCategoryTypes.stream().filter(productCategoryType -> productCategoryType.toI18nString().equals(string))
+                    .collect(toList()).get(0);
+        }
     }
 }

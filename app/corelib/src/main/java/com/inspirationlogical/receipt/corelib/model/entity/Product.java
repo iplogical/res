@@ -79,7 +79,6 @@ public @Data class Product extends AbstractEntity {
     private ProductStatus status;
 
     @NotEmpty
-    @Length(max = 20, message = "The field has to be less then 20 characters")
     private String shortName;
 
     @NotEmpty

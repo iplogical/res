@@ -91,7 +91,7 @@ public class RestaurantSummaryControllerTest extends TestFXBase {
     @Ignore
     @Test
     public void testPayTableAThousandTimes() {
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 5000; i++) {
             openTable(RESERVATION_TEST_TABLE);
             enterSaleView(RESERVATION_TEST_TABLE);
             selectCategory(AGGREGATE_ONE);

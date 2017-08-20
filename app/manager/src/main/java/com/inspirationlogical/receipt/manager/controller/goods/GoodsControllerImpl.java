@@ -18,6 +18,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.manager.controller.pricemodifier.PriceModifierController;
 import com.inspirationlogical.receipt.manager.controller.receipt.ReceiptController;
 import com.inspirationlogical.receipt.manager.controller.stock.StockController;
@@ -218,11 +219,11 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void addCategory(ProductCategoryParams params) {
         try {
             addOrUpdateCategory(params);
+            initCategories();
         } catch (IllegalProductCategoryStateException e) {
             ErrorMessage.showErrorMessage(root, e.getMessage());
         }  finally {
             categoryForm.hide();
-            initCategories();
         }
     }
 
@@ -262,21 +263,41 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     @FXML
     public void onModifyProduct(Event event) {
-        if(isSelectionNull()) return;
+        if(isSelectionNull()) {
+            ErrorMessage.showErrorMessage(root,
+                    Resources.MANAGER.getString("ProductForm.SelectProductForModify"));
+            return;
+        }
         ProductViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
         CategoryViewModel parent = goodsTable.getSelectionModel().getSelectedItem().getParent().getValue();
-        if(selected.getLongName().equals("")) return;
+        if(isCategorySelected(selected)) {
+            ErrorMessage.showErrorMessage(root,
+                    Resources.MANAGER.getString("ProductForm.SelectProductForModify"));
+            return;
+        }
         initProductForm();
         productFormController.setProductViewModel(selected);
         productFormController.setCategory(parent);
         showPopup(productForm, productFormController, root, new Point2D(520, 200));
     }
 
+    private boolean isCategorySelected(ProductViewModel selected) {
+        return selected.getLongName().equals("");
+    }
+
     @FXML
     public void onDeleteProduct(Event event) {
-        if(isSelectionNull()) return;
-        if(goodsTable.getSelectionModel().getSelectedItem().getValue().getLongName().equals("")) return;
+        if(isSelectionNull()) {
+            ErrorMessage.showErrorMessage(root,
+                    Resources.MANAGER.getString("ProductForm.SelectProductForDelete"));
+            return;
+        }
         ProductViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
+        if(isCategorySelected(selected)) {
+            ErrorMessage.showErrorMessage(root,
+                    Resources.MANAGER.getString("ProductForm.SelectProductForDelete"));
+            return;
+        }
         commonService.deleteProduct(selected.getLongName());
         initCategories();
     }
@@ -289,20 +310,39 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     @FXML
     public void onModifyCategory(Event event) {
-        if(isSelectionNull()) return;
+        if(isSelectionNull()) {
+            ErrorMessage.showErrorMessage(root,
+                    Resources.MANAGER.getString("ProductForm.SelectCategoryForModify"));
+            return;
+        }
         CategoryViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
-        if(!selected.getLongName().equals("")) return;
-        if(selected.getName().equals("root")) return;
+        if(isProductSelected(selected)) {
+            ErrorMessage.showErrorMessage(root,
+                    Resources.MANAGER.getString("ProductForm.SelectCategoryForModify"));
+            return;
+        }
         initCategoryForm();
         categoryFormController.setCategory(goodsTable.getSelectionModel().getSelectedItem().getValue());
         showPopup(categoryForm, categoryFormController, root, new Point2D(520, 200));
     }
 
+    private boolean isProductSelected(CategoryViewModel selected) {
+        return !selected.getLongName().equals("");
+    }
+
     @FXML
     public void onDeleteCategory(Event event) {
-        if(isSelectionNull()) return;
-        if(!goodsTable.getSelectionModel().getSelectedItem().getValue().getLongName().equals("")) return;
+        if(isSelectionNull()) {
+            ErrorMessage.showErrorMessage(root,
+                    Resources.MANAGER.getString("ProductForm.SelectCategoryForDelete"));
+            return;
+        }
         CategoryViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
+        if(isProductSelected(selected)) {
+            ErrorMessage.showErrorMessage(root,
+                    Resources.MANAGER.getString("ProductForm.SelectCategoryForDelete"));
+            return;
+        }
         commonService.deleteProductCategory(selected.getName());
         initCategories();
     }
@@ -322,7 +362,6 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
                 treeItem.getChildren().add(childItem);
                 updateProduct(categoryViewModel, childItem);
                 updateCategory(child, childItem);
-//                childItem.setExpanded(false);
             }
         });
     }

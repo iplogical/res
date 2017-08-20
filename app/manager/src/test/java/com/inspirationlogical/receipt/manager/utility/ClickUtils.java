@@ -45,7 +45,11 @@ public class ClickUtils extends AbstractUtils {
     }
 
     public static void clickOnConfirm() {
-        clickButtonThenWait(CONFIRM, 200);
+        clickButtonThenWait(CONFIRM, 500);
+    }
+
+    public static void clickOnCancel() {
+        clickButtonThenWait(CANCEL, 500);
     }
 
     public static void setTextField(String fxId, String text) {
@@ -75,6 +79,15 @@ public class ClickUtils extends AbstractUtils {
     public static <T> void setChoiceBox(String fxId, T value) {
         ((ChoiceBox<T>)robot.find(fxId)).setValue(value);
     }
+
+    public static void selectChoiceBoxItem(String fxId, int number) {
+        clickOnThenWait(fxId, 100);
+        for (int i = 0; i < number; i++) {
+            robot.type(KeyCode.DOWN);
+        }
+        robot.type(KeyCode.ENTER);
+    }
+
     public static void verifyThatVisible(String nodeQuery) {
         verifyThat(nodeQuery, Node::isVisible);
     }

@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.enums;
 
+import com.inspirationlogical.receipt.corelib.utility.Resources;
+
 public enum ProductCategoryType {
 
     ROOT,
@@ -22,5 +24,13 @@ public enum ProductCategoryType {
 
     public static boolean isPseudo(ProductCategoryType type) {
         return type.equals(PSEUDO) || type.equals(PSEUDO_DELETED);
+    }
+
+    public String toI18nString() {
+        if(this.equals(AGGREGATE))
+            return Resources.CONFIG.getString("ProductCategoryType.Aggregate");
+        if(this.equals(LEAF))
+            return Resources.CONFIG.getString("ProductCategoryType.Leaf");
+        return "";
     }
 }

@@ -25,6 +25,13 @@ public class JavaFXIds {
     public static final String PRODUCT_MINIMUM_STOCK = "#minimumStock";
     public static final String PRODUCT_STOCK_WINDOW = "#stockWindow";
 
+    //CategoryForm.fxml
+    public static final String CATEGORY_NAME = "#name";
+    public static final String CATEGORY_TYPE = "#type";
+    public static final String CATEGORY_PARENT = "#parent";
+
+
+    // Common
     public static final String CONFIRM = "#confirm";
     public static final String CANCEL = "#cancel";
 

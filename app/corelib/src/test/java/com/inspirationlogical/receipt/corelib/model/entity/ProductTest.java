@@ -29,12 +29,6 @@ public class ProductTest extends TestBase {
     }
 
     @Test(expected = RollbackException.class)
-    public void testShortNameTooLong() {
-        GuardedTransaction.run(()->
-                schema.getProductOne().setShortName("ExtremelyLongShortNameExceedsItsLimit"));
-    }
-
-    @Test(expected = RollbackException.class)
     public void testShortNameEmpty() {
         GuardedTransaction.run(()->
                 schema.getProductOne().setShortName(""));

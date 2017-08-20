@@ -87,15 +87,14 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 
     public ProductCategoryAdapter addChildCategory(String name, ProductCategoryType type) {
         ProductCategory newCategory = buildNewCategory(name, type);
-        GuardedTransaction.run(() -> {
-            if(isCategoryNameUsed(newCategory.getName()))
-                throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed") + name);
-            if(type.equals(ProductCategoryType.AGGREGATE)) {
-                if(hasLeafChild())
-                    throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryAlreadyHasLeaf"));
-            }
-            adaptee.getChildren().add(newCategory);
-        });
+        if(isCategoryNameUsed(newCategory.getName()))
+            throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed") + name);
+        if(type.equals(ProductCategoryType.AGGREGATE) && parentHasLeafChild()) {
+            throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryAlreadyHasLeaf"));
+        }
+        adaptee.getChildren().add(newCategory);
+        newCategory.setParent(adaptee);
+        GuardedTransaction.persist(newCategory);
         return new ProductCategoryAdapter(newCategory);
     }
 
@@ -104,7 +103,6 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .name(name)
                 .type(type)
                 .status(ProductStatus.ACTIVE)
-                .parent(adaptee)
                 .build();
     }
 
@@ -113,7 +111,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
             query.setParameter("name", name)).size() != 0;
     }
 
-    private boolean hasLeafChild() {
+    private boolean parentHasLeafChild() {
         return adaptee.getChildren().stream()
                 .filter(productCategory -> productCategory.getType().equals(ProductCategoryType.LEAF))
                 .collect(Collectors.toList()).size() != 0;

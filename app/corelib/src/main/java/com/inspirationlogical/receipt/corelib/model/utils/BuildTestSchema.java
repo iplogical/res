@@ -37,6 +37,11 @@ public class BuildTestSchema {
     public static final int NUMBER_OF_VAT_RECORDS = 5;
     public static final int NUMBER_OF_DAILY_CLOSURES = 2;
 
+    public static final String PRODUCT_ONE_LONG_NAME = "productOne";
+    public static final String PRODUCT_ONE_SHORT_NAME = "product1";
+
+    public static final String AGGREGATE_TOP_ONE_NAME = "aggregateTopOne";
+
     public static final String RESERVATION_TEST_TABLE = "20";
     public static final String RESTAURANT_TEST_TABLE = "21";
     public static final String CONSUMER_TEST_TABLE = "22";
@@ -603,9 +608,9 @@ public class BuildTestSchema {
     }
 
     private void buildProduct() {
-        productOne = Product.builder()
-                .longName("productOne")
-                .shortName("product1")
+        this.productOne = Product.builder()
+                .longName(PRODUCT_ONE_LONG_NAME)
+                .shortName(PRODUCT_ONE_SHORT_NAME)
                 .salePrice(440)
                 .purchasePrice(500)
                 .rapidCode(11)
@@ -783,8 +788,8 @@ public class BuildTestSchema {
 
 
     private void buildAggregateTopOne() {
-        aggregateTopOne = ProductCategory.builder()
-                .name("aggregateTopOne")
+        this.aggregateTopOne = ProductCategory.builder()
+                .name(AGGREGATE_TOP_ONE_NAME)
                 .type(ProductCategoryType.AGGREGATE)
                 .status(ProductStatus.ACTIVE)
                 .build();

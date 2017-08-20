@@ -1,49 +1,27 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import static com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter.distinctByKey;
-import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType.AGGREGATE;
-import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType.LEAF;
-import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType.PSEUDO;
-import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType.ROOT;
-import static com.inspirationlogical.receipt.corelib.model.enums.ProductStatus.ACTIVE;
-import static com.inspirationlogical.receipt.corelib.model.enums.ProductType.AD_HOC_PRODUCT;
-import static com.inspirationlogical.receipt.corelib.model.enums.ProductType.GAME_FEE_PRODUCT;
-import static com.inspirationlogical.receipt.corelib.model.enums.ProductType.STORABLE;
-import static java.util.stream.Collectors.toList;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
-import com.inspirationlogical.receipt.corelib.model.adapter.PriceModifierAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.RecipeAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.*;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.view.PriceModifierView;
-import com.inspirationlogical.receipt.corelib.model.view.PriceModifierViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.ProductView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
-import com.inspirationlogical.receipt.corelib.model.view.RecipeViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.StockView;
-import com.inspirationlogical.receipt.corelib.model.view.StockViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter.distinctByKey;
+import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType.*;
+import static com.inspirationlogical.receipt.corelib.model.enums.ProductStatus.ACTIVE;
+import static com.inspirationlogical.receipt.corelib.model.enums.ProductType.*;
+import static java.util.stream.Collectors.toList;
 
 @Singleton
 public class CommonServiceImpl extends AbstractService implements CommonService {
@@ -82,8 +60,10 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public ProductCategoryView addProductCategory(ProductCategoryParams params) {
-        return new ProductCategoryViewImpl(getProductCategoryAdapter(params.getParent())
+        ProductCategoryView newCategory = new ProductCategoryViewImpl(getProductCategoryAdapter(params.getParent())
                 .addChildCategory(params.getName(), params.getType()));
+        entityViews.initEntityViews();
+        return newCategory;
     }
 
     @Override
