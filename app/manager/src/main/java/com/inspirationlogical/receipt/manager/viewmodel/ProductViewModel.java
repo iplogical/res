@@ -37,12 +37,12 @@ public class ProductViewModel {
     public ProductViewModel(ProductView productView) {
         if (productView != null) {
             id = productView.getId();
-            type = productView.getType().name();
-            status =  productView.getStatus().name();
+            type = productView.getType().toI18nString();
+            status =  productView.getStatus().toI18nString();
             shortName =  productView.getShortName();
             longName =  productView.getLongName();
             rapidCode =  valueOf(productView.getRapidCode());
-            quantityUnit =  valueOf(productView.getQuantityUnit());
+            quantityUnit =  valueOf(productView.getQuantityUnit().toI18nString());
             storageMultiplier = valueOf(productView.getStorageMultiplier());
             purchasePrice =  valueOf(productView.getPurchasePrice());
             salePrice =  valueOf(productView.getSalePrice());

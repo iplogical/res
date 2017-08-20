@@ -10,4 +10,22 @@ public class JavaFXIds {
     public static final String ADD_PRODUCT = "#addProduct";
     public static final String MODIFY_PRODUCT = "#modifyProduct";
     public static final String DELETE_PRODUCT = "#deleteProduct";
+
+    // ProductFrom.fxml
+    public static final String PRODUCT_LONG_NAME = "#longName";
+    public static final String PRODUCT_SHORT_NAME = "#shortName";
+    public static final String PRODUCT_TYPE = "#type";
+    public static final String PRODUCT_CATEGORY = "#category";
+    public static final String PRODUCT_STATUS = "#status";
+    public static final String PRODUCT_RAPID_CODE = "#rapidCode";
+    public static final String PRODUCT_QUANTITY_UNIT = "#quantityUnit";
+    public static final String PRODUCT_STORAGE_MULTIPLIER = "#storageMultiplier";
+    public static final String PRODUCT_SALE_PRICE = "#salePrice";
+    public static final String PRODUCT_PURCHASE_PRICE = "#purchasePrice";
+    public static final String PRODUCT_MINIMUM_STOCK = "#minimumStock";
+    public static final String PRODUCT_STOCK_WINDOW = "#stockWindow";
+
+    public static final String CONFIRM = "#confirm";
+    public static final String CANCEL = "#cancel";
+
 }

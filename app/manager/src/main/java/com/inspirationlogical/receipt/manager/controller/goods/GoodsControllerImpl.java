@@ -197,44 +197,40 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     @Override
     public void addProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
         try {
-            ProductView product;
-            if(productId == 0) {
-                product = commonService.addProduct(parent, builder);
-            } else {
-                product = commonService.updateProduct(productId, parent, builder);
-            }
-            productForm.hide();
-            goodsTable.refresh();
+            addOrUpdateProduct(productId, parent, builder);
         } catch (IllegalProductStateException e ) {
             ErrorMessage.showErrorMessage(root, e.getMessage());
-            initColumns();
-            productForm.hide();
-        } catch (Exception e) {
-            initColumns();
-            productForm.hide();
         } finally {
+            productForm.hide();
             initCategories();
+        }
+    }
+
+    private void addOrUpdateProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
+        if(productId == 0) {
+            commonService.addProduct(parent, builder);
+        } else {
+            commonService.updateProduct(productId, parent, builder);
         }
     }
 
     @Override
     public void addCategory(ProductCategoryParams params) {
         try {
-            if(params.getOriginalName().equals("")) {
-                commonService.addProductCategory(params);
-            } else {
-                commonService.updateProductCategory(params);
-            }
-            categoryForm.hide();
+            addOrUpdateCategory(params);
         } catch (IllegalProductCategoryStateException e) {
             ErrorMessage.showErrorMessage(root, e.getMessage());
-            initColumns();
+        }  finally {
             categoryForm.hide();
-        } catch (Exception e) {
-            initColumns();
-            categoryForm.hide();
-        } finally {
             initCategories();
+        }
+    }
+
+    private void addOrUpdateCategory(ProductCategoryParams params) {
+        if(params.getOriginalName().equals("")) {
+            commonService.addProductCategory(params);
+        } else {
+            commonService.updateProductCategory(params);
         }
     }
 
