@@ -14,14 +14,14 @@ import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.manager.controller.pricemodifier.PriceModifierController;
 import com.inspirationlogical.receipt.manager.controller.receipt.ReceiptController;
 import com.inspirationlogical.receipt.manager.controller.stock.StockController;
+import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 
 import com.inspirationlogical.receipt.manager.viewmodel.ProductViewModel;
@@ -265,14 +265,14 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void onModifyProduct(Event event) {
         if(isSelectionNull()) {
             ErrorMessage.showErrorMessage(root,
-                    Resources.MANAGER.getString("ProductForm.SelectProductForModify"));
+                    ManagerResources.MANAGER.getString("ProductForm.SelectProductForModify"));
             return;
         }
         ProductViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
         CategoryViewModel parent = goodsTable.getSelectionModel().getSelectedItem().getParent().getValue();
         if(isCategorySelected(selected)) {
             ErrorMessage.showErrorMessage(root,
-                    Resources.MANAGER.getString("ProductForm.SelectProductForModify"));
+                    ManagerResources.MANAGER.getString("ProductForm.SelectProductForModify"));
             return;
         }
         initProductForm();
@@ -289,13 +289,13 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void onDeleteProduct(Event event) {
         if(isSelectionNull()) {
             ErrorMessage.showErrorMessage(root,
-                    Resources.MANAGER.getString("ProductForm.SelectProductForDelete"));
+                    ManagerResources.MANAGER.getString("ProductForm.SelectProductForDelete"));
             return;
         }
         ProductViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
         if(isCategorySelected(selected)) {
             ErrorMessage.showErrorMessage(root,
-                    Resources.MANAGER.getString("ProductForm.SelectProductForDelete"));
+                    ManagerResources.MANAGER.getString("ProductForm.SelectProductForDelete"));
             return;
         }
         commonService.deleteProduct(selected.getLongName());
@@ -312,13 +312,13 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void onModifyCategory(Event event) {
         if(isSelectionNull()) {
             ErrorMessage.showErrorMessage(root,
-                    Resources.MANAGER.getString("ProductForm.SelectCategoryForModify"));
+                    ManagerResources.MANAGER.getString("ProductForm.SelectCategoryForModify"));
             return;
         }
         CategoryViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
         if(isProductSelected(selected)) {
             ErrorMessage.showErrorMessage(root,
-                    Resources.MANAGER.getString("ProductForm.SelectCategoryForModify"));
+                    ManagerResources.MANAGER.getString("ProductForm.SelectCategoryForModify"));
             return;
         }
         initCategoryForm();
@@ -334,13 +334,13 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void onDeleteCategory(Event event) {
         if(isSelectionNull()) {
             ErrorMessage.showErrorMessage(root,
-                    Resources.MANAGER.getString("ProductForm.SelectCategoryForDelete"));
+                    ManagerResources.MANAGER.getString("ProductForm.SelectCategoryForDelete"));
             return;
         }
         CategoryViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
         if(isProductSelected(selected)) {
             ErrorMessage.showErrorMessage(root,
-                    Resources.MANAGER.getString("ProductForm.SelectCategoryForDelete"));
+                    ManagerResources.MANAGER.getString("ProductForm.SelectCategoryForDelete"));
             return;
         }
         commonService.deleteProductCategory(selected.getName());

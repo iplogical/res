@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.corelib.params;
 
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
 import lombok.Builder;
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
 import com.inspirationlogical.receipt.corelib.model.transaction.Functor;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;

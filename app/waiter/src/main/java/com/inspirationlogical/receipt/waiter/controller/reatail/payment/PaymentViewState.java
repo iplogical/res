@@ -1,11 +1,11 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.payment;
 
-import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
+import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.scene.control.TextField;
 import lombok.Data;
 
@@ -69,7 +69,7 @@ public @Data class PaymentViewState {
     private void handleSelectivePayment(boolean soldProductsEmpty, boolean paidProductsEmpty) {
         if(paidProductsEmpty) {
             ErrorMessage.showErrorMessage(paymentController.getRootNode(),
-                    Resources.WAITER.getString("PaymentView.SelectivePaymentNoPaidProduct"));
+                    WaiterResources.WAITER.getString("PaymentView.SelectivePaymentNoPaidProduct"));
         } else decideFullOrSelectivePayment(soldProductsEmpty);
     }
 
@@ -122,11 +122,11 @@ public @Data class PaymentViewState {
     private void showErrorMessage() {
         if(isDiscountAbsolute()) {
             ErrorMessage.showErrorMessage(paymentController.getRootNode(),
-                    Resources.WAITER.getString("PaymentView.DiscountAbsoluteNumberFormatError"));
+                    WaiterResources.WAITER.getString("PaymentView.DiscountAbsoluteNumberFormatError"));
 
         } else if(isDiscountPercent()) {
             ErrorMessage.showErrorMessage(paymentController.getRootNode(),
-                    Resources.WAITER.getString("PaymentView.DiscountPercentNumberFormatError"));
+                    WaiterResources.WAITER.getString("PaymentView.DiscountPercentNumberFormatError"));
         }
     }
 

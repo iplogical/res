@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.manager.controller.goods;
 
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.manager.controller.TestFXBase;
 import org.junit.Test;
 
@@ -11,7 +11,6 @@ import static com.inspirationlogical.receipt.manager.utility.CategoryFormUtils.*
 import static com.inspirationlogical.receipt.manager.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.manager.utility.GoodsUtils.*;
 import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.*;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 public class GoodsControllerTest extends TestFXBase {
 

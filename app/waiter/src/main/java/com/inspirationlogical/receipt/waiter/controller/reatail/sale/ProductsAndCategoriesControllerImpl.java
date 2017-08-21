@@ -6,7 +6,8 @@ import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
+import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import lombok.Getter;
@@ -176,7 +177,7 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
                 setSelectedCategory();
             }
         };
-        elementController.setView((ProductCategoryView) () -> Resources.WAITER.getString("SaleView.BackButton"));
+        elementController.setView((ProductCategoryView) () -> WaiterResources.WAITER.getString("SaleView.BackButton"));
         viewLoader.loadView(elementController);
         categoriesGrid.add(elementController.getRootNode(), BUTTON_POSITION, BUTTON_POSITION);
     }

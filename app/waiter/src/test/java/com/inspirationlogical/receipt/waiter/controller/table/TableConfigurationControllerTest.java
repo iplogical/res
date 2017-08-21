@@ -1,9 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
-import com.inspirationlogical.receipt.corelib.utility.Resources;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import javafx.geometry.Point2D;
-import javafx.scene.control.TextField;
 import org.junit.Test;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;

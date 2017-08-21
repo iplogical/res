@@ -11,9 +11,11 @@ import com.inspirationlogical.receipt.corelib.frontend.application.StageProvider
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.ResourceBundleWrapper;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
 
+import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,7 +34,7 @@ public class ManagerApp extends Application implements StageProvider, ResourcesP
 
     private static Stage stage;
 
-    private Resources resources;
+    private ResourceBundleWrapper resources;
 
     @Override
     public void init() {
@@ -46,7 +48,7 @@ public class ManagerApp extends Application implements StageProvider, ResourcesP
     public void start(Stage stage) {
         logger.warn("Entering ManagerApp");
         this.stage = stage;
-        resources = Resources.MANAGER;
+        resources = ManagerResources.MANAGER;
 
         Thread.setDefaultUncaughtExceptionHandler(ManagerApp::defaultExceptionHandler);
 
@@ -76,13 +78,13 @@ public class ManagerApp extends Application implements StageProvider, ResourcesP
     }
 
     @Override
-    public Resources getResources() {
+    public ResourceBundleWrapper getResources() {
         return resources;
     }
 
     private static void defaultExceptionHandler(Thread t, Throwable e) {
         logger.error("Unhandled exception in WaiterApp.", e);
-        ErrorMessage.showErrorMessageLong(stage.getScene().getRoot(), Resources.MANAGER.getString("UnhandledException"));
+        ErrorMessage.showErrorMessageLong(stage.getScene().getRoot(), ManagerResources.MANAGER.getString("UnhandledException"));
     }
 
 }

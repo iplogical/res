@@ -5,11 +5,8 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
-import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
-import com.inspirationlogical.receipt.corelib.service.RetailServiceImpl;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.contextmenu.RestaurantContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryController;
@@ -18,6 +15,7 @@ import com.inspirationlogical.receipt.waiter.controller.table.TableConfiguration
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.ConfirmMessage;
+import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -200,7 +198,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     public void onDailyClosure(Event event) {
         logger.info("The Daily Closure was pressed in the RestaurantView.");
-        ConfirmMessage.showConfirmDialog(Resources.WAITER.getString("Restaurant.DailyClosureConfirm"), () -> restaurantService.closeDay());
+        ConfirmMessage.showConfirmDialog(WaiterResources.WAITER.getString("Restaurant.DailyClosureConfirm"), () -> restaurantService.closeDay());
         updateRestaurantSummary();
     }
 

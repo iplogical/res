@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,17 +13,16 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
+import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.fxml.FXML;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.util.converter.IntegerStringConverter;
 
 @Singleton
 public class TableFormControllerImpl implements TableFormController {
@@ -78,7 +76,7 @@ public class TableFormControllerImpl implements TableFormController {
             }
         } catch (NumberFormatException e) {
             ErrorMessage.showErrorMessage(getRootNode(),
-                    Resources.WAITER.getString("TableForm.NumberFormatError"));
+                    WaiterResources.WAITER.getString("TableForm.NumberFormatError"));
         }
     }
 

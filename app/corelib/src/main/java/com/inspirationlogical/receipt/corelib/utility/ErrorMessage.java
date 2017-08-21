@@ -2,7 +2,7 @@ package com.inspirationlogical.receipt.corelib.utility;
 
 import org.controlsfx.control.Notifications;
 
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
 import javafx.geometry.Pos;
 import javafx.util.Duration;

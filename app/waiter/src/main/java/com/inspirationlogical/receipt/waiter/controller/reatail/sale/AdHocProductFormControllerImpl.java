@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
 
 import java.net.URL;
@@ -10,8 +9,9 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
+import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -75,7 +75,7 @@ public class AdHocProductFormControllerImpl implements AdHocProductFormControlle
         } catch (NumberFormatException e) {
             logger.error("Wrong adHocParams.", e);
             ErrorMessage.showErrorMessage(saleController.getRootNode(),
-                    Resources.WAITER.getString("AdHocProductForm.NumberFormatError"));
+                    WaiterResources.WAITER.getString("AdHocProductForm.NumberFormatError"));
         }
     }
 

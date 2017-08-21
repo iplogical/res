@@ -1,15 +1,9 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
-import com.inspirationlogical.receipt.corelib.utility.Resources;
-import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.collections.ObservableList;
-import javafx.geometry.Point2D;
 import javafx.scene.control.TableView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;

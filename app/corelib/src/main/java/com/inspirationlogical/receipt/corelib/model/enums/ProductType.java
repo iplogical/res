@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.enums;
 
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
 public enum ProductType {
 

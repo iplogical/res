@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.retail.sale;
 
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import org.junit.Test;
 
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;

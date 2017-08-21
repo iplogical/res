@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.manager.utility;
 
-import com.inspirationlogical.receipt.corelib.model.transaction.Functor;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
@@ -41,7 +40,7 @@ public class ClickUtils extends AbstractUtils {
     }
 
     public static void clickButtonThenWait(String buttonName, int milliSec) {
-        clickOnThenWait(Resources.MANAGER.getString(buttonName), milliSec);
+        clickOnThenWait(ManagerResources.MANAGER.getString(buttonName), milliSec);
     }
 
     public static void clickOnConfirm() {
@@ -100,11 +99,11 @@ public class ClickUtils extends AbstractUtils {
     }
 
     public static void verifyErrorMessage(String error) {
-        verifyThatVisible(Resources.MANAGER.getString(error));
+        verifyThatVisible(ManagerResources.MANAGER.getString(error));
     }
 
     public static void verifyErrorMessageWithParam(String error, String param) {
-        verifyThatVisible(Resources.MANAGER.getString(error) + param);
+        verifyThatVisible(ManagerResources.MANAGER.getString(error) + param);
     }
 
     public static FxRobotInterface type(String text) {

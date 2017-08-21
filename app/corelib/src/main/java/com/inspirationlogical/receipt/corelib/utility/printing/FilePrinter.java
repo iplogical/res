@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.apache.commons.io.IOUtils;
 
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
 /**
  * Created by Ferenc on 2017. 03. 14..

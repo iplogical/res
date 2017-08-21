@@ -11,7 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -20,7 +19,7 @@ import javax.validation.constraints.NotNull;
 import com.inspirationlogical.receipt.corelib.model.annotations.ValidTables;
 
 import com.inspirationlogical.receipt.corelib.utility.Hash;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;

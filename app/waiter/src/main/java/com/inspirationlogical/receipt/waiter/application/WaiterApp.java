@@ -12,9 +12,11 @@ import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.ResourceBundleWrapper;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 
+import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +36,7 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
 
     private static Stage stage;
 
-    private Resources resources;
+    private ResourceBundleWrapper resources;
 
     @Override
     public void init() {
@@ -49,7 +51,7 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
     public void start(Stage stage) {
         logger.warn("Entering WaiterApp");
         this.stage = stage;
-        resources = Resources.WAITER;
+        resources = WaiterResources.WAITER;
 
         Thread.setDefaultUncaughtExceptionHandler(WaiterApp::defaultExceptionHandler);
 
@@ -86,13 +88,13 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
     }
 
     @Override
-    public Resources getResources() {
+    public ResourceBundleWrapper getResources() {
         return resources;
     }
 
     private static void defaultExceptionHandler(Thread t, Throwable e) {
         logger.error("Unhandled exception in WaiterApp.", e);
-        ErrorMessage.showErrorMessageLong(stage.getScene().getRoot(), Resources.WAITER.getString("UnhandledException"));
+        ErrorMessage.showErrorMessageLong(stage.getScene().getRoot(), WaiterResources.WAITER.getString("UnhandledException"));
     }
 }
 

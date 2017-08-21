@@ -7,11 +7,12 @@ import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
+import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -213,7 +214,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             int paidPartialPrice = totalPrice - SoldProductViewModel.getTotalPrice(soldProductsModel);
             previousPartialPrice.setText(applyDiscountOnTotalPrice(paidPartialPrice) + " Ft");
         } catch (NumberFormatException e) {
-            ErrorMessage.showErrorMessage(getRootNode(), Resources.WAITER.getString("PaymentView.PartialPayNumberErrorRange"));
+            ErrorMessage.showErrorMessage(getRootNode(), WaiterResources.WAITER.getString("PaymentView.PartialPayNumberErrorRange"));
         }
     }
 
@@ -264,7 +265,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, amount), amount);
         } catch (NumberFormatException e) {
             ErrorMessage.showErrorMessage(rootPayment,
-                    Resources.WAITER.getString("PaymentView.PartialPayNumberError"));
+                    WaiterResources.WAITER.getString("PaymentView.PartialPayNumberError"));
         }
     }
 

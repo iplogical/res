@@ -5,7 +5,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.inspirationlogical.receipt.corelib.exception.FormatterClassNotFound;
 import com.inspirationlogical.receipt.corelib.exception.PrinterClassNotFoundException;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
 /**
  * Created by Ferenc on 2017. 03. 18..

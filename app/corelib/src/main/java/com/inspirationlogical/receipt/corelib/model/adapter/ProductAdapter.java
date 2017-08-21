@@ -10,7 +10,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
 import java.util.List;
 import java.util.Map;

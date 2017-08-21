@@ -12,12 +12,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
+import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 
@@ -128,13 +128,13 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     @FXML
     public void onConfirm(Event event) {
         if(type.getValue() == null) {
-            ErrorMessage.showErrorMessage(root, Resources.MANAGER.getString("ProductCategoryTypeNull"));
+            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("ProductCategoryTypeNull"));
             return;
         } else if(parent.getValue() == null) {
-            ErrorMessage.showErrorMessage(root, Resources.MANAGER.getString("ProductCategoryParentNull"));
+            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("ProductCategoryParentNull"));
             return;
         } else if(name.getText().equals("")) {
-            ErrorMessage.showErrorMessage(root, Resources.MANAGER.getString("ProductCategoryNameEmpty"));
+            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("ProductCategoryNameEmpty"));
             return;
         }
         goodsController.addCategory(buildProductCategoryParams());

@@ -7,8 +7,9 @@ import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.manager.exception.InvalidProductFormException;
+import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductViewModel;
@@ -169,10 +170,10 @@ public class ProductFormControllerImpl implements ProductFormController {
             goodsController.addProduct(productId, category.getValue(), buildProduct());
         } catch (NumberFormatException e) {
             ErrorMessage.showErrorMessage(getRootNode(),
-                    Resources.MANAGER.getString("ProductForm.NumberFormatException"));
+                    ManagerResources.MANAGER.getString("ProductForm.NumberFormatException"));
         } catch (InvalidProductFormException e) {
             ErrorMessage.showErrorMessage(getRootNode(),
-                    Resources.MANAGER.getString("ProductForm.EmptyLongNameOrChoiceBox"));
+                    ManagerResources.MANAGER.getString("ProductForm.EmptyLongNameOrChoiceBox"));
         }
     }
 

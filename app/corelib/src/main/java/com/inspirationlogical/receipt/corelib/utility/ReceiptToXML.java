@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.function.Consumer;
@@ -31,7 +30,7 @@ import com.inspirationlogical.receipt.corelib.jaxb.TagValuePair;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import org.xml.sax.SAXException;
 

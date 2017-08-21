@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
-import java.nio.file.Paths;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -25,12 +24,11 @@ import org.apache.xmlgraphics.io.Resource;
 import org.apache.xmlgraphics.io.ResourceResolver;
 import org.xml.sax.SAXException;
 
-import com.google.common.io.Files;
 import com.inspirationlogical.receipt.corelib.exception.FOPCfgXMLFormatException;
 import com.inspirationlogical.receipt.corelib.exception.FOPCfgXMLNotFoundException;
 import com.inspirationlogical.receipt.corelib.exception.FOPConfigurationErrorException;
 import com.inspirationlogical.receipt.corelib.exception.ReceiptXSLTNotFoundException;
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
 /**
  * Created by Ferenc on 2017. 03. 11..

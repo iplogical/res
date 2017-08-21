@@ -1,7 +1,8 @@
 package com.inspirationlogical.receipt.corelib.frontend.application;
 
-import com.inspirationlogical.receipt.corelib.utility.Resources;
+import com.inspirationlogical.receipt.corelib.utility.resources.ResourceBundleWrapper;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
 public interface ResourcesProvider {
-    Resources getResources();
+    ResourceBundleWrapper getResources();
 }
