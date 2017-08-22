@@ -19,7 +19,7 @@ public class RestaurantUtils  extends AbstractUtils {
 
     public static void openTable(String tableNumber) {
         longClickOn(tableNumber);
-        clickOnThenWait(Resources.WAITER.getString("ContextMenu.OpenTable"), 500);
+        clickOnThenWait(WaiterResources.WAITER.getString("ContextMenu.OpenTable"), 500);
     }
 
     public static void closeTable(String tableNumber) {
@@ -31,7 +31,7 @@ public class RestaurantUtils  extends AbstractUtils {
     public static void addTable(String tableName, String number, String guestCount, String capacity) {
         runInConfigurationMode(() -> {
             longClickOn(new Point2D(600, 150));
-            clickOnThenWait(Resources.WAITER.getString("ContextMenu.AddTable"), 100);
+            clickOnThenWait(WaiterResources.WAITER.getString("ContextMenu.AddTable"), 100);
             ((TextField)robot.find(TABLEFORM_NAME)).setText(tableName);
             ((TextField)robot.find(TABLEFORM_NUMBER)).setText(number);
             ((TextField)robot.find(TABLEFORM_GUEST_COUNT)).setText(guestCount);
@@ -47,13 +47,13 @@ public class RestaurantUtils  extends AbstractUtils {
     public static void deleteTable(String tableNumber) {
         runInConfigurationMode(() -> {
             longClickOn(tableNumber);
-            robot.clickOn(Resources.WAITER.getString("ContextMenu.DeleteTable"));
+            robot.clickOn(WaiterResources.WAITER.getString("ContextMenu.DeleteTable"));
             verifyThatNotVisible(tableNumber);
         });
     }
 
     public static void selectTab(String tab) {
-        robot.clickOn(Resources.WAITER.getString(tab));
+        robot.clickOn(WaiterResources.WAITER.getString(tab));
     }
 
     public static void addTableToTab(String tableName, String number, String tab) {

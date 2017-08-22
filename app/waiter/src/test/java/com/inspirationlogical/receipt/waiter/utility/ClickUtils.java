@@ -46,11 +46,11 @@ public class ClickUtils extends AbstractUtils {
     }
 
     public static void clickButtonThenWait(String buttonName, int milliSec) {
-        clickOnThenWait(Resources.WAITER.getString(buttonName), milliSec);
+        clickOnThenWait(WaiterResources.WAITER.getString(buttonName), milliSec);
     }
 
     public static void clickMenuThenWait(String menuName, int milliSec) {
-        clickOnThenWait(Resources.WAITER.getString(menuName), milliSec);
+        clickOnThenWait(WaiterResources.WAITER.getString(menuName), milliSec);
     }
 
     public static void setTextField(String fxId, String text) {
@@ -85,11 +85,11 @@ public class ClickUtils extends AbstractUtils {
     }
 
     public static void verifyErrorMessage(String error) {
-        verifyThatVisible(Resources.WAITER.getString(error));
+        verifyThatVisible(WaiterResources.WAITER.getString(error));
     }
 
     public static void verifyErrorMessageWithParam(String error, String param) {
-        verifyThatVisible(Resources.WAITER.getString(error) + param);
+        verifyThatVisible(WaiterResources.WAITER.getString(error) + param);
     }
 
     public static FxRobotInterface type(String text) {

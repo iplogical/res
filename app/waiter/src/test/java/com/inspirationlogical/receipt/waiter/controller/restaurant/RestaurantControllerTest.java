@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.waiter.controller.restaurant;
 
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
+import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.geometry.Point2D;
 import org.junit.Test;
 
@@ -129,11 +130,11 @@ public class RestaurantControllerTest extends TestFXBase {
     }
 
     private void verifyMenuItemVisible(String menuItem) {
-        verifyThatVisible(Resources.WAITER.getString(menuItem));
+        verifyThatVisible(WaiterResources.WAITER.getString(menuItem));
     }
 
 
     private void verifyMenuItemNotVisible(String menuItem) {
-        verifyThatNotVisible(Resources.WAITER.getString(menuItem));
+        verifyThatNotVisible(WaiterResources.WAITER.getString(menuItem));
     }
 }
