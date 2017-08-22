@@ -1,8 +1,12 @@
 package com.inspirationlogical.receipt.corelib.model.transaction;
 
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EntityManagerProvider {
 
@@ -14,18 +18,32 @@ public class EntityManagerProvider {
 
     public static synchronized EntityManager getEntityManager() {
         if(emf == null) {
-            emf = Persistence.createEntityManagerFactory("Production");
+            Map<String, String> properties = buildReceiptActualPropoerties();
+            emf = Persistence.createEntityManagerFactory("Production", properties);
             em = emf.createEntityManager();
         }
         return em;
     }
 
+    private static Map<String, String> buildReceiptActualPropoerties() {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", Resources.CONFIG.getString("ReceiptActualJdbcUrl"));
+        return properties;
+    }
+
     public static synchronized EntityManager getEntityManagerArchive() {
         if(emfArchive == null) {
+            Map<String, String> properties = buildReceiptArchivePropoerties();
             emfArchive = Persistence.createEntityManagerFactory("ProductionArchive");
             emArchive = emfArchive.createEntityManager();
         }
         return emArchive;
+    }
+
+    private static Map<String,String> buildReceiptArchivePropoerties() {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", Resources.CONFIG.getString("ReceiptArchiveJdbcUrl"));
+        return properties;
     }
 
     public static EntityManager getTestEntityManager() {

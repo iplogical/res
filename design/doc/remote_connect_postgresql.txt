@@ -1,0 +1,15 @@
+Remote access to the PostgreSQL server
+
+ - Modify /etc/postgresql/9.6/main/postgresql.conf: add the following line:
+	listen_addresses = '*'
+	
+	This makes postgresql to listen on all ip addresses.
+	
+ - Modify /etc/postgresql/9.6/main/pg_hba.conf: add the following line as the first file of the file:
+	host	all		all		0.0.0.0/0	md5
+
+	This makes postgresql to accept all user's connection.
+	
+ - Restart postgresql after the modifications:
+
+	 sudo /etc/init.d/postgresql restart
