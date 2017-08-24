@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
 import com.inspirationlogical.receipt.manager.viewmodel.StockViewModel;
 import com.inspirationlogical.receipt.manager.viewstate.StockViewState;
@@ -80,15 +81,17 @@ public class StockControllerImpl extends AbstractController implements StockCont
 
     private GoodsController goodsController;
 
+    @Inject
     private CommonService commonService;
+
+    @Inject
+    private ManagerService managerService;
 
     private StockViewState stockViewState;
 
     @Inject
-    public StockControllerImpl(GoodsController goodsController,
-                               CommonService commonService) {
+    public StockControllerImpl(GoodsController goodsController) {
         this.goodsController = goodsController;
-        this.commonService = commonService;
         this.stockViewState = new StockViewState();
     }
 
@@ -126,7 +129,7 @@ public class StockControllerImpl extends AbstractController implements StockCont
                         .isAbsoluteQuantity(quantityDisplay.selectedProperty().getValue())
                         .build())
                 .collect(Collectors.toList());
-        commonService.updateStock(stockParamsList, stockViewState.getReceiptType());
+        managerService.updateStock(stockParamsList, stockViewState.getReceiptType());
         hideInputColumn();
         actionTypeToggleGroup.selectToggle(null);
         updateStockItems();
@@ -167,7 +170,7 @@ public class StockControllerImpl extends AbstractController implements StockCont
 
     private void updateStockItems() {
         stockTable.getItems().clear();
-        commonService.getStockItems().forEach(stockView -> stockTable.getItems().add(new StockViewModel(stockView)));
+        managerService.getStockItems().forEach(stockView -> stockTable.getItems().add(new StockViewModel(stockView)));
         ObservableList<StockViewModel>  items = stockTable.getItems();
         items.sort(Comparator.comparing(StockViewModel::getLongName));
         stockTable.setItems(items);

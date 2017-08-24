@@ -24,6 +24,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStringConverter;
 
@@ -85,6 +86,9 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
     @Inject
     private CommonService commonService;
 
+    @Inject
+    private ManagerService managerService;
+
     private BooleanProperty isCategorySelected;
 
     private ObservableList<ProductView> products;
@@ -134,7 +138,7 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
 
     @FXML
     public void onConfirm(Event event) {
-        PriceModifier.PriceModifierBuilder builder = commonService.priceModifierBuilder()
+        PriceModifier.PriceModifierBuilder builder = managerService.priceModifierBuilder()
                 .name(name.getText())
                 .type(type.getValue())
                 .quantityLimit(Integer.valueOf(quantityMultiplier.getText()))

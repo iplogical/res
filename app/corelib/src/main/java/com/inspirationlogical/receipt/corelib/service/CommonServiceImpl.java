@@ -37,62 +37,6 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
-    public PriceModifier.PriceModifierBuilder priceModifierBuilder() {
-        return PriceModifier.builder();
-    }
-
-    @Override
-    public void addProduct(ProductCategoryView parent, Product.ProductBuilder builder) {
-        getProductCategoryAdapter(parent).addProduct(builder);
-        entityViews.initEntityViews();
-    }
-
-    @Override
-    public void updateProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
-        ProductAdapter.getProductById(productId).updateProduct(parent.getCategoryName(), builder);
-    }
-
-    @Override
-    public void deleteProduct(String longName) {
-        ProductAdapter.getProductByName(longName).deleteProduct();
-    }
-
-    @Override
-    public void addProductCategory(ProductCategoryParams params) {
-        getProductCategoryAdapter(params.getParent()).addChildCategory(params);
-        entityViews.initEntityViews();
-    }
-
-    @Override
-    public void updateProductCategory(ProductCategoryParams params) {
-        ProductCategoryAdapter.updateProductCategory(params);
-    }
-
-    @Override
-    public void deleteProductCategory(String name) {
-        ProductCategoryAdapter.getProductCategoryByName(name).deleteProductCategory();
-    }
-
-    @Override
-    public void updateStock(List<StockParams> params, ReceiptType receiptType) {
-        TableAdapter.getTablesByType(TableType.getTableType(receiptType)).get(0)
-                .updateStock(params, receiptType);
-    }
-
-    @Override
-    public void addPriceModifier(PriceModifierParams params) {
-        PriceModifierAdapter.addPriceModifier(params);
-    }
-
-    @Override
-    public void updateRecipe(ProductView owner, List<RecipeParams> recipeParamsList) {
-        ProductAdapter ownerProduct = getProductAdapter(owner);
-        ownerProduct.updateRecipes(recipeParamsList);
-        ownerProduct.addRecipes(recipeParamsList);
-        ownerProduct.deleteRecipes(recipeParamsList);
-    }
-
-    @Override
     public ProductCategoryView getRootProductCategory() {
         return entityViews.getCategoryViews().stream()
                 .filter(productCategoryView -> productCategoryView.getType().equals(ROOT))
@@ -189,29 +133,6 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
         productsAsRecipe.addAll(storableProducts);
         return productsAsRecipe.stream()
                 .filter(distinctByKey(ProductView::getLongName))
-                .collect(toList());
-    }
-
-    @Override
-    public List<StockView> getStockItems() {
-        return createViewsFromAdapters(StockAdapter.getItems(), StockViewImpl::new);
-    }
-
-    @Override
-    public List<PriceModifierView> getPriceModifiers() {
-        return createViewsFromAdapters(PriceModifierAdapter.getPriceModifiers(), PriceModifierViewImpl::new);
-    }
-
-    @Override
-    public List<RecipeView> getRecipeComponents(ProductView product) {
-        return createViewsFromAdapters(RecipeAdapter.getRecipesOfProduct(getProductAdapter(product)), RecipeViewImpl::new);
-    }
-
-    @Override
-    public List<ReceiptView> getReceipts() {
-        return ReceiptAdapter.getReceipts()
-                .stream()
-                .map(ReceiptViewImpl::new)
                 .collect(toList());
     }
 }

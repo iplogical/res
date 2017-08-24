@@ -17,6 +17,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.manager.controller.pricemodifier.PriceModifierController;
@@ -100,7 +101,11 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     private ReceiptController receiptController;
 
+    @Inject
     private CommonService commonService;
+
+    @Inject
+    private ManagerService managerService;
 
     private Popup productForm;
 
@@ -122,15 +127,13 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
                                ReceiptController receiptController,
                                ProductFormController productFormController,
                                CategoryFormController categoryFormController,
-                               RecipeFormController recipeFormController,
-                               CommonService commonService) {
+                               RecipeFormController recipeFormController) {
         this.stockController = stockController;
         this.priceModifierController = priceModifierController;
         this.receiptController = receiptController;
         this.productFormController = productFormController;
         this.categoryFormController = categoryFormController;
         this.recipeFormController = recipeFormController;
-        this.commonService = commonService;
     }
 
     @Override
@@ -213,9 +216,9 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     private void addOrUpdateProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
         if(productId == 0) {
-            commonService.addProduct(parent, builder);
+            managerService.addProduct(parent, builder);
         } else {
-            commonService.updateProduct(productId, parent, builder);
+            managerService.updateProduct(productId, parent, builder);
         }
     }
 
@@ -233,9 +236,9 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     private void addOrUpdateCategory(ProductCategoryParams params) {
         if(params.getOriginalName().equals("")) {
-            commonService.addProductCategory(params);
+            managerService.addProductCategory(params);
         } else {
-            commonService.updateProductCategory(params);
+            managerService.updateProductCategory(params);
         }
     }
 
@@ -302,7 +305,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
                     ManagerResources.MANAGER.getString("ProductForm.SelectProductForDelete"));
             return;
         }
-        commonService.deleteProduct(selected.getLongName());
+        managerService.deleteProduct(selected.getLongName());
         initCategories();
     }
 
@@ -347,7 +350,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
                     ManagerResources.MANAGER.getString("ProductForm.SelectCategoryForDelete"));
             return;
         }
-        commonService.deleteProductCategory(selected.getName());
+        managerService.deleteProductCategory(selected.getName());
         initCategories();
     }
 

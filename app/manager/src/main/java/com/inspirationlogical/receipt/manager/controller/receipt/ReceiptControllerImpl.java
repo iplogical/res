@@ -18,6 +18,7 @@ import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
 import com.inspirationlogical.receipt.manager.viewmodel.ReceiptRecordViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ReceiptViewModel;
@@ -103,7 +104,11 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
 
     private GoodsController goodsController;
 
+    @Inject
     private CommonService commonService;
+
+    @Inject
+    private ManagerService managerService;
 
     private Map<LocalDate, List<ReceiptView>> receiptsByDate;
 
@@ -136,7 +141,7 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     }
 
     private void initReceipts() {
-        receiptsByDate = commonService.getReceipts()
+        receiptsByDate = managerService.getReceipts()
                 .stream()
                 .sorted(comparing(ReceiptView::getOpenTime))
                 .collect(groupingBy(receiptView -> receiptView.getOpenTime().toLocalDate()));

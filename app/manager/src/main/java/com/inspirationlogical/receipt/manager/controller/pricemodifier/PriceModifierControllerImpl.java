@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
+import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
 import com.inspirationlogical.receipt.manager.viewmodel.PriceModifierViewModel;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -76,7 +77,11 @@ public class PriceModifierControllerImpl implements PriceModifierController {
 
     private GoodsController goodsController;
 
+    @Inject
     private CommonService commonService;
+
+    @Inject
+    private ManagerService managerService;
 
     private Popup priceModifierForm;
 
@@ -84,11 +89,9 @@ public class PriceModifierControllerImpl implements PriceModifierController {
 
     @Inject
     public PriceModifierControllerImpl(GoodsController goodsController,
-                                       PriceModifierFormController priceModifierFormController,
-                                       CommonService commonService) {
+                                       PriceModifierFormController priceModifierFormController) {
         this.goodsController = goodsController;
         this.priceModifierFormController = priceModifierFormController;
-        this.commonService = commonService;
     }
 
     @Override
@@ -109,7 +112,7 @@ public class PriceModifierControllerImpl implements PriceModifierController {
 
     @Override
     public void addPriceModifier(PriceModifierParams params) {
-        commonService.addPriceModifier(params);
+        managerService.addPriceModifier(params);
         updatePriceModifiers();
         priceModifierForm.hide();
     }
@@ -161,6 +164,6 @@ public class PriceModifierControllerImpl implements PriceModifierController {
 
     private void updatePriceModifiers() {
         priceModifierTable.getItems().clear();
-        commonService.getPriceModifiers().forEach(priceModifierView -> priceModifierTable.getItems().add(new PriceModifierViewModel(priceModifierView)));
+        managerService.getPriceModifiers().forEach(priceModifierView -> priceModifierTable.getItems().add(new PriceModifierViewModel(priceModifierView)));
     }
 }

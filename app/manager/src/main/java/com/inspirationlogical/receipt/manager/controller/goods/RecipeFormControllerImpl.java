@@ -15,6 +15,7 @@ import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractContro
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.RecipeViewModel;
 
@@ -63,6 +64,9 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
 
     @Inject
     private CommonService commonService;
+
+    @Inject
+    private ManagerService managerService;
 
     private ObservableList<ProductView> sellableProducts;
 
@@ -120,7 +124,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
                         .quantity(Double.valueOf(recipeViewModel.getQuantity()))
                         .build())
                 .collect(toList());
-        commonService.updateRecipe(owner.getSelectionModel().getSelectedItem(), recipeParamsList);
+        managerService.updateRecipe(owner.getSelectionModel().getSelectedItem(), recipeParamsList);
     }
 
     @FXML
@@ -160,7 +164,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
         @Override
         public void changed(ObservableValue<? extends ProductView> observable, ProductView oldValue, ProductView newValue) {
             ObservableList<RecipeViewModel> items =
-            FXCollections.observableArrayList(commonService.getRecipeComponents(newValue).stream().map(RecipeViewModel::new).collect(toList()));
+            FXCollections.observableArrayList(managerService.getRecipeComponents(newValue).stream().map(RecipeViewModel::new).collect(toList()));
             componentTable.setItems(items);
         }
     }
