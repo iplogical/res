@@ -141,7 +141,6 @@ public class ProductAdapter extends AbstractAdapter<Product> {
             ProductCategory pseudoCategory = getProductCategoryByName(adaptee.getCategory().getName()).getAdaptee();
             originalCategory.getChildren().remove(pseudoCategory);
             pseudoCategory.setParent(newCategory);
-
         });
         GuardedTransaction.run(() -> {
             ProductCategory newCategory = getProductCategoryByName(parentCategoryName).getAdaptee();

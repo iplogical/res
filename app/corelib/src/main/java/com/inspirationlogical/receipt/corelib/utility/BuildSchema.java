@@ -11327,7 +11327,7 @@ public class BuildSchema  {
     }
 
     private void rootAndAggregates() {
-        root.setChildren(new HashSet<>(
+        root.setChildren(new ArrayList<>(
                 Arrays.asList(etlap, itallap, menukAggregate, alapanyagokAggregate)));
         etlap.setParent(root);
         itallap.setParent(root);
@@ -11336,13 +11336,13 @@ public class BuildSchema  {
     }
 
     private void aggregatesAndAggregates() {
-        etlap.setChildren(new HashSet<>(
+        etlap.setChildren(new ArrayList<>(
                 Arrays.asList(ragcsak, etelek)));
-        itallap.setChildren(new HashSet<>(
+        itallap.setChildren(new ArrayList<>(
                 Arrays.asList(shotok, sorok, borok, rovidek, palinkak, uditok, forroItalok, napiAkciok, koktelok)));
-        menukAggregate.setChildren(new HashSet<>(
+        menukAggregate.setChildren(new ArrayList<>(
                 Arrays.asList(menuk)));
-        alapanyagokAggregate.setChildren(new HashSet<>(
+        alapanyagokAggregate.setChildren(new ArrayList<>(
                 Arrays.asList(alapanyagok)));
         ragcsak.setParent(etlap);
         etelek.setParent(etlap);
@@ -11360,15 +11360,15 @@ public class BuildSchema  {
     }
 
     private void aggregatesAndLeafs() {
-        ragcsak.setChildren(new HashSet<>(
+        ragcsak.setChildren(new ArrayList<>(
                 Arrays.asList(sos, edes)));
-        sorok.setChildren(new HashSet<>(
+        sorok.setChildren(new ArrayList<>(
                 Arrays.asList(uvegesSor, csapolt)));
-        borok.setChildren(new HashSet<>(
+        borok.setChildren(new ArrayList<>(
                 Arrays.asList(uvegBor, borDecire, froccsok)));
-        uditok.setChildren(new HashSet<>(
+        uditok.setChildren(new ArrayList<>(
                 Arrays.asList(uvegesUdito, limo, uditoDecire)));
-        forroItalok.setChildren(new HashSet<>(
+        forroItalok.setChildren(new ArrayList<>(
                 Arrays.asList(tea, forraltBor, kave, szirup, topping)));
         sos.setParent(ragcsak);
         edes.setParent(ragcsak);
@@ -11390,7 +11390,7 @@ public class BuildSchema  {
         szirup.setParent(forroItalok);
         topping.setParent(forroItalok);
 
-        tea.setChildren(new HashSet<>(
+        tea.setChildren(new ArrayList<>(
                 Arrays.asList(filteres)));
         filteres.setParent(tea);
     }
@@ -11742,7 +11742,7 @@ public class BuildSchema  {
         PseudoMangrovia.setParent(koktelok);
         
         // Rágcsák
-        sos.setChildren(new HashSet<>(
+        sos.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoSosPerec,
                     PseudoMogyoro,
@@ -11756,14 +11756,14 @@ public class BuildSchema  {
                     PseudoChips,
                     PseudoPopcorn)));
 
-        edes.setChildren(new HashSet<>(
+        edes.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoGumicukor,
                     PseudoBalatonszelet,
                     PseudoCsoki)));
 
         // Ételek
-        etelek.setChildren(new HashSet<>(
+        etelek.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoMelegszendivcsSonkas,
                     PseudoMelegszendivcsSzalamis,
@@ -11778,7 +11778,7 @@ public class BuildSchema  {
                     PseudoGameUpFalankTal)));
 
         // Menuk
-        menuk.setChildren(new HashSet<>(
+        menuk.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoAgentShotCover,
                     PseudoLimonCept,
@@ -11791,7 +11791,7 @@ public class BuildSchema  {
                     PseudoCoctailsToRideBig)));
 
         // Alapanyagok
-        alapanyagok.setChildren(new HashSet<>(
+        alapanyagok.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoCitrom,
                     PseudoNarancs,
@@ -11845,11 +11845,11 @@ public class BuildSchema  {
                     PseudoTortillaLap)));
         
         // Csapolt sorok
-        csapolt.setChildren(new HashSet<>(
+        csapolt.setChildren(new ArrayList<>(
                 Arrays.asList(PseudoSoproni03, PseudoSoproni05, PseudoEdelweiss03, PseudoEdelweiss05)));
 
         // Uveges sorok
-        uvegesSor.setChildren(new HashSet<>(
+        uvegesSor.setChildren(new ArrayList<>(
                 Arrays.asList(PseudoKrusoviceSvetle,
                     PseudoSoproniDemon,
                     PseudoSoproniMaxx,
@@ -11862,7 +11862,7 @@ public class BuildSchema  {
                     PseudoEdelweiss)));
 
         // Borok
-        uvegBor.setChildren(new HashSet<>(
+        uvegBor.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoHilltopIrsaiOliver,
                     PseudoGereAttilaOlaszrizling,
@@ -11874,7 +11874,7 @@ public class BuildSchema  {
                     PseudoTorleyGalaSzaraz,
                     PseudoTorleyCharmantEdes)));
 
-        borDecire.setChildren(new HashSet<>(
+        borDecire.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoHazBoraNagyEsNagy,
                     PseudoHazBoraLisiczaRoseCuvee,
@@ -11884,7 +11884,7 @@ public class BuildSchema  {
                     PseudoSzoda)));
 
         // Fröccsök
-        froccsok.setChildren(new HashSet<>(
+        froccsok.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoHazBoraNagyEsNagyKisfroccs,
                     PseudoHazBoraNagyEsNagyNagyfroccs,
@@ -11915,7 +11915,7 @@ public class BuildSchema  {
                     PseudoMeszarosPinotNoirRoseSportFroccs)));       
         
         // Roviditalok
-        rovidek.setChildren(new HashSet<>(
+        rovidek.setChildren(new ArrayList<>(
                 Arrays.asList(
                 PseudoJimBeam04,
                 PseudoJohnnieWalkerRedLabel04,
@@ -11958,7 +11958,7 @@ public class BuildSchema  {
                 PseudoBaileys04)));
 
         // Palinkak/
-        palinkak.setChildren(new HashSet<>(
+        palinkak.setChildren(new ArrayList<>(
                 Arrays.asList(
                     Pseudo_22KokuszTatratea04,
                     Pseudo_32CitrusTatratea04,
@@ -11983,7 +11983,7 @@ public class BuildSchema  {
                     PseudoSzilvapalinka02)));
 
         // Shotok
-        shotok.setChildren(new HashSet<>(
+        shotok.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoFinca1,
                     PseudoBang1,
@@ -12000,7 +12000,7 @@ public class BuildSchema  {
                     PseudoRiffRaff12)));
 
         // Uveges uditok
-        uvegesUdito.setChildren(new HashSet<>(
+        uvegesUdito.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoCocaCola,
                     PseudoCocaColaZero,
@@ -12021,7 +12021,7 @@ public class BuildSchema  {
                     PseudoMonsterRehab)));
 
         // Kimert uditok
-        uditoDecire.setChildren(new HashSet<>(
+        uditoDecire.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoCappyAlma,
                     PseudoCappyNarancs,
@@ -12029,7 +12029,7 @@ public class BuildSchema  {
                     PseudoCappyAnanasz)));
 
         // Limonadek
-        limo.setChildren(new HashSet<>(
+        limo.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoLimonadeMalna05,
                     PseudoLimonadeMeggy05,
@@ -12043,7 +12043,7 @@ public class BuildSchema  {
 
 
         // Filteres Teaak
-        filteres.setChildren(new HashSet<>(
+        filteres.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoChaiTea,
                     PseudoEarlGreyTea,
@@ -12064,7 +12064,7 @@ public class BuildSchema  {
                     pseudoAdHoc)));
 
         // Szirupok
-        szirup.setChildren(new HashSet<>(
+        szirup.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoKaramellSzirup,
                     PseudoCsokiSzirup,
@@ -12074,7 +12074,7 @@ public class BuildSchema  {
                     PseudoKokuszSzirup)));
 
         // Toppings
-        topping.setChildren(new HashSet<>(
+        topping.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoTejszinhabTopping,
                     PseudoCsokiszoszTopping,
@@ -12083,7 +12083,7 @@ public class BuildSchema  {
                     PseudoGumicukorTopping)));
         
         // Kavek
-        kave.setChildren(new HashSet<>(
+        kave.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoEspresso,
                     PseudoAmericano,
@@ -12096,7 +12096,7 @@ public class BuildSchema  {
                     PseudoJegesKave)));
 
         // Napi akciok
-        napiAkciok.setChildren(new HashSet<>(
+        napiAkciok.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoCaptainAndGyomber,
                     PseudoGinTonic,
@@ -12104,7 +12104,7 @@ public class BuildSchema  {
                     PseudoVodkaSzoda)));
 
         // Koktélok
-        koktelok.setChildren(new HashSet<>(
+        koktelok.setChildren(new ArrayList<>(
                 Arrays.asList(
                     PseudoMojito,
                     PseudoTequilaSunrise,

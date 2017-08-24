@@ -1789,7 +1789,7 @@ public class BuildTestSchema {
     }
 
     private void rootAndAggregates() {
-        root.setChildren(new HashSet<>(
+        root.setChildren(new ArrayList<>(
                 Arrays.asList(aggregateTopOne, aggregateTopTwo, aggregateRecipeElements)));
         aggregateTopOne.setParent(root);
         aggregateTopTwo.setParent(root);
@@ -1797,9 +1797,9 @@ public class BuildTestSchema {
     }
 
     private void aggregatesAndAggregates() {
-        aggregateTopOne.setChildren(new HashSet<>(
+        aggregateTopOne.setChildren(new ArrayList<>(
                 Arrays.asList(aggregateOne, aggregateTwo)));
-        aggregateTopTwo.setChildren(new HashSet<>(
+        aggregateTopTwo.setChildren(new ArrayList<>(
                 Arrays.asList(aggregateThree, aggregateFour)));
         aggregateOne.setParent(aggregateTopOne);
         aggregateTwo.setParent(aggregateTopOne);
@@ -1815,32 +1815,32 @@ public class BuildTestSchema {
         leafFive.setParent(aggregateTopOne);
         leafSix.setParent(aggregateFour);
         leafRecipeElements.setParent(aggregateRecipeElements);
-        aggregateTopOne.setChildren(new HashSet<>(
+        aggregateTopOne.setChildren(new ArrayList<>(
                 Collections.singletonList(leafFive)));
-        aggregateOne.setChildren(new HashSet<>(
+        aggregateOne.setChildren(new ArrayList<>(
                 Arrays.asList(leafOne, leafThree)));
-        aggregateTwo.setChildren(new HashSet<>(
+        aggregateTwo.setChildren(new ArrayList<>(
                 Arrays.asList(leafTwo, leafFour)));
-        aggregateFour.setChildren(new HashSet<>(
+        aggregateFour.setChildren(new ArrayList<>(
                 Collections.singletonList(leafSix)));
-        aggregateRecipeElements.setChildren(new HashSet<>(
+        aggregateRecipeElements.setChildren(new ArrayList<>(
                 Collections.singletonList(leafRecipeElements)));
 
     }
     
     private void leafsAndPseudos() {
-        leafOne.setChildren(new HashSet<>(
+        leafOne.setChildren(new ArrayList<>(
                 Arrays.asList(pseudoOne, pseudoFive, pseudoSix, pseudoAdHoc, pseudoGameFee)));
-        leafTwo.setChildren(new HashSet<>(
+        leafTwo.setChildren(new ArrayList<>(
                 Arrays.asList(pseudoThree, pseudoFour)));
-        leafThree.setChildren(new HashSet<>(
+        leafThree.setChildren(new ArrayList<>(
                 Collections.singletonList(pseudoTwo)));
-        leafFive.setChildren(new HashSet<>(
+        leafFive.setChildren(new ArrayList<>(
                 Collections.singletonList(pseudoSeven)));
-        leafSix.setChildren(new HashSet<>(
+        leafSix.setChildren(new ArrayList<>(
                 Collections.singletonList(pseudoEight)));
 
-        leafRecipeElements.setChildren(new HashSet<>(
+        leafRecipeElements.setChildren(new ArrayList<>(
                 Arrays.asList(pseudoRecipeElementOne, pseudoRecipeElementTwo, pseudoRecipeElementThree)));
         pseudoOne.setParent(leafOne);
         pseudoTwo.setParent(leafThree);
