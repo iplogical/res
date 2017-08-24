@@ -137,7 +137,8 @@ public class CategoryFormControllerImpl implements CategoryFormController {
             ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("ProductCategoryNameEmpty"));
             return;
         }
-        goodsController.addCategory(buildProductCategoryParams());
+        ProductCategoryParams params = buildProductCategoryParams();
+        goodsController.addCategory(params);
     }
 
     private ProductCategoryParams buildProductCategoryParams() {

@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.manager.controller.goods;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
 
 import java.net.URL;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 import com.google.inject.Inject;
@@ -360,10 +361,18 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
                 CategoryViewModel categoryViewModel = new CategoryViewModel(child);
                 TreeItem<CategoryViewModel> childItem = new TreeItem<>(categoryViewModel);
                 treeItem.getChildren().add(childItem);
+                sortTreeItemChildren(treeItem, childItem);
                 updateProduct(categoryViewModel, childItem);
                 updateCategory(child, childItem);
             }
         });
+    }
+
+    private void sortTreeItemChildren(TreeItem<CategoryViewModel> treeItem, TreeItem<CategoryViewModel> childItem) {
+        if(childItem.getValue().getName().isEmpty())
+            treeItem.getChildren().sort(Comparator.comparing(categoryViewModelTreeItem -> categoryViewModelTreeItem.getValue().getLongName()));
+        else
+            treeItem.getChildren().sort(Comparator.comparing(categoryViewModelTreeItem -> categoryViewModelTreeItem.getValue().getName()));
     }
 
     private void updateProduct(CategoryViewModel categoryViewModel, TreeItem<CategoryViewModel> productItem) {

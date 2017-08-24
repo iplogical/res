@@ -29,7 +29,7 @@ import lombok.experimental.Tolerate;
 
 @Entity
 @Builder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "owner")
 @Table(name = "PRICE_MODIFIER")
 @NamedQueries({
     @NamedQuery(name = PriceModifier.GET_TEST_PRICE_MODIFIERS,

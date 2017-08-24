@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 
-import java.util.Collection;
+import java.util.*;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,7 +39,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Tolerate;
 
 @Entity
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode(callSuper = true, exclude = {"product", "children", "parent"})
 @Table(name = "PRODUCT_CATEGORY")
 @NamedQueries({
@@ -63,6 +63,10 @@ public @Data class ProductCategory extends AbstractEntity {
     public static final String GET_CATEGORY_BY_NAME = "ProductCategory.GetCategoryByName";
     public static final String GET_CHILD_CATEGORIES = "ProductCategory.GetChildCategories";
 
+    public static ProductCategoryBuilder builder() {
+        return new ProductCategory().toBuilder();
+    }
+
     @NotEmpty
     @Column(unique = true)
     private String name;
@@ -76,10 +80,10 @@ public @Data class ProductCategory extends AbstractEntity {
             name = "PRODUCT_CATEGORY_RELATIONS",
             joinColumns = @JoinColumn(name = "parent", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)),
             inverseJoinColumns = @JoinColumn(name = "children", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)))
-    private Collection<ProductCategory> children;
+    private Set<ProductCategory> children = new HashSet<>();
 
     @OneToMany(mappedBy = "owner", fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
-    private Collection<PriceModifier> priceModifiers;
+    private List<PriceModifier> priceModifiers = new ArrayList<>();
 
     @OneToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))

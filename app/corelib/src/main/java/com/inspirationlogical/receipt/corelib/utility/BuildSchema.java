@@ -12122,17 +12122,17 @@ public class BuildSchema  {
     }
 
     private void categoriesAndPriceModifiers() {
-        PseudoEdelweiss05.setPriceModifiers(new HashSet<>(
+        PseudoEdelweiss05.setPriceModifiers(new ArrayList<>(
                 Arrays.asList(priceModifierEdelweiss)));
-        PseudoCaptainAndGyomber.setPriceModifiers(new HashSet<>(
+        PseudoCaptainAndGyomber.setPriceModifiers(new ArrayList<>(
                 Arrays.asList(priceModifierCaptainAndGyomber)));
-        PseudoGinTonic.setPriceModifiers(new HashSet<>(
+        PseudoGinTonic.setPriceModifiers(new ArrayList<>(
                 Arrays.asList(priceModifierGinTonic)));
-        PseudoJackAndCoke.setPriceModifiers(new HashSet<>(
+        PseudoJackAndCoke.setPriceModifiers(new ArrayList<>(
                 Arrays.asList(priceModifierJackAndCoke)));
-        PseudoVodkaSzoda.setPriceModifiers(new HashSet<>(
+        PseudoVodkaSzoda.setPriceModifiers(new ArrayList<>(
                 Arrays.asList(priceModifierVodkaSzoda)));
-        PseudoBekesSzentadrasiMeggyes.setPriceModifiers(new HashSet<>(
+        PseudoBekesSzentadrasiMeggyes.setPriceModifiers(new ArrayList<>(
                 Arrays.asList(priceModifierBekesSzentdrasiMeggyes)));
 
         priceModifierEdelweiss.setOwner(PseudoEdelweiss05);

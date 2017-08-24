@@ -133,14 +133,12 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 
     public ProductAdapter addProduct(ProductBuilder builder) {
         Product newProduct = builder.build();
-        GuardedTransaction.run(() -> {
-            if(isProductNameUsed(newProduct))
-                throw new IllegalProductStateException(Resources.CONFIG.getString("ProductNameAlreadyUsed") + newProduct.getLongName());
-            ProductCategory pseudo = buildPseudoCategory(newProduct);
-            adaptee.getChildren().add(pseudo);
-            newProduct.setCategory(pseudo);
-            newProduct.setRecipes(new ArrayList<>(Collections.singletonList(buildRecipe(newProduct))));
-        });
+        if(isProductNameUsed(newProduct))
+            throw new IllegalProductStateException(Resources.CONFIG.getString("ProductNameAlreadyUsed") + newProduct.getLongName());
+        ProductCategory pseudo = buildPseudoCategory(newProduct);
+        bindProductToPseudo(newProduct, pseudo);
+        addDefaultRecipe(newProduct);
+        GuardedTransaction.persist(newProduct);
         return new ProductAdapter(newProduct);
     }
 
@@ -157,6 +155,15 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .parent(adaptee)
                 .product(newProduct)
                 .build();
+    }
+
+    private void bindProductToPseudo(Product newProduct, ProductCategory pseudo) {
+        adaptee.getChildren().add(pseudo);
+        newProduct.setCategory(pseudo);
+    }
+
+    private void addDefaultRecipe(Product newProduct) {
+        newProduct.setRecipes(new ArrayList<>(Collections.singletonList(buildRecipe(newProduct))));
     }
 
     private Recipe buildRecipe(Product newProduct) {

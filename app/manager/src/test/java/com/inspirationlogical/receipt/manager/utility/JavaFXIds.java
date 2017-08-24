@@ -11,6 +11,8 @@ public class JavaFXIds {
     public static final String MODIFY_PRODUCT = "#modifyProduct";
     public static final String DELETE_PRODUCT = "#deleteProduct";
 
+    public static final String CREATE_RECIPE = "#createRecipe";
+
     // ProductFrom.fxml
     public static final String PRODUCT_LONG_NAME = "#longName";
     public static final String PRODUCT_SHORT_NAME = "#shortName";
@@ -25,11 +27,13 @@ public class JavaFXIds {
     public static final String PRODUCT_MINIMUM_STOCK = "#minimumStock";
     public static final String PRODUCT_STOCK_WINDOW = "#stockWindow";
 
-    //CategoryForm.fxml
+    // CategoryForm.fxml
     public static final String CATEGORY_NAME = "#name";
     public static final String CATEGORY_TYPE = "#type";
     public static final String CATEGORY_PARENT = "#parent";
 
+    // RecipeForm.fxml
+    public static final String HIDE = "#hide";
 
     // Common
     public static final String CONFIRM = "#confirm";

@@ -179,7 +179,7 @@ public class ProductFormControllerImpl implements ProductFormController {
 
     private Product.ProductBuilder buildProduct() throws NumberFormatException, InvalidProductFormException {
         if(isChoiceBoxEmpty() || isLongNameEmpty())
-            throw new RuntimeException();
+            throw new InvalidProductFormException("");
         return commonService.productBuilder()
             .longName(longName.getText())
             .shortName(shortName.getText().equals("") ? longName.getText() : shortName.getText())

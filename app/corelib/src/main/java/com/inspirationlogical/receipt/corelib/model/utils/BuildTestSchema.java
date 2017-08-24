@@ -1856,11 +1856,11 @@ public class BuildTestSchema {
     }
 
     private void categoriesAndPriceModifiers() {
-        pseudoOne.setPriceModifiers(new HashSet<>(
+        pseudoOne.setPriceModifiers(new ArrayList<>(
                 Arrays.asList(priceModifierOne, priceModifierTwo)));
-        leafTwo.setPriceModifiers(new HashSet<>(
+        leafTwo.setPriceModifiers(new ArrayList<>(
                 Collections.singletonList(priceModifierThree)));
-        pseudoTwo.setPriceModifiers(new HashSet<>(
+        pseudoTwo.setPriceModifiers(new ArrayList<>(
                 Collections.singletonList(priceModifierFour)));
         priceModifierOne.setOwner(pseudoOne);
         priceModifierTwo.setOwner(pseudoOne);
