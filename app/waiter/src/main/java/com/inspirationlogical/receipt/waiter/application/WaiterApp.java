@@ -46,7 +46,6 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
         }
     }
 
-
     @Override
     public void start(Stage stage) {
         logger.warn("Entering WaiterApp");

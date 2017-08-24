@@ -2,16 +2,12 @@ package com.inspirationlogical.receipt.manager.controller.goods;
 
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.manager.controller.TestFXBase;
-import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.PRODUCT_ONE_LONG_NAME;
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.PRODUCT_ONE_SHORT_NAME;
 import static com.inspirationlogical.receipt.manager.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.manager.utility.GoodsUtils.*;
-import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.CREATE_RECIPE;
-import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.HIDE;
 import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.PRODUCT_PURCHASE_PRICE;
 
 public class ProductFormControllerTest extends TestFXBase {
@@ -44,7 +40,7 @@ public class ProductFormControllerTest extends TestFXBase {
         setProductStatus(1);
         setQuantityUnit(1);
         clickOnConfirm();
-        verifyErrorMessage("ProductForm.NumberFormatException");
+        verifyErrorMessage("Form.NumberFormatException");
     }
 
     @Test
@@ -53,7 +49,7 @@ public class ProductFormControllerTest extends TestFXBase {
         clickOnModifyProduct();
         setTextField(PRODUCT_PURCHASE_PRICE, "a");
         clickOnConfirm();
-        verifyErrorMessage("ProductForm.NumberFormatException");
+        verifyErrorMessage("Form.NumberFormatException");
     }
 
     @Test
@@ -66,8 +62,7 @@ public class ProductFormControllerTest extends TestFXBase {
     @Test
     public void testModifyProductEmptyName() {
         modifyProduct(PRODUCT_ONE_LONG_NAME, "", "NM");
-        verifyErrorMessage("ProductForm.EmptyLongNameOrChoiceBox");
-
+        verifyErrorMessage("Form.EmptyNameOrChoiceBox");
     }
 
     @Test
@@ -76,7 +71,7 @@ public class ProductFormControllerTest extends TestFXBase {
         clickOnModifyProduct();
         setTextField(PRODUCT_PURCHASE_PRICE, "a");
         clickOnConfirm();
-        verifyErrorMessage("ProductForm.NumberFormatException");
+        verifyErrorMessage("Form.NumberFormatException");
         clickOnCancel();
     }
 

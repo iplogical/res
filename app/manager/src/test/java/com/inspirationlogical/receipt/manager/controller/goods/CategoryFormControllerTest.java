@@ -26,6 +26,46 @@ public class CategoryFormControllerTest extends TestFXBase {
     }
 
     @Test
+    public void testAddCategoryNameAlreadyUsed() {
+        clickOnAddCategory();
+        setCategoryName("leafOne");
+        setParentCategory(2);
+        setLeafCategoryType();
+        clickOnConfirm();
+        String errorMessage = Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed");
+        verifyThatVisible(errorMessage + "leafOne");
+    }
+
+    @Test
+    public void testAddCategoryInvalidInput() {
+        clickOnAddCategory();
+        setCategoryName("leafOne");
+        setCategoryOrderNumber("a");
+        setParentCategory(2);
+        setLeafCategoryType();
+        clickOnConfirm();
+        verifyErrorMessage("Form.NumberFormatException");
+    }
+
+    @Test
+    public void testAddCategoryEmptyChoiceBox() {
+        clickOnAddCategory();
+        setCategoryName("leafOne");
+        setLeafCategoryType();
+        clickOnConfirm();
+        verifyErrorMessage("Form.EmptyNameOrChoiceBox");
+    }
+
+    @Test
+    public void testAddCategoryEmptyName() {
+        clickOnAddCategory();
+        setParentCategory(2);
+        setLeafCategoryType();
+        clickOnConfirm();
+        verifyErrorMessage("Form.EmptyNameOrChoiceBox");
+    }
+
+    @Test
     public void testAddAggregateCategoryNotAllowed() {
         clickOnAddCategory();
         setCategoryName("New Aggregate");

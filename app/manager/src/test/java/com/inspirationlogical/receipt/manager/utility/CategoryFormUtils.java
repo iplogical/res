@@ -10,6 +10,10 @@ public class CategoryFormUtils extends AbstractUtils {
         setTextField(CATEGORY_NAME, name);
     }
 
+    public static void setCategoryOrderNumber(String orderNumber) {
+        setTextField(CATEGORY_ORDER_NUMBER, orderNumber);
+    }
+
     public static void setLeafCategoryType() {
         setCategoryType(2);
     }

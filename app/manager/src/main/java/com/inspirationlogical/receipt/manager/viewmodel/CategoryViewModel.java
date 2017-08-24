@@ -15,6 +15,7 @@ public class CategoryViewModel extends ProductViewModel {
     public CategoryViewModel(ProductCategoryView productCategoryView) {
         super(hasProduct(productCategoryView) ? productView : null);
         name = hasProduct ? getLongName() : productCategoryView.getName();
+        setOrderNumber(String.valueOf(productCategoryView.getOrderNumber()));
     }
 
     public CategoryViewModel(ProductView productView) {

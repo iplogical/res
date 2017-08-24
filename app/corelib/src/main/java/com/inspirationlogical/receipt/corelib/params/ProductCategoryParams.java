@@ -18,4 +18,6 @@ class ProductCategoryParams {
     private String originalName;
 
     private ProductCategoryType type;
+
+    private int orderNumber;
 }

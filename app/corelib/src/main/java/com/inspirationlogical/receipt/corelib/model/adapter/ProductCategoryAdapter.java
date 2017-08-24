@@ -11,6 +11,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
 import java.util.ArrayList;
@@ -85,11 +86,11 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                     return query;});
     }
 
-    public ProductCategoryAdapter addChildCategory(String name, ProductCategoryType type) {
-        ProductCategory newCategory = buildNewCategory(name, type);
+    public ProductCategoryAdapter addChildCategory(ProductCategoryParams params) {
+        ProductCategory newCategory = buildNewCategory(params);
         if(isCategoryNameUsed(newCategory.getName()))
-            throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed") + name);
-        if(type.equals(ProductCategoryType.AGGREGATE) && parentHasLeafChild()) {
+            throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed") + params.getName());
+        if(params.getType().equals(ProductCategoryType.AGGREGATE) && parentHasLeafChild()) {
             throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryAlreadyHasLeaf"));
         }
         adaptee.getChildren().add(newCategory);
@@ -98,11 +99,12 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         return new ProductCategoryAdapter(newCategory);
     }
 
-    private ProductCategory buildNewCategory(String name, ProductCategoryType type) {
+    private ProductCategory buildNewCategory(ProductCategoryParams params) {
         return ProductCategory.builder()
-                .name(name)
-                .type(type)
+                .name(params.getName())
+                .type(params.getType())
                 .status(ProductStatus.ACTIVE)
+                .orderNumber(params.getOrderNumber())
                 .build();
     }
 
@@ -117,12 +119,13 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .collect(Collectors.toList()).size() != 0;
     }
 
-    public static ProductCategoryAdapter updateProductCategory(String newName, String originalName, ProductCategoryType type) {
-        if(isCategoryNameUsed(newName)) {
-            throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed") + newName);
+    public static ProductCategoryAdapter updateProductCategory(ProductCategoryParams params) {
+        if(isCategoryNameUsed(params.getName())) {
+            throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed") + params.getName());
         }
-        ProductCategory originalCategory = getProductCategoryByName(originalName).getAdaptee();
-        originalCategory.setName(newName);
+        ProductCategory originalCategory = getProductCategoryByName(params.getOriginalName()).getAdaptee();
+        originalCategory.setName(params.getName());
+        originalCategory.setOrderNumber(params.getOrderNumber());
         GuardedTransaction.persist(originalCategory);
         return new ProductCategoryAdapter(originalCategory);
     }

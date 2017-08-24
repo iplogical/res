@@ -31,6 +31,7 @@ public class JavaFXIds {
     public static final String CATEGORY_NAME = "#name";
     public static final String CATEGORY_TYPE = "#type";
     public static final String CATEGORY_PARENT = "#parent";
+    public static final String CATEGORY_ORDER_NUMBER= "#orderNumber";
 
     // RecipeForm.fxml
     public static final String HIDE = "#hide";

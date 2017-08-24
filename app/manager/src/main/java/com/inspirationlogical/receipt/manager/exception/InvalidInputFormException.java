@@ -1,8 +1,8 @@
 package com.inspirationlogical.receipt.manager.exception;
 
-public class InvalidProductFormException extends Exception {
+public class InvalidInputFormException extends Exception {
 
-    public InvalidProductFormException(String message) {
+    public InvalidInputFormException(String message) {
         super("Invalid input for the ProductForm: " + message);
     }
 }

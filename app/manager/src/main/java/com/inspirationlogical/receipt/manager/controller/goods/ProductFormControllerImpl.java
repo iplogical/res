@@ -7,8 +7,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
-import com.inspirationlogical.receipt.manager.exception.InvalidProductFormException;
+import com.inspirationlogical.receipt.manager.exception.InvalidInputFormException;
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
@@ -174,16 +173,16 @@ public class ProductFormControllerImpl implements ProductFormController {
             goodsController.addProduct(productId, category.getValue(), buildProduct());
         } catch (NumberFormatException e) {
             ErrorMessage.showErrorMessage(getRootNode(),
-                    ManagerResources.MANAGER.getString("ProductForm.NumberFormatException"));
-        } catch (InvalidProductFormException e) {
+                    ManagerResources.MANAGER.getString("Form.NumberFormatException"));
+        } catch (InvalidInputFormException e) {
             ErrorMessage.showErrorMessage(getRootNode(),
-                    ManagerResources.MANAGER.getString("ProductForm.EmptyLongNameOrChoiceBox"));
+                    ManagerResources.MANAGER.getString("Form.EmptyNameOrChoiceBox"));
         }
     }
 
-    private Product.ProductBuilder buildProduct() throws NumberFormatException, InvalidProductFormException {
+    private Product.ProductBuilder buildProduct() throws NumberFormatException, InvalidInputFormException {
         if(isChoiceBoxEmpty() || isLongNameEmpty())
-            throw new InvalidProductFormException("");
+            throw new InvalidInputFormException("");
         return commonService.productBuilder()
             .longName(longName.getText())
             .shortName(shortName.getText().equals("") ? longName.getText() : shortName.getText())

@@ -16,4 +16,6 @@ public interface ProductCategoryView extends AbstractView {
     default ProductCategoryType getType() { return null;}
 
     default ProductStatus getStatus() { return null;}
+
+    default int getOrderNumber() { return 0;}
 }

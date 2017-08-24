@@ -16,7 +16,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
+import com.inspirationlogical.receipt.manager.exception.InvalidInputFormException;
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
@@ -38,15 +38,17 @@ import javafx.util.StringConverter;
 public class CategoryFormControllerImpl implements CategoryFormController {
 
     @FXML
-    VBox root;
+    private VBox root;
     @FXML
-    TextField name;
+    private TextField name;
     @FXML
-    ChoiceBox<ProductCategoryType> type;
+    private ChoiceBox<ProductCategoryType> type;
     @FXML
-    ChoiceBox<ProductCategoryView> parent;
+    private ChoiceBox<ProductCategoryView> parent;
+    @FXML
+    private TextField orderNumber;
 
-    public static String PRODUCT_CATEGORY_FORM_VIEW_PATH = "/view/fxml/CategoryForm.fxml";
+    private static String PRODUCT_CATEGORY_FORM_VIEW_PATH = "/view/fxml/CategoryForm.fxml";
 
     private GoodsController goodsController;
 
@@ -56,10 +58,6 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     private ObservableList<ProductCategoryView> allCategories;
 
     private ObservableList<ProductCategoryView> parentCategories;
-
-    private ProductCategoryView rootCategory;
-
-    private ObservableList<ProductCategoryType> categoryTypes;
 
     private String originalCategoryName;
 
@@ -82,7 +80,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     }
 
     private void initParentCategories() {
-        rootCategory = commonService.getRootProductCategory();
+        ProductCategoryView rootCategory = commonService.getRootProductCategory();
         parentCategories = FXCollections.observableArrayList(commonService.getAggregateCategories());
         parentCategories.sort(Comparator.comparing(ProductCategoryView::getCategoryName));
         parentCategories.add(rootCategory);
@@ -96,7 +94,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     }
 
     private void initCategoryTypes() {
-        categoryTypes = FXCollections.observableArrayList(Arrays.asList(ProductCategoryType.AGGREGATE, ProductCategoryType.LEAF));
+        ObservableList<ProductCategoryType> categoryTypes = FXCollections.observableArrayList(Arrays.asList(ProductCategoryType.AGGREGATE, ProductCategoryType.LEAF));
         type.setItems(categoryTypes);
         type.setConverter(new ProductCategoryTypeStringConverter(categoryTypes));
     }
@@ -109,6 +107,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
         type.setValue(null);
         type.setDisable(false);
         name.clear();
+        orderNumber.setText("0");
         originalCategoryName = "";
     }
 
@@ -118,6 +117,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
         CategoryStringConverter converterParent = new CategoryStringConverter(parentCategories);
         originalCategoryName = categoryViewModel.getName();
         name.setText(originalCategoryName);
+        orderNumber.setText(categoryViewModel.getOrderNumber());
         type.setValue(converterAll.fromString(categoryViewModel.getName()).getType());
         type.setDisable(true);
         String parentName = converterAll.fromString(categoryViewModel.getName()).getParent().getName();
@@ -127,27 +127,36 @@ public class CategoryFormControllerImpl implements CategoryFormController {
 
     @FXML
     public void onConfirm(Event event) {
-        if(type.getValue() == null) {
-            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("ProductCategoryTypeNull"));
-            return;
-        } else if(parent.getValue() == null) {
-            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("ProductCategoryParentNull"));
-            return;
-        } else if(name.getText().equals("")) {
-            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("ProductCategoryNameEmpty"));
-            return;
+        try {
+            ProductCategoryParams params = buildProductCategoryParams();
+            goodsController.addCategory(params);
+        } catch (NumberFormatException e) {
+            ErrorMessage.showErrorMessage(getRootNode(),
+                    ManagerResources.MANAGER.getString("Form.NumberFormatException"));
+        } catch (InvalidInputFormException e) {
+            ErrorMessage.showErrorMessage(getRootNode(),
+                    ManagerResources.MANAGER.getString("Form.EmptyNameOrChoiceBox"));
         }
-        ProductCategoryParams params = buildProductCategoryParams();
-        goodsController.addCategory(params);
     }
 
-    private ProductCategoryParams buildProductCategoryParams() {
+    private ProductCategoryParams buildProductCategoryParams() throws NumberFormatException, InvalidInputFormException {
+        if(isChoiceBoxEmpty() || isNameEmpty())
+            throw new InvalidInputFormException("");
         return ProductCategoryParams.builder()
             .parent(parent.getValue())
             .name(name.getText())
             .originalName(originalCategoryName)
             .type(type.getValue())
+            .orderNumber(Integer.valueOf(orderNumber.getText()))
             .build();
+    }
+
+    private boolean isNameEmpty() {
+        return name.getText().isEmpty();
+    }
+
+    private boolean isChoiceBoxEmpty() {
+        return parent.getValue() == null || type.getValue() == null;
     }
 
     @FXML
