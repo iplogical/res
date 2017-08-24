@@ -47,39 +47,39 @@ import javafx.scene.layout.VBox;
 public class PriceModifierFormControllerImpl implements PriceModifierFormController {
 
     @FXML
-    VBox root;
+    private VBox root;
     @FXML
-    TextField name;
+    private TextField name;
     @FXML
-    ChoiceBox<ProductView> ownerProduct;
+    private ChoiceBox<ProductView> ownerProduct;
     @FXML
-    ChoiceBox<ProductCategoryView> ownerCategory;
+    private ChoiceBox<ProductCategoryView> ownerCategory;
     @FXML
-    CheckBox isCategory;
+    private CheckBox isCategory;
     @FXML
-    ChoiceBox<PriceModifierType> type;
+    private ChoiceBox<PriceModifierType> type;
     @FXML
-    TextField quantityMultiplier;
+    private TextField quantityMultiplier;
     @FXML
-    TextField discountPercent;
+    private TextField discountPercent;
     @FXML
-    DatePicker startDate;
+    private DatePicker startDate;
     @FXML
-    DatePicker endDate;
+    private DatePicker endDate;
     @FXML
-    ChoiceBox<PriceModifierRepeatPeriod> repeatPeriod;
+    private ChoiceBox<PriceModifierRepeatPeriod> repeatPeriod;
     @FXML
-    TextField repeatPeriodMultiplier;
+    private TextField repeatPeriodMultiplier;
     @FXML
-    TextField startTimeHour;
+    private TextField startTimeHour;
     @FXML
-    TextField startTimeMinute;
+    private TextField startTimeMinute;
     @FXML
-    TextField endTimeHour;
+    private TextField endTimeHour;
     @FXML
-    TextField endTimeMinute;
+    private TextField endTimeMinute;
     @FXML
-    ChoiceBox<DayOfWeek> dayOfWeek;
+    private ChoiceBox<DayOfWeek> dayOfWeek;
 
     private PriceModifierController priceModifierController;
 

@@ -22,6 +22,24 @@ public class GoodsControllerTest extends TestFXBase {
     }
 
     @Test
+    public void testEnterStockView() {
+        enterStockView();
+        enterGoodsView();
+    }
+
+    @Test
+    public void testEnterPriceModifierView() {
+        enterPriceModifierView();
+        enterGoodsView();
+    }
+
+    @Test
+    public void testEnterReceiptView() {
+        enterReceiptView();
+        enterGoodsView();
+    }
+
+    @Test
     public void testModifyProductNoSelection() {
         clickOnModifyProduct();
         verifyErrorMessage("ProductForm.SelectProductForModify");

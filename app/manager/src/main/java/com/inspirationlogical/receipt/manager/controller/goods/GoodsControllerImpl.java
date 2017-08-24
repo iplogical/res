@@ -43,98 +43,51 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     private static final String GOODS_VIEW_PATH = "/view/fxml/Goods.fxml";
 
-    @FXML
-    private BorderPane root;
-    @FXML
-    private TreeTableView<CategoryViewModel> goodsTable;
-    @FXML
-    private TreeTableColumn<CategoryViewModel, String> categoryName;
-    @FXML
-    private TreeTableColumn<CategoryViewModel, String> productShortName;
-    @FXML
-    private TreeTableColumn<CategoryViewModel, String> productRapidCode;
-    @FXML
-    private TreeTableColumn<CategoryViewModel, String> productOrderNumber;
-    @FXML
-    private TreeTableColumn<CategoryViewModel, String> productType;
-    @FXML
-    private TreeTableColumn<CategoryViewModel, String> productStatus;
-    @FXML
-    private TreeTableColumn<CategoryViewModel, String> productQuantityUnit;
-    @FXML
-    private TreeTableColumn<CategoryViewModel, String> productStorageMultiplier;
-    @FXML
-    private TreeTableColumn<CategoryViewModel, String> productQuantityMultiplier;
-    @FXML
-    private TreeTableColumn<CategoryViewModel, String> productPurchasePrice;
-    @FXML
-    private TreeTableColumn<CategoryViewModel, String> productSalePrice;
-    @FXML
-    private TreeTableColumn<CategoryViewModel, String> productMinimumStock;
-    @FXML
-    private TreeTableColumn<CategoryViewModel, String> productStockWindow;
-    @FXML
-    private Button addCategory;
-    @FXML
-    private Button modifyCategory;
-    @FXML
-    private Button deleteCategory;
-    @FXML
-    private Button addProduct;
-    @FXML
-    private Button modifyProduct;
-    @FXML
-    private Button deleteProduct;
-    @FXML
-    private Button showStock;
-    @FXML
-    private Button showPriceModifiers;
-    @FXML
-    private Button showReceipts;
+    private @FXML BorderPane root;
 
-    @Inject
-    private ViewLoader viewLoader;
+    private @FXML TreeTableView<CategoryViewModel> goodsTable;
+    private @FXML TreeTableColumn<CategoryViewModel, String> categoryName;
+    private @FXML TreeTableColumn<CategoryViewModel, String> productShortName;
+    private @FXML TreeTableColumn<CategoryViewModel, String> productRapidCode;
+    private @FXML TreeTableColumn<CategoryViewModel, String> productOrderNumber;
+    private @FXML TreeTableColumn<CategoryViewModel, String> productType;
+    private @FXML TreeTableColumn<CategoryViewModel, String> productStatus;
+    private @FXML TreeTableColumn<CategoryViewModel, String> productQuantityUnit;
+    private @FXML TreeTableColumn<CategoryViewModel, String> productStorageMultiplier;
+    private @FXML TreeTableColumn<CategoryViewModel, String> productQuantityMultiplier;
+    private @FXML TreeTableColumn<CategoryViewModel, String> productPurchasePrice;
+    private @FXML TreeTableColumn<CategoryViewModel, String> productSalePrice;
+    private @FXML TreeTableColumn<CategoryViewModel, String> productMinimumStock;
+    private @FXML TreeTableColumn<CategoryViewModel, String> productStockWindow;
 
-    private StockController stockController;
+    private @FXML Button addCategory;
+    private @FXML Button modifyCategory;
+    private @FXML Button deleteCategory;
+    private @FXML Button addProduct;
+    private @FXML Button modifyProduct;
+    private @FXML Button deleteProduct;
+    private @FXML Button showStock;
+    private @FXML Button showPriceModifiers;
+    private @FXML Button showReceipts;
 
-    private PriceModifierController priceModifierController;
+    private @Inject ViewLoader viewLoader;
 
-    private ReceiptController receiptController;
+    private @Inject StockController stockController;
+    private @Inject PriceModifierController priceModifierController;
+    private @Inject ReceiptController receiptController;
 
-    @Inject
-    private CommonService commonService;
-
-    @Inject
-    private ManagerService managerService;
+    private @Inject CommonService commonService;
+    private @Inject ManagerService managerService;
 
     private Popup productForm;
-
-    private ProductFormController productFormController;
+    private @Inject ProductFormController productFormController;
 
     private Popup categoryForm;
-
-    private CategoryFormController categoryFormController;
+    private @Inject CategoryFormController categoryFormController;
 
     private Popup recipeForm;
+    private @Inject RecipeFormController recipeFormController;
 
-    private RecipeFormController recipeFormController;
-
-    private ProductCategoryView rootCategory;
-
-    @Inject
-    public GoodsControllerImpl(StockController stockController,
-                               PriceModifierController priceModifierController,
-                               ReceiptController receiptController,
-                               ProductFormController productFormController,
-                               CategoryFormController categoryFormController,
-                               RecipeFormController recipeFormController) {
-        this.stockController = stockController;
-        this.priceModifierController = priceModifierController;
-        this.receiptController = receiptController;
-        this.productFormController = productFormController;
-        this.categoryFormController = categoryFormController;
-        this.recipeFormController = recipeFormController;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -160,7 +113,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     }
 
     private void initCategories() {
-        rootCategory = commonService.getRootProductCategory();
+        ProductCategoryView rootCategory = commonService.getRootProductCategory();
         TreeItem<CategoryViewModel> rootItem = new TreeItem<>(new CategoryViewModel(rootCategory));
         goodsTable.setRoot(rootItem);
         goodsTable.setShowRoot(false);

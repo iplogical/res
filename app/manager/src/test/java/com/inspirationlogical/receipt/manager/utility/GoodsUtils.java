@@ -9,6 +9,21 @@ import static java.lang.Thread.sleep;
 
 public class GoodsUtils extends AbstractUtils {
 
+    public static void enterGoodsView() {
+        clickButtonThenWait("Common.GoodsView", 100);
+    }
+
+    public static void enterStockView() {
+        clickButtonThenWait("Common.StockView", 100);
+    }
+
+    public static void enterPriceModifierView() {
+        clickButtonThenWait("Common.PriceModifierView", 100);
+    }
+
+    public static void enterReceiptView() {
+        clickButtonThenWait("Common.ReceiptsView", 100);
+    }
     public static void clickOnAddProduct() {
         clickButtonThenWait(ADD_PRODUCT, 500);
     }

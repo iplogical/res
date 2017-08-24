@@ -43,58 +43,58 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     @FXML
     private BorderPane root;
     @FXML
-    TreeTableView<ReceiptViewModel> receiptsTable;
+    private TreeTableView<ReceiptViewModel> receiptsTable;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> date;
+    private TreeTableColumn<ReceiptViewModel, String> date;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> type;
+    private TreeTableColumn<ReceiptViewModel, String> type;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> status;
+    private TreeTableColumn<ReceiptViewModel, String> status;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> paymentMethod;
+    private TreeTableColumn<ReceiptViewModel, String> paymentMethod;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> openTime;
+    private TreeTableColumn<ReceiptViewModel, String> openTime;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> closureTime;
+    private TreeTableColumn<ReceiptViewModel, String> closureTime;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> userCode;
+    private TreeTableColumn<ReceiptViewModel, String> userCode;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> sumPurchaseNetPrice;
+    private TreeTableColumn<ReceiptViewModel, String> sumPurchaseNetPrice;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> sumPurchaseGrossPrice;
+    private TreeTableColumn<ReceiptViewModel, String> sumPurchaseGrossPrice;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> sumSaleNetPrice;
+    private TreeTableColumn<ReceiptViewModel, String> sumSaleNetPrice;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> sumSaleGrossPrice;
+    private TreeTableColumn<ReceiptViewModel, String> sumSaleGrossPrice;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> discountPercent;
+    private TreeTableColumn<ReceiptViewModel, String> discountPercent;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> VATSerie;
+    private TreeTableColumn<ReceiptViewModel, String> VATSerie;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> clientName;
+    private TreeTableColumn<ReceiptViewModel, String> clientName;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> clientAddress;
+    private TreeTableColumn<ReceiptViewModel, String> clientAddress;
     @FXML
-    TreeTableColumn<ReceiptViewModel, String> clientTAXNumber;
+    private TreeTableColumn<ReceiptViewModel, String> clientTAXNumber;
 
     @FXML
-    TableView<ReceiptRecordViewModel> receiptRecordsTable;
+    private TableView<ReceiptRecordViewModel> receiptRecordsTable;
     @FXML
-    TableColumn<ReceiptRecordViewModel, String> recordName;
+    private TableColumn<ReceiptRecordViewModel, String> recordName;
     @FXML
-    TableColumn<ReceiptRecordViewModel, String> recordType;
+    private TableColumn<ReceiptRecordViewModel, String> recordType;
     @FXML
-    TableColumn<ReceiptRecordViewModel, String> recordSoldQuantity;
+    private TableColumn<ReceiptRecordViewModel, String> recordSoldQuantity;
     @FXML
-    TableColumn<ReceiptRecordViewModel, String> recordAbsoluteQuantity;
+    private TableColumn<ReceiptRecordViewModel, String> recordAbsoluteQuantity;
     @FXML
-    TableColumn<ReceiptRecordViewModel, String> recordPurchasePrice;
+    private TableColumn<ReceiptRecordViewModel, String> recordPurchasePrice;
     @FXML
-    TableColumn<ReceiptRecordViewModel, String> recordSalePrice;
+    private TableColumn<ReceiptRecordViewModel, String> recordSalePrice;
     @FXML
-    TableColumn<ReceiptRecordViewModel, String> recordVAT;
+    private TableColumn<ReceiptRecordViewModel, String> recordVAT;
     @FXML
-    TableColumn<ReceiptRecordViewModel, String> recordDiscountPercent;
+    private TableColumn<ReceiptRecordViewModel, String> recordDiscountPercent;
 
     @FXML
     Button showGoods;
@@ -102,6 +102,7 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     @Inject
     private ViewLoader viewLoader;
 
+    @Inject
     private GoodsController goodsController;
 
     @Inject
@@ -111,12 +112,6 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     private ManagerService managerService;
 
     private Map<LocalDate, List<ReceiptView>> receiptsByDate;
-
-    @Inject
-    public ReceiptControllerImpl(GoodsController goodsController, CommonService commonService) {
-        this.goodsController = goodsController;
-        this.commonService = commonService;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

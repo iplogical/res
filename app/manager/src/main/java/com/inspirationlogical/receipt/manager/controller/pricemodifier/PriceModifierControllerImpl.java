@@ -75,24 +75,19 @@ public class PriceModifierControllerImpl implements PriceModifierController {
     @Inject
     private ViewLoader viewLoader;
 
+    @Inject
     private GoodsController goodsController;
 
     @Inject
     private CommonService commonService;
 
     @Inject
-    private ManagerService managerService;
-
-    private Popup priceModifierForm;
-
     private PriceModifierFormController priceModifierFormController;
 
     @Inject
-    public PriceModifierControllerImpl(GoodsController goodsController,
-                                       PriceModifierFormController priceModifierFormController) {
-        this.goodsController = goodsController;
-        this.priceModifierFormController = priceModifierFormController;
-    }
+    private ManagerService managerService;
+
+    private Popup priceModifierForm;
 
     @Override
     public String getViewPath() {

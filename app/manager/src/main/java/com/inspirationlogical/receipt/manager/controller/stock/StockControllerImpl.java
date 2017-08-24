@@ -34,51 +34,52 @@ public class StockControllerImpl extends AbstractController implements StockCont
     @FXML
     private BorderPane root;
     @FXML
-    TableView<StockViewModel> stockTable;
+    private TableView<StockViewModel> stockTable;
     @FXML
-    TableColumn<StockViewModel, String> productLongName;
+    private TableColumn<StockViewModel, String> productLongName;
     @FXML
-    TableColumn<StockViewModel, String> stockAvailableQuantity;
+    private TableColumn<StockViewModel, String> stockAvailableQuantity;
     @FXML
-    TableColumn<StockViewModel, String> stockInitialQuantity;
+    private TableColumn<StockViewModel, String> stockInitialQuantity;
     @FXML
-    TableColumn<StockViewModel, String> stockSoldQuantity;
+    private TableColumn<StockViewModel, String> stockSoldQuantity;
     @FXML
-    TableColumn<StockViewModel, String> stockPurchasedQuantity;
+    private TableColumn<StockViewModel, String> stockPurchasedQuantity;
     @FXML
-    TableColumn<StockViewModel, String> stockInventoryQuantity;
+    private TableColumn<StockViewModel, String> stockInventoryQuantity;
     @FXML
-    TableColumn<StockViewModel, String> stockDisposedQuantity;
+    private TableColumn<StockViewModel, String> stockDisposedQuantity;
     @FXML
-    TableColumn<StockViewModel, String> stockInputQuantity;
+    private TableColumn<StockViewModel, String> stockInputQuantity;
     @FXML
-    TableColumn<StockViewModel, String> stockDate;
+    private TableColumn<StockViewModel, String> stockDate;
     @FXML
-    TableColumn<StockViewModel, String> productType;
+    private TableColumn<StockViewModel, String> productType;
     @FXML
-    TableColumn<StockViewModel, String> productStatus;
+    private TableColumn<StockViewModel, String> productStatus;
     @FXML
-    TableColumn<StockViewModel, String> productQuantityUnit;
+    private TableColumn<StockViewModel, String> productQuantityUnit;
     @FXML
-    TableColumn<StockViewModel, String> productStorageMultiplier;
+    private TableColumn<StockViewModel, String> productStorageMultiplier;
     @FXML
-    CheckBox quantityDisplay;
+    private CheckBox quantityDisplay;
     @FXML
-    ToggleButton purchase;
+    private ToggleButton purchase;
     @FXML
-    ToggleButton inventory;
+    private ToggleButton inventory;
     @FXML
-    ToggleButton disposal;
+    private ToggleButton disposal;
     @FXML
-    Button updateStock;
+    private Button updateStock;
     @FXML
-    ToggleGroup actionTypeToggleGroup;
+    private ToggleGroup actionTypeToggleGroup;
     @FXML
-    Button showGoods;
+    private Button showGoods;
 
     @Inject
     private ViewLoader viewLoader;
 
+    @Inject
     private GoodsController goodsController;
 
     @Inject
@@ -89,14 +90,9 @@ public class StockControllerImpl extends AbstractController implements StockCont
 
     private StockViewState stockViewState;
 
-    @Inject
-    public StockControllerImpl(GoodsController goodsController) {
-        this.goodsController = goodsController;
-        this.stockViewState = new StockViewState();
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.stockViewState = new StockViewState();
         initColumns();
         initStockItems();
         initActionTypeToggles();

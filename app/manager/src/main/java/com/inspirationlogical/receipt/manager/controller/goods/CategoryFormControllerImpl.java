@@ -37,16 +37,11 @@ import javafx.util.StringConverter;
 @Singleton
 public class CategoryFormControllerImpl implements CategoryFormController {
 
-    @FXML
-    private VBox root;
-    @FXML
-    private TextField name;
-    @FXML
-    private ChoiceBox<ProductCategoryType> type;
-    @FXML
-    private ChoiceBox<ProductCategoryView> parent;
-    @FXML
-    private TextField orderNumber;
+    private @FXML VBox root;
+    private @FXML TextField name;
+    private @FXML ChoiceBox<ProductCategoryType> type;
+    private @FXML ChoiceBox<ProductCategoryView> parent;
+    private @FXML TextField orderNumber;
 
     private static String PRODUCT_CATEGORY_FORM_VIEW_PATH = "/view/fxml/CategoryForm.fxml";
 

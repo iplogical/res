@@ -39,27 +39,28 @@ import javafx.scene.layout.VBox;
 @Singleton
 public class RecipeFormControllerImpl extends AbstractController implements RecipeFormController {
 
-    public static final String RECIPE_FORM_VIEW_PATH =  "/view/fxml/RecipeForm.fxml";
+    private static final String RECIPE_FORM_VIEW_PATH =  "/view/fxml/RecipeForm.fxml";
 
     @FXML
-    VBox root;
+    private VBox root;
     @FXML
-    TableView<RecipeViewModel> componentTable;
+    private TableView<RecipeViewModel> componentTable;
     @FXML
-    TableColumn<RecipeViewModel, String> componentName;
+    private TableColumn<RecipeViewModel, String> componentName;
     @FXML
-    TableColumn<RecipeViewModel, String> componentQuantity;
+    private TableColumn<RecipeViewModel, String> componentQuantity;
     @FXML
-    TableColumn<RecipeViewModel, String> componentUnit;
+    private TableColumn<RecipeViewModel, String> componentUnit;
     @FXML
-    ChoiceBox<ProductView> owner;
+    private ChoiceBox<ProductView> owner;
     @FXML
-    ChoiceBox<ProductView> component;
+    private ChoiceBox<ProductView> component;
     @FXML
-    TextField quantity;
+    private TextField quantity;
     @FXML
-    Label quantityUnit;
+    private Label quantityUnit;
 
+    @Inject
     private GoodsController goodsController;
 
     @Inject
