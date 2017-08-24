@@ -42,15 +42,14 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
-    public ProductView addProduct(ProductCategoryView parent, Product.ProductBuilder builder) {
-        ProductView newProduct =  new ProductViewImpl(getProductCategoryAdapter(parent).addProduct(builder));
+    public void addProduct(ProductCategoryView parent, Product.ProductBuilder builder) {
+        getProductCategoryAdapter(parent).addProduct(builder);
         entityViews.initEntityViews();
-        return newProduct;
     }
 
     @Override
-    public ProductView updateProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
-        return new ProductViewImpl(ProductAdapter.getProductById(productId).updateProduct(parent.getCategoryName(), builder));
+    public void updateProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
+        ProductAdapter.getProductById(productId).updateProduct(parent.getCategoryName(), builder);
     }
 
     @Override
@@ -59,17 +58,14 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
-    public ProductCategoryView addProductCategory(ProductCategoryParams params) {
-        ProductCategoryView newCategory = new ProductCategoryViewImpl(getProductCategoryAdapter(params.getParent())
-                .addChildCategory(params));
+    public void addProductCategory(ProductCategoryParams params) {
+        getProductCategoryAdapter(params.getParent()).addChildCategory(params);
         entityViews.initEntityViews();
-        return newCategory;
     }
 
     @Override
-    public ProductCategoryView updateProductCategory(ProductCategoryParams params) {
-        return new ProductCategoryViewImpl(ProductCategoryAdapter
-                .updateProductCategory(params));
+    public void updateProductCategory(ProductCategoryParams params) {
+        ProductCategoryAdapter.updateProductCategory(params);
     }
 
     @Override

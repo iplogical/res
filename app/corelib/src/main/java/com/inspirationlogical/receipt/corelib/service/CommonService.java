@@ -16,15 +16,15 @@ public interface CommonService {
 
     PriceModifierBuilder priceModifierBuilder();
 
-    ProductView addProduct(ProductCategoryView parent, ProductBuilder builder);
+    void addProduct(ProductCategoryView parent, ProductBuilder builder);
 
-    ProductView updateProduct(Long productId, ProductCategoryView parent, ProductBuilder builder);
+    void updateProduct(Long productId, ProductCategoryView parent, ProductBuilder builder);
 
     void deleteProduct(String longName);
 
-    ProductCategoryView addProductCategory(ProductCategoryParams params);
+    void addProductCategory(ProductCategoryParams params);
 
-    ProductCategoryView updateProductCategory(ProductCategoryParams params);
+    void updateProductCategory(ProductCategoryParams params);
 
     void deleteProductCategory(String name);
 
