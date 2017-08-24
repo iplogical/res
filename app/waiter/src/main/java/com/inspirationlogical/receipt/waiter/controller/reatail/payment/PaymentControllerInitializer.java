@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.payment;
 
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.waiter.controller.reatail.payment.state.PaymentViewState;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -8,7 +9,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import static com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentViewState.PaymentType.*;
+import static com.inspirationlogical.receipt.waiter.controller.reatail.payment.state.PaymentViewState.PaymentType.*;
 
 public class PaymentControllerInitializer {
 

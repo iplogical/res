@@ -4,6 +4,7 @@ import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.geometry.Point2D;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.CONSUMED_TEST_TABLE_ONE;
@@ -24,6 +25,12 @@ import static org.junit.Assert.assertEquals;
  * Created by TheDagi on 2017. 05. 09..
  */
 public class RestaurantControllerTest extends TestFXBase {
+
+    @Ignore
+    @Test
+    public void launchAppWithTestDataBase() {
+        while (true) {}
+    }
 
     @Test
     public void testContextMenu() {
