@@ -84,7 +84,6 @@ public @Data class Product extends AbstractEntity {
     @NotEmpty
     private String longName;
 
-    @Max(999)
     private int rapidCode;
 
     @Enumerated(EnumType.STRING)

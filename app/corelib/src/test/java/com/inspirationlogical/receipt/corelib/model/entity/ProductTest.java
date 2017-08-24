@@ -41,7 +41,7 @@ public class ProductTest extends TestBase {
     }
 
     @Test(expected = RollbackException.class)
-    public void testQualityUnitNull() {
+    public void testQuantityUnitNull() {
         GuardedTransaction.run(()->
                 schema.getProductOne().setQuantityUnit(null));
     }
