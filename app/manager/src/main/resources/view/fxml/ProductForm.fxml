@@ -127,6 +127,19 @@
             <Insets left="5.0" right="5.0" />
          </VBox.margin>
       </HBox>
+      <HBox prefWidth="200.0" spacing="5.0">
+         <children>
+            <Label prefWidth="100.0" text="%ProductForm.OrderNumber">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="orderNumber" promptText="%ProductForm.OrderNumberPrompt" />
+         </children>
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
+      </HBox>
       <HBox alignment="BOTTOM_RIGHT" prefWidth="200.0" spacing="5.0">
          <children>
             <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onConfirm" prefWidth="100.0" text="%Form.Confirm">

@@ -21,9 +21,10 @@
               <columns>
                 <TreeTableColumn fx:id="categoryName" prefWidth="200.0" text="%Goods.CategoryName" />
                   <TreeTableColumn fx:id="productShortName" prefWidth="100.0" text="%Common.ProductShortName" />
-                  <TreeTableColumn fx:id="productRapidCode" prefWidth="100.0" text="%Common.ProductRapidCode" />
-                  <TreeTableColumn fx:id="productPurchasePrice" prefWidth="100.0" text="%Common.ProductPurchasePrice" />
-                  <TreeTableColumn fx:id="productSalePrice" prefWidth="100.0" text="%Common.ProductSalePrice" />
+                  <TreeTableColumn fx:id="productRapidCode" prefWidth="75.0" text="%Common.ProductRapidCode" />
+                  <TreeTableColumn fx:id="productOrderNumber" prefWidth="75.0" text="%Common.ProductOrderNumber" />
+                  <TreeTableColumn fx:id="productPurchasePrice" prefWidth="75.0" text="%Common.ProductPurchasePrice" />
+                  <TreeTableColumn fx:id="productSalePrice" prefWidth="75.0" text="%Common.ProductSalePrice" />
                   <TreeTableColumn fx:id="productStorageMultiplier" prefWidth="75.0" text="%Common.ProductStorageMultiplier" />
                   <TreeTableColumn fx:id="productQuantityUnit" prefWidth="100.0" text="%Common.ProductQuantityUnit" />
                   <TreeTableColumn fx:id="productQuantityMultiplier" prefWidth="100.0" text="%Common.ProductQuantityMultiplier" />

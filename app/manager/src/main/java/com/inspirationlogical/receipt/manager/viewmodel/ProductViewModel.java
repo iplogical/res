@@ -31,6 +31,7 @@ public class ProductViewModel {
     private String salePrice = EMPTY;
     private String minimumStock = EMPTY;
     private String stockWindow = EMPTY;
+    private String orderNumber = EMPTY;
 
     private List<RecipeView> recipes = new ArrayList<>();
 
@@ -48,6 +49,7 @@ public class ProductViewModel {
             salePrice =  valueOf(productView.getSalePrice());
             minimumStock =  valueOf(productView.getMinimumStock());
             stockWindow =  valueOf(productView.getStockWindow());
+            orderNumber = valueOf(productView.getOrderNumber());
 
             recipes = productView.getRecipes().stream().filter(recipeView -> !recipeView.isTrivial()).collect(Collectors.toList());
 

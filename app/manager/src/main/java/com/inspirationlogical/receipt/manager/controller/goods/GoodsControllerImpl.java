@@ -40,54 +40,56 @@ import javafx.stage.Popup;
 @Singleton
 public class GoodsControllerImpl extends AbstractController implements GoodsController {
 
-    public static final String GOODS_VIEW_PATH = "/view/fxml/Goods.fxml";
+    private static final String GOODS_VIEW_PATH = "/view/fxml/Goods.fxml";
 
     @FXML
     private BorderPane root;
     @FXML
-    TreeTableView<CategoryViewModel> goodsTable;
+    private TreeTableView<CategoryViewModel> goodsTable;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> categoryName;
+    private TreeTableColumn<CategoryViewModel, String> categoryName;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productShortName;
+    private TreeTableColumn<CategoryViewModel, String> productShortName;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productRapidCode;
+    private TreeTableColumn<CategoryViewModel, String> productRapidCode;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productType;
+    private TreeTableColumn<CategoryViewModel, String> productOrderNumber;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productStatus;
+    private TreeTableColumn<CategoryViewModel, String> productType;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productQuantityUnit;
+    private TreeTableColumn<CategoryViewModel, String> productStatus;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productStorageMultiplier;
+    private TreeTableColumn<CategoryViewModel, String> productQuantityUnit;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productQuantityMultiplier;
+    private TreeTableColumn<CategoryViewModel, String> productStorageMultiplier;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productPurchasePrice;
+    private TreeTableColumn<CategoryViewModel, String> productQuantityMultiplier;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productSalePrice;
+    private TreeTableColumn<CategoryViewModel, String> productPurchasePrice;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productMinimumStock;
+    private TreeTableColumn<CategoryViewModel, String> productSalePrice;
     @FXML
-    TreeTableColumn<CategoryViewModel, String> productStockWindow;
+    private TreeTableColumn<CategoryViewModel, String> productMinimumStock;
     @FXML
-    Button addCategory;
+    private TreeTableColumn<CategoryViewModel, String> productStockWindow;
     @FXML
-    Button modifyCategory;
+    private Button addCategory;
     @FXML
-    Button deleteCategory;
+    private Button modifyCategory;
     @FXML
-    Button addProduct;
+    private Button deleteCategory;
     @FXML
-    Button modifyProduct;
+    private Button addProduct;
     @FXML
-    Button deleteProduct;
+    private Button modifyProduct;
     @FXML
-    Button showStock;
+    private Button deleteProduct;
     @FXML
-    Button showPriceModifiers;
+    private Button showStock;
     @FXML
-    Button showReceipts;
+    private Button showPriceModifiers;
+    @FXML
+    private Button showReceipts;
 
     @Inject
     private ViewLoader viewLoader;
@@ -142,6 +144,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         initColumn(categoryName, CategoryViewModel::getName);
         initColumn(productShortName, CategoryViewModel::getShortName);
         initColumn(productRapidCode, CategoryViewModel::getRapidCode);
+        initColumn(productOrderNumber, CategoryViewModel::getOrderNumber);
         initColumn(productPurchasePrice, CategoryViewModel::getPurchasePrice);
         initColumn(productSalePrice, CategoryViewModel::getSalePrice);
         initColumn(productStorageMultiplier, CategoryViewModel::getStorageMultiplier);

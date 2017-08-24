@@ -102,7 +102,7 @@ public class ProductAdapter extends AbstractAdapter<Product> {
             Product productToBuild = builder.build();
             if(isProductNameAlreadyUsed(productToBuild))
                 throw new IllegalProductStateException(Resources.CONFIG.getString("ProductNameAlreadyUsed") + productToBuild.getLongName());
-            setProductParamters(productToBuild);
+            setProductParameters(productToBuild);
         });
         if(isCategoryChanged(parentCategoryName)) {
             movePseudoToNewParent(parentCategoryName);
@@ -115,7 +115,7 @@ public class ProductAdapter extends AbstractAdapter<Product> {
         return !(product == null || product.getAdaptee().getId().equals(adaptee.getId()));
     }
 
-    private void setProductParamters(Product productToBuild) {
+    private void setProductParameters(Product productToBuild) {
         adaptee.setLongName(productToBuild.getLongName());
         adaptee.setShortName(productToBuild.getShortName());
         adaptee.setType(productToBuild.getType());
@@ -127,6 +127,7 @@ public class ProductAdapter extends AbstractAdapter<Product> {
         adaptee.setPurchasePrice(productToBuild.getPurchasePrice());
         adaptee.setMinimumStock(productToBuild.getMinimumStock());
         adaptee.setStockWindow(productToBuild.getStockWindow());
+        adaptee.setOrderNumber(productToBuild.getOrderNumber());
     }
 
     private boolean isCategoryChanged(String parentCategoryName) {

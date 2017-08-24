@@ -66,6 +66,8 @@ public class ProductFormControllerImpl implements ProductFormController {
     private TextField minimumStock;
     @FXML
     private TextField stockWindow;
+    @FXML
+    private TextField orderNumber;
 
     private GoodsController goodsController;
 
@@ -137,6 +139,7 @@ public class ProductFormControllerImpl implements ProductFormController {
         purchasePrice.clear();
         minimumStock.setText("7");
         stockWindow.setText("60");
+        orderNumber.setText("0");
         type.setValue(ProductType.SELLABLE);
         status.setValue(ProductStatus.ACTIVE);
         quantityUnit.setValue(null);
@@ -154,6 +157,7 @@ public class ProductFormControllerImpl implements ProductFormController {
         purchasePrice.setText(productViewModel.getPurchasePrice());
         minimumStock.setText(productViewModel.getMinimumStock());
         stockWindow.setText(productViewModel.getStockWindow());
+        orderNumber.setText(productViewModel.getOrderNumber());
         type.setValue(type.getConverter().fromString(productViewModel.getType()));
         status.setValue(status.getConverter().fromString(productViewModel.getStatus()));
         quantityUnit.setValue(quantityUnit.getConverter().fromString(productViewModel.getQuantityUnit()));
@@ -191,7 +195,8 @@ public class ProductFormControllerImpl implements ProductFormController {
             .purchasePrice(Integer.valueOf(purchasePrice.getText()))
             .salePrice(Integer.valueOf(salePrice.getText()))
             .minimumStock(Integer.valueOf(minimumStock.getText()))
-            .stockWindow(Integer.valueOf(stockWindow.getText()));
+            .stockWindow(Integer.valueOf(stockWindow.getText()))
+            .orderNumber(Integer.valueOf(orderNumber.getText()));
     }
 
     private boolean isChoiceBoxEmpty() {
