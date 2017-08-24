@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.manager.controller.goods;
 
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.manager.controller.TestFXBase;
 import org.junit.After;
 import org.junit.Ignore;
@@ -8,11 +7,11 @@ import org.junit.Test;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.AGGREGATE_TOP_ONE_NAME;
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.PRODUCT_ONE_LONG_NAME;
-import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.PRODUCT_ONE_SHORT_NAME;
-import static com.inspirationlogical.receipt.manager.utility.CategoryFormUtils.*;
-import static com.inspirationlogical.receipt.manager.utility.ClickUtils.*;
+import static com.inspirationlogical.receipt.manager.utility.ClickUtils.clickButtonThenWait;
+import static com.inspirationlogical.receipt.manager.utility.ClickUtils.verifyErrorMessage;
 import static com.inspirationlogical.receipt.manager.utility.GoodsUtils.*;
-import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.*;
+import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.CREATE_RECIPE;
+import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.HIDE;
 
 public class GoodsControllerTest extends TestFXBase {
 

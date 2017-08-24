@@ -90,9 +90,6 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         ProductCategory newCategory = buildNewCategory(params);
         if(isCategoryNameUsed(newCategory.getName()))
             throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed") + params.getName());
-        if(params.getType().equals(ProductCategoryType.AGGREGATE) && parentHasLeafChild()) {
-            throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryAlreadyHasLeaf"));
-        }
         adaptee.getChildren().add(newCategory);
         newCategory.setParent(adaptee);
         GuardedTransaction.persist(newCategory);
@@ -111,12 +108,6 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
     private static boolean isCategoryNameUsed(String name) {
         return GuardedTransaction.runNamedQuery(ProductCategory.GET_CATEGORY_BY_NAME, query ->
             query.setParameter("name", name)).size() != 0;
-    }
-
-    private boolean parentHasLeafChild() {
-        return adaptee.getChildren().stream()
-                .filter(productCategory -> productCategory.getType().equals(ProductCategoryType.LEAF))
-                .collect(Collectors.toList()).size() != 0;
     }
 
     public static ProductCategoryAdapter updateProductCategory(ProductCategoryParams params) {

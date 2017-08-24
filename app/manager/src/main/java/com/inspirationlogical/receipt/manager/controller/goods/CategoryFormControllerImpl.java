@@ -74,9 +74,13 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addDragAndDrop(root);
+        initCategories();
+        initCategoryTypes();
+    }
+
+    private void initCategories() {
         initParentCategories();
         initAllCategories();
-        initCategoryTypes();
     }
 
     private void initParentCategories() {
@@ -101,6 +105,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
 
     @Override
     public void loadCategoryForm(GoodsController goodsController) {
+        initCategories();
         this.goodsController = goodsController;
         parent.setDisable(false);
         parent.setValue(null);

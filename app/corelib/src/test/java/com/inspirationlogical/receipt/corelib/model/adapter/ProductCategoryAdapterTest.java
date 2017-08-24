@@ -128,12 +128,6 @@ public class ProductCategoryAdapterTest extends TestBase {
         aggregateOne.addChildCategory(productCategoryParams);
     }
 
-    @Test(expected = IllegalProductCategoryStateException.class)
-    public void testAddChildCategoryAlreadyHasLeafChild() {
-        productCategoryParams.setType(ProductCategoryType.AGGREGATE);
-        aggregateOne.addChildCategory(productCategoryParams);
-    }
-
     @Test
     public void testUpdateProductCategory() {
         productCategoryParams.setName("leafTwenty");

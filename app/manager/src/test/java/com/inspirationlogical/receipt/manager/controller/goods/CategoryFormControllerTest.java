@@ -66,20 +66,26 @@ public class CategoryFormControllerTest extends TestFXBase {
     }
 
     @Test
-    public void testAddAggregateCategoryNotAllowed() {
-        clickOnAddCategory();
-        setCategoryName("New Aggregate");
-        setParentCategory(1);
-        setAggregateCategoryType();
-        clickOnConfirm();
-        String errorMessage = Resources.CONFIG.getString("ProductCategoryAlreadyHasLeaf");
-        verifyThatVisible(errorMessage);
-    }
-
-    @Test
     public void testModifyCategory() {
         modifyCategory(AGGREGATE_TOP_ONE_NAME, "New Category Name");
         verifyThatVisible("New Category Name");
         modifyCategory("New Category Name", AGGREGATE_TOP_ONE_NAME);
+    }
+
+    @Test
+    public void testAddAggregateThenLeaf() {
+        clickOnAddCategory();
+        setCategoryName("AggregateA");
+        setParentCategory(5);
+        setAggregateCategoryType();
+        clickOnConfirm();
+        verifyThatVisible("AggregateA");
+        clickOnAddCategory();
+        setCategoryName("LeafA");
+        setParentCategory(1);
+        setAggregateCategoryType();
+        clickOnConfirm();
+        verifyThatVisible("AggregateA");
+        verifyThatVisible("LeafA");
     }
 }

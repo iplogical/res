@@ -128,6 +128,7 @@ public class ProductFormControllerImpl implements ProductFormController {
 
     @Override
     public void loadProductForm(GoodsController goodsController) {
+        initCategoryChoiceBox();
         this.goodsController = goodsController;
         productId = 0L;
         longName.clear();
