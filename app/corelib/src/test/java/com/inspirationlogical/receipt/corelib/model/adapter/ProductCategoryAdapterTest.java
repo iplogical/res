@@ -51,6 +51,7 @@ public class ProductCategoryAdapterTest extends TestBase {
         productCategoryParams = ProductCategoryParams.builder()
                 .name("leafSeven")
                 .type(ProductCategoryType.LEAF)
+                .status(ProductStatus.ACTIVE)
                 .orderNumber(0)
                 .build();
 

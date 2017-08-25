@@ -100,7 +100,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         return ProductCategory.builder()
                 .name(params.getName())
                 .type(params.getType())
-                .status(ProductStatus.ACTIVE)
+                .status(params.getStatus())
                 .orderNumber(params.getOrderNumber())
                 .build();
     }
@@ -117,6 +117,7 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         ProductCategory originalCategory = getProductCategoryByName(params.getOriginalName()).getAdaptee();
         originalCategory.setName(params.getName());
         originalCategory.setOrderNumber(params.getOrderNumber());
+        originalCategory.setStatus(params.getStatus());
         GuardedTransaction.persist(originalCategory);
         return new ProductCategoryAdapter(originalCategory);
     }

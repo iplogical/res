@@ -21,12 +21,31 @@
                </font>
             </Label>
             <TextField fx:id="name" prefWidth="150.0" promptText="%CategoryForm.NamePrompt" />
+            <Label prefWidth="100.0" text="%CategoryFrom.OrderNumber">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="orderNumber" promptText="%CategoryFrom.OrderNumberPrompt" />
+         </children>
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="5.0">
+         <children>
             <Label prefWidth="100.0" text="%CategoryForm.Type">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
             <ChoiceBox fx:id="type" prefWidth="150.0" />
+            <Label prefWidth="100.0" text="%CategoryForm.Status">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="status" prefWidth="150.0" />
          </children>
          <VBox.margin>
             <Insets left="5.0" right="5.0" />
@@ -40,12 +59,6 @@
                </font>
             </Label>
             <ChoiceBox fx:id="parent" prefWidth="150.0" />
-            <Label prefWidth="100.0" text="%CategoryFrom.OrderNumber">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="orderNumber" promptText="%CategoryFrom.OrderNumberPrompt" />
          </children>
          <VBox.margin>
             <Insets left="5.0" right="5.0" />

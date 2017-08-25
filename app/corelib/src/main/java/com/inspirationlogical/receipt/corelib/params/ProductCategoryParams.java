@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.params;
 
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,8 @@ class ProductCategoryParams {
     private String originalName;
 
     private ProductCategoryType type;
+
+    private ProductStatus status;
 
     private int orderNumber;
 }

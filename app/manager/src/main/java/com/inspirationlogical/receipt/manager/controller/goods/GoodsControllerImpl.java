@@ -183,6 +183,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
             goodsTableViewModel = new GoodsTableViewModel();
             goodsTableViewModel.setName(childCategory.getName());
             goodsTableViewModel.setOrderNumber(String.valueOf(childCategory.getOrderNumber()));
+            goodsTableViewModel.setStatus(childCategory.getStatus().toI18nString());
         }
         return goodsTableViewModel;
     }

@@ -11,6 +11,7 @@ import com.inspirationlogical.receipt.manager.exception.InvalidInputFormExceptio
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
+import com.inspirationlogical.receipt.manager.viewmodel.ProductStatusStringConverter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -226,25 +227,6 @@ public class ProductFormControllerImpl implements ProductFormController {
         @Override
         public ProductType fromString(String string) {
             return productTypes.stream().filter(productType -> productType.toI18nString().equals(string))
-                    .collect(toList()).get(0);
-        }
-    }
-
-    private class ProductStatusStringConverter extends StringConverter<ProductStatus> {
-        private ObservableList<ProductStatus> productStatus;
-
-        ProductStatusStringConverter(ObservableList<ProductStatus> productStatus) {
-            this.productStatus = productStatus;
-        }
-
-        @Override
-        public String toString(ProductStatus productStatus) {
-            return productStatus.toI18nString();
-        }
-
-        @Override
-        public ProductStatus fromString(String string) {
-            return productStatus.stream().filter(productStatus -> productStatus.toI18nString().equals(string))
                     .collect(toList()).get(0);
         }
     }

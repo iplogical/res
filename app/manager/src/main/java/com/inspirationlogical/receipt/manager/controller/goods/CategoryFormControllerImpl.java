@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
@@ -21,6 +22,7 @@ import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 
 import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
+import com.inspirationlogical.receipt.manager.viewmodel.ProductStatusStringConverter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -40,6 +42,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     private @FXML VBox root;
     private @FXML TextField name;
     private @FXML ChoiceBox<ProductCategoryType> type;
+    private @FXML ChoiceBox<ProductStatus> status;
     private @FXML ChoiceBox<ProductCategoryView> parent;
     private @FXML TextField orderNumber;
 
@@ -71,6 +74,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
         addDragAndDrop(root);
         initCategories();
         initCategoryTypes();
+        initCategoryStatuses();
     }
 
     private void initCategories() {
@@ -98,6 +102,13 @@ public class CategoryFormControllerImpl implements CategoryFormController {
         type.setConverter(new ProductCategoryTypeStringConverter(categoryTypes));
     }
 
+    private void initCategoryStatuses() {
+        ObservableList<ProductStatus> productStatuses = FXCollections.observableArrayList(Arrays.asList(ProductStatus.values()));
+        productStatuses.sort(Comparator.comparing(ProductStatus::toI18nString));
+        status.setItems(productStatuses);
+        status.setConverter(new ProductStatusStringConverter(productStatuses));
+    }
+
     @Override
     public void loadCategoryForm(GoodsController goodsController) {
         initCategories();
@@ -106,21 +117,23 @@ public class CategoryFormControllerImpl implements CategoryFormController {
         parent.setValue(null);
         type.setValue(null);
         type.setDisable(false);
+        status.setValue(ProductStatus.ACTIVE);
         name.clear();
         orderNumber.setText("0");
         originalCategoryName = "";
     }
 
     @Override
-    public void setCategory(GoodsTableViewModel categoryViewModel) {
+    public void setCategory(GoodsTableViewModel goodsTableViewModel) {
         CategoryStringConverter converterAll = new CategoryStringConverter(allCategories);
         CategoryStringConverter converterParent = new CategoryStringConverter(parentCategories);
-        originalCategoryName = categoryViewModel.getName();
+        originalCategoryName = goodsTableViewModel.getName();
         name.setText(originalCategoryName);
-        orderNumber.setText(categoryViewModel.getOrderNumber());
-        type.setValue(converterAll.fromString(categoryViewModel.getName()).getType());
+        orderNumber.setText(goodsTableViewModel.getOrderNumber());
+        type.setValue(converterAll.fromString(goodsTableViewModel.getName()).getType());
         type.setDisable(true);
-        String parentName = converterAll.fromString(categoryViewModel.getName()).getParent().getName();
+        status.setValue(status.getConverter().fromString(goodsTableViewModel.getStatus()));
+        String parentName = converterAll.fromString(goodsTableViewModel.getName()).getParent().getName();
         parent.setValue(converterParent.fromString(parentName));
         parent.setDisable(true);
     }
@@ -146,8 +159,9 @@ public class CategoryFormControllerImpl implements CategoryFormController {
             .parent(parent.getValue())
             .name(name.getText())
             .originalName(originalCategoryName)
-            .type(type.getValue())
             .orderNumber(Integer.valueOf(orderNumber.getText()))
+            .type(type.getValue())
+            .status(status.getValue())
             .build();
     }
 
@@ -156,7 +170,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     }
 
     private boolean isChoiceBoxEmpty() {
-        return parent.getValue() == null || type.getValue() == null;
+        return parent.getValue() == null || type.getValue() == null || status.getValue() == null;
     }
 
     @FXML
