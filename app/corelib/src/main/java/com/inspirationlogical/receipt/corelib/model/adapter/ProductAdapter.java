@@ -92,8 +92,7 @@ public class ProductAdapter extends AbstractAdapter<Product> {
 
     public void deleteProduct() {
         GuardedTransaction.run(() -> {
-            adaptee.setStatus(ProductStatus.DELETED);
-            adaptee.getCategory().setStatus(ProductStatus.DELETED);
+            setAdapteeAndPseudoStatus(ProductStatus.DELETED);
         });
     }
 
@@ -119,7 +118,7 @@ public class ProductAdapter extends AbstractAdapter<Product> {
         adaptee.setLongName(productToBuild.getLongName());
         adaptee.setShortName(productToBuild.getShortName());
         adaptee.setType(productToBuild.getType());
-        adaptee.setStatus(productToBuild.getStatus());
+        setAdapteeAndPseudoStatus(productToBuild.getStatus());
         adaptee.setRapidCode(productToBuild.getRapidCode());
         adaptee.setQuantityUnit(productToBuild.getQuantityUnit());
         adaptee.setStorageMultiplier(productToBuild.getStorageMultiplier());
@@ -128,6 +127,11 @@ public class ProductAdapter extends AbstractAdapter<Product> {
         adaptee.setMinimumStock(productToBuild.getMinimumStock());
         adaptee.setStockWindow(productToBuild.getStockWindow());
         adaptee.setOrderNumber(productToBuild.getOrderNumber());
+    }
+
+    private void setAdapteeAndPseudoStatus(ProductStatus status) {
+        adaptee.setStatus(status);
+        adaptee.getCategory().setStatus(status);
     }
 
     private boolean isCategoryChanged(String parentCategoryName) {

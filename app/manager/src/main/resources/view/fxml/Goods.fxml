@@ -57,6 +57,13 @@
    <right>
       <VBox alignment="TOP_CENTER" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
+            <Label text="%Goods.ShowDeleted">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <CheckBox fx:id="showDeleted" mnemonicParsing="false" />
+            <Separator />
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%Goods.Category" textAlignment="CENTER">
                <font>
                   <Font size="16.0" />

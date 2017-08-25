@@ -13,6 +13,7 @@ import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateExcep
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
@@ -29,10 +30,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Popup;
 
@@ -58,6 +56,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     private @FXML TreeTableColumn<GoodsTableViewModel, String> productMinimumStock;
     private @FXML TreeTableColumn<GoodsTableViewModel, String> productStockWindow;
 
+    private @FXML CheckBox showDeleted;
     private @FXML Button addCategory;
     private @FXML Button modifyCategory;
     private @FXML Button deleteCategory;
@@ -92,8 +91,15 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initColumns();
+        initCheckBox();
         initForms();
         initCategories();
+    }
+
+    private void initCheckBox() {
+        showDeleted.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            initCategories();
+        });
     }
 
     private void initColumns() {
@@ -148,15 +154,24 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     private void updateCategory(ProductCategoryView productCategoryView, TreeItem<GoodsTableViewModel> parentTreeItem) {
         parentTreeItem.setExpanded(true);
         commonService.getChildCategories(productCategoryView).forEach(childCategory -> {
-//            if (childCategory.getStatus() == ProductStatus.ACTIVE) {
-            GoodsTableViewModel goodsTableViewModel = createProductViewModel(childCategory);
-            TreeItem<GoodsTableViewModel> childTreeItem = new TreeItem<>(goodsTableViewModel);
-            parentTreeItem.getChildren().add(childTreeItem);
-            sortTreeItemChildren(parentTreeItem);
-            updateProduct(goodsTableViewModel, childTreeItem);
-            updateCategory(childCategory, childTreeItem);
-//            }
+            if (showActiveAndDeletedIfAllowed(childCategory)) {
+                TreeItem<GoodsTableViewModel> childTreeItem = addProductsAndRecipeItems(parentTreeItem, childCategory);
+                updateCategory(childCategory, childTreeItem);
+            }
         });
+    }
+
+    private boolean showActiveAndDeletedIfAllowed(ProductCategoryView childCategory) {
+        return childCategory.getStatus() == ProductStatus.ACTIVE || showDeleted.isSelected();
+    }
+
+    private TreeItem<GoodsTableViewModel> addProductsAndRecipeItems(TreeItem<GoodsTableViewModel> parentTreeItem, ProductCategoryView childCategory) {
+        GoodsTableViewModel goodsTableViewModel = createProductViewModel(childCategory);
+        TreeItem<GoodsTableViewModel> childTreeItem = new TreeItem<>(goodsTableViewModel);
+        parentTreeItem.getChildren().add(childTreeItem);
+        sortTreeItemChildren(parentTreeItem);
+        addRecipeItemsToProduct(goodsTableViewModel, childTreeItem);
+        return childTreeItem;
     }
 
     private GoodsTableViewModel createProductViewModel(ProductCategoryView childCategory) {
@@ -176,7 +191,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         treeItem.getChildren().sort(Comparator.comparing(categoryViewModelTreeItem -> categoryViewModelTreeItem.getValue().getName()));
     }
 
-    private void updateProduct(GoodsTableViewModel goodsTableViewModel, TreeItem<GoodsTableViewModel> productItem) {
+    private void addRecipeItemsToProduct(GoodsTableViewModel goodsTableViewModel, TreeItem<GoodsTableViewModel> productItem) {
         goodsTableViewModel.getRecipes().forEach(recipe -> {
             TreeItem<GoodsTableViewModel> recipeItem = new TreeItem<>(new GoodsTableViewModel(recipe.getComponent()));
             productItem.getChildren().add(recipeItem);

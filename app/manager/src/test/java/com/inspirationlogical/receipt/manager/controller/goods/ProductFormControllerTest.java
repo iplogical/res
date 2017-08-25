@@ -75,12 +75,18 @@ public class ProductFormControllerTest extends TestFXBase {
         clickOnCancel();
     }
 
-
     @Test
     public void testDeleteProduct() {
         deleteProduct(PRODUCT_ONE_LONG_NAME);
         verifyThatNotVisible(PRODUCT_ONE_LONG_NAME);
-        clickOnAddProduct();
-        addProductWithDefaultParams(PRODUCT_ONE_LONG_NAME, PRODUCT_ONE_SHORT_NAME);
+        clickOnShowDeleted();
+        verifyThatVisible(PRODUCT_ONE_LONG_NAME);
+        selectProduct(PRODUCT_ONE_LONG_NAME);
+        clickOnModifyProduct();
+        setProductStatus(2);    // Active
+        clickOnConfirm();
+        verifyThatVisible(PRODUCT_ONE_LONG_NAME);
+        clickOnShowDeleted();
+        verifyThatVisible(PRODUCT_ONE_LONG_NAME);
     }
 }

@@ -24,6 +24,11 @@ public class GoodsUtils extends AbstractUtils {
     public static void enterReceiptView() {
         clickButtonThenWait("Common.ReceiptsView", 100);
     }
+
+    public static void clickOnShowDeleted() {
+        clickButtonThenWait(SHOW_DELETED, 200);
+    }
+
     public static void clickOnAddProduct() {
         clickButtonThenWait(ADD_PRODUCT, 500);
     }

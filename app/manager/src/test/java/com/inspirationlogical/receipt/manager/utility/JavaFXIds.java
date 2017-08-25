@@ -3,6 +3,8 @@ package com.inspirationlogical.receipt.manager.utility;
 public class JavaFXIds {
 
     // Goods.fxml
+    public static final String SHOW_DELETED = "#showDeleted";
+
     public static final String ADD_CATEGORY = "#addCategory";
     public static final String MODIFY_CATEGORY = "#modifyCategory";
     public static final String DELETE_CATEGORY = "#deleteCategory";
