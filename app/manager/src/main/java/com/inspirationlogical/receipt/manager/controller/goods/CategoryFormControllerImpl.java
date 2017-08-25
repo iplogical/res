@@ -19,8 +19,8 @@ import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.manager.exception.InvalidInputFormException;
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
-import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
 
+import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -112,7 +112,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     }
 
     @Override
-    public void setCategory(CategoryViewModel categoryViewModel) {
+    public void setCategory(GoodsTableViewModel categoryViewModel) {
         CategoryStringConverter converterAll = new CategoryStringConverter(allCategories);
         CategoryStringConverter converterParent = new CategoryStringConverter(parentCategories);
         originalCategoryName = categoryViewModel.getName();

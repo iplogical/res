@@ -38,7 +38,9 @@ public class ProductCategoryViewImpl extends AbstractModelViewImpl<ProductCatego
 
     @Override
     public ProductView getProduct() {
-        return new ProductViewImpl(new ProductAdapter(adapter.getAdaptee().getProduct()));
+        if(adapter.getAdaptee().getProduct() != null)
+            return new ProductViewImpl(new ProductAdapter(adapter.getAdaptee().getProduct()));
+        return null;
     }
 
     @Override

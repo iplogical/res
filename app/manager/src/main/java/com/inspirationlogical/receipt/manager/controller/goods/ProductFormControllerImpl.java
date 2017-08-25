@@ -10,8 +10,7 @@ import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.manager.exception.InvalidInputFormException;
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
-import com.inspirationlogical.receipt.manager.viewmodel.CategoryViewModel;
-import com.inspirationlogical.receipt.manager.viewmodel.ProductViewModel;
+import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -147,24 +146,24 @@ public class ProductFormControllerImpl implements ProductFormController {
     }
 
     @Override
-    public void setProductViewModel(ProductViewModel productViewModel) {
-        productId = productViewModel.getId();
-        longName.setText(productViewModel.getLongName());
-        shortName.setText(productViewModel.getShortName());
-        rapidCode.setText(productViewModel.getRapidCode());
-        storageMultiplier.setText(productViewModel.getStorageMultiplier());
-        salePrice.setText(productViewModel.getSalePrice());
-        purchasePrice.setText(productViewModel.getPurchasePrice());
-        minimumStock.setText(productViewModel.getMinimumStock());
-        stockWindow.setText(productViewModel.getStockWindow());
-        orderNumber.setText(productViewModel.getOrderNumber());
-        type.setValue(type.getConverter().fromString(productViewModel.getType()));
-        status.setValue(status.getConverter().fromString(productViewModel.getStatus()));
-        quantityUnit.setValue(quantityUnit.getConverter().fromString(productViewModel.getQuantityUnit()));
+    public void setProductViewModel(GoodsTableViewModel goodsTableViewModel) {
+        productId = goodsTableViewModel.getId();
+        longName.setText(goodsTableViewModel.getLongName());
+        shortName.setText(goodsTableViewModel.getShortName());
+        rapidCode.setText(goodsTableViewModel.getRapidCode());
+        storageMultiplier.setText(goodsTableViewModel.getStorageMultiplier());
+        salePrice.setText(goodsTableViewModel.getSalePrice());
+        purchasePrice.setText(goodsTableViewModel.getPurchasePrice());
+        minimumStock.setText(goodsTableViewModel.getMinimumStock());
+        stockWindow.setText(goodsTableViewModel.getStockWindow());
+        orderNumber.setText(goodsTableViewModel.getOrderNumber());
+        type.setValue(type.getConverter().fromString(goodsTableViewModel.getType()));
+        status.setValue(status.getConverter().fromString(goodsTableViewModel.getStatus()));
+        quantityUnit.setValue(quantityUnit.getConverter().fromString(goodsTableViewModel.getQuantityUnit()));
     }
 
     @Override
-    public void setCategory(CategoryViewModel categoryViewModel) {
+    public void setCategory(GoodsTableViewModel categoryViewModel) {
         category.setValue(category.getConverter().fromString(categoryViewModel.getName()));
     }
 

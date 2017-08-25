@@ -8,7 +8,7 @@ import com.inspirationlogical.receipt.corelib.model.view.StockView;
 import lombok.Data;
 
 @Data
-public class StockViewModel extends ProductViewModel {
+public class StockViewModel extends GoodsTableViewModel {
     private String availableQuantity;
     private String initialQuantity;
     private String soldQuantity;
