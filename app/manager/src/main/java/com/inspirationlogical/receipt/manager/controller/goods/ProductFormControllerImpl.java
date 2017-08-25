@@ -148,7 +148,7 @@ public class ProductFormControllerImpl implements ProductFormController {
     @Override
     public void setProductViewModel(GoodsTableViewModel goodsTableViewModel) {
         productId = goodsTableViewModel.getId();
-        longName.setText(goodsTableViewModel.getLongName());
+        longName.setText(goodsTableViewModel.getName());
         shortName.setText(goodsTableViewModel.getShortName());
         rapidCode.setText(goodsTableViewModel.getRapidCode());
         storageMultiplier.setText(goodsTableViewModel.getStorageMultiplier());

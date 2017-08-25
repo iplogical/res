@@ -120,7 +120,7 @@ public class StockControllerImpl extends AbstractController implements StockCont
         List<StockParams> stockParamsList = stockTable.getItems().stream()
                 .filter(stockViewModel -> stockViewModel.getInputQuantity() != null)
                 .map(stockViewModel -> StockParams.builder()
-                        .productName(stockViewModel.getLongName())
+                        .productName(stockViewModel.getName())
                         .quantity(Double.valueOf(stockViewModel.getInputQuantity()))
                         .isAbsoluteQuantity(quantityDisplay.selectedProperty().getValue())
                         .build())
@@ -143,7 +143,7 @@ public class StockControllerImpl extends AbstractController implements StockCont
     }
 
     private void initColumns() {
-        initColumn(productLongName, StockViewModel::getLongName);
+        initColumn(productLongName, StockViewModel::getName);
         initColumn(stockAvailableQuantity, StockViewModel::getAvailableQuantity);
         initColumn(stockInitialQuantity, StockViewModel::getInitialQuantity);
         initColumn(stockSoldQuantity, StockViewModel::getSoldQuantity);
@@ -168,7 +168,7 @@ public class StockControllerImpl extends AbstractController implements StockCont
         stockTable.getItems().clear();
         managerService.getStockItems().forEach(stockView -> stockTable.getItems().add(new StockViewModel(stockView)));
         ObservableList<StockViewModel>  items = stockTable.getItems();
-        items.sort(Comparator.comparing(StockViewModel::getLongName));
+        items.sort(Comparator.comparing(StockViewModel::getName));
         stockTable.setItems(items);
     }
 

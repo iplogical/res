@@ -18,12 +18,11 @@ public class GoodsTableViewModel {
 
     private static String PERCENT = " %";
 
-    private String name;
+    private String name = EMPTY;
     private Long id;
     private String type = EMPTY;
     private String status = EMPTY;
     private String shortName = EMPTY;
-    private String longName = EMPTY;
     private String rapidCode = EMPTY;
     private String quantityUnit = EMPTY;
     private String quantityMultiplier = EMPTY;
@@ -44,7 +43,7 @@ public class GoodsTableViewModel {
         type = productView.getType().toI18nString();
         status =  productView.getStatus().toI18nString();
         shortName =  productView.getShortName();
-        longName =  productView.getLongName();
+        name =  productView.getLongName();
         rapidCode =  valueOf(productView.getRapidCode());
         quantityUnit =  valueOf(productView.getQuantityUnit().toI18nString());
         storageMultiplier = valueOf(productView.getStorageMultiplier());

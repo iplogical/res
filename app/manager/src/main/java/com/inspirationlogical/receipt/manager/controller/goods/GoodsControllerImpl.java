@@ -145,16 +145,16 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         updateCategory(rootCategory, rootItem);
     }
 
-    private void updateCategory(ProductCategoryView productCategoryView, TreeItem<GoodsTableViewModel> treeItem) {
-        treeItem.setExpanded(true);
+    private void updateCategory(ProductCategoryView productCategoryView, TreeItem<GoodsTableViewModel> parentTreeItem) {
+        parentTreeItem.setExpanded(true);
         commonService.getChildCategories(productCategoryView).forEach(childCategory -> {
 //            if (childCategory.getStatus() == ProductStatus.ACTIVE) {
             GoodsTableViewModel goodsTableViewModel = createProductViewModel(childCategory);
-            TreeItem<GoodsTableViewModel> childItem = new TreeItem<>(goodsTableViewModel);
-            treeItem.getChildren().add(childItem);
-            sortTreeItemChildren(treeItem, childItem);
-            updateProduct(goodsTableViewModel, childItem);
-            updateCategory(childCategory, childItem);
+            TreeItem<GoodsTableViewModel> childTreeItem = new TreeItem<>(goodsTableViewModel);
+            parentTreeItem.getChildren().add(childTreeItem);
+            sortTreeItemChildren(parentTreeItem);
+            updateProduct(goodsTableViewModel, childTreeItem);
+            updateCategory(childCategory, childTreeItem);
 //            }
         });
     }
@@ -164,7 +164,6 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         ProductView productView = childCategory.getProduct();
         if(productView != null) {
             goodsTableViewModel = new GoodsTableViewModel(productView);
-            goodsTableViewModel.setName(productView.getLongName());
         } else {
             goodsTableViewModel = new GoodsTableViewModel();
             goodsTableViewModel.setName(childCategory.getName());
@@ -173,19 +172,13 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         return goodsTableViewModel;
     }
 
-    private void sortTreeItemChildren(TreeItem<GoodsTableViewModel> treeItem, TreeItem<GoodsTableViewModel> childItem) {
-        if(childItem.getValue().getName().isEmpty())
-            treeItem.getChildren().sort(Comparator.comparing(categoryViewModelTreeItem -> categoryViewModelTreeItem.getValue().getLongName()));
-        else
-            treeItem.getChildren().sort(Comparator.comparing(categoryViewModelTreeItem -> categoryViewModelTreeItem.getValue().getName()));
+    private void sortTreeItemChildren(TreeItem<GoodsTableViewModel> treeItem) {
+        treeItem.getChildren().sort(Comparator.comparing(categoryViewModelTreeItem -> categoryViewModelTreeItem.getValue().getName()));
     }
 
     private void updateProduct(GoodsTableViewModel goodsTableViewModel, TreeItem<GoodsTableViewModel> productItem) {
         goodsTableViewModel.getRecipes().forEach(recipe -> {
-            GoodsTableViewModel recipeElement = new GoodsTableViewModel(recipe.getComponent());
-            recipeElement.setName(recipe.getComponent().getLongName());
-
-            TreeItem<GoodsTableViewModel> recipeItem = new TreeItem<>(recipeElement);
+            TreeItem<GoodsTableViewModel> recipeItem = new TreeItem<>(new GoodsTableViewModel(recipe.getComponent()));
             productItem.getChildren().add(recipeItem);
         });
     }
@@ -287,7 +280,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     }
 
     private boolean isCategorySelected(GoodsTableViewModel selected) {
-        return selected.getLongName().equals("");
+        return selected.getShortName().equals("");
     }
 
     @FXML
@@ -303,7 +296,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
                     ManagerResources.MANAGER.getString("ProductForm.SelectProductForDelete"));
             return;
         }
-        managerService.deleteProduct(selected.getLongName());
+        managerService.deleteProduct(selected.getName());
         initCategories();
     }
 
@@ -332,7 +325,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     }
 
     private boolean isProductSelected(GoodsTableViewModel selected) {
-        return !selected.getLongName().equals("");
+        return !selected.getShortName().equals("");
     }
 
     @FXML
