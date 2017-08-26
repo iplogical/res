@@ -19,7 +19,7 @@ import lombok.SneakyThrows;
 
 public abstract class Registry extends AbstractModule {
 
-    protected static Injector injector;
+    private static Injector injector;
 
     @Override
     protected void configure() {

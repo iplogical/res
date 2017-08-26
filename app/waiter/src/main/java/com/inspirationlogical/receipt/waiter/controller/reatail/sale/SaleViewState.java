@@ -2,7 +2,8 @@ package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
 import lombok.Data;
 
-public @Data class SaleViewState {
+@Data
+class SaleViewState {
 
     private boolean takeAway;
 
@@ -10,13 +11,11 @@ public @Data class SaleViewState {
 
     private CancellationType cancellationType;
 
-    private boolean searching;
-
-    public boolean isSelectiveCancellation() {
+    boolean isSelectiveCancellation() {
         return cancellationType.equals(CancellationType.SELECTIVE);
     }
 
-    public boolean isSingleCancellation() {
+    boolean isSingleCancellation() {
         return cancellationType.equals(CancellationType.SINGLE);
     }
 

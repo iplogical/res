@@ -60,13 +60,11 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     @Inject
     protected @Getter ViewLoader viewLoader;
 
-    protected RestaurantService restaurantService;
+    private @Inject RestaurantService restaurantService;
+    protected @Inject RetailService retailService;
 
-    protected RetailService retailService;
-
-    protected RestaurantController restaurantController;
-
-    protected TableConfigurationController tableConfigurationController;
+    protected @Inject RestaurantController restaurantController;
+    private @Inject TableConfigurationController tableConfigurationController;
 
     protected @Setter TableView tableView;
 
@@ -74,18 +72,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected Collection<ReceiptRecordView> soldProductsView;
 
-    protected ObservableList<SoldProductViewModel> soldProductsModel;
-
-    public AbstractRetailControllerImpl(RestaurantService restaurantService,
-                                        RetailService retailService,
-                                        RestaurantController restaurantController,
-                                        TableConfigurationController tableConfigurationController) {
-        this.restaurantService = restaurantService;
-        this.retailService = retailService;
-        this.restaurantController = restaurantController;
-        this.tableConfigurationController = tableConfigurationController;
-        soldProductsModel = FXCollections.observableArrayList();
-    }
+    protected ObservableList<SoldProductViewModel> soldProductsModel = FXCollections.observableArrayList();
 
     @FXML
     public void onBackToRestaurantView(Event event) {

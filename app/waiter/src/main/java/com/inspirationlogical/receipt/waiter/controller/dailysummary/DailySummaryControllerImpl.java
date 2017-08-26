@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
 public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     implements DailySummaryController {
 
-    public static final String DAILY_SUMMARY_VIEW_PATH = "/view/fxml/DailySummary.fxml";
+    private static final String DAILY_SUMMARY_VIEW_PATH = "/view/fxml/DailySummary.fxml";
 
     @FXML
     private BorderPane root;
@@ -51,14 +51,6 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     private RestaurantView restaurantView;
 
     private String openConsumptionString;
-
-    @Inject
-    public DailySummaryControllerImpl(RestaurantService restaurantService,
-                                      RetailService retailService,
-                                      RestaurantController restaurantController,
-                                      TableConfigurationController tableConfigurationController) {
-        super(restaurantService, retailService, restaurantController, tableConfigurationController);
-    }
 
     @Override
     public String getViewPath() {

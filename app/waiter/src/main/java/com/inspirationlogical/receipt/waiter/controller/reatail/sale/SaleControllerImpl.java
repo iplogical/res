@@ -6,13 +6,8 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
-import com.inspirationlogical.receipt.corelib.service.RestaurantService;
-import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
-import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
-import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
@@ -37,7 +32,7 @@ import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.Sale
 public class SaleControllerImpl extends AbstractRetailControllerImpl
         implements SaleController {
 
-    public static final String SALE_VIEW_PATH = "/view/fxml/Sale.fxml";
+    private static final String SALE_VIEW_PATH = "/view/fxml/Sale.fxml";
 
     @FXML
     BorderPane rootSale;
@@ -81,31 +76,17 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private Popup adHocProductForm;
 
-    private CommonService commonService;
+    private @Inject CommonService commonService;
 
-    private AdHocProductFormController adHocProductFormController;
+    private @Inject PaymentController paymentController;
+    private @Inject AdHocProductFormController adHocProductFormController;
+    @Inject ProductsAndCategoriesController productController;
 
     SaleViewState saleViewState;
 
-    ProductsAndCategoriesController productController;
-
-    @Inject
-    public SaleControllerImpl(RetailService retailService,
-                              RestaurantService restaurantService,
-                              CommonService commonService,
-                              RestaurantController restaurantController,
-                              AdHocProductFormController adHocProductFormController,
-                              ProductsAndCategoriesController productController,
-                              TableConfigurationController tableConfigurationController) {
-        super(restaurantService, retailService, restaurantController, tableConfigurationController );
-        this.commonService = commonService;
-        this.adHocProductFormController = adHocProductFormController;
-        this.productController = productController;
-        saleViewState = new SaleViewState();
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        saleViewState = new SaleViewState();
         initializeSoldProducts();
         new SaleControllerInitializer(this).initialize();
     }
@@ -169,7 +150,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onToPaymentView(Event event) {
         retailService.mergeReceiptRecords(receiptView);
-        PaymentController paymentController = WaiterRegistry.getInstance(PaymentController.class);
         paymentController.setTableView(tableView);
         viewLoader.loadViewIntoScene(paymentController);
         paymentController.enterPaymentView();

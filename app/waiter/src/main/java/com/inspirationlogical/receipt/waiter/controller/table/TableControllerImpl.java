@@ -5,7 +5,7 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.h
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
 import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,7 +17,6 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
-import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 
 import javafx.fxml.FXML;
@@ -36,47 +35,37 @@ public class TableControllerImpl implements TableController {
     private static final String CONSUMED_VIEW_PATH = "/view/fxml/ConsumedTable.fxml";
 
     @FXML
-    Label rootTable;
+    private Label rootTable;
     @FXML
-    AnchorPane tableContainer;
+    private AnchorPane tableContainer;
     @FXML
-    StackPane tableStackPane;
+    private StackPane tableStackPane;
     @FXML
-    Label name;
+    private Label name;
     @FXML
-    Label guests;
+    private Label guests;
     @FXML
-    Label number;
+    private Label number;
     @FXML
-    Label capacity;
+    private Label capacity;
     @FXML
-    ImageView note;
+    private ImageView note;
     @FXML
-    ImageView meeple;
+    private ImageView meeple;
     @FXML
     private Label hostedCount;
 
-    @Inject
-    private ViewLoader viewLoader;
+    private @Inject ViewLoader viewLoader;
 
-    private RestaurantController restaurantController;
+    private @Inject RetailService retailService;
 
-    private TableConfigurationController tableConfigurationController;
-
-    private RetailService retailService;
+    private @Inject RestaurantController restaurantController;
+    private @Inject TableConfigurationController tableConfigurationController;
+    private @Inject SaleController saleController;
 
     private TableView tableView;
 
     private TableViewState tableViewState;
-
-    @Inject
-    public TableControllerImpl(RestaurantController restaurantController,
-                               TableConfigurationController tableConfigurationController,
-                               RetailService retailService) {
-        this.restaurantController = restaurantController;
-        this.tableConfigurationController = tableConfigurationController;
-        this.retailService = retailService;
-    }
 
     public void setView(TableView tableView) {
         this.tableView = tableView;
@@ -176,7 +165,7 @@ public class TableControllerImpl implements TableController {
         name.setText(tableView.getName());
         updateHostInfo();
         updateGuestCountAndCapacity();
-        updateNote();
+        setNoteVisibility();
     }
 
     private void updateGuestCountAndCapacity() {
@@ -200,28 +189,22 @@ public class TableControllerImpl implements TableController {
     }
 
     private void updateHostInfo() {
-        if (tableView.isHost()) {
-            meeple.setVisible(true);
-            hostedCount.setVisible(true);
-            hostedCount.setText(valueOf(tableView.getHostedTables().size()));
-        } else {
-            meeple.setVisible(false);
-            hostedCount.setVisible(false);
-            hostedCount.setText(EMPTY);
-        }
-        if (tableView.isHosted()) {
-            number.setText(valueOf(tableView.getHost().getNumber()));
-        } else {
-            number.setText(valueOf(tableView.getNumber()));
-        }
+        setHostInfoVisibility(tableView.isHost());
+        number.setText(tableView.isHosted() ? valueOf(tableView.getHost().getNumber()): valueOf(tableView.getNumber()));
     }
 
-    private void updateNote() {
-        if (isEmpty(tableView.getNote())) {
-            note.setVisible(false);
-        } else {
-            note.setVisible(true);
-        }
+    private void setHostInfoVisibility(boolean isHost) {
+        meeple.setVisible(isHost);
+        setHostedCountVisibilityAndText(isHost);
+    }
+
+    private void setHostedCountVisibilityAndText(boolean isHost) {
+        hostedCount.setVisible(isHost);
+        hostedCount.setText(isHost ? valueOf(tableView.getHostedTables().size()): EMPTY);
+    }
+
+    private void setNoteVisibility() {
+        note.setVisible(isNotEmpty(tableView.getNote()));
     }
 
     @Override
@@ -275,7 +258,6 @@ public class TableControllerImpl implements TableController {
     }
 
     private void enterSaleView() {
-        SaleController saleController = WaiterRegistry.getInstance(SaleController.class);
         saleController.setTableView(tableView);
         viewLoader.loadViewIntoScene(saleController);
         saleController.enterSaleView();

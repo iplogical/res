@@ -1,17 +1,17 @@
 package com.inspirationlogical.receipt.waiter.registry;
 
-import com.google.inject.Provides;
 import com.inspirationlogical.receipt.corelib.frontend.registry.Registry;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.service.RetailServiceImpl;
-import com.inspirationlogical.receipt.waiter.controller.reatail.sale.*;
 import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryController;
 import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.reatail.sale.*;
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationController;
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.*;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.table.*;
 
 public class WaiterRegistry extends Registry {
@@ -30,17 +30,9 @@ public class WaiterRegistry extends Registry {
         bind(PaymentController.class).to(PaymentControllerImpl.class);
         bind(DailySummaryController.class).to(DailySummaryControllerImpl.class);
         bind(ReservationController.class).to(ReservationControllerImpl.class);
+        bind(TableController.class).to(TableControllerImpl.class);
         bind(TableFormController.class).to(TableFormControllerImpl.class);
         bind(AdHocProductFormController.class).to(AdHocProductFormControllerImpl.class);
         bind(RetailService.class).to(RetailServiceImpl.class);
-    }
-
-    @Provides
-    TableController provideTableController(RestaurantController restaurantController,
-                                           TableConfigurationController tableConfigurationController,
-                                           RetailService retailService) {
-        TableController tableController = new TableControllerImpl(restaurantController, tableConfigurationController, retailService);
-        injector.injectMembers(tableController);
-        return tableController;
     }
 }

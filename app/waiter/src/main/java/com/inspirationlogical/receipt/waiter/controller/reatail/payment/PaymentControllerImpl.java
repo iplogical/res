@@ -33,7 +33,7 @@ import static java.util.stream.Collectors.toList;
 public class PaymentControllerImpl extends AbstractRetailControllerImpl
         implements PaymentController {
 
-    public static final String PAYMENT_VIEW_PATH = "/view/fxml/Payment.fxml";
+    private static final String PAYMENT_VIEW_PATH = "/view/fxml/Payment.fxml";
 
     @FXML
     private BorderPane rootPayment;
@@ -97,26 +97,13 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     TableColumn payProductTotalPrice;
 
-    private SaleController saleController;
+    private @Inject SaleController saleController;
 
     PaymentViewState paymentViewState;
 
     private List<ReceiptRecordView> paidProductsView;
 
     private ObservableList<SoldProductViewModel> paidProductsModel;
-
-    @Inject
-    public PaymentControllerImpl(RetailService retailService,
-                                 RestaurantService restaurantService,
-                                 RestaurantController restaurantController,
-                                 SaleController saleController,
-                                 TableConfigurationController tableConfigurationController) {
-        super(restaurantService, retailService, restaurantController, tableConfigurationController);
-        this.saleController = saleController;
-        paymentViewState = new PaymentViewState(this);
-        paidProductsModel = FXCollections.observableArrayList();
-        paidProductsView = new ArrayList<>();
-    }
 
     @Override
     public String getViewPath() {
@@ -130,6 +117,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        paymentViewState = new PaymentViewState(this);
+        paidProductsModel = FXCollections.observableArrayList();
+        paidProductsView = new ArrayList<>();
         initializeSoldProducts();
         new PaymentControllerInitializer(this).initialize();
     }
