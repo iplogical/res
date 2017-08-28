@@ -29,4 +29,8 @@ public class CategoryFormUtils extends AbstractUtils {
     public static void setParentCategory(int number) {
         selectChoiceBoxItem(CATEGORY_PARENT, number);
     }
+
+    public static void setCategoryStatus(int number) {
+        selectChoiceBoxItem(CATEGORY_STATUS, number - 1);
+    }
 }

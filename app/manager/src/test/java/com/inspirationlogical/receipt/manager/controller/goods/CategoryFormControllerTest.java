@@ -4,12 +4,9 @@ import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.manager.controller.TestFXBase;
 import org.junit.Test;
 
-import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.AGGREGATE_TOP_ONE_NAME;
-import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.PRODUCT_ONE_LONG_NAME;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;
 import static com.inspirationlogical.receipt.manager.utility.CategoryFormUtils.*;
-import static com.inspirationlogical.receipt.manager.utility.ClickUtils.clickOnConfirm;
-import static com.inspirationlogical.receipt.manager.utility.ClickUtils.verifyErrorMessage;
-import static com.inspirationlogical.receipt.manager.utility.ClickUtils.verifyThatVisible;
+import static com.inspirationlogical.receipt.manager.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.manager.utility.GoodsUtils.*;
 import static com.inspirationlogical.receipt.manager.utility.GoodsUtils.clickOnDeleteCategory;
 
@@ -70,6 +67,7 @@ public class CategoryFormControllerTest extends TestFXBase {
         modifyCategory(AGGREGATE_TOP_ONE_NAME, "New Category Name");
         verifyThatVisible("New Category Name");
         modifyCategory("New Category Name", AGGREGATE_TOP_ONE_NAME);
+        verifyThatVisible(AGGREGATE_TOP_ONE_NAME);
     }
 
     @Test
@@ -87,5 +85,47 @@ public class CategoryFormControllerTest extends TestFXBase {
         clickOnConfirm();
         verifyThatVisible("AggregateA");
         verifyThatVisible("LeafA");
+    }
+
+    @Test
+    public void testDeleteAggregateCategory() {
+        selectCategory(AGGREGATE_TOP_ONE_NAME);
+        clickOnDeleteCategory();
+        verifyThatNotVisible(AGGREGATE_TOP_ONE_NAME);
+        verifyThatNotVisible(AGGREGATE_ONE_NAME);
+        verifyThatNotVisible(LEAF_ONE_NAME);
+        verifyThatNotVisible(PRODUCT_ONE_LONG_NAME);
+        clickOnShowDeleted();
+        verifyThatVisible(AGGREGATE_TOP_ONE_NAME);
+        verifyThatVisible(AGGREGATE_ONE_NAME);
+        verifyThatVisible(LEAF_ONE_NAME);
+        verifyThatVisible(PRODUCT_ONE_LONG_NAME);
+        selectCategory(AGGREGATE_TOP_ONE_NAME);
+        clickOnModifyCategory();
+        setCategoryStatus(2); // Active
+        clickOnConfirm();
+        clickOnShowDeleted();
+        verifyThatVisible(AGGREGATE_TOP_ONE_NAME);
+        verifyThatVisible(AGGREGATE_ONE_NAME);
+        verifyThatVisible(LEAF_ONE_NAME);
+        verifyThatVisible(PRODUCT_ONE_LONG_NAME);
+    }
+
+    @Test
+    public void testDeleteLeafCategory() {
+        selectCategory(LEAF_ONE_NAME);
+        clickOnDeleteCategory();
+        verifyThatNotVisible(LEAF_ONE_NAME);
+        verifyThatNotVisible(PRODUCT_ONE_LONG_NAME);
+        clickOnShowDeleted();
+        verifyThatVisible(LEAF_ONE_NAME);
+        verifyThatVisible(PRODUCT_ONE_LONG_NAME);
+        selectCategory(LEAF_ONE_NAME);
+        clickOnModifyCategory();
+        setCategoryStatus(2); // Active
+        clickOnConfirm();
+        clickOnShowDeleted();
+        verifyThatVisible(LEAF_ONE_NAME);
+        verifyThatVisible(PRODUCT_ONE_LONG_NAME);
     }
 }

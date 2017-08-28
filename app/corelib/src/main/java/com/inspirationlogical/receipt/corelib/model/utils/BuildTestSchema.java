@@ -41,6 +41,8 @@ public class BuildTestSchema {
     public static final String PRODUCT_ONE_SHORT_NAME = "product1";
 
     public static final String AGGREGATE_TOP_ONE_NAME = "aggregateTopOne";
+    public static final String AGGREGATE_ONE_NAME = "aggregateOne";
+    public static final String LEAF_ONE_NAME = "leafOne";
 
     public static final String RESERVATION_TEST_TABLE = "20";
     public static final String RESTAURANT_TEST_TABLE = "21";
@@ -807,7 +809,7 @@ public class BuildTestSchema {
 
     private void buildAggregateOne() {
         aggregateOne = ProductCategory.builder()
-                .name("aggregateOne")
+                .name(AGGREGATE_ONE_NAME)
                 .type(ProductCategoryType.AGGREGATE)
                 .status(ProductStatus.ACTIVE)
                 .build();
@@ -846,8 +848,8 @@ public class BuildTestSchema {
     }
 
     private void buildLeafOne() {
-        leafOne = ProductCategory.builder()
-                .name("leafOne")
+        this.leafOne = ProductCategory.builder()
+                .name(LEAF_ONE_NAME)
                 .type(ProductCategoryType.LEAF)
                 .status(ProductStatus.ACTIVE)
                 .priceModifiers(new ArrayList<>())
@@ -1798,7 +1800,7 @@ public class BuildTestSchema {
 
     private void aggregatesAndAggregates() {
         aggregateTopOne.setChildren(new ArrayList<>(
-                Arrays.asList(aggregateOne, aggregateTwo)));
+                Arrays.asList(aggregateOne, aggregateTwo, leafFive)));
         aggregateTopTwo.setChildren(new ArrayList<>(
                 Arrays.asList(aggregateThree, aggregateFour)));
         aggregateOne.setParent(aggregateTopOne);
@@ -1815,8 +1817,6 @@ public class BuildTestSchema {
         leafFive.setParent(aggregateTopOne);
         leafSix.setParent(aggregateFour);
         leafRecipeElements.setParent(aggregateRecipeElements);
-        aggregateTopOne.setChildren(new ArrayList<>(
-                Collections.singletonList(leafFive)));
         aggregateOne.setChildren(new ArrayList<>(
                 Arrays.asList(leafOne, leafThree)));
         aggregateTwo.setChildren(new ArrayList<>(

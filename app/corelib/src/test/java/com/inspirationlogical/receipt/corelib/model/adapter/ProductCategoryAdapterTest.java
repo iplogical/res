@@ -133,7 +133,7 @@ public class ProductCategoryAdapterTest extends TestBase {
     public void testUpdateProductCategory() {
         productCategoryParams.setName("leafTwenty");
         productCategoryParams.setOriginalName("leafOne");
-        ProductCategoryAdapter.updateProductCategory(productCategoryParams);
+        getProductCategoryByName("leafOne").updateProductCategory(productCategoryParams);
         assertEquals("leafTwenty", getProductCategoryByName("leafTwenty").getAdaptee().getName());
         assertNull(getProductCategoryByName("leafOne"));
     }
@@ -142,13 +142,15 @@ public class ProductCategoryAdapterTest extends TestBase {
     public void testUpdateProductCategoryNameUsed() {
         productCategoryParams.setName("leafTwo");
         productCategoryParams.setOriginalName("leafOne");
-        ProductCategoryAdapter.updateProductCategory(productCategoryParams);
+        getProductCategoryByName("leafOne").updateProductCategory(productCategoryParams);
     }
 
     @Test
-    public void testDelete() {
+    public void testDeleteProductCategory() {
         aggregateOne.deleteProductCategory();
         ProductCategory aggregateOneUpdated = getProductCategoryByName(aggregateOne.getAdaptee().getName()).getAdaptee();
         assertEquals(ProductStatus.DELETED, aggregateOneUpdated.getStatus());
+        aggregateOneUpdated.getChildren().forEach(childCategory -> assertEquals(ProductStatus.DELETED, childCategory.getStatus()));
+        assertEquals(ProductStatus.DELETED, aggregateOneUpdated.getChildren().get(0).getChildren().get(0).getProduct().getStatus());
     }
 }

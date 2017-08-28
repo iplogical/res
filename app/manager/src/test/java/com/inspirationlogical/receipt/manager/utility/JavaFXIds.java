@@ -32,6 +32,7 @@ public class JavaFXIds {
     // CategoryForm.fxml
     public static final String CATEGORY_NAME = "#name";
     public static final String CATEGORY_TYPE = "#type";
+    public static final String CATEGORY_STATUS = "#status";
     public static final String CATEGORY_PARENT = "#parent";
     public static final String CATEGORY_ORDER_NUMBER= "#orderNumber";
 

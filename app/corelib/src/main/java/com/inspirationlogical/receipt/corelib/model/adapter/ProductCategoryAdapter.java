@@ -17,7 +17,6 @@ import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
@@ -86,14 +85,13 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                     return query;});
     }
 
-    public ProductCategoryAdapter addChildCategory(ProductCategoryParams params) {
+    public void addChildCategory(ProductCategoryParams params) {
         ProductCategory newCategory = buildNewCategory(params);
-        if(isCategoryNameUsed(newCategory.getName()))
+        if(isCategoryNameUsed(params))
             throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed") + params.getName());
         adaptee.getChildren().add(newCategory);
         newCategory.setParent(adaptee);
         GuardedTransaction.persist(newCategory);
-        return new ProductCategoryAdapter(newCategory);
     }
 
     private ProductCategory buildNewCategory(ProductCategoryParams params) {
@@ -105,28 +103,43 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
                 .build();
     }
 
-    private static boolean isCategoryNameUsed(String name) {
+    private static boolean isCategoryNameUsed(ProductCategoryParams params) {
+        if(params.getName().equals(params.getOriginalName())) return false;
         return GuardedTransaction.runNamedQuery(ProductCategory.GET_CATEGORY_BY_NAME, query ->
-            query.setParameter("name", name)).size() != 0;
+            query.setParameter("name", params.getName())).size() != 0;
     }
 
-    public static ProductCategoryAdapter updateProductCategory(ProductCategoryParams params) {
-        if(isCategoryNameUsed(params.getName())) {
+    public void updateProductCategory(ProductCategoryParams params) {
+        if(isCategoryNameUsed(params)) {
             throw new IllegalProductCategoryStateException(Resources.CONFIG.getString("ProductCategoryNameAlreadyUsed") + params.getName());
         }
-        ProductCategory originalCategory = getProductCategoryByName(params.getOriginalName()).getAdaptee();
-        originalCategory.setName(params.getName());
-        originalCategory.setOrderNumber(params.getOrderNumber());
-        originalCategory.setStatus(params.getStatus());
-        GuardedTransaction.persist(originalCategory);
-        return new ProductCategoryAdapter(originalCategory);
+        adaptee.setName(params.getName());
+        adaptee.setOrderNumber(params.getOrderNumber());
+        setStatusOfCategorySubTree(params.getStatus());
+        GuardedTransaction.persist(adaptee);
+    }
+
+    private void setStatusOfCategorySubTree(ProductStatus status) {
+        adaptee.setStatus(status);
+        adaptee.getChildren().forEach(childCategory -> setStatusRecursively(childCategory, status));
+    }
+
+    private void setStatusRecursively(ProductCategory productCategory, ProductStatus status) {
+        productCategory.setStatus(status);
+        if(productCategory.getProduct() != null) {
+            productCategory.getProduct().setStatus(status);
+        } else {
+            productCategory.getChildren().forEach(childCategory -> setStatusRecursively(childCategory, status));
+        }
     }
 
     public void deleteProductCategory() {
-        GuardedTransaction.run(() -> getAdaptee().setStatus(ProductStatus.DELETED));
+        GuardedTransaction.run(() -> {
+            setStatusOfCategorySubTree(ProductStatus.DELETED);
+        });
     }
 
-    public ProductAdapter addProduct(ProductBuilder builder) {
+    public void addProduct(ProductBuilder builder) {
         Product newProduct = builder.build();
         if(isProductNameUsed(newProduct))
             throw new IllegalProductStateException(Resources.CONFIG.getString("ProductNameAlreadyUsed") + newProduct.getLongName());
@@ -134,7 +147,6 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         bindProductToPseudo(newProduct, pseudo);
         addDefaultRecipe(newProduct);
         GuardedTransaction.persist(newProduct);
-        return new ProductAdapter(newProduct);
     }
 
     private boolean isProductNameUsed(Product product) {

@@ -54,7 +54,7 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Override
     public void updateProductCategory(ProductCategoryParams params) {
-        ProductCategoryAdapter.updateProductCategory(params);
+        ProductCategoryAdapter.getProductCategoryByName(params.getOriginalName()).updateProductCategory(params);
     }
 
     @Override
