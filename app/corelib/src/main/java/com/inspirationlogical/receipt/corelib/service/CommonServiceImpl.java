@@ -78,23 +78,6 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
-    public void getChildCategoriesRecursively(ProductCategoryView current, List<ProductCategoryView> traversal) {
-        traversal.add(current);
-        entityViews.getCategoryViews().stream()
-                .filter(categoryView -> isNotRootCategory(categoryView) && isMyChild(current, categoryView))
-                .forEach(categoryView -> getChildCategoriesRecursively(categoryView, traversal));
-    }
-
-    @Override
-    public List<ProductCategoryView> getChildPseudoCategories(ProductCategoryView productCategoryView) {
-        List<ProductCategoryView> childCategories = new ArrayList<>();
-        getChildCategoriesRecursively(productCategoryView, childCategories);
-        return childCategories.stream()
-                .filter(productCategory -> productCategory.getType().equals(PSEUDO))
-                .collect(toList());
-    }
-
-    @Override
     public List<ProductView> getActiveProducts() {
         return entityViews.getProductViews().stream()
                 .filter(productView -> productView.getStatus().equals(ACTIVE))
@@ -118,6 +101,21 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
                 .filter(productView -> !productView.getType().equals(GAME_FEE_PRODUCT))
                 .filter(productView -> !productView.getType().equals(STORABLE))
                 .collect(toList());
+    }
+
+    private List<ProductCategoryView> getChildPseudoCategories(ProductCategoryView productCategoryView) {
+        List<ProductCategoryView> childCategories = new ArrayList<>();
+        getChildCategoriesRecursively(productCategoryView, childCategories);
+        return childCategories.stream()
+                .filter(productCategory -> productCategory.getType().equals(PSEUDO))
+                .collect(toList());
+    }
+
+    private void getChildCategoriesRecursively(ProductCategoryView current, List<ProductCategoryView> traversal) {
+        traversal.add(current);
+        entityViews.getCategoryViews().stream()
+                .filter(categoryView -> isNotRootCategory(categoryView) && isMyChild(current, categoryView))
+                .forEach(categoryView -> getChildCategoriesRecursively(categoryView, traversal));
     }
 
     @Override

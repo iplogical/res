@@ -24,10 +24,6 @@ public interface CommonService {
 
     List<ProductCategoryView> getChildCategories(ProductCategoryView productCategoryView);
 
-    void getChildCategoriesRecursively(ProductCategoryView current, List<ProductCategoryView> traversal);
-
-    List<ProductCategoryView> getChildPseudoCategories(ProductCategoryView productCategoryView);
-
     List<ProductView> getActiveProducts();
 
     List<ProductView> getSellableProducts();
