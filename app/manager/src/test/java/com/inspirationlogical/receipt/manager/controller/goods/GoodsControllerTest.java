@@ -10,8 +10,9 @@ import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema
 import static com.inspirationlogical.receipt.manager.utility.ClickUtils.clickButtonThenWait;
 import static com.inspirationlogical.receipt.manager.utility.ClickUtils.verifyErrorMessage;
 import static com.inspirationlogical.receipt.manager.utility.GoodsUtils.*;
-import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.CREATE_RECIPE;
-import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.HIDE;
+import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.SHOW_RECIPE_FORM;
+import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.CLOSE;
+import static com.inspirationlogical.receipt.manager.utility.RecipeFormUtils.clickOnClose;
 
 public class GoodsControllerTest extends TestFXBase {
 
@@ -93,8 +94,8 @@ public class GoodsControllerTest extends TestFXBase {
 
     @After
     public void clearSelections() {
-        clickButtonThenWait(CREATE_RECIPE, 200);
-        clickButtonThenWait(HIDE, 200);
+        clickOnShowRecipeForm();
+        clickOnClose();
     }
 }
 

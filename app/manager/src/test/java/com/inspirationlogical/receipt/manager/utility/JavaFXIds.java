@@ -13,7 +13,7 @@ public class JavaFXIds {
     public static final String MODIFY_PRODUCT = "#modifyProduct";
     public static final String DELETE_PRODUCT = "#deleteProduct";
 
-    public static final String CREATE_RECIPE = "#createRecipe";
+    public static final String SHOW_RECIPE_FORM = "#showRecipeForm";
 
     // ProductFrom.fxml
     public static final String PRODUCT_LONG_NAME = "#longName";
@@ -37,7 +37,8 @@ public class JavaFXIds {
     public static final String CATEGORY_ORDER_NUMBER= "#orderNumber";
 
     // RecipeForm.fxml
-    public static final String HIDE = "#hide";
+    public static final String CLOSE = "#close";
+    public static final String COMPONENTS_TABLE = "#componentTable";
 
     // Common
     public static final String CONFIRM = "#confirm";

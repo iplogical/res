@@ -282,9 +282,9 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
                     ManagerResources.MANAGER.getString("ProductForm.SelectProductForModify"));
             return;
         }
-        GoodsTableViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
+        GoodsTableViewModel selected = getGoodsTableSelectedValue();
         GoodsTableViewModel parent = goodsTable.getSelectionModel().getSelectedItem().getParent().getValue();
-        if(isCategorySelected(selected)) {
+        if(selected.isCategory()) {
             ErrorMessage.showErrorMessage(root,
                     ManagerResources.MANAGER.getString("ProductForm.SelectProductForModify"));
             return;
@@ -295,8 +295,8 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         showPopup(productForm, productFormController, root, new Point2D(520, 200));
     }
 
-    private boolean isCategorySelected(GoodsTableViewModel selected) {
-        return selected.getShortName().equals("");
+    private GoodsTableViewModel getGoodsTableSelectedValue() {
+        return goodsTable.getSelectionModel().getSelectedItem().getValue();
     }
 
     @FXML
@@ -306,8 +306,8 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
                     ManagerResources.MANAGER.getString("ProductForm.SelectProductForDelete"));
             return;
         }
-        GoodsTableViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
-        if(isCategorySelected(selected)) {
+        GoodsTableViewModel selected = getGoodsTableSelectedValue();
+        if(selected.isCategory()) {
             ErrorMessage.showErrorMessage(root,
                     ManagerResources.MANAGER.getString("ProductForm.SelectProductForDelete"));
             return;
@@ -329,19 +329,15 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
                     ManagerResources.MANAGER.getString("ProductForm.SelectCategoryForModify"));
             return;
         }
-        GoodsTableViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
-        if(isProductSelected(selected)) {
+        GoodsTableViewModel selected = getGoodsTableSelectedValue();
+        if(selected.isProduct()) {
             ErrorMessage.showErrorMessage(root,
                     ManagerResources.MANAGER.getString("ProductForm.SelectCategoryForModify"));
             return;
         }
         initCategoryForm();
-        categoryFormController.setCategory(goodsTable.getSelectionModel().getSelectedItem().getValue());
+        categoryFormController.setCategory(getGoodsTableSelectedValue());
         showPopup(categoryForm, categoryFormController, root, new Point2D(520, 200));
-    }
-
-    private boolean isProductSelected(GoodsTableViewModel selected) {
-        return !selected.getShortName().equals("");
     }
 
     @FXML
@@ -351,8 +347,8 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
                     ManagerResources.MANAGER.getString("ProductForm.SelectCategoryForDelete"));
             return;
         }
-        GoodsTableViewModel selected = goodsTable.getSelectionModel().getSelectedItem().getValue();
-        if(isProductSelected(selected)) {
+        GoodsTableViewModel selected = getGoodsTableSelectedValue();
+        if(selected.isProduct()) {
             ErrorMessage.showErrorMessage(root,
                     ManagerResources.MANAGER.getString("ProductForm.SelectCategoryForDelete"));
             return;
@@ -362,11 +358,20 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     }
 
     @FXML
-    public void onCreateRecipe(Event event) {
-        recipeFormController.fetchProducts();
+    public void onShowRecipeForm(Event event) {
+        if(!isSelectionNull()) {
+            GoodsTableViewModel selected = getGoodsTableSelectedValue();
+            if (selected.isProduct() && selected.isSellable()) {
+                recipeFormController.setSelectedProduct(selected);
+            }
+        }
         showPopup(recipeForm, recipeFormController, root, new Point2D(520, 200));
     }
 
+    @FXML
+    public void onRefreshRecipes(Event event) {
+        recipeFormController.initProducts();
+    }
     private boolean isSelectionNull() {
         return goodsTable.getSelectionModel().getSelectedItem() == null;
     }

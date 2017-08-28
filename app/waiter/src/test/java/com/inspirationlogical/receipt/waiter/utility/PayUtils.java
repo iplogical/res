@@ -90,7 +90,7 @@ public class PayUtils  extends AbstractUtils {
         return tableView.getItems();
     }
 
-    public static void assertPaidProduct(int row, String name, double quantity, int unitPrice, int totalPrice) {
+    private static void assertPaidProduct(int row, String name, double quantity, int unitPrice, int totalPrice) {
         assertEquals(name, getPaidProductName(row));
         assertEquals(Double.toString(quantity), getPaidProductQuantity(row));
         assertEquals(Integer.toString(unitPrice), getPaidProductUnitPrice(row));

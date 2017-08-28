@@ -53,6 +53,10 @@ public class GoodsUtils extends AbstractUtils {
         clickButtonThenWait(DELETE_CATEGORY, 500);
     }
 
+    public static void clickOnShowRecipeForm() {
+        clickButtonThenWait(SHOW_RECIPE_FORM, 200);
+    }
+
     public static void selectProduct(String longName) {
         clickOnThenWait(longName, 100);
     }

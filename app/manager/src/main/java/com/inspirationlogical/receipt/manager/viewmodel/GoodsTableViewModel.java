@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
 
@@ -59,5 +60,18 @@ public class GoodsTableViewModel {
                 .filter(RecipeView::isTrivial).findFirst();
 
         recipeView.ifPresent(recipe -> quantityMultiplier = valueOf(recipe.getQuantity()));
+    }
+
+    public boolean isProduct() {
+        return !shortName.equals("");
+    }
+
+    public boolean isCategory() {
+        return !isProduct();
+    }
+
+    public boolean isSellable() {
+        return !type.equals(ProductType.STORABLE.toI18nString());
+
     }
 }

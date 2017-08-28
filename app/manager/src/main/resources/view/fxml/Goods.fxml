@@ -111,11 +111,12 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button fx:id="createRecipe" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateRecipe" text="%Goods.RecipeView" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="showRecipeForm" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onShowRecipeForm" text="%Goods.RecipeView" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
+            <Button fx:id="refreshRecipes" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onRefreshRecipes" text="%Goods.RefreshRecipes" />
             <Separator />
             <Button fx:id="showStock" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onShowStock" text="%Common.StockView" textAlignment="CENTER">
                <font>

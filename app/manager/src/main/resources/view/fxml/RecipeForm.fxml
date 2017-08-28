@@ -26,12 +26,12 @@
                <children>
                   <HBox spacing="5.0">
                      <children>
-                        <Label prefWidth="100.0" text="%RecipeForm.Owner">
+                        <Label prefWidth="100.0" text="%RecipeForm.Product">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="owner" prefWidth="150.0" />
+                        <ChoiceBox fx:id="product" prefWidth="150.0" />
                      </children>
                   </HBox>
                   <Separator prefWidth="200.0" />

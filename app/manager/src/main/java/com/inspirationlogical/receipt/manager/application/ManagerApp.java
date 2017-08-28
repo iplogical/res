@@ -83,7 +83,7 @@ public class ManagerApp extends Application implements StageProvider, ResourcesP
     }
 
     private static void defaultExceptionHandler(Thread t, Throwable e) {
-        logger.error("Unhandled exception in WaiterApp.", e);
+        logger.error("Unhandled exception in ManagerApp.", e);
         ErrorMessage.showErrorMessageLong(stage.getScene().getRoot(), ManagerResources.MANAGER.getString("UnhandledException"));
     }
 
