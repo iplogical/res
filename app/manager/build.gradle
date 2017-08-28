@@ -6,8 +6,23 @@
  * For more details take a look at the Java Quickstart chapter in the Gradle
  * user guide available at https://docs.gradle.org/2.13/userguide/tutorial_java_projects.html
  */
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'edu.sc.seis.gradle:launch4j:2.4.1'
+    }
+}
+
+repositories {
+    jcenter()
+}
+
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'edu.sc.seis.launch4j'
 
 mainClassName = "com.inspirationlogical.receipt.manager.application.ManagerApp"
 
@@ -33,4 +48,8 @@ dependencies {
 tasks.withType(JavaCompile) {
     options.compilerArgs << '-parameters'
     options.encoding = 'UTF-8'
+}
+
+launch4j {
+    mainClassName = project.mainClassName
 }
