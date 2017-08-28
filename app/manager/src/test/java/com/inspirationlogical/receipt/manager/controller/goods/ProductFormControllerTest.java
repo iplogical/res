@@ -9,6 +9,7 @@ import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema
 import static com.inspirationlogical.receipt.manager.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.manager.utility.GoodsUtils.*;
 import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.PRODUCT_PURCHASE_PRICE;
+import static com.inspirationlogical.receipt.manager.utility.ProductFormUtils.*;
 
 public class ProductFormControllerTest extends TestFXBase {
 
