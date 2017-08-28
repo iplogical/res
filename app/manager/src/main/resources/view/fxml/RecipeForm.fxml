@@ -82,7 +82,7 @@
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="hide" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onHide" prefWidth="100.0" text="%Form.Hide">
+                        <Button fx:id="close" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onClose" prefWidth="100.0" text="%Form.Close">
                            <font>
                               <Font size="16.0" />
                            </font>

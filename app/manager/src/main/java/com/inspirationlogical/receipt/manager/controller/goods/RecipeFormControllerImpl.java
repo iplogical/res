@@ -129,7 +129,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
     }
 
     @FXML
-    public void onHide(Event event) {
+    public void onClose(Event event) {
         goodsController.updateGoods();
         componentTable.getItems().clear();
         hideNode(root);
