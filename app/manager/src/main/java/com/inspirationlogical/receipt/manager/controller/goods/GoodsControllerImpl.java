@@ -364,6 +364,8 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
             if (selected.isProduct() && selected.isSellable()) {
                 recipeFormController.setSelectedProduct(selected);
             }
+        } else {
+            recipeFormController.updateComponentsTable();
         }
         showPopup(recipeForm, recipeFormController, root, new Point2D(520, 200));
     }
@@ -372,6 +374,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void onRefreshRecipes(Event event) {
         recipeFormController.initProducts();
     }
+
     private boolean isSelectionNull() {
         return goodsTable.getSelectionModel().getSelectedItem() == null;
     }

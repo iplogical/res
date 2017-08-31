@@ -77,11 +77,6 @@
                   <Separator prefWidth="200.0" />
                   <HBox alignment="BOTTOM_RIGHT" spacing="5.0">
                      <children>
-                        <Button fx:id="confirm" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onConfirm" prefWidth="100.0" text="%Form.Confirm">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Button>
                         <Button fx:id="close" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onClose" prefWidth="100.0" text="%Form.Close">
                            <font>
                               <Font size="16.0" />

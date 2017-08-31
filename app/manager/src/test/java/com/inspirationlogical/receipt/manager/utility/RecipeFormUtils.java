@@ -6,7 +6,7 @@ import javafx.scene.control.TableView;
 
 import static com.inspirationlogical.receipt.manager.utility.ClickUtils.clickButtonThenWait;
 import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.CLOSE;
-import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.COMPONENTS_TABLE;
+import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.RECIPE_FORM_COMPONENTS_TABLE;
 import static org.junit.Assert.assertNotEquals;
 
 public class RecipeFormUtils extends AbstractUtils {
@@ -16,7 +16,7 @@ public class RecipeFormUtils extends AbstractUtils {
     }
 
     private static ObservableList<RecipeViewModel> getComponents() {
-        TableView<RecipeViewModel> components = robot.find(COMPONENTS_TABLE);
+        TableView<RecipeViewModel> components = robot.find(RECIPE_FORM_COMPONENTS_TABLE);
         return components.getItems();
     }
 

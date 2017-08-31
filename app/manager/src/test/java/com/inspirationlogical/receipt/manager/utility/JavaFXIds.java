@@ -38,7 +38,11 @@ public class JavaFXIds {
 
     // RecipeForm.fxml
     public static final String CLOSE = "#close";
-    public static final String COMPONENTS_TABLE = "#componentTable";
+    public static final String RECIPE_FORM_COMPONENTS_TABLE = "#componentTable";
+    public static final String RECIPE_FORM_PRODUCTS = "#product";
+    public static final String RECIPE_FORM_COMPONENTS = "#component";
+    public static final String RECIPE_FORM_ADD_COMPONENT = "#add";
+    public static final String RECIPE_FORM_REMOVE_COMPONENT = "#remove";
 
     // Common
     public static final String CONFIRM = "#confirm";

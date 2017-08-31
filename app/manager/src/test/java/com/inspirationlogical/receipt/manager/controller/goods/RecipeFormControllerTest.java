@@ -19,4 +19,43 @@ public class RecipeFormControllerTest extends TestFXBase {
         assertComponent("productRecipeElementThree");
         clickOnClose();
     }
+
+    @Test
+    public void testAddComponent() {
+        selectProduct("productFour");
+        clickOnShowRecipeForm();
+    }
+
+    @Test
+    public void testAddComponentEmptyChoiceBox() {
+        selectProduct("productFour");
+        clickOnShowRecipeForm();
+    }
+
+    @Test
+    public void testAddComponentInvalidInput() {
+        selectProduct("productFour");
+        clickOnShowRecipeForm();
+    }
+
+    @Test
+    public void testModifyComponent() {
+
+    }
+
+    @Test
+    public void testModifyComponentInvalidInput() {
+
+    }
+
+    @Test
+    public void testDeleteComponent() {
+
+    }
+
+    @Test
+    public void testDeleteComponentNoSelection() {
+
+    }
+
 }

@@ -16,6 +16,8 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.RecipeViewModel;
@@ -94,6 +96,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
 
     private void initProductChoiceBox() {
         sellableProducts = FXCollections.observableArrayList(commonService.getSellableProducts());
+        sellableProducts.sort(Comparator.comparing(ProductView::getShortName));
         product.setItems(sellableProducts);
         product.getSelectionModel().selectedItemProperty().addListener(new OwnerChoiceBoxListener());
         product.setConverter(new ProductStringConverter(sellableProducts));
@@ -101,6 +104,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
 
     private void initComponentChoiceBox() {
         storalbeProducts = FXCollections.observableArrayList(commonService.getStorableProducts());
+        storalbeProducts.sort(Comparator.comparing(ProductView::getShortName));
         component.setItems(storalbeProducts);
         component.setConverter(new ProductStringConverter(storalbeProducts));
         component.getSelectionModel().selectedItemProperty().addListener(new ComponentChoiceBoxListener());
@@ -132,16 +136,11 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
         product.getSelectionModel().select(selected);
     }
 
-    @FXML
-    public void onConfirm(Event event) {
-        if (product.getSelectionModel().isEmpty()) return;
-        List<RecipeParams> recipeParamsList = componentTable.getItems().stream()
-                .map(recipeViewModel -> RecipeParams.builder()
-                        .componentName(recipeViewModel.getComponent())
-                        .quantity(Double.valueOf(recipeViewModel.getQuantity()))
-                        .build())
-                .collect(toList());
-        managerService.updateRecipe(product.getSelectionModel().getSelectedItem(), recipeParamsList);
+    @Override
+    public void updateComponentsTable() {
+        if(!noProductSelected()) {
+            updateComponentsTable(product.getValue());
+        }
     }
 
     @FXML
@@ -153,21 +152,58 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
 
     @FXML
     public void onAdd(Event event) {
-        if(product.getSelectionModel().getSelectedItem() == null) return;
-        if(component.getSelectionModel().getSelectedItem() == null) return;
-        if(quantity.getText().equals("")) return;
-        RecipeViewModel newComponent = RecipeViewModel.builder()
+        if(noProductSelected() || noComponentSelected()) {
+            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.EmptyChoiceBox"));
+            return;
+        }
+        try {
+            RecipeViewModel newComponent = buildRecipeViewModel();
+            componentTable.getItems().add(newComponent);
+            updateRecipe();
+        } catch (NumberFormatException e) {
+            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.NumberFormatQuantity"));
+        }
+
+    }
+
+    private void updateRecipe() {
+        List<RecipeParams> recipeParamsList = buildRecipeParamsList();
+        managerService.updateRecipe(product.getSelectionModel().getSelectedItem(), recipeParamsList);
+    }
+
+    private boolean noComponentSelected() {
+        return component.getSelectionModel().getSelectedItem() == null;
+    }
+
+    private boolean noProductSelected() {
+        return product.getSelectionModel().getSelectedItem() == null;
+    }
+
+    private List<RecipeParams> buildRecipeParamsList() {
+        return componentTable.getItems().stream()
+                .map(recipeViewModel -> RecipeParams.builder()
+                        .componentName(recipeViewModel.getComponent())
+                        .quantity(Double.valueOf(recipeViewModel.getQuantity()))
+                        .build())
+                .collect(toList());
+    }
+
+    private RecipeViewModel buildRecipeViewModel() {
+        return RecipeViewModel.builder()
                 .component(component.getSelectionModel().getSelectedItem().getLongName())
                 .unit(component.getSelectionModel().getSelectedItem().getQuantityUnit().toString())
-                .quantity(quantity.getText())
+                .quantity(Double.valueOf(quantity.getText()).toString())
                 .build();
-        componentTable.getItems().add(newComponent);
     }
 
     @FXML
     public void onDelete(Event event) {
-        if(componentTable.getSelectionModel().getSelectedItem() == null) return;
+        if(componentTable.getSelectionModel().getSelectedItem() == null) {
+            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.SelectComponentForDelete"));
+            return;
+        }
         componentTable.getItems().remove(componentTable.getSelectionModel().getSelectedItem());
+        updateRecipe();
     }
 
     private class ComponentChoiceBoxListener implements ChangeListener<ProductView> {
@@ -180,9 +216,13 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
     private class OwnerChoiceBoxListener implements ChangeListener<ProductView> {
         @Override
         public void changed(ObservableValue<? extends ProductView> observable, ProductView oldValue, ProductView newValue) {
-            ObservableList<RecipeViewModel> items =
-            FXCollections.observableArrayList(managerService.getRecipeComponents(newValue).stream().map(RecipeViewModel::new).collect(toList()));
-            componentTable.setItems(items);
+            updateComponentsTable(newValue);
         }
+    }
+
+    private void updateComponentsTable(ProductView product) {
+        ObservableList<RecipeViewModel> items =
+        FXCollections.observableArrayList(managerService.getRecipeComponents(product).stream().map(RecipeViewModel::new).collect(toList()));
+        componentTable.setItems(items);
     }
 }

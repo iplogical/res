@@ -10,4 +10,6 @@ public interface RecipeFormController extends Controller {
     void loadRecipeForm(GoodsController goodsController);
 
     void setSelectedProduct(GoodsTableViewModel selectedGoodsValue);
+
+    void updateComponentsTable();
 }
