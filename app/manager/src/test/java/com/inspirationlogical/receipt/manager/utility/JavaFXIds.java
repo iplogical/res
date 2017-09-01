@@ -41,8 +41,10 @@ public class JavaFXIds {
     public static final String RECIPE_FORM_COMPONENTS_TABLE = "#componentTable";
     public static final String RECIPE_FORM_PRODUCTS = "#product";
     public static final String RECIPE_FORM_COMPONENTS = "#component";
+    public static final String RECIPE_FORM_QUANTITY = "#quantity";
     public static final String RECIPE_FORM_ADD_COMPONENT = "#add";
     public static final String RECIPE_FORM_REMOVE_COMPONENT = "#remove";
+
 
     // Common
     public static final String CONFIRM = "#confirm";

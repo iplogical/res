@@ -197,7 +197,11 @@ public class ProductAdapter extends AbstractAdapter<Product> {
     }
 
     private void updateComponents(List<RecipeAdapter> components, Map<String, Double> recipeParamsMap) {
-        GuardedTransaction.run(() -> components.forEach(recipeAdapter -> recipeAdapter.getAdaptee().setQuantityMultiplier(recipeParamsMap.get(recipeAdapter.getAdaptee().getComponent().getLongName()))));
+        components.forEach(recipeAdapter -> {
+            String componentName = recipeAdapter.getAdaptee().getComponent().getLongName();
+            recipeAdapter.getAdaptee().setQuantityMultiplier(recipeParamsMap.get(componentName));
+            GuardedTransaction.persist(recipeAdapter.getAdaptee());
+        });
     }
 
     private void deleteComponents(List<RecipeAdapter> recipesToDelete) {
@@ -209,12 +213,13 @@ public class ProductAdapter extends AbstractAdapter<Product> {
     private void addComponents(Map<String, Double> recipesToAdd) {
         recipesToAdd.forEach((key, value) -> {
             Product component = getProductByName(key).getAdaptee();
-            GuardedTransaction.run(() -> addNewComponent(value, component));
+            addNewComponent(value, component);
         });
     }
 
     private void addNewComponent(Double value, Product component) {
         Recipe newComponent = Recipe.builder().component(component).quantityMultiplier(value).owner(adaptee).build();
         adaptee.getRecipes().add(newComponent);
+        GuardedTransaction.persist(newComponent);
     }
 }

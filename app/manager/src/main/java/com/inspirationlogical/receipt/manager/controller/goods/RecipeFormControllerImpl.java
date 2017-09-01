@@ -98,7 +98,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
         sellableProducts = FXCollections.observableArrayList(commonService.getSellableProducts());
         sellableProducts.sort(Comparator.comparing(ProductView::getShortName));
         product.setItems(sellableProducts);
-        product.getSelectionModel().selectedItemProperty().addListener(new OwnerChoiceBoxListener());
+        product.getSelectionModel().selectedItemProperty().addListener(new ProductChoiceBoxListener());
         product.setConverter(new ProductStringConverter(sellableProducts));
     }
 
@@ -112,10 +112,20 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
 
     private void initComponentTable() {
         componentTable.setEditable(true);
-        initColumn(componentName, RecipeViewModel::getComponent);
+        initColumn(componentName, RecipeViewModel::getComponentLongName);
         initColumn(componentQuantity, RecipeViewModel::getQuantity);
-        initInputColumn(componentQuantity, RecipeViewModel::setQuantity);
+        initInputColumn(componentQuantity, this::onModifyQuantity);
         initColumn(componentUnit, RecipeViewModel::getUnit);
+    }
+
+    private void onModifyQuantity(RecipeViewModel recipe, String newQuantity) {
+        try {
+            Double.valueOf(newQuantity);
+            recipe.setQuantity(newQuantity);
+            updateRecipe();
+        } catch (NumberFormatException e) {
+            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.NumberFormatQuantity"));
+        }
     }
 
     @Override
@@ -146,14 +156,25 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
     @FXML
     public void onClose(Event event) {
         goodsController.updateGoods();
-        componentTable.getItems().clear();
+        clearRecipeForm();
         hideNode(root);
+    }
+
+    private void clearRecipeForm() {
+        componentTable.getItems().clear();
+        product.getSelectionModel().clearSelection();
+        component.getSelectionModel().clearSelection();
+        quantity.clear();
     }
 
     @FXML
     public void onAdd(Event event) {
         if(noProductSelected() || noComponentSelected()) {
             ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.EmptyChoiceBox"));
+            return;
+        }
+        if(componentAlreadyAdded()) {
+            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.ComponentAlreadyAdded"));
             return;
         }
         try {
@@ -166,34 +187,49 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
 
     }
 
-    private void updateRecipe() {
-        List<RecipeParams> recipeParamsList = buildRecipeParamsList();
-        managerService.updateRecipe(product.getSelectionModel().getSelectedItem(), recipeParamsList);
+    private boolean noComponentSelected() {
+        return getSelectedComponent() == null;
     }
 
-    private boolean noComponentSelected() {
-        return component.getSelectionModel().getSelectedItem() == null;
+    private ProductView getSelectedComponent() {
+        return component.getSelectionModel().getSelectedItem();
     }
 
     private boolean noProductSelected() {
-        return product.getSelectionModel().getSelectedItem() == null;
+        return getSelectedProduct() == null;
+    }
+
+    private boolean componentAlreadyAdded() {
+        return componentTable.getItems().stream()
+                .filter(recipeViewModel -> recipeViewModel.getComponentLongName().equals(getSelectedComponent().getLongName()))
+                .count() != 0;
+    }
+
+    private RecipeViewModel buildRecipeViewModel() {
+        ProductView selectedComponent = getSelectedComponent();
+        return RecipeViewModel.builder()
+                .componentLongName(selectedComponent.getLongName())
+                .unit(selectedComponent.getQuantityUnit().toString())
+                .quantity(Double.valueOf(quantity.getText()).toString())
+                .build();
+    }
+
+    private void updateRecipe() {
+        List<RecipeParams> recipeParamsList = buildRecipeParamsList();
+        managerService.updateRecipe(getSelectedProduct(), recipeParamsList);
+    }
+
+    private ProductView getSelectedProduct() {
+        return product.getSelectionModel().getSelectedItem();
     }
 
     private List<RecipeParams> buildRecipeParamsList() {
         return componentTable.getItems().stream()
                 .map(recipeViewModel -> RecipeParams.builder()
-                        .componentName(recipeViewModel.getComponent())
+                        .componentName(recipeViewModel.getComponentLongName())
                         .quantity(Double.valueOf(recipeViewModel.getQuantity()))
                         .build())
                 .collect(toList());
-    }
-
-    private RecipeViewModel buildRecipeViewModel() {
-        return RecipeViewModel.builder()
-                .component(component.getSelectionModel().getSelectedItem().getLongName())
-                .unit(component.getSelectionModel().getSelectedItem().getQuantityUnit().toString())
-                .quantity(Double.valueOf(quantity.getText()).toString())
-                .build();
     }
 
     @FXML
@@ -202,27 +238,36 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
             ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.SelectComponentForDelete"));
             return;
         }
+        if(componentTable.getItems().size() == 1) {
+            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.DeleteLastComponent"));
+            return;
+        }
         componentTable.getItems().remove(componentTable.getSelectionModel().getSelectedItem());
         updateRecipe();
     }
 
-    private class ComponentChoiceBoxListener implements ChangeListener<ProductView> {
+    private class ProductChoiceBoxListener implements ChangeListener<ProductView> {
         @Override
         public void changed(ObservableValue<? extends ProductView> observable, ProductView oldValue, ProductView newValue) {
-            quantityUnit.setText(newValue.getQuantityUnit().toString());
-        }
-    }
-
-    private class OwnerChoiceBoxListener implements ChangeListener<ProductView> {
-        @Override
-        public void changed(ObservableValue<? extends ProductView> observable, ProductView oldValue, ProductView newValue) {
-            updateComponentsTable(newValue);
+            if(newValue != null) {
+                updateComponentsTable(newValue);
+            }
         }
     }
 
     private void updateComponentsTable(ProductView product) {
         ObservableList<RecipeViewModel> items =
-        FXCollections.observableArrayList(managerService.getRecipeComponents(product).stream().map(RecipeViewModel::new).collect(toList()));
+                FXCollections.observableArrayList(managerService.getRecipeComponents(product).stream().map(RecipeViewModel::new).collect(toList()));
         componentTable.setItems(items);
+    }
+
+    private class ComponentChoiceBoxListener implements ChangeListener<ProductView> {
+        @Override
+        public void changed(ObservableValue<? extends ProductView> observable, ProductView oldValue, ProductView newValue) {
+            if(newValue != null) {
+                quantityUnit.setText(newValue.getQuantityUnit().toString());
+            }
+        }
+
     }
 }

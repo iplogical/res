@@ -8,18 +8,18 @@ import lombok.Data;
 
 @Builder
 public @Data class RecipeViewModel {
-    String component;
+    String componentLongName;
     String quantity;
     String unit;
 
-    public RecipeViewModel(String component, String quantity, String unit) {
-        this.component = component;
+    public RecipeViewModel(String componentLongName, String quantity, String unit) {
+        this.componentLongName = componentLongName;
         this.quantity = quantity;
         this.unit = unit;
     }
 
     public RecipeViewModel(RecipeView recipeView) {
-        component = recipeView.getComponent().getLongName();
+        componentLongName = recipeView.getComponent().getLongName();
         quantity = valueOf(recipeView.getQuantity());
         unit = recipeView.getComponent().getQuantityUnit().name();
     }

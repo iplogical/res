@@ -94,7 +94,7 @@ public class ClickUtils extends AbstractUtils {
     public static void verifyThatNotVisible(String nodeQuery) {
         try {
             verifyThat(nodeQuery, Node::isVisible);
-            fail("Should not find the node");
+            fail("Should not find2 the node");
         } catch (NullPointerException e) {}
     }
 
@@ -114,6 +114,8 @@ public class ClickUtils extends AbstractUtils {
                 current = KeyCode.SPACE;
             } else if(c == ',') {
                 current = KeyCode.COMMA;
+            } else if(c == '.') {
+                current = KeyCode.PERIOD;
             }
             robotInterface = robotInterface.type(current);
         }
