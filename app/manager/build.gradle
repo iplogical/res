@@ -52,4 +52,6 @@ tasks.withType(JavaCompile) {
 
 launch4j {
     mainClassName = project.mainClassName
+    icon = 'C:/workspace/git/Receipt/app/manager/src/main/resources/icons/meeple.ico'
+
 }
