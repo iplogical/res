@@ -5,10 +5,13 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
+import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.StockViewModel;
 import com.inspirationlogical.receipt.manager.viewstate.StockViewState;
 import javafx.beans.value.ChangeListener;
@@ -88,6 +91,9 @@ public class StockControllerImpl extends AbstractController implements StockCont
     @Inject
     private ManagerService managerService;
 
+    @Inject
+    private StockListener.StockUpdateListener stockListener;
+
     private StockViewState stockViewState;
 
     @Override
@@ -116,30 +122,39 @@ public class StockControllerImpl extends AbstractController implements StockCont
 
     @FXML
     public void onUpdateStock(Event event) {
-        if(stockViewState.getReceiptType() == null) return;
-        List<StockParams> stockParamsList = stockTable.getItems().stream()
-                .filter(stockViewModel -> stockViewModel.getInputQuantity() != null)
-                .map(stockViewModel -> StockParams.builder()
-                        .productName(stockViewModel.getName())
-                        .quantity(Double.valueOf(stockViewModel.getInputQuantity()))
-                        .isAbsoluteQuantity(quantityDisplay.selectedProperty().getValue())
-                        .build())
-                .collect(Collectors.toList());
-        managerService.updateStock(stockParamsList, stockViewState.getReceiptType());
-        hideInputColumn();
-        actionTypeToggleGroup.selectToggle(null);
-        updateStockItems();
+        if(stockViewState.getReceiptType() == null) {
+            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("Stock.SelectReceiptType"));
+            return;
+        }
+        try {
+            List<StockParams> stockParamsList = stockTable.getItems().stream()
+            .filter(stockViewModel -> stockViewModel.getInputQuantity() != null)
+            .map(this::buildStockParams)
+            .collect(Collectors.toList());
+            managerService.updateStock(stockParamsList, stockViewState.getReceiptType(), stockListener);
+            hideInputColumn();
+            actionTypeToggleGroup.selectToggle(null);
+        } catch (NumberFormatException e) {
+            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("Stock.NumberFormatQuantity"));
+        }
+    }
+
+    private StockParams buildStockParams(StockViewModel stockViewModel) {
+        return StockParams.builder()
+                .productName(stockViewModel.getName())
+                .quantity(Double.valueOf(stockViewModel.getInputQuantity()))
+                .isAbsoluteQuantity(quantityDisplay.selectedProperty().getValue())
+                .build();
     }
 
     @FXML
     public void onQuantityDisplayToggle(Event event) {
         if(stockViewState.getIsAbsoluteQuantity().getValue()) {
             displayAbsoluteValues();
-            updateStockItems();
         } else {
             displayUnitValues();
-            updateStockItems();
         }
+        updateStockItems();
     }
 
     private void initColumns() {
@@ -164,7 +179,8 @@ public class StockControllerImpl extends AbstractController implements StockCont
         updateStockItems();
     }
 
-    private void updateStockItems() {
+    @Override
+    public void updateStockItems() {
         stockTable.getItems().clear();
         managerService.getStockItems().forEach(stockView -> stockTable.getItems().add(new StockViewModel(stockView)));
         ObservableList<StockViewModel>  items = stockTable.getItems();

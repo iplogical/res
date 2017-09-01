@@ -14,6 +14,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
@@ -95,10 +96,11 @@ public class TableAdapter extends AbstractAdapter<Table> {
                 });
     }
 
-    public void updateStock(List<StockParams> paramsList, ReceiptType receiptType) {
+    public void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
         ReceiptAdapter receiptAdapter = ReceiptAdapter.receiptAdapterFactory(receiptType);
         receiptAdapter.addStockRecords(paramsList);
         bindReceiptToTable(receiptAdapter);
+        StockListener.addObserver(listener);
         GuardedTransaction.persist(receiptAdapter.getAdaptee());
         receiptAdapter.close(PaymentParams.builder().paymentMethod(PaymentMethod.CASH)
                                                     .discountAbsolute(0)

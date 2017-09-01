@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
@@ -63,9 +64,9 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
     }
 
     @Override
-    public void updateStock(List<StockParams> params, ReceiptType receiptType) {
+    public void updateStock(List<StockParams> params, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
         TableAdapter.getTablesByType(TableType.getTableType(receiptType)).get(0)
-                .updateStock(params, receiptType);
+                .updateStock(params, receiptType, listener);
     }
 
     @Override

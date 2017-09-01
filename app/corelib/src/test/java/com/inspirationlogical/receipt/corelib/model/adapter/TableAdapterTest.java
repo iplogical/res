@@ -223,7 +223,7 @@ public class TableAdapterTest extends TestBase {
                 query -> {query.setParameter("status", ReceiptStatus.CLOSED);
                     query.setParameter("number", tablePurchase.getAdaptee().getNumber());
                     return query;});
-        tablePurchase.updateStock(paramsList, ReceiptType.PURCHASE);
+        tablePurchase.updateStock(paramsList, ReceiptType.PURCHASE, () -> {});
         List<Receipt> closedReceiptsAfter = GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
                 query -> {query.setParameter("status", ReceiptStatus.CLOSED);
                     query.setParameter("number", tablePurchase.getAdaptee().getNumber());
