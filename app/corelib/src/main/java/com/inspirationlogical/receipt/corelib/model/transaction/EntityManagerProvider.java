@@ -34,7 +34,7 @@ public class EntityManagerProvider {
     public static synchronized EntityManager getEntityManagerArchive() {
         if(emfArchive == null) {
             Map<String, String> properties = buildReceiptArchivePropoerties();
-            emfArchive = Persistence.createEntityManagerFactory("ProductionArchive");
+            emfArchive = Persistence.createEntityManagerFactory("ProductionArchive", properties);
             emArchive = emfArchive.createEntityManager();
         }
         return emArchive;

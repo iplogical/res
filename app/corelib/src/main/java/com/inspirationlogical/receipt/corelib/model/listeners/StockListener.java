@@ -27,9 +27,9 @@ public class StockListener implements ReceiptAdapter.Listener {
         BackgroundThread.execute(() -> {
             receipt.getSoldProducts().forEach(receiptRecordAdapter ->
                     StockAdapter.updateStock(receiptRecordAdapter.getAdaptee(), Optional.of(receipt.getAdaptee().getType())));
-            System.out.println(Thread.currentThread().getName() + ": StockListener executed successfully");
             observerList.forEach(StockUpdateListener::finished);
             observerList.clear();
+            System.out.println(Thread.currentThread().getName() + ": StockListener executed successfully");
         });
     }
 

@@ -20,6 +20,7 @@ public class ReceiptArchiverListener implements ReceiptAdapter.Listener {
         BackgroundThread.execute(() -> {
             cloneReceiptAndStoreToArchive(receipt);
             GuardedTransaction.detach(receipt.getAdaptee());
+            System.out.println(Thread.currentThread().getName() + ": ReceiptArchiverListener executed successfully");
         });
     }
 
@@ -27,7 +28,6 @@ public class ReceiptArchiverListener implements ReceiptAdapter.Listener {
         Receipt newReceipt = cloneReceipt(receipt);
         cloneReceiptRecords(receipt.getAdaptee().getRecords(), newReceipt);
         GuardedTransactionArchive.persist(newReceipt);
-        System.out.println(Thread.currentThread().getName() + ": ReceiptArchiverListener executed successfully");
     }
 
     private Receipt cloneReceipt(ReceiptAdapter receipt) {
