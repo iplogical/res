@@ -233,6 +233,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     protected void soldProductsRowClickHandler(SoldProductViewModel row) {
+        disableSoldProductsTableRowClickHandler();
         if(paymentViewState.isSelectivePayment()) {
             addRowToPaidProducts(row, removeRowFromSoldProducts(row));
         } else if(paymentViewState.isSinglePayment()) {
@@ -242,6 +243,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
                 partialPaymentRowClickHandler(row);
             }
         }
+        enableSoldProductsTableRowClickHandler();
     }
 
     private void singlePaymentRowClickHandler(SoldProductViewModel row) {

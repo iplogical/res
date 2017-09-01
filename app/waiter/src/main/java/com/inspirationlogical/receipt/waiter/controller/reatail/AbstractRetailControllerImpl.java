@@ -20,11 +20,13 @@ import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
+import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -101,7 +103,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected void initializeSoldProducts() {
         initializeSoldProductsTable();
-        initializeSoldProductsTableRowHandler();
+        enableSoldProductsTableRowClickHandler();
     }
 
     private void initializeSoldProductsTable() {
@@ -112,16 +114,32 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         initColumn(productTotalPrice, SoldProductViewModel::getProductTotalPrice);
     }
 
-    private void initializeSoldProductsTableRowHandler() {
+    protected void enableSoldProductsTableRowClickHandler() {
         soldProductsTable.setRowFactory(tv -> {
             TableRow<SoldProductViewModel> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if(event.getClickCount() == 1 && (! row.isEmpty())) {
-                    soldProductsRowClickHandler(row.getItem());
-                }
-            });
+            row.setOnMouseClicked(enableRowClickHandler(row));
             return row;
         });
+    }
+
+    private EventHandler<MouseEvent> enableRowClickHandler(TableRow<SoldProductViewModel> row) {
+        return event -> {
+            if(event.getClickCount() == 1 && (!row.isEmpty())) {
+                soldProductsRowClickHandler(row.getItem());
+            }
+        };
+    }
+
+    protected void disableSoldProductsTableRowClickHandler() {
+        soldProductsTable.setRowFactory(tv -> {
+            TableRow<SoldProductViewModel> row = new TableRow<>();
+            row.setOnMouseClicked(disableRowClickHandler(row));
+            return row;
+        });
+    }
+
+    private EventHandler<MouseEvent> disableRowClickHandler(TableRow<SoldProductViewModel> row) {
+        return event -> {};
     }
 
     protected abstract void soldProductsRowClickHandler(SoldProductViewModel row);
