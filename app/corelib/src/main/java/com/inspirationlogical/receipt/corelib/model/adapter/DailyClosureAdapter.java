@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
@@ -50,11 +52,11 @@ public class DailyClosureAdapter extends AbstractAdapter<DailyClosure> {
         GuardedTransaction.persist(newDailyClosure);
     }
 
-    public void update(ReceiptAdapter receipt) {
+    public void update(ReceiptAdapterBase receipt) {
         GuardedTransaction.run(() -> updateDailyClosure(receipt));
     }
 
-    private void updateDailyClosure(ReceiptAdapter receiptAdapter) {
+    private void updateDailyClosure(ReceiptAdapterBase receiptAdapter) {
         // TODO: set discount
         Receipt receipt = receiptAdapter.getAdaptee();
         updateSumPrices(receipt, receipt.getPaymentMethod());

@@ -1,23 +1,20 @@
 package com.inspirationlogical.receipt.corelib.model.listeners;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
-import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 
 /**
  * Created by TheDagi on 2017. 04. 17..
  */
-public class DailyClosureListener implements ReceiptAdapter.Listener {
+public class DailyClosureListener implements ReceiptAdapterPay.Listener {
     @Override
-    public void onOpen(ReceiptAdapter receipt) {
+    public void onOpen(ReceiptAdapterPay receipt) {
 
     }
 
     @Override
-    public void onClose(ReceiptAdapter receipt) {
+    public void onClose(ReceiptAdapterBase receipt) {
         DailyClosureAdapter.getOpenDailyClosure().update(receipt);
     }
 }

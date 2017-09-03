@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
 import javafx.geometry.Dimension2D;
@@ -20,7 +24,7 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
 
     @Override
     public boolean isOpen() {
-        return adapter.getOpenReceipt() != null;
+        return ReceiptAdapter.getOpenReceipt(adapter.getAdaptee().getNumber()) != null;
     }
 
     @Override
@@ -111,7 +115,7 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
         if(adapter == null ) {
             return 0;
         }
-        return adapter.getOpenReceipt().getTotalPrice();
+        return ((ReceiptAdapterBase)ReceiptAdapter.getOpenReceipt(adapter.getAdaptee().getNumber())).getTotalPrice();
     }
 
     @Override

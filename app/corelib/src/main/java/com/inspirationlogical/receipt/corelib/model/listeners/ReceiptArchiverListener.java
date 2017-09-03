@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.listeners;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
@@ -8,15 +9,15 @@ import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 
 import java.util.List;
 
-public class ReceiptArchiverListener implements ReceiptAdapter.Listener {
+public class ReceiptArchiverListener implements ReceiptAdapterPay.Listener {
 
     @Override
-    public void onOpen(ReceiptAdapter receipt) {
+    public void onOpen(ReceiptAdapterPay receipt) {
 
     }
 
     @Override
-    public void onClose(ReceiptAdapter receipt) {
+    public void onClose(ReceiptAdapterBase receipt) {
         BackgroundThread.execute(() -> {
             cloneReceiptAndStoreToArchive(receipt);
             GuardedTransaction.detach(receipt.getAdaptee());
@@ -24,13 +25,13 @@ public class ReceiptArchiverListener implements ReceiptAdapter.Listener {
         });
     }
 
-    void cloneReceiptAndStoreToArchive(ReceiptAdapter receipt) {
+    void cloneReceiptAndStoreToArchive(ReceiptAdapterBase receipt) {
         Receipt newReceipt = cloneReceipt(receipt);
         cloneReceiptRecords(receipt.getAdaptee().getRecords(), newReceipt);
         GuardedTransactionArchive.persist(newReceipt);
     }
 
-    private Receipt cloneReceipt(ReceiptAdapter receipt) {
+    private Receipt cloneReceipt(ReceiptAdapterBase receipt) {
         List<Table> tables = GuardedTransactionArchive.runNamedQuery(Table.GET_TABLE_BY_NUMBER, query ->
             query.setParameter("number", receipt.getAdaptee().getOwner().getNumber()));
         List<VATSerie> vatSeries = GuardedTransactionArchive.runNamedQuery((VATSerie.GET_VAT_SERIE));

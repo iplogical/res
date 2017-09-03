@@ -1,11 +1,11 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -16,12 +16,12 @@ import static org.junit.Assert.assertNull;
 public class DailyClosureAdapterTest extends TestBase {
 
     private DailyClosureAdapter openDailyClosure;
-    private ReceiptAdapter receipt;
+    private ReceiptAdapterBase receipt;
 
     @Before
     public void setUp() {
         openDailyClosure = new DailyClosureAdapter(schema.getDailyClosureTwo());
-        receipt = new ReceiptAdapter(schema.getReceiptSaleOne());
+        receipt = new ReceiptAdapterBase(schema.getReceiptSaleOne());
     }
 
     @Test

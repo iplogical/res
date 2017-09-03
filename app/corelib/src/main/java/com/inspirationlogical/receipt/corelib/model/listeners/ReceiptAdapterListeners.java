@@ -7,12 +7,12 @@ package com.inspirationlogical.receipt.corelib.model.listeners;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 
 public class ReceiptAdapterListeners {
 
-    public static  List<ReceiptAdapter.Listener> getAllListeners(){
-        List<ReceiptAdapter.Listener> list = new ArrayList<>();
+    public static  List<ReceiptAdapterPay.Listener> getAllListeners(){
+        List<ReceiptAdapterPay.Listener> list = new ArrayList<>();
         list.add(new ReceiptPrinter());
         list.add(new StockListener());
         list.add(new DailyClosureListener());

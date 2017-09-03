@@ -5,6 +5,7 @@ import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;

@@ -3,6 +3,8 @@ package com.inspirationlogical.receipt.corelib.service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.adapter.*;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
@@ -99,7 +101,7 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Override
     public List<ReceiptView> getReceipts() {
-        return ReceiptAdapter.getReceipts()
+        return ReceiptAdapterBase.getReceipts()
                 .stream()
                 .map(ReceiptViewImpl::new)
                 .collect(toList());

@@ -1,34 +1,25 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import static com.inspirationlogical.receipt.corelib.model.enums.TableType.canBeHosted;
-import static java.util.stream.Collectors.toList;
-
-import java.time.LocalDate;
-import java.util.List;
-import javax.persistence.EntityManager;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.adapter.*;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
-import com.inspirationlogical.receipt.corelib.model.view.ReservationViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
-import com.inspirationlogical.receipt.corelib.model.view.RestaurantViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
-
 import com.inspirationlogical.receipt.corelib.params.TableParams;
-import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import static com.inspirationlogical.receipt.corelib.model.enums.TableType.canBeHosted;
+import static java.util.stream.Collectors.toList;
 
 @Singleton
 public class RestaurantServiceImpl extends AbstractService implements RestaurantService {
@@ -74,11 +65,11 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public void mergeTables(TableView consumer, List<TableView> consumed) {
-        TableAdapter consumerTableAdapter = getTableAdapter(consumer);
-        List<TableAdapter> consumedTableAdapters = consumed.stream()
-                .map(this::getTableAdapter)
-                .collect(toList());
-        getRestaurantAdapter(getActiveRestaurant()).mergeTables(consumerTableAdapter, consumedTableAdapters);
+//        TableAdapter consumerTableAdapter = getTableAdapter(consumer);
+//        List<TableAdapter> consumedTableAdapters = consumed.stream()
+//                .map(this::getTableAdapter)
+//                .collect(toList());
+//        getRestaurantAdapter(getActiveRestaurant()).mergeTables(consumerTableAdapter, consumedTableAdapters);
     }
 
     @Override
@@ -139,7 +130,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     @Override
     public void closeDay() {
         StockAdapter.closeLatestStockEntries();
-        ReceiptAdapter.deleteReceipts();
+        ReceiptAdapterBase.deleteReceipts();
         DailyClosureAdapter.getOpenDailyClosure().close();
     }
 

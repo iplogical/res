@@ -4,7 +4,6 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.util.Collection;
-import javax.persistence.EntityManager;
 
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
@@ -15,7 +14,7 @@ import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
@@ -38,7 +37,7 @@ public class RetailServiceTest {
     private TableAdapter tableAdapter;
 
     @Mock
-    private ReceiptAdapter receiptAdapter;
+    private ReceiptAdapterBase receiptAdapter;
 
     @Mock
     private ProductViewImpl productView;

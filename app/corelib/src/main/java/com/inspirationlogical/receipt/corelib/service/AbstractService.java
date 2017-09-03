@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.adapter.*;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 
 import java.util.List;
@@ -38,7 +38,7 @@ abstract class AbstractService {
         return ((ProductCategoryViewImpl)category).getAdapter();
     }
 
-    ReceiptAdapter getReceiptAdapter(ReceiptView receiptView) {
+    ReceiptAdapterBase getReceiptAdapter(ReceiptView receiptView) {
         return ((ReceiptViewImpl)receiptView).getAdapter();
     }
 

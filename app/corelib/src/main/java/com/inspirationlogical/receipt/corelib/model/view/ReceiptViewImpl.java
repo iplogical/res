@@ -5,17 +5,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 
-public class ReceiptViewImpl extends AbstractModelViewImpl<ReceiptAdapter>
+public class ReceiptViewImpl extends AbstractModelViewImpl<ReceiptAdapterBase>
     implements ReceiptView {
 
-    public ReceiptViewImpl(ReceiptAdapter adapter) {
+    public ReceiptViewImpl(ReceiptAdapterBase adapter) {
         super(adapter);
     }
 

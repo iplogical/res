@@ -15,6 +15,7 @@ import java.util.List;
 import javax.persistence.RollbackException;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import javafx.geometry.Dimension2D;
@@ -275,7 +276,7 @@ public class TableAdapterTest extends TestBase {
 
     @Test
     public void testExchangeTablesOneIsOpen() {
-        ReceiptAdapter openReceipt = tableNormal.getOpenReceipt();
+        ReceiptAdapterBase openReceipt = tableNormal.getOpenReceipt();
         tableNormal.exchangeTables(tableNormalClosed);
         assertNull(tableNormal.getOpenReceipt());
         assertEquals(openReceipt.getAdaptee(), tableNormalClosed.getOpenReceipt().getAdaptee());
@@ -289,8 +290,8 @@ public class TableAdapterTest extends TestBase {
                 receipt.setClosureTime(null);
             });
         });
-        ReceiptAdapter receiptOfTableNormal = tableNormal.getOpenReceipt();
-        ReceiptAdapter receiptOfTableNormalClosed = tableNormalClosed.getOpenReceipt();
+        ReceiptAdapterBase receiptOfTableNormal = tableNormal.getOpenReceipt();
+        ReceiptAdapterBase receiptOfTableNormalClosed = tableNormalClosed.getOpenReceipt();
         tableNormal.exchangeTables(tableNormalClosed);
         assertEquals(receiptOfTableNormal.getAdaptee(), tableNormalClosed.getOpenReceipt().getAdaptee());
         assertEquals(receiptOfTableNormalClosed.getAdaptee(), tableNormal.getOpenReceipt().getAdaptee());

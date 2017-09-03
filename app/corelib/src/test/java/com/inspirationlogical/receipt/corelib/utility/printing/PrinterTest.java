@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.corelib.utility.printing;
 
 import com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema;
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.utility.ReceiptToXML;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,7 +21,7 @@ public class PrinterTest {
 
     @Before
     public void closeReceiptSaleOneAndGeneratePDF(){
-        ReceiptAdapter ra = new ReceiptAdapter(schema.getReceiptSaleTwo());
+        ReceiptAdapterBase ra = new ReceiptAdapterBase(schema.getReceiptSaleTwo());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         new ReceiptFormatterEpsonTMT20II().convertToPDF(out,
                 ReceiptToXML.ConvertToStream(ra)

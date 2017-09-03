@@ -27,7 +27,8 @@ import com.inspirationlogical.receipt.corelib.jaxb.ReceiptFooter;
 import com.inspirationlogical.receipt.corelib.jaxb.ReceiptHeader;
 import com.inspirationlogical.receipt.corelib.jaxb.TagCurrencyValue;
 import com.inspirationlogical.receipt.corelib.jaxb.TagValuePair;
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
@@ -40,7 +41,7 @@ import org.xml.sax.SAXException;
  */
 public class ReceiptToXML {
     // TODO: Change database encoding to UTF-8. Use UTF-8 everywhere.
-    public static Receipt Convert(ReceiptAdapter receiptAdapter) {
+    public static Receipt Convert(ReceiptAdapterBase receiptAdapter) {
         return createReceipt(receiptAdapter, new ObjectFactory());
     }
 
@@ -56,7 +57,7 @@ public class ReceiptToXML {
         }
     }
 
-    public static InputStream ConvertToStream(ReceiptAdapter receiptAdapter) {
+    public static InputStream ConvertToStream(ReceiptAdapterBase receiptAdapter) {
         Receipt r = createReceipt(receiptAdapter, new ObjectFactory());
         try {
             JAXBContext context = JAXBContext.newInstance("com.inspirationlogical.receipt.corelib.jaxb");
@@ -72,7 +73,7 @@ public class ReceiptToXML {
         }
     }
 
-    private static Receipt createReceipt(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
+    private static Receipt createReceipt(ReceiptAdapterBase receiptAdapter, ObjectFactory factory) {
         Receipt receipt = factory.createReceipt();
         receipt.setHeader(createHeader(receiptAdapter, factory));
         receipt.setBody(createReceiptBody(receiptAdapter, factory));
@@ -80,7 +81,7 @@ public class ReceiptToXML {
         return receipt;
     }
 
-    private static ReceiptFooter createFooter(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
+    private static ReceiptFooter createFooter(ReceiptAdapterBase receiptAdapter, ObjectFactory factory) {
         ReceiptFooter footer = factory.createReceiptFooter();
         Restaurant restaurant = receiptAdapter.getAdaptee().getOwner().getOwner();
         setOptionalString(footer::setDisclaimer,restaurant.getReceiptDisclaimer());
@@ -123,7 +124,7 @@ public class ReceiptToXML {
     }
 
 
-    private static ReceiptHeader createHeader(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
+    private static ReceiptHeader createHeader(ReceiptAdapterBase receiptAdapter, ObjectFactory factory) {
         ReceiptHeader header = factory.createReceiptHeader();
         Restaurant restaurant = receiptAdapter.getAdaptee().getOwner().getOwner();
         header.setRestaurantLogoPath(Resources.CONFIG.getString("ReceiptLogoPath"));
@@ -137,7 +138,7 @@ public class ReceiptToXML {
         return header;
     }
 
-    private static void setCustomerInfo(ReceiptAdapter adapter, ReceiptBody body, ObjectFactory factory) {
+    private static void setCustomerInfo(ReceiptAdapterBase adapter, ReceiptBody body, ObjectFactory factory) {
         Client client = adapter.getAdaptee().getClient();
         if (client != null) {
             CustomerInfo customer = factory.createCustomerInfo();
@@ -151,7 +152,7 @@ public class ReceiptToXML {
         }
     }
 
-    private static ReceiptBody createReceiptBody(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
+    private static ReceiptBody createReceiptBody(ReceiptAdapterBase receiptAdapter, ObjectFactory factory) {
         ReceiptBody body = factory.createReceiptBody();
         setCustomerInfo(receiptAdapter, body, factory);
         body.setType(Resources.PRINTER.getString("RECEIPTTYPE_" + receiptAdapter.getAdaptee().getType().toString().toUpperCase()));
@@ -174,7 +175,7 @@ public class ReceiptToXML {
         return body;
     }
 
-    private static ReceiptBodyHeader createReceiptBodyHeader(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
+    private static ReceiptBodyHeader createReceiptBodyHeader(ReceiptAdapterBase receiptAdapter, ObjectFactory factory) {
         ReceiptBodyHeader header = factory.createReceiptBodyHeader();
         header.setNameHeader(Resources.PRINTER.getString("NameHeader"));
         header.setQtyHeader(Resources.PRINTER.getString("QtyHeader"));
@@ -202,7 +203,7 @@ public class ReceiptToXML {
         return tv;
     }
 
-    private static ReceiptBodyFooter createReceiptBodyFooter(ReceiptAdapter receiptAdapter, ObjectFactory factory) {
+    private static ReceiptBodyFooter createReceiptBodyFooter(ReceiptAdapterBase receiptAdapter, ObjectFactory factory) {
         ReceiptBodyFooter footer = factory.createReceiptBodyFooter();
         footer.setTotal(createTagCurrencyValue(factory,
                 Resources.PRINTER.getString("TotalTag"),

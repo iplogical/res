@@ -1,10 +1,9 @@
 package com.inspirationlogical.receipt.corelib.model.listeners;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
-import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,11 +12,11 @@ import static org.junit.Assert.assertEquals;
 
 public class ReceiptArchiverListenerTest extends TestBase {
 
-    private ReceiptAdapter receiptSaleOne;
+    private ReceiptAdapterBase receiptSaleOne;
 
     @Before
     public void createAdapters() {
-        receiptSaleOne = new ReceiptAdapter(schema.getReceiptSaleOne());
+        receiptSaleOne = new ReceiptAdapterBase(schema.getReceiptSaleOne());
     }
 
     @Test

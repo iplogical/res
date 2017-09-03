@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapter.getOpenReceipt;
 import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER;
 import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
 import static java.util.stream.Collectors.toList;
@@ -8,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.*;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
@@ -77,27 +79,21 @@ public class TableAdapter extends AbstractAdapter<Table> {
         return tables.stream().mapToInt(Table::getNumber).min().orElse(0) + 1;
     }
 
-    public ReceiptAdapter getOpenReceipt() {
-        List<Receipt> adapters = getReceiptsByStatusAndOwner(ReceiptStatus.OPEN, adaptee.getNumber());
-        if (adapters.size() == 0) {
-            return null;
-        } else if (adapters.size() > 1) {
-            throw new RuntimeException();
-        }
-        return new ReceiptAdapter(adapters.get(0));
+    public ReceiptAdapterBase getOpenReceipt() {
+        return (ReceiptAdapterBase)ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
     }
 
-    private List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
-        return GuardedTransaction.runNamedQuery(GET_RECEIPT_BY_STATUS_AND_OWNER, GRAPH_RECEIPT_AND_RECORDS,
-                query -> {
-                    query.setParameter("status", status);
-                    query.setParameter("number", tableNumber);
-                    return query;
-                });
-    }
+//    private List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
+//        return GuardedTransaction.runNamedQuery(GET_RECEIPT_BY_STATUS_AND_OWNER, GRAPH_RECEIPT_AND_RECORDS,
+//                query -> {
+//                    query.setParameter("status", status);
+//                    query.setParameter("number", tableNumber);
+//                    return query;
+//                });
+//    }
 
     public void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
-        ReceiptAdapter receiptAdapter = ReceiptAdapter.receiptAdapterFactory(receiptType);
+        ReceiptAdapterBase receiptAdapter = (ReceiptAdapterBase) ReceiptAdapter.receiptAdapterFactory(receiptType);
         receiptAdapter.addStockRecords(paramsList);
         bindReceiptToTable(receiptAdapter);
         StockListener.addObserver(listener);
@@ -108,7 +104,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
                                                     .build());
     }
 
-    private void bindReceiptToTable(ReceiptAdapter receiptAdapter) {
+    private void bindReceiptToTable(ReceiptAdapterBase receiptAdapter) {
         receiptAdapter.getAdaptee().setOwner(adaptee);
         adaptee.getReceipts().add(receiptAdapter.getAdaptee());
     }
@@ -195,7 +191,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         if (isTableOpen()) {
             throw new IllegalTableStateException("Open table for an open table. Table number: " + adaptee.getNumber());
         }
-        ReceiptAdapter receiptAdapter = ReceiptAdapter.receiptAdapterFactory(ReceiptType.SALE);
+        ReceiptAdapterBase receiptAdapter = (ReceiptAdapterBase)ReceiptAdapter.receiptAdapterFactory(ReceiptType.SALE);
         bindReceiptToTable(receiptAdapter);
         GuardedTransaction.persist(receiptAdapter.getAdaptee());
     }
@@ -204,7 +200,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         if (!isTableOpen()) {
             throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
         }
-        getOpenReceipt().close(paymentParams);
+        ReceiptAdapter.getOpenReceipt(adaptee.getNumber()).close(paymentParams);
         setDefaultTableParams();
     }
 
@@ -218,19 +214,19 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-        ReceiptAdapter activeReceipt = getOpenReceipt();
-        if(activeReceipt == null) {
+        ReceiptAdapter openReceipt = ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
+        if(openReceipt == null) {
             throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
         }
-        activeReceipt.paySelective(records, paymentParams);
+        openReceipt.paySelective(records, paymentParams);
     }
 
     public void payPartial(double partialValue, PaymentParams paymentParams) {
-        ReceiptAdapter activeReceipt = getOpenReceipt();
-        if(activeReceipt == null) {
+        ReceiptAdapter openReceipt = ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
+        if(openReceipt == null) {
             throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
         }
-        activeReceipt.payPartial(partialValue, paymentParams);
+        openReceipt.payPartial(partialValue, paymentParams);
     }
 
     public void deleteTable() {
@@ -271,7 +267,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public boolean isTableOpen() {
-        return this.getOpenReceipt() != null;
+        return ReceiptAdapter.getOpenReceipt(adaptee.getNumber()) != null;
     }
 
     public boolean isConsumerTable() {
@@ -302,43 +298,43 @@ public class TableAdapter extends AbstractAdapter<Table> {
 
     public void exchangeTables(TableAdapter other) {
         GuardedTransaction.run(() -> {
-            ReceiptAdapter receiptOfThis =  getOpenReceipt();
-            ReceiptAdapter receiptOfOther = other.getOpenReceipt();
+            ReceiptAdapterBase receiptOfThis = (ReceiptAdapterBase)ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
+            ReceiptAdapterBase receiptOfOther = (ReceiptAdapterBase)ReceiptAdapter.getOpenReceipt(other.getAdaptee().getNumber());
             if(bothAreOpen(receiptOfThis, receiptOfOther)) {
                 exchangeOwners(other, receiptOfThis, receiptOfOther);
             } else if(oneIsOpen(receiptOfThis, receiptOfOther)) {
-                ReceiptAdapter openReceipt = getTheOpenReceipt(receiptOfThis, receiptOfOther);
+                ReceiptAdapterBase openReceipt = getTheOpenReceipt(receiptOfThis, receiptOfOther);
                 changeOwner(openReceipt, other);
             }
         });
     }
 
-    private boolean bothAreOpen(ReceiptAdapter receiptOfThis, ReceiptAdapter receiptOfOther) {
+    private boolean bothAreOpen(ReceiptAdapterBase receiptOfThis, ReceiptAdapterBase receiptOfOther) {
         return receiptOfThis != null && receiptOfOther != null;
     }
 
-    private void exchangeOwners(TableAdapter other, ReceiptAdapter receiptOfThis, ReceiptAdapter receiptOfOther) {
+    private void exchangeOwners(TableAdapter other, ReceiptAdapterBase receiptOfThis, ReceiptAdapterBase receiptOfOther) {
         removeFromThisAndAddToOther(other, receiptOfThis);
         receiptOfThis.getAdaptee().setOwner(other.getAdaptee());
         removeFromOtherAndAddToThis(other, receiptOfOther);
         receiptOfOther.getAdaptee().setOwner(adaptee);
     }
 
-    private void removeFromThisAndAddToOther(TableAdapter other, ReceiptAdapter receiptOfThis) {
+    private void removeFromThisAndAddToOther(TableAdapter other, ReceiptAdapterBase receiptOfThis) {
         adaptee.getReceipts().remove(receiptOfThis.getAdaptee());
         other.getAdaptee().getReceipts().add(receiptOfThis.getAdaptee());
     }
 
-    private void removeFromOtherAndAddToThis(TableAdapter other, ReceiptAdapter receiptOfOther) {
+    private void removeFromOtherAndAddToThis(TableAdapter other, ReceiptAdapterBase receiptOfOther) {
         other.getAdaptee().getReceipts().remove(receiptOfOther.getAdaptee());
         adaptee.getReceipts().add(receiptOfOther.getAdaptee());
     }
 
-    private boolean oneIsOpen(ReceiptAdapter receiptOfThis, ReceiptAdapter receiptOfOther) {
+    private boolean oneIsOpen(ReceiptAdapterBase receiptOfThis, ReceiptAdapterBase receiptOfOther) {
         return receiptOfThis != null || receiptOfOther != null;
     }
 
-    private void changeOwner(ReceiptAdapter openReceipt, TableAdapter other) {
+    private void changeOwner(ReceiptAdapterBase openReceipt, TableAdapter other) {
         if(openReceipt.getAdaptee().getOwner().equals(adaptee)) {
             removeFromThisAndAddToOther(other, openReceipt);
             openReceipt.getAdaptee().setOwner(other.getAdaptee());
@@ -348,7 +344,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         }
     }
 
-    private ReceiptAdapter getTheOpenReceipt(ReceiptAdapter receiptOfThis, ReceiptAdapter receiptOfOther) {
+    private ReceiptAdapterBase getTheOpenReceipt(ReceiptAdapterBase receiptOfThis, ReceiptAdapterBase receiptOfOther) {
         if(receiptOfThis != null) {
             return receiptOfThis;
         }

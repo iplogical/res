@@ -59,7 +59,7 @@ public class ProductAdapter extends AbstractAdapter<Product> {
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
-    static ProductAdapter getAdHocProduct() {
+    public static ProductAdapter getAdHocProduct() {
                 List<Product> adHocProductList = GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_TYPE,
                         query -> {
                     query.setParameter("type", ProductType.AD_HOC_PRODUCT);
@@ -71,7 +71,7 @@ public class ProductAdapter extends AbstractAdapter<Product> {
         return new ProductAdapter(adHocProductList.get(0));
     }
 
-    static ProductAdapter getGameFeeProduct() {
+    public static ProductAdapter getGameFeeProduct() {
         List<Product> gameFeeProductList = GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_TYPE,
                 query -> query.setParameter("type", ProductType.GAME_FEE_PRODUCT));
         if(gameFeeProductList.isEmpty()) {
@@ -85,7 +85,7 @@ public class ProductAdapter extends AbstractAdapter<Product> {
     }
 
 
-    ProductCategoryAdapter getCategoryAdapter() {
+    public ProductCategoryAdapter getCategoryAdapter() {
         return new ProductCategoryAdapter(adaptee.getCategory());
     }
 

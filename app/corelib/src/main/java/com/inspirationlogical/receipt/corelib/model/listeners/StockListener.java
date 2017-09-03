@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.listeners;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
 import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 
@@ -9,7 +10,7 @@ import java.util.*;
 /**
  * Created by Bálint on 2017.04.04..
  */
-public class StockListener implements ReceiptAdapter.Listener {
+public class StockListener implements ReceiptAdapterPay.Listener {
 
     @FunctionalInterface
     public interface StockUpdateListener {
@@ -18,12 +19,12 @@ public class StockListener implements ReceiptAdapter.Listener {
     private static List<StockUpdateListener> observerList = new ArrayList<>();
 
     @Override
-    public void onOpen(ReceiptAdapter receipt) {
+    public void onOpen(ReceiptAdapterPay receipt) {
 
     }
 
     @Override
-    public void onClose(ReceiptAdapter receipt) {
+    public void onClose(ReceiptAdapterBase receipt) {
         BackgroundThread.execute(() -> {
             receipt.getSoldProducts().forEach(receiptRecordAdapter ->
                     StockAdapter.updateStock(receiptRecordAdapter.getAdaptee(), Optional.of(receipt.getAdaptee().getType())));
