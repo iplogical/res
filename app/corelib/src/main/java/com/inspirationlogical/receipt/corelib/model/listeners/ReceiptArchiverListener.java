@@ -3,9 +3,7 @@ package com.inspirationlogical.receipt.corelib.model.listeners;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.entity.*;
-import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
-import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 
 import java.util.List;
 
@@ -17,12 +15,12 @@ public class ReceiptArchiverListener implements ReceiptAdapterPay.Listener {
     }
 
     @Override
-    public void onClose(ReceiptAdapterBase receipt) {
-        BackgroundThread.execute(() -> {
-            cloneReceiptAndStoreToArchive(receipt);
-            GuardedTransaction.detach(receipt.getAdaptee());
-            System.out.println(Thread.currentThread().getName() + ": ReceiptArchiverListener executed successfully");
-        });
+    public void onClose(Receipt receipt) {
+//        BackgroundThread.execute(() -> {
+//            cloneReceiptAndStoreToArchive(receipt);
+//            GuardedTransaction.detach(receipt.getAdaptee());
+//            System.out.println(Thread.currentThread().getName() + ": ReceiptArchiverListener executed successfully");
+//        });
     }
 
     void cloneReceiptAndStoreToArchive(ReceiptAdapterBase receipt) {

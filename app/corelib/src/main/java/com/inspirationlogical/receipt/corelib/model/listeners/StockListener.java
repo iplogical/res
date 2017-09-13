@@ -1,8 +1,8 @@
 package com.inspirationlogical.receipt.corelib.model.listeners;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 
 import java.util.*;
@@ -24,10 +24,10 @@ public class StockListener implements ReceiptAdapterPay.Listener {
     }
 
     @Override
-    public void onClose(ReceiptAdapterBase receipt) {
+    public void onClose(Receipt receipt) {
         BackgroundThread.execute(() -> {
-            receipt.getSoldProducts().forEach(receiptRecordAdapter ->
-                    StockAdapter.updateStock(receiptRecordAdapter.getAdaptee(), Optional.of(receipt.getAdaptee().getType())));
+            receipt.getRecords().forEach(receiptRecord ->
+                    StockAdapter.updateStock(receiptRecord, Optional.of(receipt.getType())));
             observerList.forEach(StockUpdateListener::finished);
             observerList.clear();
             System.out.println(Thread.currentThread().getName() + ": StockListener executed successfully");

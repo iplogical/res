@@ -52,13 +52,12 @@ public class DailyClosureAdapter extends AbstractAdapter<DailyClosure> {
         GuardedTransaction.persist(newDailyClosure);
     }
 
-    public void update(ReceiptAdapterBase receipt) {
+    public void update(Receipt receipt) {
         GuardedTransaction.run(() -> updateDailyClosure(receipt));
     }
 
-    private void updateDailyClosure(ReceiptAdapterBase receiptAdapter) {
+    private void updateDailyClosure(Receipt receipt) {
         // TODO: set discount
-        Receipt receipt = receiptAdapter.getAdaptee();
         updateSumPrices(receipt, receipt.getPaymentMethod());
         adaptee.setNumberOfReceipts(adaptee.getNumberOfReceipts() + 1);
     }

@@ -145,8 +145,8 @@ public class RestaurantAdapterTest extends TestBase {
 
     @Test
     public void testCreateReceiptOfDailyConsumptionNumberOfRecords() {
-        ReceiptAdapterBase receipt = restaurantAdapter.createReceiptOfDailyConsumption();
-        assertEquals(totalRecordsOfTheDay, receipt.getAdaptee().getRecords().size());
+        Receipt receipt = restaurantAdapter.createReceiptOfDailyConsumption();
+        assertEquals(totalRecordsOfTheDay, receipt.getRecords().size());
     }
 
     @Test
@@ -155,8 +155,8 @@ public class RestaurantAdapterTest extends TestBase {
         receiptSaleTwo.getRecords().get(0).setDiscountPercent(20);
         receiptSaleFour.getRecords().get(0).setName("testRecord");
         receiptSaleFour.getRecords().get(0).setDiscountPercent(20);
-        ReceiptAdapterBase receipt = restaurantAdapter.createReceiptOfDailyConsumption();
-        assertEquals(totalRecordsOfTheDay - 1, receipt.getAdaptee().getRecords().size());
+        Receipt receipt = restaurantAdapter.createReceiptOfDailyConsumption();
+        assertEquals(totalRecordsOfTheDay - 1, receipt.getRecords().size());
     }
 
     @Test
@@ -164,14 +164,14 @@ public class RestaurantAdapterTest extends TestBase {
         int totalCash = receiptSaleFour.getSumSaleGrossPrice() + receiptSaleClosedTable.getSumSaleGrossPrice();
         int totalCreditCard = receiptSaleTwo.getSumSaleGrossPrice();
         int totalCoupon = 0;
-        ReceiptAdapterBase receipt = restaurantAdapter.createReceiptOfDailyConsumption();
+        Receipt receipt = restaurantAdapter.createReceiptOfDailyConsumption();
         assertEquals(totalCash, getSalePrice(receipt, PaymentMethod.CASH));
         assertEquals(totalCreditCard, getSalePrice(receipt, PaymentMethod.CREDIT_CARD));
         assertEquals(totalCoupon, getSalePrice(receipt, PaymentMethod.COUPON));
     }
 
-    private int getSalePrice(ReceiptAdapterBase receipt, PaymentMethod paymentMethod) {
-        return receipt.getAdaptee().getRecords().stream()
+    private int getSalePrice(Receipt receipt, PaymentMethod paymentMethod) {
+        return receipt.getRecords().stream()
                         .filter(record -> record.getName().equals(paymentMethod.toString()))
                         .collect(toList()).get(0).getSalePrice();
     }

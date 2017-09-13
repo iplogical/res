@@ -5,8 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 import com.inspirationlogical.receipt.corelib.utility.ReceiptToXML;
 import com.inspirationlogical.receipt.corelib.utility.printing.FilePrinter;
@@ -34,7 +34,7 @@ public class ReceiptPrinter implements ReceiptAdapterPay.Listener {
      * @param receipt to print
      */
     @Override
-    public void onClose(ReceiptAdapterBase receipt) {
+    public void onClose(Receipt receipt) {
         BackgroundThread.execute(() -> {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             FormatterService.create().convertToPDF(out,ReceiptToXML.ConvertToStream(receipt));

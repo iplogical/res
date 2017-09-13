@@ -83,15 +83,6 @@ public class TableAdapter extends AbstractAdapter<Table> {
         return (ReceiptAdapterBase)ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
     }
 
-//    private List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
-//        return GuardedTransaction.runNamedQuery(GET_RECEIPT_BY_STATUS_AND_OWNER, GRAPH_RECEIPT_AND_RECORDS,
-//                query -> {
-//                    query.setParameter("status", status);
-//                    query.setParameter("number", tableNumber);
-//                    return query;
-//                });
-//    }
-
     public void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
         ReceiptAdapterBase receiptAdapter = (ReceiptAdapterBase) ReceiptAdapter.receiptAdapterFactory(receiptType);
         receiptAdapter.addStockRecords(paramsList);

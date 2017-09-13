@@ -27,8 +27,6 @@ import com.inspirationlogical.receipt.corelib.jaxb.ReceiptFooter;
 import com.inspirationlogical.receipt.corelib.jaxb.ReceiptHeader;
 import com.inspirationlogical.receipt.corelib.jaxb.TagCurrencyValue;
 import com.inspirationlogical.receipt.corelib.jaxb.TagValuePair;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
@@ -41,8 +39,8 @@ import org.xml.sax.SAXException;
  */
 public class ReceiptToXML {
     // TODO: Change database encoding to UTF-8. Use UTF-8 everywhere.
-    public static Receipt Convert(ReceiptAdapterBase receiptAdapter) {
-        return createReceipt(receiptAdapter, new ObjectFactory());
+    public static Receipt Convert(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
+        return createReceipt(receipt, new ObjectFactory());
     }
 
     private static Schema schema;
@@ -57,8 +55,8 @@ public class ReceiptToXML {
         }
     }
 
-    public static InputStream ConvertToStream(ReceiptAdapterBase receiptAdapter) {
-        Receipt r = createReceipt(receiptAdapter, new ObjectFactory());
+    public static InputStream ConvertToStream(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
+        Receipt r = createReceipt(receipt, new ObjectFactory());
         try {
             JAXBContext context = JAXBContext.newInstance("com.inspirationlogical.receipt.corelib.jaxb");
             Marshaller jaxbMarshaller = context.createMarshaller();
@@ -73,23 +71,23 @@ public class ReceiptToXML {
         }
     }
 
-    private static Receipt createReceipt(ReceiptAdapterBase receiptAdapter, ObjectFactory factory) {
-        Receipt receipt = factory.createReceipt();
-        receipt.setHeader(createHeader(receiptAdapter, factory));
-        receipt.setBody(createReceiptBody(receiptAdapter, factory));
-        receipt.setFooter(createFooter(receiptAdapter, factory));
-        return receipt;
+    private static Receipt createReceipt(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ObjectFactory factory) {
+        Receipt receiptJAXB = factory.createReceipt();
+        receiptJAXB.setHeader(createHeader(receipt, factory));
+        receiptJAXB.setBody(createReceiptBody(receipt, factory));
+        receiptJAXB.setFooter(createFooter(receipt, factory));
+        return receiptJAXB;
     }
 
-    private static ReceiptFooter createFooter(ReceiptAdapterBase receiptAdapter, ObjectFactory factory) {
+    private static ReceiptFooter createFooter(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ObjectFactory factory) {
         ReceiptFooter footer = factory.createReceiptFooter();
-        Restaurant restaurant = receiptAdapter.getAdaptee().getOwner().getOwner();
+        Restaurant restaurant = receipt.getOwner().getOwner();
         setOptionalString(footer::setDisclaimer,restaurant.getReceiptDisclaimer());
         setOptionalString(footer::setNote, restaurant.getReceiptNote());
         setOptionalString(footer::setGreet, restaurant.getReceiptGreet());
-        GregorianCalendar gc = GregorianCalendar.from(receiptAdapter.getAdaptee().getClosureTime().atZone(ZoneId.systemDefault()));
+        GregorianCalendar gc = GregorianCalendar.from(receipt.getClosureTime().atZone(ZoneId.systemDefault()));
         footer.setDatetime(new XMLGregorianCalendarImpl(gc));
-        footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag") + ":" + receiptAdapter.getAdaptee().getId().toString());
+        footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag") + ":" + receipt.getId().toString());
         footer.setVendorInfo(Resources.PRINTER.getString("VendorInfo"));
         return footer;
     }
@@ -124,9 +122,9 @@ public class ReceiptToXML {
     }
 
 
-    private static ReceiptHeader createHeader(ReceiptAdapterBase receiptAdapter, ObjectFactory factory) {
+    private static ReceiptHeader createHeader(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ObjectFactory factory) {
         ReceiptHeader header = factory.createReceiptHeader();
-        Restaurant restaurant = receiptAdapter.getAdaptee().getOwner().getOwner();
+        Restaurant restaurant = receipt.getOwner().getOwner();
         header.setRestaurantLogoPath(Resources.CONFIG.getString("ReceiptLogoPath"));
         header.setRestaurantName(restaurant.getRestaurantName());
         header.setRestaurantAddress(restaurant.getRestaurantAddress().getZIPCode() + " "
@@ -138,8 +136,8 @@ public class ReceiptToXML {
         return header;
     }
 
-    private static void setCustomerInfo(ReceiptAdapterBase adapter, ReceiptBody body, ObjectFactory factory) {
-        Client client = adapter.getAdaptee().getClient();
+    private static void setCustomerInfo(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ReceiptBody body, ObjectFactory factory) {
+        Client client = receipt.getClient();
         if (client != null) {
             CustomerInfo customer = factory.createCustomerInfo();
             setOptionalString(customer::setName, client.getName()
@@ -152,12 +150,12 @@ public class ReceiptToXML {
         }
     }
 
-    private static ReceiptBody createReceiptBody(ReceiptAdapterBase receiptAdapter, ObjectFactory factory) {
+    private static ReceiptBody createReceiptBody(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ObjectFactory factory) {
         ReceiptBody body = factory.createReceiptBody();
-        setCustomerInfo(receiptAdapter, body, factory);
-        body.setType(Resources.PRINTER.getString("RECEIPTTYPE_" + receiptAdapter.getAdaptee().getType().toString().toUpperCase()));
-        body.setHeader(createReceiptBodyHeader(receiptAdapter, factory));
-        List<ReceiptBodyEntry> records = receiptAdapter.getAdaptee().getRecords().stream().map((record) -> {
+        setCustomerInfo(receipt, body, factory);
+        body.setType(Resources.PRINTER.getString("RECEIPTTYPE_" + receipt.getType().toString().toUpperCase()));
+        body.setHeader(createReceiptBodyHeader(factory));
+        List<ReceiptBodyEntry> records = receipt.getRecords().stream().map((record) -> {
             ReceiptBodyEntry entry = factory.createReceiptBodyEntry();
             String name = record.getName();
             if (record.getDiscountPercent() > 0.0) {
@@ -171,11 +169,11 @@ public class ReceiptToXML {
             return entry;
         }).collect(Collectors.toList());
         body.getEntry().addAll(records);
-        body.setFooter(createReceiptBodyFooter(receiptAdapter, factory));
+        body.setFooter(createReceiptBodyFooter(receipt, factory));
         return body;
     }
 
-    private static ReceiptBodyHeader createReceiptBodyHeader(ReceiptAdapterBase receiptAdapter, ObjectFactory factory) {
+    private static ReceiptBodyHeader createReceiptBodyHeader(ObjectFactory factory) {
         ReceiptBodyHeader header = factory.createReceiptBodyHeader();
         header.setNameHeader(Resources.PRINTER.getString("NameHeader"));
         header.setQtyHeader(Resources.PRINTER.getString("QtyHeader"));
@@ -203,18 +201,18 @@ public class ReceiptToXML {
         return tv;
     }
 
-    private static ReceiptBodyFooter createReceiptBodyFooter(ReceiptAdapterBase receiptAdapter, ObjectFactory factory) {
+    private static ReceiptBodyFooter createReceiptBodyFooter(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ObjectFactory factory) {
         ReceiptBodyFooter footer = factory.createReceiptBodyFooter();
         footer.setTotal(createTagCurrencyValue(factory,
                 Resources.PRINTER.getString("TotalTag"),
                 Resources.PRINTER.getString("TotalCurrency"),
-                receiptAdapter.getAdaptee().getRecords().stream()
+                receipt.getRecords().stream()
                         .map(e -> e.getSalePrice() * e.getSoldQuantity())
                         .reduce(0.0, (x, y) -> x + y).longValue())
         );
 
         setOptional(footer::setDiscount,
-                receiptAdapter.getAdaptee().getDiscountPercent(),
+                receipt.getDiscountPercent(),
                 aDouble -> aDouble > 0.0,
                 aDouble -> createTagCurrencyValue(factory,
                         Resources.PRINTER.getString("DiscountTag"),
@@ -234,7 +232,7 @@ public class ReceiptToXML {
         footer.setPaymentMethod(createTagValue(factory,
                 Resources.PRINTER.getString("PaymentMethod"),
                 Resources.PRINTER.getString("PAYMENTMETHOD_" +
-                        receiptAdapter.getAdaptee().getPaymentMethod().toString().toUpperCase())));
+                        receipt.getPaymentMethod().toString().toUpperCase())));
 
         //FIXME: add currency in model.Receipt
         BigInteger total = footer.getDiscountedTotal() == null
@@ -242,13 +240,13 @@ public class ReceiptToXML {
                 : footer.getDiscountedTotal().getValue();
 
         // NOTE: set rounded total only if paymentmethod is cash, and rounded value not equals total
-        setOptional(footer::setTotalRounded, receiptAdapter.getAdaptee().getPaymentMethod(),
+        setOptional(footer::setTotalRounded, receipt.getPaymentMethod(),
                 paymentMethod -> RoundingLogic.roundingNeeded(paymentMethod) &&
                         !total.equals(BigInteger.valueOf((long) RoundingLogic.create(paymentMethod).round(total.doubleValue()))),
                 x -> createTagCurrencyValue(factory,
                         Resources.PRINTER.getString("TotalRoundedTag"),
                         Resources.PRINTER.getString("TotalRoundedCurrency"),
-                        (long) RoundingLogic.create(receiptAdapter.getAdaptee().getPaymentMethod()).round(total.doubleValue()))
+                        (long) RoundingLogic.create(receipt.getPaymentMethod()).round(total.doubleValue()))
         );
         return footer;
     }

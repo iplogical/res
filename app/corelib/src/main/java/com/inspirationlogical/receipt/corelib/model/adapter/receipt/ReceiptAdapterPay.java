@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.corelib.model.adapter.receipt;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
 import com.inspirationlogical.receipt.corelib.model.adapter.AbstractAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.VATSerieAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
@@ -16,7 +15,6 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.utility.Round;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,7 +23,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase.getDiscountMultiplier;
-import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapter.receiptAdapterFactory;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
@@ -33,14 +30,14 @@ public class ReceiptAdapterPay extends AbstractAdapter<Receipt> {
 
     public  interface Listener{
         void onOpen(ReceiptAdapterPay receipt);
-        void onClose(ReceiptAdapterBase receipt);
+        void onClose(Receipt receipt);
     }
 
     public ReceiptAdapterPay(Receipt receipt) {
         super(receipt);
     }
 
-    public void close(PaymentParams paymentParams, ReceiptAdapterBase receiptAdapterBase) {
+    public void close(PaymentParams paymentParams) {
         if(adaptee.getRecords().isEmpty()) {
             deleteReceipt();
             return;
@@ -63,11 +60,11 @@ public class ReceiptAdapterPay extends AbstractAdapter<Receipt> {
             adaptee.setUserCode(paymentParams.getUserCode());
             adaptee.setPaymentMethod(paymentParams.getPaymentMethod());
             applyDiscountOnSalePrices();
-            ReceiptAdapterListeners.getAllListeners().forEach((l) -> {l.onClose(receiptAdapterBase);});
+            ReceiptAdapterListeners.getAllListeners().forEach((l) -> {l.onClose(adaptee);});
         });
     }
 
-    public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams, ReceiptAdapterBase receiptAdapterBase) {
+    public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
         ReceiptAdapterPay paidReceipt = buildReceipt(ReceiptType.SALE);
 
         GuardedTransaction.run(() -> {
@@ -89,10 +86,10 @@ public class ReceiptAdapterPay extends AbstractAdapter<Receipt> {
             adaptee.getOwner().getReceipts().add(paidReceipt.getAdaptee());
             GuardedTransaction.persist(paidReceipt.adaptee);
         });
-        paidReceipt.close(paymentParams, receiptAdapterBase);
+        paidReceipt.close(paymentParams);
     }
 
-    public void payPartial(double partialValue, PaymentParams paymentParams, ReceiptAdapterBase receiptAdapterBase) {
+    public void payPartial(double partialValue, PaymentParams paymentParams) {
         ReceiptAdapterPay partialReceipt = buildReceipt(ReceiptType.SALE);
         GuardedTransaction.run(() -> {
             cloneReceiptRecords(partialReceipt.getAdaptee(), partialValue);
@@ -100,7 +97,7 @@ public class ReceiptAdapterPay extends AbstractAdapter<Receipt> {
             partialReceipt.getAdaptee().setOwner(adaptee.getOwner());
             GuardedTransaction.persist(partialReceipt.getAdaptee());
         });
-        partialReceipt.close(paymentParams, receiptAdapterBase);
+        partialReceipt.close(paymentParams);
     }
 
     private ReceiptAdapterPay buildReceipt(ReceiptType type) {

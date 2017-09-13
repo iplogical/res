@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.utility.printing;
 
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.utility.ReceiptToXML;
@@ -21,10 +22,10 @@ public class PrinterTest {
 
     @Before
     public void closeReceiptSaleOneAndGeneratePDF(){
-        ReceiptAdapterBase ra = new ReceiptAdapterBase(schema.getReceiptSaleTwo());
+        Receipt receipt = schema.getReceiptSaleTwo();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         new ReceiptFormatterEpsonTMT20II().convertToPDF(out,
-                ReceiptToXML.ConvertToStream(ra)
+                ReceiptToXML.ConvertToStream(receipt)
         );
         pdf = new ByteArrayInputStream(out.toByteArray(),0,out.size());
     }

@@ -3,7 +3,6 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
@@ -156,11 +155,11 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     }
 
     public void printDailyConsumption() {
-        ReceiptAdapterBase receiptAdapter = createReceiptOfDailyConsumption();
-        new ReceiptPrinter().onClose(receiptAdapter);
+        Receipt aggregatedReceipt = createReceiptOfDailyConsumption();
+        new ReceiptPrinter().onClose(aggregatedReceipt);
     }
 
-    ReceiptAdapterBase createReceiptOfDailyConsumption() {
+    Receipt createReceiptOfDailyConsumption() {
         LocalDateTime latestClosure = DailyClosureAdapter.getLatestClosureTime();
         List<ReceiptAdapterBase> receipts = getReceiptsByClosureTime(latestClosure);
         Receipt aggregatedReceipt = buildAggregatedReceipt(latestClosure);
@@ -174,7 +173,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         aggregatedReceipt.getRecords().sort(Comparator.comparing(ReceiptRecord::getSoldQuantity).reversed());
         addIncomesAsReceiptRecord(aggregatedReceipt, incomesByPaymentMethod);
         receipts.forEach(receiptAdapter -> GuardedTransaction.detach(receiptAdapter.getAdaptee()));
-        return new ReceiptAdapterBase(aggregatedReceipt);
+        return aggregatedReceipt;
     }
 
     private Receipt buildAggregatedReceipt(LocalDateTime latestClosure) {

@@ -127,17 +127,17 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
 
     @Override
     public void close(PaymentParams paymentParams) {
-        receiptAdapterPay.close(paymentParams, this);
+        receiptAdapterPay.close(paymentParams);
     }
 
     @Override
     public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-        receiptAdapterPay.paySelective(records, paymentParams, this);
+        receiptAdapterPay.paySelective(records, paymentParams);
     }
 
     @Override
     public void payPartial(double partialValue, PaymentParams paymentParams) {
-        receiptAdapterPay.payPartial(partialValue, paymentParams, this);
+        receiptAdapterPay.payPartial(partialValue, paymentParams);
     }
 
     @Override
