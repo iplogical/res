@@ -65,11 +65,11 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public void mergeTables(TableView consumer, List<TableView> consumed) {
-//        TableAdapter consumerTableAdapter = getTableAdapter(consumer);
-//        List<TableAdapter> consumedTableAdapters = consumed.stream()
-//                .map(this::getTableAdapter)
-//                .collect(toList());
-//        getRestaurantAdapter(getActiveRestaurant()).mergeTables(consumerTableAdapter, consumedTableAdapters);
+        TableAdapter consumerTableAdapter = getTableAdapter(consumer);
+        List<TableAdapter> consumedTableAdapters = consumed.stream()
+                .map(this::getTableAdapter)
+                .collect(toList());
+        getRestaurantAdapter(getActiveRestaurant()).mergeTables(consumerTableAdapter, consumedTableAdapters);
     }
 
     @Override

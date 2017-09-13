@@ -98,33 +98,33 @@ public class RestaurantAdapterTest extends TestBase {
                 GuardedTransactionArchive.runNamedQuery(Table.GET_DISPLAYABLE_TABLES).size());
     }
 
-//    @Test
-//    public void testMergeTables() {
-//        restaurantAdapter.mergeTables(tableNormal, Arrays.asList(tableNormalClosed));
-//        Table tableNormalUpdated = getTableFromActual(tableNormal.getAdaptee().getNumber()).getAdaptee();
-//        Table tableNormalClosedUpdated = getTableFromActual(tableNormalClosed.getAdaptee().getNumber()).getAdaptee();
-//        assertEquals(1,
-//                tableNormalUpdated.getConsumed().stream()
-//                        .filter(table -> table.getNumber() == tableNormalClosed.getAdaptee().getNumber())
-//                        .collect(toList()).size());
-//        assertEquals(tableNormal.getAdaptee().getNumber(), tableNormalClosedUpdated.getConsumer().getNumber());
-//    }
-//
-//    @Test
-//    public void testMergerTablesMoveReceiptRecords() {
-//        int recordNum = tableNormal.getOpenReceipt().getAdaptee().getRecords().size();
-//        restaurantAdapter.mergeTables(tableNormalClosed, Arrays.asList(tableNormal));
-//        TableAdapter tableNormalUpdated = getTableFromActual(tableNormal.getAdaptee().getNumber());
-//        TableAdapter tableNormalClosedUpdated = getTableFromActual(tableNormalClosed.getAdaptee().getNumber());
-//        assertNull(tableNormalUpdated.getOpenReceipt());
-//        assertNotNull(tableNormalClosedUpdated.getOpenReceipt());
-//        assertEquals(recordNum, tableNormalClosedUpdated.getOpenReceipt().getAdaptee().getRecords().size());
-//    }
-//
-//    @Test(expected = IllegalTableStateException.class)
-//    public void testMergeTablesConsumerTable() {
-//        restaurantAdapter.mergeTables(tableNormalClosed, Arrays.asList(tableConsumer));
-//    }
+    @Test
+    public void testMergeTables() {
+        restaurantAdapter.mergeTables(tableNormal, Arrays.asList(tableNormalClosed));
+        Table tableNormalUpdated = getTableFromActual(tableNormal.getAdaptee().getNumber()).getAdaptee();
+        Table tableNormalClosedUpdated = getTableFromActual(tableNormalClosed.getAdaptee().getNumber()).getAdaptee();
+        assertEquals(1,
+                tableNormalUpdated.getConsumed().stream()
+                        .filter(table -> table.getNumber() == tableNormalClosed.getAdaptee().getNumber())
+                        .collect(toList()).size());
+        assertEquals(tableNormal.getAdaptee().getNumber(), tableNormalClosedUpdated.getConsumer().getNumber());
+    }
+
+    @Test
+    public void testMergerTablesMoveReceiptRecords() {
+        int recordNum = tableNormal.getOpenReceipt().getAdaptee().getRecords().size();
+        restaurantAdapter.mergeTables(tableNormalClosed, Arrays.asList(tableNormal));
+        TableAdapter tableNormalUpdated = getTableFromActual(tableNormal.getAdaptee().getNumber());
+        TableAdapter tableNormalClosedUpdated = getTableFromActual(tableNormalClosed.getAdaptee().getNumber());
+        assertNull(tableNormalUpdated.getOpenReceipt());
+        assertNotNull(tableNormalClosedUpdated.getOpenReceipt());
+        assertEquals(recordNum, tableNormalClosedUpdated.getOpenReceipt().getAdaptee().getRecords().size());
+    }
+
+    @Test(expected = IllegalTableStateException.class)
+    public void testMergeTablesConsumerTable() {
+        restaurantAdapter.mergeTables(tableNormalClosed, Arrays.asList(tableConsumer));
+    }
 
     @Test
     public void testSplitTables() {

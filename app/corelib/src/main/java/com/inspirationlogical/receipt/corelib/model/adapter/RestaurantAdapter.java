@@ -79,54 +79,54 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         });
     }
 
-//    public void mergeTables(TableAdapter consumer, List<TableAdapter> consumed) {
-////        openConsumerIfClosed(consumer);
-//        GuardedTransaction.run(() -> {
-//            addConsumedTablesToConsumer(consumer, consumed);
-//            moveConsumedRecordsToConsumer(consumer, consumed);
-//        });
-//    }
-//
-//    private void openConsumerIfClosed(TableAdapter consumer) {
-//        if (!consumer.isTableOpen()) {
-//            consumer.openTable();
-//        }
-//    }
-//
-//    private void addConsumedTablesToConsumer(TableAdapter consumer, List<TableAdapter> consumed) {
-//        consumed.forEach(consumedTableAdapter -> {
-//            if (consumedTableAdapter.isConsumerTable()) {
-//                throw new IllegalTableStateException("");
-//            }
-//            consumedTableAdapter.hideTable();
-//            bindConsumedToConsumer(consumer.getAdaptee(), consumedTableAdapter.getAdaptee());
-//        });
-//    }
-//
-//    private void bindConsumedToConsumer(Table consumer, Table consumedTable) {
-//        consumedTable.setConsumer(consumer);
-//        consumer.getConsumed().add(consumedTable);
-//    }
-//
-//    private void moveConsumedRecordsToConsumer(TableAdapter consumer, List<TableAdapter> consumed) {
-//        Receipt consumerReceipt = consumer.getOpenReceipt().getAdaptee();
-//        List<ReceiptRecord> consumedRecords = consumed.stream()
-//                .map(TableAdapter::getOpenReceipt)
-//                .filter(Objects::nonNull)
-//                .map(ReceiptAdapterPay::getAdaptee)
-//                .map(receipt -> {
-//                    List<ReceiptRecord> receiptRecords = new ArrayList<>();
-//                    receiptRecords.addAll(receipt.getRecords());
-//                    receiptRecords.forEach(receiptRecord ->
-//                            receiptRecord.setOwner(consumerReceipt));
-//                    receipt.setStatus(ReceiptStatus.CANCELED);
-//                    receipt.getRecords().clear();
-//                    return receiptRecords;
-//                })
-//                .flatMap(Collection::stream)
-//                .collect(Collectors.toList());
-//        consumerReceipt.getRecords().addAll(consumedRecords);
-//    }
+    public void mergeTables(TableAdapter consumer, List<TableAdapter> consumed) {
+        openConsumerIfClosed(consumer);
+        GuardedTransaction.run(() -> {
+            addConsumedTablesToConsumer(consumer, consumed);
+            moveConsumedRecordsToConsumer(consumer, consumed);
+        });
+    }
+
+    private void openConsumerIfClosed(TableAdapter consumer) {
+        if (!consumer.isTableOpen()) {
+            consumer.openTable();
+        }
+    }
+
+    private void addConsumedTablesToConsumer(TableAdapter consumer, List<TableAdapter> consumed) {
+        consumed.forEach(consumedTableAdapter -> {
+            if (consumedTableAdapter.isConsumerTable()) {
+                throw new IllegalTableStateException("");
+            }
+            consumedTableAdapter.hideTable();
+            bindConsumedToConsumer(consumer.getAdaptee(), consumedTableAdapter.getAdaptee());
+        });
+    }
+
+    private void bindConsumedToConsumer(Table consumer, Table consumedTable) {
+        consumedTable.setConsumer(consumer);
+        consumer.getConsumed().add(consumedTable);
+    }
+
+    private void moveConsumedRecordsToConsumer(TableAdapter consumer, List<TableAdapter> consumed) {
+        Receipt consumerReceipt = consumer.getOpenReceipt().getAdaptee();
+        List<ReceiptRecord> consumedRecords = consumed.stream()
+                .map(TableAdapter::getOpenReceipt)
+                .filter(Objects::nonNull)
+                .map(ReceiptAdapterBase::getAdaptee)
+                .map(receipt -> {
+                    List<ReceiptRecord> receiptRecords = new ArrayList<>();
+                    receiptRecords.addAll(receipt.getRecords());
+                    receiptRecords.forEach(receiptRecord ->
+                            receiptRecord.setOwner(consumerReceipt));
+                    receipt.setStatus(ReceiptStatus.CANCELED);
+                    receipt.getRecords().clear();
+                    return receiptRecords;
+                })
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        consumerReceipt.getRecords().addAll(consumedRecords);
+    }
 
     public List<TableAdapter> splitTables(TableAdapter consumer) {
         List<Table> consumed = consumer.getConsumedTables();
