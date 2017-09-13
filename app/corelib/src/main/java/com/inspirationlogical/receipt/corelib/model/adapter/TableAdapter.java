@@ -197,10 +197,11 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void payTable(PaymentParams paymentParams) {
-        if (!isTableOpen()) {
+        ReceiptAdapter openReceipt = ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
+        if (openReceipt == null) {
             throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
         }
-        ReceiptAdapter.getOpenReceipt(adaptee.getNumber()).close(paymentParams);
+        openReceipt.close(paymentParams);
         setDefaultTableParams();
     }
 
