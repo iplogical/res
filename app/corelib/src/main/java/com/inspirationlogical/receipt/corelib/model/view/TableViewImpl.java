@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
 import javafx.geometry.Dimension2D;

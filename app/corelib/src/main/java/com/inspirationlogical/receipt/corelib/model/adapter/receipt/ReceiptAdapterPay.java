@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
 import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase.getDiscountMultiplier;
@@ -43,25 +44,68 @@ public class ReceiptAdapterPay extends AbstractAdapter<Receipt> {
             return;
         }
         GuardedTransaction.run(() -> {
-            if(adaptee.getStatus() == ReceiptStatus.CLOSED) {
-                throw new IllegalReceiptStateException("Close operation is illegal for a CLOSED receipt");
-            }
+            checkIfReceiptIsClosed();
             adaptee.setStatus(ReceiptStatus.CLOSED);
             adaptee.setClosureTime(now());
-            adaptee.setSumPurchaseGrossPrice((int)adaptee.getRecords().stream()
-                    .mapToDouble(ReceiptAdapterPay::calculatePurchaseGrossPrice).sum());
-            adaptee.setSumPurchaseNetPrice((int)adaptee.getRecords().stream()
-                    .mapToDouble(ReceiptAdapterPay::calculatePurchaseNetPrice).sum());
-            adaptee.setSumSaleGrossPrice((int)adaptee.getRecords().stream()
-                    .mapToDouble(ReceiptAdapterPay::calculateSaleGrossPrice).sum());
-            adaptee.setSumSaleNetPrice((int)adaptee.getRecords().stream()
-                    .mapToDouble(ReceiptAdapterPay::calculateSaleNetPrice).sum());
+            adaptee.setSumPurchaseGrossPrice(getSumValue(this::calculatePurchaseGrossPrice));
+            adaptee.setSumPurchaseNetPrice(getSumValue(this::calculatePurchaseNetPrice));
+            adaptee.setSumSaleGrossPrice(getSumValue(this::calculateSaleGrossPrice));
+            adaptee.setSumSaleNetPrice(getSumValue(this::calculateSaleNetPrice));
             adaptee.setDiscountPercent(calculateDiscount(paymentParams));
             adaptee.setUserCode(paymentParams.getUserCode());
             adaptee.setPaymentMethod(paymentParams.getPaymentMethod());
             applyDiscountOnSalePrices();
             ReceiptAdapterListeners.getAllListeners().forEach((l) -> {l.onClose(adaptee);});
         });
+    }
+
+    private void deleteReceipt() {
+        GuardedTransaction.delete(adaptee, () -> {
+            adaptee.getOwner().getReceipts().remove(adaptee);
+            adaptee.setOwner(null);
+        });
+    }
+
+    private void checkIfReceiptIsClosed() {
+        if(adaptee.getStatus() == ReceiptStatus.CLOSED) {
+            throw new IllegalReceiptStateException("Close operation is illegal for a CLOSED receipt");
+        }
+    }
+
+    private int getSumValue(ToDoubleFunction<ReceiptRecord> calculator) {
+        return (int)adaptee.getRecords().stream().mapToDouble(calculator).sum();
+    }
+
+    private double calculatePurchaseGrossPrice(ReceiptRecord record) {
+        return record.getPurchasePrice() * record.getSoldQuantity();
+    }
+
+    private double calculatePurchaseNetPrice(ReceiptRecord record) {
+        return calculatePurchaseGrossPrice(record) / calculateVATDivider(record);
+    }
+
+    private double calculateSaleGrossPrice(ReceiptRecord record) {
+        return record.getSalePrice() * record.getSoldQuantity();
+    }
+
+    private double calculateSaleNetPrice(ReceiptRecord record) {
+        return calculateSaleGrossPrice(record) / calculateVATDivider(record);
+    }
+
+    private double calculateDiscount(PaymentParams paymentParams) {
+        if(paymentParams.getDiscountPercent() != 0) {
+            return paymentParams.getDiscountPercent();
+        } else if(paymentParams.getDiscountAbsolute() != 0) {
+            double discountAbs = paymentParams.getDiscountAbsolute();
+            double sumSale = getAdaptee().getSumSaleGrossPrice();
+            double discount = discountAbs / sumSale * 100;
+            return discount;
+        } else return 0;
+    }
+
+    private void applyDiscountOnSalePrices() {
+        adaptee.setSumSaleGrossPrice((int)(adaptee.getSumSaleGrossPrice() * getDiscountMultiplier(adaptee.getDiscountPercent())));
+        adaptee.setSumSaleNetPrice((int)(adaptee.getSumSaleNetPrice() * getDiscountMultiplier(adaptee.getDiscountPercent())));
     }
 
     public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
@@ -124,48 +168,7 @@ public class ReceiptAdapterPay extends AbstractAdapter<Receipt> {
         });
     }
 
-
-    private double calculateDiscount(PaymentParams paymentParams) {
-        if(paymentParams.getDiscountPercent() != 0) {
-            return paymentParams.getDiscountPercent();
-        } else if(paymentParams.getDiscountAbsolute() != 0) {
-            double discountAbs = paymentParams.getDiscountAbsolute();
-            double sumSale = getAdaptee().getSumSaleGrossPrice();
-            double discount = discountAbs / sumSale * 100;
-            return discount;
-        } else return 0;
-    }
-
-    private void applyDiscountOnSalePrices() {
-        adaptee.setSumSaleGrossPrice((int)(adaptee.getSumSaleGrossPrice() * getDiscountMultiplier(adaptee.getDiscountPercent())));
-        adaptee.setSumSaleNetPrice((int)(adaptee.getSumSaleNetPrice() * getDiscountMultiplier(adaptee.getDiscountPercent())));
-    }
-
-    private void deleteReceipt() {
-        GuardedTransaction.delete(adaptee, () -> {
-            adaptee.getOwner().getReceipts().remove(adaptee);
-            adaptee.setOwner(null);
-        });
-    }
-
-    private static double calculatePurchaseGrossPrice(ReceiptRecord record) {
-        return record.getPurchasePrice() * record.getSoldQuantity();
-    }
-
-    private static double calculatePurchaseNetPrice(ReceiptRecord record) {
-        return calculatePurchaseGrossPrice(record) / calculateVATDivider(record);
-    }
-
-    private static double calculateSaleGrossPrice(ReceiptRecord record) {
-        return record.getSalePrice() * record.getSoldQuantity();
-    }
-
-    private static double calculateSaleNetPrice(ReceiptRecord record) {
-        return calculateSaleGrossPrice(record) / calculateVATDivider(record);
-    }
-
     private static double calculateVATDivider(ReceiptRecord record) {
         return (100 + record.getVAT()) / 100;
     }
-
 }
