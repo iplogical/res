@@ -42,12 +42,7 @@ import org.xml.sax.SAXException;
  */
 public class ReceiptToXML {
 
-    final static Logger logger = LoggerFactory.getLogger(ReceiptToXML.class);
-
-    // TODO: Change database encoding to UTF-8. Use UTF-8 everywhere.
-    public static Receipt Convert(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
-        return createReceipt(receipt, new ObjectFactory());
-    }
+    private final static Logger logger = LoggerFactory.getLogger(ReceiptToXML.class);
 
     private static Schema schema;
 
@@ -61,9 +56,25 @@ public class ReceiptToXML {
         }
     }
 
-    public static InputStream ConvertToStream(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
+    @FunctionalInterface
+    private interface Transformer<To, From> {
+        To transform(From from);
+    }
+
+    @FunctionalInterface
+    private interface Predicate<T> {
+        boolean apply(T t);
+    }
+
+    private ObjectFactory factory;
+
+    public ReceiptToXML(ObjectFactory factory) {
+        this.factory = factory;
+    }
+
+    public InputStream convertToStream(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
         logger.info("Create the Receipt content tree from the entity: " + receipt.toString());
-        Receipt r = createReceipt(receipt, new ObjectFactory());
+        Receipt r = createReceipt(receipt);
         try {
             logger.info("Create the JAXBContext and the Marshaller objects.");
             JAXBContext context = JAXBContext.newInstance("com.inspirationlogical.receipt.corelib.jaxb");
@@ -77,21 +88,21 @@ public class ReceiptToXML {
             jaxbMarshaller.marshal(r, baos);
             return new ByteArrayInputStream(baos.toByteArray(), 0, baos.size());
         } catch (Exception e) {
-            logger.error("Exception in ConvertToStream: " + e.getMessage());
+            logger.error("Exception in convertToStream: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
-    private static Receipt createReceipt(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ObjectFactory factory) {
+    private Receipt createReceipt(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
         logger.info("Creating the JAXB receipt.");
         Receipt receiptJAXB = factory.createReceipt();
-        receiptJAXB.setHeader(createHeader(receipt, factory));
-        receiptJAXB.setBody(createReceiptBody(receipt, factory));
-        receiptJAXB.setFooter(createFooter(receipt, factory));
+        receiptJAXB.setHeader(createHeader(receipt));
+        receiptJAXB.setBody(createReceiptBody(receipt));
+        receiptJAXB.setFooter(createFooter(receipt));
         return receiptJAXB;
     }
 
-    private static ReceiptHeader createHeader(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ObjectFactory factory) {
+    private ReceiptHeader createHeader(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
         logger.info("Creating the JAXB receipt header.");
         ReceiptHeader header = factory.createReceiptHeader();
         Restaurant restaurant = receipt.getOwner().getOwner();
@@ -107,25 +118,15 @@ public class ReceiptToXML {
         return header;
     }
 
-    @FunctionalInterface
-    private interface Transformer<To, From> {
-        To transform(From from);
-    }
-
-    @FunctionalInterface
-    private interface Predicate<T> {
-        boolean apply(T t);
-    }
-
-    private static void setOptionalString(Consumer<String> c, String str) {
+    private void setOptionalString(Consumer<String> c, String str) {
         setOptionalString(c, str, x -> x);
     }
 
-    private static <T> void setOptionalString(Consumer<T> c, String str, Transformer<T, String> t) {
+    private <T> void setOptionalString(Consumer<T> c, String str, Transformer<T, String> t) {
         setOptional(c, str, x -> x != null && !x.trim().isEmpty(), t);
     }
 
-    private static <T, F> void setOptional(
+    private <T, F> void setOptional(
             Consumer<T> out,
             F in,
             Predicate<F> predicate,
@@ -135,11 +136,12 @@ public class ReceiptToXML {
         }
     }
 
-    private static ReceiptBody createReceiptBody(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ObjectFactory factory) {
+    private ReceiptBody createReceiptBody(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
+        logger.info("Creating the JAXB receipt body.");
         ReceiptBody body = factory.createReceiptBody();
-        setCustomerInfo(receipt, body, factory);
+        setCustomerInfo(receipt, body);
         body.setType(Resources.PRINTER.getString("RECEIPTTYPE_" + receipt.getType().toString().toUpperCase()));
-        body.setHeader(createReceiptBodyHeader(factory));
+        body.setHeader(createReceiptBodyHeader());
         List<ReceiptBodyEntry> records = receipt.getRecords().stream().map((record) -> {
             ReceiptBodyEntry entry = factory.createReceiptBodyEntry();
             String name = record.getName();
@@ -154,11 +156,11 @@ public class ReceiptToXML {
             return entry;
         }).collect(Collectors.toList());
         body.getEntry().addAll(records);
-        body.setFooter(createReceiptBodyFooter(receipt, factory));
+        body.setFooter(createReceiptBodyFooter(receipt));
         return body;
     }
 
-    private static void setCustomerInfo(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ReceiptBody body, ObjectFactory factory) {
+    private void setCustomerInfo(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ReceiptBody body) {
         Client client = receipt.getClient();
         if (client != null) {
             CustomerInfo customer = factory.createCustomerInfo();
@@ -172,7 +174,7 @@ public class ReceiptToXML {
         }
     }
 
-    private static ReceiptBodyHeader createReceiptBodyHeader(ObjectFactory factory) {
+    private ReceiptBodyHeader createReceiptBodyHeader() {
         ReceiptBodyHeader header = factory.createReceiptBodyHeader();
         header.setNameHeader(Resources.PRINTER.getString("NameHeader"));
         header.setQtyHeader(Resources.PRINTER.getString("QtyHeader"));
@@ -181,65 +183,56 @@ public class ReceiptToXML {
         return header;
     }
 
-    static private TagCurrencyValue createTagCurrencyValue(ObjectFactory f, String tag, String currency, Long value) {
-        return createTagCurrencyValue(f, tag, currency, BigInteger.valueOf(value));
+    private ReceiptBodyFooter createReceiptBodyFooter(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
+        ReceiptBodyFooter receiptBodyFooter = factory.createReceiptBodyFooter();
+        setTotalField(receipt, receiptBodyFooter);
+        setDiscountField(receipt, receiptBodyFooter);
+        setDiscountedTotalField(receiptBodyFooter);
+        setTotalRoundedField(receipt, receiptBodyFooter);
+        setPaymentMethodField(receipt, receiptBodyFooter);
+        return receiptBodyFooter;
     }
 
-    static private TagCurrencyValue createTagCurrencyValue(ObjectFactory f, String tag, String currency, BigInteger value) {
-        TagCurrencyValue tcv = f.createTagCurrencyValue();
-        tcv.setTag(tag);
-        tcv.setCurrency(currency);
-        tcv.setValue(value);
-        return tcv;
-    }
-
-    static private TagValuePair createTagValue(ObjectFactory f, String tag, String value) {
-        TagValuePair tv = f.createTagValuePair();
-        tv.setTag(tag);
-        tv.setValue(value);
-        return tv;
-    }
-
-    private static ReceiptBodyFooter createReceiptBodyFooter(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ObjectFactory factory) {
-        ReceiptBodyFooter footer = factory.createReceiptBodyFooter();
-        footer.setTotal(createTagCurrencyValue(factory,
+    private void setTotalField(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ReceiptBodyFooter receiptBodyFooter) {
+        receiptBodyFooter.setTotal(createTagCurrencyValue(factory,
                 Resources.PRINTER.getString("TotalTag"),
                 Resources.PRINTER.getString("TotalCurrency"),
                 receipt.getRecords().stream()
                         .map(e -> e.getSalePrice() * e.getSoldQuantity())
                         .reduce(0.0, (x, y) -> x + y).longValue())
         );
+    }
 
-        setOptional(footer::setDiscount,
+    private void setDiscountField(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ReceiptBodyFooter receiptBodyFooter) {
+        setOptional(receiptBodyFooter::setDiscount,
                 receipt.getDiscountPercent(),
                 aDouble -> aDouble > 0.0,
                 aDouble -> createTagCurrencyValue(factory,
                         Resources.PRINTER.getString("DiscountTag"),
                         Resources.PRINTER.getString("TotalCurrency"),
                         // NOTE: discount is in percentage dimension  hence the div by 100.0
-                       -(long) (aDouble / 100.0 * footer.getTotal().getValue().doubleValue()))
+                        -(long) (aDouble / 100.0 * receiptBodyFooter.getTotal().getValue().doubleValue()))
         );
+    }
 
-        setOptional(footer::setDiscountedTotal, footer.getDiscount(),
+    private void setDiscountedTotalField(ReceiptBodyFooter receiptBodyFooter) {
+        setOptional(receiptBodyFooter::setDiscountedTotal, receiptBodyFooter.getDiscount(),
                 tagCurrencyValue -> tagCurrencyValue != null && tagCurrencyValue.getValue().intValue() != 0,
                 tagCurrencyValue -> createTagCurrencyValue(factory,
                         Resources.PRINTER.getString("DiscountedTotalTag"),
                         tagCurrencyValue.getCurrency(),
-                        footer.getTotal().getValue().subtract(tagCurrencyValue.getValue().abs()))
+                        receiptBodyFooter.getTotal().getValue().subtract(tagCurrencyValue.getValue().abs()))
         );
+    }
 
-        footer.setPaymentMethod(createTagValue(factory,
-                Resources.PRINTER.getString("PaymentMethod"),
-                Resources.PRINTER.getString("PAYMENTMETHOD_" +
-                        receipt.getPaymentMethod().toString().toUpperCase())));
-
+    private void setTotalRoundedField(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ReceiptBodyFooter receiptBodyFooter) {
         //FIXME: add currency in model.Receipt
-        BigInteger total = footer.getDiscountedTotal() == null
-                ? footer.getTotal().getValue()
-                : footer.getDiscountedTotal().getValue();
+        BigInteger total = receiptBodyFooter.getDiscountedTotal() == null
+                ? receiptBodyFooter.getTotal().getValue()
+                : receiptBodyFooter.getDiscountedTotal().getValue();
 
         // NOTE: set rounded total only if payment method is cash, and rounded value not equals total
-        setOptional(footer::setTotalRounded, receipt.getPaymentMethod(),
+        setOptional(receiptBodyFooter::setTotalRounded, receipt.getPaymentMethod(),
                 paymentMethod -> RoundingLogic.roundingNeeded(paymentMethod) &&
                         !total.equals(BigInteger.valueOf((long) RoundingLogic.create(paymentMethod).round(total.doubleValue()))),
                 x -> createTagCurrencyValue(factory,
@@ -247,10 +240,36 @@ public class ReceiptToXML {
                         Resources.PRINTER.getString("TotalRoundedCurrency"),
                         (long) RoundingLogic.create(receipt.getPaymentMethod()).round(total.doubleValue()))
         );
-        return footer;
     }
 
-    private static ReceiptFooter createFooter(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ObjectFactory factory) {
+    private void setPaymentMethodField(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt, ReceiptBodyFooter receiptBodyFooter) {
+        receiptBodyFooter.setPaymentMethod(createTagValue(factory,
+                Resources.PRINTER.getString("PaymentMethod"),
+                Resources.PRINTER.getString("PAYMENTMETHOD_" +
+                        receipt.getPaymentMethod().toString().toUpperCase())));
+    }
+
+    private TagCurrencyValue createTagCurrencyValue(ObjectFactory f, String tag, String currency, Long value) {
+        return createTagCurrencyValue(f, tag, currency, BigInteger.valueOf(value));
+    }
+
+    private TagCurrencyValue createTagCurrencyValue(ObjectFactory f, String tag, String currency, BigInteger value) {
+        TagCurrencyValue tcv = f.createTagCurrencyValue();
+        tcv.setTag(tag);
+        tcv.setCurrency(currency);
+        tcv.setValue(value);
+        return tcv;
+    }
+
+    private TagValuePair createTagValue(ObjectFactory f, String tag, String value) {
+        TagValuePair tv = f.createTagValuePair();
+        tv.setTag(tag);
+        tv.setValue(value);
+        return tv;
+    }
+
+    private ReceiptFooter createFooter(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
+        logger.info("Creating the JAXB receipt footer.");
         ReceiptFooter footer = factory.createReceiptFooter();
         Restaurant restaurant = receipt.getOwner().getOwner();
         setOptionalString(footer::setDisclaimer,restaurant.getReceiptDisclaimer());

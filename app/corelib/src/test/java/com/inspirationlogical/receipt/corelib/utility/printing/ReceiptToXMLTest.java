@@ -9,23 +9,21 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import com.inspirationlogical.receipt.corelib.jaxb.ObjectFactory;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema;
 
 import org.junit.Rule;
 import org.junit.Test;
 
-public class ReceiptToXMLTest {
-
-    @Rule
-    public final BuildTestSchema schema = new BuildTestSchema();
-
+public class ReceiptToXMLTest extends TestBase {
 
     @Test
     public void test_receipt_XML_created_from_a_closed_recipt_can_be_validated_against_the_schema() {
         try {
             Receipt receipt = schema.getReceiptSaleTwo();
-            String xml_doc =  new BufferedReader(new InputStreamReader(ReceiptToXML.ConvertToStream(receipt)))
+            String xml_doc =  new BufferedReader(new InputStreamReader(new ReceiptToXML(new ObjectFactory()).convertToStream(receipt)))
                     .lines().collect(Collectors.joining("\n"));
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
@@ -43,7 +41,7 @@ public class ReceiptToXMLTest {
             Receipt receipt = schema.getReceiptSaleTwo();
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             new ReceiptFormatterEpsonTMT20II().convertToPDF(out,
-                    ReceiptToXML.ConvertToStream(receipt)
+                    new ReceiptToXML(new ObjectFactory()).convertToStream(receipt)
             );
 
         } catch(Exception e){
@@ -55,7 +53,7 @@ public class ReceiptToXMLTest {
     public void test_receipt_formatting_through_dependency_injection(){
         Receipt receipt = schema.getReceiptSaleTwo();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        FormatterService.create().convertToPDF(out,ReceiptToXML.ConvertToStream(receipt));
+        FormatterService.create().convertToPDF(out, new ReceiptToXML(new ObjectFactory()).convertToStream(receipt));
     }
 
 }

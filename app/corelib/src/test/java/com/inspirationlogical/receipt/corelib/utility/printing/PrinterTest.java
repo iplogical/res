@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.corelib.utility.printing;
 
+import com.inspirationlogical.receipt.corelib.jaxb.ObjectFactory;
+import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema;
 import org.junit.Before;
@@ -11,10 +13,7 @@ import java.io.*;
 /**
  * Created by Ferenc on 2017. 03. 11..
  */
-public class PrinterTest {
-
-    @Rule
-    public final BuildTestSchema schema = new BuildTestSchema();
+public class PrinterTest extends TestBase {
 
     private InputStream pdf;
 
@@ -23,7 +22,7 @@ public class PrinterTest {
         Receipt receipt = schema.getReceiptSaleTwo();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         new ReceiptFormatterEpsonTMT20II().convertToPDF(out,
-                ReceiptToXML.ConvertToStream(receipt)
+                new ReceiptToXML(new ObjectFactory()).convertToStream(receipt)
         );
         pdf = new ByteArrayInputStream(out.toByteArray(),0,out.size());
     }
