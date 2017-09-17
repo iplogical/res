@@ -2,8 +2,6 @@ package com.inspirationlogical.receipt.corelib.utility.printing;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
-import com.inspirationlogical.receipt.corelib.utility.ReceiptToXML;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

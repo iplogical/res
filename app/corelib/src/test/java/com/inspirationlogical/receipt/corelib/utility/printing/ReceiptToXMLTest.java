@@ -9,12 +9,9 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 
-import com.inspirationlogical.receipt.corelib.utility.ReceiptToXML;
 import org.junit.Rule;
 import org.junit.Test;
 

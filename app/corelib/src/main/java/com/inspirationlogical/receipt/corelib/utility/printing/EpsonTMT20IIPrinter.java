@@ -25,7 +25,7 @@ public class EpsonTMT20IIPrinter implements Printer {
         List<javax.print.PrintService> filtered = service.stream()
                 .filter((s) -> s.getName().contains(PRINTER_NAME)).collect(Collectors.toList());
         if(filtered.isEmpty()) {
-            throw new RuntimeException("Couldn't find "+PRINTER_NAME+ " printer");
+            throw new RuntimeException("Couldn't find "+ PRINTER_NAME + " printer");
         }
         this.service = filtered.get(0);
     }
@@ -40,7 +40,7 @@ public class EpsonTMT20IIPrinter implements Printer {
     public void print(InputStream pdf) {
         try {
             DocPrintJob job = service.createPrintJob();
-            Doc doc = new SimpleDoc(pdf, DocFlavor.INPUT_STREAM.PDF, null);
+            Doc doc = new SimpleDoc(pdf, DocFlavor.INPUT_STREAM.AUTOSENSE, null);
             PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
             job.print(doc, aset);
         }catch (PrintException e){
