@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.utility.printing;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -11,8 +12,8 @@ import com.google.inject.Inject;
 public class FormatterService {
     @Inject
     private ReceiptFormatter formatter;
-    public void convertToPDF(OutputStream out, InputStream receipt){
-        formatter.convertToPDF(out,receipt);
+    public ByteArrayOutputStream convertToPDF(InputStream receipt){
+        return formatter.convertToPDF(receipt);
     }
 
     public static FormatterService create(){

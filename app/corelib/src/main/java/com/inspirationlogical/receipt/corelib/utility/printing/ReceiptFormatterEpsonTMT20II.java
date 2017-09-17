@@ -94,7 +94,8 @@ public class ReceiptFormatterEpsonTMT20II implements ReceiptFormatter {
      * Method that will convert the given XML to PDF
      */
     @Override
-    public void convertToPDF(OutputStream out, InputStream xml) {
+    public ByteArrayOutputStream convertToPDF(InputStream xml) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         InputStream xsl = new ByteArrayInputStream(xslTemplate.getBytes(Charset.defaultCharset()));
         StreamSource xmlSource = new StreamSource(xml);
 
@@ -116,7 +117,7 @@ public class ReceiptFormatterEpsonTMT20II implements ReceiptFormatter {
             // That's where the XML is first transformed to XSL-FO and then
             // PDF is created
             transformer.transform(xmlSource, res);
-
+            return out;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

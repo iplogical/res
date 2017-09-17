@@ -72,7 +72,7 @@ public class ReceiptToXML {
         this.factory = factory;
     }
 
-    public InputStream convertToStream(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
+    public InputStream convertToXMLStream(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
         logger.info("Create the Receipt content tree from the entity: " + receipt.toString());
         Receipt r = createReceipt(receipt);
         try {
@@ -88,7 +88,7 @@ public class ReceiptToXML {
             jaxbMarshaller.marshal(r, baos);
             return new ByteArrayInputStream(baos.toByteArray(), 0, baos.size());
         } catch (Exception e) {
-            logger.error("Exception in convertToStream: " + e.getMessage());
+            logger.error("Exception in convertToXMLStream: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }

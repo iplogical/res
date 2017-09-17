@@ -3,9 +3,7 @@ package com.inspirationlogical.receipt.corelib.utility.printing;
 import com.inspirationlogical.receipt.corelib.jaxb.ObjectFactory;
 import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.*;
@@ -20,9 +18,8 @@ public class PrinterTest extends TestBase {
     @Before
     public void closeReceiptSaleOneAndGeneratePDF(){
         Receipt receipt = schema.getReceiptSaleTwo();
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        new ReceiptFormatterEpsonTMT20II().convertToPDF(out,
-                new ReceiptToXML(new ObjectFactory()).convertToStream(receipt)
+        ByteArrayOutputStream out = new ReceiptFormatterEpsonTMT20II().convertToPDF(
+                new ReceiptToXML(new ObjectFactory()).convertToXMLStream(receipt)
         );
         pdf = new ByteArrayInputStream(out.toByteArray(),0,out.size());
     }

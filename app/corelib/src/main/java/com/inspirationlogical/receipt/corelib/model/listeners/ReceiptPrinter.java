@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.listeners;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,13 +43,11 @@ public class ReceiptPrinter implements ReceiptAdapterPay.Listener {
     public void onClose(Receipt receipt) {
         BackgroundThread.execute(() -> {
             logger.info("Starting the process of printing the receipt: " +  receipt.toString());
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
             ReceiptToXML converter = new ReceiptToXML(new ObjectFactory());
-
-            FormatterService.create().convertToPDF(out, converter.convertToStream(receipt));
-            printers.forEach(printer -> printer.print(new ByteArrayInputStream(out.toByteArray(),0,out.size())));
+            InputStream xmlReceipt = converter.convertToXMLStream(receipt);
+            ByteArrayOutputStream out = FormatterService.create().convertToPDF(xmlReceipt);
+            printers.forEach(printer -> printer.print(new ByteArrayInputStream(out.toByteArray(),0, out.size())));
             logger.info("Printing executed successfully");
-            System.out.println(Thread.currentThread().getName() + ": Printing executed successfully");
         });
     }
 }
