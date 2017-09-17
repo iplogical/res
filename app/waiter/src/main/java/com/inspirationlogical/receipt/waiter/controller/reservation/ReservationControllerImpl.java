@@ -96,8 +96,7 @@ public class ReservationControllerImpl extends AbstractController
     @FXML
     private Label liveTime;
 
-    private CalendarPicker date;
-    private LocalDate selectedDate;
+    private CalendarPickerWrapper datePickerWrapper;
 
     private CalendarTimePicker startTime;
     private CalendarTimePicker endTime;
@@ -130,9 +129,9 @@ public class ReservationControllerImpl extends AbstractController
         this.retailService = retailService;
         this.restaurantController = restaurantController;
         this.tableConfigurationController = tableConfigurationController;
-        this.date = new CalendarPicker();
         this.startTime = new CalendarTimePicker();
         this.endTime = new CalendarTimePicker();
+        this.datePickerWrapper = new CalendarPickerWrapper();
     }
 
     @Override
@@ -157,15 +156,12 @@ public class ReservationControllerImpl extends AbstractController
     }
 
     private void initDate() {
-        date.setCalendar(Calendar.getInstance());
-        selectedDate = LocalDate.now();
-        date.setLocale(Locale.forLanguageTag("hu-HU"));
-        date.setPrefWidth(400);
-        dateContainer.getChildren().add(date);
-        date.calendarProperty().addListener((observable, oldValue, newValue) -> {
-            selectedDate = LocalDateTime.ofInstant(newValue.getTime().toInstant(), ZoneId.systemDefault()).toLocalDate();
+        datePickerWrapper.initDate();
+        datePickerWrapper.addDateListener((observable, oldValue, newValue) -> {
+            datePickerWrapper.setSelectedDate(LocalDateTime.ofInstant(newValue.getTime().toInstant(), ZoneId.systemDefault()).toLocalDate());
             initReservations();
         });
+        dateContainer.getChildren().add(datePickerWrapper.getDate());
     }
 
     private void initStartTime() {
@@ -193,7 +189,7 @@ public class ReservationControllerImpl extends AbstractController
     }
 
     private void initReservations() {
-        reservationViews = restaurantService.getReservations(selectedDate);
+        reservationViews = restaurantService.getReservations(datePickerWrapper.getSelectedDate());
         List<ReservationViewModel> models = reservationViews.stream().map(ReservationViewModel::new).collect(toList());
         models.sort(Comparator.comparing(ReservationViewModel::getTableNumberAsInt));
         reservationModels = FXCollections.observableArrayList(models);
@@ -284,7 +280,7 @@ public class ReservationControllerImpl extends AbstractController
                 .tableNumber(Integer.valueOf(tableNumber.getText()))
                 .guestCount(Integer.valueOf(guestCount.getText()))
                 .phoneNumber(phoneNumber.getText())
-                .date(LocalDateTime.ofInstant(date.getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalDate())
+                .date(LocalDateTime.ofInstant(datePickerWrapper.getDate().getCalendar().getTime().toInstant(), ZoneId.systemDefault()).toLocalDate())
                 .startTime(LocalTime.of(startHour, startMinute))
                 .endTime(LocalTime.of(endHour, endMinute))
                 .build();

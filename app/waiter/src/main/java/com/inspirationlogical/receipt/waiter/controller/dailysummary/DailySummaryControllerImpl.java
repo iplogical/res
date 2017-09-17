@@ -14,10 +14,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import jfxtras.scene.control.CalendarPicker;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 /**
@@ -42,11 +45,18 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     private Label couponTotalPrice;
     @FXML
     private Label totalPrice;
+
+    @FXML
+    private HBox dateContainer;
+
     @FXML
     private Button printDailyConsumption;
 
     @FXML
     private Label liveTime;
+
+    private CalendarPicker date;
+    private LocalDate selectedDate;
 
     private RestaurantView restaurantView;
 
