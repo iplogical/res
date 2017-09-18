@@ -35,7 +35,7 @@ public class BuildTestSchema {
     public static final int NUMBER_OF_RESTAURANT = 1;
     public static final int NUMBER_OF_VAT_SERIE = 1;
     public static final int NUMBER_OF_VAT_RECORDS = 5;
-    public static final int NUMBER_OF_DAILY_CLOSURES = 2;
+    public static final int NUMBER_OF_DAILY_CLOSURES = 3;
 
     public static final String PRODUCT_ONE_LONG_NAME = "productOne";
     public static final String PRODUCT_ONE_SHORT_NAME = "product1";
@@ -198,6 +198,7 @@ public class BuildTestSchema {
 
     private @Getter DailyClosure dailyClosureOne;
     private @Getter DailyClosure dailyClosureTwo;
+    private @Getter DailyClosure openDailyClosure;
 
     public BuildTestSchema(){
         entityManager = EntityManagerProvider.getTestEntityManager();
@@ -241,6 +242,7 @@ public class BuildTestSchema {
     }
 
     private void buildDailyClosures() {
+        buildOpenDailyClosure();
         buildDailyClosureOne();
         buildDailyClosureTwo();
     }
@@ -581,6 +583,37 @@ public class BuildTestSchema {
 
     private void buildDailyClosureTwo() {
         dailyClosureTwo = DailyClosure.builder()
+                .closureTime(now().minusDays(2))
+                .sumPurchaseNetPriceCash(10000)
+                .sumPurchaseNetPriceCreditCard(10000)
+                .sumPurchaseNetPriceCoupon(10000)
+                .sumPurchaseNetPriceTotal(30000)
+
+                .sumPurchaseGrossPriceCash(12000)
+                .sumPurchaseGrossPriceCreditCard(12000)
+                .sumPurchaseGrossPriceCoupon(12000)
+                .sumPurchaseGrossPriceTotal(36000)
+
+                .sumSaleNetPriceCash(20000)
+                .sumSaleNetPriceCreditCard(20000)
+                .sumSaleNetPriceCoupon(20000)
+                .sumSaleNetPriceTotal(60000)
+
+                .sumSaleGrossPriceCash(25000)
+                .sumSaleGrossPriceCreditCard(25000)
+                .sumSaleGrossPriceCoupon(25000)
+                .sumSaleGrossPriceTotal(75000)
+
+                .profit(30000)
+                .markup(50)
+                .receiptAverage(3000)
+                .numberOfReceipts(25)
+                .discount(5)
+                .build();
+    }
+
+    private void buildOpenDailyClosure() {
+        openDailyClosure = DailyClosure.builder()
                 .closureTime(null)
                 .sumPurchaseNetPriceCash(0)
                 .sumPurchaseNetPriceCreditCard(0)
@@ -1186,7 +1219,7 @@ public class BuildTestSchema {
                 .status(ReceiptStatus.CLOSED)
                 .paymentMethod(PaymentMethod.CREDIT_CARD)
                 .openTime(LocalDateTime.now())
-                .closureTime(LocalDateTime.now())
+                .closureTime(LocalDateTime.now().minusHours(1))
                 .sumPurchaseGrossPrice(2500)
                 .sumPurchaseNetPrice(2000)
                 .sumSaleGrossPrice(5000)
@@ -1212,7 +1245,7 @@ public class BuildTestSchema {
                 .status(ReceiptStatus.CLOSED)
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(LocalDateTime.now())
-                .closureTime(LocalDateTime.now())
+                .closureTime(LocalDateTime.now().minusHours(2))
                 .sumPurchaseGrossPrice(2500)
                 .sumPurchaseNetPrice(2000)
                 .sumSaleGrossPrice(5000)
@@ -1229,7 +1262,7 @@ public class BuildTestSchema {
                 .status(ReceiptStatus.CLOSED)
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(LocalDateTime.now())
-                .closureTime(LocalDateTime.now())
+                .closureTime(LocalDateTime.now().minusHours(3))
                 .sumPurchaseGrossPrice(2500)
                 .sumPurchaseNetPrice(2000)
                 .sumSaleGrossPrice(5000)
@@ -2108,7 +2141,8 @@ public class BuildTestSchema {
 
     private void restaurantAndDailyClosures() {
         restaurant.setDailyClosures(new ArrayList<>(
-                Arrays.asList(dailyClosureOne, dailyClosureTwo)));
+                Arrays.asList(openDailyClosure, dailyClosureOne, dailyClosureTwo)));
+        openDailyClosure.setOwner(restaurant);
         dailyClosureOne.setOwner(restaurant);
         dailyClosureTwo.setOwner(restaurant);
     }

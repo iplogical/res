@@ -62,16 +62,17 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
         return receipts.stream().map(ReceiptAdapterBase::new).collect(toList());
     }
 
-    public static List<ReceiptAdapterBase> getReceiptsByClosureTime(LocalDateTime closureTime) {
+    public static List<ReceiptAdapterBase> getReceiptsByClosureTime(LocalDateTime startTime, LocalDateTime endTime) {
         List<Receipt> receipts = GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_CLOSURE_TIME_AND_TYPE,
-                query -> query.setParameter("closureTime", closureTime)
+                query -> query.setParameter("startTime", startTime)
+                        .setParameter("endTime", endTime)
                         .setParameter("type", ReceiptType.SALE));
         return receipts.stream().map(ReceiptAdapterBase::new).collect(toList());
     }
 
     public static void deleteReceipts() {
         LocalDateTime latestClosureTime = DailyClosureAdapter.getLatestClosureTime();
-        List<ReceiptAdapterBase> receiptsToDelete = getReceiptsByClosureTime(latestClosureTime);
+        List<ReceiptAdapterBase> receiptsToDelete = getReceiptsByClosureTime(latestClosureTime, now());
         receiptsToDelete.forEach(receipt -> {
             receipt.getAdaptee().getOwner().getReceipts().remove(receipt.getAdaptee());
             receipt.getAdaptee().setOwner(null);

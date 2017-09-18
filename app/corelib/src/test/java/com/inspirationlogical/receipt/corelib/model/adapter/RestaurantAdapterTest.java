@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_DISPLAYABLE_TABLES;
 import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.getTableFromActual;
+import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
@@ -10,7 +11,6 @@ import static org.junit.Assert.assertTrue;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.TestBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
@@ -20,6 +20,7 @@ import org.junit.Test;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 /**
@@ -37,6 +38,7 @@ public class RestaurantAdapterTest extends TestBase {
     private Receipt receiptSaleFour;
     private Receipt receiptSaleClosedTable;
     private int totalRecordsOfTheDay;
+    private LocalDateTime latestClosure;
 
     @Before
     public void setUp() {
@@ -64,6 +66,8 @@ public class RestaurantAdapterTest extends TestBase {
                 .capacity(5)
                 .note("Big Chocklate Cake")
                 .visible(true);
+
+        latestClosure = DailyClosureAdapter.getLatestClosureTime();
     }
 
     @Test
@@ -145,7 +149,7 @@ public class RestaurantAdapterTest extends TestBase {
 
     @Test
     public void testCreateReceiptOfDailyConsumptionNumberOfRecords() {
-        Receipt receipt = restaurantAdapter.createReceiptOfDailyConsumption();
+        Receipt receipt = restaurantAdapter.createReceiptOfAggregatedConsumption(latestClosure, now().plusDays(1));
         assertEquals(totalRecordsOfTheDay, receipt.getRecords().size());
     }
 
@@ -155,7 +159,7 @@ public class RestaurantAdapterTest extends TestBase {
         receiptSaleTwo.getRecords().get(0).setDiscountPercent(20);
         receiptSaleFour.getRecords().get(0).setName("testRecord");
         receiptSaleFour.getRecords().get(0).setDiscountPercent(20);
-        Receipt receipt = restaurantAdapter.createReceiptOfDailyConsumption();
+        Receipt receipt = restaurantAdapter.createReceiptOfAggregatedConsumption(latestClosure, now().plusDays(1));
         assertEquals(totalRecordsOfTheDay - 1, receipt.getRecords().size());
     }
 
@@ -164,7 +168,7 @@ public class RestaurantAdapterTest extends TestBase {
         int totalCash = receiptSaleFour.getSumSaleGrossPrice() + receiptSaleClosedTable.getSumSaleGrossPrice();
         int totalCreditCard = receiptSaleTwo.getSumSaleGrossPrice();
         int totalCoupon = 0;
-        Receipt receipt = restaurantAdapter.createReceiptOfDailyConsumption();
+        Receipt receipt = restaurantAdapter.createReceiptOfAggregatedConsumption(latestClosure, now().plusDays(1));
         assertEquals(totalCash, getSalePrice(receipt, PaymentMethod.CASH));
         assertEquals(totalCreditCard, getSalePrice(receipt, PaymentMethod.CREDIT_CARD));
         assertEquals(totalCoupon, getSalePrice(receipt, PaymentMethod.COUPON));

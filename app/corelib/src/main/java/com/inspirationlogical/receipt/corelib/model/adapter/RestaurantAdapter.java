@@ -11,6 +11,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
+import jfxtras.labs.repeatagenda.scene.control.repeatagenda.icalendar.rrule.freq.Daily;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -154,15 +155,16 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
             return 0;
     }
 
-    public void printDailyConsumption() {
-        Receipt aggregatedReceipt = createReceiptOfDailyConsumption();
+    public void printAggregatedConsumption(LocalDateTime startTime, LocalDateTime endTime) {
+        LocalDateTime closureBeforeStartTime = DailyClosureAdapter.getClosureTimeBeforeDate(startTime);
+        LocalDateTime closureAfterEndTime = DailyClosureAdapter.getClosureTimeAfterDate(endTime);
+        Receipt aggregatedReceipt = createReceiptOfAggregatedConsumption(closureBeforeStartTime, closureAfterEndTime);
         new ReceiptPrinter().onClose(aggregatedReceipt);
     }
 
-    Receipt createReceiptOfDailyConsumption() {
-        LocalDateTime latestClosure = DailyClosureAdapter.getLatestClosureTime();
-        List<ReceiptAdapterBase> receipts = getReceiptsByClosureTime(latestClosure);
-        Receipt aggregatedReceipt = buildAggregatedReceipt(latestClosure);
+    Receipt createReceiptOfAggregatedConsumption(LocalDateTime startTime, LocalDateTime endTime) {
+        List<ReceiptAdapterBase> receipts = getReceiptsByClosureTime(startTime, endTime);
+        Receipt aggregatedReceipt = buildAggregatedReceipt(startTime);
         Map<PaymentMethod, Integer> incomesByPaymentMethod = initIncomes();
         receipts.forEach(receipt -> {
             updateIncomes(receipt, incomesByPaymentMethod);
@@ -176,10 +178,10 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         return aggregatedReceipt;
     }
 
-    private Receipt buildAggregatedReceipt(LocalDateTime latestClosure) {
+    private Receipt buildAggregatedReceipt(LocalDateTime startTime) {
         Receipt receipt = Receipt.builder()
                 .records(new ArrayList<>())
-                .openTime(latestClosure)
+                .openTime(startTime)
                 .closureTime(now())
                 .owner(TableAdapter.getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee())
                 .paymentMethod(PaymentMethod.CASH)

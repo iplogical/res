@@ -1,12 +1,13 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
+import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import org.junit.Before;
 import org.junit.Test;
 
+import static java.time.LocalDateTime.now;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -17,17 +18,33 @@ import static org.junit.Assert.assertNull;
 public class DailyClosureAdapterTest extends TestBase {
 
     private DailyClosureAdapter openDailyClosure;
+    private DailyClosureAdapter dailyClosureOne;
+    private DailyClosureAdapter dailyClosureTwo;
     private Receipt receipt;
 
     @Before
     public void setUp() {
-        openDailyClosure = new DailyClosureAdapter(schema.getDailyClosureTwo());
+        openDailyClosure = new DailyClosureAdapter(schema.getOpenDailyClosure());
+        dailyClosureOne = new DailyClosureAdapter(schema.getDailyClosureOne());
+        dailyClosureTwo = new DailyClosureAdapter(schema.getDailyClosureTwo());
         receipt = schema.getReceiptSaleOne();
     }
 
     @Test
     public void testGetLatestClosureTime() {
         assertNotNull(DailyClosureAdapter.getLatestClosureTime());
+    }
+
+    @Test
+    public void testGetClosureTimeBefore() {
+        assertEquals(dailyClosureOne.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimeBeforeDate(now().minusHours(12)));
+        assertEquals(dailyClosureTwo.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimeBeforeDate(now().minusHours(36)));
+    }
+
+    @Test
+    public void testGetClosureTimeAfter() {
+        assertEquals(dailyClosureOne.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimeAfterDate(now().minusHours(36)));
+        assertEquals(dailyClosureTwo.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimeAfterDate(now().minusHours(60)));
     }
 
     @Test

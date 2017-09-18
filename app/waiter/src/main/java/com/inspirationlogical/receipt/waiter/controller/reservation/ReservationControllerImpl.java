@@ -25,7 +25,6 @@ import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
@@ -37,7 +36,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import jfxtras.scene.control.CalendarPicker;
 import jfxtras.scene.control.CalendarTimePicker;
 import lombok.SneakyThrows;
 
@@ -131,7 +129,6 @@ public class ReservationControllerImpl extends AbstractController
         this.tableConfigurationController = tableConfigurationController;
         this.startTime = new CalendarTimePicker();
         this.endTime = new CalendarTimePicker();
-        this.datePickerWrapper = new CalendarPickerWrapper();
     }
 
     @Override
@@ -146,7 +143,7 @@ public class ReservationControllerImpl extends AbstractController
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initDate();
+        initDatePicker();
         initStartTime();
         initEndTime();
         initColumns();
@@ -155,12 +152,8 @@ public class ReservationControllerImpl extends AbstractController
         initLiveTime(liveTime);
     }
 
-    private void initDate() {
-        datePickerWrapper.initDate();
-        datePickerWrapper.addDateListener((observable, oldValue, newValue) -> {
-            datePickerWrapper.setSelectedDate(LocalDateTime.ofInstant(newValue.getTime().toInstant(), ZoneId.systemDefault()).toLocalDate());
-            initReservations();
-        });
+    private void initDatePicker() {
+        datePickerWrapper = CalendarPickerWrapper.getInstance();
         dateContainer.getChildren().add(datePickerWrapper.getDate());
     }
 

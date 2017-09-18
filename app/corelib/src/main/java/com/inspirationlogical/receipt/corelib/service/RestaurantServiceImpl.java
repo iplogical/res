@@ -130,7 +130,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     @Override
     public void closeDay() {
         StockAdapter.closeLatestStockEntries();
-        ReceiptAdapterBase.deleteReceipts();
+//        ReceiptAdapterBase.deleteReceipts();
         DailyClosureAdapter.getOpenDailyClosure().close();
     }
 

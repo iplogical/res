@@ -63,22 +63,32 @@ public class ReceiptAdapterTest extends TestBase {
     }
 
     @Test
-    public void testGetReceiptsByClosureTimeOneHourAgo() {
-        assertEquals(NUMBER_OF_CLOSED_RECEIPTS, getReceiptsByClosureTime(now().minusHours(1)).size());
+    public void testGetReceiptsByClosureTimeFourHoursAgo() {
+        assertEquals(NUMBER_OF_CLOSED_RECEIPTS, getReceiptsByClosureTime(now().minusHours(4), now()).size());
+    }
+
+    @Test
+    public void testGetReceiptsByClosureTimeOneHoursAgo() {
+        assertEquals(1, getReceiptsByClosureTime(now().minusHours(1).minusMinutes(10), now()).size());
+    }
+
+    @Test
+    public void testGetReceiptsByClosureTimeTwoHoursAgo() {
+        assertEquals(1, getReceiptsByClosureTime(now().minusHours(2).minusMinutes(10), now().minusHours(1).minusMinutes(10)).size());
     }
 
     @Test
     public void testGetReceiptsByClosureTimeNow() {
-        assertEquals(0, getReceiptsByClosureTime(now()).size());
+        assertEquals(0, getReceiptsByClosureTime(now(), now()).size());
     }
 
     @Test
     public void testDeleteReceipts() {
-        List<ReceiptAdapterBase> closedReceipts = getReceiptsByClosureTime(now().minusHours(1));
+        List<ReceiptAdapterBase> closedReceipts = getReceiptsByClosureTime(now().minusHours(4), now());
         int numberOfRecords = closedReceipts.stream()
                 .mapToInt(receiptAdapter -> receiptAdapter.getAdaptee().getRecords().size()).sum();
         ReceiptAdapterBase.deleteReceipts();
-        assertEquals(0, getReceiptsByClosureTime(now().minusHours(1)).size());
+        assertEquals(0, getReceiptsByClosureTime(now().minusHours(1), now()).size());
         assertEquals(NUMBER_OF_RECEIPT_RECORDS - numberOfRecords, GuardedTransaction.runNamedQuery(ReceiptRecord.GET_TEST_RECEIPT_RECORDS).size());
         assertEquals(NUMBER_OF_RECEIPT_RECORD_CREATEDS - numberOfRecords, GuardedTransaction.runNamedQuery(ReceiptRecordCreated.GET_TEST_RECEIPT_RECORDS_CREATED).size());
     }
@@ -262,7 +272,7 @@ public class ReceiptAdapterTest extends TestBase {
         assertEquals(soldQuantityTwo * (1 - 0.33), receiptSaleOne.getAdaptee().getRecords().get(1).getSoldQuantity(), 0.001);
         assertEquals(soldQuantityThree * (1 - 0.33), receiptSaleOne.getAdaptee().getRecords().get(2).getSoldQuantity(), 0.001);
         assertEquals(soldQuantityFour * (1 - 0.33), receiptSaleOne.getAdaptee().getRecords().get(3).getSoldQuantity(), 0.001);
-        List<ReceiptAdapterBase> closedReceipts = getReceiptsByClosureTime(now().minusSeconds(2));
+        List<ReceiptAdapterBase> closedReceipts = getReceiptsByClosureTime(now().minusSeconds(2), now());
         closedReceipts.sort(Comparator.comparing(receiptAdapter -> ((ReceiptAdapterBase)receiptAdapter).getAdaptee().getClosureTime()).reversed());
         ReceiptAdapterBase newClosedReceipt = closedReceipts.get(0);
         assertEquals(soldQuantityOne * 0.33, newClosedReceipt.getAdaptee().getRecords().get(0).getSoldQuantity(), 0.001);

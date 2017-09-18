@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
@@ -28,6 +26,23 @@ public class DailyClosureAdapter extends AbstractAdapter<DailyClosure> {
             return now().minusDays(1);
         }
         return dailyClosureList.get(1).getClosureTime();    // Element 0 is always the open daily closure record, which has no closure time.
+    }
+
+    private static LocalDateTime getClosureTimeByDate(LocalDateTime date, String namedQuery) {
+        List<DailyClosure> dailyClosureList = GuardedTransaction.runNamedQuery(namedQuery,
+                query -> query.setParameter("closureTime", date));
+        if(dailyClosureList.size() == 0) {
+            return date;
+        }
+        return dailyClosureList.get(0).getClosureTime();
+    }
+
+    public static LocalDateTime getClosureTimeBeforeDate(LocalDateTime date) {
+        return getClosureTimeByDate(date, DailyClosure.GET_DAILY_CLOSURE_BEFORE_DATE);
+    }
+
+    public static LocalDateTime getClosureTimeAfterDate(LocalDateTime date) {
+        return getClosureTimeByDate(date, DailyClosure.GET_DAILY_CLOSURE_AFTER_DATE);
     }
 
     public static DailyClosureAdapter getOpenDailyClosure() {

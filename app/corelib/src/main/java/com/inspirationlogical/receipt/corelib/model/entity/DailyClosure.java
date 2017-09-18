@@ -11,9 +11,7 @@ import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-import static com.inspirationlogical.receipt.corelib.model.entity.DailyClosure.GET_LATEST_DAILY_CLOSURE;
-import static com.inspirationlogical.receipt.corelib.model.entity.DailyClosure.GET_OPEN_DAILY_CLOSURE;
-import static com.inspirationlogical.receipt.corelib.model.entity.DailyClosure.GET_TEST_DAILY_CLOSURES;
+import static com.inspirationlogical.receipt.corelib.model.entity.DailyClosure.*;
 
 /**
  * Created by TheDagi on 2017. 04. 17..
@@ -28,6 +26,10 @@ import static com.inspirationlogical.receipt.corelib.model.entity.DailyClosure.G
                 query = "FROM DailyClosure dc"),
         @NamedQuery(name = GET_LATEST_DAILY_CLOSURE,
                 query = "FROM DailyClosure dc ORDER BY dc.closureTime desc"),
+        @NamedQuery(name = GET_DAILY_CLOSURE_BEFORE_DATE,
+                query = "FROM DailyClosure dc WHERE dc.closureTime < :closureTime ORDER BY dc.closureTime desc"),
+        @NamedQuery(name = GET_DAILY_CLOSURE_AFTER_DATE,
+                query = "FROM DailyClosure dc WHERE dc.closureTime > :closureTime ORDER BY dc.closureTime asc"),
         @NamedQuery(name = GET_OPEN_DAILY_CLOSURE,
                 query = "FROM DailyClosure dc WHERE dc.closureTime IS NULL")
 })
@@ -36,6 +38,8 @@ public @Data class DailyClosure extends AbstractEntity {
 
     public static final String GET_TEST_DAILY_CLOSURES = "Table.GetTestDailyClosures";
     public static final String GET_LATEST_DAILY_CLOSURE = "Table.GetLatestDailyClosure";
+    public static final String GET_DAILY_CLOSURE_BEFORE_DATE = "Table.GetDailyClosureBeforeDate";
+    public static final String GET_DAILY_CLOSURE_AFTER_DATE = "Table.GetDailyClosureAfterDate";
     public static final String GET_OPEN_DAILY_CLOSURE = "Table.GetOpenDailyClosure";
 
 

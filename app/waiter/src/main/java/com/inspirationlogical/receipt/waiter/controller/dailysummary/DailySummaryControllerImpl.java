@@ -2,11 +2,8 @@ package com.inspirationlogical.receipt.waiter.controller.dailysummary;
 
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
-import com.inspirationlogical.receipt.corelib.service.RestaurantService;
-import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
-import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
+import com.inspirationlogical.receipt.waiter.controller.reservation.CalendarPickerWrapper;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -15,12 +12,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import jfxtras.scene.control.CalendarPicker;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ResourceBundle;
 
 /**
@@ -47,7 +44,9 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     private Label totalPrice;
 
     @FXML
-    private HBox dateContainer;
+    private HBox startDateContainer;
+    @FXML
+    private HBox endDateContainer;
 
     @FXML
     private Button printDailyConsumption;
@@ -55,8 +54,9 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     @FXML
     private Label liveTime;
 
-    private CalendarPicker date;
-    private LocalDate selectedDate;
+    private CalendarPickerWrapper startDatePicker;
+
+    private CalendarPickerWrapper endDatePicker;
 
     private RestaurantView restaurantView;
 
@@ -74,8 +74,24 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initDate();
         initLiveTime(liveTime);
         updatePriceFields();
+    }
+
+    private void initDate() {
+        initStartDate();
+        initEndDate();
+    }
+
+    private void initStartDate() {
+        startDatePicker = CalendarPickerWrapper.getInstance();
+        startDateContainer.getChildren().add(startDatePicker.getDate());
+    }
+
+    private void initEndDate() {
+        endDatePicker = CalendarPickerWrapper.getInstance();
+        endDateContainer.getChildren().add(endDatePicker.getDate());
     }
 
     @Override
@@ -113,6 +129,6 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onPrintDailyConsumption(Event event) {
-        retailService.printDailyConsumption(restaurantView);
+        retailService.printAggregateConsumption(restaurantView, startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
     }
 }

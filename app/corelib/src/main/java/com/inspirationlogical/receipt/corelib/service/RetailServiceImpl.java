@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 import com.google.inject.Inject;
@@ -81,8 +82,8 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     }
 
     @Override
-    public void printDailyConsumption(RestaurantView restaurantView) {
-        getRestaurantAdapter(restaurantView).printDailyConsumption();
-        logger.info("The daily consumption was printed: " + restaurantView);
+    public void printAggregateConsumption(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate) {
+        getRestaurantAdapter(restaurantView).printAggregatedConsumption(startDate.atTime(5, 0), endDate.atTime(16, 00));
+        logger.info("The aggregated consumption was printed between: " + startDate + " - " + endDate + ", for restaurant" + restaurantView);
     }
 }

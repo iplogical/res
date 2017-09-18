@@ -49,7 +49,7 @@ import lombok.experimental.Tolerate;
     @NamedQuery(name = Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
             query="SELECT r FROM Receipt r WHERE r.status=:status AND r.owner.number=:number"),
     @NamedQuery(name = Receipt.GET_RECEIPT_BY_CLOSURE_TIME_AND_TYPE,
-            query="SELECT r FROM Receipt r WHERE r.closureTime>:closureTime and r.type=:type")
+            query="SELECT r FROM Receipt r WHERE r.closureTime>:startTime AND r.closureTime<:endTime AND r.type=:type")
 })
 @NamedEntityGraphs({
         @NamedEntityGraph(name = GRAPH_RECEIPT_AND_RECORDS,
