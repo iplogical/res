@@ -1,10 +1,5 @@
 package com.inspirationlogical.receipt.waiter.application;
 
-import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.APP_HEIGHT;
-import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.APP_TITLE;
-import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.APP_WIDTH;
-import static com.inspirationlogical.receipt.waiter.registry.WaiterRegistry.getInstance;
-
 import com.inspirationlogical.receipt.corelib.frontend.application.MainStage;
 import com.inspirationlogical.receipt.corelib.frontend.application.ResourcesProvider;
 import com.inspirationlogical.receipt.corelib.frontend.application.StageProvider;
@@ -13,18 +8,18 @@ import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerPro
 import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.resources.ResourceBundleWrapper;
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
-
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
-import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.*;
+import static com.inspirationlogical.receipt.waiter.registry.WaiterRegistry.getInstance;
 
 
 public class WaiterApp extends Application implements StageProvider, ResourcesProvider {

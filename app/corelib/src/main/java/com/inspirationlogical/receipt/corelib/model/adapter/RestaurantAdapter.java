@@ -11,8 +11,8 @@ import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
-import jfxtras.labs.repeatagenda.scene.control.repeatagenda.icalendar.rrule.freq.Daily;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Predicate;
@@ -155,10 +155,9 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
             return 0;
     }
 
-    public void printAggregatedConsumption(LocalDateTime startTime, LocalDateTime endTime) {
-        LocalDateTime closureBeforeStartTime = DailyClosureAdapter.getClosureTimeBeforeDate(startTime);
-        LocalDateTime closureAfterEndTime = DailyClosureAdapter.getClosureTimeAfterDate(endTime);
-        Receipt aggregatedReceipt = createReceiptOfAggregatedConsumption(closureBeforeStartTime, closureAfterEndTime);
+    public void printAggregatedConsumption(LocalDate startTime, LocalDate endTime) {
+        List<LocalDateTime> closureTimes = DailyClosureAdapter.getClosureTimes(startTime, endTime);
+        Receipt aggregatedReceipt = createReceiptOfAggregatedConsumption(closureTimes.get(0), closureTimes.get(1));
         new ReceiptPrinter().onClose(aggregatedReceipt);
     }
 

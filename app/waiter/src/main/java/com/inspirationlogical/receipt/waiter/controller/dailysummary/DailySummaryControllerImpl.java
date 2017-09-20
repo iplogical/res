@@ -18,6 +18,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -42,6 +43,11 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     private Label couponTotalPrice;
     @FXML
     private Label totalPrice;
+
+    @FXML
+    private Label startDateValue;
+    @FXML
+    private Label endDateValue;
 
     @FXML
     private HBox startDateContainer;
@@ -82,22 +88,29 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     private void initDate() {
         initStartDate();
         initEndDate();
+        updateClosureTimeLabels();
     }
 
     private void initStartDate() {
         startDatePicker = CalendarPickerWrapper.getInstance();
+        startDatePicker.setOnChange(this::updateClosureTimeLabels);
         startDateContainer.getChildren().add(startDatePicker.getDate());
     }
 
     private void initEndDate() {
         endDatePicker = CalendarPickerWrapper.getInstance();
+        endDatePicker.setOnChange(this::updateClosureTimeLabels);
         endDateContainer.getChildren().add(endDatePicker.getDate());
     }
 
-    @Override
-    protected void soldProductsRowClickHandler(SoldProductViewModel row) {
-
+    private void updateClosureTimeLabels() {
+        List<LocalDateTime> closureTimes = retailService.getClosureTimes(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
+        startDateValue.setText(closureTimes.get(0).toString());
+        endDateValue.setText(closureTimes.get(1).toString());
     }
+
+    @Override
+    protected void soldProductsRowClickHandler(SoldProductViewModel row) {}
 
     @Override
     public void onBackToRestaurantView(Event event) {

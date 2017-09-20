@@ -5,7 +5,9 @@ import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
@@ -23,7 +25,7 @@ public class DailyClosureAdapter extends AbstractAdapter<DailyClosure> {
     public static LocalDateTime getLatestClosureTime() {
         List<DailyClosure> dailyClosureList = GuardedTransaction.runNamedQuery(DailyClosure.GET_LATEST_DAILY_CLOSURE);
         if(dailyClosureList.size() < 2) {
-            return now().minusDays(1);
+            return now().plusDays(1);
         }
         return dailyClosureList.get(1).getClosureTime();    // Element 0 is always the open daily closure record, which has no closure time.
     }
@@ -32,16 +34,23 @@ public class DailyClosureAdapter extends AbstractAdapter<DailyClosure> {
         List<DailyClosure> dailyClosureList = GuardedTransaction.runNamedQuery(namedQuery,
                 query -> query.setParameter("closureTime", date));
         if(dailyClosureList.size() == 0) {
-            return date;
+            return date.plusDays(1);
         }
         return dailyClosureList.get(0).getClosureTime();
     }
 
-    public static LocalDateTime getClosureTimeBeforeDate(LocalDateTime date) {
+    public static List<LocalDateTime> getClosureTimes(LocalDate startDate, LocalDate endDate) {
+        List<LocalDateTime> closureTimes = new ArrayList<>();
+        closureTimes.add(getClosureTimeBeforeDate(startDate.atTime(5, 0)));
+        closureTimes.add(getClosureTimeAfterDate(endDate.atTime(21, 0)));
+        return closureTimes;
+    }
+
+    private static LocalDateTime getClosureTimeBeforeDate(LocalDateTime date) {
         return getClosureTimeByDate(date, DailyClosure.GET_DAILY_CLOSURE_BEFORE_DATE);
     }
 
-    public static LocalDateTime getClosureTimeAfterDate(LocalDateTime date) {
+    private static LocalDateTime getClosureTimeAfterDate(LocalDateTime date) {
         return getClosureTimeByDate(date, DailyClosure.GET_DAILY_CLOSURE_AFTER_DATE);
     }
 

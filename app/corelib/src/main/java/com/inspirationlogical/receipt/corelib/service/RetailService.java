@@ -1,7 +1,9 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
@@ -28,6 +30,8 @@ public interface RetailService {
     void cancelReceiptRecord(TableView tableView, ReceiptRecordView receiptRecordView);
 
     void mergeReceiptRecords(ReceiptView receiptView);
+
+    List<LocalDateTime> getClosureTimes(LocalDate startDate, LocalDate endDate);
 
     void printAggregateConsumption(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate);
 }

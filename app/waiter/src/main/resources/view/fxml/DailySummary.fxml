@@ -143,9 +143,10 @@
                                        </children>
                                     </HBox>
                                     <Separator />
-                                    <HBox>
+                                    <HBox spacing="5.0">
                                        <children>
                                           <Label text="%DailySummary.StartDate" />
+                                          <Label fx:id="startDateValue" />
                                        </children>
                                     </HBox>
                                     <HBox fx:id="startDateContainer" prefHeight="100.0" prefWidth="200.0">
@@ -153,9 +154,10 @@
                                           <Insets top="10.0" />
                                        </VBox.margin>
                                     </HBox>
-                                    <HBox>
+                                    <HBox spacing="5.0">
                                        <children>
                                           <Label text="%DailySummary.EndDate" />
+                                          <Label fx:id="endDateValue" />
                                        </children>
                                     </HBox>
                                     <HBox fx:id="endDateContainer" prefHeight="100.0" prefWidth="200.0">
