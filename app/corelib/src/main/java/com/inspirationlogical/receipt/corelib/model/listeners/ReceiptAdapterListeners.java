@@ -16,7 +16,6 @@ public class ReceiptAdapterListeners {
         list.add(new ReceiptPrinter());
         list.add(new StockListener());
         list.add(new DailyClosureListener());
-        list.add(new ReceiptArchiverListener());
         return list;
     }
 }

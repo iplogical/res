@@ -10,7 +10,6 @@ import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,14 +42,13 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         Table newTable = builder.build();
         if (isTableNumberAlreadyInUse(newTable.getNumber())) {
             if(canBeHosted(newTable.getType())) {
-                newTable.setHost(TableAdapter.getTableFromActual(newTable.getNumber()).getAdaptee());
+                newTable.setHost(TableAdapter.getTable(newTable.getNumber()).getAdaptee());
                 newTable.setNumber(TableAdapter.getFirstUnusedNumber());
             } else {
                 throw new IllegalTableStateException("The table number " + newTable.getNumber() + " is already in use");
             }
         }
-        addTableToActual(newTable);
-        addTableToArchive(newTable);
+        persistTable(newTable);
         return new TableAdapter(newTable);
     }
 
@@ -63,20 +61,10 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         return false;
     }
 
-    private void addTableToActual(Table newTable) {
+    private void persistTable(Table newTable) {
         GuardedTransaction.run(() -> {
             adaptee.getTables().add(newTable);
             newTable.setOwner(adaptee);
-        });
-    }
-
-    private void addTableToArchive(Table newTable) {
-        GuardedTransactionArchive.run(() -> {
-            List<Restaurant> restaurants = GuardedTransactionArchive.runNamedQuery(Restaurant.GET_ACTIVE_RESTAURANT);
-            Restaurant restaurant = restaurants.get(0);
-            Table newArchiveTable = Table.cloneTable(newTable);
-            newArchiveTable.setOwner(restaurant);
-            restaurant.getTables().add(newArchiveTable);
         });
     }
 

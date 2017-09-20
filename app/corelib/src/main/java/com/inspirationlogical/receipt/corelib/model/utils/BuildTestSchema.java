@@ -4,7 +4,6 @@ import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 import lombok.Getter;
 
 import javax.persistence.EntityManager;
@@ -202,26 +201,13 @@ public class BuildTestSchema {
 
     public BuildTestSchema(){
         entityManager = EntityManagerProvider.getTestEntityManager();
-        entityManagerArchive = EntityManagerProvider.getTestEntityManagerArchive();
     }
 
     public void buildTestSchema() {
-        buildAndPersistArchive();
-        buildAndPersistActual();
-    }
-
-    private void buildAndPersistActual() {
-        dropAllActual();
+        dropAll();
         buildObjects();
         setUpObjectRelationShips();
-        persistObjectsActual();
-    }
-
-    private void buildAndPersistArchive() {
-        dropAllArchive();
-        buildObjects();
-        setUpObjectRelationShips();
-        persistObjectsArchive();
+        persistObjects();
     }
 
     private void buildObjects() {
@@ -424,7 +410,7 @@ public class BuildTestSchema {
         
     }
 
-    private void dropAllActual(){
+    private void dropAll(){
         GuardedTransaction.run(() -> {
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.PriceModifier").executeUpdate();
             entityManager.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Recipe").executeUpdate();
@@ -445,28 +431,7 @@ public class BuildTestSchema {
         entityManager.clear();
     }
 
-    private void dropAllArchive(){
-        GuardedTransactionArchive.run(() -> {
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.PriceModifier").executeUpdate();
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Recipe").executeUpdate();
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Stock").executeUpdate();
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Product").executeUpdate();
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated").executeUpdate();
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord").executeUpdate();
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Receipt").executeUpdate();
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Reservation").executeUpdate();
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Table").executeUpdate();
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.DailyClosure").executeUpdate();
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.Restaurant").executeUpdate();
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.VAT").executeUpdate();
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.VATSerie").executeUpdate();
-            entityManagerArchive.createQuery("DELETE FROM com.inspirationlogical.receipt.corelib.model.entity.ProductCategory").executeUpdate();
-            entityManagerArchive.createNativeQuery("DELETE FROM PRODUCT_CATEGORY_RELATIONS").executeUpdate();
-        });
-        entityManagerArchive.clear();
-    }
-
-    private void persistObjectsActual() {
+    private void persistObjects() {
         GuardedTransaction.persist(restaurant);
         persistReceipts();
         persistRecipes();
@@ -508,24 +473,6 @@ public class BuildTestSchema {
         GuardedTransaction.persist(stockOne);
         GuardedTransaction.persist(stockTwo);
         GuardedTransaction.persist(stockThree);
-    }
-
-    private void persistObjectsArchive() {
-        GuardedTransactionArchive.persist(restaurant);
-        persistArchiveReceipts();
-    }
-
-    private void persistArchiveReceipts() {
-        GuardedTransactionArchive.persist(receiptSaleOne);
-        GuardedTransactionArchive.persist(receiptSaleTwo);
-        GuardedTransactionArchive.persist(receiptSaleThree);
-        GuardedTransactionArchive.persist(receiptSaleFour);
-        GuardedTransactionArchive.persist(receiptSaleClosedTable);
-        GuardedTransactionArchive.persist(receiptTableSaleTest);
-        GuardedTransactionArchive.persist(receiptPurchase);
-        GuardedTransactionArchive.persist(receiptInventory);
-        GuardedTransactionArchive.persist(receiptDisposal);
-        GuardedTransactionArchive.persist(receiptOther);
     }
 
     private void buildRestaurant() {

@@ -37,7 +37,6 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
     public void init() {
         if(testApplication) {
             EntityManagerProvider.getTestEntityManager();
-            EntityManagerProvider.getTestEntityManagerArchive();
         }
     }
 
@@ -67,7 +66,6 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
     @Override
     public void stop() throws Exception {
         EntityManagerProvider.closeEntityManager();
-        EntityManagerProvider.closeEntityManagerArchive();
         BackgroundThread.shutdown();
         logger.warn("Stopping WaiterApp");
     }

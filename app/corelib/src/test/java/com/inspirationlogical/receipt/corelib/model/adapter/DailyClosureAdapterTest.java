@@ -7,7 +7,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import org.junit.Before;
 import org.junit.Test;
 
-import static java.time.LocalDateTime.now;
+import static java.time.LocalDate.now;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -36,15 +36,16 @@ public class DailyClosureAdapterTest extends TestBase {
     }
 
     @Test
-    public void testGetClosureTimeBefore() {
-        assertEquals(dailyClosureOne.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimeBeforeDate(now().minusHours(12)));
-        assertEquals(dailyClosureTwo.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimeBeforeDate(now().minusHours(36)));
+    public void testGetClosureTimesBefore() {
+        assertEquals(dailyClosureOne.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimes(now(), now()).get(0));
+        assertEquals(dailyClosureTwo.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimes(now().minusDays(1), now()).get(0));
     }
 
     @Test
-    public void testGetClosureTimeAfter() {
-        assertEquals(dailyClosureOne.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimeAfterDate(now().minusHours(36)));
-        assertEquals(dailyClosureTwo.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimeAfterDate(now().minusHours(60)));
+    public void testGetClosureTimesAfter() {
+        assertEquals(now().plusDays(1).atTime(21, 0), DailyClosureAdapter.getClosureTimes(now(), now()).get(1));
+        assertEquals(dailyClosureOne.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimes(now().minusDays(3), now().minusDays(2)).get(1));
+        assertEquals(dailyClosureTwo.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimes(now().minusDays(4), now().minusDays(3)).get(1));
     }
 
     @Test

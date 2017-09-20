@@ -39,7 +39,6 @@ import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
 import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 import com.inspirationlogical.receipt.corelib.security.Role;
 import com.inspirationlogical.receipt.corelib.security.model.entity.AuthUser;
 
@@ -48,7 +47,6 @@ import lombok.Getter;
 public class BuildSchema  {
 
     private @Getter EntityManager entityManager;
-    private boolean isActual;
 
     private @Getter Product productAdHoc;
     private @Getter Product productGameFee;
@@ -1209,22 +1207,12 @@ public class BuildSchema  {
     private @Getter AuthUser admin;
     private @Getter AuthUser user;
 
-    public BuildSchema(boolean isActual){
-        this.isActual = isActual;
-        if(isActual) {
-            entityManager = EntityManagerProvider.getEntityManager();
-
-        } else {
-            entityManager = EntityManagerProvider.getEntityManagerArchive();
-        }
+    public BuildSchema() {
+        entityManager = EntityManagerProvider.getEntityManager();
     }
 
-    private void dropAll(boolean isActual){
-        if(isActual) {
-            GuardedTransaction.run(this::dropFromAllTables);            
-        } else {
-            GuardedTransactionArchive.run(this::dropFromAllTables);
-        }
+    private void dropAll(){
+        GuardedTransaction.run(this::dropFromAllTables);
         entityManager.clear();
     }
 
@@ -1250,10 +1238,10 @@ public class BuildSchema  {
     }
 
     public void buildTestSchema() {
-        dropAll(isActual);
+        dropAll();
         buildObjects();
         setUpObjectRelationShips();
-        persistObjects(isActual);
+        persistObjects();
     }
 
     private void buildObjects() {
@@ -1296,24 +1284,14 @@ public class BuildSchema  {
         restaurantAndDailyClosures();
     }
 
-    private void persistObjects(boolean isActual) {
-        if(isActual) {
-            GuardedTransaction.run(() -> entityManager.persist(restaurant));
-            GuardedTransaction.run(() -> entityManager.persist(root));
-            GuardedTransaction.run(() -> entityManager.persist(vatSerie));
-            GuardedTransaction.run(() -> entityManager.persist(admin));
-            GuardedTransaction.run(() -> entityManager.persist(user));
-            GuardedTransaction.run(this::persistReceipts);
-            GuardedTransaction.run(this::persistRecipes);
-        } else {
-            GuardedTransactionArchive.run(() -> entityManager.persist(restaurant));
-            GuardedTransactionArchive.run(() -> entityManager.persist(root));
-            GuardedTransactionArchive.run(() -> entityManager.persist(vatSerie));
-            GuardedTransactionArchive.run(() -> entityManager.persist(admin));
-            GuardedTransactionArchive.run(() -> entityManager.persist(user));
-            GuardedTransactionArchive.run(this::persistReceipts);
-            GuardedTransactionArchive.run(this::persistRecipes);
-        }
+    private void persistObjects() {
+        GuardedTransaction.run(() -> entityManager.persist(restaurant));
+        GuardedTransaction.run(() -> entityManager.persist(root));
+        GuardedTransaction.run(() -> entityManager.persist(vatSerie));
+        GuardedTransaction.run(() -> entityManager.persist(admin));
+        GuardedTransaction.run(() -> entityManager.persist(user));
+        GuardedTransaction.run(this::persistReceipts);
+        GuardedTransaction.run(this::persistRecipes);
     }
 
     private void persistReceipts() {

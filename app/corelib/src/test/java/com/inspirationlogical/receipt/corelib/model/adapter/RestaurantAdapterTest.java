@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_DISPLAYABLE_TABLES;
-import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.getTableFromActual;
+import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.getTable;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 import static junit.framework.TestCase.assertNotNull;
@@ -13,7 +13,6 @@ import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateExcepti
 import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -79,8 +78,6 @@ public class RestaurantAdapterTest extends TestBase {
     public void testAddTable() {
         restaurantAdapter.addTable(tableBuilder);
         assertEquals(NUMBER_OF_DISPLAYABLE_TABLES + 1, TableAdapter.getDisplayableTables().size());
-        assertEquals(NUMBER_OF_DISPLAYABLE_TABLES + 1,
-                GuardedTransactionArchive.runNamedQuery(Table.GET_DISPLAYABLE_TABLES).size());
     }
 
     @Test(expected = IllegalTableStateException.class)
@@ -95,18 +92,16 @@ public class RestaurantAdapterTest extends TestBase {
         tableBuilder.number(schema.getTableNormal().getNumber())
                 .type(TableType.LOITERER);
         restaurantAdapter.addTable(tableBuilder);
-        assertNotNull(getTableFromActual(firstUnsued));
-        assertTrue(getTableFromActual(schema.getTableNormal().getNumber()).isTableHost());
+        assertNotNull(getTable(firstUnsued));
+        assertTrue(getTable(schema.getTableNormal().getNumber()).isTableHost());
         assertEquals(NUMBER_OF_DISPLAYABLE_TABLES + 1, TableAdapter.getDisplayableTables().size());
-        assertEquals(NUMBER_OF_DISPLAYABLE_TABLES + 1,
-                GuardedTransactionArchive.runNamedQuery(Table.GET_DISPLAYABLE_TABLES).size());
     }
 
     @Test
     public void testMergeTables() {
         restaurantAdapter.mergeTables(tableNormal, Arrays.asList(tableNormalClosed));
-        Table tableNormalUpdated = getTableFromActual(tableNormal.getAdaptee().getNumber()).getAdaptee();
-        Table tableNormalClosedUpdated = getTableFromActual(tableNormalClosed.getAdaptee().getNumber()).getAdaptee();
+        Table tableNormalUpdated = getTable(tableNormal.getAdaptee().getNumber()).getAdaptee();
+        Table tableNormalClosedUpdated = getTable(tableNormalClosed.getAdaptee().getNumber()).getAdaptee();
         assertEquals(1,
                 tableNormalUpdated.getConsumed().stream()
                         .filter(table -> table.getNumber() == tableNormalClosed.getAdaptee().getNumber())
@@ -118,8 +113,8 @@ public class RestaurantAdapterTest extends TestBase {
     public void testMergerTablesMoveReceiptRecords() {
         int recordNum = tableNormal.getOpenReceipt().getAdaptee().getRecords().size();
         restaurantAdapter.mergeTables(tableNormalClosed, Arrays.asList(tableNormal));
-        TableAdapter tableNormalUpdated = getTableFromActual(tableNormal.getAdaptee().getNumber());
-        TableAdapter tableNormalClosedUpdated = getTableFromActual(tableNormalClosed.getAdaptee().getNumber());
+        TableAdapter tableNormalUpdated = getTable(tableNormal.getAdaptee().getNumber());
+        TableAdapter tableNormalClosedUpdated = getTable(tableNormalClosed.getAdaptee().getNumber());
         assertNull(tableNormalUpdated.getOpenReceipt());
         assertNotNull(tableNormalClosedUpdated.getOpenReceipt());
         assertEquals(recordNum, tableNormalClosedUpdated.getOpenReceipt().getAdaptee().getRecords().size());
@@ -133,8 +128,8 @@ public class RestaurantAdapterTest extends TestBase {
     @Test
     public void testSplitTables() {
         restaurantAdapter.splitTables(tableConsumer);
-        TableAdapter tableConsumerUpdated = getTableFromActual(tableConsumer.getAdaptee().getNumber());
-        TableAdapter tableConsumedUpdated = getTableFromActual(tableConsumed.getAdaptee().getNumber());
+        TableAdapter tableConsumerUpdated = getTable(tableConsumer.getAdaptee().getNumber());
+        TableAdapter tableConsumedUpdated = getTable(tableConsumed.getAdaptee().getNumber());
         assertNull(tableConsumedUpdated.getAdaptee().getConsumer());
         assertEquals(0, tableConsumerUpdated.getAdaptee().getConsumed().size());
     }

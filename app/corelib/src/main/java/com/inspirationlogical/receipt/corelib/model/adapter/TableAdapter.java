@@ -1,8 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapter.getOpenReceipt;
-import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER;
-import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
 import static java.util.stream.Collectors.toList;
 
 import java.util.Collection;
@@ -10,15 +7,12 @@ import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.*;
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransactionArchive;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
@@ -32,31 +26,22 @@ public class TableAdapter extends AbstractAdapter<Table> {
         super(adaptee);
     }
 
-    static TableAdapter getTableFromActual(int number) {
-        return getTableByNumber(number, true);
+    static TableAdapter getTable(int number) {
+        return getTableByNumber(number);
     }
 
-    static TableAdapter getTableFromArchive(int number) {
-        return getTableByNumber(number, false);
-    }
-
-    private static TableAdapter getTableByNumber(int number, boolean actual) {
+    private static TableAdapter getTableByNumber(int number) {
         @SuppressWarnings("unchecked")
-        List<Table> tables = getTablesByNumber(number, actual);
+        List<Table> tables = getTablesByNumber(number);
         if (tables.isEmpty()) {
             return null;
         }
         return new TableAdapter(tables.get(0));
     }
 
-    private static List<Table> getTablesByNumber(int number, boolean actual) {
-        if(actual) {
-            return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_NUMBER, query ->
-                    query.setParameter("number", number));
-        } else {
-            return GuardedTransactionArchive.runNamedQuery(Table.GET_TABLE_BY_NUMBER, query ->
-                    query.setParameter("number", number));
-        }
+    private static List<Table> getTablesByNumber(int number) {
+        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_NUMBER, query ->
+                query.setParameter("number", number));
     }
 
     public static List<TableAdapter> getDisplayableTables() {
@@ -124,7 +109,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
 
     private void setNewHost(int tableNumber) {
         if(tableNumber != adaptee.getNumber()) {    // Prevent a table being hosted by itself.
-            adaptee.setHost(TableAdapter.getTableFromActual(tableNumber).getAdaptee());
+            adaptee.setHost(TableAdapter.getTable(tableNumber).getAdaptee());
         }
     }
 
@@ -132,10 +117,6 @@ public class TableAdapter extends AbstractAdapter<Table> {
         int originalNumber = adaptee.getNumber();
         GuardedTransaction.run(() -> {
             adaptee.setNumber(tableNumber);
-        });
-        GuardedTransactionArchive.run(() -> {
-            Table tableArchive = getTableFromArchive(originalNumber).getAdaptee();
-            tableArchive.setNumber(tableNumber);
         });
     }
 
@@ -222,11 +203,6 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public void deleteTable() {
-        deleteTableFromActual();
-        deleteTableFromArchive();
-    }
-
-    private void deleteTableFromActual() {
         GuardedTransaction.run(() -> {
             Table orphanage = getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee();
             moveReceiptsToOrphanageTable(adaptee, orphanage);
@@ -235,18 +211,6 @@ public class TableAdapter extends AbstractAdapter<Table> {
             adaptee.getReservations().clear();
             adaptee.getOwner().getTables().remove(adaptee);
             GuardedTransaction.delete(adaptee, () -> {});
-        });
-    }
-
-    private void deleteTableFromArchive() {
-        GuardedTransactionArchive.run(() -> {
-            Table archiveTable = getTableFromArchive(adaptee.getNumber()).getAdaptee();
-            Table orphanageArchive = (Table)GuardedTransactionArchive.runNamedQuery(Table.GET_TABLE_BY_TYPE,
-                    query -> query.setParameter("type", TableType.ORPHANAGE)).get(0);
-            moveReceiptsToOrphanageTable(archiveTable, orphanageArchive);
-            archiveTable.getReceipts().clear();
-            archiveTable.getOwner().getTables().remove(archiveTable);
-            GuardedTransactionArchive.delete(archiveTable, () -> {});
         });
     }
 
