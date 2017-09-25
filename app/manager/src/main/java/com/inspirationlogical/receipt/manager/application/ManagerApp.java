@@ -40,7 +40,6 @@ public class ManagerApp extends Application implements StageProvider, ResourcesP
     public void init() {
         if(testApplication) {
             EntityManagerProvider.getTestEntityManager();
-            EntityManagerProvider.getTestEntityManagerArchive();
         }
     }
 
@@ -65,7 +64,6 @@ public class ManagerApp extends Application implements StageProvider, ResourcesP
     @Override
     public void stop() throws Exception {
         EntityManagerProvider.closeEntityManager();
-        EntityManagerProvider.closeEntityManagerArchive();
     }
 
     public static void main(String[] args) {
@@ -83,7 +81,7 @@ public class ManagerApp extends Application implements StageProvider, ResourcesP
     }
 
     private static void defaultExceptionHandler(Thread t, Throwable e) {
-        logger.error("Unhandled exception in ManagerApp.", e);
+        logger.error("Unhandled exception in ManagerApp. On thread: " + t.getName(), e);
         ErrorMessage.showErrorMessageLong(stage.getScene().getRoot(), ManagerResources.MANAGER.getString("UnhandledException"));
     }
 

@@ -85,7 +85,7 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
     }
 
     private static void defaultExceptionHandler(Thread t, Throwable e) {
-        logger.error("Unhandled exception in WaiterApp.", e);
+        logger.error("Unhandled exception in WaiterApp. On thread: " + t.getName(), e);
         ErrorMessage.showErrorMessageLong(stage.getScene().getRoot(), WaiterResources.WAITER.getString("UnhandledException"));
     }
 }
