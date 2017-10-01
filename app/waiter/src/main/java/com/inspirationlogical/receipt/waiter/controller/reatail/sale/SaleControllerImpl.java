@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController;
+import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentControllerImpl;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
@@ -18,6 +19,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Popup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,6 +34,8 @@ import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.Sale
 @Singleton
 public class SaleControllerImpl extends AbstractRetailControllerImpl
         implements SaleController {
+
+    final private static Logger logger = LoggerFactory.getLogger(PaymentControllerImpl.class);
 
     private static final String SALE_VIEW_PATH = "/view/fxml/Sale.fxml";
 
@@ -93,6 +98,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void enterSaleView() {
+        logger.info("Entering the sale view for table: " + tableView.toString());
         getSoldProductsAndRefreshTable();
         productController.initCategoriesAndProducts();
         updateTableSummary();
@@ -135,6 +141,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     protected void soldProductsRowClickHandler(SoldProductViewModel row) {
+        logger.info("The sold products table was clicked on the row: " + row.toString() + "in sale view state: " + saleViewState.toString());
         disableSoldProductsTableRowClickHandler();
         if(saleViewState.isSelectiveCancellation()) {
             retailService.cancelReceiptRecord(tableView, removeRowFromSoldProducts(row));
@@ -151,6 +158,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onToPaymentView(Event event) {
+        logger.info("Entering the payment view for table: " + tableView.toString());
         retailService.mergeReceiptRecords(receiptView);
         paymentController.setTableView(tableView);
         viewLoader.loadViewIntoScene(paymentController);
@@ -164,6 +172,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onSellAdHocProduct(Event event) {
+        logger.info("The sell ad hoc product button was clicked.");
         adHocProductForm = new Popup();
         adHocProductForm.getContent().add(viewLoader.loadView(adHocProductFormController));
         adHocProductFormController.loadAdHocProductForm(this);
@@ -172,6 +181,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onGiftProduct(Event event) {
+        logger.info("The gift product button was clicked.");
         setGiftProduct();
     }
 

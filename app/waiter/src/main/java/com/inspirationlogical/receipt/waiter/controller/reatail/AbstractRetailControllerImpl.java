@@ -29,11 +29,15 @@ import javafx.scene.control.TableRow;
 import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Bálint on 2017.03.28..
  */
 public abstract class AbstractRetailControllerImpl extends AbstractController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AbstractRetailControllerImpl.class);
 
     @FXML
     protected Label tableName;
@@ -78,6 +82,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     @FXML
     public void onBackToRestaurantView(Event event) {
+        logger.info("Back to restaurant view from table: " + tableView.toString());
         retailService.mergeReceiptRecords(receiptView);
         backToRestaurantView();
     }
@@ -92,6 +97,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     public void onGuestPlus(Event event) {
         restaurantService.setGuestCount(tableView, tableView.getGuestCount() + 1);
         updateTableSummary();
+        logger.info("The guest plus button was clicked. Guest count: " + tableView.getGuestCount());
     }
 
     @FXML
@@ -99,6 +105,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         if(tableView.getGuestCount() == 0) return;
         restaurantService.setGuestCount(tableView, tableView.getGuestCount() - 1);
         updateTableSummary();
+        logger.info("The guest minus button was clicked. Guest count: " + tableView.getGuestCount());
     }
 
     protected void initializeSoldProducts() {
