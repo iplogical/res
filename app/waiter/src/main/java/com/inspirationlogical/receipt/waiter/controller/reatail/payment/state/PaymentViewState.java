@@ -35,13 +35,13 @@ public @Data class PaymentViewState {
 
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
-            if(isFullPayment()) {
-                paymentState = new FullPaymentState();
-            } else if(isPartialPayment()) {
-                paymentState = new PartialPaymentState();
-            } else {
-                paymentState = new SelectivePaymentState();
-            }
+        if(isFullPayment()) {
+            paymentState = new FullPaymentState();
+        } else if(isPartialPayment()) {
+            paymentState = new PartialPaymentState();
+        } else {
+            paymentState = new SelectivePaymentState();
+        }
     }
 
     public PaymentViewState(PaymentController paymentController) {
@@ -118,5 +118,17 @@ public @Data class PaymentViewState {
         NONE,
         ABSOLUTE,
         PERCENT
+    }
+
+    @Override
+    public String toString() {
+        return "PaymentViewState{" +
+                ", paymentMethod=" + paymentMethod +
+                ", paymentParams=" + paymentParams +
+                ", paymentType=" + paymentType +
+                ", discountType=" + discountType +
+                ", discountAbsoluteValue=" + discountAbsoluteValue.getText() +
+                ", discountPercentValue=" + discountPercentValue.getText() +
+                '}';
     }
 }

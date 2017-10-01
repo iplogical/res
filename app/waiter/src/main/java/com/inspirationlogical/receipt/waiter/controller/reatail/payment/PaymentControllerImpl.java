@@ -11,6 +11,7 @@ import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailCo
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.state.PaymentViewState;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
@@ -21,6 +22,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,6 +35,8 @@ import static java.util.stream.Collectors.toList;
 @Singleton
 public class PaymentControllerImpl extends AbstractRetailControllerImpl
         implements PaymentController {
+
+    final private static Logger logger = LoggerFactory.getLogger(PaymentControllerImpl.class);
 
     private static final String PAYMENT_VIEW_PATH = "/view/fxml/Payment.fxml";
 
@@ -146,6 +151,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onPay(Event event) {
+        logger.info("The pay button was pushed.");
         paymentViewState.handlePayment(isSoldProductsEmpty(), isPaidProductsEmpty());
     }
 
@@ -159,6 +165,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void handleFullPayment(PaymentParams paymentParams) {
+        logger.info("Handling full payment with paymentParams: " + paymentParams.toString());
         retailService.payTable(tableView, paymentParams);
         getSoldProductsAndRefreshTable();
         discardPaidRecords();
@@ -189,6 +196,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void handleSelectivePayment(PaymentParams paymentParams) {
+        logger.info("Handling selective payment with paymentParams: " + paymentParams.toString());
         retailService.paySelective(tableView, paidProductsView, paymentParams);
         updatePreviousPartialPrice();
         discardPaidRecords();
@@ -198,6 +206,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void handlePartialPayment(PaymentParams paymentParams) {
         try {
+            logger.info("Handling selective payment with paymentParams: " + paymentParams.toString());
             retailService.payPartial(tableView, getPartialValue(), paymentParams);
             int totalPrice = SoldProductViewModel.getTotalPrice(soldProductsModel);
             getSoldProductsAndRefreshTable();
@@ -233,6 +242,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     protected void soldProductsRowClickHandler(SoldProductViewModel row) {
+        logger.info("The sold products table was clicked on the row: " + row.toString() + ", in payment view state: " + paymentViewState.toString());
         disableSoldProductsTableRowClickHandler();
         if(paymentViewState.isSelectivePayment()) {
             addRowToPaidProducts(row, removeRowFromSoldProducts(row));
@@ -310,6 +320,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     void paidProductsRowClickHandler(SoldProductViewModel row) {
+        logger.info("The paid products table was clicked for row: " + row);
         List<SoldProductViewModel> rowInSoldProducts = soldProductsModel.stream().filter(model -> model.getProductName().equals(row.getProductName()))
                 .collect(toList());
         if(rowInSoldProducts.isEmpty()) {
@@ -354,6 +365,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void onBackToRestaurantView(Event event) {
+        logger.info("Going to restaurant view.");
         discardPaidRecords();
         retailService.mergeReceiptRecords(receiptView);
         backToRestaurantView();
@@ -361,6 +373,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onBackToSaleView(Event event) {
+        logger.info("Going to sale view.");
         discardPaidRecords();
         retailService.mergeReceiptRecords(receiptView);
         enterSaleView();
@@ -373,6 +386,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onAutoGameFee(Event event) {
+        logger.info("The auto game fee button was clicked");
         ReceiptRecordView gameFee = handleAutomaticGameFee();
         if(gameFee == null) return;
         if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee)).size() == 0) {
@@ -394,6 +408,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     @FXML
     public void onManualGameFee(Event event) {
+        logger.info("The manual game fee button was clicked");
         ReceiptRecordView gameFee = retailService.sellGameFee(tableView, 1);
         if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee)).size() == 0) {
             soldProductsView.add(gameFee);

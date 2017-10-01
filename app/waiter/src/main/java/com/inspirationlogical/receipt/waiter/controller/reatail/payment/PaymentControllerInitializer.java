@@ -8,10 +8,14 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.inspirationlogical.receipt.waiter.controller.reatail.payment.state.PaymentViewState.PaymentType.*;
 
 public class PaymentControllerInitializer {
+
+    final private static Logger logger = LoggerFactory.getLogger(PaymentControllerImpl.class);
 
     private PaymentControllerImpl p;
 
@@ -92,9 +96,11 @@ public class PaymentControllerInitializer {
         @Override
         public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
             if(p.paymentTypeToggleGroup.getSelectedToggle() == null) {
+                logger.info("The payment type changed to FULL.");
                 p.paymentViewState.setPaymentType(PaymentViewState.PaymentType.FULL);
                 return;
             }
+            logger.info("The payment type changed to: " + p.paymentTypeToggleGroup.getSelectedToggle().getUserData());
             p.paymentViewState.setPaymentType(
                     (PaymentViewState.PaymentType) p.paymentTypeToggleGroup.getSelectedToggle().getUserData());
         }
@@ -104,9 +110,11 @@ public class PaymentControllerInitializer {
         @Override
         public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
             if (p.discountTypeToggleGroup.getSelectedToggle() == null) {
+                logger.info("The discount type changed to NONE.");
                 p.paymentViewState.setDiscountType(PaymentViewState.DiscountType.NONE);
                 return;
             }
+            logger.info("The discount type changed to: " + p.discountTypeToggleGroup.getSelectedToggle().getUserData());
             p.paymentViewState.setDiscountType(
                     (PaymentViewState.DiscountType) p.discountTypeToggleGroup.getSelectedToggle().getUserData());
         }
@@ -115,6 +123,7 @@ public class PaymentControllerInitializer {
     private class PaymentMethodToggleListener implements ChangeListener<Toggle> {
         @Override
         public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+            logger.info("The payment method changed to :" + p.paymentMethodToggleGroup.getSelectedToggle().getUserData());
             p.paymentViewState.setPaymentMethod(
                     (PaymentMethod) p.paymentMethodToggleGroup.getSelectedToggle().getUserData());
         }
