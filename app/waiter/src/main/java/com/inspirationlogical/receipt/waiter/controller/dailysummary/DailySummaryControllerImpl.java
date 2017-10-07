@@ -109,6 +109,7 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
         List<LocalDateTime> closureTimes = retailService.getClosureTimes(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
         startDateValue.setText(closureTimes.get(0).toString());
         endDateValue.setText(closureTimes.get(1).toString());
+        getSoldProductsAndRefreshTable();
     }
 
     @Override
