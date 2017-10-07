@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
@@ -34,4 +35,6 @@ public interface RetailService {
     List<LocalDateTime> getClosureTimes(LocalDate startDate, LocalDate endDate);
 
     void printAggregateConsumption(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate);
+
+    ReceiptView getAggregatedReceipt(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate);
 }

@@ -10,6 +10,8 @@ import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -149,6 +151,12 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         new ReceiptPrinter().onClose(aggregatedReceipt);
     }
 
+    public ReceiptView getAggregatedReceipt(LocalDate startTime, LocalDate endTime) {
+        List<LocalDateTime> closureTimes = DailyClosureAdapter.getClosureTimes(startTime, endTime);
+        Receipt aggregatedReceipt = createReceiptOfAggregatedConsumption(closureTimes.get(0), closureTimes.get(1));
+        return new ReceiptViewImpl(new ReceiptAdapterBase(aggregatedReceipt));
+    }
+
     Receipt createReceiptOfAggregatedConsumption(LocalDateTime startTime, LocalDateTime endTime) {
         List<ReceiptAdapterBase> receipts = getReceiptsByClosureTime(startTime, endTime);
         Receipt aggregatedReceipt = buildAggregatedReceipt(startTime);
@@ -212,7 +220,9 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     }
 
     private ReceiptRecord buildReceiptRecord(ReceiptRecord receiptRecord) {
-        return ReceiptRecord.builder()
+        ReceiptRecord cloneRecord =  ReceiptRecord.builder()
+                .owner(receiptRecord.getOwner())
+                .createdList(new ArrayList<>(receiptRecord.getCreatedList()))
                 .product(receiptRecord.getProduct())
                 .type(receiptRecord.getType())
                 .name(receiptRecord.getName())
@@ -222,6 +232,9 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                 .VAT(receiptRecord.getVAT())
                 .discountPercent(receiptRecord.getDiscountPercent())
                 .build();
+        cloneRecord.setId(receiptRecord.getId());
+        cloneRecord.setVersion(receiptRecord.getVersion());
+        return cloneRecord;
     }
 
     private void addIncomesAsReceiptRecord(Receipt aggregatedReceipt, Map<PaymentMethod, Integer> salePrices) {
@@ -233,6 +246,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     private ReceiptRecord buildIncomeReceiptRecord(Map<PaymentMethod, Integer> salePrices, PaymentMethod paymentMethod) {
         return ReceiptRecord.builder()
                 .product(null)
+                .createdList(new ArrayList<>())
                 .type(ReceiptRecordType.HERE)
                 .name(paymentMethod.toString())
                 .soldQuantity(0)

@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +13,8 @@ import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+
+import static java.util.stream.Collectors.toList;
 
 public class ReceiptViewImpl extends AbstractModelViewImpl<ReceiptAdapterBase>
     implements ReceiptView {
@@ -27,7 +30,17 @@ public class ReceiptViewImpl extends AbstractModelViewImpl<ReceiptAdapterBase>
         }
         return adapter.getSoldProducts().stream()
                 .map(ReceiptRecordViewImpl::new)
-                .collect(Collectors.toList());
+                .collect(toList());
+    }
+
+    @Override
+    public List<ReceiptRecordView> getAggregatedRecords() {
+        if(adapter == null) {
+            return Collections.emptyList();
+        }
+        return adapter.getAggregatedRecords().stream()
+                .map(ReceiptRecordViewImpl::new)
+                .collect(toList());
     }
 
     @Override

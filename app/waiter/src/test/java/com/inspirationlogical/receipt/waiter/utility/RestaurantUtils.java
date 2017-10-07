@@ -17,6 +17,10 @@ public class RestaurantUtils  extends AbstractUtils {
         clickButtonThenWait("Restaurant.Reservation", 500);
     }
 
+    public static void enterDailySummary() {
+        clickButtonThenWait("Restaurant.Consumption", 500);
+    }
+
     public static void openTable(String tableNumber) {
         longClickOn(tableNumber);
         clickOnThenWait(WaiterResources.WAITER.getString("ContextMenu.OpenTable"), 500);

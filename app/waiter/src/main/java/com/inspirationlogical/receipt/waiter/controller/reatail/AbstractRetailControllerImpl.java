@@ -32,6 +32,8 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * Created by Bálint on 2017.03.28..
  */
@@ -162,7 +164,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     }
 
     protected ObservableList<SoldProductViewModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
-        List<SoldProductViewModel> list = soldProducts.stream().map(SoldProductViewModel::new).collect(Collectors.toList());
+        List<SoldProductViewModel> list = soldProducts.stream().map(SoldProductViewModel::new).collect(toList());
         return FXCollections.observableArrayList(list);
     }
 
@@ -186,7 +188,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected List<ReceiptRecordView> findMatchingView(Collection<ReceiptRecordView> productsView, SoldProductViewModel row) {
         return productsView.stream()
                 .filter(receiptRecordView -> SoldProductViewModel.isEquals(row, receiptRecordView))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     protected ReceiptRecordView decreaseRowInSoldProducts(SoldProductViewModel row, double amount) {
@@ -221,7 +223,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected List<ReceiptRecordView> findEquivalentView(Collection<ReceiptRecordView> productsView, SoldProductViewModel row) {
         return productsView.stream()
                 .filter(receiptRecordView -> SoldProductViewModel.isEquivalent(row, receiptRecordView))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     protected void addRowToSoldProducts(SoldProductViewModel row) {
@@ -232,11 +234,11 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     }
 
     protected void getSoldProductsAndRefreshTable() {
-        soldProductsView = getSoldProducts(restaurantService, tableView);
+        soldProductsView = getSoldProducts();
         refreshSoldProductsTable();
     }
 
-    private Collection<ReceiptRecordView> getSoldProducts(RestaurantService restaurantService, TableView tableView) {
+    protected Collection<ReceiptRecordView> getSoldProducts() {
         receiptView = restaurantService.getOpenReceipt(tableView);
         return receiptView.getSoldProducts();
     }

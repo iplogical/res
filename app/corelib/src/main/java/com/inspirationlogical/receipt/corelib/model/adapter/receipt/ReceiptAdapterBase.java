@@ -126,6 +126,11 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
         return records.stream().map(ReceiptRecordAdapter::new).collect(toList());
     }
 
+    public List<ReceiptRecordAdapter> getAggregatedRecords() {
+        List<ReceiptRecord> records = adaptee.getRecords();
+        return records.stream().map(ReceiptRecordAdapter::new).collect(toList());
+    }
+
     @Override
     public void close(PaymentParams paymentParams) {
         receiptAdapterPay.close(paymentParams);

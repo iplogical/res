@@ -94,4 +94,9 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
         getRestaurantAdapter(restaurantView).printAggregatedConsumption(startDate, endDate);
         logger.info("The aggregated consumption was printed between: " + startDate + " - " + endDate + ", for restaurant" + restaurantView);
     }
+
+    @Override
+    public ReceiptView getAggregatedReceipt(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate) {
+        return getRestaurantAdapter(restaurantView).getAggregatedReceipt(startDate, endDate);
+    }
 }

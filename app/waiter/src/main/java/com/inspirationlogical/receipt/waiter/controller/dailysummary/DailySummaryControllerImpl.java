@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller.dailysummary;
 
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reservation.CalendarPickerWrapper;
@@ -18,6 +19,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -80,9 +82,10 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initializeSoldProducts();
         initDate();
         initLiveTime(liveTime);
-        updatePriceFields();
+//        updatePriceFields();
     }
 
     private void initDate() {
@@ -107,6 +110,12 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
         List<LocalDateTime> closureTimes = retailService.getClosureTimes(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
         startDateValue.setText(closureTimes.get(0).toString());
         endDateValue.setText(closureTimes.get(1).toString());
+    }
+
+    @Override
+    protected Collection<ReceiptRecordView> getSoldProducts() {
+        receiptView = retailService.getAggregatedReceipt(restaurantView, startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
+        return receiptView.getAggregatedRecords();
     }
 
     @Override
@@ -138,6 +147,7 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
                 + Integer.valueOf(creditCardTotalPrice.getText())
                 + Integer.valueOf(couponTotalPrice.getText());
         totalPrice.setText(String.valueOf(totalPriceInt));
+        getSoldProductsAndRefreshTable();
     }
 
     @FXML
