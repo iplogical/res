@@ -4,6 +4,7 @@ package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
@@ -144,7 +145,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         logger.info("The sold products table was clicked on the row: " + row.toString() + "in sale view state: " + saleViewState.toString());
         disableSoldProductsTableRowClickHandler();
         if(saleViewState.isSelectiveCancellation()) {
-            retailService.cancelReceiptRecord(tableView, removeRowFromSoldProducts(row));
+            ReceiptRecordView clickedRecord = removeRowFromSoldProducts(row);
+            if(clickedRecord == null) return;
+            retailService.cancelReceiptRecord(tableView, clickedRecord);
             getSoldProductsAndRefreshTable();
         } else if(saleViewState.isSingleCancellation()) {
             decreaseRowInSoldProducts(row, 1);

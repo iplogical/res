@@ -192,6 +192,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected ReceiptRecordView decreaseRowInSoldProducts(SoldProductViewModel row, double amount) {
         List<ReceiptRecordView> matchingReceiptRecordView = findMatchingView(soldProductsView, row);
+        if(matchingReceiptRecordView.size() == 0) return null;
         matchingReceiptRecordView.get(0).decreaseSoldQuantity(amount);
         decreaseClickedRow(row, amount);
         return matchingReceiptRecordView.get(0);
@@ -208,6 +209,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         soldProductsModel.remove(row);
         soldProductsTable.setItems(soldProductsModel);
         List<ReceiptRecordView> matching = findMatchingView(soldProductsView, row);
+        if(matching.size() == 0) return null;
         soldProductsView.remove(matching.get(0));
         return matching.get(0);
     }

@@ -245,7 +245,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         logger.info("The sold products table was clicked on the row: " + row.toString() + ", in payment view state: " + paymentViewState.toString());
         disableSoldProductsTableRowClickHandler();
         if(paymentViewState.isSelectivePayment()) {
-            addRowToPaidProducts(row, removeRowFromSoldProducts(row));
+            ReceiptRecordView clickedRecord = removeRowFromSoldProducts(row);
+            if(clickedRecord == null) return;
+            addRowToPaidProducts(row, clickedRecord);
         } else if(paymentViewState.isSinglePayment()) {
             singlePaymentRowClickHandler(row);
         } else if(paymentViewState.isPartialPayment()) {
@@ -258,13 +260,17 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private void singlePaymentRowClickHandler(SoldProductViewModel row) {
             double value = Math.min(Double.valueOf(row.getProductQuantity()), 1);
-            increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, value), value);
+            ReceiptRecordView clickedRecord = decreaseRowInSoldProducts(row, value);
+            if(clickedRecord == null) return;
+            increaseRowInPaidProducts(row, clickedRecord, value);
     }
 
     private void partialPaymentRowClickHandler(SoldProductViewModel row) {
         try {
             double amount = Double.valueOf(partialPaymentValue.getText());
-            increaseRowInPaidProducts(row, decreaseRowInSoldProducts(row, amount), amount);
+            ReceiptRecordView clickedRecord = decreaseRowInSoldProducts(row, amount);
+            if(clickedRecord == null) return;
+            increaseRowInPaidProducts(row, clickedRecord, amount);
         } catch (NumberFormatException e) {
             ErrorMessage.showErrorMessage(rootPayment,
                     WaiterResources.WAITER.getString("PaymentView.PartialPayNumberError"));
