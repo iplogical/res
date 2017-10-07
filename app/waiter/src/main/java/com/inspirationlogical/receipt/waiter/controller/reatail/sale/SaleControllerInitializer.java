@@ -31,8 +31,10 @@ public class SaleControllerInitializer {
         s.singleCancellation.setUserData(SINGLE);
         s.selectiveCancellation.setUserData(SELECTIVE);
         s.saleViewState.setCancellationType(NONE);
+        s.giftProduct.selectedProperty().addListener(s.giftProductToggleListener);
         s.cancellationTypeToggleGroup.selectedToggleProperty().addListener(s.cancellationTypeToggleListener);
         s.sortByClickTime.selectedProperty().addListener(s.sortByClickTimeToggleListener);
+        s.takeAway.selectedProperty().addListener(s.takeAwayChangeListener);
     }
 
     private void initializeQuickSearchAndSellHandler() {

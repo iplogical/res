@@ -232,9 +232,9 @@
    <right>
       <VBox fx:id="left" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <RadioButton fx:id="takeAway" mnemonicParsing="false" onAction="#onTakeAwayToggled" text="%SaleView.TakeAway" />
+            <RadioButton fx:id="takeAway" mnemonicParsing="false" text="%SaleView.TakeAway" />
             <Button fx:id="sellAdHocProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSellAdHocProduct" text="%SaleView.SellAdHocProduct" textAlignment="CENTER" />
-            <ToggleButton fx:id="giftProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGiftProduct" text="%SaleView.GiftProduct" textAlignment="CENTER" />
+            <ToggleButton fx:id="giftProduct" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%SaleView.GiftProduct" textAlignment="CENTER" />
             <Separator prefWidth="200.0" />
             <ToggleButton fx:id="selectiveCancellation" mnemonicParsing="false" prefWidth="150.0" text="%SaleView.SelectiveCancellation">
                <font>

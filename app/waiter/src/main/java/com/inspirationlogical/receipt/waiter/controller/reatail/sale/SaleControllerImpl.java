@@ -52,13 +52,13 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     GridPane productsGrid;
 
     @FXML
-    private RadioButton takeAway;
+    RadioButton takeAway;
 
     @FXML
     private Button sellAdHocProduct;
 
     @FXML
-    private ToggleButton giftProduct;
+    ToggleButton giftProduct;
 
     @FXML
     ToggleButton selectiveCancellation;
@@ -166,11 +166,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     @FXML
-    public void onTakeAwayToggled(Event event) {
-        saleViewState.setTakeAway(takeAway.isSelected());
-    }
-
-    @FXML
     public void onSellAdHocProduct(Event event) {
         logger.info("The sell ad hoc product button was clicked.");
         adHocProductForm = new Popup();
@@ -180,18 +175,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     @FXML
-    public void onGiftProduct(Event event) {
-        logger.info("The gift product button was clicked.");
-        setGiftProduct();
-    }
-
-    @FXML
     public void onSearchChanged(Event event) {
         productController.search(searchField.getText());
-    }
-
-    private void setGiftProduct() {
-        saleViewState.setGift(giftProduct.isSelected());
     }
 
     private void resetToggleGroups() {
@@ -201,12 +186,26 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         sortByClickTime.requestFocus();
     }
 
+    ChangeListener<Boolean> takeAwayChangeListener = (observable, oldValue, newValue) -> {
+        logger.info("The take away button was clicked. New value: " + takeAway.isSelected());
+        saleViewState.setTakeAway(takeAway.isSelected());
+
+    };
+
+    ChangeListener<Boolean> giftProductToggleListener = (observable, oldValue, newValue) -> {
+        logger.info("The gift product button was clicked. New value: " + giftProduct.isSelected());
+        saleViewState.setGift(giftProduct.isSelected());
+    };
+
     ChangeListener<Toggle> cancellationTypeToggleListener = (observable, oldValue, newValue) -> {
         if(cancellationTypeToggleGroup.getSelectedToggle() == null) {
+            logger.info("The cancellation type changed to NONE.");
             saleViewState.setCancellationType(NONE);
             return;
         }
-        saleViewState.setCancellationType((SaleViewState.CancellationType)cancellationTypeToggleGroup.getSelectedToggle().getUserData());
+        SaleViewState.CancellationType type = (SaleViewState.CancellationType)cancellationTypeToggleGroup.getSelectedToggle().getUserData();
+        logger.info("The cancellation type was changed to " + type.toString());
+        saleViewState.setCancellationType(type);
     };
 
     ChangeListener<Boolean> sortByClickTimeToggleListener = (observable, oldValue, newValue) -> {
