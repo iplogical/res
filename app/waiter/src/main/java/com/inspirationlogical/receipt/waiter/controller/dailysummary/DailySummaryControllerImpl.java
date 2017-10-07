@@ -85,7 +85,6 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
         initializeSoldProducts();
         initDate();
         initLiveTime(liveTime);
-//        updatePriceFields();
     }
 
     private void initDate() {

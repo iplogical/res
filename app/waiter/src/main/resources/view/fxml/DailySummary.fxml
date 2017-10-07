@@ -73,8 +73,6 @@
                                           <AnchorPane>
                                              <children>
                                                 <Label fx:id="note" />
-                                                <Button fx:id="guestPlus" mnemonicParsing="false" text="Button" />
-                                                <Button fx:id="guestMinus" mnemonicParsing="false" text="Button" AnchorPane.leftAnchor="100.0" />
                                              </children>
                                           </AnchorPane>
                                        </children>

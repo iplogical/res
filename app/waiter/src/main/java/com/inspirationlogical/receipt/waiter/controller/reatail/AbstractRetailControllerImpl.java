@@ -184,7 +184,6 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         totalPrice.setText(SoldProductViewModel.getTotalPrice(soldProductsModel) + " Ft");
     }
 
-
     protected List<ReceiptRecordView> findMatchingView(Collection<ReceiptRecordView> productsView, SoldProductViewModel row) {
         return productsView.stream()
                 .filter(receiptRecordView -> SoldProductViewModel.isEquals(row, receiptRecordView))

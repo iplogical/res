@@ -98,5 +98,11 @@ public class JavaFXIds {
     public final static String RESERVATIONS_DELETE = "#delete";
     public final static String RESERVATIONS_OPEN_TABLE = "#openTable";
 
+    // DailySummary.fxml
+    public static final String DAILY_SUMMARY_OPEN_CONSUMPTION = "#openConsumption";
+    public static final String DAILY_SUMMARY_CASH_TOTAL_PRICE = "#cashTotalPrice";
+    public static final String DAILY_SUMMARY_CREDIT_CARD_TOTAL_PRICE = "#creditCardTotalPrice";
+    public static final String DAILY_SUMMARY_COUPON_TOTAL_PRICE = "#couponTotalPrice";
+    public static final String DAILY_SUMMARY_TOTAL_PRICE = "#totalPrice";
 
 }
