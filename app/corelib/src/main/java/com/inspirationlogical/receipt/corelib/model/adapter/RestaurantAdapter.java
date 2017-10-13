@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase.getDiscountMultiplier;
 import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase.getReceiptsByClosureTime;
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.canBeHosted;
 import static java.time.LocalDateTime.now;
@@ -164,6 +165,8 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         receipts.forEach(receipt -> {
             updateIncomes(receipt, incomesByPaymentMethod);
             receipt.getAdaptee().getRecords().forEach(receiptRecord -> {
+                receiptRecord.setDiscountPercent(receipt.getAdaptee().getDiscountPercent() + receiptRecord.getDiscountPercent());
+                receiptRecord.setSalePrice((int)(receiptRecord.getSalePrice() * getDiscountMultiplier(receiptRecord.getDiscountPercent())));
                 mergeReceiptRecords(aggregatedReceipt, receiptRecord);
             });
         });
@@ -249,7 +252,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                 .createdList(new ArrayList<>())
                 .type(ReceiptRecordType.HERE)
                 .name(paymentMethod.toString())
-                .soldQuantity(0)
+                .soldQuantity(1)
                 .purchasePrice(0)
                 .salePrice(salePrices.get(paymentMethod))
                 .VAT(0)

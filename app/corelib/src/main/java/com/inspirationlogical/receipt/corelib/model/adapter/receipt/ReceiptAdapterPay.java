@@ -55,7 +55,6 @@ public class ReceiptAdapterPay extends AbstractAdapter<Receipt> {
             adaptee.setUserCode(paymentParams.getUserCode());
             adaptee.setPaymentMethod(paymentParams.getPaymentMethod());
             applyDiscountOnSalePrices();
-            applyDiscountsOnReceiptRecords();
             ReceiptAdapterListeners.getAllListeners().forEach((l) -> {l.onClose(adaptee);});
         });
     }
@@ -107,13 +106,6 @@ public class ReceiptAdapterPay extends AbstractAdapter<Receipt> {
     private void applyDiscountOnSalePrices() {
         adaptee.setSumSaleGrossPrice((int)(adaptee.getSumSaleGrossPrice() * getDiscountMultiplier(adaptee.getDiscountPercent())));
         adaptee.setSumSaleNetPrice((int)(adaptee.getSumSaleNetPrice() * getDiscountMultiplier(adaptee.getDiscountPercent())));
-    }
-
-    private void applyDiscountsOnReceiptRecords() {
-        adaptee.getRecords().forEach(record -> {
-            record.setDiscountPercent(adaptee.getDiscountPercent());
-            record.setSalePrice((int)(record.getSalePrice() * getDiscountMultiplier(adaptee.getDiscountPercent())));
-        });
     }
 
     public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {

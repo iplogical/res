@@ -80,7 +80,7 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
         });
     }
 
-    protected static double getDiscountMultiplier(double discountPercent) {
+    public static double getDiscountMultiplier(double discountPercent) {
         return (100D - discountPercent) / 100;
     }
 
