@@ -97,13 +97,15 @@ public class ReceiptAdapterPay extends AbstractAdapter<Receipt> {
             return paymentParams.getDiscountPercent();
         } else if(paymentParams.getDiscountAbsolute() != 0) {
             double discountAbs = paymentParams.getDiscountAbsolute();
-            double sumSale = getAdaptee().getSumSaleGrossPrice();
+            double sumSale = adaptee.getSumSaleGrossPrice();
             double discount = discountAbs / sumSale * 100;
             return discount;
         } else return 0;
     }
 
     private void applyDiscountOnSalePrices() {
+        adaptee.setSumSaleGrossOriginalPrice(adaptee.getSumSaleGrossPrice());
+        adaptee.setSumSaleNetOriginalPrice(adaptee.getSumSaleNetPrice());
         adaptee.setSumSaleGrossPrice((int)(adaptee.getSumSaleGrossPrice() * getDiscountMultiplier(adaptee.getDiscountPercent())));
         adaptee.setSumSaleNetPrice((int)(adaptee.getSumSaleNetPrice() * getDiscountMultiplier(adaptee.getDiscountPercent())));
     }

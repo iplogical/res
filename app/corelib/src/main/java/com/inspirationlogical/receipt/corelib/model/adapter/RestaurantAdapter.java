@@ -12,6 +12,7 @@ import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
+import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -162,8 +163,11 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         List<ReceiptAdapterBase> receipts = getReceiptsByClosureTime(startTime, endTime);
         Receipt aggregatedReceipt = buildAggregatedReceipt(startTime);
         Map<PaymentMethod, Integer> incomesByPaymentMethod = initIncomes();
+        Wrapper<Integer> totalDiscount = new Wrapper<>();
+        totalDiscount.setContent(0);
         receipts.forEach(receipt -> {
             updateIncomes(receipt, incomesByPaymentMethod);
+            totalDiscount.setContent(updateDiscount(receipt, totalDiscount.getContent()));
             receipt.getAdaptee().getRecords().forEach(receiptRecord -> {
                 receiptRecord.setDiscountPercent(receipt.getAdaptee().getDiscountPercent() + receiptRecord.getDiscountPercent());
                 receiptRecord.setSalePrice((int)(receiptRecord.getSalePrice() * getDiscountMultiplier(receiptRecord.getDiscountPercent())));
@@ -172,6 +176,7 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
         });
         aggregatedReceipt.getRecords().sort(Comparator.comparing(ReceiptRecord::getSoldQuantity).reversed());
         addIncomesAsReceiptRecord(aggregatedReceipt, incomesByPaymentMethod);
+        addDiscountsAsReceiptRecord(aggregatedReceipt, totalDiscount);
         receipts.forEach(receiptAdapter -> GuardedTransaction.detach(receiptAdapter.getAdaptee()));
         return aggregatedReceipt;
     }
@@ -203,6 +208,11 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
     private void updateIncomes(ReceiptAdapterBase receipt, Map<PaymentMethod, Integer> incomes) {
         int salePrice = incomes.get(receipt.getAdaptee().getPaymentMethod());
         incomes.put(receipt.getAdaptee().getPaymentMethod(), salePrice + receipt.getAdaptee().getSumSaleGrossPrice());
+    }
+
+    private int updateDiscount(ReceiptAdapterBase receipt, int totalDiscount) {
+        int discount = receipt.getAdaptee().getSumSaleGrossOriginalPrice() - receipt.getAdaptee().getSumSaleGrossPrice();
+        return discount + totalDiscount;
     }
 
     private void mergeReceiptRecords(Receipt aggregatedReceipt, ReceiptRecord receiptRecord) {
@@ -252,11 +262,30 @@ public class RestaurantAdapter extends AbstractAdapter<Restaurant> {
                 .createdList(new ArrayList<>())
                 .type(ReceiptRecordType.HERE)
                 .name(paymentMethod.toString())
-                .soldQuantity(1)
+                .soldQuantity(0)
                 .purchasePrice(0)
                 .salePrice(salePrices.get(paymentMethod))
                 .VAT(0)
                 .discountPercent(0)
                 .build();
     }
+
+    private void addDiscountsAsReceiptRecord(Receipt aggregatedReceipt, Wrapper<Integer> totalDiscount) {
+        aggregatedReceipt.getRecords().add(buildDiscountReceiptRecord(totalDiscount));
+    }
+
+    private ReceiptRecord buildDiscountReceiptRecord(Wrapper<Integer> totalDiscount) {
+        return ReceiptRecord.builder()
+                .product(null)
+                .createdList(new ArrayList<>())
+                .type(ReceiptRecordType.HERE)
+                .name("DISCOUNT")
+                .soldQuantity(0)
+                .purchasePrice(0)
+                .salePrice(totalDiscount.getContent())
+                .VAT(0)
+                .discountPercent(0)
+                .build();
+    }
+
 }

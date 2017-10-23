@@ -112,6 +112,10 @@ public @Data class Receipt extends AbstractEntity {
 
     private int sumSaleGrossPrice;
 
+    private int sumSaleNetOriginalPrice;
+
+    private int sumSaleGrossOriginalPrice;
+
     private double discountPercent;
 
     @Embedded

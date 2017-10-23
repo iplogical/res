@@ -162,11 +162,11 @@ Látható
     <node id="n5">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="288.9706705571131" width="189.9999999999999" x="-443.4361903001328" y="-321.05793492695875"/>
+          <y:Geometry height="321.259333667648" width="189.9999999999999" x="-443.4361903001328" y="-321.05793492695875"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="52.69140625" x="68.65429687499994" y="4.0">Bizonylat</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="253.919921875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="160.05859375" x="2.0" y="30.701171875">ID
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="283.322265625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="180.75390625" x="2.0" y="30.701171875">ID
 GU ID
 Verzió ID
 Típus
@@ -179,6 +179,8 @@ Szumma beszerzési nettó ár
 Szumma beszerzési bruttó ár
 Szumma eladási nettó ár
 Szumma eladási bruttó ár
+Szumma eladási nettó eredeti ár
+Szumma eladási bruttó eredeti ár
 Engedmény %
 Vevő név
 Vevő cím
@@ -842,7 +844,7 @@ Időpont<y:LabelModel>
     <edge id="e3" source="n7" target="n5">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="11.781250541096767" ty="-117.9392060063027"/>
+          <y:Path sx="0.0" sy="0.0" tx="4.104508007750383" ty="-132.629666833824"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="crows_foot_many_optional"/>
           <y:BendStyle smoothed="false"/>
@@ -852,7 +854,7 @@ Időpont<y:LabelModel>
     <edge id="e4" source="n5" target="n8">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-39.604477061702426" sy="-115.84399447997548" tx="0.0" ty="0.0"/>
+          <y:Path sx="-45.04815584962404" sy="-132.629666833824" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="crows_foot_one" target="none"/>
           <y:BendStyle smoothed="false"/>

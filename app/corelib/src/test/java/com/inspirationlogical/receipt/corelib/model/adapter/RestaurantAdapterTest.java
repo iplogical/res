@@ -49,7 +49,7 @@ public class RestaurantAdapterTest extends TestBase {
         receiptSaleTwo = schema.getReceiptSaleTwo();
         receiptSaleFour = schema.getReceiptSaleFour();
         receiptSaleClosedTable = schema.getReceiptSaleClosedTable();
-        int generatedRecords = 3;
+        int generatedRecords = 4;
         totalRecordsOfTheDay = receiptSaleTwo.getRecords().size() +
                 receiptSaleFour.getRecords().size() +
                 receiptSaleClosedTable.getRecords().size() +
@@ -153,7 +153,7 @@ public class RestaurantAdapterTest extends TestBase {
         receiptSaleTwo.getRecords().get(0).setName("testRecord");
         receiptSaleTwo.getRecords().get(0).setDiscountPercent(20);
         receiptSaleFour.getRecords().get(0).setName("testRecord");
-        receiptSaleFour.getRecords().get(0).setDiscountPercent(20);
+        receiptSaleFour.getRecords().get(0).setDiscountPercent(0);
         Receipt receipt = restaurantAdapter.createReceiptOfAggregatedConsumption(latestClosure, now().plusDays(1));
         assertEquals(totalRecordsOfTheDay - 1, receipt.getRecords().size());
     }

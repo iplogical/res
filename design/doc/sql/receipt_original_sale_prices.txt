@@ -1,0 +1,9 @@
+
+
+ALTER TABLE receipt ADD COLUMN sumSaleGrossOriginalPrice INTEGER;
+
+ALTER TABLE receipt ADD COLUMN sumSaleNetOriginalPrice INTEGER;
+
+UPDATE receipt  SET sumSaleGrossOriginalPrice=sumSaleGrossPrice / ((100 - discountPercent) / 100);
+
+UPDATE receipt  SET sumSaleNetOriginalPrice=sumSaleNetPrice / ((100 - discountPercent) / 100);
