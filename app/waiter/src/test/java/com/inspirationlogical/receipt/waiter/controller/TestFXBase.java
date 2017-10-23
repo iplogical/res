@@ -27,7 +27,7 @@ import static com.inspirationlogical.receipt.waiter.registry.WaiterRegistry.getI
  */
 public abstract class TestFXBase extends ApplicationTest {
 
-    private static boolean isApplicationStarted = false;
+    protected static boolean isApplicationStarted = false;
 
     @BeforeClass
     public static void launchApplication() throws Exception {

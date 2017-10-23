@@ -1618,7 +1618,7 @@ public class BuildTestSchema {
                 .visible(true)
                 .capacity(6)
                 .guestCount(0)
-                .coordinateX(600)
+                .coordinateX(500)
                 .coordinateY(200)
                 .reservations(new ArrayList<>())
                 .build();
@@ -1632,7 +1632,7 @@ public class BuildTestSchema {
                 .visible(true)
                 .capacity(6)
                 .guestCount(0)
-                .coordinateX(700)
+                .coordinateX(600)
                 .coordinateY(200)
                 .reservations(new ArrayList<>())
                 .build();
@@ -1646,7 +1646,7 @@ public class BuildTestSchema {
                 .visible(true)
                 .capacity(6)
                 .guestCount(0)
-                .coordinateX(800)
+                .coordinateX(700)
                 .coordinateY(200)
                 .reservations(new ArrayList<>())
                 .build();
@@ -1660,7 +1660,7 @@ public class BuildTestSchema {
                 .visible(true)
                 .capacity(6)
                 .guestCount(0)
-                .coordinateX(900)
+                .coordinateX(800)
                 .coordinateY(200)
                 .reservations(new ArrayList<>())
                 .build();
@@ -1674,7 +1674,7 @@ public class BuildTestSchema {
                 .visible(true)
                 .capacity(6)
                 .guestCount(0)
-                .coordinateX(600)
+                .coordinateX(500)
                 .coordinateY(400)
                 .reservations(new ArrayList<>())
                 .build();
@@ -1688,7 +1688,7 @@ public class BuildTestSchema {
                 .visible(true)
                 .capacity(6)
                 .guestCount(0)
-                .coordinateX(700)
+                .coordinateX(600)
                 .coordinateY(400)
                 .reservations(new ArrayList<>())
                 .build();
@@ -1702,7 +1702,7 @@ public class BuildTestSchema {
                 .visible(true)
                 .capacity(6)
                 .guestCount(0)
-                .coordinateX(800)
+                .coordinateX(700)
                 .coordinateY(400)
                 .reservations(new ArrayList<>())
                 .build();
@@ -1716,7 +1716,7 @@ public class BuildTestSchema {
                 .visible(true)
                 .capacity(6)
                 .guestCount(0)
-                .coordinateX(900)
+                .coordinateX(800)
                 .coordinateY(400)
                 .reservations(new ArrayList<>())
                 .build();

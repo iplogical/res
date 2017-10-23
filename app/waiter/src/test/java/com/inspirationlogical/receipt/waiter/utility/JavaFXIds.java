@@ -82,6 +82,10 @@ public class JavaFXIds {
     public final static String TO_SALE = "#backToSaleView";
     public final static String PAY = "#pay";
 
+    public final static String PAYMENT_METHOD_CASH = "#paymentMethodCash";
+    public final static String PAYMENT_METHOD_CREDIT_CARD = "#paymentMethodCreditCard";
+    public final static String PAYMENT_METHOD_COUPON = "#paymentMethodCoupon";
+
     // Reservation.fxml
     public final static String RESERVATIONS_TABLE = "#reservationsTable";
     public final static String RESERVATIONS_NAME = "#name";
