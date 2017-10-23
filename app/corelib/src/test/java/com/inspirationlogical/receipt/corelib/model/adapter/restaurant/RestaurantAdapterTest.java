@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.model.adapter;
+package com.inspirationlogical.receipt.corelib.model.adapter.restaurant;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_DISPLAYABLE_TABLES;
 import static com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter.getTable;
@@ -11,6 +11,9 @@ import static org.junit.Assert.assertTrue;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.TestBase;
+import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.RestaurantAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import org.junit.Before;
@@ -33,11 +36,6 @@ public class RestaurantAdapterTest extends TestBase {
     private TableAdapter tableNormalClosed;
     private TableAdapter tableConsumer;
     private TableAdapter tableConsumed;
-    private Receipt receiptSaleTwo;
-    private Receipt receiptSaleFour;
-    private Receipt receiptSaleClosedTable;
-    private int totalRecordsOfTheDay;
-    private LocalDateTime latestClosure;
 
     @Before
     public void setUp() {
@@ -46,14 +44,6 @@ public class RestaurantAdapterTest extends TestBase {
         tableNormalClosed = new TableAdapter(schema.getTableNormalClosed());
         tableConsumer = new TableAdapter(schema.getTableConsumer());
         tableConsumed = new TableAdapter(schema.getTableConsumed());
-        receiptSaleTwo = schema.getReceiptSaleTwo();
-        receiptSaleFour = schema.getReceiptSaleFour();
-        receiptSaleClosedTable = schema.getReceiptSaleClosedTable();
-        int generatedRecords = 4;
-        totalRecordsOfTheDay = receiptSaleTwo.getRecords().size() +
-                receiptSaleFour.getRecords().size() +
-                receiptSaleClosedTable.getRecords().size() +
-                generatedRecords;
 
         tableBuilder =  Table.builder()
                 .name("Ittas Juci")
@@ -65,8 +55,6 @@ public class RestaurantAdapterTest extends TestBase {
                 .capacity(5)
                 .note("Big Chocklate Cake")
                 .visible(true);
-
-        latestClosure = DailyClosureAdapter.getLatestClosureTime();
     }
 
     @Test
@@ -134,44 +122,5 @@ public class RestaurantAdapterTest extends TestBase {
         assertEquals(0, tableConsumerUpdated.getAdaptee().getConsumed().size());
     }
 
-    @Test
-    public void testGetConsumptionOfTheDay() {
-        assertEquals(0, restaurantAdapter.getConsumptionOfTheDay(null));
-        assertEquals(0, restaurantAdapter.getConsumptionOfTheDay(PaymentMethod.CASH));
-        assertEquals(0, restaurantAdapter.getConsumptionOfTheDay(PaymentMethod.CREDIT_CARD));
-        assertEquals(0, restaurantAdapter.getConsumptionOfTheDay(PaymentMethod.COUPON));
-    }
 
-    @Test
-    public void testCreateReceiptOfDailyConsumptionNumberOfRecords() {
-        Receipt receipt = restaurantAdapter.createReceiptOfAggregatedConsumption(latestClosure, now().plusDays(1));
-        assertEquals(totalRecordsOfTheDay, receipt.getRecords().size());
-    }
-
-    @Test
-    public void testCreateReceiptOfDailyConsumptionSameDiscountAndName() {
-        receiptSaleTwo.getRecords().get(0).setName("testRecord");
-        receiptSaleTwo.getRecords().get(0).setDiscountPercent(20);
-        receiptSaleFour.getRecords().get(0).setName("testRecord");
-        receiptSaleFour.getRecords().get(0).setDiscountPercent(0);
-        Receipt receipt = restaurantAdapter.createReceiptOfAggregatedConsumption(latestClosure, now().plusDays(1));
-        assertEquals(totalRecordsOfTheDay - 1, receipt.getRecords().size());
-    }
-
-    @Test
-    public void testCreateReceiptOfDailyConsumptionIncomes() {
-        int totalCash = receiptSaleFour.getSumSaleGrossPrice() + receiptSaleClosedTable.getSumSaleGrossPrice();
-        int totalCreditCard = receiptSaleTwo.getSumSaleGrossPrice();
-        int totalCoupon = 0;
-        Receipt receipt = restaurantAdapter.createReceiptOfAggregatedConsumption(latestClosure, now().plusDays(1));
-        assertEquals(totalCash, getSalePrice(receipt, PaymentMethod.CASH));
-        assertEquals(totalCreditCard, getSalePrice(receipt, PaymentMethod.CREDIT_CARD));
-        assertEquals(totalCoupon, getSalePrice(receipt, PaymentMethod.COUPON));
-    }
-
-    private int getSalePrice(Receipt receipt, PaymentMethod paymentMethod) {
-        return receipt.getRecords().stream()
-                        .filter(record -> record.getName().equals(paymentMethod.toString()))
-                        .collect(toList()).get(0).getSalePrice();
-    }
 }

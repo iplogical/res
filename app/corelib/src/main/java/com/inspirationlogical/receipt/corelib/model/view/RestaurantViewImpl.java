@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.RestaurantAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.RestaurantAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 
 /**

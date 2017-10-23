@@ -26,7 +26,7 @@ public class TableAdapter extends AbstractAdapter<Table> {
         super(adaptee);
     }
 
-    static TableAdapter getTable(int number) {
+    public static TableAdapter getTable(int number) {
         return getTableByNumber(number);
     }
 
