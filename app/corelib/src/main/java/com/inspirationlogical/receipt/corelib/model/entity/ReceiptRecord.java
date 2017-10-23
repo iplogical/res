@@ -66,6 +66,8 @@ public @Data class ReceiptRecord extends AbstractEntity {
 
     private int salePrice;
 
+    private int originalSalePrice;
+
     private double VAT;
 
     @Max(100)

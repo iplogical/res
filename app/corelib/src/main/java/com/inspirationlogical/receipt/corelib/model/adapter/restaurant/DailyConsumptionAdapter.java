@@ -11,7 +11,7 @@ import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
-import com.inspirationlogical.receipt.corelib.utility.Wrapper;
+import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,12 +41,12 @@ public class DailyConsumptionAdapter {
         List<ReceiptAdapterBase> receipts = getReceiptsByClosureTime(startTime, endTime);
         Receipt aggregatedReceipt = buildAggregatedReceipt(startTime);
         Map<PaymentMethod, Integer> incomesByPaymentMethod = initIncomes();
-        Wrapper<Integer> totalDiscount = new Wrapper<>();
-        totalDiscount.setContent(0);
+        Map<DiscountType, Integer> discountsByType = initDiscounts();
         receipts.forEach(receipt -> {
             updateIncomes(receipt, incomesByPaymentMethod);
-            totalDiscount.setContent(updateDiscount(receipt, totalDiscount.getContent()));
+            updateTableDiscount(receipt, discountsByType);
             receipt.getAdaptee().getRecords().forEach(receiptRecord -> {
+                updateProductDiscount(receiptRecord, discountsByType);
                 receiptRecord.setDiscountPercent(receipt.getAdaptee().getDiscountPercent() + receiptRecord.getDiscountPercent());
                 receiptRecord.setSalePrice((int)(receiptRecord.getSalePrice() * getDiscountMultiplier(receiptRecord.getDiscountPercent())));
                 mergeReceiptRecords(aggregatedReceipt, receiptRecord);
@@ -54,9 +54,14 @@ public class DailyConsumptionAdapter {
         });
         aggregatedReceipt.getRecords().sort(Comparator.comparing(ReceiptRecord::getSoldQuantity).reversed());
         addIncomesAsReceiptRecord(aggregatedReceipt, incomesByPaymentMethod);
-        addDiscountsAsReceiptRecord(aggregatedReceipt, totalDiscount);
+        addDiscountsAsReceiptRecord(aggregatedReceipt, discountsByType);
         receipts.forEach(receiptAdapter -> GuardedTransaction.detach(receiptAdapter.getAdaptee()));
         return aggregatedReceipt;
+    }
+
+    private void updateProductDiscount(ReceiptRecord receiptRecord, Map<DiscountType, Integer> discountsByType) {
+        int discount = receiptRecord.getOriginalSalePrice() - receiptRecord.getSalePrice();
+        discountsByType.put(DiscountType.PRODUCT, discount + discountsByType.get(DiscountType.PRODUCT));
     }
 
     private Receipt buildAggregatedReceipt(LocalDateTime startTime) {
@@ -83,23 +88,28 @@ public class DailyConsumptionAdapter {
         return salePrices;
     }
 
+    private Map<DiscountType,Integer> initDiscounts() {
+        Map<DiscountType, Integer> discounts = new HashMap<>();
+        discounts.put(DiscountType.PRODUCT, 0);
+        discounts.put(DiscountType.TABLE, 0);
+        return discounts;
+    }
+
     private void updateIncomes(ReceiptAdapterBase receipt, Map<PaymentMethod, Integer> incomes) {
         int salePrice = incomes.get(receipt.getAdaptee().getPaymentMethod());
         incomes.put(receipt.getAdaptee().getPaymentMethod(), salePrice + receipt.getAdaptee().getSumSaleGrossPrice());
     }
 
-    private int updateDiscount(ReceiptAdapterBase receipt, int totalDiscount) {
+    private void updateTableDiscount(ReceiptAdapterBase receipt, Map<DiscountType, Integer> discountsByType) {
         int discount = receipt.getAdaptee().getSumSaleGrossOriginalPrice() - receipt.getAdaptee().getSumSaleGrossPrice();
-        return discount + totalDiscount;
+        discountsByType.put(DiscountType.TABLE, discount + discountsByType.get(DiscountType.TABLE));
     }
 
     private void mergeReceiptRecords(Receipt aggregatedReceipt, ReceiptRecord receiptRecord) {
         List<ReceiptRecord> aggregatedRecords = aggregatedReceipt.getRecords().stream()
                 .filter(sameNameAndDiscount(receiptRecord))
-                .map(aggregatedRecord -> {
-                    aggregatedRecord.setSoldQuantity(aggregatedRecord.getSoldQuantity() + receiptRecord.getSoldQuantity());
-                    return aggregatedRecord;
-                }).collect(Collectors.toList());
+                .peek(aggregatedRecord -> aggregatedRecord.setSoldQuantity(aggregatedRecord.getSoldQuantity() + receiptRecord.getSoldQuantity()))
+                .collect(Collectors.toList());
         if (aggregatedRecords.isEmpty()) {
             aggregatedReceipt.getRecords().add(buildReceiptRecord(receiptRecord));
         }
@@ -129,41 +139,59 @@ public class DailyConsumptionAdapter {
     }
 
     private void addIncomesAsReceiptRecord(Receipt aggregatedReceipt, Map<PaymentMethod, Integer> salePrices) {
-        for(PaymentMethod m : salePrices.keySet()) {
-            aggregatedReceipt.getRecords().add(buildIncomeReceiptRecord(salePrices, m));
+        aggregatedReceipt.getRecords().add(buildIncomeReceiptRecord(PaymentMethod.CASH, salePrices.get(PaymentMethod.CASH)));
+        aggregatedReceipt.getRecords().add(buildIncomeReceiptRecord(PaymentMethod.CREDIT_CARD, salePrices.get(PaymentMethod.CREDIT_CARD)));
+        aggregatedReceipt.getRecords().add(buildIncomeReceiptRecord(PaymentMethod.COUPON, salePrices.get(PaymentMethod.COUPON)));
+    }
+
+    private ReceiptRecord buildIncomeReceiptRecord(PaymentMethod paymentMethod, int salePrice) {
+        return ReceiptRecord.builder()
+                .product(null)
+                .createdList(new ArrayList<>())
+                .type(ReceiptRecordType.HERE)
+                .name(paymentMethod.toI18nString())
+                .soldQuantity(0)
+                .purchasePrice(0)
+                .salePrice(salePrice)
+                .VAT(0)
+                .discountPercent(0)
+                .build();
+    }
+
+    private void addDiscountsAsReceiptRecord(Receipt aggregatedReceipt, Map<DiscountType, Integer> totalDiscounts) {
+        aggregatedReceipt.getRecords().add(buildDiscountReceiptRecord(DiscountType.PRODUCT, totalDiscounts.get(DiscountType.PRODUCT)));
+        aggregatedReceipt.getRecords().add(buildDiscountReceiptRecord(DiscountType.TABLE, totalDiscounts.get(DiscountType.TABLE)));
+        aggregatedReceipt.getRecords().add(buildDiscountReceiptRecord(DiscountType.TOTAL,
+                totalDiscounts.get(DiscountType.PRODUCT) + totalDiscounts.get(DiscountType.TABLE)));
+    }
+
+    private ReceiptRecord buildDiscountReceiptRecord(DiscountType type, Integer totalDiscount) {
+        return ReceiptRecord.builder()
+                .product(null)
+                .createdList(new ArrayList<>())
+                .type(ReceiptRecordType.HERE)
+                .name(type.toI18nString())
+                .soldQuantity(0)
+                .purchasePrice(0)
+                .salePrice(totalDiscount)
+                .VAT(0)
+                .discountPercent(0)
+                .build();
+    }
+
+    private enum DiscountType {
+        PRODUCT,
+        TABLE,
+        TOTAL;
+
+        public String toI18nString() {
+            if(this.equals(PRODUCT))
+                return Resources.CONFIG.getString("DiscountType.Product");
+            if(this.equals(TABLE))
+                return Resources.CONFIG.getString("DiscountType.Table");
+            if(this.equals(TOTAL))
+                return Resources.CONFIG.getString("DiscountType.Total");
+            return "";
         }
     }
-
-    private ReceiptRecord buildIncomeReceiptRecord(Map<PaymentMethod, Integer> salePrices, PaymentMethod paymentMethod) {
-        return ReceiptRecord.builder()
-                .product(null)
-                .createdList(new ArrayList<>())
-                .type(ReceiptRecordType.HERE)
-                .name(paymentMethod.toString())
-                .soldQuantity(0)
-                .purchasePrice(0)
-                .salePrice(salePrices.get(paymentMethod))
-                .VAT(0)
-                .discountPercent(0)
-                .build();
-    }
-
-    private void addDiscountsAsReceiptRecord(Receipt aggregatedReceipt, Wrapper<Integer> totalDiscount) {
-        aggregatedReceipt.getRecords().add(buildDiscountReceiptRecord(totalDiscount));
-    }
-
-    private ReceiptRecord buildDiscountReceiptRecord(Wrapper<Integer> totalDiscount) {
-        return ReceiptRecord.builder()
-                .product(null)
-                .createdList(new ArrayList<>())
-                .type(ReceiptRecordType.HERE)
-                .name("DISCOUNT")
-                .soldQuantity(0)
-                .purchasePrice(0)
-                .salePrice(totalDiscount.getContent())
-                .VAT(0)
-                .discountPercent(0)
-                .build();
-    }
-
 }

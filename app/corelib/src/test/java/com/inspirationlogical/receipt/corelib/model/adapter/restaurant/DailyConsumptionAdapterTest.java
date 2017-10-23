@@ -31,7 +31,7 @@ public class DailyConsumptionAdapterTest extends TestBase {
         receiptSaleTwo = schema.getReceiptSaleTwo();
         receiptSaleFour = schema.getReceiptSaleFour();
         receiptSaleClosedTable = schema.getReceiptSaleClosedTable();
-        int generatedRecords = 4;
+        int generatedRecords = 6;
         totalRecordsOfTheDay = receiptSaleTwo.getRecords().size() +
                 receiptSaleFour.getRecords().size() +
                 receiptSaleClosedTable.getRecords().size() +
@@ -77,7 +77,7 @@ public class DailyConsumptionAdapterTest extends TestBase {
 
     private int getSalePrice(Receipt receipt, PaymentMethod paymentMethod) {
         return receipt.getRecords().stream()
-                .filter(record -> record.getName().equals(paymentMethod.toString()))
+                .filter(record -> record.getName().equals(paymentMethod.toI18nString()))
                 .collect(toList()).get(0).getSalePrice();
     }
 }
