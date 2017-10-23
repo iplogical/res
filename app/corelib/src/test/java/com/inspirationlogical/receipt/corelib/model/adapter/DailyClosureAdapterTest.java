@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;
 import static java.time.LocalDate.now;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -59,9 +60,9 @@ public class DailyClosureAdapterTest extends TestBase {
     public void testCloseDailyClosure() {
         openDailyClosure.update(receipt);
         openDailyClosure.close();
-        assertEquals(7943, openDailyClosure.getAdaptee().getProfit());
-        assertEquals(60.63, openDailyClosure.getAdaptee().getMarkup(), 0.001);
-        assertEquals(13100, openDailyClosure.getAdaptee().getReceiptAverage());
+        assertEquals(15543, openDailyClosure.getAdaptee().getProfit());
+        assertEquals(75.09, openDailyClosure.getAdaptee().getMarkup(), 0.001);
+        assertEquals(20700, openDailyClosure.getAdaptee().getReceiptAverage());
         assertEquals(1, openDailyClosure.getAdaptee().getNumberOfReceipts());
         assertNotNull(DailyClosureAdapter.getOpenDailyClosure());
     }
@@ -71,11 +72,11 @@ public class DailyClosureAdapterTest extends TestBase {
         openDailyClosure.update(receipt);
         assertEquals(receipt.getSumPurchaseGrossPrice(), openDailyClosure.getAdaptee().getSumPurchaseGrossPriceCash());
         assertEquals(receipt.getSumPurchaseNetPrice(), openDailyClosure.getAdaptee().getSumPurchaseNetPriceCash());
-        assertEquals(receipt.getSumSaleGrossPrice(), openDailyClosure.getAdaptee().getSumSaleGrossPriceCash());
+        assertEquals(receipt.getSumSaleGrossPrice() + OPEN_DAILY_CLOSURE_INIT_GROSS_CASH, openDailyClosure.getAdaptee().getSumSaleGrossPriceCash());
         assertEquals(receipt.getSumSaleNetPrice(), openDailyClosure.getAdaptee().getSumSaleNetPriceCash());
         assertEquals(receipt.getSumPurchaseGrossPrice(), openDailyClosure.getAdaptee().getSumPurchaseGrossPriceTotal());
         assertEquals(receipt.getSumPurchaseNetPrice(), openDailyClosure.getAdaptee().getSumPurchaseNetPriceTotal());
-        assertEquals(receipt.getSumSaleGrossPrice(), openDailyClosure.getAdaptee().getSumSaleGrossPriceTotal());
+        assertEquals(receipt.getSumSaleGrossPrice() + OPEN_DAILY_CLOSURE_INIT_GROSS_TOTAL, openDailyClosure.getAdaptee().getSumSaleGrossPriceTotal());
         assertEquals(receipt.getSumSaleNetPrice(), openDailyClosure.getAdaptee().getSumSaleNetPriceTotal());
     }
 
@@ -85,11 +86,11 @@ public class DailyClosureAdapterTest extends TestBase {
         openDailyClosure.update(receipt);
         assertEquals(receipt.getSumPurchaseGrossPrice(), openDailyClosure.getAdaptee().getSumPurchaseGrossPriceCreditCard());
         assertEquals(receipt.getSumPurchaseNetPrice(), openDailyClosure.getAdaptee().getSumPurchaseNetPriceCreditCard());
-        assertEquals(receipt.getSumSaleGrossPrice(), openDailyClosure.getAdaptee().getSumSaleGrossPriceCreditCard());
+        assertEquals(receipt.getSumSaleGrossPrice() + OPEN_DAILY_CLOSURE_INIT_GROSS_CREDIT_CARD, openDailyClosure.getAdaptee().getSumSaleGrossPriceCreditCard());
         assertEquals(receipt.getSumSaleNetPrice(), openDailyClosure.getAdaptee().getSumSaleNetPriceCreditCard());
         assertEquals(receipt.getSumPurchaseGrossPrice(), openDailyClosure.getAdaptee().getSumPurchaseGrossPriceTotal());
         assertEquals(receipt.getSumPurchaseNetPrice(), openDailyClosure.getAdaptee().getSumPurchaseNetPriceTotal());
-        assertEquals(receipt.getSumSaleGrossPrice(), openDailyClosure.getAdaptee().getSumSaleGrossPriceTotal());
+        assertEquals(receipt.getSumSaleGrossPrice() + OPEN_DAILY_CLOSURE_INIT_GROSS_TOTAL, openDailyClosure.getAdaptee().getSumSaleGrossPriceTotal());
         assertEquals(receipt.getSumSaleNetPrice(), openDailyClosure.getAdaptee().getSumSaleNetPriceTotal());
     }
 
@@ -99,11 +100,11 @@ public class DailyClosureAdapterTest extends TestBase {
         openDailyClosure.update(receipt);
         assertEquals(receipt.getSumPurchaseGrossPrice(), openDailyClosure.getAdaptee().getSumPurchaseGrossPriceCoupon());
         assertEquals(receipt.getSumPurchaseNetPrice(), openDailyClosure.getAdaptee().getSumPurchaseNetPriceCoupon());
-        assertEquals(receipt.getSumSaleGrossPrice(), openDailyClosure.getAdaptee().getSumSaleGrossPriceCoupon());
+        assertEquals(receipt.getSumSaleGrossPrice() + OPEN_DAILY_CLOSURE_INIT_GROSS_COUPON, openDailyClosure.getAdaptee().getSumSaleGrossPriceCoupon());
         assertEquals(receipt.getSumSaleNetPrice(), openDailyClosure.getAdaptee().getSumSaleNetPriceCoupon());
         assertEquals(receipt.getSumPurchaseGrossPrice(), openDailyClosure.getAdaptee().getSumPurchaseGrossPriceTotal());
         assertEquals(receipt.getSumPurchaseNetPrice(), openDailyClosure.getAdaptee().getSumPurchaseNetPriceTotal());
-        assertEquals(receipt.getSumSaleGrossPrice(), openDailyClosure.getAdaptee().getSumSaleGrossPriceTotal());
+        assertEquals(receipt.getSumSaleGrossPrice() + OPEN_DAILY_CLOSURE_INIT_GROSS_TOTAL, openDailyClosure.getAdaptee().getSumSaleGrossPriceTotal());
         assertEquals(receipt.getSumSaleNetPrice(), openDailyClosure.getAdaptee().getSumSaleNetPriceTotal());
     }
 }

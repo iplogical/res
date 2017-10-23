@@ -179,7 +179,7 @@ public class DailyConsumptionAdapter {
                 .build();
     }
 
-    private enum DiscountType {
+    public enum DiscountType {
         PRODUCT,
         TABLE,
         TOTAL;

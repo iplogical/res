@@ -57,6 +57,11 @@ public class BuildTestSchema {
     public static final String RESERVATION_ONE_NAME = "TestName1";
     public static final String RESERVATION_ONE_NOTE = "TestNote1";
 
+    public static final int OPEN_DAILY_CLOSURE_INIT_GROSS_CASH = 5600;
+    public static final int OPEN_DAILY_CLOSURE_INIT_GROSS_CREDIT_CARD = 2000;
+    public static final int OPEN_DAILY_CLOSURE_INIT_GROSS_COUPON = 0;
+    public static final int OPEN_DAILY_CLOSURE_INIT_GROSS_TOTAL = 7600;
+
     private @Getter EntityManager entityManager;
     private @Getter EntityManager entityManagerArchive;
 
@@ -577,10 +582,10 @@ public class BuildTestSchema {
                 .sumSaleNetPriceCoupon(0)
                 .sumSaleNetPriceTotal(0)
 
-                .sumSaleGrossPriceCash(0)
-                .sumSaleGrossPriceCreditCard(0)
+                .sumSaleGrossPriceCash(5600)
+                .sumSaleGrossPriceCreditCard(2000)
                 .sumSaleGrossPriceCoupon(0)
-                .sumSaleGrossPriceTotal(0)
+                .sumSaleGrossPriceTotal(7600)
                 .profit(0)
                 .markup(0)
                 .receiptAverage(0)
@@ -1167,14 +1172,16 @@ public class BuildTestSchema {
                 .paymentMethod(PaymentMethod.CREDIT_CARD)
                 .openTime(LocalDateTime.now())
                 .closureTime(LocalDateTime.now().minusHours(1))
-                .sumPurchaseGrossPrice(2500)
-                .sumPurchaseNetPrice(2000)
-                .sumSaleGrossPrice(5000)
-                .sumSaleNetPrice(4000)
+                .sumPurchaseGrossPrice(1500)
+                .sumPurchaseNetPrice(1200)
+                .sumSaleGrossPrice(2000)
+                .sumSaleNetPrice(1600)
+                .sumSaleGrossOriginalPrice(2000)
+                .sumSaleNetOriginalPrice(1600)
+                .discountPercent(0.0D)
                 .client(buildDefaultClient())
                 .build();
     }
-
 
     private void buildReceiptSaleThree() {
         receiptSaleThree = Receipt.builder()
@@ -1193,27 +1200,30 @@ public class BuildTestSchema {
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(LocalDateTime.now())
                 .closureTime(LocalDateTime.now().minusHours(2))
-                .sumPurchaseGrossPrice(2500)
-                .sumPurchaseNetPrice(2000)
-                .sumSaleGrossPrice(5000)
-                .sumSaleNetPrice(4000)
+                .sumPurchaseGrossPrice(1000)
+                .sumPurchaseNetPrice(800)
+                .sumSaleGrossPrice(1600)
+                .sumSaleNetPrice(1200)
+                .sumSaleGrossOriginalPrice(2000)
+                .sumSaleNetOriginalPrice(1600)
                 .discountPercent(20)
                 .client(buildDefaultClient())
                 .build();
     }
-
 
     private void buildReceiptSaleClosedTable() {
         receiptSaleClosedTable = Receipt.builder()
                 .type(ReceiptType.SALE)
                 .status(ReceiptStatus.CLOSED)
                 .paymentMethod(PaymentMethod.CASH)
-                .openTime(LocalDateTime.now())
+                .openTime(LocalDateTime.now().minusHours(6))
                 .closureTime(LocalDateTime.now().minusHours(3))
-                .sumPurchaseGrossPrice(2500)
-                .sumPurchaseNetPrice(2000)
-                .sumSaleGrossPrice(5000)
-                .sumSaleNetPrice(4000)
+                .sumPurchaseGrossPrice(3000)
+                .sumPurchaseNetPrice(2400)
+                .sumSaleGrossPrice(4000)
+                .sumSaleNetPrice(3200)
+                .sumSaleGrossOriginalPrice(4000)
+                .sumSaleNetOriginalPrice(3200)
                 .discountPercent(0)
                 .client(buildDefaultClient())
                 .build();
@@ -1296,6 +1306,7 @@ public class BuildTestSchema {
                 .type(ReceiptRecordType.HERE)
                 .VAT(27)
                 .salePrice(440)
+                .originalSalePrice(440)
                 .purchasePrice(250)
                 .soldQuantity(1D)
                 .createdList(new ArrayList<>())
@@ -1310,6 +1321,7 @@ public class BuildTestSchema {
                 .soldQuantity(2D)
                 .absoluteQuantity(2D)
                 .salePrice(560)
+                .originalSalePrice(560)
                 .purchasePrice(300)
                 .createdList(new ArrayList<>())
                 .build();
@@ -1317,9 +1329,10 @@ public class BuildTestSchema {
 
     private void buildReceiptRecordSaleThree() {
         receiptSaleTwoRecordOne = ReceiptRecord.builder()
-                .name("C")
+                .name("receiptSaleTwoRecordOne")
                 .soldQuantity(1D)
                 .salePrice(1000)
+                .originalSalePrice(1000)
                 .type(ReceiptRecordType.HERE)
                 .createdList(new ArrayList<>())
                 .build();
@@ -1327,14 +1340,14 @@ public class BuildTestSchema {
 
     private void buildReceiptRecordSaleFour() {
         receiptSaleTwoRecordTwo = ReceiptRecord.builder()
-                .name("D")
+                .name("receiptSaleTwoRecordTwo")
                 .soldQuantity(0.5)
                 .salePrice(2000)
+                .originalSalePrice(2000)
                 .type(ReceiptRecordType.HERE)
                 .createdList(new ArrayList<>())
                 .build();
     }
-
 
     private void buildReceiptRecordSaleFive() {
         receiptSaleOneRecordThree = ReceiptRecord.builder()
@@ -1342,6 +1355,7 @@ public class BuildTestSchema {
                 .type(ReceiptRecordType.HERE)
                 .VAT(27)
                 .salePrice(780)
+                .originalSalePrice(780)
                 .purchasePrice(350)
                 .soldQuantity(2D)
                 .createdList(new ArrayList<>())
@@ -1354,12 +1368,12 @@ public class BuildTestSchema {
                 .type(ReceiptRecordType.HERE)
                 .VAT(27)
                 .salePrice(4990)
+                .originalSalePrice(4990)
                 .purchasePrice(2500)
                 .soldQuantity(2D)
                 .createdList(new ArrayList<>())
                 .build();
     }
-
 
     private void buildReceiptSaleFourRecordOne() {
         receiptSaleFourRecordOne = ReceiptRecord.builder()
@@ -1367,6 +1381,7 @@ public class BuildTestSchema {
                 .type(ReceiptRecordType.HERE)
                 .VAT(27)
                 .salePrice(1000)
+                .originalSalePrice(1000)
                 .purchasePrice(500)
                 .soldQuantity(2D)
                 .createdList(new ArrayList<>())
@@ -1375,10 +1390,11 @@ public class BuildTestSchema {
 
     private void buildReceiptSaleClosedTableRecordOne() {
         receiptSaleClosedTableRecordOne = ReceiptRecord.builder()
-                .name("receiptSaleClosedTableRecordOne")
+                .name("receiptSaleClosedTableROne")
                 .type(ReceiptRecordType.HERE)
                 .VAT(27)
                 .salePrice(2000)
+                .originalSalePrice(2000)
                 .purchasePrice(1000)
                 .soldQuantity(2D)
                 .createdList(new ArrayList<>())

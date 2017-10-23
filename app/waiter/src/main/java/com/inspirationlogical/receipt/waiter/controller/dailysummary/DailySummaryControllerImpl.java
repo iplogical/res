@@ -16,9 +16,7 @@ import javafx.scene.layout.HBox;
 
 import javax.inject.Singleton;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -44,7 +42,7 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     @FXML
     private Label couponTotalPrice;
     @FXML
-    private Label totalPrice;
+    private Label dailySummaryTotalPrice;
 
     @FXML
     private Label startDateValue;
@@ -146,7 +144,7 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
                 + Integer.valueOf(cashTotalPrice.getText())
                 + Integer.valueOf(creditCardTotalPrice.getText())
                 + Integer.valueOf(couponTotalPrice.getText());
-        totalPrice.setText(String.valueOf(totalPriceInt));
+        dailySummaryTotalPrice.setText(String.valueOf(totalPriceInt));
         getSoldProductsAndRefreshTable();
     }
 

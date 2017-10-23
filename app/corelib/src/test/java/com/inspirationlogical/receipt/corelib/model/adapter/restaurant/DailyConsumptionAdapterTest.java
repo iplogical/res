@@ -2,11 +2,8 @@ package com.inspirationlogical.receipt.corelib.model.adapter.restaurant;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,9 +39,9 @@ public class DailyConsumptionAdapterTest extends TestBase {
 
     @Test
     public void testGetConsumptionOfTheDay() {
-        assertEquals(0, restaurantAdapter.getConsumptionOfTheDay(null));
-        assertEquals(0, restaurantAdapter.getConsumptionOfTheDay(PaymentMethod.CASH));
-        assertEquals(0, restaurantAdapter.getConsumptionOfTheDay(PaymentMethod.CREDIT_CARD));
+        assertEquals(7600, restaurantAdapter.getConsumptionOfTheDay(null));
+        assertEquals(5600, restaurantAdapter.getConsumptionOfTheDay(PaymentMethod.CASH));
+        assertEquals(2000, restaurantAdapter.getConsumptionOfTheDay(PaymentMethod.CREDIT_CARD));
         assertEquals(0, restaurantAdapter.getConsumptionOfTheDay(PaymentMethod.COUPON));
     }
 
