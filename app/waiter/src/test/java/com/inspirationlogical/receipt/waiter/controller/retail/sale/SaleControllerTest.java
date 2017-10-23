@@ -24,20 +24,20 @@ public class SaleControllerTest extends SaleViewTest {
 
     @Test
     public void testSellGiftProduct() {
-        clickButtonThenWait(GIFT_PRODUCT, 20);
+        clickOnGiftProduct();
         selectCategory(AGGREGATE_ONE);
         sellProduct(PRODUCT_FIVE);
         assertSoldProduct(1, PRODUCT_FIVE_LONG + " *", 1, 0, 0);
-        clickButtonThenWait(GIFT_PRODUCT, 20);
+        clickOnGiftProduct();
         selectiveCancellation(PRODUCT_FIVE_LONG + " *");
     }
 
     @Test
     public void testSellMultipleGiftProductsWithin5Seconds() {
-        clickButtonThenWait(GIFT_PRODUCT, 20);
+        clickOnGiftProduct();
         selectCategory(AGGREGATE_ONE);
         sellProduct(PRODUCT_FIVE);
-        clickButtonThenWait(GIFT_PRODUCT, 20);
+        clickOnGiftProduct();
         sellProduct(PRODUCT_FIVE);
         assertSoldProduct(1, PRODUCT_FIVE_LONG + " *", 2, 0, 0);
         selectiveCancellation(PRODUCT_FIVE_LONG + " *");
@@ -45,11 +45,11 @@ public class SaleControllerTest extends SaleViewTest {
 
     @Test
     public void testIncreaseGiftProduct() {
-        clickButtonThenWait(GIFT_PRODUCT, 20);
+        clickOnGiftProduct();
         selectCategory(AGGREGATE_ONE);
         sellProduct(PRODUCT_FIVE);
         clickOnThenWait(PRODUCT_FIVE_LONG + " *", 20);
-        clickButtonThenWait(GIFT_PRODUCT, 20);
+        clickOnGiftProduct();
         clickOnThenWait(PRODUCT_FIVE_LONG + " *", 20);
         assertSoldProduct(1, PRODUCT_FIVE_LONG + " *", 3, 0, 0);
         selectiveCancellation(PRODUCT_FIVE_LONG + " *");
@@ -57,7 +57,7 @@ public class SaleControllerTest extends SaleViewTest {
 
     @Test
     public void testSellGiftProductThenNormalProduct() {
-        clickButtonThenWait(GIFT_PRODUCT, 20);
+        clickOnGiftProduct();
         selectCategory(AGGREGATE_ONE);
         sellProduct(PRODUCT_FIVE);
         clickButtonThenWait(GIFT_PRODUCT, 5100);

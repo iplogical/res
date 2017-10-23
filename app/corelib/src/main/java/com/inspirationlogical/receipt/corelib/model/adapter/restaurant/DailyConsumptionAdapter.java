@@ -60,7 +60,7 @@ public class DailyConsumptionAdapter {
     }
 
     private void updateProductDiscount(ReceiptRecord receiptRecord, Map<DiscountType, Integer> discountsByType) {
-        int discount = receiptRecord.getOriginalSalePrice() - receiptRecord.getSalePrice();
+        int discount = (int)((receiptRecord.getOriginalSalePrice() - receiptRecord.getSalePrice()) * receiptRecord.getSoldQuantity());
         discountsByType.put(DiscountType.PRODUCT, discount + discountsByType.get(DiscountType.PRODUCT));
     }
 

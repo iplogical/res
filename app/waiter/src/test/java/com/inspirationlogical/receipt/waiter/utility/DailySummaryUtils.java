@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
+import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.DailyConsumptionAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickButtonThenWait;
@@ -16,32 +17,16 @@ import static org.junit.Assert.assertEquals;
 
 public class DailySummaryUtils {
 
-    public static final int INIT_TOTAL_CASH = 5600;
-    public static final int INIT_TOTAL_CREDITCARD = 2000;
-    public static final int INIT_TOTAL_COUPON = 0;
+    private static final int INITIAL_PRODUCT_DISCOUNT = 0;
+    private static final int INITIAL_TABLE_DISCOUNT = 400;
+    private static final int INITIAL_TOTAL_DISCOUNT = 400;
+
+    private static final int INIT_TOTAL_CASH = 5600;
+    private static final int INIT_TOTAL_CREDITCARD = 2000;
+    private static final int INIT_TOTAL_COUPON = 0;
 
     public static void backToRestaurantView() {
         clickButtonThenWait("Common.BackToRestaurantView", 1000);
-    }
-
-    public static int getOpenConsumption() {
-        return Integer.valueOf(getLabel(DAILY_SUMMARY_OPEN_CONSUMPTION));
-    }
-
-    public static int getCashTotalPrice() {
-        return Integer.valueOf(getLabel(DAILY_SUMMARY_CASH_TOTAL_PRICE));
-    }
-
-    public static int getCreditCardTotalPrice() {
-        return Integer.valueOf(getLabel(DAILY_SUMMARY_CREDIT_CARD_TOTAL_PRICE));
-    }
-
-    public static int getCouponTotalPrice() {
-        return Integer.valueOf(getLabel(DAILY_SUMMARY_COUPON_TOTAL_PRICE));
-    }
-
-    public static int getTotalPrice() {
-        return Integer.valueOf(getLabel(DAILY_SUMMARY_TOTAL_PRICE));
     }
 
     public static void payByMethod(PaymentMethod paymentMethod) {
@@ -56,12 +41,32 @@ public class DailySummaryUtils {
         pay();
     }
 
-    public static void assertSoldTotalPrices(int cash, int creditCard, int coupon) {
+    public static void assertSoldTotalPrices(int deltaCash, int deltaCreditCard, int deltaCoupon) {
         assertEquals(13100, getOpenConsumption());
-        assertEquals(5600 + cash, getCashTotalPrice());
-        assertEquals(2000 + creditCard, getCreditCardTotalPrice());
-        assertEquals(0 + coupon, getCouponTotalPrice());
-        assertEquals(20700 + cash + creditCard + coupon, getTotalPrice());
+        assertEquals(5600 + deltaCash, getCashTotalPrice());
+        assertEquals(2000 + deltaCreditCard, getCreditCardTotalPrice());
+        assertEquals(0 + deltaCoupon, getCouponTotalPrice());
+        assertEquals(20700 + deltaCash + deltaCreditCard + deltaCoupon, getTotalPrice());
+    }
+
+    private static int getOpenConsumption() {
+        return Integer.valueOf(getLabel(DAILY_SUMMARY_OPEN_CONSUMPTION));
+    }
+
+    private static int getCashTotalPrice() {
+        return Integer.valueOf(getLabel(DAILY_SUMMARY_CASH_TOTAL_PRICE));
+    }
+
+    private static int getCreditCardTotalPrice() {
+        return Integer.valueOf(getLabel(DAILY_SUMMARY_CREDIT_CARD_TOTAL_PRICE));
+    }
+
+    private static int getCouponTotalPrice() {
+        return Integer.valueOf(getLabel(DAILY_SUMMARY_COUPON_TOTAL_PRICE));
+    }
+
+    private static int getTotalPrice() {
+        return Integer.valueOf(getLabel(DAILY_SUMMARY_TOTAL_PRICE));
     }
 
     public static void openTableAndSellProducts() {
@@ -83,5 +88,17 @@ public class DailySummaryUtils {
 
     public static void assertTotalCoupon(int deltaRow, int deltaCoupon) {
         assertSoldProduct(7 + deltaRow, PaymentMethod.COUPON.toI18nString(), 0, INIT_TOTAL_COUPON + deltaCoupon, 0);
+    }
+
+    public static void assertProductDiscount(int deltaRow, int deltaDiscount) {
+        assertSoldProduct(8 + deltaRow, DailyConsumptionAdapter.DiscountType.PRODUCT.toI18nString(), 0, INITIAL_PRODUCT_DISCOUNT + deltaDiscount, 0);
+    }
+
+    public static void assertTableDiscount(int deltaRow, int deltaDiscount) {
+        assertSoldProduct(9 + deltaRow, DailyConsumptionAdapter.DiscountType.TABLE.toI18nString(), 0, INITIAL_TABLE_DISCOUNT + deltaDiscount, 0);
+    }
+
+    public static void assertTotalDiscount(int deltaRow, int deltaDiscount) {
+        assertSoldProduct(10 + deltaRow, DailyConsumptionAdapter.DiscountType.TOTAL.toI18nString(), 0, INITIAL_TOTAL_DISCOUNT + deltaDiscount, 0);
     }
 }

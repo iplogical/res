@@ -121,6 +121,9 @@ public class SaleUtils  extends AbstractUtils {
         clickButtonThenWait(TO_PAYMENT, 200);
     }
 
+    public static void clickOnGiftProduct() {
+        clickButtonThenWait(GIFT_PRODUCT, 20);
+    }
 
     public static void backToRestaurantView() {
         clickButtonThenWait("Common.BackToRestaurantView", 500);

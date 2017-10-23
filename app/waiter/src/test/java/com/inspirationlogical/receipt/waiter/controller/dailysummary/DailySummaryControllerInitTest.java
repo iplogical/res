@@ -13,10 +13,6 @@ import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.assertSold
 
 public class DailySummaryControllerInitTest extends TestFXBase {
 
-    private static final int INITIAL_PRODUCT_DISCOUNT = 0;
-    private static final int INITIAL_TABLE_DISCOUNT = 400;
-    private static final int INITIAL_TOTAL_DISCOUNT = 400;
-
     @Before
     public void toDailySummary() {
         enterDailySummary();
@@ -36,9 +32,9 @@ public class DailySummaryControllerInitTest extends TestFXBase {
         assertTotalCash(0, 0);
         assertTotalCreditCard(0, 0);
         assertTotalCoupon(0, 0);
-        assertSoldProduct(8, DailyConsumptionAdapter.DiscountType.PRODUCT.toI18nString(), 0, INITIAL_PRODUCT_DISCOUNT, 0);
-        assertSoldProduct(9, DailyConsumptionAdapter.DiscountType.TABLE.toI18nString(), 0, INITIAL_TABLE_DISCOUNT, 0);
-        assertSoldProduct(10, DailyConsumptionAdapter.DiscountType.TOTAL.toI18nString(), 0, INITIAL_TOTAL_DISCOUNT, 0);
+        assertProductDiscount(0, 0);
+        assertTableDiscount(0, 0);
+        assertTotalDiscount(0, 0);
     }
 
     @After
