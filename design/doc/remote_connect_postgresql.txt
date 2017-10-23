@@ -13,3 +13,12 @@ Remote access to the PostgreSQL server
  - Restart postgresql after the modifications:
 
 	 sudo /etc/init.d/postgresql restart
+	 
+ - Dump database:
+	
+	 pg_dump dbname -U postgres -h localhost > outputfile
+	 
+ - Import dump file
+ 
+	psql -U postgres dbname < dumpfile
+
