@@ -17,7 +17,7 @@ public class GoodsUtils extends AbstractUtils {
         clickButtonThenWait("Common.StockView", 100);
     }
 
-    public static void enterPriceModifierView() {
+     public static void enterPriceModifierView() {
         clickButtonThenWait("Common.PriceModifierView", 100);
     }
 

@@ -7,12 +7,14 @@ import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRe
 import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.WEEKLY;
 import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType.QUANTITY_DISCOUNT;
 import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType.SIMPLE_DISCOUNT;
+import static java.util.stream.Collectors.toList;
 
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 import javax.inject.Inject;
 
@@ -39,6 +41,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 /**
  * Created by régiDAGi on 2017. 04. 08..
@@ -116,17 +119,43 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addDragAndDrop(root);
-        isCategorySelected = isCategory.selectedProperty();
+        initOwnerProduct();
+        initOwnerCategory();
+        initPriceModifierType();
+        initRepeatPeriod();
+        initDayOfWeek();
+    }
+
+    private void initOwnerProduct() {
         products = FXCollections.observableArrayList(commonService.getSellableProducts());
+        products.sort(Comparator.comparing(ProductView::getShortName));
         ownerProduct.setItems(products);
         ownerProduct.setConverter(new ProductStringConverter(products));
+    }
+
+    private void initOwnerCategory() {
+        isCategorySelected = isCategory.selectedProperty();
+
         productCategories = FXCollections.observableArrayList(commonService.getAllCategories());
+        productCategories.sort(Comparator.comparing(ProductCategoryView::getCategoryName));
         ownerCategory.setItems(productCategories);
         ownerCategory.setConverter(new CategoryStringConverter(productCategories));
+    }
+
+    private void initPriceModifierType() {
         priceModifierTypes = FXCollections.observableArrayList(Arrays.asList(SIMPLE_DISCOUNT, QUANTITY_DISCOUNT));
+        priceModifierTypes.sort(Comparator.comparing(PriceModifierType::toI18nString));
         type.setItems(priceModifierTypes);
+        type.setConverter(new PriceModifierTypeStringConverter(priceModifierTypes));
+    }
+
+    private void initRepeatPeriod() {
         priceModifierRepeatPeriods = FXCollections.observableArrayList(Arrays.asList(NO_REPETITION, DAILY, WEEKLY));
+        priceModifierRepeatPeriods.sort(Comparator.comparing(PriceModifierRepeatPeriod::toI18nString));
         repeatPeriod.setItems(priceModifierRepeatPeriods);
+    }
+
+    private void initDayOfWeek() {
         dayOfWeek.setItems(FXCollections.observableArrayList(Arrays.asList(DayOfWeek.values())));
     }
 
@@ -163,5 +192,24 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
     @FXML
     public void onCancel(Event event) {
         hideNode(root);
+    }
+
+    private class PriceModifierTypeStringConverter extends StringConverter<PriceModifierType> {
+        private ObservableList<PriceModifierType> priceModifierTypes;
+
+        PriceModifierTypeStringConverter(ObservableList<PriceModifierType> priceModifierTypes) {
+            this.priceModifierTypes = priceModifierTypes;
+        }
+
+        @Override
+        public String toString(PriceModifierType priceModifierType) {
+            return priceModifierType.toI18nString();
+        }
+
+        @Override
+        public PriceModifierType fromString(String string) {
+            return priceModifierTypes.stream().filter(priceModifierType -> priceModifierType.toI18nString().equals(string))
+                    .collect(toList()).get(0);
+        }
     }
 }

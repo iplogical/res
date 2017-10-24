@@ -3,6 +3,9 @@ package com.inspirationlogical.receipt.corelib.model.view;
 import com.inspirationlogical.receipt.corelib.model.adapter.PriceModifierAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 
+import java.time.format.TextStyle;
+import java.util.Locale;
+
 /**
  * Created by régiDAGi on 2017. 04. 08..
  */
@@ -28,7 +31,7 @@ public class PriceModifierViewImpl extends AbstractModelViewImpl<PriceModifierAd
 
     @Override
     public String getType() {
-        return adapter.getAdaptee().getType().toString();
+        return adapter.getAdaptee().getType().toI18nString();
     }
 
     @Override
@@ -53,7 +56,7 @@ public class PriceModifierViewImpl extends AbstractModelViewImpl<PriceModifierAd
 
     @Override
     public String getRepeatPeriod() {
-        return adapter.getAdaptee().getRepeatPeriod().toString();
+        return adapter.getAdaptee().getRepeatPeriod().toI18nString();
     }
 
     @Override
@@ -82,6 +85,6 @@ public class PriceModifierViewImpl extends AbstractModelViewImpl<PriceModifierAd
         if(adapter.getAdaptee().getDayOfWeek() == null) {
             return "";
         }
-        return adapter.getAdaptee().getDayOfWeek().toString();
+        return adapter.getAdaptee().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("hu"));
     }
 }
