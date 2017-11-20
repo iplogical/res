@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Ferenc on 2017. 03. 10..
  */
 public abstract class AbstractGuardedTransaction {
-    final static Logger logger = LoggerFactory.getLogger(AbstractGuardedTransaction.class);
+    private final static Logger logger = LoggerFactory.getLogger(AbstractGuardedTransaction.class);
 
     @FunctionalInterface
     public interface NamedQueryCallback {
@@ -33,7 +33,6 @@ public abstract class AbstractGuardedTransaction {
     protected static void run(EntityManager manager, Functor f, Functor before, Functor after) {
         boolean myTransaction = !manager.getTransaction().isActive();
         if(myTransaction){
-            logger.info("Beginning a transaction.");
             manager.getTransaction().begin();
         }
         try {
@@ -41,9 +40,7 @@ public abstract class AbstractGuardedTransaction {
             f.doIt();
             after.doIt();
             if(myTransaction) {
-                logger.info("Commiting a transaction.");
                 manager.getTransaction().commit();
-                logger.info("A transaction was successfully committed.");
             }
         } catch (Exception e){
             logger.error("Exception in GuardedTransaction", e);
