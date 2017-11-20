@@ -5,7 +5,9 @@ import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
+import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.PriceModifierViewModel;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.Event;
@@ -37,31 +39,31 @@ public class PriceModifierControllerImpl implements PriceModifierController {
     private BorderPane root;
 
     @FXML
-    TableView<PriceModifierViewModel> priceModifierTable;
+    private TableView<PriceModifierViewModel> priceModifierTable;
     @FXML
-    TableColumn<PriceModifierViewModel, String> ownerLongName;
+    private TableColumn<PriceModifierViewModel, String> ownerLongName;
     @FXML
-    TableColumn<PriceModifierViewModel, String> priceModifierName;
+    private TableColumn<PriceModifierViewModel, String> priceModifierName;
     @FXML
-    TableColumn<PriceModifierViewModel, String> priceModifierType;
+    private TableColumn<PriceModifierViewModel, String> priceModifierType;
     @FXML
-    TableColumn<PriceModifierViewModel, String> priceModifierQuantityLimit;
+    private TableColumn<PriceModifierViewModel, String> priceModifierQuantityLimit;
     @FXML
-    TableColumn<PriceModifierViewModel, String> priceModifierDiscountPercent;
+    private TableColumn<PriceModifierViewModel, String> priceModifierDiscountPercent;
     @FXML
-    TableColumn<PriceModifierViewModel, String> priceModifierStartDate;
+    private TableColumn<PriceModifierViewModel, String> priceModifierStartDate;
     @FXML
-    TableColumn<PriceModifierViewModel, String> priceModifierEndDate;
+    private TableColumn<PriceModifierViewModel, String> priceModifierEndDate;
     @FXML
-    TableColumn<PriceModifierViewModel, String> priceModifierRepeatPeriod;
+    private TableColumn<PriceModifierViewModel, String> priceModifierRepeatPeriod;
     @FXML
-    TableColumn<PriceModifierViewModel, String> priceModifierPeriodMultiplier;
+    private TableColumn<PriceModifierViewModel, String> priceModifierPeriodMultiplier;
     @FXML
-    TableColumn<PriceModifierViewModel, String> priceModifierStartTime;
+    private TableColumn<PriceModifierViewModel, String> priceModifierStartTime;
     @FXML
-    TableColumn<PriceModifierViewModel, String> priceModifierEndTime;
+    private TableColumn<PriceModifierViewModel, String> priceModifierEndTime;
     @FXML
-    TableColumn<PriceModifierViewModel, String> priceModifierDayOfWeek;
+    private TableColumn<PriceModifierViewModel, String> priceModifierDayOfWeek;
 
     @FXML
     Button createItem;
@@ -119,6 +121,11 @@ public class PriceModifierControllerImpl implements PriceModifierController {
 
     @FXML
     public void onCreateItem(Event event) {
+        showPriceModifierForm();
+        priceModifierFormController.clearPriceModifierForm();
+    }
+
+    private void showPriceModifierForm() {
         priceModifierForm = new Popup();
         priceModifierForm.getContent().add(viewLoader.loadView(priceModifierFormController));
         priceModifierFormController.loadPriceModifierForm(this);
@@ -127,10 +134,26 @@ public class PriceModifierControllerImpl implements PriceModifierController {
 
     @FXML
     public void onModifyItem(Event event) {
+        if(isSelectionNull()) {
+            ErrorMessage.showErrorMessage(root,
+                    ManagerResources.MANAGER.getString("PriceModifier.SelectPriceModifierForModify"));
+            return;
+        }
+        showPriceModifierForm();
+        priceModifierFormController.loadPriceModifierForm(priceModifierTable.getSelectionModel().getSelectedItem());
+    }
+
+    private boolean isSelectionNull() {
+        return priceModifierTable.getSelectionModel().getSelectedItem() == null;
     }
 
     @FXML
     public void onDeleteItem(Event event) {
+        if(isSelectionNull()) {
+            ErrorMessage.showErrorMessage(root,
+                    ManagerResources.MANAGER.getString("PriceModifier.SelectPriceModifierForDelete"));
+            return;
+        }
     }
 
     private PriceModifierViewModel getViewModel(TableColumn.CellDataFeatures<PriceModifierViewModel, String> cellDataFeatures) {

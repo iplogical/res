@@ -32,6 +32,10 @@ public interface ManagerService {
 
     void addPriceModifier(PriceModifierParams params);
 
+    void updatePriceModifier(PriceModifierParams params);
+
+    void deletePriceModifier(PriceModifierParams params);
+
     void updateRecipe(ProductView owner, List<RecipeParams> recipeParamsList);
 
     List<StockView> getStockItems();

@@ -34,6 +34,6 @@ class PriceModifierViewModel {
         periodMultiplier = priceModifierView.getPeriodMultiplier() == null ? "" : priceModifierView.getPeriodMultiplier();
         startTime = priceModifierView.getStartTime() == null ? "" : priceModifierView.getStartTime();
         endTime = priceModifierView.getEndTime() == null ? "" : priceModifierView.getEndTime();
-        dayOfWeek = priceModifierView.getWeekOfDay() == null ? "" : priceModifierView.getWeekOfDay();
+        dayOfWeek = priceModifierView.getDayOfWeek() == null ? "" : priceModifierView.getDayOfWeek();
     }
 }

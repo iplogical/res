@@ -24,7 +24,6 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class ManagerApp extends Application implements StageProvider, ResourcesProvider {
 
     @Setter

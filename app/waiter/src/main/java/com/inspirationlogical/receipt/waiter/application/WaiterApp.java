@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.*;
 import static com.inspirationlogical.receipt.waiter.registry.WaiterRegistry.getInstance;
 
-
 public class WaiterApp extends Application implements StageProvider, ResourcesProvider {
 
     @Setter

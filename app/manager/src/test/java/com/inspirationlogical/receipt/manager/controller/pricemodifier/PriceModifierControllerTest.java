@@ -6,8 +6,11 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.inspirationlogical.receipt.manager.utility.ClickUtils.clickOnConfirm;
+import static com.inspirationlogical.receipt.manager.utility.ClickUtils.verifyErrorMessage;
+import static com.inspirationlogical.receipt.manager.utility.GoodsUtils.clickOnModifyProduct;
 import static com.inspirationlogical.receipt.manager.utility.GoodsUtils.enterPriceModifierView;
-import static com.inspirationlogical.receipt.manager.utility.PriceModifierUtils.backToGoodsView;
+import static com.inspirationlogical.receipt.manager.utility.PriceModifierUtils.*;
 
 public class PriceModifierControllerTest extends TestFXBase {
 
@@ -17,13 +20,21 @@ public class PriceModifierControllerTest extends TestFXBase {
     }
 
     @Test
-    public void testAddPriceModifierSimple() {
+    public void testAddPriceModifierQuantity() {
 
     }
 
     @Test
-    public void testAddPriceModifierQuantity() {
+    public void testModifyPriceModifierNoSelection() {
+        clickOnModifyPriceModifier();
+        verifyErrorMessage("PriceModifier.SelectPriceModifierForModify");
 
+    }
+
+    @Test
+    public void testDeletePriceModifierNoSelection() {
+        clickOnDeletePriceModifier();
+        verifyErrorMessage("PriceModifier.SelectPriceModifierForDelete");
     }
 
     @After

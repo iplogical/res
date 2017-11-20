@@ -68,7 +68,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="quantityMultiplier" prefWidth="150.0" promptText="%PriceModifierForm.QuantityLimitPrompt" />
+            <TextField fx:id="quantityLimit" prefWidth="150.0" promptText="%PriceModifierForm.QuantityLimitPrompt" />
          </children>
          <VBox.margin>
             <Insets left="5.0" right="5.0" />

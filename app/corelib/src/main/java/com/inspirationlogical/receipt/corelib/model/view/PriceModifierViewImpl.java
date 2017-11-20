@@ -81,7 +81,7 @@ public class PriceModifierViewImpl extends AbstractModelViewImpl<PriceModifierAd
     }
 
     @Override
-    public String getWeekOfDay() {
+    public String getDayOfWeek() {
         if(adapter.getAdaptee().getDayOfWeek() == null) {
             return "";
         }

@@ -6,8 +6,16 @@ ALTER TABLE receipt ADD COLUMN sumSaleNetOriginalPrice INTEGER;
 
 ALTER TABLE receipt_record ADD COLUMN originalSalePrice INTEGER;
 
-UPDATE receipt  SET sumSaleGrossOriginalPrice=sumSaleGrossPrice / ((100 - discountPercent) / 100);
+UPDATE receipt SET sumSaleGrossOriginalPrice=sumSaleGrossPrice / ((100 - discountPercent) / 100)
+WHERE discountPercent!= 100;
 
-UPDATE receipt  SET sumSaleNetOriginalPrice=sumSaleNetPrice / ((100 - discountPercent) / 100);
+UPDATE receipt SET sumSaleNetOriginalPrice=sumSaleNetPrice / ((100 - discountPercent) / 100)
+WHERE discountPercent!= 100;;
 
 UPDATE receipt_record SET originalSalePrice=product.salePrice FROM product WHERE product.product_id=receipt_record.product_id;
+
+ // Eliminate null values for sumSaleNetOriginalPrice and sumSaleGrossOriginalPrice
+ 
+UPDATE receipt SET sumSaleGrossOriginalPrice=0 WHERE sumSaleGrossOriginalPrice is null;
+
+UPDATE receipt SET sumSaleNetOriginalPrice=0 WHERE sumSaleNetOriginalPrice is null;

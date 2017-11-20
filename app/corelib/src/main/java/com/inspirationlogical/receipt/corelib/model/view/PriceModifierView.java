@@ -24,5 +24,5 @@ public interface PriceModifierView extends AbstractView {
 
     String getEndTime();
 
-    String getWeekOfDay();
+    String getDayOfWeek();
 }

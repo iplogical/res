@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.adapter.*;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
@@ -74,6 +73,16 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
     @Override
     public void addPriceModifier(PriceModifierParams params) {
         PriceModifierAdapter.addPriceModifier(params);
+    }
+
+    @Override
+    public void updatePriceModifier(PriceModifierParams params) {
+
+    }
+
+    @Override
+    public void deletePriceModifier(PriceModifierParams params) {
+
     }
 
     @Override
