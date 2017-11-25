@@ -189,6 +189,7 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
     public void loadPriceModifierForm(PriceModifierViewModel selected) {
         this.priceModifierViewModel = selected;
         setOwner();
+        disableOwnerEditing(true);
         originalName = priceModifierViewModel.getName();
         name.setText(priceModifierViewModel.getName());
         type.setValue(type.getConverter().fromString(priceModifierViewModel.getType()));
@@ -202,6 +203,12 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
         setStartTime();
         setEndTime();
         dayOfWeek.setValue(dayOfWeek.getConverter().fromString(priceModifierViewModel.getDayOfWeek()));
+    }
+
+    private void disableOwnerEditing(boolean editable) {
+        ownerProduct.setDisable(editable);
+        ownerCategory.setDisable(editable);
+        isCategory.setDisable(editable);
     }
 
     private void setOwner() {
@@ -235,6 +242,7 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
     public void clearPriceModifierForm() {
         originalName = "";
         name.setText("");
+        disableOwnerEditing(false);
         ownerProduct.setValue(null);
         ownerCategory.setValue(null);
         isCategory.setSelected(false);
@@ -380,6 +388,9 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
 
         @Override
         public DayOfWeek fromString(String string) {
+            if(string.equals("")) {
+                return null;
+            }
             return dayOfWeeks.stream().filter(dayOfWeek1 -> dayOfWeek1.getDisplayName(TextStyle.FULL, Locale.forLanguageTag("hu")).equals(string))
                     .collect(toList()).get(0);
         }

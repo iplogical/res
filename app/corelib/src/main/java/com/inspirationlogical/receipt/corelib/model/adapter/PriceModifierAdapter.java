@@ -52,9 +52,30 @@ public class PriceModifierAdapter extends AbstractAdapter<PriceModifier> {
         GuardedTransaction.persist(priceModifier);
     }
 
+    public static void updatePriceModifier(PriceModifierParams params) {
+        GuardedTransaction.run(() -> {
+            PriceModifier priceModifier = getPriceModifier(params.getOriginalName());
+            PriceModifier newPriceModifier = params.getBuilder().build();
+            priceModifier.setName(newPriceModifier.getName());
+            priceModifier.setType(newPriceModifier.getType());
+            priceModifier.setQuantityLimit(newPriceModifier.getQuantityLimit());
+            priceModifier.setDiscountPercent(newPriceModifier.getDiscountPercent());
+            priceModifier.setStartDate(newPriceModifier.getStartDate());
+            priceModifier.setEndDate(newPriceModifier.getEndDate());
+            priceModifier.setRepeatPeriod(newPriceModifier.getRepeatPeriod());
+            priceModifier.setDayOfWeek(newPriceModifier.getDayOfWeek());
+            priceModifier.setStartTime(newPriceModifier.getStartTime());
+            priceModifier.setEndTime(newPriceModifier.getEndTime());
+        });
+    }
+
+    private static PriceModifier getPriceModifier(String name) {
+        return (PriceModifier) GuardedTransaction.runNamedQuery(GET_PRICE_MODIFIERS_BY_NAME,
+                query -> query.setParameter("name", name)).get(0);
+    }
+
     public static void deletePriceModifier(PriceModifierParams params) {
-        PriceModifier priceModifier = (PriceModifier) GuardedTransaction.runNamedQuery(GET_PRICE_MODIFIERS_BY_NAME,
-                query -> query.setParameter("name", params.getOriginalName())).get(0);
+        PriceModifier priceModifier = getPriceModifier(params.getOriginalName());
         GuardedTransaction.delete(priceModifier,() -> priceModifier.getOwner().getPriceModifiers().remove(priceModifier));
     }
 

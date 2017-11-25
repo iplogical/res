@@ -110,7 +110,11 @@ public class PriceModifierControllerImpl implements PriceModifierController {
 
     @Override
     public void addPriceModifier(PriceModifierParams params) {
-        managerService.addPriceModifier(params);
+        if(params.getOriginalName().equals("")) {
+            managerService.addPriceModifier(params);
+        } else {
+            managerService.updatePriceModifier(params);
+        }
         updatePriceModifiers();
         priceModifierForm.hide();
     }

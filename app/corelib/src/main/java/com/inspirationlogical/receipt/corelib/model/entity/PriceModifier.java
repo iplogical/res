@@ -35,7 +35,7 @@ import lombok.experimental.Tolerate;
     @NamedQuery(name = PriceModifier.GET_TEST_PRICE_MODIFIERS,
             query="FROM PriceModifier pm"),
     @NamedQuery(name = PriceModifier.GET_PRICE_MODIFIERS,
-            query="FROM PriceModifier pm"),
+            query="FROM PriceModifier pm ORDER BY pm.name"),
     @NamedQuery(name = PriceModifier.GET_PRICE_MODIFIERS_BY_PRODUCT_AND_DATES,
             query="FROM PriceModifier pm WHERE pm.owner.id =:owner_id AND pm.startDate <:time AND pm.endDate >:time"),
     @NamedQuery(name = PriceModifier.GET_PRICE_MODIFIERS_BY_NAME,

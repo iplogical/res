@@ -77,7 +77,7 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Override
     public void updatePriceModifier(PriceModifierParams params) {
-
+        PriceModifierAdapter.updatePriceModifier(params);
     }
 
     @Override

@@ -9,12 +9,11 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.PRICE_MODIFIER1_NAME;
 import static com.inspirationlogical.receipt.manager.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.manager.utility.GoodsUtils.enterPriceModifierView;
 import static com.inspirationlogical.receipt.manager.utility.PriceModifierFormUtils.*;
-import static com.inspirationlogical.receipt.manager.utility.PriceModifierUtils.backToGoodsView;
-import static com.inspirationlogical.receipt.manager.utility.PriceModifierUtils.clickOnAddPriceModifier;
-import static com.inspirationlogical.receipt.manager.utility.PriceModifierUtils.clickOnDeletePriceModifier;
+import static com.inspirationlogical.receipt.manager.utility.PriceModifierUtils.*;
 
 public class PriceModifierFormControllerTest extends TestFXBase {
 
@@ -74,6 +73,15 @@ public class PriceModifierFormControllerTest extends TestFXBase {
                 ManagerResources.MANAGER.getString("PriceModifierForm.ErrorEmptyEndDate") + System.lineSeparator() +
                 ManagerResources.MANAGER.getString("PriceModifierForm.ErrorEmptyRepeatPeriod") + System.lineSeparator()
             );
+    }
+
+    @Test
+    public void testUpdatePriceModifier() {
+        clickOn(PRICE_MODIFIER1_NAME);
+        clickOnModifyPriceModifier();
+        setName("testModifiedName");
+        clickOnConfirm();
+        verifyThatVisible("testModifiedName");
     }
 
     @After

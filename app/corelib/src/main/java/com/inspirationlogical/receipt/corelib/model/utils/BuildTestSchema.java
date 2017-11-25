@@ -43,6 +43,8 @@ public class BuildTestSchema {
     public static final String AGGREGATE_ONE_NAME = "aggregateOne";
     public static final String LEAF_ONE_NAME = "leafOne";
 
+    public static final String PRICE_MODIFIER1_NAME = "TestPriceModifier1";
+
     public static final String RESERVATION_TEST_TABLE = "20";
     public static final String RESTAURANT_TEST_TABLE = "21";
     public static final String CONSUMER_TEST_TABLE = "22";
@@ -999,7 +1001,7 @@ public class BuildTestSchema {
 
     private void buildPriceModifierOne() {
         priceModifierOne = PriceModifier.builder()
-                .name("TestPriceModifier1")
+                .name(PRICE_MODIFIER1_NAME)
                 .type(PriceModifierType.SIMPLE_DISCOUNT)
                 .repeatPeriod(PriceModifierRepeatPeriod.NO_REPETITION)
                 .startDate(LocalDateTime.of(2017, 1, 8, 16, 0))
@@ -1026,6 +1028,7 @@ public class BuildTestSchema {
                 .name("TestPriceModifier3")
                 .type(PriceModifierType.QUANTITY_DISCOUNT)
                 .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
+                .dayOfWeek(LocalDate.now().getDayOfWeek())
                 .startDate(LocalDateTime.of(2017, 2, 8, 16, 0))
                 .endDate(LocalDateTime.of(2017, 5, 8, 20, 20))
                 .discountPercent(33.333)
