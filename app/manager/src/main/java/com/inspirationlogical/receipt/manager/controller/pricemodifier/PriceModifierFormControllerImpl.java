@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.format.TextStyle;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -33,6 +34,7 @@ import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.corelib.utility.ValidationResult;
+import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.PriceModifierViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStringConverter;
@@ -263,21 +265,16 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
 
     private PriceModifier.PriceModifierBuilder getPriceModifierBuilder() {
         String quantityLimit = getQuantityLimitValue();
-
-        LocalTime startTime = null;
-        LocalTime endTime = null;
-        if(repeatPeriod.getValue().equals(DAILY)) {
-            startTime = LocalTime.of(Integer.valueOf(startTimeHour.getText()), Integer.valueOf(startTimeMinute.getText()));
-            endTime = LocalTime.of(Integer.valueOf(endTimeHour.getText()), Integer.valueOf(endTimeMinute.getText()));
-        }
+        LocalTime startTime = getStartTime();
+        LocalTime endTime = getEndTime();
 
         return managerService.priceModifierBuilder()
                     .name(name.getText())
                     .type(type.getValue())
                     .quantityLimit(Integer.valueOf(quantityLimit))
                     .discountPercent(Double.valueOf(discountPercent.getText()))
-                    .startDate(LocalDateTime.of(startDate.getValue(), LocalTime.of(0, 0)))
-                    .endDate(LocalDateTime.of(endDate.getValue(), LocalTime.of(23, 59)))
+                    .startDate(LocalDateTime.of(getStartDate(), LocalTime.of(0, 0)))
+                    .endDate(LocalDateTime.of(getEndDate(), LocalTime.of(23, 59)))
                     .repeatPeriod(repeatPeriod.getValue())
                     .startTime(startTime)
                     .endTime(endTime)
@@ -287,11 +284,33 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
     private String getQuantityLimitValue() {
         String quantityLimit;
         if(!type.getValue().equals(QUANTITY_DISCOUNT)) {
-            quantityLimit = "";
+            quantityLimit = "0";
         } else {
             quantityLimit = this.quantityLimit.getText();
         }
         return quantityLimit;
+    }
+
+    private LocalTime getStartTime() {
+        if(repeatPeriod.getValue().equals(DAILY)) {
+            return LocalTime.of(Integer.valueOf(startTimeHour.getText()), Integer.valueOf(startTimeMinute.getText()));
+        }
+        return null;
+    }
+
+    private LocalTime getEndTime() {
+        if(repeatPeriod.getValue().equals(DAILY)) {
+            return LocalTime.of(Integer.valueOf(endTimeHour.getText()), Integer.valueOf(endTimeMinute.getText()));
+        }
+        return null;
+    }
+
+    private LocalDate getStartDate() {
+        return LocalDate.parse(startDate.getEditor().getText(), DATE_FORMATTER);
+    }
+
+    private LocalDate getEndDate() {
+        return LocalDate.parse(endDate.getEditor().getText(), DATE_FORMATTER);
     }
 
     private PriceModifierParams getPriceModifierParams(PriceModifier.PriceModifierBuilder builder) {
@@ -394,23 +413,24 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
             validateType();
             validateOwner();
             validateDisountPercent();
-            validateStartDate();
-            validateEndDate();
-            validateRepeatPeriot();
+            ValidateDates();
+            validateRepeatPeriod();
             return new ValidationResult(valid, errorMessage.toString());
         }
 
         private void validateName() {
             if(name.getText().isEmpty()) {
                 valid = false;
-                errorMessage.append("A név nem lehet üres!").append(System.lineSeparator());
+                errorMessage.append(
+                        ManagerResources.MANAGER.getString("PriceModifierForm.ErrorEmptyName")).append(System.lineSeparator());
             }
         }
 
         private void validateType() {
             if(type.getValue() == null) {
                 valid = false;
-                errorMessage.append("A típus nem lehet üres. Válasszon típust!").append(System.lineSeparator());
+                errorMessage.append(
+                        ManagerResources.MANAGER.getString("PriceModifierForm.ErrorEmptyType")).append(System.lineSeparator());
                 return;
             }
             validateQuantityLimit();
@@ -422,7 +442,8 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
                     int limit = Integer.valueOf(quantityLimit.getText());
                 } catch (NumberFormatException e) {
                     valid = false;
-                    errorMessage.append("A határérték mezőben csak szám szerepelhet!").append(System.lineSeparator());
+                    errorMessage.append(
+                            ManagerResources.MANAGER.getString("PriceModifierForm.ErrorQuantityLimitFormat")).append(System.lineSeparator());
                  }
             }
         }
@@ -431,12 +452,14 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
             if(isCategory.selectedProperty().get()) {
                 if(ownerCategory.getValue() == null) {
                     valid = false;
-                    errorMessage.append("A kategória nem lehet üres. Válasszon kategóriát!").append(System.lineSeparator());
+                    errorMessage.append(
+                            ManagerResources.MANAGER.getString("PriceModifierForm.ErrorEmptyCategory")).append(System.lineSeparator());
                 }
             } else {
                 if(ownerProduct.getValue() == null) {
                     valid = false;
-                    errorMessage.append("A termék nem lehet üres. Válasszon terméket!").append(System.lineSeparator());
+                    errorMessage.append(
+                            ManagerResources.MANAGER.getString("PriceModifierForm.ErrorEmptyProduct")).append(System.lineSeparator());
                 }
             }
         }
@@ -446,28 +469,55 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
                 double discount = Double.valueOf(discountPercent.getText());
             } catch (NumberFormatException e) {
                 valid = false;
-                errorMessage.append("A leértékelés mezőben csak szám szerepelhet!").append(System.lineSeparator());
+                errorMessage.append(
+                        ManagerResources.MANAGER.getString("PriceModifierForm.ErrorDiscountFormat")).append(System.lineSeparator());
             }
         }
 
-        private void validateStartDate() {
-            if(startDate.getValue() == null) {
+        private void ValidateDates() {
+            LocalDate start = validateStartDate();
+            LocalDate end = validateEndDate();
+            validateStartIsBeforeEnd(start, end);
+        }
+
+        private LocalDate validateStartDate() {
+            try {
+                return getStartDate();
+            } catch (DateTimeParseException e) {
                 valid = false;
-                errorMessage.append("A kezdés mező nem lehet üres!").append(System.lineSeparator());
+                errorMessage.append(
+                        ManagerResources.MANAGER.getString("PriceModifierForm.ErrorEmptyStartDate")).append(System.lineSeparator());
             }
+            return null;
         }
 
-        private void validateEndDate() {
-            if(endDate.getValue() == null) {
+        private LocalDate validateEndDate() {
+            try {
+                return LocalDate.parse(endDate.getEditor().getText(), DATE_FORMATTER);
+            } catch (DateTimeParseException e) {
                 valid = false;
-                errorMessage.append("A vég mező nem lehet üres!").append(System.lineSeparator());
+                errorMessage.append(
+                        ManagerResources.MANAGER.getString("PriceModifierForm.ErrorEmptyEndDate")).append(System.lineSeparator());
+            }
+            return null;
+        }
+
+        private void validateStartIsBeforeEnd(LocalDate start, LocalDate end) {
+            if(start == null || end == null) {
+                return;
+            }
+            if(start.isAfter(end)) {
+                valid = false;
+                errorMessage.append(
+                        ManagerResources.MANAGER.getString("PriceModifierForm.ErrorStartDateAfterEndDate")).append(System.lineSeparator());
             }
         }
 
-        private void validateRepeatPeriot() {
+        private void validateRepeatPeriod() {
             if(repeatPeriod.getValue() == null) {
                 valid = false;
-                errorMessage.append("Az ismétlődés mező nem lehet üres!").append(System.lineSeparator());
+                errorMessage.append(
+                        ManagerResources.MANAGER.getString("PriceModifierForm.ErrorEmptyRepeatPeriod")).append(System.lineSeparator());
                 return;
             }
             validateDailyRepeatPeriodTimeValues();
@@ -483,15 +533,18 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
                     int endMinute = Integer.valueOf(endTimeMinute.getText());
                     if (startHour < 0 || startHour > 23 || endHour < 0 || endHour > 23) {
                         valid = false;
-                        errorMessage.append("Az ismétlődési idő és vég idő mezőkben az óra értéke 0 és 23 között lehet").append(System.lineSeparator());
+                        errorMessage.append(
+                                ManagerResources.MANAGER.getString("PriceModifierForm.ErrorHoursRange")).append(System.lineSeparator());
                     }
                     if (startMinute < 0 || startMinute > 59 || endMinute < 0 || endMinute > 59) {
                         valid = false;
-                        errorMessage.append("Az ismétlődési idő és vég idő mezőkben az perc értéke 0 és 59 között lehet").append(System.lineSeparator());
+                        errorMessage.append(
+                                ManagerResources.MANAGER.getString("PriceModifierForm.ErrorMinutesRange")).append(System.lineSeparator());
                     }
                 } catch (NumberFormatException e) {
                     valid = false;
-                    errorMessage.append("Az ismétlődési idő és vég idő mezőkben csak számok szerepelhetnek!").append(System.lineSeparator());
+                    errorMessage.append(
+                            ManagerResources.MANAGER.getString("PriceModifierForm.ErrorTimesFormat")).append(System.lineSeparator());
                 }
             }
         }
@@ -500,7 +553,7 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
             if (repeatPeriod.getValue().equals(WEEKLY)) {
                 if(dayOfWeek.getValue() == null) {
                     valid = false;
-                    errorMessage.append("A nap mező nem lehet üres!").append(System.lineSeparator());
+                    errorMessage.append(ManagerResources.MANAGER.getString("PriceModifierForm.ErrorEmptyDay")).append(System.lineSeparator());
                 }
             }
         }
