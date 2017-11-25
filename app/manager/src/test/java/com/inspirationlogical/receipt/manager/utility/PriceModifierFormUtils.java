@@ -2,19 +2,22 @@ package com.inspirationlogical.receipt.manager.utility;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import static com.inspirationlogical.receipt.manager.utility.ClickUtils.selectChoiceBoxItem;
+import static com.inspirationlogical.receipt.manager.utility.ClickUtils.setDatePicker;
 import static com.inspirationlogical.receipt.manager.utility.ClickUtils.setTextField;
 import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.*;
 
 public class PriceModifierFormUtils  extends AbstractUtils{
 
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
     public static void setName(String name) {
         setTextField(PRICE_MODIFIER_NAME, name);
     }
 
     public static void setOwnerProduct(int number) {
-        selectChoiceBoxItem(PRICE_MODIFIER_OWNER_PRODUCT, number - 1);
+        selectChoiceBoxItem(PRICE_MODIFIER_OWNER_PRODUCT, number);
     }
 
     public static void setOwnerCategory(int number) {
@@ -26,23 +29,28 @@ public class PriceModifierFormUtils  extends AbstractUtils{
     }
 
     public static void setType(int number) {
-        selectChoiceBoxItem(PRICE_MODIFIER_TYPE, number - 1);
+        selectChoiceBoxItem(PRICE_MODIFIER_TYPE, number);
     }
 
     public static void setQuantityLimit(int quantityLimit) {
         setTextField(PRICE_MODIFIER_QUANTITY_LIMIT, String.valueOf(quantityLimit));
     }
 
+    public static void setDiscountPercent(double discountPercent) {
+        setTextField(PRICE_MODIFIER_DISCOUNT_PERCENT, String.valueOf(discountPercent));
+
+    }
+
     public static void setStartDate(LocalDate startDate) {
-        setTextField(PRICE_MODIFIER_START_DATE, startDate.toString());
+        setDatePicker(PRICE_MODIFIER_START_DATE, startDate.format(DATE_FORMATTER));
     }
 
     public static void setEndDate(LocalDate endDate) {
-        setTextField(PRICE_MODIFIER_END_DATE, endDate.toString());
+        setDatePicker(PRICE_MODIFIER_END_DATE, endDate.format(DATE_FORMATTER));
     }
 
     public static void setRepeatPeriod(int number) {
-        selectChoiceBoxItem(PRICE_MODIFIER_REPEAT_PERIOD, number - 1);
+        selectChoiceBoxItem(PRICE_MODIFIER_REPEAT_PERIOD, number);
     }
 
     public static void setRepeatPeriodMultiplier(int number) {
@@ -50,7 +58,7 @@ public class PriceModifierFormUtils  extends AbstractUtils{
     }
 
     public static void setDayOfWeek(int number) {
-        selectChoiceBoxItem(PRICE_MODIFIER_DAY_OF_WEEK, number - 1);
+        selectChoiceBoxItem(PRICE_MODIFIER_DAY_OF_WEEK, number);
     }
 
     public static void setStartTime(LocalTime startTime) {

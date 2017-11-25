@@ -67,7 +67,7 @@ public class JavaFXIds {
     public static final String PRICE_MODIFIER_REPEAT_PERIOD = "#repeatPeriod";
     public static final String PRICE_MODIFIER_REPEAT_PERIOD_MULTIPLIER = "#repeatPeriodMultiplier";
     public static final String PRICE_MODIFIER_DAY_OF_WEEK = "#dayOfWeek";
-    public static final String PRICE_MODIFIER_START_TIME_HOUR = "startTimeHour";
+    public static final String PRICE_MODIFIER_START_TIME_HOUR = "#startTimeHour";
     public static final String PRICE_MODIFIER_START_TIME_MINUTE = "#startTimeMinute";
     public static final String PRICE_MODIFIER_END_TIME_HOUR = "#endTimeHour";
     public static final String PRICE_MODIFIER_END_TIME_MINUTE = "#endTimeMinute";

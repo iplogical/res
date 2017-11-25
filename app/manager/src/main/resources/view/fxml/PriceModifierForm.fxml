@@ -114,12 +114,6 @@
                </font>
             </Label>
             <ChoiceBox fx:id="repeatPeriod" prefWidth="150.0" />
-            <Label prefWidth="100.0" text="%PriceModifierForm.RepeatPeriodMultiplier">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="repeatPeriodMultiplier" prefWidth="150.0" promptText="%PriceModifierForm.RepeatPeriodMultiplier" />
          </children>
          <VBox.margin>
             <Insets left="5.0" right="5.0" />

@@ -26,6 +26,7 @@ public class PriceModifierFormControllerTest extends TestFXBase {
         setOwnerProduct(1);
         setType(1);
         setQuantityLimit(3);
+        setDiscountPercent(33.333);
         setStartDate(LocalDate.now());
         setEndDate(LocalDate.now().plusDays(5));
         setRepeatPeriod(1);
@@ -33,5 +34,6 @@ public class PriceModifierFormControllerTest extends TestFXBase {
         setStartTime(LocalTime.of(12, 0));
         setEndTime(LocalTime.of(20, 0));
         clickOnConfirm();
+        sleep(5000);
     }
 }

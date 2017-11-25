@@ -16,7 +16,7 @@ import static com.inspirationlogical.receipt.manager.utility.RecipeFormUtils.cli
 
 public class GoodsControllerTest extends TestFXBase {
 
-    @Ignore
+//    @Ignore
     @Test
     public void launchAppWithTestDataBase() {
         while (true) {}

@@ -3,10 +3,7 @@ package com.inspirationlogical.receipt.manager.utility;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import org.testfx.api.FxRobotInterface;
@@ -71,12 +68,12 @@ public class ClickUtils extends AbstractUtils {
         return ((Label)robot.find(fxId)).getText();
     }
 
-    public static String getChoiceBox(String fxId) {
-        return (String)((ChoiceBox)robot.find(fxId)).getValue();
+    public static void setDatePicker(String fxId, String text) {
+        ((DatePicker)robot.find(fxId)).getEditor().setText(text);
     }
 
-    public static <T> void setChoiceBox(String fxId, T value) {
-        ((ChoiceBox<T>)robot.find(fxId)).setValue(value);
+    public static String getDatePicker(String fxId) {
+        return ((DatePicker)robot.find(fxId)).getEditor().getText();
     }
 
     public static void selectChoiceBoxItem(String fxId, int number) {
