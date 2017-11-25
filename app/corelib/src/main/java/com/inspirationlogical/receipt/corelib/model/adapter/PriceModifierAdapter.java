@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import static com.inspirationlogical.receipt.corelib.model.entity.PriceModifier.GET_PRICE_MODIFIERS_BY_NAME;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -49,6 +50,12 @@ public class PriceModifierAdapter extends AbstractAdapter<PriceModifier> {
         priceModifier.setOwner(owner);
         owner.getPriceModifiers().add(priceModifier);
         GuardedTransaction.persist(priceModifier);
+    }
+
+    public static void deletePriceModifier(PriceModifierParams params) {
+        PriceModifier priceModifier = (PriceModifier) GuardedTransaction.runNamedQuery(GET_PRICE_MODIFIERS_BY_NAME,
+                query -> query.setParameter("name", params.getOriginalName())).get(0);
+        GuardedTransaction.delete(priceModifier,() -> priceModifier.getOwner().getPriceModifiers().remove(priceModifier));
     }
 
     public PriceModifierAdapter(PriceModifier adaptee) {

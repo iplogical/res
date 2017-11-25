@@ -82,7 +82,7 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Override
     public void deletePriceModifier(PriceModifierParams params) {
-
+        PriceModifierAdapter.deletePriceModifier(params);
     }
 
     @Override

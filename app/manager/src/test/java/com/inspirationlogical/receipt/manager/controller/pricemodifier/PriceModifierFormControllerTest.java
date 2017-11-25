@@ -2,18 +2,19 @@ package com.inspirationlogical.receipt.manager.controller.pricemodifier;
 
 import com.inspirationlogical.receipt.manager.controller.TestFXBase;
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static com.inspirationlogical.receipt.manager.utility.ClickUtils.clickOnConfirm;
-import static com.inspirationlogical.receipt.manager.utility.ClickUtils.verifyErrorMessage;
-import static com.inspirationlogical.receipt.manager.utility.ClickUtils.verifyThatVisible;
+import static com.inspirationlogical.receipt.manager.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.manager.utility.GoodsUtils.enterPriceModifierView;
 import static com.inspirationlogical.receipt.manager.utility.PriceModifierFormUtils.*;
+import static com.inspirationlogical.receipt.manager.utility.PriceModifierUtils.backToGoodsView;
 import static com.inspirationlogical.receipt.manager.utility.PriceModifierUtils.clickOnAddPriceModifier;
+import static com.inspirationlogical.receipt.manager.utility.PriceModifierUtils.clickOnDeletePriceModifier;
 
 public class PriceModifierFormControllerTest extends TestFXBase {
 
@@ -35,6 +36,9 @@ public class PriceModifierFormControllerTest extends TestFXBase {
         setDayOfWeek(1);
         clickOnConfirm();
         verifyThatVisible("test_PM1");
+        clickOn("test_PM1");
+        clickOnDeletePriceModifier();
+        verifyThatNotVisible("test_PM1");
     }
 
     @Test
@@ -52,6 +56,9 @@ public class PriceModifierFormControllerTest extends TestFXBase {
         setEndTime(LocalTime.of(20, 0));
         clickOnConfirm();
         verifyThatVisible("test_PM2");
+        clickOn("test_PM2");
+        clickOnDeletePriceModifier();
+        verifyThatNotVisible("test_PM2");
     }
 
     @Test
@@ -68,4 +75,10 @@ public class PriceModifierFormControllerTest extends TestFXBase {
                 ManagerResources.MANAGER.getString("PriceModifierForm.ErrorEmptyRepeatPeriod") + System.lineSeparator()
             );
     }
+
+    @After
+    public void toGoodsView() {
+        backToGoodsView();
+    }
+
 }

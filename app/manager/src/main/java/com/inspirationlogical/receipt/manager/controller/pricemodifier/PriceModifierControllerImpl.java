@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.manager.controller.pricemodifier;
 
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
+import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
@@ -140,11 +141,15 @@ public class PriceModifierControllerImpl implements PriceModifierController {
             return;
         }
         showPriceModifierForm();
-        priceModifierFormController.loadPriceModifierForm(priceModifierTable.getSelectionModel().getSelectedItem());
+        priceModifierFormController.loadPriceModifierForm(getSelectedPriceModifier());
     }
 
     private boolean isSelectionNull() {
-        return priceModifierTable.getSelectionModel().getSelectedItem() == null;
+        return getSelectedPriceModifier() == null;
+    }
+
+    private PriceModifierViewModel getSelectedPriceModifier() {
+        return priceModifierTable.getSelectionModel().getSelectedItem();
     }
 
     @FXML
@@ -154,15 +159,16 @@ public class PriceModifierControllerImpl implements PriceModifierController {
                     ManagerResources.MANAGER.getString("PriceModifier.SelectPriceModifierForDelete"));
             return;
         }
+        PriceModifierViewModel priceModifier = getSelectedPriceModifier();
+        PriceModifierParams params = PriceModifierParams.builder()
+                .originalName(priceModifier.getName())
+                .build();
+        managerService.deletePriceModifier(params);
+        updatePriceModifiers();
     }
 
     private PriceModifierViewModel getViewModel(TableColumn.CellDataFeatures<PriceModifierViewModel, String> cellDataFeatures) {
         return cellDataFeatures.getValue();
-    }
-
-    private void initColumn(TableColumn<PriceModifierViewModel, String> tableColumn, Function<PriceModifierViewModel, String> method) {
-        tableColumn.setCellValueFactory((TableColumn.CellDataFeatures<PriceModifierViewModel, String> category) ->
-                new ReadOnlyStringWrapper(method.apply(getViewModel(category))));
     }
 
     private void initColumns() {
@@ -178,6 +184,11 @@ public class PriceModifierControllerImpl implements PriceModifierController {
         initColumn(priceModifierStartTime, PriceModifierViewModel::getStartTime);
         initColumn(priceModifierEndTime, PriceModifierViewModel::getEndTime);
         initColumn(priceModifierDayOfWeek, PriceModifierViewModel::getDayOfWeek);
+    }
+
+    private void initColumn(TableColumn<PriceModifierViewModel, String> tableColumn, Function<PriceModifierViewModel, String> method) {
+        tableColumn.setCellValueFactory((TableColumn.CellDataFeatures<PriceModifierViewModel, String> category) ->
+                new ReadOnlyStringWrapper(method.apply(getViewModel(category))));
     }
 
     private void updatePriceModifiers() {
