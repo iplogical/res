@@ -45,9 +45,10 @@ public class CSSUtilities {
 
     public static void setBackgroundColor(TableViewState tableViewState, Node node) {
         RecentConsumption recentConsumption = tableViewState.hasRecentConsumption();
-        if(recentConsumption.equals(RecentConsumption.RECENT_10_MINUTES)) {
+        boolean isOrderNotYetDelivered = !tableViewState.isOrderDelivered();
+        if(isOrderNotYetDelivered && recentConsumption.equals(RecentConsumption.RECENT_10_MINUTES)) {
             setBackgroundColor(node, BACKGROUND_RECENT_10_MINUTES);
-        } else if(recentConsumption.equals(RecentConsumption.RECENT_30_MINUTES)) {
+        } else if(isOrderNotYetDelivered && recentConsumption.equals(RecentConsumption.RECENT_30_MINUTES)) {
             setBackgroundColor(node, BACKGROUND_RECENT_30_MINUTES);
         } else if(tableViewState.isOpen()) {
             setBackgroundColor(node, BACKGROUND_OPEN);

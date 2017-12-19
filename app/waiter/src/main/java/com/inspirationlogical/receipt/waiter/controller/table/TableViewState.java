@@ -19,6 +19,8 @@ public class TableViewState implements ViewState {
 
     private boolean selected;
 
+    private boolean orderDelivered;
+
     public TableViewState(RestaurantViewState restaurantViewState, TableView tableView) {
         this.restaurantViewState = restaurantViewState;
         this.tableView = tableView;

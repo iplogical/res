@@ -72,7 +72,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected @Inject RetailService retailService;
 
     protected @Inject RestaurantController restaurantController;
-    private @Inject TableConfigurationController tableConfigurationController;
+    protected @Inject TableConfigurationController tableConfigurationController;
 
     protected @Setter TableView tableView;
 
@@ -84,12 +84,12 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     @FXML
     public void onBackToRestaurantView(Event event) {
-        logger.info("Back to restaurant view from table: " + tableView.toString());
-        retailService.mergeReceiptRecords(receiptView);
         backToRestaurantView();
     }
 
     protected void backToRestaurantView() {
+        logger.info("Back to restaurant view from table: " + tableView.toString());
+        retailService.mergeReceiptRecords(receiptView);
         restaurantController.updateRestaurant();
         tableConfigurationController.getTableController(tableView).updateTable();
         viewLoader.loadViewIntoScene(restaurantController);

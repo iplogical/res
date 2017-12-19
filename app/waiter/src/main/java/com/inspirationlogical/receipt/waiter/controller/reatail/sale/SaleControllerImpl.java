@@ -78,6 +78,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private Button backToRestaurantView;
 
     @FXML
+    private Button orderDelivered;
+
+    @FXML
     Label liveTime;
 
     private Popup adHocProductForm;
@@ -120,12 +123,14 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void sellProduct(ProductView productView) {
         retailService.sellProduct(tableView, productView, 1, saleViewState.isTakeAway(), saleViewState.isGift());
+        setOrderDelivered(false);
         getSoldProductsAndRefreshTable();
     }
 
     @Override
     public void sellAdHocProduct(AdHocProductParams adHocProductParams) {
         retailService.sellAdHocProduct(tableView, adHocProductParams, saleViewState.isTakeAway());
+        setOrderDelivered(false);
         getSoldProductsAndRefreshTable();
         adHocProductForm.hide();
     }
@@ -180,6 +185,16 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onSearchChanged(Event event) {
         productController.search(searchField.getText());
+    }
+
+    @FXML
+    public void onOrderDelivered(Event event) {
+        setOrderDelivered(true);
+        backToRestaurantView();
+    }
+
+    private void setOrderDelivered(boolean isDelivered) {
+        tableConfigurationController.getTableController(tableView).setOrderDelivered(isDelivered);
     }
 
     private void resetToggleGroups() {

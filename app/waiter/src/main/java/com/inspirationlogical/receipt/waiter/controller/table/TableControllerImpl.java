@@ -226,6 +226,11 @@ public class TableControllerImpl implements TableController {
         CSSUtilities.setBorderColor(tableViewState.isSelected(), tableStackPane);
     }
 
+    @Override
+    public void setOrderDelivered(boolean delivered) {
+        tableViewState.setOrderDelivered(delivered);
+    }
+
     @FXML
     public void onTableClicked(MouseEvent event) {
         if(isContextMenuOpen() || isMotionMode()) {

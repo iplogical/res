@@ -25,4 +25,6 @@ public interface TableController extends Controller {
     void openTable(Control control);
 
     void deselectTable();
+
+    void setOrderDelivered(boolean delivered);
 }
