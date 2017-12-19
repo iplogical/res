@@ -56,6 +56,9 @@ public class ReceiptAdapterPay extends AbstractAdapter<Receipt> {
             adaptee.setPaymentMethod(paymentParams.getPaymentMethod());
             applyDiscountOnSalePrices();
             ReceiptAdapterListeners.getAllListeners().forEach((l) -> {l.onClose(adaptee);});
+            if(paymentParams.isDoublePrint()) {
+                ReceiptAdapterListeners.getPrinterListener().onClose(adaptee);
+            }
         });
     }
 

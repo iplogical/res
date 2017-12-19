@@ -216,6 +216,8 @@
             <Button fx:id="backToSaleView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToSaleView" text="%PaymentView.BackToSaleView" textAlignment="CENTER" />
             <Button fx:id="backToRestaurantView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%Common.BackToRestaurantView" textAlignment="CENTER" />
             <Separator />
+            <RadioButton fx:id="doublePrint" mnemonicParsing="false" text="%PaymentView.DoublePrint" />
+            <Separator prefWidth="200.0" />
             <VBox>
                <children>
                   <RadioButton fx:id="paymentMethodCash" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%Common.Cash" textAlignment="CENTER">

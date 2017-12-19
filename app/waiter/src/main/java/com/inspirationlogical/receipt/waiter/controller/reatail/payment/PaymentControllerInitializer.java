@@ -36,6 +36,7 @@ public class PaymentControllerInitializer {
         initializePaymentMethodToggles();
         initializePaymentTypeToggles();
         initializeDiscountToggles();
+        initializeDoublePrint();
     }
 
     private void initializePaymentMethodToggles() {
@@ -60,6 +61,11 @@ public class PaymentControllerInitializer {
         p.discountPercent.setUserData(PaymentViewState.DiscountType.PERCENT);
         p.paymentViewState.setDiscountType(PaymentViewState.DiscountType.NONE);
         p.discountTypeToggleGroup.selectedToggleProperty().addListener(new DiscountTypeTogglesListener());
+    }
+
+    private void initializeDoublePrint() {
+        p.doublePrint.setSelected(false);
+        p.doublePrint.selectedProperty().addListener(new DoublePrintToggleListener());
     }
 
     private void initializePaidProductsTable() {
@@ -126,6 +132,14 @@ public class PaymentControllerInitializer {
             logger.info("The payment method changed to :" + p.paymentMethodToggleGroup.getSelectedToggle().getUserData());
             p.paymentViewState.setPaymentMethod(
                     (PaymentMethod) p.paymentMethodToggleGroup.getSelectedToggle().getUserData());
+        }
+    }
+
+    private class DoublePrintToggleListener implements ChangeListener<Boolean> {
+        @Override
+        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            logger.info("The double print toggle changed to :" + newValue);
+            p.paymentViewState.setDoublePrintState(newValue);
         }
     }
 }

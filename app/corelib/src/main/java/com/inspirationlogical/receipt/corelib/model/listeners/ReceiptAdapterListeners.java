@@ -18,4 +18,9 @@ public class ReceiptAdapterListeners {
         list.add(new DailyClosureListener());
         return list;
     }
+
+    public static ReceiptAdapterPay.Listener getPrinterListener() {
+        return new ReceiptPrinter();
+    }
+
 }

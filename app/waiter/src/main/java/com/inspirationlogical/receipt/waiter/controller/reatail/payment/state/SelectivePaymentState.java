@@ -10,6 +10,8 @@ public class SelectivePaymentState extends AbstractPaymentState {
         if(paidProductsEmpty) {
             ErrorMessage.showErrorMessage(paymentController.getRootNode(),
                     WaiterResources.WAITER.getString("PaymentView.SelectivePaymentNoPaidProduct"));
-        } else decideFullOrSelectivePayment(soldProductsEmpty);
+        } else {
+            decideFullOrSelectivePayment(soldProductsEmpty);
+        }
     }
 }

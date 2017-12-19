@@ -16,4 +16,6 @@ public @Data class PaymentParams {
 
     private double discountPercent;
 
+    private boolean isDoublePrint;
+
 }

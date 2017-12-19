@@ -33,6 +33,8 @@ public @Data class PaymentViewState {
 
     private PaymentState paymentState;
 
+    private boolean doublePrintState;
+
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
         if(isFullPayment()) {
@@ -69,6 +71,7 @@ public @Data class PaymentViewState {
                 .paymentMethod(paymentMethod)
                 .discountAbsolute(isDiscountAbsolute() ? Integer.valueOf(discountAbsoluteValue.getText()) : 0)
                 .discountPercent(isDiscountPercent() ? Double.valueOf(discountPercentValue.getText()) : 0)
+                .isDoublePrint(doublePrintState)
                 .build();
     }
 

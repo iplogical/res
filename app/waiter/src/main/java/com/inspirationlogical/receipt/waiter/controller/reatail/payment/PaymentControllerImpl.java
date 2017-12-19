@@ -53,6 +53,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     ToggleGroup paymentMethodToggleGroup;
 
     @FXML
+    RadioButton doublePrint;
+
+    @FXML
     ToggleButton selectivePayment;
     @FXML
     ToggleButton singlePayment;
