@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
+import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantViewState;
@@ -25,6 +26,10 @@ public class TableViewState implements ViewState {
 
     public boolean isOpen() {
         return tableView.isOpen();
+    }
+
+    public RecentConsumption hasRecentConsumption() {
+        return tableView.hasRecentConsumption();
     }
 
     public boolean isVisible() {

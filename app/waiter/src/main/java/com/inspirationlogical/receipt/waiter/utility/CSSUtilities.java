@@ -1,5 +1,7 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
+import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
+import com.inspirationlogical.receipt.waiter.controller.table.TableViewState;
 import javafx.scene.Node;
 
 /**
@@ -10,6 +12,8 @@ public class CSSUtilities {
     private static String BORDER_SELECTED = "#00bfff";
     private static String BORDER_DEFAULT = "#000000";
     private static String BACKGROUND_OPEN = "#98FB98";
+    private static String BACKGROUND_RECENT_10_MINUTES = "#FF2121";
+    private static String BACKGROUND_RECENT_30_MINUTES = "#FFFC5E";
     private static String BACKGROUND_DEFAULT = "#D2B48C";
     private static String BACKGROUND_CONSUMED = "#00bfff3f";
 
@@ -39,8 +43,13 @@ public class CSSUtilities {
         }
     }
 
-    public static void setBackgroundColor(boolean isOpen, Node node) {
-        if(isOpen) {
+    public static void setBackgroundColor(TableViewState tableViewState, Node node) {
+        RecentConsumption recentConsumption = tableViewState.hasRecentConsumption();
+        if(recentConsumption.equals(RecentConsumption.RECENT_10_MINUTES)) {
+            setBackgroundColor(node, BACKGROUND_RECENT_10_MINUTES);
+        } else if(recentConsumption.equals(RecentConsumption.RECENT_30_MINUTES)) {
+            setBackgroundColor(node, BACKGROUND_RECENT_30_MINUTES);
+        } else if(tableViewState.isOpen()) {
             setBackgroundColor(node, BACKGROUND_OPEN);
         } else {
             setBackgroundColor(node, BACKGROUND_DEFAULT);

@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.view;
 
 import java.util.List;
 
+import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
 import javafx.geometry.Dimension2D;
@@ -13,6 +14,8 @@ import javafx.geometry.Point2D;
 public interface TableView extends AbstractView {
 
     boolean isOpen();
+
+    RecentConsumption hasRecentConsumption();
 
     boolean isVisible();
 

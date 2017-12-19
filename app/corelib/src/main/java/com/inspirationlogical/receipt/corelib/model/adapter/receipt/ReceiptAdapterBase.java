@@ -6,6 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
@@ -16,7 +17,9 @@ import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER;
 import static com.inspirationlogical.receipt.corelib.model.entity.Receipt.GRAPH_RECEIPT_AND_RECORDS;
@@ -160,5 +163,17 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
         return GuardedTransaction.runNamedQuery(ReceiptRecord.GET_RECEIPT_RECORDS_BY_RECEIPT,
                 query -> {query.setParameter("owner_id", adaptee.getId());
                     return query;});
+    }
+
+    public LocalDateTime getLatestSellTime() {
+        Optional<ReceiptRecordCreated> latest = getReceiptRecords().stream()
+                .map(ReceiptRecord::getCreatedList)
+                .flatMap(Collection::stream)
+                .max(Comparator.comparing(ReceiptRecordCreated::getCreated));
+        if(latest.isPresent()) {
+            return latest.get().getCreated();
+        } else {
+            return now().minusDays(1);
+        }
     }
 }

@@ -1,15 +1,19 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
+import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
+
+import static java.time.LocalDateTime.now;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -23,6 +27,22 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
     @Override
     public boolean isOpen() {
         return ReceiptAdapter.getOpenReceipt(adapter.getAdaptee().getNumber()) != null;
+    }
+
+    @Override
+    public RecentConsumption hasRecentConsumption() {
+        ReceiptAdapterBase openReceipt = adapter.getOpenReceipt();
+        if(openReceipt == null) {
+            return RecentConsumption.NO_RECENT;
+        }
+        LocalDateTime latestSellTime = adapter.getOpenReceipt().getLatestSellTime();
+        if(latestSellTime.isAfter(now().minusMinutes(10))) {
+            return RecentConsumption.RECENT_10_MINUTES;
+        } else if(latestSellTime.isAfter(now().minusMinutes(30))) {
+            return RecentConsumption.RECENT_30_MINUTES;
+        } else {
+            return RecentConsumption.NO_RECENT;
+        }
     }
 
     @Override

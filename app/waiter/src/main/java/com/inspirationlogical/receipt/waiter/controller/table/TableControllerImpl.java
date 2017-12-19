@@ -150,7 +150,7 @@ public class TableControllerImpl implements TableController {
                 consumeTables();
             }
             updateTableParams();
-            CSSUtilities.setBackgroundColor(tableViewState.isOpen(), tableStackPane);
+            CSSUtilities.setBackgroundColor(tableViewState, tableStackPane);
             showNode(rootTable, tableView.getPosition());
         } else {
             hideNode(rootTable);
