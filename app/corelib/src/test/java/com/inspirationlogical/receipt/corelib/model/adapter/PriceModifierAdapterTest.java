@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_PRICE_MODIFIERS;
+import static java.lang.Math.abs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -114,37 +115,23 @@ public class PriceModifierAdapterTest extends TestBase {
     }
 
     @Test
-    public void testIsValidWeeklyTrue() {
-        assertTrue(PriceModifierAdapter.isValidNow(weeklyDiscount));
+    public void testIsValidWeekly() {
+        LocalDateTime todayMorning = LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.of(4, 0));
+        LocalDateTime tomorrowNight = LocalDateTime.of(LocalDateTime.now().plusDays(1).toLocalDate(), LocalTime.of(3, 59));
+        assertFalse(weeklyDiscount.isValidNow(todayMorning));
+        assertTrue(weeklyDiscount.isValidNow(todayMorning.plusMinutes(1)));
+        assertTrue(weeklyDiscount.isValidNow(tomorrowNight));
+        assertFalse(weeklyDiscount.isValidNow(tomorrowNight.plusMinutes(1)));
     }
 
     @Test
-    public void testIsValidWeeklyFalse() {
-        weeklyDiscount.getAdaptee().setDayOfWeek(LocalDate.now().plusDays(1).getDayOfWeek());
-        assertFalse(PriceModifierAdapter.isValidNow(weeklyDiscount));
-    }
-
-    @Test
-    public void testIsValidDailyTrue() {
-        assertTrue(PriceModifierAdapter.isValidNow(dailyDiscount));
-    }
-
-    @Test
-    public void testIsValidDailyFalseByStart() {
-        dailyDiscount.getAdaptee().setStartTime(LocalTime.now().plusMinutes(5));
-        assertFalse(PriceModifierAdapter.isValidNow(dailyDiscount));
-    }
-
-    @Test
-    public void testIsValidDailyFalseByEnd() {
-        dailyDiscount.getAdaptee().setEndTime(LocalTime.now().minusMinutes(1));
-        assertFalse(PriceModifierAdapter.isValidNow(dailyDiscount));
-    }
-
-
-    @Test
-    public void testIsValidNoRepetition() {
-        dailyDiscount.getAdaptee().setRepeatPeriod(PriceModifierRepeatPeriod.NO_REPETITION);
-        assertTrue(PriceModifierAdapter.isValidNow(dailyDiscount));
+    public void testIsValidDaily() {
+        LocalDateTime dailyStart = LocalDateTime.of(LocalDateTime.now().toLocalDate(), dailyDiscount.getAdaptee().getStartTime());
+        LocalDateTime dailyEnd = LocalDateTime.of(LocalDateTime.now().toLocalDate(), dailyDiscount.getAdaptee().getEndTime());
+        assertFalse(dailyDiscount.isValidNow(dailyStart.minusMinutes(1)));
+        assertTrue(dailyDiscount.isValidNow(dailyStart));
+        assertTrue(dailyDiscount.isValidNow(dailyStart.plusMinutes(30)));
+        assertTrue(dailyDiscount.isValidNow(dailyEnd));
+        assertFalse(dailyDiscount.isValidNow(dailyEnd.plusMinutes(1)));
     }
 }

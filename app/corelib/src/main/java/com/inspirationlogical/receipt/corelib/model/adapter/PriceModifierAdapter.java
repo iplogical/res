@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransacti
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -22,21 +23,6 @@ public class PriceModifierAdapter extends AbstractAdapter<PriceModifier> {
     public  static List<PriceModifierAdapter> getPriceModifiers() {
         List<PriceModifier> priceModifiers = GuardedTransaction.runNamedQuery(PriceModifier.GET_PRICE_MODIFIERS);
         return priceModifiers.stream().map(PriceModifierAdapter::new).collect(toList());
-    }
-
-    public static boolean isValidNow(PriceModifierAdapter priceModifierAdapter) {
-        if(priceModifierAdapter.getAdaptee().getRepeatPeriod().equals(PriceModifierRepeatPeriod.NO_REPETITION)) {
-            return true;
-        } else if(priceModifierAdapter.getAdaptee().getRepeatPeriod().equals(PriceModifierRepeatPeriod.DAILY)) {
-            if(isTimeMatches(priceModifierAdapter)) {
-                return true;
-            }
-        } else if(priceModifierAdapter.getAdaptee().getRepeatPeriod().equals(PriceModifierRepeatPeriod.WEEKLY)) {
-            if(isDayOfWeekMatches(priceModifierAdapter)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public static void addPriceModifier(PriceModifierParams params) {
@@ -94,12 +80,27 @@ public class PriceModifierAdapter extends AbstractAdapter<PriceModifier> {
         return ((soldQuantity - (soldQuantity % adaptee.getQuantityLimit())) * adaptee.getDiscountPercent()) / soldQuantity;
     }
 
-    private static boolean isTimeMatches(PriceModifierAdapter priceModifierAdapter) {
-        LocalTime now = LocalTime.now();
-        return now.isAfter(priceModifierAdapter.getAdaptee().getStartTime()) && now.isBefore(priceModifierAdapter.getAdaptee().getEndTime());
+    public boolean isValidNow(LocalDateTime now) {
+        if(getAdaptee().getRepeatPeriod().equals(PriceModifierRepeatPeriod.NO_REPETITION)) {
+            return true;
+        } else if(getAdaptee().getRepeatPeriod().equals(PriceModifierRepeatPeriod.DAILY)) {
+            return isTimeMatches(now.toLocalTime());
+        } else if(getAdaptee().getRepeatPeriod().equals(PriceModifierRepeatPeriod.WEEKLY)) {
+            return isDayOfWeekMatches(now);
+        }
+        return false;
     }
 
-    private static boolean isDayOfWeekMatches(PriceModifierAdapter priceModifierAdapter) {
-        return LocalDate.now().getDayOfWeek().equals(priceModifierAdapter.getAdaptee().getDayOfWeek());
+    private boolean isTimeMatches(LocalTime now) {
+        return now.plusMinutes(1).isAfter(getAdaptee().getStartTime()) && now.minusMinutes(1).isBefore(getAdaptee().getEndTime());
     }
+
+    private boolean isDayOfWeekMatches(LocalDateTime now) {
+        boolean isToday = now.getDayOfWeek().equals(getAdaptee().getDayOfWeek());
+        boolean isYesterday = now.minusDays(1).getDayOfWeek().equals(getAdaptee().getDayOfWeek());
+        boolean isNight = now.toLocalTime().isBefore(LocalTime.of(4,0));
+        boolean isDay = now.toLocalTime().isAfter(LocalTime.of(4, 0));
+        return (isToday && isDay) || (isYesterday && isNight);
+    }
+
 }

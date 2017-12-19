@@ -14,6 +14,7 @@ import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransacti
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -72,9 +73,10 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
 
         return priceModifiers.stream()
                 .map(PriceModifierAdapter::new)
-                .filter(PriceModifierAdapter::isValidNow)
+                .filter(priceModifierAdapter -> priceModifierAdapter.isValidNow(LocalDateTime.now()))
                 .map(pm -> pm.getDiscountPercent(receiptRecordAdapter))
-                .max(Double::compareTo).orElse(0D);
+                .max(Double::compareTo)
+                .orElse(0D);
     }
 
     private List<PriceModifier> getPriceModifiersByOwnerAndDates(ProductCategory category) {
