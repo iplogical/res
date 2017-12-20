@@ -170,5 +170,6 @@ public class SaleControllerTest extends SaleViewTest {
         assertEquals("3.0", getSoldProductQuantityWithRecent(1));
         clickOnThenWait(PRODUCT_FIVE_LONG, 50);
         assertEquals("4.0 (1)", getSoldProductQuantityWithRecent(1));
+        selectiveCancellation(PRODUCT_FIVE_LONG);
     }
 }
