@@ -161,6 +161,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
             getSoldProductsAndRefreshTable();
         } else {
             increaseRowInSoldProducts(row, 1, true);
+            setOrderDelivered(false);
             getSoldProductsAndRefreshTable();
         }
         enableSoldProductsTableRowClickHandler();
