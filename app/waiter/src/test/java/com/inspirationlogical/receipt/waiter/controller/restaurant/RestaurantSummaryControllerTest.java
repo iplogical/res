@@ -20,6 +20,7 @@ public class RestaurantSummaryControllerTest extends TestFXBase {
 
     private static final String TABLE_NUMBER = RESTAURANT_TEST_TABLE;
     static final int OPEN_CONSUMPTION = 13100;
+    static final int INITIAL_PAID_CONSUMPTION = 7600;
 
     @Before
     public void closeDay() {

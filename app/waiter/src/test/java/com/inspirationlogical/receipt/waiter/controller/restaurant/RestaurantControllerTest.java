@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.CONSUMED_TEST_TABLE_ONE;
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.RESTAURANT_TEST_TABLE;
+import static com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantSummaryControllerTest.INITIAL_PAID_CONSUMPTION;
 import static com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantSummaryControllerTest.OPEN_CONSUMPTION;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.AGGREGATE_ONE;
@@ -120,6 +121,8 @@ public class RestaurantControllerTest extends TestFXBase {
 
     @Test
     public void testDailyClosureWithYes() {
+        assertEquals(INITIAL_PAID_CONSUMPTION, getPaidConsumption());
+        assertEquals(OPEN_CONSUMPTION, getOpenConsumption());
         openTable(RESTAURANT_TEST_TABLE);
         enterSaleView(RESTAURANT_TEST_TABLE);
         selectCategory(AGGREGATE_ONE);
@@ -127,8 +130,8 @@ public class RestaurantControllerTest extends TestFXBase {
         enterPaymentView();
         pay();
         assertEquals(OPEN_CONSUMPTION, getOpenConsumption());
-        assertEquals(4400, getPaidConsumption());
-        assertEquals(OPEN_CONSUMPTION + 4400, getTotalIncome());
+        assertEquals(4400 + INITIAL_PAID_CONSUMPTION, getPaidConsumption());
+        assertEquals(OPEN_CONSUMPTION + INITIAL_PAID_CONSUMPTION + 4400, getTotalIncome());
         clickButtonThenWait("Restaurant.DailyClosure", 500);
         clickOnThenWait("Yes", 1000);
         assertEquals(OPEN_CONSUMPTION, getOpenConsumption());
