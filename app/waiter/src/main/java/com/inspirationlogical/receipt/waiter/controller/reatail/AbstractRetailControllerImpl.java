@@ -173,6 +173,9 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     }
 
     protected LocalDateTime getOrderDeliveredTime() {
+        if(getTableController() == null) {
+            return null;
+        }
         return getTableController().getOrderDeliveredTime();
     }
 
@@ -253,6 +256,9 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     }
 
     protected TableController getTableController() {
+        if(tableView == null) {
+            return null;
+        }
         return tableConfigurationController.getTableController(tableView);
     }
 }
