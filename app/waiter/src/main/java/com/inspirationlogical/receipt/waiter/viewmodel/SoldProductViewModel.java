@@ -36,6 +36,8 @@ public @Data class SoldProductViewModel {
 
     private List<LocalDateTime> clickTimes;
 
+    private LocalDateTime orderDeliveredTime;
+
     public static boolean isEquals(SoldProductViewModel row, ReceiptRecordView receiptRecordView) {
         return valueOf(receiptRecordView.getId()).equals(row.getProductId());
     }
@@ -54,9 +56,10 @@ public @Data class SoldProductViewModel {
         return totalPrice;
     }
     
-    public SoldProductViewModel(ReceiptRecordView receiptRecordView) {
+    public SoldProductViewModel(ReceiptRecordView receiptRecordView, LocalDateTime orderDeliveredTime) {
         this.clickTimes = receiptRecordView.getCreated();
         this.productName = receiptRecordView.getName();
+        this.orderDeliveredTime = orderDeliveredTime;
         this.productQuantity = valueOf(receiptRecordView.getSoldQuantity()) + (getRecentClickCount() == 0 ? "" : (" (" + getRecentClickCount() + ")"));
         this.productUnitPrice = valueOf(receiptRecordView.getSalePrice());
         this.productTotalPrice = valueOf(receiptRecordView.getTotalPrice());
@@ -69,6 +72,7 @@ public @Data class SoldProductViewModel {
     public SoldProductViewModel(SoldProductViewModel other) {
         this.clickTimes = other.clickTimes;
         this.productName = other.productName;
+        this.orderDeliveredTime = other.orderDeliveredTime;
         this.productQuantity = other.productQuantity;
         this.productUnitPrice = other.productUnitPrice;
         this.productTotalPrice = other.productTotalPrice;
@@ -116,7 +120,13 @@ public @Data class SoldProductViewModel {
     }
 
     private long getRecentClickCount() {
-        return clickTimes.stream().filter(localDateTime -> localDateTime.isAfter(now().minusMinutes(20))).count();
+        LocalDateTime boundaryTime;
+        if(orderDeliveredTime == null) {
+            boundaryTime = now().minusMinutes(30);
+        } else {
+            boundaryTime = orderDeliveredTime.isAfter(now().minusMinutes(30)) ? orderDeliveredTime : now().minusMinutes(30);
+        }
+        return clickTimes.stream().filter(localDateTime -> localDateTime.isAfter(boundaryTime)).count();
     }
 
     private void markDiscountedProduct() {

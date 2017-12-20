@@ -81,7 +81,7 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
     @Override
     public List<LocalDateTime> getCreated() {
         return adapter.getAdaptee().getCreatedList().stream()
-                .map(receiptRecordCreated -> receiptRecordCreated.getCreated())
+                .map(ReceiptRecordCreated::getCreated)
                 .collect(toList());
     }
 

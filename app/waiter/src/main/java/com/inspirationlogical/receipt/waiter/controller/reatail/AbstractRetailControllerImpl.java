@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -15,6 +16,7 @@ import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
+import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 
 import javafx.collections.FXCollections;
@@ -164,8 +166,14 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     }
 
     protected ObservableList<SoldProductViewModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
-        List<SoldProductViewModel> list = soldProducts.stream().map(SoldProductViewModel::new).collect(toList());
+        List<SoldProductViewModel> list = soldProducts.stream()
+                .map(receiptRecordView -> new SoldProductViewModel(receiptRecordView, getOrderDeliveredTime()))
+                .collect(toList());
         return FXCollections.observableArrayList(list);
+    }
+
+    protected LocalDateTime getOrderDeliveredTime() {
+        return getTableController().getOrderDeliveredTime();
     }
 
     protected void refreshSoldProductsTable() {
@@ -242,5 +250,9 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected Collection<ReceiptRecordView> getSoldProducts() {
         receiptView = restaurantService.getOpenReceipt(tableView);
         return receiptView.getSoldProducts();
+    }
+
+    protected TableController getTableController() {
+        return tableConfigurationController.getTableController(tableView);
     }
 }

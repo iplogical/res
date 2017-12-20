@@ -8,6 +8,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 import com.google.inject.Inject;
@@ -229,6 +230,16 @@ public class TableControllerImpl implements TableController {
     @Override
     public void setOrderDelivered(boolean delivered) {
         tableViewState.setOrderDelivered(delivered);
+    }
+
+    @Override
+    public void setOrderDeliveredTime(LocalDateTime time) {
+        tableViewState.setOrderDeliveredTime(time);
+    }
+
+    @Override
+    public LocalDateTime getOrderDeliveredTime() {
+        return tableViewState.getOrderDeliveredTime();
     }
 
     @FXML

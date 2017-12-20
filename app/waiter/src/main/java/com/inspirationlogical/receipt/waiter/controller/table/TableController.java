@@ -6,6 +6,8 @@ import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
 import javafx.scene.control.Control;
 
+import java.time.LocalDateTime;
+
 public interface TableController extends Controller {
 
     void setView(TableView tableView);
@@ -27,4 +29,8 @@ public interface TableController extends Controller {
     void deselectTable();
 
     void setOrderDelivered(boolean delivered);
+
+    void setOrderDeliveredTime(LocalDateTime time);
+
+    LocalDateTime getOrderDeliveredTime();
 }

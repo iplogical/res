@@ -60,6 +60,10 @@ public class SaleUtils  extends AbstractUtils {
         return getSoldProducts().get(row - 1).getProductQuantity();
     }
 
+    public static String getSoldProductQuantityWithRecent(int row) {
+        return getSoldProducts().get(row - 1).getProductQuantityWithRecent();
+    }
+
     private static String getSoldProductUnitPrice(int row) {
         return getSoldProducts().get(row - 1).getProductUnitPrice();
     }

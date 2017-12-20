@@ -368,7 +368,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         ReceiptRecordView recordInPaidProducts = findEquivalentView(paidProductsView, row).get(0);
         ReceiptRecordView recordInSoldProducts = retailService.cloneReceiptRecordView(tableView, recordInPaidProducts, 1);
         soldProductsView.add(recordInSoldProducts);
-        addRowToSoldProducts(new SoldProductViewModel(recordInSoldProducts));
+        addRowToSoldProducts(new SoldProductViewModel(recordInSoldProducts, getOrderDeliveredTime()));
         return recordInPaidProducts;
     }
 
@@ -398,7 +398,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         logger.info("The auto game fee button was clicked");
         ReceiptRecordView gameFee = handleAutomaticGameFee();
         if(gameFee == null) return;
-        if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee)).size() == 0) {
+        if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee, getOrderDeliveredTime())).size() == 0) {
             soldProductsView.add(gameFee);
         }
         refreshSoldProductsTable();
@@ -419,7 +419,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void onManualGameFee(Event event) {
         logger.info("The manual game fee button was clicked");
         ReceiptRecordView gameFee = retailService.sellGameFee(tableView, 1);
-        if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee)).size() == 0) {
+        if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee, getOrderDeliveredTime())).size() == 0) {
             soldProductsView.add(gameFee);
         }
         refreshSoldProductsTable();

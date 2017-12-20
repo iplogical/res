@@ -10,6 +10,7 @@ import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
@@ -24,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
@@ -194,7 +196,10 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void setOrderDelivered(boolean isDelivered) {
-        tableConfigurationController.getTableController(tableView).setOrderDelivered(isDelivered);
+        getTableController().setOrderDelivered(isDelivered);
+        if(isDelivered) {
+            getTableController().setOrderDeliveredTime(LocalDateTime.now());
+        }
     }
 
     private void resetToggleGroups() {

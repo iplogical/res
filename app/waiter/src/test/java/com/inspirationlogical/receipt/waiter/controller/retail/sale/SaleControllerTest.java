@@ -159,4 +159,16 @@ public class SaleControllerTest extends SaleViewTest {
         selectiveCancellation(PRODUCT_FIVE_LONG);
         selectiveCancellation(PRODUCT_TWO_LONG);
     }
+
+    @Test
+    public void testOrderDeliveredButton() {
+        selectCategory(AGGREGATE_ONE);
+        sellProduct(PRODUCT_FIVE, 3);
+        assertEquals("3.0 (3)", getSoldProductQuantityWithRecent(1));
+        clickButtonThenWait(ORDER_DELIVERED, 50);
+        clickOnThenWait(TABLE_NUMBER, 200);
+        assertEquals("3.0", getSoldProductQuantityWithRecent(1));
+        clickOnThenWait(PRODUCT_FIVE_LONG, 50);
+        assertEquals("4.0 (1)", getSoldProductQuantityWithRecent(1));
+    }
 }

@@ -7,6 +7,8 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantViewState;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * Created by Bálint on 2017.03.22..
  */
@@ -20,6 +22,8 @@ public class TableViewState implements ViewState {
     private boolean selected;
 
     private boolean orderDelivered;
+
+    private LocalDateTime orderDeliveredTime;
 
     public TableViewState(RestaurantViewState restaurantViewState, TableView tableView) {
         this.restaurantViewState = restaurantViewState;
