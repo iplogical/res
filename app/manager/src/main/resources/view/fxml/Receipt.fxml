@@ -61,13 +61,13 @@
                         <TreeTableColumn fx:id="paymentMethod" prefWidth="100.0" text="%Receipt.PaymentMethod" />
                         <TreeTableColumn fx:id="openTime" prefWidth="100.0" text="%Receipt.OpenTime" />
                         <TreeTableColumn fx:id="closureTime" prefWidth="100.0" text="%Receipt.ClosureTime" />
-                        <TreeTableColumn fx:id="userCode" prefWidth="100.0" text="%Receipt.UserCode" />
-                        <TreeTableColumn fx:id="sumPurchaseNetPrice" prefWidth="100.0" text="%Receipt.SumPurchaseNetPrice" />
-                        <TreeTableColumn fx:id="sumPurchaseGrossPrice" prefWidth="100.0" text="%Receipt.SumPurchaseGrossPrice" />
-                        <TreeTableColumn fx:id="sumSaleNetPrice" prefWidth="100.0" text="%Receipt.SumSaleNetPrice" />
                         <TreeTableColumn fx:id="sumSaleGrossPrice" prefWidth="100.0" text="%Receipt.SumSaleGrossPrice" />
+                        <TreeTableColumn fx:id="sumSaleNetPrice" prefWidth="100.0" text="%Receipt.SumSaleNetPrice" />
+                        <TreeTableColumn fx:id="sumPurchaseGrossPrice" prefWidth="100.0" text="%Receipt.SumPurchaseGrossPrice" />
+                        <TreeTableColumn fx:id="sumPurchaseNetPrice" prefWidth="100.0" text="%Receipt.SumPurchaseNetPrice" />
                         <TreeTableColumn fx:id="discountPercent" prefWidth="100.0" text="%Receipt.DiscountPercent" />
                         <TreeTableColumn fx:id="VATSerie" prefWidth="100.0" text="%Receipt.VATSerie" />
+                        <TreeTableColumn fx:id="userCode" prefWidth="100.0" text="%Receipt.UserCode" />
                         <TreeTableColumn fx:id="clientName" prefWidth="100.0" text="%Receipt.ClientName" />
                         <TreeTableColumn fx:id="clientAddress" prefWidth="100.0" text="%Receipt.ClientAddress" />
                         <TreeTableColumn fx:id="clientTAXNumber" prefWidth="100.0" text="%Receipt.ClientTAXNumber" />

@@ -7,6 +7,8 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
@@ -33,14 +35,23 @@ public class ReceiptViewModel {
     private String clientName = EMPTY;
     private String clientAddress = EMPTY;
     private String clientTAXNumber = EMPTY;
-
     private List<ReceiptRecordView> records = Collections.emptyList();
 
-    public ReceiptViewModel() {
+    public static ReceiptViewModel getSumReceiptViewModel(LocalDate localDate, List<ReceiptView> receiptsOfDate) {
+        ReceiptViewModel sumViewModel = new ReceiptViewModel();
+        sumViewModel.setDate(valueOf(localDate));
+        sumViewModel.setSumSaleGrossPrice(sumViewModel.getSumValue(receiptsOfDate, ReceiptView::getSumSaleGrossPrice));
+        sumViewModel.setSumSaleNetPrice(sumViewModel.getSumValue(receiptsOfDate, ReceiptView::getSumSaleNetPrice));
+        sumViewModel.setSumPurchaseGrossPrice(sumViewModel.getSumValue(receiptsOfDate, ReceiptView::getSumPurchaseGrossPrice));
+        sumViewModel.setSumPurchaseNetPrice(sumViewModel.getSumValue(receiptsOfDate, ReceiptView::getSumPurchaseNetPrice));
+        return sumViewModel;
     }
 
-    public ReceiptViewModel(LocalDate localDate) {
-        date = valueOf(localDate);
+    private String getSumValue(List<ReceiptView> receiptsOfDate, ToIntFunction<? super ReceiptView> getter) {
+        return String.valueOf(receiptsOfDate.stream().mapToInt(getter).sum());
+    }
+
+    public ReceiptViewModel() {
     }
 
     public ReceiptViewModel(ReceiptView receiptView) {

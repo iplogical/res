@@ -7,9 +7,8 @@ import static javafx.collections.FXCollections.observableArrayList;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -136,10 +135,14 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     }
 
     private void initReceipts() {
-        receiptsByDate = managerService.getReceipts()
+        Map<LocalDate, List<ReceiptView>> unsortedReceiptsByDate = managerService.getReceipts()
                 .stream()
                 .sorted(comparing(ReceiptView::getOpenTime))
                 .collect(groupingBy(receiptView -> receiptView.getOpenTime().toLocalDate()));
+        receiptsByDate = unsortedReceiptsByDate.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue,  newValue) -> oldValue, LinkedHashMap::new));
     }
 
     private void initReceiptsColumns() {
@@ -149,13 +152,13 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
         initColumn(paymentMethod, ReceiptViewModel::getPaymentMethod);
         initColumn(openTime, ReceiptViewModel::getOpenTime);
         initColumn(closureTime, ReceiptViewModel::getClosureTime);
-        initColumn(userCode, ReceiptViewModel::getUserCode);
-        initColumn(sumPurchaseNetPrice, ReceiptViewModel::getSumPurchaseNetPrice);
-        initColumn(sumPurchaseGrossPrice, ReceiptViewModel::getSumPurchaseGrossPrice);
-        initColumn(sumSaleNetPrice, ReceiptViewModel::getSumSaleNetPrice);
         initColumn(sumSaleGrossPrice, ReceiptViewModel::getSumSaleGrossPrice);
+        initColumn(sumSaleNetPrice, ReceiptViewModel::getSumSaleNetPrice);
+        initColumn(sumPurchaseGrossPrice, ReceiptViewModel::getSumPurchaseGrossPrice);
+        initColumn(sumPurchaseNetPrice, ReceiptViewModel::getSumPurchaseNetPrice);
         initColumn(discountPercent, ReceiptViewModel::getDiscountPercent);
         initColumn(VATSerie, ReceiptViewModel::getVATSerie);
+        initColumn(userCode, ReceiptViewModel::getUserCode);
         initColumn(clientName, ReceiptViewModel::getClientName);
         initColumn(clientAddress, ReceiptViewModel::getClientAddress);
         initColumn(clientTAXNumber, ReceiptViewModel::getClientTAXNumber);
@@ -197,25 +200,11 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
 
     private void populateReceiptRows(TreeItem<ReceiptViewModel> rootItem) {
         receiptsByDate.forEach((date, receiptsOfDate) -> {
-            TreeItem<ReceiptViewModel> dateItem = new TreeItem<>(new ReceiptViewModel(date));
-            dateItem.setExpanded(true);
+            TreeItem<ReceiptViewModel> dateItem = new TreeItem<>(ReceiptViewModel.getSumReceiptViewModel(date, receiptsOfDate));
+            dateItem.setExpanded(false);
             rootItem.getChildren().add(dateItem);
-            addPaymentMethodSumRows(receiptsOfDate, dateItem);
             addRows(receiptsOfDate, dateItem);
         });
-    }
-
-    private void addPaymentMethodSumRows(List<ReceiptView> receiptsOfDate, TreeItem<ReceiptViewModel> dateItem) {
-        for (PaymentMethod paymentMethod : PaymentMethod.values()) {
-            List<ReceiptView> receipts = receiptsOfDate
-                    .stream()
-                    .filter(receiptView -> receiptView.getPaymentMethod().equals(paymentMethod))
-                    .collect(toList());
-            if (!receipts.isEmpty()) {
-                TreeItem<ReceiptViewModel> receiptItem = new TreeItem<>(new ReceiptViewModel(paymentMethod, receipts));
-                dateItem.getChildren().add(receiptItem);
-            }
-        }
     }
 
     private void addRows(List<ReceiptView> receiptsOfDate, TreeItem<ReceiptViewModel> dateItem) {

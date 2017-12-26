@@ -45,7 +45,7 @@ import lombok.experimental.Tolerate;
 @javax.persistence.Table(name = "RECEIPT")
 @NamedQueries({
     @NamedQuery(name = Receipt.GET_RECEIPTS,
-            query="FROM Receipt r"),
+            query="FROM Receipt r ORDER BY r.openTime ASC"),
     @NamedQuery(name = Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
             query="SELECT r FROM Receipt r WHERE r.status=:status AND r.owner.number=:number"),
     @NamedQuery(name = Receipt.GET_RECEIPT_BY_CLOSURE_TIME_AND_TYPE,
