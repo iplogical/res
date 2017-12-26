@@ -3,9 +3,14 @@ package com.inspirationlogical.receipt.waiter.controller.retail.sale;
 import javafx.scene.control.Label;
 import org.junit.Test;
 
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.RESTAURANT_TEST_TABLE;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
+import static com.inspirationlogical.receipt.waiter.utility.PayUtils.pay;
+import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.enterSaleView;
+import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.openTable;
+import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.reOpenTable;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 import static org.junit.Assert.assertEquals;
 
@@ -166,10 +171,28 @@ public class SaleControllerTest extends SaleViewTest {
         sellProduct(PRODUCT_FIVE, 3);
         assertEquals("3.0 (3)", getSoldProductQuantityWithRecent(1));
         clickButtonThenWait(ORDER_DELIVERED, 50);
-        clickOnThenWait(TABLE_NUMBER, 200);
+        enterSaleView(TABLE_NUMBER);
         assertEquals("3.0", getSoldProductQuantityWithRecent(1));
         clickOnThenWait(PRODUCT_FIVE_LONG, 50);
         assertEquals("4.0 (1)", getSoldProductQuantityWithRecent(1));
         selectiveCancellation(PRODUCT_FIVE_LONG);
+    }
+
+    @Test
+    public void testReOpenTable() {
+        selectCategory(AGGREGATE_ONE);
+        sellProduct(PRODUCT_FIVE, 5);
+        sellProduct(PRODUCT_TWO, 2);
+        sellProduct(PRODUCT_SIX, 6);
+        enterPaymentView();
+        pay();
+        reOpenTable(TABLE_NUMBER);
+        enterSaleView(TABLE_NUMBER);
+        assertSoldProduct(1, PRODUCT_FIVE_LONG, 5, 440, 2200);
+        assertSoldProduct(2, PRODUCT_TWO_LONG, 2, 200, 400);
+        assertSoldProduct(3, PRODUCT_SIX_LONG, 6, 480, 2880);
+        selectiveCancellation(PRODUCT_FIVE_LONG);
+        selectiveCancellation(PRODUCT_TWO_LONG);
+        selectiveCancellation(PRODUCT_SIX_LONG);
     }
 }

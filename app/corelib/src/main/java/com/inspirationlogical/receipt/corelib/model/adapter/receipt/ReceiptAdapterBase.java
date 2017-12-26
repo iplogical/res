@@ -51,7 +51,7 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
         return adapters.get(0);
     }
 
-    private static List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
+    public static List<Receipt> getReceiptsByStatusAndOwner(ReceiptStatus status, int tableNumber) {
         return GuardedTransaction.runNamedQuery(GET_RECEIPT_BY_STATUS_AND_OWNER, GRAPH_RECEIPT_AND_RECORDS,
                 query -> {
                     query.setParameter("status", status);
@@ -71,16 +71,6 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
                         .setParameter("endTime", endTime)
                         .setParameter("type", ReceiptType.SALE));
         return receipts.stream().map(ReceiptAdapterBase::new).collect(toList());
-    }
-
-    public static void deleteReceipts() {
-        LocalDateTime latestClosureTime = DailyClosureAdapter.getLatestClosureTime();
-        List<ReceiptAdapterBase> receiptsToDelete = getReceiptsByClosureTime(latestClosureTime, now());
-        receiptsToDelete.forEach(receipt -> {
-            receipt.getAdaptee().getOwner().getReceipts().remove(receipt.getAdaptee());
-            receipt.getAdaptee().setOwner(null);
-            GuardedTransaction.delete(receipt.getAdaptee(), () -> {});
-        });
     }
 
     public static double getDiscountMultiplier(double discountPercent) {

@@ -1,11 +1,9 @@
 package com.inspirationlogical.receipt.waiter.contextmenu;
 
 import com.inspirationlogical.receipt.corelib.frontend.contextmenu.ContextMenuBuilder;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantViewState;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
-
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantViewState;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.scene.control.ContextMenu;

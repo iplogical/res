@@ -83,17 +83,6 @@ public class ReceiptAdapterTest extends TestBase {
     }
 
     @Test
-    public void testDeleteReceipts() {
-        List<ReceiptAdapterBase> closedReceipts = getReceiptsByClosureTime(now().minusHours(4), now());
-        int numberOfRecords = closedReceipts.stream()
-                .mapToInt(receiptAdapter -> receiptAdapter.getAdaptee().getRecords().size()).sum();
-        ReceiptAdapterBase.deleteReceipts();
-        assertEquals(0, getReceiptsByClosureTime(now().minusHours(1), now()).size());
-        assertEquals(NUMBER_OF_RECEIPT_RECORDS - numberOfRecords, GuardedTransaction.runNamedQuery(ReceiptRecord.GET_TEST_RECEIPT_RECORDS).size());
-        assertEquals(NUMBER_OF_RECEIPT_RECORD_CREATEDS - numberOfRecords, GuardedTransaction.runNamedQuery(ReceiptRecordCreated.GET_TEST_RECEIPT_RECORDS_CREATED).size());
-    }
-
-    @Test
     public void testGetSoldProducts() {
         assertEquals(4, receiptSaleOne.getSoldProducts().size());
     }

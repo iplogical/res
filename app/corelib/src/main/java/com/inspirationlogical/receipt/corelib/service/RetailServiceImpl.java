@@ -32,6 +32,15 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     }
 
     @Override
+    public boolean reOpenTable(TableView tableView) {
+        if(getTableAdapter(tableView).reOpenTable()) {
+            logger.info("A table was re-opened: " + tableView);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void sellProduct(TableView tableView, ProductView productView, int quantity, boolean isTakeAway, boolean isGift) {
         getTableAdapter(tableView).getOpenReceipt().sellProduct(getProductAdapter(productView), quantity, isTakeAway, isGift);
         logger.info("A product was sold: quantity: " + quantity + ", takeAway: " + isTakeAway + " isGift: " + isGift + " " + productView + " ," + tableView);

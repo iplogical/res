@@ -47,6 +47,7 @@ public class RestaurantControllerTest extends TestFXBase {
             verifyMenuItemVisible("ContextMenu.DeleteTable");
             verifyMenuItemVisible("ContextMenu.RotateTable");
             verifyMenuItemVisible("ContextMenu.EditTable");
+            verifyMenuItemVisible("ContextMenu.ReOpenTable");
         });
     }
 
@@ -58,6 +59,7 @@ public class RestaurantControllerTest extends TestFXBase {
             verifyMenuItemNotVisible("ContextMenu.DeleteTable");
             verifyMenuItemVisible("ContextMenu.RotateTable");
             verifyMenuItemVisible("ContextMenu.EditTable");
+            verifyMenuItemNotVisible("ContextMenu.ReOpenTable");
         });
         closeTable(RESTAURANT_TEST_TABLE);
     }

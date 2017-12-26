@@ -1,14 +1,18 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
+import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase.getReceiptsByStatusAndOwner;
 import static java.util.stream.Collectors.toList;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.*;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
@@ -166,6 +170,23 @@ public class TableAdapter extends AbstractAdapter<Table> {
         ReceiptAdapterBase receiptAdapter = (ReceiptAdapterBase)ReceiptAdapter.receiptAdapterFactory(ReceiptType.SALE);
         bindReceiptToTable(receiptAdapter);
         GuardedTransaction.persist(receiptAdapter.getAdaptee());
+    }
+
+    public boolean reOpenTable() {
+        if (isTableOpen()) {
+            throw new IllegalTableStateException("Re-open table for an open table. Table number: " + adaptee.getNumber());
+        }
+        List<Receipt> receipts = getReceiptsByStatusAndOwner(ReceiptStatus.CLOSED, adaptee.getNumber());
+        if(receipts.isEmpty()) {
+            return false;
+        }
+        Receipt latestReceipt = receipts.stream().sorted(Comparator.comparing(Receipt::getClosureTime).reversed())
+                .collect(toList()).get(0);
+        GuardedTransaction.run(() -> {
+            latestReceipt.setStatus(ReceiptStatus.OPEN);
+            latestReceipt.setClosureTime(null);
+        });
+        return true;
     }
 
     public void payTable(PaymentParams paymentParams) {

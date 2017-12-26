@@ -16,10 +16,12 @@ import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 
+import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -219,6 +221,17 @@ public class TableControllerImpl implements TableController {
         retailService.openTable(tableView);
         restaurantController.updateRestaurantSummary();
         updateTable();
+    }
+
+    @Override
+    public void reOpenTable(Control control) {
+        if (retailService.reOpenTable(tableView)) {
+            restaurantController.updateRestaurantSummary();
+            updateTable();
+        } else {
+            ErrorMessage.showErrorMessage(restaurantController.getRootNode(),
+                    WaiterResources.WAITER.getString("Restaurant.ReOpenTableFailed"));
+        }
     }
 
     @Override

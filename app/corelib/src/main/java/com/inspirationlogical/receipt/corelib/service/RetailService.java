@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
@@ -13,6 +12,8 @@ import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 public interface RetailService {
 
     void openTable(TableView tableView);
+
+    boolean reOpenTable(TableView tableView);
 
     void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift);
 

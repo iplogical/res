@@ -50,6 +50,8 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
             } else {
                 MenuItem deleteTable = buildMenuItem("ContextMenu.DeleteTable", tableConfigurationController::deleteTable);
                 contextMenu.getItems().add(deleteTable);
+                MenuItem reOpenTable = buildMenuItem("ContextMenu.ReOpenTable", tableController::reOpenTable);
+                contextMenu.getItems().add(reOpenTable);
             }
         } else {
             if(!tableViewState.isOpen()) {

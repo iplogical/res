@@ -156,6 +156,23 @@ public class TableAdapterTest extends TestBase {
     }
 
     @Test
+    public void testReOpenTable() {
+        tableNormalClosed.reOpenTable();
+        assertNotNull(tableNormalClosed.getOpenReceipt());
+    }
+
+    @Test
+    public void testReOpenTableNoClosedReceipt() {
+        assertFalse(tableFrequenter.reOpenTable());
+        assertNull(tableFrequenter.getOpenReceipt());
+    }
+
+    @Test(expected = IllegalTableStateException.class)
+    public void testReOpenTableAlreadyOpen() {
+        tableNormal.reOpenTable();
+    }
+
+    @Test
     public void testPayTable() {
         tableNormal.payTable(paymentParams);
         assertNull(tableNormal.getOpenReceipt());

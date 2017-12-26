@@ -26,6 +26,13 @@ public class RestaurantUtils  extends AbstractUtils {
         clickOnThenWait(WaiterResources.WAITER.getString("ContextMenu.OpenTable"), 500);
     }
 
+    public static void reOpenTable(String tableNumber) {
+        runInConfigurationMode(() -> {
+            longClickOn(tableNumber);
+            clickOnThenWait(WaiterResources.WAITER.getString("ContextMenu.ReOpenTable"), 500);
+        });
+    }
+
     public static void closeTable(String tableNumber) {
         clickOnThenWait(tableNumber, 500);
         clickButtonThenWait("SaleView.ToPaymentView", 500);
