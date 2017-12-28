@@ -76,15 +76,13 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     @FXML
     private TableColumn<ReceiptRecordViewModel, String> recordName;
     @FXML
-    private TableColumn<ReceiptRecordViewModel, String> recordType;
-    @FXML
     private TableColumn<ReceiptRecordViewModel, String> recordSoldQuantity;
-    @FXML
-    private TableColumn<ReceiptRecordViewModel, String> recordAbsoluteQuantity;
     @FXML
     private TableColumn<ReceiptRecordViewModel, String> recordPurchasePrice;
     @FXML
     private TableColumn<ReceiptRecordViewModel, String> recordSalePrice;
+    @FXML
+    private TableColumn<ReceiptRecordViewModel, String> recordTotalPrice;
     @FXML
     private TableColumn<ReceiptRecordViewModel, String> recordVAT;
     @FXML
@@ -173,11 +171,10 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
 
     private void initReceiptRecordsColumns() {
         initColumn(recordName, ReceiptRecordViewModel::getName);
-        initColumn(recordType, ReceiptRecordViewModel::getType);
         initColumn(recordSoldQuantity, ReceiptRecordViewModel::getSoldQuantity);
-        initColumn(recordAbsoluteQuantity, ReceiptRecordViewModel::getAbsoluteQuantity);
-        initColumn(recordPurchasePrice, ReceiptRecordViewModel::getPurchasePrice);
         initColumn(recordSalePrice, ReceiptRecordViewModel::getSalePrice);
+        initColumn(recordTotalPrice, ReceiptRecordViewModel::getTotalPrice);
+        initColumn(recordPurchasePrice, ReceiptRecordViewModel::getPurchasePrice);
         initColumn(recordVAT, ReceiptRecordViewModel::getVAT);
         initColumn(recordDiscountPercent, ReceiptRecordViewModel::getDiscountPercent);
     }

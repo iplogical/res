@@ -11,11 +11,10 @@ import lombok.Data;
 public class ReceiptRecordViewModel {
     private Long id = -1L;
     private String name = EMPTY;
-    private String type = EMPTY;
     private String soldQuantity = EMPTY;
-    private String absoluteQuantity = EMPTY;
-    private String purchasePrice = EMPTY;
     private String salePrice = EMPTY;
+    private String totalPrice = EMPTY;
+    private String purchasePrice = EMPTY;
     private String VAT = EMPTY;
     private String discountPercent = EMPTY;
 
@@ -25,11 +24,10 @@ public class ReceiptRecordViewModel {
         if (receiptRecordView != null) {
             id = receiptRecordView.getId();
             name = receiptRecordView.getName();
-            type = valueOf(receiptRecordView.getType());
             soldQuantity = valueOf(receiptRecordView.getSoldQuantity());
-            absoluteQuantity = valueOf(receiptRecordView.getAbsoluteQuantity());
-            purchasePrice = valueOf(receiptRecordView.getPurchasePrice());
             salePrice = valueOf(receiptRecordView.getSalePrice());
+            totalPrice = valueOf((int)(receiptRecordView.getSalePrice() * receiptRecordView.getSoldQuantity()));
+            purchasePrice = valueOf(receiptRecordView.getPurchasePrice());
             VAT = valueOf(receiptRecordView.getVat());
             discountPercent = valueOf(receiptRecordView.getDiscountPercent());
             this.receiptRecordView = receiptRecordView;
