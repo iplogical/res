@@ -182,11 +182,22 @@ public class TableAdapter extends AbstractAdapter<Table> {
         }
         Receipt latestReceipt = receipts.stream().sorted(Comparator.comparing(Receipt::getClosureTime).reversed())
                 .collect(toList()).get(0);
+        reopenReceipt(latestReceipt);
+        updateStockRecords(latestReceipt);
+        return true;
+    }
+
+    private void reopenReceipt(Receipt latestReceipt) {
         GuardedTransaction.run(() -> {
             latestReceipt.setStatus(ReceiptStatus.OPEN);
             latestReceipt.setClosureTime(null);
         });
-        return true;
+    }
+
+    private void updateStockRecords(Receipt latestReceipt) {
+        latestReceipt.getRecords().forEach(receiptRecord -> {
+            StockAdapter.decreaseStock(receiptRecord, latestReceipt.getType());
+        });
     }
 
     public void payTable(PaymentParams paymentParams) {

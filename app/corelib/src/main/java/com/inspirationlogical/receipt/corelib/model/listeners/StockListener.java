@@ -33,7 +33,7 @@ public class StockListener implements ReceiptAdapterPay.Listener {
             logger.info("Updating stock record for receipt: " + receipt.toString());
             receipt.getRecords().forEach(receiptRecord -> {
                     logger.info("Updating stock record for receiptRecord: " + receiptRecord.toString());
-                    StockAdapter.updateStock(receiptRecord, Optional.of(receipt.getType()));
+                    StockAdapter.updateStock(receiptRecord, receipt.getType());
             });
             observerList.forEach(StockUpdateListener::finished);
             observerList.clear();

@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.entity.Stock;
@@ -27,20 +27,32 @@ public class StockAdapter extends AbstractAdapter<Stock> {
                 .collect(toList());
     }
 
-    public static void updateStock(ReceiptRecord receiptRecord, Optional<ReceiptType> receiptType) {
+    public static void updateStock(ReceiptRecord receiptRecord, ReceiptType receiptType) {
+        updateStockRecords(receiptRecord, receiptType, true);
+    }
+
+    public static void decreaseStock(ReceiptRecord receiptRecord, ReceiptType receiptType) {
+        updateStockRecords(receiptRecord, receiptType, false);
+    }
+
+    private static void updateStockRecords(ReceiptRecord receiptRecord, ReceiptType receiptType, boolean increase) {
         List<Recipe> recipes = GuardedTransaction.runNamedQuery(GET_RECIPES_OF_PRODUCT, query -> query.setParameter("owner", receiptRecord.getProduct()));
         recipes.forEach(recipe ->
         {
             StockAdapter stockAdapter = StockAdapter.getLatestItemByProduct(new ProductAdapter(recipe.getComponent()));
             double quantity = calculateStockQuantity(receiptRecord, receiptType, recipe);
-            stockAdapter.updateStockAdapter(roundToTwoDecimals(quantity), receiptType.get());
+            if(increase) {
+                stockAdapter.updateStockAdapter(roundToTwoDecimals(quantity), receiptType);
+            } else {
+                stockAdapter.decreaseStockAdapter(roundToTwoDecimals(quantity), receiptType);
+            }
             GuardedTransaction.detach(stockAdapter.getAdaptee());
             GuardedTransaction.detach(recipe);
         });
     }
 
-    private static Double calculateStockQuantity(ReceiptRecord receiptRecord, Optional<ReceiptType> receiptType, Recipe recipe) {
-        return receiptType.filter(type -> type.equals(ReceiptType.SALE))
+    private static Double calculateStockQuantity(ReceiptRecord receiptRecord, ReceiptType receiptType, Recipe recipe) {
+        return Optional.of(receiptType).filter(type -> type.equals(ReceiptType.SALE))
                 .map(type -> recipe.getQuantityMultiplier() * receiptRecord.getSoldQuantity())
                 .orElse(receiptRecord.getAbsoluteQuantity());
     }
@@ -125,5 +137,17 @@ public class StockAdapter extends AbstractAdapter<Stock> {
 
     private void increaseDisposedQuantity(double quantity) {
         GuardedTransaction.run(() -> adaptee.setDisposedQuantity(adaptee.getDisposedQuantity() + quantity / adaptee.getOwner().getStorageMultiplier()));
+    }
+
+    private void decreaseStockAdapter(double quantity, ReceiptType type) {
+        if(ReceiptType.isSale(type)) {
+            decreaseSoldQuantity(quantity);
+        } else {
+            // ONLY SALE RECEIPTS CAN BE REOPENED.
+        }
+    }
+
+    private void decreaseSoldQuantity(double quantity) {
+        GuardedTransaction.run(() -> adaptee.setSoldQuantity(adaptee.getSoldQuantity() - quantity / adaptee.getOwner().getStorageMultiplier()));
     }
 }
