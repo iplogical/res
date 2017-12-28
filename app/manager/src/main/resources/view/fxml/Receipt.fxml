@@ -79,17 +79,126 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <TableView fx:id="receiptRecordsTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <columns>
-                      <TableColumn fx:id="recordName" prefWidth="100.0" text="%Receipt.Record.Name" />
-                        <TableColumn fx:id="recordSoldQuantity" prefWidth="100.0" text="%Receipt.Record.SoldQuantity" />
-                        <TableColumn fx:id="recordSalePrice" prefWidth="100.0" text="%Receipt.Record.SalePrice" />
-                        <TableColumn fx:id="recordTotalPrice" prefWidth="75.0" text="%Receipt.Record.TotalPrice" />
-                        <TableColumn fx:id="recordPurchasePrice" prefWidth="100.0" text="%Receipt.Record.PurchasePrice" />
-                        <TableColumn fx:id="recordVAT" prefWidth="100.0" text="%Receipt.Record.VAT" />
-                        <TableColumn fx:id="recordDiscountPercent" prefWidth="100.0" text="%Receipt.Record.DiscountPercent" />
-                    </columns>
-                  </TableView>
+                  <SplitPane dividerPositions="0.55" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                           <children>
+                              <TableView fx:id="receiptRecordsTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columns>
+                                  <TableColumn fx:id="recordName" prefWidth="100.0" text="%Receipt.Record.Name" />
+                                    <TableColumn fx:id="recordSoldQuantity" prefWidth="100.0" text="%Receipt.Record.SoldQuantity" />
+                                    <TableColumn fx:id="recordSalePrice" prefWidth="100.0" text="%Receipt.Record.SalePrice" />
+                                    <TableColumn fx:id="recordTotalPrice" prefWidth="75.0" text="%Receipt.Record.TotalPrice" />
+                                    <TableColumn fx:id="recordPurchasePrice" prefWidth="100.0" text="%Receipt.Record.PurchasePrice" />
+                                    <TableColumn fx:id="recordVAT" prefWidth="100.0" text="%Receipt.Record.VAT" />
+                                    <TableColumn fx:id="recordDiscountPercent" prefWidth="100.0" text="%Receipt.Record.DiscountPercent" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <DatePicker fx:id="startDate" promptText="%Receipt.StartDate" />
+                                          <DatePicker fx:id="endDate" promptText="%Receipt.EndDate" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <Label text="%Receipt.NumberOfReceipts" />
+                                          <Label fx:id="numberOfReceipts" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <Label text="%Receipt.Income" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <Label prefWidth="80.0" text="%Receipt.Cash" />
+                                          <Label fx:id="cashNet" alignment="CENTER_RIGHT" prefWidth="60.0" textAlignment="RIGHT" />
+                                          <Label text="/" />
+                                          <Label fx:id="cashGross" alignment="CENTER_RIGHT" prefWidth="60.0" textAlignment="RIGHT" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="75.0" prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <Label prefWidth="80.0" text="%Receipt.CreditCard" />
+                                          <Label fx:id="creditCardNet" alignment="CENTER_RIGHT" prefWidth="60.0" textAlignment="RIGHT" />
+                                          <Label text="/" />
+                                          <Label fx:id="creditCardGross" alignment="CENTER_RIGHT" prefWidth="60.0" textAlignment="RIGHT" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="100.0" prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <Label prefWidth="80.0" text="%Receipt.Coupon" />
+                                          <Label fx:id="couponNet" alignment="CENTER_RIGHT" prefWidth="60.0" textAlignment="RIGHT" />
+                                          <Label text="/" />
+                                          <Label fx:id="couponGross" alignment="CENTER_RIGHT" prefWidth="60.0" textAlignment="RIGHT" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="125.0" prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <Label prefWidth="80.0" text="%Receipt.Total" />
+                                          <Label fx:id="totalNet" alignment="CENTER_RIGHT" prefWidth="60.0" textAlignment="RIGHT" />
+                                          <Label text="/" />
+                                          <Label fx:id="totalGross" alignment="CENTER_RIGHT" prefWidth="60.0" textAlignment="RIGHT" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox prefWidth="200.0" spacing="5.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                       <children>
+                                          <Label text="%Receipt.Expenditure" />
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="200.0" prefWidth="200.0" spacing="5.0">
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                       <children>
+                                          <Label prefWidth="80.0" text="%Receipt.Total" />
+                                          <Label fx:id="totalGrossExpenditure" alignment="CENTER_RIGHT" prefWidth="60.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
                </children>
             </AnchorPane>
         </items>

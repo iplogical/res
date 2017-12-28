@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter.receipt;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.AbstractAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
@@ -15,6 +14,7 @@ import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Comparator;
@@ -60,8 +60,13 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
                 });
     }
 
-    public static List<ReceiptAdapterBase> getReceipts() {
-        List<Receipt> receipts = GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPTS);
+    public static List<ReceiptAdapterBase> getReceipts(LocalDate startDate, LocalDate endDate) {
+        List<Receipt> receipts = GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPT_BY_OPEN_TIME,
+                query -> {
+                    query.setParameter("startTime", startDate.atStartOfDay());
+                    query.setParameter("endTime", endDate.plusDays(1).atStartOfDay());
+                    return query;
+        });
         return receipts.stream().map(ReceiptAdapterBase::new).collect(toList());
     }
 

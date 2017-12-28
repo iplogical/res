@@ -17,6 +17,7 @@ import com.inspirationlogical.receipt.corelib.params.StockParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -113,8 +114,8 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
     }
 
     @Override
-    public List<ReceiptView> getReceipts() {
-        return ReceiptAdapterBase.getReceipts()
+    public List<ReceiptView> getReceipts(LocalDate startDate, LocalDate endDate) {
+        return ReceiptAdapterBase.getReceipts(startDate, endDate)
                 .stream()
                 .map(ReceiptViewImpl::new)
                 .collect(toList());

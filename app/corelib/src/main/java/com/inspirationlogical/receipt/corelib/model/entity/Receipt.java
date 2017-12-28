@@ -49,7 +49,9 @@ import lombok.experimental.Tolerate;
     @NamedQuery(name = Receipt.GET_RECEIPT_BY_STATUS_AND_OWNER,
             query="SELECT r FROM Receipt r WHERE r.status=:status AND r.owner.number=:number"),
     @NamedQuery(name = Receipt.GET_RECEIPT_BY_CLOSURE_TIME_AND_TYPE,
-            query="SELECT r FROM Receipt r WHERE r.closureTime>:startTime AND r.closureTime<:endTime AND r.type=:type")
+            query="SELECT r FROM Receipt r WHERE r.closureTime>:startTime AND r.closureTime<:endTime AND r.type=:type"),
+    @NamedQuery(name = Receipt.GET_RECEIPT_BY_OPEN_TIME,
+            query="SELECT r FROM Receipt r WHERE r.openTime>:startTime AND r.openTime<:endTime")
 })
 @NamedEntityGraphs({
         @NamedEntityGraph(name = GRAPH_RECEIPT_AND_RECORDS,
@@ -65,6 +67,7 @@ public @Data class Receipt extends AbstractEntity {
     public static final String GET_RECEIPTS = "Receipt.GetReceipts";
     public static final String GET_RECEIPT_BY_STATUS_AND_OWNER = "Receipt.GetActiveReceipt";
     public static final String GET_RECEIPT_BY_CLOSURE_TIME_AND_TYPE = "Receipt.GetReceiptByClosureTime";
+    public static final String GET_RECEIPT_BY_OPEN_TIME = "Receipt.GetReceiptByOpenTime";
     public static final String GRAPH_RECEIPT_AND_RECORDS = "Receipt.GraphReceiptAndRecords";
     private static final Receipt PROTOTYPE = new Receipt();
 

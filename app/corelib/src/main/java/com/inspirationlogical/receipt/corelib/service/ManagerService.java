@@ -10,6 +10,7 @@ import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ManagerService {
@@ -44,7 +45,7 @@ public interface ManagerService {
 
     List<RecipeView> getRecipeComponents(ProductView product);
 
-    List<ReceiptView> getReceipts();
+    List<ReceiptView> getReceipts(LocalDate startDate, LocalDate endDate);
 
     ReceiptRecordView decreaseReceiptRecord(ReceiptRecordView receiptRecordView, double quantity);
 

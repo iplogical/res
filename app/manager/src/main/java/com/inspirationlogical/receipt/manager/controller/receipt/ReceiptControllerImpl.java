@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.manager.controller.receipt;
 
+import static java.time.LocalDate.now;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
@@ -90,17 +91,42 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
 
     private ObservableList<ReceiptRecordViewModel> receiptRecordViewModels;
 
-    private
     @FXML
-    Button showGoods;
+    private Button showGoods;
 
     @FXML
-    Button selectiveCancellation;
+    private Button selectiveCancellation;
     @FXML
-    TextField decreaseQuantity;
+    private TextField decreaseQuantity;
 
     @FXML
-    Button refreshButton;
+    private Button refreshButton;
+
+    @FXML
+    private DatePicker startDate;
+    @FXML
+    private DatePicker endDate;
+
+    @FXML
+    private Label numberOfReceipts;
+    @FXML
+    private Label cashNet;
+    @FXML
+    private Label cashGross;
+    @FXML
+    private Label creditCardNet;
+    @FXML
+    private Label creditCardGross;
+    @FXML
+    private Label couponNet;
+    @FXML
+    private Label couponGross;
+    @FXML
+    private Label totalNet;
+    @FXML
+    private Label totalGross;
+    @FXML
+    private Label totalGrossExpenditure;
 
     @Inject
     private ViewLoader viewLoader;
@@ -115,7 +141,13 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initDatePickers();
         initReceiptController();
+    }
+
+    private void initDatePickers() {
+        startDate.setValue(now().withDayOfMonth(1));
+        endDate.setValue(now().withDayOfMonth(now().lengthOfMonth()));
     }
 
     private void initReceiptController() {
@@ -135,7 +167,7 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     }
 
     private void initReceipts() {
-        Map<LocalDate, List<ReceiptView>> unsortedReceiptsByDate = managerService.getReceipts()
+        Map<LocalDate, List<ReceiptView>> unsortedReceiptsByDate = managerService.getReceipts(startDate.getValue(), endDate.getValue())
                 .stream()
                 .sorted(comparing(ReceiptView::getOpenTime))
                 .collect(groupingBy(receiptView -> receiptView.getOpenTime().toLocalDate()));
@@ -143,6 +175,7 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
                 .sorted(Map.Entry.comparingByKey(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue,  newValue) -> oldValue, LinkedHashMap::new));
+        SummaryCalculator.getInstance(this, receiptsByDate).calculateSummaries();
     }
 
     private void initReceiptsColumns() {
@@ -265,4 +298,18 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
         initReceiptController();
     }
 
+    @Override
+    public void setSummaryValues(SummaryValues values) {
+        numberOfReceipts.setText(String.valueOf(values.getNumberOfReceipts()));
+        cashNet.setText(String.valueOf(values.getCashNetIncome()));
+        cashGross.setText(String.valueOf(values.getCashGrossIncome()));
+        creditCardNet.setText(String.valueOf(values.getCreditCardNetIncome()));
+        creditCardGross.setText(String.valueOf(values.getCreditCardGrossIncome()));
+        couponNet.setText(String.valueOf(values.getCouponNetIncome()));
+        couponGross.setText(String.valueOf(values.getCouponGrossIncome()));
+        totalNet.setText(String.valueOf(values.getTotalNetIncome()));
+        totalGross.setText(String.valueOf(values.getTotalGrossIncome()));
+
+        totalGrossExpenditure.setText(String.valueOf(values.getTotalGrossExpenditure()));
+    }
 }

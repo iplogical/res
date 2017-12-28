@@ -6,6 +6,7 @@ import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -15,7 +16,6 @@ import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
@@ -59,7 +59,7 @@ public class ReceiptAdapterTest extends TestBase {
 
     @Test
     public void testGetReceipts() {
-        assertEquals(NUMBER_OF_RECEIPTS, ReceiptAdapterBase.getReceipts().size());
+        assertEquals(NUMBER_OF_RECEIPTS, ReceiptAdapterBase.getReceipts(LocalDate.now().minusDays(10), LocalDate.now()).size());
     }
 
     @Test
