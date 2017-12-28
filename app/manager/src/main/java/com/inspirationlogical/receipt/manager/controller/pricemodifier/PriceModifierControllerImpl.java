@@ -82,9 +82,6 @@ public class PriceModifierControllerImpl implements PriceModifierController {
     private GoodsController goodsController;
 
     @Inject
-    private CommonService commonService;
-
-    @Inject
     private PriceModifierFormController priceModifierFormController;
 
     @Inject

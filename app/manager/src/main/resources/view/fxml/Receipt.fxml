@@ -39,6 +39,9 @@
                   <Font size="16.0" />
                </font>
             </Button>
+            <Button fx:id="selectiveCancellation" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSelectiveCancellation" text="%Receipt.SelectiveCancellation" />
+            <TextField fx:id="decreaseQuantity" maxWidth="1.7976931348623157E308" promptText="%Receipt.Quantity" />
+            <Button fx:id="refreshButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onRefresh" text="%Receipt.Refresh" />
          </children>
          <padding>
             <Insets left="5.0" top="5.0" />
@@ -66,7 +69,6 @@
                         <TreeTableColumn fx:id="sumPurchaseGrossPrice" prefWidth="100.0" text="%Receipt.SumPurchaseGrossPrice" />
                         <TreeTableColumn fx:id="sumPurchaseNetPrice" prefWidth="100.0" text="%Receipt.SumPurchaseNetPrice" />
                         <TreeTableColumn fx:id="discountPercent" prefWidth="100.0" text="%Receipt.DiscountPercent" />
-                        <TreeTableColumn fx:id="VATSerie" prefWidth="100.0" text="%Receipt.VATSerie" />
                         <TreeTableColumn fx:id="userCode" prefWidth="100.0" text="%Receipt.UserCode" />
                         <TreeTableColumn fx:id="clientName" prefWidth="100.0" text="%Receipt.ClientName" />
                         <TreeTableColumn fx:id="clientAddress" prefWidth="100.0" text="%Receipt.ClientAddress" />

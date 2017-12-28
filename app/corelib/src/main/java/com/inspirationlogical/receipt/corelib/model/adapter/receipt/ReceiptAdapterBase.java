@@ -149,7 +149,7 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
                 .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum();
     }
 
-    protected List<ReceiptRecord> getReceiptRecords() {
+    private List<ReceiptRecord> getReceiptRecords() {
         return GuardedTransaction.runNamedQuery(ReceiptRecord.GET_RECEIPT_RECORDS_BY_RECEIPT,
                 query -> {query.setParameter("owner_id", adaptee.getId());
                     return query;});

@@ -14,24 +14,21 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
-import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
+import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.ReceiptRecordViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ReceiptViewModel;
 
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableRow;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 
 @Singleton
@@ -68,8 +65,6 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     @FXML
     private TreeTableColumn<ReceiptViewModel, String> discountPercent;
     @FXML
-    private TreeTableColumn<ReceiptViewModel, String> VATSerie;
-    @FXML
     private TreeTableColumn<ReceiptViewModel, String> clientName;
     @FXML
     private TreeTableColumn<ReceiptViewModel, String> clientAddress;
@@ -95,8 +90,19 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     @FXML
     private TableColumn<ReceiptRecordViewModel, String> recordDiscountPercent;
 
+    private ObservableList<ReceiptRecordViewModel> receiptRecordViewModels;
+
+    private
     @FXML
     Button showGoods;
+
+    @FXML
+    Button selectiveCancellation;
+    @FXML
+    TextField decreaseQuantity;
+
+    @FXML
+    Button refreshButton;
 
     @Inject
     private ViewLoader viewLoader;
@@ -105,15 +111,16 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     private GoodsController goodsController;
 
     @Inject
-    private CommonService commonService;
-
-    @Inject
     private ManagerService managerService;
 
     private Map<LocalDate, List<ReceiptView>> receiptsByDate;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initReceiptController();
+    }
+
+    private void initReceiptController() {
         initReceipts();
         initReceiptsColumns();
         initReceiptRecordsColumns();
@@ -127,11 +134,6 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     @Override
     public Node getRootNode() {
         return root;
-    }
-
-    @FXML
-    public void onShowGoods(Event event) {
-        viewLoader.loadViewIntoScene(goodsController);
     }
 
     private void initReceipts() {
@@ -157,7 +159,6 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
         initColumn(sumPurchaseGrossPrice, ReceiptViewModel::getSumPurchaseGrossPrice);
         initColumn(sumPurchaseNetPrice, ReceiptViewModel::getSumPurchaseNetPrice);
         initColumn(discountPercent, ReceiptViewModel::getDiscountPercent);
-        initColumn(VATSerie, ReceiptViewModel::getVATSerie);
         initColumn(userCode, ReceiptViewModel::getUserCode);
         initColumn(clientName, ReceiptViewModel::getClientName);
         initColumn(clientAddress, ReceiptViewModel::getClientAddress);
@@ -185,17 +186,21 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
         receiptsTable.setRowFactory(tv -> {
             TreeTableRow<ReceiptViewModel> row = new TreeTableRow<>();
             row.setOnMouseClicked(event -> {
-                if(event.getClickCount() == 1 && (! row.isEmpty())) {
-                    List<ReceiptRecordViewModel> records = row.getItem().getRecords()
-                            .stream()
-                            .map(ReceiptRecordViewModel::new)
-                            .collect(toList());
-                    receiptRecordsTable.setItems(observableArrayList(records));
-                    row.getItem();
+                if(event.getClickCount() == 1 && (!row.isEmpty())) {
+                    addReceiptRecordsToTable(row.getItem());
                 }
             });
             return row;
         });
+    }
+
+    private void addReceiptRecordsToTable(ReceiptViewModel receipt) {
+        List<ReceiptRecordViewModel> records = receipt.getRecords()
+                .stream()
+                .map(ReceiptRecordViewModel::new)
+                .collect(toList());
+        receiptRecordViewModels = observableArrayList(records);
+        receiptRecordsTable.setItems(receiptRecordViewModels);
     }
 
     private void populateReceiptRows(TreeItem<ReceiptViewModel> rootItem) {
@@ -213,4 +218,54 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
             dateItem.getChildren().add(receiptItem);
         });
     }
+
+    @FXML
+    public void onShowGoods(Event event) {
+        viewLoader.loadViewIntoScene(goodsController);
+    }
+
+    @FXML
+    public void onSelectiveCancellation(Event event) {
+        ReceiptRecordViewModel selectedRecordModel = receiptRecordsTable.getSelectionModel().getSelectedItem();
+        ReceiptViewModel selectedReceiptModel = receiptsTable.getSelectionModel().getSelectedItem().getValue();
+
+        if(selectedRecordModel == null || selectedReceiptModel == null) {
+            ErrorMessage.showErrorMessage(getRootNode(), ManagerResources.MANAGER.getString("Receipt.SelectRecordForCancellation"));
+            return;
+        }
+        ReceiptRecordView selectedRecordView = selectedRecordModel.getReceiptRecordView();
+        if(!selectedRecordView.getOwnerStatus().equals(ReceiptStatus.CLOSED)) {
+            ErrorMessage.showErrorMessage(getRootNode(), ManagerResources.MANAGER.getString("Receipt.CancellationForOpenReceipt"));
+            return;
+        }
+        double decreaseQuantityValue = getDecreaseQuantity();
+        ReceiptRecordView updatedRecordView = managerService.decreaseReceiptRecord(selectedRecordView, decreaseQuantityValue);
+        receiptRecordViewModels.remove(selectedRecordModel);
+        selectedReceiptModel.getRecords().remove(selectedRecordView);
+        if(updatedRecordView != null) {
+            selectedReceiptModel.getRecords().add(updatedRecordView);
+            ReceiptRecordViewModel updatedRecordModel = new ReceiptRecordViewModel(updatedRecordView);
+            receiptRecordViewModels.add(updatedRecordModel);
+            receiptRecordsTable.setItems(receiptRecordViewModels);
+            receiptRecordsTable.getSelectionModel().select(updatedRecordModel);
+        }
+    }
+
+    private double getDecreaseQuantity() {
+        String decreaseQuantityText = decreaseQuantity.getText();
+        if(decreaseQuantityText.isEmpty()) {
+            return 1D;
+        }
+        try {
+            return Double.parseDouble(decreaseQuantityText);
+        } catch (NumberFormatException e) {
+            return 1D;
+        }
+    }
+
+    @FXML
+    public void onRefresh(Event event) {
+        initReceiptController();
+    }
+
 }

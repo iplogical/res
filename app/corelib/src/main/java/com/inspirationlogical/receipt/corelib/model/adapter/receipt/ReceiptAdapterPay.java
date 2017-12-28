@@ -47,10 +47,7 @@ public class ReceiptAdapterPay extends AbstractAdapter<Receipt> {
             checkIfReceiptIsClosed();
             adaptee.setStatus(ReceiptStatus.CLOSED);
             adaptee.setClosureTime(now());
-            adaptee.setSumPurchaseGrossPrice(getSumValue(this::calculatePurchaseGrossPrice));
-            adaptee.setSumPurchaseNetPrice(getSumValue(this::calculatePurchaseNetPrice));
-            adaptee.setSumSaleGrossPrice(getSumValue(this::calculateSaleGrossPrice));
-            adaptee.setSumSaleNetPrice(getSumValue(this::calculateSaleNetPrice));
+            setSumValues();
             adaptee.setDiscountPercent(calculateDiscount(paymentParams));
             adaptee.setUserCode(paymentParams.getUserCode());
             adaptee.setPaymentMethod(paymentParams.getPaymentMethod());
@@ -60,6 +57,13 @@ public class ReceiptAdapterPay extends AbstractAdapter<Receipt> {
                 ReceiptAdapterListeners.getPrinterListener().onClose(adaptee);
             }
         });
+    }
+
+    public void setSumValues() {
+        adaptee.setSumPurchaseGrossPrice(getSumValue(this::calculatePurchaseGrossPrice));
+        adaptee.setSumPurchaseNetPrice(getSumValue(this::calculatePurchaseNetPrice));
+        adaptee.setSumSaleGrossPrice(getSumValue(this::calculateSaleGrossPrice));
+        adaptee.setSumSaleNetPrice(getSumValue(this::calculateSaleNetPrice));
     }
 
     private void deleteReceipt() {

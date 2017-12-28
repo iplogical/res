@@ -9,6 +9,7 @@ import lombok.Data;
 
 @Data
 public class ReceiptRecordViewModel {
+    private Long id = -1L;
     private String name = EMPTY;
     private String type = EMPTY;
     private String soldQuantity = EMPTY;
@@ -18,8 +19,11 @@ public class ReceiptRecordViewModel {
     private String VAT = EMPTY;
     private String discountPercent = EMPTY;
 
+    private ReceiptRecordView receiptRecordView;
+
     public ReceiptRecordViewModel(ReceiptRecordView receiptRecordView) {
         if (receiptRecordView != null) {
+            id = receiptRecordView.getId();
             name = receiptRecordView.getName();
             type = valueOf(receiptRecordView.getType());
             soldQuantity = valueOf(receiptRecordView.getSoldQuantity());
@@ -28,6 +32,7 @@ public class ReceiptRecordViewModel {
             salePrice = valueOf(receiptRecordView.getSalePrice());
             VAT = valueOf(receiptRecordView.getVat());
             discountPercent = valueOf(receiptRecordView.getDiscountPercent());
+            this.receiptRecordView = receiptRecordView;
         }
     }
 }

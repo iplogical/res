@@ -7,6 +7,7 @@ import static java.util.stream.Collectors.toList;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -123,6 +124,11 @@ public class ReceiptRecordViewImpl extends AbstractModelViewImpl<ReceiptRecordAd
     @Override
     public boolean isPartiallyPayable() {
         return adapter.getAdaptee().getProduct().getType().equals(ProductType.PARTIALLY_PAYABLE);
+    }
+
+    @Override
+    public ReceiptStatus getOwnerStatus() {
+        return adapter.getAdaptee().getOwner().getStatus();
     }
 
     @Override

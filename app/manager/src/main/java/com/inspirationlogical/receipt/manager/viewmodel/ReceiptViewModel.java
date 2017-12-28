@@ -1,21 +1,17 @@
 package com.inspirationlogical.receipt.manager.viewmodel;
 
-import static java.lang.String.valueOf;
-import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
+import com.inspirationlogical.receipt.corelib.model.entity.Client;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Client;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
-
-import lombok.Data;
+import static java.lang.String.valueOf;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @Data
 public class ReceiptViewModel {
@@ -31,7 +27,6 @@ public class ReceiptViewModel {
     private String sumSaleNetPrice = EMPTY;
     private String sumSaleGrossPrice = EMPTY;
     private String discountPercent = EMPTY;
-    private String VATSerie = EMPTY;
     private String clientName = EMPTY;
     private String clientAddress = EMPTY;
     private String clientTAXNumber = EMPTY;
@@ -67,7 +62,6 @@ public class ReceiptViewModel {
             sumSaleNetPrice = valueOf(receiptView.getSumSaleNetPrice());
             sumSaleGrossPrice = valueOf(receiptView.getSumSaleGrossPrice());
             discountPercent = valueOf(receiptView.getDiscountPercent());
-            VATSerie = valueOf(receiptView.getVATSerie());
             Client client = receiptView.getClient();
             if (client != null) {
                 clientName = receiptView.getClient().getName();
@@ -76,29 +70,5 @@ public class ReceiptViewModel {
             }
             records = receiptView.getSoldProducts();
         }
-    }
-
-    public ReceiptViewModel(PaymentMethod paymentMethod, List<ReceiptView> receiptViews) {
-        this.paymentMethod = paymentMethod.toString();
-        records = receiptViews
-                .stream()
-                .flatMap(receiptView -> receiptView.getSoldProducts().stream())
-                .collect(toList());
-        sumPurchaseNetPrice = valueOf(receiptViews
-                .stream()
-                .mapToInt(ReceiptView::getSumPurchaseNetPrice)
-                .sum());
-        sumPurchaseGrossPrice = valueOf(receiptViews
-                .stream()
-                .mapToInt(ReceiptView::getSumPurchaseGrossPrice)
-                .sum());
-        sumSaleNetPrice = valueOf(receiptViews
-                .stream()
-                .mapToInt(ReceiptView::getSumSaleNetPrice)
-                .sum());
-        sumSaleGrossPrice = valueOf(receiptViews
-                .stream()
-                .mapToInt(ReceiptView::getSumSaleGrossPrice)
-                .sum());
     }
 }

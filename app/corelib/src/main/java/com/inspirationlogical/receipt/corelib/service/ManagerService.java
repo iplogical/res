@@ -45,4 +45,7 @@ public interface ManagerService {
     List<RecipeView> getRecipeComponents(ProductView product);
 
     List<ReceiptView> getReceipts();
+
+    ReceiptRecordView decreaseReceiptRecord(ReceiptRecordView receiptRecordView, double quantity);
+
 }

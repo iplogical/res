@@ -14,6 +14,8 @@ import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -21,6 +23,8 @@ import static java.util.stream.Collectors.toList;
 
 @Singleton
 public class ManagerServiceImpl extends AbstractService implements ManagerService {
+
+    final private static Logger logger = LoggerFactory.getLogger(ManagerServiceImpl.class);
 
     @Inject
     ManagerServiceImpl(EntityViews entityViews) {
@@ -114,5 +118,15 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
                 .stream()
                 .map(ReceiptViewImpl::new)
                 .collect(toList());
+    }
+
+    @Override
+    public ReceiptRecordView decreaseReceiptRecord(ReceiptRecordView receiptRecordView, double quantity) {
+        logger.info("A receipt record was decreased by the manager: " + receiptRecordView);
+        ReceiptRecordAdapter updated = getReceiptRecordAdapter(receiptRecordView).decreaseReceiptRecord(quantity);
+        if(updated == null) {
+            return null;
+        }
+        return new ReceiptRecordViewImpl(updated);
     }
 }
