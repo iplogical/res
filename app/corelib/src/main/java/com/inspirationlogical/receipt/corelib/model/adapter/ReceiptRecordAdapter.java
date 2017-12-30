@@ -15,11 +15,19 @@ public class ReceiptRecordAdapter extends AbstractAdapter<ReceiptRecord> {
     }
 
     public ReceiptRecordAdapter decreaseReceiptRecord(double quantity) {
+        decreaseStock(quantity);
         if(adaptee.getSoldQuantity() > quantity) {
             return decreaseSoldQuantity(quantity);
         } else {
             return deleteReceiptRecord();
         }
+    }
+
+    private void decreaseStock(double quantity) {
+        ReceiptRecord clone = ReceiptRecord.cloneReceiptRecord(adaptee);
+        clone.setSoldQuantity(quantity);
+        clone.setProduct(adaptee.getProduct());
+        StockAdapter.decreaseStock(clone, adaptee.getOwner().getType());
     }
 
     private ReceiptRecordAdapter decreaseSoldQuantity(double quantity) {
