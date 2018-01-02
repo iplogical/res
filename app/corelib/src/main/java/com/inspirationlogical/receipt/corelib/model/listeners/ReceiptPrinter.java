@@ -9,11 +9,11 @@ import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapt
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
-import com.inspirationlogical.receipt.corelib.utility.printing.ReceiptToXML;
-import com.inspirationlogical.receipt.corelib.utility.printing.FilePrinter;
-import com.inspirationlogical.receipt.corelib.utility.printing.FormatterService;
-import com.inspirationlogical.receipt.corelib.utility.printing.PrintService;
-import com.inspirationlogical.receipt.corelib.utility.printing.Printer;
+import com.inspirationlogical.receipt.corelib.printing.ReceiptToXML;
+import com.inspirationlogical.receipt.corelib.printing.FilePrinter;
+import com.inspirationlogical.receipt.corelib.printing.FormatterService;
+import com.inspirationlogical.receipt.corelib.printing.PrintService;
+import com.inspirationlogical.receipt.corelib.printing.Printer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

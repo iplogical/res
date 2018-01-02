@@ -27,7 +27,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.inspirationlogical.receipt.corelib.utility.printing" level="INFO">
+    <logger name="com.inspirationlogical.receipt.corelib.printing" level="INFO">
         <appender-ref ref="PRINTING_LOG"/>
     </logger>
 

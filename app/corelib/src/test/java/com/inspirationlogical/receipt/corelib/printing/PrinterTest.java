@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.utility.printing;
+package com.inspirationlogical.receipt.corelib.printing;
 
 import com.inspirationlogical.receipt.corelib.jaxb.ObjectFactory;
 import com.inspirationlogical.receipt.corelib.model.TestBase;

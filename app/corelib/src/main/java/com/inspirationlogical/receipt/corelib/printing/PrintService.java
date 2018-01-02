@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.utility.printing;
+package com.inspirationlogical.receipt.corelib.printing;
 
 import java.io.InputStream;
 
