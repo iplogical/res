@@ -6,14 +6,16 @@ import com.google.inject.Injector;
 import com.inspirationlogical.receipt.corelib.exception.FormatterClassNotFound;
 import com.inspirationlogical.receipt.corelib.exception.PrinterClassNotFoundException;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
+import lombok.Getter;
 
 /**
  * Created by Ferenc on 2017. 03. 18..
  */
 class PrintingInjector extends AbstractModule {
 
+    @Getter
     private static Injector injector;
-    public static Injector getInjector() {return injector;}
+
     static {
         injector = Guice.createInjector(new PrintingInjector());
     }

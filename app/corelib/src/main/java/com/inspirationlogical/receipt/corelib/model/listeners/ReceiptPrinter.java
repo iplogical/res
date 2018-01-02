@@ -1,15 +1,14 @@
 package com.inspirationlogical.receipt.corelib.model.listeners;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.util.Arrays;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.inspirationlogical.receipt.corelib.jaxb.ObjectFactory;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
+import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 import com.inspirationlogical.receipt.corelib.utility.printing.ReceiptToXML;
 import com.inspirationlogical.receipt.corelib.utility.printing.FilePrinter;
 import com.inspirationlogical.receipt.corelib.utility.printing.FormatterService;
@@ -23,12 +22,19 @@ import org.slf4j.LoggerFactory;
  */
 public class ReceiptPrinter implements ReceiptAdapterPay.Listener {
 
-    final static Logger logger = LoggerFactory.getLogger(ReceiptPrinter.class);
+    private final static Logger logger = LoggerFactory.getLogger(ReceiptPrinter.class);
 
-    private static List<Printer> printers = Arrays.asList(
-            PrintService.create().getPrinter(), // if printer not found this will become a NULL printer
-            new FilePrinter()
-    );
+    private static List<Printer> printers;
+
+    static {
+        printers = new ArrayList<>();
+        PrintService printService = PrintService.create();
+        if(printService != null) {
+            printers.add(printService.getPrinter());
+        }
+        printers.add(new FilePrinter());
+    }
+
 
     @Override
     public void onOpen(ReceiptAdapterPay receipt) {
@@ -42,12 +48,52 @@ public class ReceiptPrinter implements ReceiptAdapterPay.Listener {
     @Override
     public void onClose(Receipt receipt) {
         BackgroundThread.execute(() -> {
-            logger.info("Starting the process of printing the receipt: " +  receipt.toString());
-            ReceiptToXML converter = new ReceiptToXML(new ObjectFactory());
-            InputStream xmlReceipt = converter.convertToXMLStream(receipt);
-            ByteArrayOutputStream out = FormatterService.create().convertToPDF(xmlReceipt);
-            printers.forEach(printer -> printer.print(new ByteArrayInputStream(out.toByteArray(),0, out.size())));
-            logger.info("Printing executed successfully");
+            ByteArrayOutputStream out = null;
+            InputStream xmlReceipt = null;
+            try {
+                logger.info("Starting the process of printing the receipt: " +  receipt.toString());
+                ReceiptToXML converter = new ReceiptToXML(new ObjectFactory());
+                xmlReceipt = converter.convertToXMLStream(receipt);
+                out = FormatterService.create().convertToPDF(xmlReceipt);
+                Wrapper<ByteArrayOutputStream> outWrapper = new Wrapper<>();
+                outWrapper.setContent(out);
+                printers.forEach(printer -> printPdf(printer, outWrapper));
+                logger.info("Printing executed successfully");
+            }
+            finally {
+                closeInputStream(xmlReceipt);
+                closeOutputStream(out);
+            }
         });
+    }
+
+    private void printPdf(Printer printer, Wrapper<ByteArrayOutputStream> outWrapper) {
+        ByteArrayInputStream in = null;
+        try {
+            in = new ByteArrayInputStream(outWrapper.getContent().toByteArray(),0, outWrapper.getContent().size());
+            printer.print(in);
+        } finally {
+            closeInputStream(in);
+        }
+    }
+
+    private void closeInputStream(InputStream in) {
+        if (in != null) {
+            try {
+                in.close();
+            } catch (IOException e) {
+                logger.error("Exception while closing input stream.", e);
+            }
+        }
+    }
+
+    private void closeOutputStream(OutputStream out) {
+        if (out != null) {
+            try {
+                out.close();
+            } catch (IOException e) {
+                logger.error("Exception while closing output stream.", e);
+            }
+        }
     }
 }

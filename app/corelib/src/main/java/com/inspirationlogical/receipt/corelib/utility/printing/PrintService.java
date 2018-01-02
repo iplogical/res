@@ -17,8 +17,12 @@ public class PrintService {
     @Inject
     private Printer printer;
 
-    private PrintService(String input){
-        printer = new NullPrinter();
+    public static PrintService create(){
+        try {
+            return PrintingInjector.getInjector().getInstance(PrintService.class);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     public String getName(){
@@ -27,14 +31,6 @@ public class PrintService {
 
     public void print(InputStream pdf){
         printer.print(pdf);
-    }
-
-    public static PrintService create(){
-        try {
-            return PrintingInjector.getInjector().getInstance(PrintService.class);
-        }catch (Exception e){
-            return new PrintService("");
-        }
     }
 }
 

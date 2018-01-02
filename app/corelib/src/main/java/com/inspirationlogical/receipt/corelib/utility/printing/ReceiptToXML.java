@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.utility.printing;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.time.ZoneId;
@@ -75,6 +76,7 @@ public class ReceiptToXML {
     public InputStream convertToXMLStream(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
         logger.info("Create the Receipt content tree from the entity: " + receipt.toString());
         Receipt r = createReceipt(receipt);
+        ByteArrayOutputStream baos = null;
         try {
             logger.info("Create the JAXBContext and the Marshaller objects.");
             JAXBContext context = JAXBContext.newInstance("com.inspirationlogical.receipt.corelib.jaxb");
@@ -82,7 +84,7 @@ public class ReceiptToXML {
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             jaxbMarshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             jaxbMarshaller.setSchema(schema);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            baos = new ByteArrayOutputStream();
 
             logger.info("Start marshalling to create the xml representation of the Receipt");
             jaxbMarshaller.marshal(r, baos);
@@ -90,6 +92,14 @@ public class ReceiptToXML {
         } catch (Exception e) {
             logger.error("Exception in convertToXMLStream: " + e.getMessage());
             throw new RuntimeException(e);
+        } finally {
+            try {
+                if (baos != null) {
+                    baos.close();
+                }
+            } catch (IOException e) {
+                logger.error("Error while closing the output stream", e);
+            }
         }
     }
 

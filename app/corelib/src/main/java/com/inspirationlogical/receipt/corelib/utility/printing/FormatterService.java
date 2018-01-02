@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 public class FormatterService {
     @Inject
     private ReceiptFormatter formatter;
+
     public ByteArrayOutputStream convertToPDF(InputStream receipt){
         return formatter.convertToPDF(receipt);
     }
