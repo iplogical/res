@@ -2,11 +2,10 @@ package com.inspirationlogical.receipt.corelib.printing;
 
 import java.io.InputStream;
 
-/**
- * Created by Ferenc on 2017. 03. 14..
- */
 public interface Printer {
-    String getName();
+//
+//    String getName();
+
     void print(InputStream pdf);
 }
 

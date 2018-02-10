@@ -6,10 +6,6 @@ import com.google.inject.Inject;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-/**
- * Created by Ferenc on 2017. 03. 18..
- */
-
 @NoArgsConstructor
 public class PrintService {
 
@@ -23,10 +19,6 @@ public class PrintService {
         }catch (Exception e){
             return null;
         }
-    }
-
-    public String getName(){
-        return printer.getName();
     }
 
     public void print(InputStream pdf){

@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.printing;
 
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,9 +21,6 @@ import javax.print.attribute.PrintServiceAttributeSet;
 import javax.print.event.PrintJobAdapter;
 import javax.print.event.PrintJobEvent;
 
-/**
- * Created by Ferenc on 2017. 03. 11..
- */
 public class EpsonTMT20IIPrinter implements Printer {
 
     private final static Logger logger = LoggerFactory.getLogger(EpsonTMT20IIPrinter.class);
@@ -41,12 +39,6 @@ public class EpsonTMT20IIPrinter implements Printer {
             throw new RuntimeException("Couldn't find "+ PRINTER_NAME + " printer");
         }
         this.service = filtered.get(0);
-    }
-
-
-    @Override
-    public String getName() {
-        return PRINTER_NAME;
     }
 
     @Override

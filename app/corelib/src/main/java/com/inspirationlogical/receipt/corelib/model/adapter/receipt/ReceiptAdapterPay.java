@@ -29,7 +29,7 @@ import static java.util.stream.Collectors.toList;
 
 public class ReceiptAdapterPay extends AbstractAdapter<Receipt> {
 
-    public  interface Listener{
+    public interface Listener{
         void onOpen(ReceiptAdapterPay receipt);
         void onClose(Receipt receipt);
     }

@@ -30,9 +30,6 @@ import com.inspirationlogical.receipt.corelib.exception.FOPConfigurationErrorExc
 import com.inspirationlogical.receipt.corelib.exception.ReceiptXSLTNotFoundException;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
-/**
- * Created by Ferenc on 2017. 03. 11..
- */
 public class ReceiptFormatterEpsonTMT20II implements ReceiptFormatter {
     private static FopFactory fopFactory;
 

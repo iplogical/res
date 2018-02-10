@@ -37,10 +37,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
-
-/**
- * Created by Ferenc on 2017. 03. 11..
- */
 public class ReceiptToXML {
 
     private final static Logger logger = LoggerFactory.getLogger(ReceiptToXML.class);

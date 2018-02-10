@@ -8,30 +8,26 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 
+import lombok.Getter;
 import org.apache.commons.io.IOUtils;
 
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
-/**
- * Created by Ferenc on 2017. 03. 14..
- */
 public class FilePrinter implements Printer {
-    @Override
-    public String getName() {
-        return "FilePrinter";
-    }
+
+    @Getter
+    private static String filePath;
 
     @Override
     public void print(InputStream pdf) {
         File out = null;
         FileOutputStream outStream = null;
         try {
-            String filename = "receipt_" + now()
-                    .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS")) + ".pdf";
-            String path = Resources.CONFIG.getString("ReceiptOutDir") + File.separator + filename;
+            String fileName = "receipt_" + now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS")) + ".pdf";
+            String path = Resources.CONFIG.getString("ReceiptOutDir") + File.separator + fileName;
             new File(Resources.CONFIG.getString("ReceiptOutDir") ).mkdirs();
-            out = new File(Paths.get(path).toString());
-            out.createNewFile();
+            filePath = Paths.get(path).toString();
+            out = new File(filePath);
             outStream = new FileOutputStream(out);
             IOUtils.copy(pdf,outStream);
         } catch (Exception e) {

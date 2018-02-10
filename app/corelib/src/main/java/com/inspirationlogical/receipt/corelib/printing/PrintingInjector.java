@@ -38,9 +38,18 @@ class PrintingInjector extends AbstractModule {
 
     @Override
     protected void configure() {
-        Class printer = getClass(Resources.CONFIG.getString("ReceiptPrinterClass"),PrinterClassNotFoundException.class);
+        Class printer;
+        if (isWindows()) {
+            printer = getClass(Resources.CONFIG.getString("ReceiptPrinterClassWindows"), PrinterClassNotFoundException.class);
+        } else {
+            printer = getClass(Resources.CONFIG.getString("ReceiptPrinterClass"), PrinterClassNotFoundException.class);
+        }
         Class formatter  = getClass(Resources.CONFIG.getString("ReceiptFormatterClass"), FormatterClassNotFound.class);
         bind(Printer.class).to(printer);
         bind(ReceiptFormatter.class).to(formatter);
+    }
+
+    private boolean isWindows() {
+        return System.getProperty("os.name").toLowerCase().contains("win");
     }
 }

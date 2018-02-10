@@ -28,11 +28,11 @@ public class ReceiptPrinter implements ReceiptAdapterPay.Listener {
 
     static {
         printers = new ArrayList<>();
+        printers.add(new FilePrinter());
         PrintService printService = PrintService.create();
         if(printService != null) {
             printers.add(printService.getPrinter());
         }
-        printers.add(new FilePrinter());
     }
 
 

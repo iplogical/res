@@ -28,8 +28,10 @@ dependencies {
     compile 'org.hibernate:hibernate-validator:5.4.0.Final'
     compile 'org.hibernate:hibernate-c3p0:5.2.10.Final'
 
-    compile 'org.apache.xmlgraphics:fop:2.1'
-    compile 'org.apache.pdfbox:fontbox:1.8.13'
+    compile 'org.apache.xmlgraphics:fop:2.2'
+    compile 'org.apache.pdfbox:fontbox:2.0.8'
+    compile 'org.apache.pdfbox:pdfbox:2.0.8'
+
     compile 'org.apache.commons:commons-lang3:3.0'
 
     // https://mvnrepository.com/artifact/javax.el/el-api
