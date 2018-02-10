@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -31,6 +32,18 @@ import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
+import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.ResourceBundle;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
+import static java.lang.String.valueOf;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
+@Component
 public class TableControllerImpl implements TableController {
 
     private static final String TABLE_VIEW_PATH = "/view/fxml/Table.fxml";

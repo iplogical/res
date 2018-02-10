@@ -6,11 +6,13 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 import static com.inspirationlogical.receipt.corelib.service.AbstractService.createViewsFromAdapters;
 
+@Component
 public class EntityViewsImpl implements EntityViews {
 
     private static List<ProductView> productViews;

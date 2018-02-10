@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.adapter.*;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
@@ -16,13 +15,17 @@ import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@Singleton
+//@Singleton
+@Service
+@Transactional
 public class ManagerServiceImpl extends AbstractService implements ManagerService {
 
     final private static Logger logger = LoggerFactory.getLogger(ManagerServiceImpl.class);

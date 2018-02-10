@@ -17,10 +17,22 @@ import javafx.stage.Stage;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.orm.jpa.LocalEntityManagerFactoryBean;
 
 import static com.inspirationlogical.receipt.corelib.frontend.application.MainStage.*;
-import static com.inspirationlogical.receipt.waiter.registry.WaiterRegistry.getInstance;
 
+@SpringBootApplication
+@ComponentScan(basePackages = {
+        "com.inspirationlogical.receipt.corelib.frontend.view",
+        "com.inspirationlogical.receipt.corelib.service",
+        "com.inspirationlogical.receipt.waiter"
+})
 public class WaiterApp extends Application implements StageProvider, ResourcesProvider {
 
     @Setter
@@ -30,6 +42,16 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
 
     private static Stage stage;
 
+    @Autowired
+    private ViewLoader viewLoader;
+
+    @Autowired
+    private RestaurantController restaurantController;
+
+    private ConfigurableApplicationContext springContext;
+
+    private Parent root;
+
     private ResourceBundleWrapper resources;
 
     @Override
@@ -37,6 +59,11 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
         if(testApplication) {
             EntityManagerProvider.getTestEntityManager();
         }
+        springContext = SpringApplication.run(WaiterApp.class);
+        MainStage.setStageProvider(this);
+        MainStage.setResourcesProvider(this);
+//        ViewLoader viewLoader = getInstance(ViewLoader.class);
+        root = (Parent) viewLoader.loadView(restaurantController);
     }
 
     @Override
@@ -48,10 +75,6 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
         Thread.setDefaultUncaughtExceptionHandler(WaiterApp::defaultExceptionHandler);
 
         try {
-            MainStage.setStageProvider(this);
-            MainStage.setResourcesProvider(this);
-            ViewLoader viewLoader = getInstance(ViewLoader.class);
-            Parent root = (Parent) viewLoader.loadView(getInstance(RestaurantController.class));
             stage.setTitle(APP_TITLE);
             stage.setScene(new Scene(root, APP_WIDTH, APP_HEIGHT));
             stage.setFullScreen(true);
@@ -66,6 +89,7 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
     public void stop() throws Exception {
         EntityManagerProvider.closeEntityManager();
         BackgroundThread.shutdown();
+        springContext.stop();
         logger.warn("Stopping WaiterApp");
     }
 
@@ -86,6 +110,13 @@ public class WaiterApp extends Application implements StageProvider, ResourcesPr
     private static void defaultExceptionHandler(Thread t, Throwable e) {
         logger.error("Unhandled exception in WaiterApp. On thread: " + t.getName(), e);
         ErrorMessage.showErrorMessageLong(stage.getScene().getRoot(), WaiterResources.WAITER.getString("UnhandledException"));
+    }
+
+    @Bean
+    public LocalEntityManagerFactoryBean entityManagerFactory() {
+        LocalEntityManagerFactoryBean factoryBean = new LocalEntityManagerFactoryBean();
+        factoryBean.setPersistenceUnitName("Production");
+        return factoryBean;
     }
 }
 

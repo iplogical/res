@@ -1,28 +1,28 @@
 package com.inspirationlogical.receipt.corelib.frontend.view;
 
-import java.io.IOException;
-
-import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.application.MainStage;
 import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
+@Component
 public class ViewLoader {
 
-    private FXMLLoaderProvider fxmlLoaderProvider;
-
-    @Inject
-    public ViewLoader(FXMLLoaderProvider fxmlLoaderProvider) {
-        this.fxmlLoaderProvider = fxmlLoaderProvider;
-    }
+//    private FXMLLoaderProvider fxmlLoaderProvider;
+//
+//    @Inject
+//    public ViewLoader(FXMLLoaderProvider fxmlLoaderProvider) {
+//        this.fxmlLoaderProvider = fxmlLoaderProvider;
+//    }
 
     public Node loadView(String viewPath) {
         Parent root = null;
 
-        FXMLLoader loader = fxmlLoaderProvider.getLoader(viewPath);
+        FXMLLoader loader = getLoader(viewPath);
         loader.setResources(MainStage.getResourcesProvider().getResources().getBundle());
 
         try {
@@ -38,7 +38,7 @@ public class ViewLoader {
         Parent root = (Parent) controller.getRootNode();
 
         if (root == null) {
-            FXMLLoader loader = fxmlLoaderProvider.getLoader(controller.getViewPath());
+            FXMLLoader loader = getLoader(controller.getViewPath());
             loader.setController(controller);
             loader.setResources(MainStage.getResourcesProvider().getResources().getBundle());
             try {
@@ -50,11 +50,15 @@ public class ViewLoader {
         return root;
     }
 
+    private FXMLLoader getLoader(String viewPath) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(viewPath));
+//        loader.setControllerFactory(springContext::getBean);
+        return loader;
+    }
+
     public Node loadViewIntoScene(Controller controller) {
         Parent root = (Parent) loadView(controller);
-
         MainStage.getStageProvider().getStage().getScene().setRoot(root);
-
         return root;
     }
 }

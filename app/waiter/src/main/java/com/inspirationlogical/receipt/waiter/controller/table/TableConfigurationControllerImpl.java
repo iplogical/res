@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
@@ -26,7 +24,10 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import javafx.util.Duration;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -35,20 +36,25 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldH
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 import static java.util.stream.Collectors.toList;
 
-@Singleton
+//@Singleton
+@Component
 public class TableConfigurationControllerImpl implements TableConfigurationController {
 
-    @Inject
+    //    @Inject
+    @Autowired
     private ViewLoader viewLoader;
 
+    @Autowired
     private RestaurantController restaurantController;
 
     private RestaurantViewState restaurantViewState;
 
     private static Predicate<TableView> DISPLAYABLE_TABLE = TableView::isDisplayable;
 
-
+    @Autowired
     private TableFormController tableFormController;
+
+    @Autowired
     private RestaurantService restaurantService;
 
     @Getter
@@ -58,13 +64,21 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     private RestaurantView restaurantView;
     private Popup tableForm;
 
-    @Inject
-    public TableConfigurationControllerImpl(RestaurantController restaurantController,
-                                            TableFormController tableFormController,
-                                            RestaurantService restaurantService) {
-        this.restaurantController = restaurantController;
-        this.tableFormController = tableFormController;
-        this.restaurantService = restaurantService;
+//    //@Inject
+//    @Autowired
+//    public TableConfigurationControllerImpl(RestaurantController restaurantController,
+//                                            TableFormController tableFormController,
+//                                            RestaurantService restaurantService) {
+//        this.restaurantController = restaurantController;
+//        this.tableFormController = tableFormController;
+//        this.restaurantService = restaurantService;
+//        restaurantView = restaurantService.getActiveRestaurant();
+//        tableControllers = new HashSet<>();
+//        selectedTables = new ArrayList<>();
+//    }
+
+    @PostConstruct
+    private void init() {
         restaurantView = restaurantService.getActiveRestaurant();
         tableControllers = new HashSet<>();
         selectedTables = new ArrayList<>();

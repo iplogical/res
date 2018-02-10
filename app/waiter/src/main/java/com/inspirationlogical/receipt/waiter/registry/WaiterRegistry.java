@@ -10,8 +10,6 @@ import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentC
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.*;
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationController;
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.table.*;
 
 public class WaiterRegistry extends Registry {
@@ -23,7 +21,7 @@ public class WaiterRegistry extends Registry {
     @Override
     protected void configure() {
         super.configure();
-        bind(RestaurantController.class).to(RestaurantControllerImpl.class);
+//        bind(RestaurantController.class).to(RestaurantControllerImpl.class);
         bind(TableConfigurationController.class).to(TableConfigurationControllerImpl.class);
         bind(SaleController.class).to(SaleControllerImpl.class);
         bind(ProductsAndCategoriesController.class).to(ProductsAndCategoriesControllerImpl.class);

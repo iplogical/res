@@ -1,19 +1,11 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
-
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.fxml.FXML;
 import javafx.geometry.Dimension2D;
@@ -23,8 +15,15 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import org.springframework.stereotype.Component;
 
-@Singleton
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
+
+//@Singleton
+@Component
 public class TableFormControllerImpl implements TableFormController {
 
     private static final String TABLE_FORM_VIEW_PATH = "/view/fxml/TableForm.fxml";

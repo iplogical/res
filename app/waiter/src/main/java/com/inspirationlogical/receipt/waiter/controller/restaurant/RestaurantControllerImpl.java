@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.restaurant;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
@@ -26,6 +25,8 @@ import javafx.stage.Popup;
 import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.util.LinkedHashSet;
@@ -36,7 +37,8 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.m
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.HOLD_DURATION_MILLIS;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 
-@Singleton
+//@Singleton
+@Component
 public class RestaurantControllerImpl implements RestaurantController {
 
     final private static Logger logger = LoggerFactory.getLogger(RestaurantControllerImpl.class);
@@ -108,9 +110,15 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Inject
     public RestaurantControllerImpl(RestaurantService restaurantService,
-                                    TableConfigurationController tableConfigurationController) {
+                                    @Lazy TableConfigurationController tableConfigurationController) {
         this.restaurantService = restaurantService;
         this.tableConfigurationController = tableConfigurationController;
+        selectedTables = new LinkedHashSet<>();
+        restaurantViewState = new RestaurantViewState(selectedTables);
+    }
+
+    //    @Inject
+    public RestaurantControllerImpl() {
         selectedTables = new LinkedHashSet<>();
         restaurantViewState = new RestaurantViewState(selectedTables);
     }

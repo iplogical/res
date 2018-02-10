@@ -1,21 +1,17 @@
 package com.inspirationlogical.receipt.corelib.frontend.registry;
 
-import javax.persistence.EntityManager;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import com.google.inject.*;
 import com.inspirationlogical.receipt.corelib.frontend.view.FXMLLoaderProvider;
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.security.service.SecurityService;
 import com.inspirationlogical.receipt.corelib.security.service.SecurityServiceImpl;
-import com.inspirationlogical.receipt.corelib.service.*;
-
+import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.corelib.service.CommonServiceImpl;
+import com.inspirationlogical.receipt.corelib.service.EntityViews;
+import com.inspirationlogical.receipt.corelib.service.EntityViewsImpl;
 import lombok.SneakyThrows;
+
+import javax.persistence.EntityManager;
 
 public abstract class Registry extends AbstractModule {
 
@@ -23,7 +19,7 @@ public abstract class Registry extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(RestaurantService.class).to(RestaurantServiceImpl.class);
+//        bind(RestaurantService.class).to(RestaurantServiceImpl.class);
         bind(CommonService.class).to(CommonServiceImpl.class);
         bind(SecurityService.class).to(SecurityServiceImpl.class);
         bind(EntityViews.class).to(EntityViewsImpl.class);
@@ -43,11 +39,11 @@ public abstract class Registry extends AbstractModule {
         return new FXMLLoaderProvider(this);
     }
 
-    @Provides
-    @Singleton
-    ViewLoader provideViewLoader(FXMLLoaderProvider fxmlLoaderProvider) {
-        return new ViewLoader(fxmlLoaderProvider);
-    }
+//    @Provides
+//    @Singleton
+//    ViewLoader provideViewLoader(FXMLLoaderProvider fxmlLoaderProvider) {
+//        return new ViewLoader(fxmlLoaderProvider);
+//    }
 
     @Provides
     @Singleton

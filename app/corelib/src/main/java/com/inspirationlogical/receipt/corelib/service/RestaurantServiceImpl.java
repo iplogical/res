@@ -1,9 +1,11 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
-import com.inspirationlogical.receipt.corelib.model.adapter.*;
+import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.RestaurantAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
@@ -13,14 +15,18 @@ import com.inspirationlogical.receipt.corelib.params.TableParams;
 import javafx.geometry.Point2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.canBeHosted;
 import static java.util.stream.Collectors.toList;
 
-@Singleton
+//@Singleton
+@Service
+@Transactional
 public class RestaurantServiceImpl extends AbstractService implements RestaurantService {
 
     final private static Logger logger = LoggerFactory.getLogger(RestaurantServiceImpl.class);
