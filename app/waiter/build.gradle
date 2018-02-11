@@ -7,23 +7,8 @@
  * user guide available at https://docs.gradle.org/2.13/userguide/tutorial_java_projects.html
  */
 
-//
-//buildscript {
-//    ext {
-//        springBootVersion = '1.5.10.RELEASE'
-//    }
-//    repositories {
-//        mavenCentral()
-//    }
-//    dependencies {
-//        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-//    }
-//}
-
 apply plugin: 'java'
 apply plugin: 'application'
-apply plugin: 'idea'
-//apply plugin: 'org.springframework.boot'
 
 mainClassName = 'com.inspirationlogical.receipt.waiter.application.WaiterApp'
 
@@ -35,11 +20,7 @@ run {
 dependencies {
     compile project(':corelib')
 
-//    compile('org.springframework.boot:spring-boot-starter')
-//    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-
     testCompile project(':corelib')
-    // https://mvnrepository.com/artifact/org.testfx/testfx-core
     testCompile group: 'org.testfx', name: 'testfx-core', version: '4.0.6-alpha'
     testCompile group: 'org.testfx', name: 'testfx-junit', version: '4.0.6-alpha'
 
