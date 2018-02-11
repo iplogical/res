@@ -2,14 +2,18 @@ package com.inspirationlogical.receipt.waiter.controller.dailysummary;
 
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
+import com.inspirationlogical.receipt.waiter.utility.DailySummaryUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickButtonThenWait;
 import static com.inspirationlogical.receipt.waiter.utility.DailySummaryUtils.*;
-import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
+import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.PAYMENT_METHOD_CASH;
+import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TO_PAYMENT;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.PayUtils.*;
+import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.closeDay;
 import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.enterDailySummary;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 
@@ -71,4 +75,11 @@ public class DailySummaryControllerDiscountTest extends TestFXBase {
         assertTotalDiscount(2, 6900);
         assertSoldTotalPrices(6900, 0, 0);
     }
+
+    @After
+    public void toRestaurantView() {
+        DailySummaryUtils.backToRestaurantView();
+        closeDay();
+    }
+
 }

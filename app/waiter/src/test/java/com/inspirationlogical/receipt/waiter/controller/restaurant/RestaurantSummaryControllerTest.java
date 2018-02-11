@@ -5,11 +5,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.CONSUMED_TEST_TABLE_ONE;
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.RESERVATION_TEST_TABLE;
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.RESTAURANT_TEST_TABLE;
-import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickButtonThenWait;
-import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickOnThenWait;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.PayUtils.pay;
 import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
@@ -23,10 +20,8 @@ public class RestaurantSummaryControllerTest extends TestFXBase {
     static final int INITIAL_PAID_CONSUMPTION = 7600;
 
     @Before
-    public void closeDay() {
-        clickButtonThenWait("Restaurant.DailyClosure", 500);
-        clickOnThenWait("Yes", 2000);
-        sleep(2500);
+    public void init() {
+        closeDay();
     }
 
     @Test

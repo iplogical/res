@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import javafx.geometry.Point2D;
 import javafx.scene.control.TextField;
 
@@ -113,5 +112,11 @@ public class RestaurantUtils  extends AbstractUtils {
 
     public static int getTotalIncome() {
         return Integer.valueOf(getLabel(TOTAL_INCOME));
+    }
+
+    public static void closeDay() {
+        clickButtonThenWait("Restaurant.DailyClosure", 500);
+        clickOnThenWait("Yes", 2000);
+        robot.sleep(2500);
     }
 }

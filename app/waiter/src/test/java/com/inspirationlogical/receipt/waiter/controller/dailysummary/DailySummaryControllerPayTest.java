@@ -10,6 +10,7 @@ import org.junit.Test;
 import static com.inspirationlogical.receipt.waiter.utility.DailySummaryUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.PRODUCT_FIVE_LONG;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.PRODUCT_THREE_LONG;
+import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.closeDay;
 import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.enterDailySummary;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.assertSoldProduct;
 
@@ -53,6 +54,7 @@ public class DailySummaryControllerPayTest extends TestFXBase {
     @After
     public void toRestaurantView() {
         DailySummaryUtils.backToRestaurantView();
+        closeDay();
     }
 
 }
