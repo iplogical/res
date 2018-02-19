@@ -7,7 +7,8 @@ public enum QuantityUnit {
     LITER,
     CENTILITER,
     KILOGRAM,
-    GRAM;
+    GRAM,
+    PIECE;
 
     public String toI18nString() {
         if(this.equals(LITER))
@@ -18,6 +19,8 @@ public enum QuantityUnit {
             return Resources.CONFIG.getString("QuantityUnit.Kilogram");
         if(this.equals(GRAM))
             return Resources.CONFIG.getString("QuantityUnit.Gram");
+        if (this.equals(PIECE))
+            return Resources.CONFIG.getString("QuantityUnit.Piece");
         return "";
     }
 
