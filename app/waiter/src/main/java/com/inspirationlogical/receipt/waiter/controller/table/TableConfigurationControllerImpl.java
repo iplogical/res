@@ -79,13 +79,13 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @PostConstruct
     private void init() {
-        restaurantView = restaurantService.getActiveRestaurant();
         tableControllers = new HashSet<>();
         selectedTables = new ArrayList<>();
     }
 
     @Override
     public void initialize() {
+        restaurantView = restaurantService.getActiveRestaurant();
         restaurantViewState = restaurantController.getViewState();
         initTables();
         initTableForm();

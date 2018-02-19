@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 @Component
 public class ViewLoader {
@@ -40,7 +41,8 @@ public class ViewLoader {
         if (root == null) {
             FXMLLoader loader = getLoader(controller.getViewPath());
             loader.setController(controller);
-            loader.setResources(MainStage.getResourcesProvider().getResources().getBundle());
+            ResourceBundle resourceBundle = MainStage.getResourcesProvider().getResources().getBundle();
+            loader.setResources(resourceBundle);
             try {
                 root = loader.load();
             } catch (IOException e) {
