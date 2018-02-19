@@ -1,11 +1,5 @@
 package com.inspirationlogical.receipt.manager.controller.goods;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
-
-import java.net.URL;
-import java.util.Comparator;
-import java.util.ResourceBundle;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
@@ -24,7 +18,6 @@ import com.inspirationlogical.receipt.manager.controller.pricemodifier.PriceModi
 import com.inspirationlogical.receipt.manager.controller.receipt.ReceiptController;
 import com.inspirationlogical.receipt.manager.controller.stock.StockController;
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
-
 import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -33,6 +26,12 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Popup;
+
+import java.net.URL;
+import java.util.Comparator;
+import java.util.ResourceBundle;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
 
 @Singleton
 public class GoodsControllerImpl extends AbstractController implements GoodsController {
@@ -144,7 +143,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     private void initCategories() {
         ProductCategoryView rootCategory = commonService.getRootProductCategory();
-        GoodsTableViewModel goodsTableViewModel = createProductViewModel(rootCategory);
+        GoodsTableViewModel goodsTableViewModel = createGoodsTableViewModel(rootCategory);
         TreeItem<GoodsTableViewModel> rootItem = new TreeItem<>(goodsTableViewModel);
         goodsTable.setRoot(rootItem);
         goodsTable.setShowRoot(false);
@@ -166,7 +165,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     }
 
     private TreeItem<GoodsTableViewModel> addProductsAndRecipeItems(TreeItem<GoodsTableViewModel> parentTreeItem, ProductCategoryView childCategory) {
-        GoodsTableViewModel goodsTableViewModel = createProductViewModel(childCategory);
+        GoodsTableViewModel goodsTableViewModel = createGoodsTableViewModel(childCategory);
         TreeItem<GoodsTableViewModel> childTreeItem = new TreeItem<>(goodsTableViewModel);
         parentTreeItem.getChildren().add(childTreeItem);
         sortTreeItemChildren(parentTreeItem);
@@ -174,8 +173,8 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         return childTreeItem;
     }
 
-    private GoodsTableViewModel createProductViewModel(ProductCategoryView childCategory) {
-        GoodsTableViewModel goodsTableViewModel = null;
+    private GoodsTableViewModel createGoodsTableViewModel(ProductCategoryView childCategory) {
+        GoodsTableViewModel goodsTableViewModel;
         ProductView productView = childCategory.getProduct();
         if(productView != null) {
             goodsTableViewModel = new GoodsTableViewModel(productView);
@@ -217,8 +216,17 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
             ErrorMessage.showErrorMessage(root, e.getMessage());
         } finally {
             productForm.hide();
-            initCategories();
+            initCategoriesAndScrollBack();
         }
+    }
+
+    private void initCategoriesAndScrollBack() {
+        int index = 0;
+        if (goodsTable.getSelectionModel() != null) {
+            index = goodsTable.getSelectionModel().getFocusedIndex();
+        }
+        initCategories();
+        goodsTable.scrollTo(index);
     }
 
     private void addOrUpdateProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
@@ -233,7 +241,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void addCategory(ProductCategoryParams params) {
         try {
             addOrUpdateCategory(params);
-            initCategories();
+            initCategoriesAndScrollBack();
         } catch (IllegalProductCategoryStateException e) {
             ErrorMessage.showErrorMessage(root, e.getMessage());
         }  finally {
@@ -251,7 +259,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     @Override
     public void updateGoods() {
-        initCategories();
+        initCategoriesAndScrollBack();
     }
 
     @FXML
