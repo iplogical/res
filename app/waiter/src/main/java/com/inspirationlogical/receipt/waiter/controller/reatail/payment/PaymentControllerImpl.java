@@ -4,15 +4,10 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
-import com.inspirationlogical.receipt.corelib.service.RestaurantService;
-import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.state.PaymentViewState;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.collections.FXCollections;
@@ -336,7 +331,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             ReceiptRecordView recordInPaidProducts = cloneReceiptRecordAndAddToSoldProducts(row);
             decreaseRowInPaidProducts(row, recordInPaidProducts, 1);
         } else {
-            decreaseRowInPaidProducts(row, increaseRowInSoldProducts(rowInSoldProducts.get(0), 1, false), 1);
+            double amount = Double.parseDouble(row.getProductQuantity());
+            amount = amount < 1 ? amount : 1;
+            decreaseRowInPaidProducts(row, increaseRowInSoldProducts(rowInSoldProducts.get(0), amount, false), amount);
         }
         refreshPaidProductsTable();
         refreshSoldProductsTable();
