@@ -3,16 +3,10 @@ package com.inspirationlogical.receipt.corelib.service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
-import com.inspirationlogical.receipt.corelib.model.adapter.*;
-import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.view.*;
-import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
-import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
-import com.inspirationlogical.receipt.corelib.params.RecipeParams;
-import com.inspirationlogical.receipt.corelib.params.StockParams;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +94,7 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
                 .filter(productView -> !productView.getType().equals(AD_HOC_PRODUCT))
                 .filter(productView -> !productView.getType().equals(GAME_FEE_PRODUCT))
                 .filter(productView -> !productView.getType().equals(STORABLE))
+                .filter(productView -> productView.getStatus().equals(ACTIVE))
                 .collect(toList());
     }
 

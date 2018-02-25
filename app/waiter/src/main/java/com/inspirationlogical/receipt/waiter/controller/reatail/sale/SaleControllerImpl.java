@@ -6,11 +6,9 @@ import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
-import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentControllerImpl;
-import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
@@ -86,8 +84,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     Label liveTime;
 
     private Popup adHocProductForm;
-
-    private @Inject CommonService commonService;
 
     private @Inject PaymentController paymentController;
     private @Inject AdHocProductFormController adHocProductFormController;
