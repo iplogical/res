@@ -9,13 +9,13 @@
 <xsl:template match="receipt">
     <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
         <fo:layout-master-set>
-            <fo:simple-page-master 
-                page-width="80mm"
-                margin-top="0mm"
-                margin-left="5mm"
-                margin-bottom="10mm"
-                margin-right="5mm"
-                master-name="PageMaster" 
+            <fo:simple-page-master
+                    page-width="80mm"
+                    margin-top="0mm"
+                    margin-left="0mm"
+                    margin-bottom="10mm"
+                    margin-right="10mm"
+                    master-name="PageMaster"
                 >
                 <fo:region-body margin-top="1cm" margin-bottom="1cm"/>
             </fo:simple-page-master>
