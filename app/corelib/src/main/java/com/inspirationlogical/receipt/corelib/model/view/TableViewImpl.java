@@ -1,17 +1,16 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.now;
 
@@ -182,6 +181,24 @@ public class TableViewImpl extends AbstractModelViewImpl<TableAdapter> implement
                 .map(TableAdapter::new)
                 .map(TableViewImpl::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isOrderDelivered() {
+        ReceiptAdapterBase openReceipt = adapter.getOpenReceipt();
+        if (openReceipt == null) {
+            return true;
+        }
+        return openReceipt.isOrderDelivered();
+    }
+
+    @Override
+    public LocalDateTime getOrderDeliveryTime() {
+        ReceiptAdapterBase openReceipt = adapter.getOpenReceipt();
+        if (openReceipt == null) {
+            return null;
+        }
+        return openReceipt.getOrderDeliveryTime();
     }
 
     @Override

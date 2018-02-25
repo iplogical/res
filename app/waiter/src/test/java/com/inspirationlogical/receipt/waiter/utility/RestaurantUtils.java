@@ -115,7 +115,8 @@ public class RestaurantUtils  extends AbstractUtils {
     }
 
     public static void closeDay() {
-        clickButtonThenWait("Restaurant.DailyClosure", 500);
+//        clickButtonThenWait("Restaurant.DailyClosure", 500);
+        clickButtonThenWait(CLOSE_DAY, 500);
         clickOnThenWait("Yes", 2000);
         robot.sleep(2500);
     }

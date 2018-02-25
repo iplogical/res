@@ -1,16 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
-import static java.lang.String.valueOf;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-
-import java.net.URL;
-import java.time.LocalDateTime;
-import java.util.ResourceBundle;
-
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
@@ -20,7 +9,6 @@ import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
-
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -31,6 +19,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+
+import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.ResourceBundle;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
+import static java.lang.String.valueOf;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class TableControllerImpl implements TableController {
 
@@ -243,11 +242,12 @@ public class TableControllerImpl implements TableController {
     @Override
     public void setOrderDelivered(boolean delivered) {
         tableViewState.setOrderDelivered(delivered);
-    }
-
-    @Override
-    public void setOrderDeliveredTime(LocalDateTime time) {
-        tableViewState.setOrderDeliveredTime(time);
+        retailService.setOrderDelivered(tableView, delivered);
+        if (delivered) {
+            LocalDateTime now = LocalDateTime.now();
+            tableViewState.setOrderDeliveredTime(now);
+            retailService.setOrderDeliveredTime(tableView, now);
+        }
     }
 
     @Override

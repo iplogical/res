@@ -1,13 +1,13 @@
 package com.inspirationlogical.receipt.corelib.service;
 
+import com.inspirationlogical.receipt.corelib.model.view.*;
+import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
+import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-
-import com.inspirationlogical.receipt.corelib.model.view.*;
-import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
-import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 
 public interface RetailService {
 
@@ -38,4 +38,8 @@ public interface RetailService {
     void printAggregateConsumption(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate);
 
     ReceiptView getAggregatedReceipt(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate);
+
+    void setOrderDelivered(TableView tableView, boolean delivered);
+
+    void setOrderDeliveredTime(TableView tableView, LocalDateTime now);
 }

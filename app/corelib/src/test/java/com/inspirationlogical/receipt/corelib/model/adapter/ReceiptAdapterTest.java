@@ -1,21 +1,12 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase.getReceiptsByClosureTime;
-import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;
-import static java.time.LocalDateTime.now;
-import static java.util.stream.Collectors.toList;
-import static org.junit.Assert.assertEquals;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-
+import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
 import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
@@ -25,9 +16,18 @@ import com.inspirationlogical.receipt.corelib.params.StockParams;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
+import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase.getReceiptsByClosureTime;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_CLOSED_RECEIPTS;
+import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.NUMBER_OF_RECEIPTS;
+import static java.time.LocalDateTime.now;
+import static java.util.stream.Collectors.toList;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Bálint on 2017.03.13..
@@ -315,8 +315,14 @@ public class ReceiptAdapterTest extends TestBase {
         receiptSaleOne.mergeReceiptRecords();
         assertEquals(numberOfRecords, receiptSaleOne.getAdaptee().getRecords().size());
         assertEquals(initialQuantity + 1, receiptSaleOne.getAdaptee().getRecords().stream()
-            .filter(record -> record.getName().equals(originalRecord.getAdaptee().getName()))
-            .collect(toList()).get(0).getSoldQuantity(), 0.001);
+                .filter(record -> record.getName().equals(originalRecord.getAdaptee().getName()))
+                .collect(toList()).get(0).getSoldQuantity(), 0.001);
+
+    }
+
+    @Test
+    public void testDeliveredSetToTrue() {
+        receiptSaleOne.setOrderDelivered(true);
 
     }
 }

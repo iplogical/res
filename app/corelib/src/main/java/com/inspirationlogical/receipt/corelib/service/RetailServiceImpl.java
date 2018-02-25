@@ -1,10 +1,5 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
@@ -14,6 +9,11 @@ import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Singleton
 public class RetailServiceImpl extends AbstractService implements RetailService {
@@ -108,5 +108,15 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     @Override
     public ReceiptView getAggregatedReceipt(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate) {
         return new DailyConsumptionAdapter().getAggregatedReceipt(startDate, endDate);
+    }
+
+    @Override
+    public void setOrderDelivered(TableView tableView, boolean delivered) {
+        getTableAdapter(tableView).getOpenReceipt().setOrderDelivered(delivered);
+    }
+
+    @Override
+    public void setOrderDeliveredTime(TableView tableView, LocalDateTime now) {
+        getTableAdapter(tableView).getOpenReceipt().setOrderDeliveredTime(now);
     }
 }

@@ -1,0 +1,3 @@
+ALTER TABLE public.receipt ADD deliverytime TIMESTAMP NULL;
+
+ALTER TABLE public.receipt ADD isdelivered BOOLEAN DEFAULT TRUE NULL;

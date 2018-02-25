@@ -3,7 +3,6 @@ package com.inspirationlogical.receipt.waiter.controller.table;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
-
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantViewState;
 import lombok.Data;
 
@@ -28,6 +27,8 @@ public class TableViewState implements ViewState {
     public TableViewState(RestaurantViewState restaurantViewState, TableView tableView) {
         this.restaurantViewState = restaurantViewState;
         this.tableView = tableView;
+        orderDelivered = tableView.isOrderDelivered();
+        orderDeliveredTime = tableView.getOrderDeliveryTime();
     }
 
     public boolean isOpen() {

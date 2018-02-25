@@ -14,6 +14,7 @@ import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransacti
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,4 +170,23 @@ public class ReceiptAdapterSell extends AbstractAdapter<Receipt> {
         });
     }
 
+    public void setOrderDelivered(boolean delivered) {
+        GuardedTransaction.run(() -> {
+            adaptee.setDelivered(delivered);
+        });
+    }
+
+    public boolean isOrderDelivered() {
+        return adaptee.isDelivered();
+    }
+
+    public void setOrderDeliveredTime(LocalDateTime now) {
+        GuardedTransaction.run(() -> {
+            adaptee.setDeliveryTime(now);
+        });
+    }
+
+    public LocalDateTime getOrderDeliveryTime() {
+        return adaptee.getDeliveryTime();
+    }
 }

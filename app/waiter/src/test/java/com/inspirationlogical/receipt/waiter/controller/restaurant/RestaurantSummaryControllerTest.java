@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.restaurant;
 
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -19,13 +18,9 @@ public class RestaurantSummaryControllerTest extends TestFXBase {
     static final int OPEN_CONSUMPTION = 13100;
     static final int INITIAL_PAID_CONSUMPTION = 7600;
 
-    @Before
-    public void init() {
-        closeDay();
-    }
-
     @Test
     public void testOpenTableNumber() {
+        closeDay();
         int originalOpenTableNumber = getOpenTableNumber();
         openTable(TABLE_NUMBER);
         sleep(1000);
@@ -36,6 +31,7 @@ public class RestaurantSummaryControllerTest extends TestFXBase {
 
     @Test
     public void testGuestCount() {
+        closeDay();
         int originalGuestCount = getGuestCount();
         openTable(TABLE_NUMBER);
         enterSaleView(TABLE_NUMBER);
@@ -51,6 +47,7 @@ public class RestaurantSummaryControllerTest extends TestFXBase {
 
     @Test
     public void testIncomeValues() {
+        closeDay();
         openTableAndSellThreeSoproni();
         backToRestaurantView();
         assertEquals(OPEN_CONSUMPTION + 1320, getOpenConsumption());

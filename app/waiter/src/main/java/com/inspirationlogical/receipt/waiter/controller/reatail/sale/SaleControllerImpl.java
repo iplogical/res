@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
@@ -194,9 +193,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private void setOrderDelivered(boolean isDelivered) {
         getTableController().setOrderDelivered(isDelivered);
-        if(isDelivered) {
-            getTableController().setOrderDeliveredTime(LocalDateTime.now());
-        }
     }
 
     private void resetToggleGroups() {

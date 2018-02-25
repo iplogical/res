@@ -171,4 +171,20 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
             return now().minusDays(1);
         }
     }
+
+    public void setOrderDelivered(boolean delivered) {
+        receiptAdapterSell.setOrderDelivered(delivered);
+    }
+
+    public boolean isOrderDelivered() {
+        return receiptAdapterSell.isOrderDelivered();
+    }
+
+    public void setOrderDeliveredTime(LocalDateTime now) {
+        receiptAdapterSell.setOrderDeliveredTime(now);
+    }
+
+    public LocalDateTime getOrderDeliveryTime() {
+        return receiptAdapterSell.getOrderDeliveryTime();
+    }
 }

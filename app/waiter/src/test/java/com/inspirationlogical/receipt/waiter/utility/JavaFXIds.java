@@ -16,6 +16,7 @@ public class JavaFXIds {
     public final static String OPEN_CONSUMPTION = "#openConsumption";
     public final static String PAID_CONSUMPTION = "#paidConsumption";
     public final static String TOTAL_INCOME = "#totalIncome";
+    public final static String CLOSE_DAY = "#dailyClosure";
 
     // TableForm.fxml
     public final static String TABLEFORM_NAME = "#tableName";

@@ -370,9 +370,9 @@ public class PaymentControllerTest  extends TestFXBase {
     public void testMovePaidProductBackToSoldProductsForPartialPayment() {
         payPartial(2, 0.5);
         assertPaidProductThree(1, 0.5);
+        assertSoldProductThree(2, 1.5);
         putBackToSold(1);
         assertSoldProductThree(2, 2);
-        pay();
     }
 
     @Test
@@ -386,7 +386,6 @@ public class PaymentControllerTest  extends TestFXBase {
         assertSoldProduct(3, GAME_FEE, 2, 300, 600);
         assertSoldTotalPrice(7720);
         assertNumberOfSoldProducts(3);
-
     }
 
     @Test

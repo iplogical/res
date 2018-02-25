@@ -1,9 +1,8 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
-import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
-
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import javafx.scene.control.Control;
 
 import java.time.LocalDateTime;
@@ -31,8 +30,6 @@ public interface TableController extends Controller {
     void deselectTable();
 
     void setOrderDelivered(boolean delivered);
-
-    void setOrderDeliveredTime(LocalDateTime time);
 
     LocalDateTime getOrderDeliveredTime();
 }
