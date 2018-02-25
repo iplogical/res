@@ -1,14 +1,13 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
-import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
-import static org.apache.commons.lang3.StringUtils.isNumeric;
+import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * Created by TheDagi on 2017. 07. 17..
@@ -28,16 +27,28 @@ public class SearchProduct implements Search {
                     .filter(rapidCodeEquals(pattern))
                     .collect(Collectors.toList());
         }
-        return allProducts.stream()
-                .filter(containsPattern(pattern))
+        List<ProductView> matchingProducts = allProducts.stream()
+                .filter(startsWithPattern(pattern))
+                .sorted(Comparator.comparing(ProductView::getShortName))
                 .collect(Collectors.toList());
+        List<ProductView> otherProducts = allProducts.stream()
+                .filter(containsPattern(pattern))
+                .sorted(Comparator.comparing(ProductView::getShortName))
+                .collect(Collectors.toList());
+        matchingProducts.addAll(otherProducts);
+        return matchingProducts;
     }
 
-    protected Predicate<ProductView> rapidCodeEquals(String pattern) {
+    private Predicate<ProductView> rapidCodeEquals(String pattern) {
         return productView -> productView.getRapidCode() == Integer.parseInt(pattern);
     }
 
-    private static <T extends AbstractView> Predicate<T> containsPattern(String pattern) {
-        return productView -> containsIgnoreCase(productView.getName(), pattern);
+    private Predicate<ProductView> startsWithPattern(String pattern) {
+        return productView -> startsWithIgnoreCase(productView.getShortName(), pattern);
+    }
+
+    private Predicate<ProductView> containsPattern(String pattern) {
+        return productView -> !startsWithIgnoreCase(productView.getShortName(), pattern) &&
+                containsIgnoreCase(productView.getShortName(), pattern);
     }
 }

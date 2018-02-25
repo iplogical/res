@@ -6,7 +6,6 @@ import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -147,6 +146,10 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
 
     private <T extends AbstractView> void drawListOfElements(List<T> elements, GridPane grid) {
         elements.sort(Comparator.comparing(AbstractView::getOrderNumber));
+        draw32Elements(elements, grid);
+    }
+
+    private <T extends AbstractView> void draw32Elements(List<T> elements, GridPane grid) {
         for(int i = 0; i < Math.min(elements.size(), 32); i++) {
             drawElement(elements.get(i), grid, i);
         }
@@ -200,7 +203,7 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
             drawListOfElements(visibleProducts, productsGrid);
         } else {
             searchedProducts = productSearcher.search(searchText);
-            drawListOfElements(searchedProducts, productsGrid);
+            draw32Elements(searchedProducts, productsGrid);
         }
     }
 }
