@@ -1,13 +1,14 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.payment;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.state.PaymentViewState;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
+
+import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleFxmlView;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.collections.FXCollections;
@@ -19,6 +20,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,7 +30,7 @@ import java.util.ResourceBundle;
 
 import static java.util.stream.Collectors.toList;
 
-@Singleton
+@Component
 public class PaymentControllerImpl extends AbstractRetailControllerImpl
         implements PaymentController {
 
@@ -100,7 +103,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     TableColumn payProductTotalPrice;
 
-    private @Inject SaleController saleController;
+    @Autowired
+    private SaleController saleController;
 
     PaymentViewState paymentViewState;
 
@@ -387,7 +391,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private void enterSaleView() {
         saleController.enterSaleView();
-        viewLoader.loadViewIntoScene(saleController);
+        WaiterApp.showView(SaleFxmlView.class);
+//        viewLoader.loadViewIntoScene(saleController);
     }
 
     @FXML

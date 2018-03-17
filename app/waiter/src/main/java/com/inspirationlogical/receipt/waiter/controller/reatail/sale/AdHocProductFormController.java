@@ -7,5 +7,5 @@ import com.inspirationlogical.receipt.corelib.frontend.controller.Controller;
  */
 public interface AdHocProductFormController extends Controller {
 
-    void loadAdHocProductForm(SaleController saleController);
+//    void loadAdHocProductForm(SaleController saleController);
 }

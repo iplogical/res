@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import javafx.scene.layout.GridPane;
@@ -22,5 +21,5 @@ public interface ProductsAndCategoriesController {
     void setSubCategoriesGrid(GridPane subCategoriesGrid);
     void setProductsGrid(GridPane productsGrid);
     void setSaleController(SaleController saleController);
-    void setViewLoader(ViewLoader viewLoader);
+//    void setViewLoader(ViewLoader viewLoader);
 }

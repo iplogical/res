@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
@@ -15,23 +14,23 @@ import com.inspirationlogical.receipt.corelib.params.TableParams;
 import javafx.geometry.Point2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.canBeHosted;
 import static java.util.stream.Collectors.toList;
 
-//@Singleton
 @Service
 @Transactional
 public class RestaurantServiceImpl extends AbstractService implements RestaurantService {
 
     final private static Logger logger = LoggerFactory.getLogger(RestaurantServiceImpl.class);
 
-    @Inject
+    @Autowired
     RestaurantServiceImpl(EntityViews entityViews) {
         super(entityViews);
     }

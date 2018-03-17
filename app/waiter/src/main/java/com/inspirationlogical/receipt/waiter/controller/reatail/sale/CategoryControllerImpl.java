@@ -1,10 +1,10 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
-import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 
 import javafx.scene.input.MouseEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by Bálint on 2017.03.24..
@@ -14,7 +14,7 @@ public class CategoryControllerImpl extends ElementControllerImpl<ProductCategor
     private boolean isSelected;
     private ProductsAndCategoriesController productsAndCategoriesController;
 
-    @Inject
+    @Autowired
     public CategoryControllerImpl(SaleController saleController,
                                   ProductsAndCategoriesController productsAndCategoriesController) {
         super(saleController);

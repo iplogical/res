@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
@@ -10,21 +9,24 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.contextmenu.TableContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantViewState;
 import com.inspirationlogical.receipt.waiter.exception.ViewNotFoundException;
-import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.util.Duration;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -40,9 +42,8 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class TableConfigurationControllerImpl implements TableConfigurationController {
 
-    //    @Inject
-    @Autowired
-    private ViewLoader viewLoader;
+//    @Autowired
+//    private ViewLoader viewLoader;
 
     @Autowired
     private RestaurantController restaurantController;
@@ -57,12 +58,19 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @Autowired
     private RestaurantService restaurantService;
 
+    @Autowired
+    private ApplicationContext appCtx;
+
     @Getter
     private Set<TableController> tableControllers;
     private List<TableController> selectedTables;
 
     private RestaurantView restaurantView;
     private Popup tableForm;
+
+    private TableView tableViewBeingDrawn;
+
+    private TableController tableControllerBeingDrawn;
 
 //    //@Inject
 //    @Autowired
@@ -99,12 +107,14 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void showCreateTableForm(Point2D position) {
+        tableForm.getContent().add(WaiterApp.showView(TableFormFxmlView.class, Modality.NONE));
         tableFormController.createTableForm(restaurantViewState.getTableType());
         showPopup(tableForm, tableFormController, restaurantController.getActiveTab(), position);
     }
 
     @Override
     public void showEditTableForm(Control control) {
+        tableForm.getContent().add(WaiterApp.showView(TableFormFxmlView.class, Modality.NONE));
         TableController tableController = getTableController(control);
         tableFormController.loadTableForm(tableController, restaurantViewState.getTableType());
         Point2D position = calculatePopupPosition(control, restaurantController.getActiveTab());
@@ -113,7 +123,9 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     private void initTableForm() {
         tableForm = new Popup();
-        tableForm.getContent().add(viewLoader.loadView(tableFormController));
+//        tableForm.getContent().add(viewLoader.loadView(tableFormController));
+//        tableForm.getContent().add(WaiterApp.showView(TableFormFxmlView.class, Modality.WINDOW_MODAL));
+//        tableForm.hide();
     }
 
     @Override
@@ -330,7 +342,8 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
                 .limit(1)
                 .collect(toList());
         if(filteredControllers.isEmpty()) {
-            viewLoader.loadViewIntoScene(restaurantController);
+//            viewLoader.loadViewIntoScene(restaurantController);
+            WaiterApp.showView(RestaurantFxmlView.class);
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
                     WaiterResources.WAITER.getString("TableDoesNotExist") + reservation.getTableNumber());
             return;
@@ -338,7 +351,8 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         TableController tableController = filteredControllers.get(0);
         TableView tableView = tableController.getView();
         if(tableView.isOpen()) {
-            viewLoader.loadViewIntoScene(restaurantController);
+//            viewLoader.loadViewIntoScene(restaurantController);
+            WaiterApp.showView(RestaurantFxmlView.class);
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
                     WaiterResources.WAITER.getString("TableIsOpenReservation") + tableView.getNumber());
             return;
@@ -346,7 +360,8 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         TableParams tableParams = buildTableParams(reservation, tableView);
         editTable(tableController, tableParams);
         tableController.openTable(null);
-        viewLoader.loadViewIntoScene(restaurantController);
+//        viewLoader.loadViewIntoScene(restaurantController);
+        WaiterApp.showView(RestaurantFxmlView.class);
     }
 
     private TableParams buildTableParams(ReservationView reservation, TableView tableView) {
@@ -362,14 +377,28 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void drawTable(TableView tableView) {
-        TableController tableController = WaiterRegistry.getInstance(TableController.class);
-        tableController.setView(tableView);
-        tableControllers.add(tableController);
-        viewLoader.loadView(tableController);
-        addPressAndHold(tableController.getViewState(), tableController.getRoot(),
-                new TableContextMenuBuilderDecorator(this, tableController, new BaseContextMenuBuilder()),
+        tableViewBeingDrawn = tableView;
+//        TableController tableController = appCtx.getBean(TableController.class);
+//        tableController.setView(tableView);
+//        tableControllers.add(tableController);
+
+        WaiterApp.showView(TableFxmlView.class);
+
+//        viewLoader.loadView(tableController);
+        addPressAndHold(tableControllerBeingDrawn.getViewState(), tableControllerBeingDrawn.getRoot(),
+                new TableContextMenuBuilderDecorator(this, tableControllerBeingDrawn, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
-        restaurantController.addNodeToPane(tableController.getRoot(), tableView.getType());
+        restaurantController.addNodeToPane(tableControllerBeingDrawn.getRoot(), tableView.getType());
+    }
+
+    @Override
+    public TableView getTableViewBeingDrawn() {
+        return tableViewBeingDrawn;
+    }
+
+    @Override
+    public void setTableControllerBeingDrawn(TableController tableControllerBeingDrawn) {
+        this.tableControllerBeingDrawn = tableControllerBeingDrawn;
     }
 
     @Override

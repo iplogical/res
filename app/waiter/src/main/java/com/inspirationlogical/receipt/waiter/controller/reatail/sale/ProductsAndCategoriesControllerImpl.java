@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
@@ -11,20 +10,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Singleton
+@Component
 public class ProductsAndCategoriesControllerImpl implements ProductsAndCategoriesController {
 
     private final int GRID_SIZE = 4;
 
-    @Setter private ViewLoader viewLoader;
+//    @Setter private ViewLoader viewLoader;
     @Setter private SaleController saleController;
     private CommonService commonService;
 
@@ -46,7 +45,7 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
 
     private List<ElementController> elementControllers;
 
-    @Inject
+    @Autowired
     public ProductsAndCategoriesControllerImpl(CommonService commonService) {
         this.commonService = commonService;
         this.elementControllers = new ArrayList<>();
@@ -165,7 +164,9 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
         }
         elementController.setView(elementView);
         elementControllers.add(elementController);
-        viewLoader.loadView(elementController);
+//        viewLoader.loadView(elementController);
+        // TODO_REFACTOR: add buttons somehow.
+//        WaiterApp.showView();
         grid.add(elementController.getRootNode(), index % GRID_SIZE, index / GRID_SIZE);
     }
 
@@ -181,7 +182,8 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
             }
         };
         elementController.setView((ProductCategoryView) () -> WaiterResources.WAITER.getString("SaleView.BackButton"));
-        viewLoader.loadView(elementController);
+        // TODO_REFACTOR: add buttons somehow.
+//        viewLoader.loadView(elementController);
         categoriesGrid.add(elementController.getRootNode(), BUTTON_POSITION, BUTTON_POSITION);
     }
 

@@ -1,11 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
-
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -13,6 +8,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Created by Bálint on 2017.03.23..
@@ -37,7 +36,7 @@ public class ElementControllerImpl<T extends AbstractView> implements ElementCon
 
     protected @Setter @Getter T view;
 
-    @Inject
+    @Autowired
     public ElementControllerImpl(SaleController saleController) {
         this.saleController = saleController;
     }

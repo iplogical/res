@@ -1,16 +1,16 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
-import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 
 import javafx.scene.input.MouseEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by Bálint on 2017.03.24..
  */
 public class ProductControllerImpl extends ElementControllerImpl<ProductView> {
 
-    @Inject
+    @Autowired
     public ProductControllerImpl(SaleController saleController) {
         super(saleController);
     }

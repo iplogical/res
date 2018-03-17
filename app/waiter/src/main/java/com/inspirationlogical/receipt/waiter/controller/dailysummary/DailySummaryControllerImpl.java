@@ -3,9 +3,12 @@ package com.inspirationlogical.receipt.waiter.controller.dailysummary;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reservation.CalendarPickerWrapper;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -14,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-import javax.inject.Singleton;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -24,7 +26,7 @@ import java.util.ResourceBundle;
 /**
  * Created by TheDagi on 2017. 04. 21..
  */
-@Singleton
+@FXMLController
 public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     implements DailySummaryController {
 
@@ -121,7 +123,8 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void onBackToRestaurantView(Event event) {
-        viewLoader.loadViewIntoScene(restaurantController);
+//        viewLoader.loadViewIntoScene(restaurantController);
+        WaiterApp.showView(RestaurantFxmlView.class);
     }
 
     @Override

@@ -17,9 +17,9 @@ apply plugin: 'idea'
 
 dependencies {
 
-    compile 'org.springframework.boot:spring-boot-starter:1.5.10.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.10.RELEASE'
-
+    compile 'org.springframework.boot:spring-boot-starter:2.0.0.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa:2.0.0.RELEASE'
+    compile files('../libs/springboot-javafx-support-2.1.7-SNAPSHOT-PROPRIETARY.jar')
 
     compile 'org.slf4j:slf4j-api:1.7.25'
 
@@ -43,7 +43,8 @@ dependencies {
 
     compile 'org.glassfish.web:javax.el:2.2.6'
 
-    compile 'com.google.inject:guice:4.1.0'
+//    compile 'com.google.inject:guice:4.1.0'
+
     compile "org.projectlombok:lombok:1.16.14"
 
     compile 'org.controlsfx:controlsfx:8.40.11'

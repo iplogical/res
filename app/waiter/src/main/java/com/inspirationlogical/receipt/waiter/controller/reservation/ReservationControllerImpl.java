@@ -1,33 +1,19 @@
 package com.inspirationlogical.receipt.waiter.controller.reservation;
 
-import static java.util.stream.Collectors.partitioningBy;
-import static java.util.stream.Collectors.toList;
-
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.*;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.frontend.viewmodel.ReservationViewModel;
 import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
-
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -38,11 +24,22 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import jfxtras.scene.control.CalendarTimePicker;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by TheDagi on 2017. 04. 26..
  */
-@Singleton
+@FXMLController
 public class ReservationControllerImpl extends AbstractController
         implements ReservationController {
 
@@ -99,8 +96,8 @@ public class ReservationControllerImpl extends AbstractController
     private CalendarTimePicker startTime;
     private CalendarTimePicker endTime;
 
-    @Inject
-    private ViewLoader viewLoader;
+//    @Autowired
+//    private ViewLoader viewLoader;
 
     private RestaurantService restaurantService;
 
@@ -118,7 +115,7 @@ public class ReservationControllerImpl extends AbstractController
 
     private long reservationId;
 
-    @Inject
+    @Autowired
     public ReservationControllerImpl(RestaurantService restaurantService,
                                      RetailService retailService,
                                      RestaurantController restaurantController,
@@ -240,7 +237,8 @@ public class ReservationControllerImpl extends AbstractController
 
     @FXML
     public void onBackToRestaurantView(Event event) {
-        viewLoader.loadViewIntoScene(restaurantController);
+//        viewLoader.loadViewIntoScene(restaurantController);
+        WaiterApp.showView(RestaurantFxmlView.class);
     }
 
     @FXML

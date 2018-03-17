@@ -1,14 +1,17 @@
 package com.inspirationlogical.receipt.corelib.security.service;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.inspirationlogical.receipt.corelib.security.User;
 import com.inspirationlogical.receipt.corelib.security.model.adapter.AuthUserAdapter;
 import com.inspirationlogical.receipt.corelib.security.model.entity.AuthUser;
-
 import io.dropwizard.auth.basic.BasicCredentials;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+
+@Service
+@Transactional
 public class SecurityServiceImpl implements SecurityService {
 
     @Override

@@ -24,7 +24,7 @@ public class SaleControllerInitializer {
         s.productController.setSubCategoriesGrid(s.subCategoriesGrid);
         s.productController.setProductsGrid(s.productsGrid);
         s.productController.setSaleController(s);
-        s.productController.setViewLoader(s.getViewLoader());
+//        s.productController.setViewLoader(s.getViewLoader());
     }
 
     private void initializeToggles() {

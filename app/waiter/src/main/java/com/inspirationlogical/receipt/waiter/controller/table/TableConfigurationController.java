@@ -47,6 +47,10 @@ public interface TableConfigurationController {
 
     void drawTable(TableView tableView);
 
+    TableView getTableViewBeingDrawn();
+
+    void setTableControllerBeingDrawn(TableController tableControllerBeingDrawn);
+
     TableController getTableController(TableView tableView);
 
     Set<TableController> getTableControllers();

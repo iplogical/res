@@ -1,35 +1,32 @@
 package com.inspirationlogical.receipt.corelib.printing;
 
-import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import javax.xml.transform.Result;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.stream.StreamSource;
-
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
-import org.apache.commons.io.IOUtils;
-import org.apache.fop.apps.FOUserAgent;
-import org.apache.fop.apps.Fop;
-import org.apache.fop.apps.FopFactory;
-import org.apache.fop.apps.FopFactoryBuilder;
-import org.apache.fop.apps.MimeConstants;
-import org.apache.fop.apps.io.ResourceResolverFactory;
-import org.apache.xmlgraphics.io.Resource;
-import org.apache.xmlgraphics.io.ResourceResolver;
-import org.xml.sax.SAXException;
-
 import com.inspirationlogical.receipt.corelib.exception.FOPCfgXMLFormatException;
 import com.inspirationlogical.receipt.corelib.exception.FOPCfgXMLNotFoundException;
 import com.inspirationlogical.receipt.corelib.exception.FOPConfigurationErrorException;
 import com.inspirationlogical.receipt.corelib.exception.ReceiptXSLTNotFoundException;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
+import org.apache.commons.io.IOUtils;
+import org.apache.fop.apps.*;
+import org.apache.fop.apps.io.ResourceResolverFactory;
+import org.apache.xmlgraphics.io.Resource;
+import org.apache.xmlgraphics.io.ResourceResolver;
+import org.springframework.stereotype.Component;
+import org.xml.sax.SAXException;
 
+import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+
+@Component
 public class ReceiptFormatterEpsonTMT20II implements ReceiptFormatter {
     private static FopFactory fopFactory;
 

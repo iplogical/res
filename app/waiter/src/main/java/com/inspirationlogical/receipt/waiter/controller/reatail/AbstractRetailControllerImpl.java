@@ -1,14 +1,14 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail;
 
-import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
@@ -22,10 +22,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.input.MouseEvent;
-import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -37,6 +43,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * Created by Bálint on 2017.03.28..
  */
+@Component
 public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractRetailControllerImpl.class);
@@ -65,14 +72,20 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     @FXML
     protected TableColumn<SoldProductViewModel, String> productTotalPrice;
 
-    @Inject
-    protected @Getter ViewLoader viewLoader;
+//    @Autowired
+//    protected @Getter ViewLoader viewLoader;
 
-    private @Inject RestaurantService restaurantService;
-    protected @Inject RetailService retailService;
+    @Autowired
+    private RestaurantService restaurantService;
 
-    protected @Inject RestaurantController restaurantController;
-    protected @Inject TableConfigurationController tableConfigurationController;
+    @Autowired
+    protected RetailService retailService;
+
+    @Autowired
+    protected RestaurantController restaurantController;
+
+    @Autowired
+    protected TableConfigurationController tableConfigurationController;
 
     protected @Setter TableView tableView;
 
@@ -91,7 +104,8 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected void backToRestaurantView() {
         tableConfigurationController.getTableController(tableView).updateTable();
-        viewLoader.loadViewIntoScene(restaurantController);
+//        viewLoader.loadViewIntoScene(restaurantController);
+        WaiterApp.showView(RestaurantFxmlView.class);
     }
 
     @FXML

@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
-import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
@@ -15,6 +14,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
@@ -22,7 +22,6 @@ import java.util.ResourceBundle;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
 
-//@Singleton
 @Component
 public class TableFormControllerImpl implements TableFormController {
 
@@ -50,7 +49,7 @@ public class TableFormControllerImpl implements TableFormController {
 
     private ResourceBundle resourceBundle;
 
-    @Inject
+    @Autowired
     public TableFormControllerImpl(TableConfigurationController tableConfigurationController,
                                    RestaurantService restaurantService) {
         this.tableConfigurationController = tableConfigurationController;

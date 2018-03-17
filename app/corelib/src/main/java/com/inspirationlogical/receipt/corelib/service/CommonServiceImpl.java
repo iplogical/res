@@ -1,11 +1,11 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,7 +23,7 @@ import static java.util.stream.Collectors.toList;
 @Transactional
 public class CommonServiceImpl extends AbstractService implements CommonService {
 
-    @Inject
+    @Autowired
     public CommonServiceImpl(EntityViews entityViews) {
         super(entityViews);
     }

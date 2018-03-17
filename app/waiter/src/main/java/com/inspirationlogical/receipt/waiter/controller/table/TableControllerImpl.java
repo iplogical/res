@@ -1,15 +1,16 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
-import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
+import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -19,8 +20,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import org.springframework.stereotype.Component;
+import javafx.stage.Modality;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
+import javax.annotation.PostConstruct;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
@@ -43,7 +47,8 @@ import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
-@Component
+@FXMLController
+@Scope("prototype")
 public class TableControllerImpl implements TableController {
 
     private static final String TABLE_VIEW_PATH = "/view/fxml/Table.fxml";
@@ -70,13 +75,20 @@ public class TableControllerImpl implements TableController {
     @FXML
     private Label hostedCount;
 
-    private @Inject ViewLoader viewLoader;
+//    @Autowired
+//    private ViewLoader viewLoader;
 
-    private @Inject RetailService retailService;
+    @Autowired
+    private RetailService retailService;
 
-    private @Inject RestaurantController restaurantController;
-    private @Inject TableConfigurationController tableConfigurationController;
-    private @Inject SaleController saleController;
+    @Autowired
+    private RestaurantController restaurantController;
+
+    @Autowired
+    private TableConfigurationController tableConfigurationController;
+
+    @Autowired
+    private SaleController saleController;
 
     private TableView tableView;
 
@@ -89,9 +101,18 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setView(tableConfigurationController.getTableViewBeingDrawn());
+
         addDragAndDrop(rootTable, tableViewState.getRestaurantViewState().getMotionViewState());
         setPreferredSize();
         updateTable();
+
+    }
+
+    @PostConstruct
+    private void init() {
+        tableConfigurationController.getTableControllers().add(this);
+        tableConfigurationController.setTableControllerBeingDrawn(this);
     }
 
     private void setPreferredSize() {
@@ -109,7 +130,8 @@ public class TableControllerImpl implements TableController {
     }
 
     private StackPane buildConsumedTable(TableView view) {
-        StackPane consumedTable = (StackPane) viewLoader.loadView(CONSUMED_VIEW_PATH);
+//        StackPane consumedTable = (StackPane) viewLoader.loadView(CONSUMED_VIEW_PATH);
+        StackPane consumedTable = (StackPane) WaiterApp.showView(ConsumedTableFxmlView.class, Modality.NONE);
         setConsumedTableNumber(view, consumedTable);
         setConsumedTableSize(view, consumedTable);
         setConsumedTableHostInfo(view, consumedTable);
@@ -299,7 +321,8 @@ public class TableControllerImpl implements TableController {
 
     private void enterSaleView() {
         saleController.setTableView(tableView);
-        viewLoader.loadViewIntoScene(saleController);
+        WaiterApp.showView(SaleFxmlView.class);
+//        viewLoader.loadViewIntoScene(saleController);
         saleController.enterSaleView();
     }
 

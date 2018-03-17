@@ -1,15 +1,17 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
+
+import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentControllerImpl;
+import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentFxmlView;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -18,9 +20,11 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
 import javafx.stage.Popup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,7 +35,7 @@ import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.Sale
 /**
  * Created by Bálint on 2017.03.22..
  */
-@Singleton
+@FXMLController
 public class SaleControllerImpl extends AbstractRetailControllerImpl
         implements SaleController {
 
@@ -84,9 +88,17 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private Popup adHocProductForm;
 
-    private @Inject PaymentController paymentController;
-    private @Inject AdHocProductFormController adHocProductFormController;
-    @Inject ProductsAndCategoriesController productController;
+    @Autowired
+    private CommonService commonService;
+
+    @Autowired
+    private PaymentController paymentController;
+
+    @Autowired
+    private AdHocProductFormController adHocProductFormController;
+
+    @Autowired
+    ProductsAndCategoriesController productController;
 
     SaleViewState saleViewState;
 
@@ -167,7 +179,8 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         logger.info("Entering the payment view for table: " + tableView.toString());
         retailService.mergeReceiptRecords(receiptView);
         paymentController.setTableView(tableView);
-        viewLoader.loadViewIntoScene(paymentController);
+//        viewLoader.loadViewIntoScene(paymentController);
+        WaiterApp.showView(PaymentFxmlView.class);
         paymentController.enterPaymentView();
     }
 
@@ -175,8 +188,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     public void onSellAdHocProduct(Event event) {
         logger.info("The sell ad hoc product button was clicked.");
         adHocProductForm = new Popup();
-        adHocProductForm.getContent().add(viewLoader.loadView(adHocProductFormController));
-        adHocProductFormController.loadAdHocProductForm(this);
+//        adHocProductForm.getContent().add(viewLoader.loadView(adHocProductFormController));
+        adHocProductForm.getContent().add(WaiterApp.showView(AdHocProductFormFxmlView.class, Modality.WINDOW_MODAL));
+//        adHocProductFormController.loadAdHocProductForm(this);
         showPopup(adHocProductForm, adHocProductFormController, rootSale, new Point2D(520, 200));
     }
 

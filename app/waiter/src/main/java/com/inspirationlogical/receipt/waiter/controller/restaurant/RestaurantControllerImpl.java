@@ -1,19 +1,19 @@
 package com.inspirationlogical.receipt.waiter.controller.restaurant;
 
-import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.contextmenu.RestaurantContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryController;
+import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
-import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.ConfirmMessage;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.beans.binding.Bindings;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -25,8 +25,7 @@ import javafx.stage.Popup;
 import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
 import java.util.LinkedHashSet;
@@ -37,8 +36,7 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.m
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.HOLD_DURATION_MILLIS;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 
-//@Singleton
-@Component
+@FXMLController
 public class RestaurantControllerImpl implements RestaurantController {
 
     final private static Logger logger = LoggerFactory.getLogger(RestaurantControllerImpl.class);
@@ -93,38 +91,47 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     Label liveTime;
 
-    @Inject
-    ViewLoader viewLoader;
+//    @Autowired
+//    ViewLoader viewLoader;
 
     Popup tableForm;
 
     private Set<TableController> selectedTables;
 
-    RestaurantService restaurantService;
+    @Autowired
+    private RestaurantService restaurantService;
 
-    RestaurantView restaurantView;
+    private RestaurantView restaurantView;
 
-    RestaurantViewState restaurantViewState;
+    private RestaurantViewState restaurantViewState;
 
-    TableConfigurationController tableConfigurationController;
+    @Autowired
+    private TableConfigurationController tableConfigurationController;
 
-    @Inject
-    public RestaurantControllerImpl(RestaurantService restaurantService,
-                                    @Lazy TableConfigurationController tableConfigurationController) {
-        this.restaurantService = restaurantService;
-        this.tableConfigurationController = tableConfigurationController;
-        selectedTables = new LinkedHashSet<>();
-        restaurantViewState = new RestaurantViewState(selectedTables);
-    }
+    @Autowired
+    private DailySummaryController dailySummaryController;
 
-    //    @Inject
-    public RestaurantControllerImpl() {
-        selectedTables = new LinkedHashSet<>();
-        restaurantViewState = new RestaurantViewState(selectedTables);
-    }
+    @Autowired
+    private ReservationController reservationController;
+
+//    @Inject
+//    public RestaurantControllerImpl(RestaurantService restaurantService,
+//                                    @Lazy TableConfigurationController tableConfigurationController) {
+//        this.restaurantService = restaurantService;
+//        this.tableConfigurationController = tableConfigurationController;
+//        selectedTables = new LinkedHashSet<>();
+//        restaurantViewState = new RestaurantViewState(selectedTables);
+//    }
+
+//    public RestaurantControllerImpl() {
+//        selectedTables = new LinkedHashSet<>();
+//        restaurantViewState = new RestaurantViewState(selectedTables);
+//    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        selectedTables = new LinkedHashSet<>();
+        restaurantViewState = new RestaurantViewState(selectedTables);
         initContextMenu(tablesControl);
         initContextMenu(loiterersControl);
         initContextMenu(frequentersControl);
@@ -140,7 +147,6 @@ public class RestaurantControllerImpl implements RestaurantController {
                 new RestaurantContextMenuBuilderDecorator(tableConfigurationController, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));
     }
-
 
     private void initControls() {
         restaurantViewState.setConfigurable(configuration.selectedProperty());
@@ -178,10 +184,10 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     public void onDailySummary(Event event) {
-        DailySummaryController dailySummaryController = WaiterRegistry.getInstance(DailySummaryController.class);
         dailySummaryController.setRestaurantView(restaurantView);
-        dailySummaryController.setOpenConsumption(getOpenConsumption());
-        viewLoader.loadViewIntoScene(dailySummaryController);
+        dailySummaryController.setOpenConsumption(openConsumption.getText());
+//        viewLoader.loadViewIntoScene(dailySummaryController);
+        WaiterApp.showView(DailySummaryFxmlView.class);
         dailySummaryController.updatePriceFields();
         logger.info("Entering the Daily Summary.");
     }
@@ -194,9 +200,8 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     public void onReservationClicked(Event event) {
-        ReservationController reservationController = WaiterRegistry.getInstance(ReservationController.class);
         reservationController.setRestaurantView(restaurantView);
-        viewLoader.loadViewIntoScene(reservationController);
+//        viewLoader.loadViewIntoScene(reservationController);
         logger.info("Entering the Reservations.");
     }
 
