@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="tableStackPane" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0" style="-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-color: #00bfff3f; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="tableStackPane" minHeight="80.0" minWidth="80.0" prefHeight="80.0" prefWidth="80.0" style="-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-color: #00bfff3f; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.inspirationlogical.receipt.waiter.controller.table.TableController">
    <stylesheets>
       <URL value="@../css/Table.css" />
    </stylesheets>

@@ -20,7 +20,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Modality;
 import javafx.stage.Popup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,6 +106,12 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         saleViewState = new SaleViewState();
         initializeSoldProducts();
         new SaleControllerInitializer(this).initialize();
+        initAdHocProductForm();
+    }
+
+    private void initAdHocProductForm() {
+        adHocProductForm = new Popup();
+        adHocProductForm.getContent().add(WaiterApp.getRootNode(AdHocProductFormFxmlView.class));
     }
 
     @Override
@@ -187,9 +192,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onSellAdHocProduct(Event event) {
         logger.info("The sell ad hoc product button was clicked.");
-        adHocProductForm = new Popup();
 //        adHocProductForm.getContent().add(viewLoader.loadView(adHocProductFormController));
-        adHocProductForm.getContent().add(WaiterApp.showView(AdHocProductFormFxmlView.class, Modality.WINDOW_MODAL));
 //        adHocProductFormController.loadAdHocProductForm(this);
         showPopup(adHocProductForm, adHocProductFormController, rootSale, new Point2D(520, 200));
     }

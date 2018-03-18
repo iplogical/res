@@ -2,23 +2,53 @@ package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
-
+import de.felixroske.jfxsupport.FXMLController;
+import javafx.fxml.FXML;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
-/**
- * Created by Bálint on 2017.03.24..
- */
-public class CategoryControllerImpl extends ElementControllerImpl<ProductCategoryView> {
+import javax.annotation.PostConstruct;
 
-    private boolean isSelected;
-    private ProductsAndCategoriesController productsAndCategoriesController;
+@FXMLController
+@Scope("prototype")
+public class CategoryControllerImpl implements CategoryController {
+
+    @FXML
+    private Label categoryRoot;
+
+    @FXML
+    private VBox vBox;
+
+    @FXML
+    private Label categoryName;
 
     @Autowired
-    public CategoryControllerImpl(SaleController saleController,
-                                  ProductsAndCategoriesController productsAndCategoriesController) {
-        super(saleController);
-        this.productsAndCategoriesController = productsAndCategoriesController;
+    private SaleController saleController;
+
+    @Autowired
+    ProductsAndCategoriesController productsAndCategoriesController;
+
+    @Getter
+    @Setter
+    private ProductCategoryView view;
+
+    private boolean isSelected;
+
+    @PostConstruct
+    private void init() {
+        view = productsAndCategoriesController.getProductCategoryViewBeingDrawn();
+        productsAndCategoriesController.setCategoryControllerBeingDrawn(this);
+    }
+
+    @Override
+    public Control getRoot() {
+        return categoryRoot;
     }
 
     @Override
@@ -27,14 +57,20 @@ public class CategoryControllerImpl extends ElementControllerImpl<ProductCategor
         CSSUtilities.setBorderColor(isSelected, vBox);
     }
 
+    @FXML
     @Override
-    public void onElementClicked(MouseEvent event) {
+    public void onCategoryClicked(MouseEvent event) {
         if(isSelected) {
             return;
         } else {
-            root.requestFocus();
+            categoryRoot.requestFocus();
             saleController.clearSearch();
             productsAndCategoriesController.selectCategory(this.getView());
         }
+    }
+
+    @Override
+    public void updateNode() {
+        categoryName.setText(view.getName());
     }
 }

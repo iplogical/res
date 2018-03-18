@@ -20,6 +20,12 @@ public interface ProductsAndCategoriesController {
     void setCategoriesGrid(GridPane categoriesGrid);
     void setSubCategoriesGrid(GridPane subCategoriesGrid);
     void setProductsGrid(GridPane productsGrid);
-    void setSaleController(SaleController saleController);
-//    void setViewLoader(ViewLoader viewLoader);
+
+    ProductView getProductViewBeingDrawn();
+
+    void setProductControllerBeingDrawn(ProductController productControllerBeingDrawn);
+
+    ProductCategoryView getProductCategoryViewBeingDrawn();
+
+    void setCategoryControllerBeingDrawn(CategoryController controllerBeingDrawn);
 }

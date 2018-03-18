@@ -19,7 +19,7 @@ dependencies {
 
     compile 'org.springframework.boot:spring-boot-starter:2.0.0.RELEASE'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:2.0.0.RELEASE'
-    compile files('../libs/springboot-javafx-support-2.1.7-SNAPSHOT-PROPRIETARY.jar')
+//    compile files('../libs/springboot-javafx-support-2.1.7-SNAPSHOT-PROPRIETARY.jar')
 
     compile 'org.slf4j:slf4j-api:1.7.25'
 

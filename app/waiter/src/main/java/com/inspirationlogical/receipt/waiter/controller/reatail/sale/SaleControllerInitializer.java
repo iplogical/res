@@ -23,7 +23,7 @@ public class SaleControllerInitializer {
         s.productController.setCategoriesGrid(s.categoriesGrid);
         s.productController.setSubCategoriesGrid(s.subCategoriesGrid);
         s.productController.setProductsGrid(s.productsGrid);
-        s.productController.setSaleController(s);
+//        s.productController.setSaleController(s);
 //        s.productController.setViewLoader(s.getViewLoader());
     }
 

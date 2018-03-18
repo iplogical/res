@@ -123,15 +123,14 @@ public class RestaurantControllerImpl implements RestaurantController {
 //        restaurantViewState = new RestaurantViewState(selectedTables);
 //    }
 
-//    public RestaurantControllerImpl() {
-//        selectedTables = new LinkedHashSet<>();
-//        restaurantViewState = new RestaurantViewState(selectedTables);
-//    }
+    @Autowired
+    public RestaurantControllerImpl() {
+        selectedTables = new LinkedHashSet<>();
+        restaurantViewState = new RestaurantViewState(selectedTables);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        selectedTables = new LinkedHashSet<>();
-        restaurantViewState = new RestaurantViewState(selectedTables);
         initContextMenu(tablesControl);
         initContextMenu(loiterersControl);
         initContextMenu(frequentersControl);

@@ -4,6 +4,7 @@ import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -14,7 +15,6 @@ import javafx.util.converter.IntegerStringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,7 +24,7 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHa
 /**
  * Created by Bálint on 2017.03.21..
  */
-@Component
+@FXMLController
 public class AdHocProductFormControllerImpl implements AdHocProductFormController {
     private static final Logger logger = LoggerFactory.getLogger(WaiterApp.class);
     public static final String AD_HOC_PRODUCT_FORM_VIEW_PATH = "/view/fxml/AdHocProductForm.fxml";
@@ -56,10 +56,10 @@ public class AdHocProductFormControllerImpl implements AdHocProductFormControlle
         adHocProductSalePrice.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
     }
 
-//    @Override
-//    public void loadAdHocProductForm(SaleController saleController) {
-//        this.saleController = saleController;
-//    }
+    @Override
+    public void loadAdHocProductForm(SaleController saleController) {
+        this.saleController = saleController;
+    }
 
     @FXML
     public void onConfirm(MouseEvent event) {

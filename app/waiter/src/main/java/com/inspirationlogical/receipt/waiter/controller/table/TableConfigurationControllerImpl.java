@@ -21,12 +21,10 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.util.Duration;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -42,9 +40,6 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class TableConfigurationControllerImpl implements TableConfigurationController {
 
-//    @Autowired
-//    private ViewLoader viewLoader;
-
     @Autowired
     private RestaurantController restaurantController;
 
@@ -57,10 +52,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Autowired
     private RestaurantService restaurantService;
-
-    @Autowired
-    private ApplicationContext appCtx;
-
     @Getter
     private Set<TableController> tableControllers;
     private List<TableController> selectedTables;
@@ -71,19 +62,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     private TableView tableViewBeingDrawn;
 
     private TableController tableControllerBeingDrawn;
-
-//    //@Inject
-//    @Autowired
-//    public TableConfigurationControllerImpl(RestaurantController restaurantController,
-//                                            TableFormController tableFormController,
-//                                            RestaurantService restaurantService) {
-//        this.restaurantController = restaurantController;
-//        this.tableFormController = tableFormController;
-//        this.restaurantService = restaurantService;
-//        restaurantView = restaurantService.getActiveRestaurant();
-//        tableControllers = new HashSet<>();
-//        selectedTables = new ArrayList<>();
-//    }
 
     @PostConstruct
     private void init() {
@@ -107,14 +85,12 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void showCreateTableForm(Point2D position) {
-        tableForm.getContent().add(WaiterApp.showView(TableFormFxmlView.class, Modality.NONE));
         tableFormController.createTableForm(restaurantViewState.getTableType());
         showPopup(tableForm, tableFormController, restaurantController.getActiveTab(), position);
     }
 
     @Override
     public void showEditTableForm(Control control) {
-        tableForm.getContent().add(WaiterApp.showView(TableFormFxmlView.class, Modality.NONE));
         TableController tableController = getTableController(control);
         tableFormController.loadTableForm(tableController, restaurantViewState.getTableType());
         Point2D position = calculatePopupPosition(control, restaurantController.getActiveTab());
@@ -123,9 +99,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     private void initTableForm() {
         tableForm = new Popup();
-//        tableForm.getContent().add(viewLoader.loadView(tableFormController));
-//        tableForm.getContent().add(WaiterApp.showView(TableFormFxmlView.class, Modality.WINDOW_MODAL));
-//        tableForm.hide();
+        tableForm.getContent().add(WaiterApp.getRootNode(TableFormFxmlView.class));
     }
 
     @Override

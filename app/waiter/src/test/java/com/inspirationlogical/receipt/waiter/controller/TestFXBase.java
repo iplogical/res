@@ -1,12 +1,9 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
-import com.inspirationlogical.receipt.corelib.frontend.application.MainStage;
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
-import com.inspirationlogical.receipt.waiter.utility.*;
+import com.inspirationlogical.receipt.waiter.utility.AbstractUtils;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
@@ -18,9 +15,6 @@ import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.concurrent.TimeoutException;
-
-import static com.inspirationlogical.receipt.waiter.registry.WaiterRegistry.getInstance;
-
 
 /**
  * Created by TheDagi on 2017. 05. 09..

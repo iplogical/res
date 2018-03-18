@@ -5,7 +5,8 @@ import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
-import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import lombok.Getter;
@@ -23,8 +24,6 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
 
     private final int GRID_SIZE = 4;
 
-//    @Setter private ViewLoader viewLoader;
-    @Setter private SaleController saleController;
     private CommonService commonService;
 
     private Search productSearcher;
@@ -43,12 +42,24 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
     @Getter private List<ProductView> searchedProducts;
     private List<ProductView> visibleProducts;
 
-    private List<ElementController> elementControllers;
+    private List<CategoryController> categoryControllers;
+
+    @Getter
+    private ProductView productViewBeingDrawn;
+
+    @Setter
+    private ProductController productControllerBeingDrawn;
+
+    @Getter
+    private ProductCategoryView productCategoryViewBeingDrawn;
+
+    @Setter
+    private CategoryController categoryControllerBeingDrawn;
 
     @Autowired
     public ProductsAndCategoriesControllerImpl(CommonService commonService) {
         this.commonService = commonService;
-        this.elementControllers = new ArrayList<>();
+        this.categoryControllers = new ArrayList<>();
         initializeCategories();
         initializeProductSearcher();
     }
@@ -115,7 +126,7 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
     }
 
     private void redrawCategoriesAndProducts() {
-        elementControllers.clear();
+        categoryControllers.clear();
         redrawTopCategories();
         redrawSubCategories();
         redrawProducts();
@@ -138,9 +149,9 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
     }
 
     private void setSelectedCategory() {
-        elementControllers.stream()
+        categoryControllers.stream()
                 .filter(controller -> controller.getView().getName().equals(selectedCategory.getName()))
-                .forEach(ElementController::select);
+                .forEach(CategoryController::select);
     }
 
     private <T extends AbstractView> void drawListOfElements(List<T> elements, GridPane grid) {
@@ -155,36 +166,36 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
     }
 
     private <T extends AbstractView> void drawElement(T elementView, GridPane grid, int index) {
-        ElementController elementController = null;
-
+        Node root = null;
         if(elementView instanceof ProductView) {
-            elementController = new ProductControllerImpl(saleController);
+            productViewBeingDrawn = (ProductView) elementView;
+            root = WaiterApp.getRootNode(ProductControllerFxmlView.class);
+            productControllerBeingDrawn.updateNode();
         } else if (elementView instanceof ProductCategoryView) {
-            elementController = new CategoryControllerImpl(saleController, this);
+            productCategoryViewBeingDrawn = (ProductCategoryView) elementView;
+            root = WaiterApp.getRootNode(CategoryControllerFxmlView.class);
+            categoryControllers.add(categoryControllerBeingDrawn);
+            categoryControllerBeingDrawn.updateNode();
         }
-        elementController.setView(elementView);
-        elementControllers.add(elementController);
-//        viewLoader.loadView(elementController);
-        // TODO_REFACTOR: add buttons somehow.
-//        WaiterApp.showView();
-        grid.add(elementController.getRootNode(), index % GRID_SIZE, index / GRID_SIZE);
+        grid.add(root, index % GRID_SIZE, index / GRID_SIZE);
     }
 
     private void drawBackButton(GridPane categoriesGrid) {
         final int BUTTON_POSITION = GRID_SIZE - 1;
-        ElementController elementController = new ProductControllerImpl(saleController) {
+        ProductController elementController = new ProductControllerImpl() {
 
             @Override
-            public void onElementClicked(MouseEvent event) {
+            public void onProductClicked(MouseEvent event) {
                 upWithCategories();
                 redrawCategoriesAndProducts();
                 setSelectedCategory();
             }
         };
-        elementController.setView((ProductCategoryView) () -> WaiterResources.WAITER.getString("SaleView.BackButton"));
+//        elementController.setView((ProductCategoryView) () -> WaiterResources.WAITER.getString("SaleView.BackButton"));
         // TODO_REFACTOR: add buttons somehow.
 //        viewLoader.loadView(elementController);
-        categoriesGrid.add(elementController.getRootNode(), BUTTON_POSITION, BUTTON_POSITION);
+        // TODO_REFACTOR: add back button
+//        categoriesGrid.add(elementController.getRootNode(), BUTTON_POSITION, BUTTON_POSITION);
     }
 
     private void upWithCategories() {
