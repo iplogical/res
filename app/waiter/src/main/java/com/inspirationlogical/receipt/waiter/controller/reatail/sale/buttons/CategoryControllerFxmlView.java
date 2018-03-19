@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
+package com.inspirationlogical.receipt.waiter.controller.reatail.sale.buttons;
 
 import de.felixroske.jfxsupport.AbstractFxmlView;
 import de.felixroske.jfxsupport.FXMLView;

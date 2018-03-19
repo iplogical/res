@@ -1,7 +1,7 @@
-package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
+package com.inspirationlogical.receipt.waiter.controller.reatail.sale.buttons;
 
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
+import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Control;
@@ -17,60 +17,48 @@ import javax.annotation.PostConstruct;
 
 @FXMLController
 @Scope("prototype")
-public class CategoryControllerImpl implements CategoryController {
+public class BackButtonControllerImpl implements CategoryController {
 
     @FXML
-    private Label categoryRoot;
+    private Label backButtonRoot;
 
     @FXML
     private VBox vBox;
 
     @FXML
-    private Label categoryName;
-
-    @Autowired
-    private SaleController saleController;
-
-    @Autowired
-    ProductsAndCategoriesController productsAndCategoriesController;
+    private Label backButtonName;
 
     @Getter
     @Setter
     private ProductCategoryView view;
 
-    private boolean isSelected;
+    @Autowired
+    private ProductsAndCategoriesController productsAndCategoriesController;
 
     @PostConstruct
     private void init() {
-        view = productsAndCategoriesController.getProductCategoryViewBeingDrawn();
+        view = (ProductCategoryView) () -> WaiterResources.WAITER.getString("SaleView.BackButton");
         productsAndCategoriesController.setCategoryControllerBeingDrawn(this);
     }
 
     @Override
     public Control getRoot() {
-        return categoryRoot;
+        return backButtonRoot;
     }
 
     @Override
     public void select() {
-        this.isSelected = true;
-        CSSUtilities.setBorderColor(isSelected, vBox);
+
     }
 
     @FXML
     @Override
     public void onCategoryClicked(MouseEvent event) {
-        if(isSelected) {
-            return;
-        } else {
-            categoryRoot.requestFocus();
-            saleController.clearSearch();
-            productsAndCategoriesController.selectCategory(this.getView());
-        }
+        productsAndCategoriesController.onBackButtonClicked();
     }
 
     @Override
     public void updateNode() {
-        categoryName.setText(view.getName());
+        backButtonName.setText(WaiterResources.WAITER.getString("SaleView.BackButton"));
     }
 }

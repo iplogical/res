@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
+package com.inspirationlogical.receipt.waiter.controller.reatail.sale.buttons;
 
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.view.AbstractView;
@@ -6,8 +6,9 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
+import com.inspirationlogical.receipt.waiter.controller.reatail.sale.Search;
+import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SearchProduct;
 import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import lombok.Getter;
 import lombok.Setter;
@@ -182,20 +183,16 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
 
     private void drawBackButton(GridPane categoriesGrid) {
         final int BUTTON_POSITION = GRID_SIZE - 1;
-        ProductController elementController = new ProductControllerImpl() {
+        Node root = WaiterApp.getRootNode(BackButtonFxmlView.class);
+        categoryControllerBeingDrawn.updateNode();
+        categoriesGrid.add(root, BUTTON_POSITION, BUTTON_POSITION);
+    }
 
-            @Override
-            public void onProductClicked(MouseEvent event) {
-                upWithCategories();
-                redrawCategoriesAndProducts();
-                setSelectedCategory();
-            }
-        };
-//        elementController.setView((ProductCategoryView) () -> WaiterResources.WAITER.getString("SaleView.BackButton"));
-        // TODO_REFACTOR: add buttons somehow.
-//        viewLoader.loadView(elementController);
-        // TODO_REFACTOR: add back button
-//        categoriesGrid.add(elementController.getRootNode(), BUTTON_POSITION, BUTTON_POSITION);
+    @Override
+    public void onBackButtonClicked() {
+        upWithCategories();
+        redrawCategoriesAndProducts();
+        setSelectedCategory();
     }
 
     private void upWithCategories() {

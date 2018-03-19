@@ -1,6 +1,7 @@
-package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
+package com.inspirationlogical.receipt.waiter.controller.reatail.sale.buttons;
 
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Control;

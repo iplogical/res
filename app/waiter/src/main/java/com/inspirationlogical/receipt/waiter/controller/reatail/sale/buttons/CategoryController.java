@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
+package com.inspirationlogical.receipt.waiter.controller.reatail.sale.buttons;
 
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import javafx.scene.control.Control;

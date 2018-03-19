@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
+package com.inspirationlogical.receipt.waiter.controller.reatail.sale.buttons;
 
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
@@ -12,6 +12,8 @@ public interface ProductsAndCategoriesController {
     void updateCategoriesAndProducts();
 
     void selectCategory(ProductCategoryView selected);
+
+    void onBackButtonClicked();
 
     void search(String text);
 

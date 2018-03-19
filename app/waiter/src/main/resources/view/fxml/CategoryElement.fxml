@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Label fx:id="categoryRoot" onMouseClicked="#onCategoryClicked" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.inspirationlogical.receipt.waiter.controller.reatail.sale.CategoryControllerImpl">
+<Label fx:id="categoryRoot" onMouseClicked="#onCategoryClicked" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.inspirationlogical.receipt.waiter.controller.reatail.sale.buttons.CategoryControllerImpl">
     <graphic>
         <VBox fx:id="vBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="110.0" style="-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-color: #FFFFFF; -fx-background-radius: 10;">
            <children>

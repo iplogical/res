@@ -10,6 +10,7 @@ import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailCo
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentFxmlView;
+import com.inspirationlogical.receipt.waiter.controller.reatail.sale.buttons.ProductsAndCategoriesController;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.beans.value.ChangeListener;
