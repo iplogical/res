@@ -1,25 +1,22 @@
 package com.inspirationlogical.receipt.waiter.controller;
 
 import com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema;
-import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.utility.AbstractUtils;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.stage.Stage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.testfx.api.FxToolkit;
-import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.concurrent.TimeoutException;
 
 /**
  * Created by TheDagi on 2017. 05. 09..
  */
-public abstract class TestFXBase extends ApplicationTest {
+public abstract class TestFXBase extends GuiTest {
 
     protected static boolean isApplicationStarted = false;
 
@@ -28,8 +25,8 @@ public abstract class TestFXBase extends ApplicationTest {
         if(!isApplicationStarted) {
             isApplicationStarted = true;
             new BuildTestSchema().buildTestSchema();
-            WaiterApp.setTestApplication(true); // Seems like the args are not passed to the start method... Workaround.
-            ApplicationTest.launch(WaiterApp.class);
+//            WaiterApp.setTestApplication(true); // Seems like the args are not passed to the start method... Workaround.
+//            ApplicationTest.launch(WaiterApp.class);
         }
     }
 
@@ -38,10 +35,10 @@ public abstract class TestFXBase extends ApplicationTest {
         AbstractUtils.setRobot(this);
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        stage.show();
-    }
+//    @Override
+//    public void start(Stage stage) throws Exception {
+//        stage.show();
+//    }
 
     @After
     public void afterEachTest() throws TimeoutException {

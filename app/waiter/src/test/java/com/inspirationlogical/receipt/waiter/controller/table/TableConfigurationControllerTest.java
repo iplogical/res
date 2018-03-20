@@ -1,8 +1,12 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import javafx.geometry.Point2D;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
@@ -14,6 +18,8 @@ import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = WaiterApp.class)
 public class TableConfigurationControllerTest extends TestFXBase {
 
     @Test

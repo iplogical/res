@@ -1,22 +1,27 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
-import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
+import com.inspirationlogical.receipt.waiter.application.WaiterApp;
+import com.inspirationlogical.receipt.waiter.controller.GuiTest;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.TABLE_TEST_TABLE;
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.TABLE_TEST_TABLE_NAME;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
-import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TABLEFORM_CONFIRM;
-import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TABLEFORM_NAME;
+import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.addTableToTab;
+import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.deleteTableFromTab;
+import static org.junit.Assert.*;
 
-public class TableControllerTest extends TestFXBase {
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = WaiterApp.class)
+public class TableControllerTest extends GuiTest {
 
     @Test
     public void testMeepleVisible() {
