@@ -15,10 +15,12 @@ import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
+import com.inspirationlogical.receipt.corelib.service.sub.TableService;
 import javafx.geometry.Point2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +40,9 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     private ReceiptRepository receiptRepository;
 
     @Autowired
+    private ApplicationContext applicationContext;
+
+    @Autowired
     RestaurantServiceImpl(EntityViews entityViews) {
         super(entityViews);
     }
@@ -51,6 +56,12 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     public ReceiptView getOpenReceipt(TableView tableView) {
         Receipt receipt = receiptRepository.getOpenReceipt(ReceiptStatus.OPEN, tableView.getNumber());
         receipt.getRecords().size();
+
+        Table theTable = ((TableViewImpl)tableView).getAdapter().getAdaptee();
+        TableService tableService = applicationContext.getBean(TableService.class, theTable);
+        tableService.setNumber(5);
+
+
         return new ReceiptViewImpl(new ReceiptAdapterBase(receipt));
 //        return new ReceiptViewImpl(getTableAdapter(tableView).getOpenReceipt());
     }
