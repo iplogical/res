@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableJpaRepositories("com.inspirationlogical.receipt.corelib.repository")
 @ComponentScan(basePackages = {
         "com.inspirationlogical.receipt.corelib",
         "com.inspirationlogical.receipt.waiter"

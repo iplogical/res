@@ -5,12 +5,16 @@ import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.RestaurantAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
+import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import javafx.geometry.Point2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +35,9 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     final private static Logger logger = LoggerFactory.getLogger(RestaurantServiceImpl.class);
 
     @Autowired
+    private ReceiptRepository receiptRepository;
+
+    @Autowired
     RestaurantServiceImpl(EntityViews entityViews) {
         super(entityViews);
     }
@@ -42,7 +49,10 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public ReceiptView getOpenReceipt(TableView tableView) {
-        return new ReceiptViewImpl(getTableAdapter(tableView).getOpenReceipt());
+        Receipt receipt = receiptRepository.getOpenReceipt(ReceiptStatus.OPEN, tableView.getNumber());
+        receipt.getRecords().size();
+        return new ReceiptViewImpl(new ReceiptAdapterBase(receipt));
+//        return new ReceiptViewImpl(getTableAdapter(tableView).getOpenReceipt());
     }
 
     @Override
