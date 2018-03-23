@@ -1,14 +1,8 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase.getReceiptsByStatusAndOwner;
-import static java.util.stream.Collectors.toList;
-
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.*;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapter;
+import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
@@ -20,10 +14,16 @@ import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransacti
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
-
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import javafx.geometry.Point2D;
 import lombok.NonNull;
+
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+
+import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase.getReceiptsByStatusAndOwner;
+import static java.util.stream.Collectors.toList;
 public class TableAdapter extends AbstractAdapter<Table> {
 
     public TableAdapter(@NonNull Table adaptee) {
@@ -90,6 +90,9 @@ public class TableAdapter extends AbstractAdapter<Table> {
     }
 
     public TableAdapter getConsumer() {
+        if(adaptee.getConsumer() == null) {
+            return null;
+        }
         return new TableAdapter(adaptee.getConsumer());
     }
 

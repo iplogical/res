@@ -44,7 +44,7 @@ public class CSSUtilities {
     }
 
     public static void setBackgroundColor(TableViewState tableViewState, Node node) {
-        RecentConsumption recentConsumption = tableViewState.hasRecentConsumption();
+        RecentConsumption recentConsumption = tableViewState.getRecentConsumption();
         boolean isOrderNotYetDelivered = !tableViewState.isOrderDelivered();
         if(isOrderNotYetDelivered && recentConsumption.equals(RecentConsumption.RECENT_10_MINUTES)) {
             setBackgroundColor(node, BACKGROUND_RECENT_10_MINUTES);

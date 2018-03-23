@@ -35,8 +35,8 @@ public class TableViewState implements ViewState {
         return tableView.isOpen();
     }
 
-    public RecentConsumption hasRecentConsumption() {
-        return tableView.hasRecentConsumption();
+    public RecentConsumption getRecentConsumption() {
+        return tableView.getRecentConsumption();
     }
 
     public boolean isVisible() {

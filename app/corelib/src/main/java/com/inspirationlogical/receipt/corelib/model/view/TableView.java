@@ -15,7 +15,7 @@ public interface TableView extends AbstractView {
 
     boolean isOpen();
 
-    RecentConsumption hasRecentConsumption();
+    RecentConsumption getRecentConsumption();
 
     boolean isVisible();
 

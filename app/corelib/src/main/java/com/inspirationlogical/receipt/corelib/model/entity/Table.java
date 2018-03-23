@@ -119,13 +119,4 @@ public @Data class Table extends AbstractEntity {
     public String toString() {
         return "Table: type=" + type + ", number=" + number + ", name=" + name + ", visibility=" + visible;
     }
-
-    public static Table cloneTable(Table table) {
-        return Table.builder()
-                .type(table.getType())
-                .number(table.getNumber())
-                .name(table.getName())
-                .visible(table.isVisible())
-                .build();
-    }
 }
