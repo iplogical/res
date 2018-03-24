@@ -58,7 +58,7 @@ public interface ReceiptAdapter {
 
     ReceiptRecordAdapter cloneReceiptRecordAdapter(ReceiptRecordAdapter record, double amount);
 
-    void cancelReceiptRecord(ReceiptRecordAdapter receiptRecordAdapter);
+//    void cancelReceiptRecord(ReceiptRecordAdapter receiptRecordAdapter);
 
-    void mergeReceiptRecords();
+//    void mergeReceiptRecords();
 }

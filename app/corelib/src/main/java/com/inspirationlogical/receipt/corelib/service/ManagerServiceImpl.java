@@ -12,6 +12,7 @@ import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ import static java.util.stream.Collectors.toList;
 public class ManagerServiceImpl extends AbstractService implements ManagerService {
 
     final private static Logger logger = LoggerFactory.getLogger(ManagerServiceImpl.class);
+
+    @Autowired
+    private ReceiptRecordService receiptRecordService;
 
     @Autowired
     ManagerServiceImpl(EntityViews entityViews) {

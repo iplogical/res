@@ -164,11 +164,11 @@ public class ReceiptAdapterSell extends AbstractAdapter<Receipt> {
         return new ReceiptRecordAdapter(receiptRecord[0]);
     }
 
-    public void cancelReceiptRecord(ReceiptRecordAdapter receiptRecordAdapter) {
-        GuardedTransaction.delete(receiptRecordAdapter.getAdaptee(), () -> {
-            adaptee.getRecords().remove(receiptRecordAdapter.getAdaptee());
-        });
-    }
+//    public void cancelReceiptRecord(ReceiptRecordAdapter receiptRecordAdapter) {
+//        GuardedTransaction.delete(receiptRecordAdapter.getAdaptee(), () -> {
+//            adaptee.getRecords().remove(receiptRecordAdapter.getAdaptee());
+//        });
+//    }
 
     public void setOrderDelivered(boolean delivered) {
         GuardedTransaction.run(() -> {

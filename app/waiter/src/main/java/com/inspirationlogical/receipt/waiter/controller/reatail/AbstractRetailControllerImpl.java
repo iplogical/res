@@ -215,7 +215,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected ReceiptRecordView decreaseRowInSoldProducts(SoldProductViewModel row, double amount) {
         List<ReceiptRecordView> matchingReceiptRecordView = findMatchingView(soldProductsView, row);
         if(matchingReceiptRecordView.size() == 0) return null;
-        matchingReceiptRecordView.get(0).decreaseSoldQuantity(amount);
+        retailService.decreaseSoldQuantity(matchingReceiptRecordView.get(0), amount);
         decreaseClickedRow(row, amount);
         return matchingReceiptRecordView.get(0);
     }
@@ -238,7 +238,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected ReceiptRecordView increaseRowInSoldProducts(SoldProductViewModel row, double amount, boolean isSale) {
         List<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentView(soldProductsView, row);
-        equivalentReceiptRecordView.get(0).increaseSoldQuantity(amount, isSale);
+        retailService.increaseSoldQuantity(equivalentReceiptRecordView.get(0), amount, isSale);
         row.increaseProductQuantity(amount);
         return equivalentReceiptRecordView.get(0);
     }

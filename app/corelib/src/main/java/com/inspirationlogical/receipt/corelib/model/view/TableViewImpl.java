@@ -189,7 +189,7 @@ public class TableViewImpl implements TableView {
     public String toString() {
         return adapter.toString();
     }
-    
+
     public boolean isConsumer() {
         return isConsumer;
     }

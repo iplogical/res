@@ -11,7 +11,6 @@ import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
@@ -19,7 +18,7 @@ import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
-import com.inspirationlogical.receipt.corelib.service.sub.TableService;
+import com.inspirationlogical.receipt.corelib.service.table.TableService;
 import javafx.geometry.Point2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,7 +98,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public ReceiptView getOpenReceipt(TableView tableView) {
-        Receipt receipt = receiptRepository.getOpenReceipt(ReceiptStatus.OPEN, tableView.getNumber());
+        Receipt receipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         receipt.getRecords().size();
         return new ReceiptViewImpl(new ReceiptAdapterBase(receipt));
     }

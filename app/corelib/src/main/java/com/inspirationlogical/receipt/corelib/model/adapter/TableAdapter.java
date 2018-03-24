@@ -63,10 +63,10 @@ public class TableAdapter extends AbstractAdapter<Table> {
                 .collect(toList());
     }
 
-    public static int getFirstUnusedNumber() {
-        List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_FIRST_UNUSED_NUMBER, query -> query);
-        return tables.stream().mapToInt(Table::getNumber).min().orElse(0) + 1;
-    }
+//    public static int getFirstUnusedNumber() {
+//        List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_FIRST_UNUSED_NUMBER, query -> query);
+//        return tables.stream().mapToInt(Table::getNumber).min().orElse(0) + 1;
+//    }
 
     public ReceiptAdapterBase getOpenReceipt() {
         return (ReceiptAdapterBase)ReceiptAdapter.getOpenReceipt(adaptee.getNumber());

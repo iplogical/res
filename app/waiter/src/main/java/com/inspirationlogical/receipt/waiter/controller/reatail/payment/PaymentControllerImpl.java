@@ -301,13 +301,13 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void cloneReceiptRecordAndAddToPaidProducts(SoldProductViewModel row, ReceiptRecordView toAdd, double amount) {
-        ReceiptRecordView newRecord = retailService.cloneReceiptRecordView(tableView, toAdd, amount);
+        ReceiptRecordView newRecord = retailService.cloneReceiptRecordView(toAdd, amount);
         paidProductsView.add(newRecord);
         paidProductsModel.add(createNewRow(row, newRecord, amount));
     }
 
     private void increaseReceiptRecordAndRowQuantity(double amount, List<ReceiptRecordView> equivalentReceiptRecordView) {
-        equivalentReceiptRecordView.get(0).increaseSoldQuantity(amount, false);
+        retailService.increaseSoldQuantity(equivalentReceiptRecordView.get(0), amount, false);
         List<SoldProductViewModel> matchingRows =
                 paidProductsModel.stream().filter(thisRow -> SoldProductViewModel.isEquals(thisRow, equivalentReceiptRecordView.get(0)))
                         .collect(toList());
@@ -345,7 +345,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private void decreaseRowInPaidProducts(SoldProductViewModel row, ReceiptRecordView toAdd, double amount) {
         List<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentView(paidProductsView, row);
-        equivalentReceiptRecordView.get(0).decreaseSoldQuantity(amount);
+        retailService.decreaseSoldQuantity(equivalentReceiptRecordView.get(0), amount);
         List<SoldProductViewModel> matchingRows =
                 paidProductsModel.stream().filter(thisRow -> SoldProductViewModel.isEquals(thisRow, equivalentReceiptRecordView.get(0)))
                         .collect(toList());
@@ -367,7 +367,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private ReceiptRecordView cloneReceiptRecordAndAddToSoldProducts(SoldProductViewModel row) {
         ReceiptRecordView recordInPaidProducts = findEquivalentView(paidProductsView, row).get(0);
-        ReceiptRecordView recordInSoldProducts = retailService.cloneReceiptRecordView(tableView, recordInPaidProducts, 1);
+        ReceiptRecordView recordInSoldProducts = retailService.cloneReceiptRecordView(recordInPaidProducts, 1);
         soldProductsView.add(recordInSoldProducts);
         addRowToSoldProducts(new SoldProductViewModel(recordInSoldProducts, getOrderDeliveredTime()));
         return recordInPaidProducts;

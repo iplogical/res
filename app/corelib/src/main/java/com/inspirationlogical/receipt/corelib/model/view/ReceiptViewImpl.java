@@ -16,8 +16,32 @@ import static java.util.stream.Collectors.toList;
 public class ReceiptViewImpl extends AbstractModelViewImpl<ReceiptAdapterBase>
     implements ReceiptView {
 
+    private long id;
+    private List<ReceiptRecordView> soldProducts;
+    private List<ReceiptRecordView> aggregatedRecords;
+    private long totalPrice;
+    private ReceiptType type;
+    private ReceiptStatus status;
+    private PaymentMethod paymentMethod;
+    private LocalDateTime openTime;
+    private LocalDateTime closureTime;
+    private int userCode;
+    private int sumPurchaseNetPrice;
+    private int sumPurchaseGrossPrice;
+    private int sumSaleNetPrice;
+    private int sumSaleGrossPrice;
+    private double discountPercent;
+    private VATSerie VATSerie;
+    private Client client;
+
     public ReceiptViewImpl(ReceiptAdapterBase adapter) {
         super(adapter);
+        id = adapter.getAdaptee().getId();
+    }
+
+    @Override
+    public long getId() {
+        return adapter.getAdaptee().getId();
     }
 
     @Override

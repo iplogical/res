@@ -1,33 +1,43 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.RecipeAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
+import lombok.Getter;
+import lombok.ToString;
 
-public class RecipeViewImpl extends AbstractModelViewImpl<RecipeAdapter> implements RecipeView {
+@Getter
+@ToString
+public class RecipeViewImpl implements RecipeView {
 
-    public RecipeViewImpl(RecipeAdapter adapter) {
-        super(adapter);
+    private ProductView owner;
+    private ProductView component;
+    private double quantity;
+    private boolean isTrivial;
+
+    public RecipeViewImpl(Recipe recipe) {
+        owner = new ProductViewImpl(recipe.getOwner());
+        component = new ProductViewImpl(recipe.getComponent());
+        quantity = recipe.getQuantityMultiplier();
+        isTrivial = recipe.getOwner().equals(recipe.getComponent());
     }
 
-    @Override
-    public ProductView getOwner() {
-        return new ProductViewImpl(new ProductAdapter(adapter.getAdaptee().getOwner()));
-    }
-
-    @Override
-    public ProductView getComponent() {
-        return new ProductViewImpl(new ProductAdapter(adapter.getAdaptee().getComponent()));
-    }
-
-    @Override
-    public double getQuantity() {
-        return adapter.getAdaptee().getQuantityMultiplier();
-    }
-
-    @Override
-    public boolean isTrivial() {
-        Recipe recipe = adapter.getAdaptee();
-        return recipe.getOwner().equals(recipe.getComponent());
-    }
+//    @Override
+//    public ProductView getOwner() {
+//        return new ProductViewImpl(new ProductAdapter(adapter.getAdaptee().getOwner()));
+//    }
+//
+//    @Override
+//    public ProductView getComponent() {
+//        return new ProductViewImpl(new ProductAdapter(adapter.getAdaptee().getComponent()));
+//    }
+//
+//    @Override
+//    public double getQuantity() {
+//        return adapter.getAdaptee().getQuantityMultiplier();
+//    }
+//
+//    @Override
+//    public boolean isTrivial() {
+//        Recipe recipe = adapter.getAdaptee();
+//        return recipe.getOwner().equals(recipe.getComponent());
+//    }
 }

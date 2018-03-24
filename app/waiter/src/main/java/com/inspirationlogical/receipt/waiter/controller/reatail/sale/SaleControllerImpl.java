@@ -167,7 +167,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         if(saleViewState.isSelectiveCancellation()) {
             ReceiptRecordView clickedRecord = removeRowFromSoldProducts(row);
             if(clickedRecord == null) return;
-            retailService.cancelReceiptRecord(tableView, clickedRecord);
+            retailService.cancelReceiptRecord(clickedRecord);
             getSoldProductsAndRefreshTable();
         } else if(saleViewState.isSingleCancellation()) {
             decreaseRowInSoldProducts(row, 1);

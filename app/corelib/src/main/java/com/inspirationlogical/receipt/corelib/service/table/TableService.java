@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.service.sub;
+package com.inspirationlogical.receipt.corelib.service.table;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;

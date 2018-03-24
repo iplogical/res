@@ -34,10 +34,6 @@ abstract class AbstractService {
         return ((ProductCategoryViewImpl)category).getAdapter();
     }
 
-    ReceiptAdapterBase getReceiptAdapter(ReceiptView receiptView) {
-        return ((ReceiptViewImpl)receiptView).getAdapter();
-    }
-
     ReceiptRecordAdapter getReceiptRecordAdapter(ReceiptRecordView receiptRecordView) {
         return ((ReceiptRecordViewImpl)receiptRecordView).getAdapter();
     }

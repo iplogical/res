@@ -27,7 +27,8 @@ public class ReceiptRecordAdapter extends AbstractAdapter<ReceiptRecord> {
         ReceiptRecord clone = ReceiptRecord.cloneReceiptRecord(adaptee);
         clone.setSoldQuantity(quantity);
         clone.setProduct(adaptee.getProduct());
-        StockAdapter.decreaseStock(clone, adaptee.getOwner().getType());
+        //TODO_REFACOR: deal with this.
+//        StockAdapter.decreaseStock(clone, adaptee.getOwner().getType());
     }
 
     private ReceiptRecordAdapter decreaseSoldQuantity(double quantity) {

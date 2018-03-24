@@ -27,9 +27,9 @@ public interface RetailService {
 
     void payPartial(TableView tableView, double partialValue, PaymentParams paymentParams);
 
-    ReceiptRecordView cloneReceiptRecordView(TableView tableView, ReceiptRecordView receiptRecordView, double amount);
+    ReceiptRecordView cloneReceiptRecordView(ReceiptRecordView receiptRecordView, double amount);
 
-    void cancelReceiptRecord(TableView tableView, ReceiptRecordView receiptRecordView);
+    void cancelReceiptRecord(ReceiptRecordView receiptRecordView);
 
     void mergeReceiptRecords(ReceiptView receiptView);
 
@@ -42,4 +42,8 @@ public interface RetailService {
     void setOrderDelivered(TableView tableView, boolean delivered);
 
     void setOrderDeliveredTime(TableView tableView, LocalDateTime now);
+
+    void increaseSoldQuantity(ReceiptRecordView receiptRecord, double amount, boolean isSale);
+
+    void decreaseSoldQuantity(ReceiptRecordView receiptRecord, double amount);
 }

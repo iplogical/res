@@ -28,14 +28,12 @@ import static java.util.stream.Collectors.toList;
 
 public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements ReceiptAdapter {
 
-    private ReceiptAdapterMerge receiptAdapterMerge;
     private ReceiptAdapterPay receiptAdapterPay;
     private ReceiptAdapterSell receiptAdapterSell;
     private ReceiptAdapterStock receiptAdapterStock;
 
     public ReceiptAdapterBase(Receipt adaptee) {
         super(adaptee);
-        receiptAdapterMerge = new ReceiptAdapterMerge(adaptee);
         receiptAdapterPay = new ReceiptAdapterPay(adaptee);
         receiptAdapterSell = new ReceiptAdapterSell(adaptee);
         receiptAdapterStock = new ReceiptAdapterStock(adaptee);
@@ -108,10 +106,10 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
         return receiptAdapterSell.cloneReceiptRecordAdapter(record, amount);
     }
 
-    @Override
-    public void cancelReceiptRecord(ReceiptRecordAdapter receiptRecordAdapter) {
-        receiptAdapterSell.cancelReceiptRecord(receiptRecordAdapter);
-    }
+//    @Override
+//    public void cancelReceiptRecord(ReceiptRecordAdapter receiptRecordAdapter) {
+//        receiptAdapterSell.cancelReceiptRecord(receiptRecordAdapter);
+//    }
 
     @Override
     public void addStockRecords(List<StockParams> paramsList) {
@@ -144,10 +142,10 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
         receiptAdapterPay.payPartial(partialValue, paymentParams);
     }
 
-    @Override
-    public void mergeReceiptRecords() {
-        receiptAdapterMerge.mergeReceiptRecords();
-    }
+//    @Override
+//    public void mergeReceiptRecords() {
+//        receiptAdapterMerge.mergeReceiptRecords();
+//    }
 
     public int getTotalPrice() {
         return getReceiptRecords().stream()

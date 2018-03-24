@@ -5,6 +5,8 @@ import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.DailyCons
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
+import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,12 @@ import java.util.List;
 public class RetailServiceImpl extends AbstractService implements RetailService {
 
     final private static Logger logger = LoggerFactory.getLogger(RetailServiceImpl.class);
+
+    @Autowired
+    private ReceiptService receiptService;
+
+    @Autowired
+    private ReceiptRecordService receiptRecordService;
 
     @Autowired
     RetailServiceImpl(EntityViews entityViews) {
@@ -79,20 +87,20 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     }
 
     @Override
-    public ReceiptRecordView cloneReceiptRecordView(TableView tableView, ReceiptRecordView receiptRecordView, double quantity) {
-        logger.info("A receipt record was cloned: quantity:" + quantity + ", " + receiptRecordView + ", " + tableView);
-        return new ReceiptRecordViewImpl(getTableAdapter(tableView).getOpenReceipt().cloneReceiptRecordAdapter(getReceiptRecordAdapter(receiptRecordView), quantity));
+    public ReceiptRecordView cloneReceiptRecordView(ReceiptRecordView receiptRecordView, double quantity) {
+        logger.info("A receipt record was cloned: quantity:" + quantity + ", " + receiptRecordView);
+        return receiptRecordService.cloneReceiptRecordAdapter(receiptRecordView, quantity);
     }
 
     @Override
-    public void cancelReceiptRecord(TableView tableView, ReceiptRecordView receiptRecordView) {
-        getTableAdapter(tableView).getOpenReceipt().cancelReceiptRecord(getReceiptRecordAdapter(receiptRecordView));
-        logger.info("A receipt record was canceled: " + receiptRecordView + ", " + tableView);
+    public void cancelReceiptRecord(ReceiptRecordView receiptRecordView) {
+        receiptRecordService.cancelReceiptRecord(receiptRecordView);
+        logger.info("A receipt record was canceled: " + receiptRecordView);
     }
 
     @Override
     public void mergeReceiptRecords(ReceiptView receiptView) {
-        getReceiptAdapter(receiptView).mergeReceiptRecords();
+        receiptService.mergeReceiptRecords(receiptView);
         logger.info("A the records of a receipt were merged: " + receiptView);
     }
 
@@ -120,5 +128,14 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     @Override
     public void setOrderDeliveredTime(TableView tableView, LocalDateTime now) {
         getTableAdapter(tableView).getOpenReceipt().setOrderDeliveredTime(now);
+    }
+
+    public void increaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount, boolean isSale) {
+        receiptRecordService.increaseSoldQuantity(receiptRecordView, amount, isSale);
+    }
+
+    @Override
+    public void decreaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount) {
+        receiptRecordService.decreaseSoldQuantity(receiptRecordView, amount);
     }
 }
