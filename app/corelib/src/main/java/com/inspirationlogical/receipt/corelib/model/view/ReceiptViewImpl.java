@@ -1,18 +1,15 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
@@ -155,8 +152,8 @@ public class ReceiptViewImpl extends AbstractModelViewImpl<ReceiptAdapterBase>
         return adapter.getAdaptee().getClient();
     }
 
-    @Override
-    public String toString() {
-        return adapter.toString();
-    }
+//    @Override
+//    public String toString() {
+//        return adapter.toString();
+//    }
 }

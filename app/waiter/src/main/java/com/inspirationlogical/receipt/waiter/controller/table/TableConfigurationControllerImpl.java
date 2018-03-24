@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
@@ -110,7 +109,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @Override
     public void addTable(TableParams tableParams) {
         try {
-            TableView tableView = restaurantService.addTable(restaurantView, buildTable(tableParams));
+            TableView tableView = restaurantService.addTable(restaurantView, buildTableParams(tableParams));
             hideTableForm();
             drawTable(tableView);
             updateHostTable(tableView);
@@ -120,22 +119,12 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         }
     }
 
-    private Table.TableBuilder buildTable(TableParams params) {
+    private TableParams buildTableParams(TableParams params) {
         TableType tableType = restaurantViewState.getTableType();
         Point2D position = calculateTablePosition(tableFormController.getRootNode(), restaurantController.getActiveTab());
-        return restaurantService
-                .tableBuilder()
-                .type(tableType)
-                .name(params.getName())
-                .number(params.getNumber())
-                .note(params.getNote())
-                .guestCount(params.getGuestCount())
-                .capacity(params.getCapacity())
-                .visible(true)
-                .coordinateX((int) position.getX())
-                .coordinateY((int) position.getY())
-                .dimensionX((int) params.getDimension().getWidth())
-                .dimensionY((int) params.getDimension().getHeight());
+        params.setType(tableType);
+        params.setPosition(position);
+        return params;
     }
 
     private void updateHostTable(TableView tableView) {

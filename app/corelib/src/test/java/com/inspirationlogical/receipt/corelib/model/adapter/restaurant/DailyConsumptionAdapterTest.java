@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 public class DailyConsumptionAdapterTest extends TestBase {
 
-    private RestaurantAdapter restaurantAdapter;
+    private RestaurantAdapterImpl restaurantAdapter;
     private Receipt receiptSaleTwo;
     private Receipt receiptSaleFour;
     private Receipt receiptSaleClosedTable;
@@ -24,7 +24,7 @@ public class DailyConsumptionAdapterTest extends TestBase {
 
     @Before
     public void setUp() {
-        restaurantAdapter = new RestaurantAdapter(schema.getRestaurant());
+        restaurantAdapter = new RestaurantAdapterImpl(schema.getRestaurant());
         receiptSaleTwo = schema.getReceiptSaleTwo();
         receiptSaleFour = schema.getReceiptSaleFour();
         receiptSaleClosedTable = schema.getReceiptSaleClosedTable();

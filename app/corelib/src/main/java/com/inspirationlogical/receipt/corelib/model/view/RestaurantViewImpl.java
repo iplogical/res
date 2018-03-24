@@ -1,30 +1,31 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.RestaurantAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import lombok.Getter;
+
+import java.util.Map;
 
 /**
  * Created by Bálint on 2017.03.13..
  */
-public class RestaurantViewImpl extends AbstractModelViewImpl<RestaurantAdapter>
-    implements RestaurantView {
+@Getter
+public class RestaurantViewImpl implements RestaurantView {
 
-    public RestaurantViewImpl(RestaurantAdapter adapter) {
-        super(adapter);
-    }
+    private long restaurantId;
+    private String restaurantName;
+    private String companyName;
+    private Map<PaymentMethod, Integer> consumptionOfTheDay;
 
-    @Override
-    public String getRestaurantName() {
-        return adapter.getAdaptee().getRestaurantName();
-    }
-
-    @Override
-    public String getCompanyName() {
-        return adapter.getAdaptee().getCompanyName();
+    public RestaurantViewImpl(Restaurant restaurant, Map<PaymentMethod, Integer> consumptionOfTheDay) {
+        restaurantId = restaurant.getId();
+        restaurantName = restaurant.getRestaurantName();;
+        companyName = restaurant.getCompanyName();
+        this.consumptionOfTheDay = consumptionOfTheDay;
     }
 
     @Override
     public int getConsumptionOfTheDay(PaymentMethod paymentMethod) {
-        return adapter.getConsumptionOfTheDay(paymentMethod);
+        return consumptionOfTheDay.get(paymentMethod);
     }
 }

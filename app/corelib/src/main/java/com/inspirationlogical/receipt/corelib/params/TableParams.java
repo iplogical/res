@@ -2,11 +2,14 @@ package com.inspirationlogical.receipt.corelib.params;
 
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Builder
+@ToString
 public class TableParams {
 
     private String name;
@@ -19,5 +22,11 @@ public class TableParams {
 
     private Integer capacity;
 
+    private TableType type;
+
+    private Point2D position;
+
     private Dimension2D dimension;
+
+
 }

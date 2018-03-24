@@ -1,20 +1,24 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
+import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.RestaurantAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
-import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
+import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
+import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
+import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
+import com.inspirationlogical.receipt.corelib.repository.TableRepository;
 import com.inspirationlogical.receipt.corelib.service.sub.TableService;
 import javafx.geometry.Point2D;
 import org.slf4j.Logger;
@@ -25,7 +29,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.canBeHosted;
 import static java.util.stream.Collectors.toList;
@@ -40,6 +46,18 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     private ReceiptRepository receiptRepository;
 
     @Autowired
+    private TableRepository tableRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private DailyClosureRepository dailyClosureRepository;
+
+    @Autowired
+    private TableService tableService;
+
+    @Autowired
     private ApplicationContext applicationContext;
 
     @Autowired
@@ -49,21 +67,41 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public RestaurantView getActiveRestaurant() {
-        return new RestaurantViewImpl(RestaurantAdapter.getActiveRestaurant());
+        List<Restaurant> restaurants = restaurantRepository.findAll();
+        if (restaurants.isEmpty()) {
+            throw new RestaurantNotFoundException();
+        }
+        return new RestaurantViewImpl(restaurants.get(0), getConsumptionOfTheDay());
+    }
+
+    private Map<PaymentMethod, Integer> getConsumptionOfTheDay() {
+        Map<PaymentMethod, Integer> consumptionOfTheDay = new HashMap<>();
+        consumptionOfTheDay.put(PaymentMethod.CASH, getConsumptionOfTheDay(PaymentMethod.CASH));
+        consumptionOfTheDay.put(PaymentMethod.CREDIT_CARD, getConsumptionOfTheDay(PaymentMethod.CREDIT_CARD));
+        consumptionOfTheDay.put(PaymentMethod.COUPON, getConsumptionOfTheDay(PaymentMethod.COUPON));
+        consumptionOfTheDay.put(null, getConsumptionOfTheDay(null));
+        return consumptionOfTheDay;
+    }
+
+    private int getConsumptionOfTheDay(PaymentMethod paymentMethod) {
+        DailyClosure openDailyClosure = dailyClosureRepository.findByClosureTimeIsNull();
+        if(paymentMethod == null)
+            return openDailyClosure.getSumSaleGrossPriceCash() + openDailyClosure.getSumSaleGrossPriceCreditCard();
+        if(paymentMethod.equals(PaymentMethod.CASH))
+            return openDailyClosure.getSumSaleGrossPriceCash();
+        if(paymentMethod.equals(PaymentMethod.CREDIT_CARD))
+            return openDailyClosure.getSumSaleGrossPriceCreditCard();
+        if(paymentMethod.equals(PaymentMethod.COUPON))
+            return openDailyClosure.getSumSaleGrossPriceCoupon();
+        else
+            return 0;
     }
 
     @Override
     public ReceiptView getOpenReceipt(TableView tableView) {
         Receipt receipt = receiptRepository.getOpenReceipt(ReceiptStatus.OPEN, tableView.getNumber());
         receipt.getRecords().size();
-
-        Table theTable = ((TableViewImpl)tableView).getAdapter().getAdaptee();
-        TableService tableService = applicationContext.getBean(TableService.class, theTable);
-        tableService.setNumber(5);
-
-
         return new ReceiptViewImpl(new ReceiptAdapterBase(receipt));
-//        return new ReceiptViewImpl(getTableAdapter(tableView).getOpenReceipt());
     }
 
     @Override
@@ -73,13 +111,13 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public int getFirstUnusedNumber() {
-        return TableAdapter.getFirstUnusedNumber();
+        return tableRepository.getFirstUnusedNumber();
     }
 
     @Override
-    public TableView addTable(RestaurantView restaurant, TableBuilder builder) {
-        logger.info("A table was added: " + builder.build());
-        return new TableViewImpl(getRestaurantAdapter(restaurant).addTable(builder));
+    public TableView addTable(RestaurantView restaurant, TableParams tableParams) {
+        logger.info("A table was added: " + tableParams);
+        return new TableViewImpl(tableService.addTable(restaurant, tableParams));
 
     }
 
@@ -94,13 +132,14 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
         List<TableAdapter> consumedTableAdapters = consumed.stream()
                 .map(this::getTableAdapter)
                 .collect(toList());
-        getRestaurantAdapter(getActiveRestaurant()).mergeTables(consumerTableAdapter, consumedTableAdapters);
+//        getRestaurantAdapter(getActiveRestaurant()).mergeTables(consumerTableAdapter, consumedTableAdapters);
+        tableService.mergeTables(consumerTableAdapter, consumedTableAdapters);
     }
 
     @Override
     public List<TableView> splitTables(TableView consumer) {
         TableAdapter consumerTableAdapter = getTableAdapter(consumer);
-        return getRestaurantAdapter(getActiveRestaurant()).splitTables(consumerTableAdapter)
+        return tableService.splitTables(consumerTableAdapter)
                 .stream()
                 .map(TableViewImpl::new)
                 .collect(toList());
@@ -113,14 +152,9 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
-    public TableBuilder tableBuilder() {
-        return Table.builder();
-    }
-
-    @Override
     public void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant) {
         TableAdapter tableAdapter = getTableAdapter(tableView);
-        if(getRestaurantAdapter(restaurant).isTableNumberAlreadyInUse(tableNumber)) {
+        if(tableService.isTableNumberAlreadyInUse(tableNumber)) {
             if(canBeHosted(tableView.getType())) {
                 tableAdapter.setHost(tableNumber);
             } else {

@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.RestaurantAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantViewImpl;
@@ -26,7 +25,7 @@ import javafx.geometry.Point2D;
 /**
  * Created by Bálint on 2017.03.13..
  */
-@PrepareForTest(RestaurantAdapter.class)
+@PrepareForTest(RestaurantAdapterImpl.class)
 @RunWith(PowerMockRunner.class)
 public class RestaurantServiceTest {
     private RestaurantService service;
@@ -38,7 +37,7 @@ public class RestaurantServiceTest {
     private RestaurantViewImpl restaurantView;
 
     @Mock
-    private RestaurantAdapter restaurantAdapter;
+    private RestaurantAdapterImpl restaurantAdapter;
 
     @Mock
     private TableViewImpl tableView;
@@ -60,13 +59,13 @@ public class RestaurantServiceTest {
     @Test
     public void testGetActiveRestaurant() {
         //given
-        mockStatic(RestaurantAdapter.class);
-        when(RestaurantAdapter.getActiveRestaurant()).thenReturn(restaurantAdapter);
+        mockStatic(RestaurantAdapterImpl.class);
+        when(RestaurantAdapterImpl.getActiveRestaurant()).thenReturn(restaurantAdapter);
         //when
         service.getActiveRestaurant();
         //then
         verifyStatic(times(1));
-        RestaurantAdapter.getActiveRestaurant();
+        RestaurantAdapterImpl.getActiveRestaurant();
     }
 
     @Test

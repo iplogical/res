@@ -11,18 +11,13 @@ import static org.junit.Assert.assertTrue;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.TestBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.RestaurantAdapter;
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 /**
@@ -30,7 +25,7 @@ import java.util.Arrays;
  */
 public class RestaurantAdapterTest extends TestBase {
 
-    private RestaurantAdapter restaurantAdapter;
+    private RestaurantAdapterImpl restaurantAdapter;
     private Table.TableBuilder tableBuilder;
     private TableAdapter tableNormal;
     private TableAdapter tableNormalClosed;
@@ -39,7 +34,7 @@ public class RestaurantAdapterTest extends TestBase {
 
     @Before
     public void setUp() {
-        restaurantAdapter = new RestaurantAdapter(schema.getRestaurant());
+        restaurantAdapter = new RestaurantAdapterImpl(schema.getRestaurant());
         tableNormal = new TableAdapter(schema.getTableNormal());
         tableNormalClosed = new TableAdapter(schema.getTableNormalClosed());
         tableConsumer = new TableAdapter(schema.getTableConsumer());
@@ -59,7 +54,7 @@ public class RestaurantAdapterTest extends TestBase {
 
     @Test
     public void testGetActiveRestaurant() {
-        assertNotNull(RestaurantAdapter.getActiveRestaurant());
+        assertNotNull(RestaurantAdapterImpl.getActiveRestaurant());
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.corelib.service;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.*;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.RestaurantAdapter;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 
 import java.util.List;
@@ -21,10 +20,6 @@ abstract class AbstractService {
 
     AbstractService(EntityViews entityViews) {
         this.entityViews = entityViews;
-    }
-
-    RestaurantAdapter getRestaurantAdapter(RestaurantView restaurant) {
-        return ((RestaurantViewImpl)restaurant).getAdapter();
     }
 
     TableAdapter getTableAdapter(TableView tableView) {
