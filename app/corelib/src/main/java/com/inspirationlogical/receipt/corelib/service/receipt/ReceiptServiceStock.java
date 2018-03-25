@@ -30,15 +30,16 @@ public class ReceiptServiceStock {
     @Autowired
     private TableRepository tableRepository;
 
+    @Autowired
+    private ReceiptService receiptService;
+
     public void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
         Receipt receipt = buildReceipt(receiptType);
         addStockRecords(receipt, paramsList);
         bindReceiptToTable(receipt);
         StockListener.addObserver(listener);
-//        GuardedTransaction.persist(receiptAdapter.getAdaptee());
-        receiptRepository.save(receipt);
 
-        receiptAdapter.close(PaymentParams.builder().paymentMethod(PaymentMethod.CASH)
+        receiptService.close(receipt, PaymentParams.builder().paymentMethod(PaymentMethod.CASH)
                 .discountAbsolute(0)
                 .discountPercent(0)
                 .build());
@@ -61,7 +62,7 @@ public class ReceiptServiceStock {
         table.getReceipts().add(receipt);
     }
 
-    public void addStockRecords(Receipt receipt, List<StockParams> paramsList) {
+    private void addStockRecords(Receipt receipt, List<StockParams> paramsList) {
         paramsList.forEach(params -> {
             Product product = productRepository.findByLongName(params.getProductName());
             ReceiptRecord record = buildReceiptRecord(params, product);

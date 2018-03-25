@@ -1,8 +1,10 @@
 package com.inspirationlogical.receipt.corelib.service.receipt;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
@@ -32,23 +34,23 @@ public class ReceiptServiceImpl implements ReceiptService {
     private ReceiptServiceStock receiptServiceStock;
 
     @Override
-    public void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift) {
-
+    public void sellProduct(Receipt receipt, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {
+        receiptServiceSell.sellProduct(receipt, productView, amount, isTakeAway, isGift);
     }
 
     @Override
-    public void sellAdHocProduct(AdHocProductParams adHocProductParams, boolean takeAway) {
-
+    public void sellAdHocProduct(Receipt receipt, AdHocProductParams adHocProductParams, boolean isTakeAway) {
+        receiptServiceSell.sellAdHocProduct(receipt, adHocProductParams, isTakeAway);
     }
 
     @Override
-    public ReceiptRecordAdapter sellGameFee(int quantity) {
-        return null;
+    public ReceiptRecordView sellGameFee(Receipt receipt, int quantity) {
+        return receiptServiceSell.sellGameFee(receipt, quantity);
     }
 
     @Override
-    public void addStockRecords(List<StockParams> paramsList) {
-        receiptServiceStock.addStockRecords();
+    public void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
+        receiptServiceStock.updateStock(paramsList, receiptType, listener);
     }
 
     @Override

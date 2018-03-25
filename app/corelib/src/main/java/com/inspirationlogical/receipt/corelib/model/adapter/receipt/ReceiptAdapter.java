@@ -1,13 +1,11 @@
 package com.inspirationlogical.receipt.corelib.model.adapter.receipt;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.VATSerieAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 import java.util.ArrayList;
@@ -38,11 +36,11 @@ public interface ReceiptAdapter {
         return new ReceiptAdapterBase(newReceipt);
     }
 
-    void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift);
-
-    void sellAdHocProduct(AdHocProductParams adHocProductParams, boolean takeAway);
-
-    ReceiptRecordAdapter sellGameFee(int quantity);
+//    void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift);
+//
+//    void sellAdHocProduct(AdHocProductParams adHocProductParams, boolean takeAway);
+//
+//    ReceiptRecordAdapter sellGameFee(int quantity);
 
     void addStockRecords(List<StockParams> paramsList);
 
@@ -54,7 +52,7 @@ public interface ReceiptAdapter {
 //
 //    void payPartial(double partialValue, PaymentParams paymentParams);
 
-    ReceiptRecordAdapter cloneReceiptRecordAdapter(ReceiptRecordAdapter record, double amount);
+//    ReceiptRecordAdapter cloneReceiptRecordAdapter(ReceiptRecordAdapter record, double amount);
 
 //    void cancelReceiptRecord(ReceiptRecordAdapter receiptRecordAdapter);
 

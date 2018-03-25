@@ -1,8 +1,10 @@
 package com.inspirationlogical.receipt.corelib.service.receipt;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
+import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
@@ -14,13 +16,13 @@ import java.util.List;
 
 public interface ReceiptService {
 
-    void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift);
+    void sellProduct(Receipt receipt, ProductView productView, int amount, boolean isTakeAway, boolean isGift);
 
-    void sellAdHocProduct(AdHocProductParams adHocProductParams, boolean takeAway);
+    void sellAdHocProduct(Receipt receipt, AdHocProductParams adHocProductParams, boolean takeAway);
 
-    ReceiptRecordAdapter sellGameFee(int quantity);
+    ReceiptRecordView sellGameFee(Receipt receipt, int quantity);
 
-    void addStockRecords(List<StockParams> paramsList);
+    void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener);
 
     Collection<ReceiptRecordAdapter> getSoldProducts();
 

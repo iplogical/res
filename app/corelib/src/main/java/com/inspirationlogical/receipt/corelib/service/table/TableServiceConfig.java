@@ -1,11 +1,11 @@
 package com.inspirationlogical.receipt.corelib.service.table;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
+import javafx.geometry.Point2D;
 
 import java.util.List;
 
@@ -15,11 +15,27 @@ public interface TableServiceConfig {
 
     void deleteTable(TableView tableView);
 
+    void openTable(TableView tableView);
+
+    void setTableNumber(TableView tableView, int tableNumber);
+
+    void setTableParams(TableView tableView, TableParams tableParams);
+
+    void setGuestCount(TableView tableView, int guestCount);
+
+    void displayTable(TableView tableView);
+
+    void hideTable(TableView tableView);
+
+    void setPosition(TableView tableView, Point2D position);
+
+    void rotateTable(TableView tableView);
+
     boolean isTableNumberAlreadyInUse(int tableNumber);
 
-    void mergeTables(TableAdapter consumer, List<TableAdapter> consumed);
+    void mergeTables(TableView consumer, List<TableView> consumed);
 
-    List<TableAdapter> splitTables(TableAdapter consumer);
+    List<TableView> splitTables(TableView consumer);
 
     int getTotalPrice(TableView tableView);
 

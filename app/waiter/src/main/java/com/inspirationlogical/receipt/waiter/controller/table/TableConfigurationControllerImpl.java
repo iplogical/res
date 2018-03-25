@@ -152,7 +152,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     private void setTableParams(TableView tableView, TableParams tableParams) {
         if (notOwnNumberIsDisplayed(tableView, tableParams)) {
-            restaurantService.setTableNumber(tableView, tableParams.getNumber(), restaurantView);
+            restaurantService.setTableNumber(tableView, tableParams.getNumber());
         }
         restaurantService.setTableParams(tableView, tableParams);
     }

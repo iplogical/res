@@ -3,7 +3,6 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
-import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Product.ProductBuilder;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
@@ -14,12 +13,10 @@ import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransacti
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
 public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
@@ -62,30 +59,30 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         super(adaptee);
     }
 
-    public double getDiscount(ReceiptRecordAdapter receiptRecordAdapter) {
-        ProductCategory category = adaptee;
-        List<PriceModifier> priceModifiers = new ArrayList<>();
-        do {
-            List<PriceModifier> loopModifiers = getPriceModifiersByOwnerAndDates(category);
-            category = category.getParent();
-            priceModifiers.addAll(loopModifiers);
-        } while(!category.getType().equals(ProductCategoryType.ROOT));
-
-        return priceModifiers.stream()
-                .map(PriceModifierAdapter::new)
-                .filter(priceModifierAdapter -> priceModifierAdapter.isValidNow(LocalDateTime.now()))
-                .map(pm -> pm.getDiscountPercent(receiptRecordAdapter))
-                .max(Double::compareTo)
-                .orElse(0D);
-    }
-
-    private List<PriceModifier> getPriceModifiersByOwnerAndDates(ProductCategory category) {
-        return GuardedTransaction.runNamedQuery(PriceModifier.GET_PRICE_MODIFIERS_BY_PRODUCT_AND_DATES,
-                query -> {
-                    query.setParameter("owner_id", category.getId());
-                    query.setParameter("time", now());
-                    return query;});
-    }
+//    public double getDiscount(ReceiptRecordAdapter receiptRecordAdapter) {
+//        ProductCategory category = adaptee;
+//        List<PriceModifier> priceModifiers = new ArrayList<>();
+//        do {
+//            List<PriceModifier> loopModifiers = getPriceModifiersByOwnerAndDates(category);
+//            category = category.getParent();
+//            priceModifiers.addAll(loopModifiers);
+//        } while(!category.getType().equals(ProductCategoryType.ROOT));
+//
+//        return priceModifiers.stream()
+//                .map(PriceModifierAdapter::new)
+//                .filter(priceModifierAdapter -> priceModifierAdapter.isValidNow(LocalDateTime.now()))
+//                .map(pm -> pm.getDiscountPercent(receiptRecordAdapter))
+//                .max(Double::compareTo)
+//                .orElse(0D);
+//    }
+//
+//    private List<PriceModifier> getPriceModifiersByOwnerAndDates(ProductCategory category) {
+//        return GuardedTransaction.runNamedQuery(PriceModifier.GET_PRICE_MODIFIERS_BY_PRODUCT_AND_DATES,
+//                query -> {
+//                    query.setParameter("owner_id", category.getId());
+//                    query.setParameter("time", now());
+//                    return query;});
+//    }
 
     public void addChildCategory(ProductCategoryParams params) {
         ProductCategory newCategory = buildNewCategory(params);

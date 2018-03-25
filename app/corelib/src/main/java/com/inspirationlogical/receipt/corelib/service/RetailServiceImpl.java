@@ -2,10 +2,12 @@ package com.inspirationlogical.receipt.corelib.service;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.DailyConsumptionAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordService;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
@@ -40,6 +42,9 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     private TableServiceConfig tableServiceConfig;
 
     @Autowired
+    private ReceiptRepository receiptRepository;
+
+    @Autowired
     RetailServiceImpl(EntityViews entityViews) {
         super(entityViews);
     }
@@ -61,20 +66,23 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
 
     @Override
     public void sellProduct(TableView tableView, ProductView productView, int quantity, boolean isTakeAway, boolean isGift) {
-        getTableAdapter(tableView).getOpenReceipt().sellProduct(getProductAdapter(productView), quantity, isTakeAway, isGift);
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
+        receiptService.sellProduct(openReceipt, productView, quantity, isTakeAway, isGift);
         logger.info("A product was sold: quantity: " + quantity + ", takeAway: " + isTakeAway + " isGift: " + isGift + " " + productView + " ," + tableView);
     }
 
     @Override
     public void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean takeAway) {
-        getTableAdapter(tableView).getOpenReceipt().sellAdHocProduct(adHocProductParams, takeAway);
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
+        receiptService.sellAdHocProduct(openReceipt, adHocProductParams, takeAway);
         logger.info("An Ad Hoc product was sold: takeAway: " + takeAway + " " + adHocProductParams + " ," + tableView);
     }
 
     @Override
     public ReceiptRecordView sellGameFee(TableView tableView, int quantity) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         logger.info("A game fee was sold: quantity: " + quantity + ", " + tableView);
-        return new ReceiptRecordViewImpl(getTableAdapter(tableView).getOpenReceipt().sellGameFee(quantity));
+        return receiptService.sellGameFee(openReceipt, quantity);
     }
 
     @Override

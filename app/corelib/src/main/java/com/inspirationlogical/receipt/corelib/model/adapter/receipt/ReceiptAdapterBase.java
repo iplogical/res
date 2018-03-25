@@ -28,13 +28,9 @@ import static java.util.stream.Collectors.toList;
 
 public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements ReceiptAdapter {
 
-    private ReceiptAdapterSell receiptAdapterSell;
-    private ReceiptAdapterStock receiptAdapterStock;
 
     public ReceiptAdapterBase(Receipt adaptee) {
         super(adaptee);
-        receiptAdapterSell = new ReceiptAdapterSell(adaptee);
-        receiptAdapterStock = new ReceiptAdapterStock(adaptee);
     }
 
     static Receipt getOpenReceipt(int tableNumber) {
@@ -84,25 +80,25 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
                         .setParameter("name", productAdapter.getAdaptee().getLongName()));
     }
 
-    @Override
-    public void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift) {
-        receiptAdapterSell.sellProduct(productAdapter, amount, isTakeAway, isGift);
-    }
+//    @Override
+//    public void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift) {
+//        receiptAdapterSell.sellProduct(productAdapter, amount, isTakeAway, isGift);
+//    }
+//
+//    @Override
+//    public void sellAdHocProduct(AdHocProductParams adHocProductParams, boolean takeAway) {
+//        receiptAdapterSell.sellAdHocProduct(adHocProductParams, takeAway);
+//    }
+//
+//    @Override
+//    public ReceiptRecordAdapter sellGameFee(int quantity) {
+//        return receiptAdapterSell.sellGameFee(quantity);
+//    }
 
-    @Override
-    public void sellAdHocProduct(AdHocProductParams adHocProductParams, boolean takeAway) {
-        receiptAdapterSell.sellAdHocProduct(adHocProductParams, takeAway);
-    }
-
-    @Override
-    public ReceiptRecordAdapter sellGameFee(int quantity) {
-        return receiptAdapterSell.sellGameFee(quantity);
-    }
-
-    @Override
-    public ReceiptRecordAdapter cloneReceiptRecordAdapter(ReceiptRecordAdapter record, double amount) {
-        return receiptAdapterSell.cloneReceiptRecordAdapter(record, amount);
-    }
+//    @Override
+//    public ReceiptRecordAdapter cloneReceiptRecordAdapter(ReceiptRecordAdapter record, double amount) {
+//        return receiptAdapterSell.cloneReceiptRecordAdapter(record, amount);
+//    }
 
 //    @Override
 //    public void cancelReceiptRecord(ReceiptRecordAdapter receiptRecordAdapter) {

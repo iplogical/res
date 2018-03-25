@@ -67,10 +67,10 @@ public class TableAdapter extends AbstractAdapter<Table> {
 //        List<Table> tables = GuardedTransaction.runNamedQuery(Table.GET_FIRST_UNUSED_NUMBER, query -> query);
 //        return tables.stream().mapToInt(Table::getNumber).min().orElse(0) + 1;
 //    }
-
-    public ReceiptAdapterBase getOpenReceipt() {
-        return (ReceiptAdapterBase)ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
-    }
+//
+//    public ReceiptAdapterBase getOpenReceipt() {
+//        return (ReceiptAdapterBase)ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
+//    }
 
 //    public void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
 //        ReceiptAdapterBase receiptAdapter = (ReceiptAdapterBase) ReceiptAdapter.receiptAdapterFactory(receiptType);
@@ -89,91 +89,91 @@ public class TableAdapter extends AbstractAdapter<Table> {
 //        adaptee.getReceipts().add(receiptAdapter.getAdaptee());
 //    }
 
-    public TableAdapter getConsumer() {
-        if(adaptee.getConsumer() == null) {
-            return null;
-        }
-        return new TableAdapter(adaptee.getConsumer());
-    }
+//    public TableAdapter getConsumer() {
+//        if(adaptee.getConsumer() == null) {
+//            return null;
+//        }
+//        return new TableAdapter(adaptee.getConsumer());
+//    }
+//
+//    public TableAdapter getHost() {
+//        if(adaptee.getHost() == null) {
+//            return null;
+//        }
+//        return new TableAdapter(adaptee.getHost());
+//    }
 
-    public TableAdapter getHost() {
-        if(adaptee.getHost() == null) {
-            return null;
-        }
-        return new TableAdapter(adaptee.getHost());
-    }
+//    public void setHost(int tableNumber) {
+//        GuardedTransaction.run(() -> {
+//            removePreviousHost();
+//            setNewHost(tableNumber);
+//        });
+//    }
+//
+//    public void removePreviousHost() {
+//        adaptee.setHost(null);
+//    }
+//
+//    private void setNewHost(int tableNumber) {
+//        if(tableNumber != adaptee.getNumber()) {    // Prevent a table being hosted by itself.
+//            adaptee.setHost(TableAdapter.getTable(tableNumber).getAdaptee());
+//        }
+//    }
+//
+//    public void setNumber(int tableNumber) {
+//        int originalNumber = adaptee.getNumber();
+//        GuardedTransaction.run(() -> {
+//            adaptee.setNumber(tableNumber);
+//        });
+//    }
 
-    public void setHost(int tableNumber) {
-        GuardedTransaction.run(() -> {
-            removePreviousHost();
-            setNewHost(tableNumber);
-        });
-    }
+//    public void setTableParams(TableParams tableParams) {
+//        GuardedTransaction.run(() -> {
+//            adaptee.setName(tableParams.getName());
+//            adaptee.setGuestCount(tableParams.getGuestCount());
+//            adaptee.setCapacity(tableParams.getCapacity());
+//            adaptee.setNote(tableParams.getNote());
+//            adaptee.setDimensionX((int)tableParams.getDimension().getWidth());
+//            adaptee.setDimensionY((int)tableParams.getDimension().getHeight());
+//        });
+//    }
 
-    public void removePreviousHost() {
-        adaptee.setHost(null);
-    }
+//    public void setGuestCount(int guestCount) {
+//        GuardedTransaction.run(() -> adaptee.setGuestCount(guestCount));
+//    }
+//
+//    public void displayTable() {
+//        GuardedTransaction.run(() -> adaptee.setVisible(true));
+//    }
+//
+//    public void hideTable() {
+//        GuardedTransaction.run(() -> adaptee.setVisible(false));
+//    }
+//
+//    public void setPosition(Point2D position) {
+//        GuardedTransaction.run(() -> {
+//            adaptee.setCoordinateX((int) position.getX());
+//            adaptee.setCoordinateY((int) position.getY());
+//        });
+//    }
+//
+//    public void rotateTable() {
+//        GuardedTransaction.run(() -> {
+//            int dimensionX = adaptee.getDimensionX();
+//            int dimensionY = adaptee.getDimensionY();
+//            adaptee.setDimensionX(dimensionY);
+//            adaptee.setDimensionY(dimensionX);
+//        });
+//    }
 
-    private void setNewHost(int tableNumber) {
-        if(tableNumber != adaptee.getNumber()) {    // Prevent a table being hosted by itself.
-            adaptee.setHost(TableAdapter.getTable(tableNumber).getAdaptee());
-        }
-    }
-
-    public void setNumber(int tableNumber) {
-        int originalNumber = adaptee.getNumber();
-        GuardedTransaction.run(() -> {
-            adaptee.setNumber(tableNumber);
-        });
-    }
-
-    public void setTableParams(TableParams tableParams) {
-        GuardedTransaction.run(() -> {
-            adaptee.setName(tableParams.getName());
-            adaptee.setGuestCount(tableParams.getGuestCount());
-            adaptee.setCapacity(tableParams.getCapacity());
-            adaptee.setNote(tableParams.getNote());
-            adaptee.setDimensionX((int)tableParams.getDimension().getWidth());
-            adaptee.setDimensionY((int)tableParams.getDimension().getHeight());
-        });
-    }
-
-    public void setGuestCount(int guestCount) {
-        GuardedTransaction.run(() -> adaptee.setGuestCount(guestCount));
-    }
-
-    public void displayTable() {
-        GuardedTransaction.run(() -> adaptee.setVisible(true));
-    }
-
-    public void hideTable() {
-        GuardedTransaction.run(() -> adaptee.setVisible(false));
-    }
-
-    public void setPosition(Point2D position) {
-        GuardedTransaction.run(() -> {
-            adaptee.setCoordinateX((int) position.getX());
-            adaptee.setCoordinateY((int) position.getY());
-        });
-    }
-
-    public void rotateTable() {
-        GuardedTransaction.run(() -> {
-            int dimensionX = adaptee.getDimensionX();
-            int dimensionY = adaptee.getDimensionY();
-            adaptee.setDimensionX(dimensionY);
-            adaptee.setDimensionY(dimensionX);
-        });
-    }
-
-    public void openTable() {
-        if (isTableOpen()) {
-            throw new IllegalTableStateException("Open table for an open table. Table number: " + adaptee.getNumber());
-        }
-        ReceiptAdapterBase receiptAdapter = (ReceiptAdapterBase)ReceiptAdapter.receiptAdapterFactory(ReceiptType.SALE);
-        bindReceiptToTable(receiptAdapter);
-        GuardedTransaction.persist(receiptAdapter.getAdaptee());
-    }
+//    public void openTable() {
+//        if (isTableOpen()) {
+//            throw new IllegalTableStateException("Open table for an open table. Table number: " + adaptee.getNumber());
+//        }
+//        ReceiptAdapterBase receiptAdapter = (ReceiptAdapterBase)ReceiptAdapter.receiptAdapterFactory(ReceiptType.SALE);
+//        bindReceiptToTable(receiptAdapter);
+//        GuardedTransaction.persist(receiptAdapter.getAdaptee());
+//    }
 
     public boolean reOpenTable() {
         if (isTableOpen()) {
@@ -257,9 +257,9 @@ public class TableAdapter extends AbstractAdapter<Table> {
 //                }).collect(toList()));
 //    }
 
-    public boolean isTableOpen() {
-        return ReceiptAdapter.getOpenReceipt(adaptee.getNumber()) != null;
-    }
+//    public boolean isTableOpen() {
+//        return ReceiptAdapter.getOpenReceipt(adaptee.getNumber()) != null;
+//    }
 
 //    public boolean isConsumerTable() {
 //        return !this.getConsumedTables().isEmpty();
@@ -277,15 +277,15 @@ public class TableAdapter extends AbstractAdapter<Table> {
 //        return adaptee.getHost() != null;
 //    }
 
-    public List<Table> getConsumedTables() {
-        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_CONSUMER, query ->
-            query.setParameter("consumer", adaptee));
-    }
+//    public List<Table> getConsumedTables() {
+//        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_CONSUMER, query ->
+//            query.setParameter("consumer", adaptee));
+//    }
 
-    public List<Table> getHostedTables() {
-        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_HOST, query ->
-            query.setParameter("host", adaptee));
-    }
+//    public List<Table> getHostedTables() {
+//        return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_HOST, query ->
+//            query.setParameter("host", adaptee));
+//    }
 
     public void exchangeTables(TableAdapter other) {
         GuardedTransaction.run(() -> {

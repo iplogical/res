@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
@@ -32,7 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.inspirationlogical.receipt.corelib.model.enums.TableType.canBeHosted;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -100,7 +98,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     public ReceiptView getOpenReceipt(TableView tableView) {
         Receipt receipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         receipt.getRecords().size();
-        return new ReceiptViewImpl(new ReceiptAdapterBase(receipt));
+        return new ReceiptViewImpl(receipt);
     }
 
     @Override
@@ -127,21 +125,12 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public void mergeTables(TableView consumer, List<TableView> consumed) {
-        TableAdapter consumerTableAdapter = getTableAdapter(consumer);
-        List<TableAdapter> consumedTableAdapters = consumed.stream()
-                .map(this::getTableAdapter)
-                .collect(toList());
-//        getRestaurantAdapter(getActiveRestaurant()).mergeTables(consumerTableAdapter, consumedTableAdapters);
-        tableServiceConfig.mergeTables(consumerTableAdapter, consumedTableAdapters);
+        tableServiceConfig.mergeTables(consumer, consumed);
     }
 
     @Override
     public List<TableView> splitTables(TableView consumer) {
-        TableAdapter consumerTableAdapter = getTableAdapter(consumer);
-        return tableServiceConfig.splitTables(consumerTableAdapter)
-                .stream()
-                .map(TableViewImpl::new)
-                .collect(toList());
+        return tableServiceConfig.splitTables(consumer);
     }
 
     @Override
@@ -151,38 +140,28 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
-    public void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant) {
-        TableAdapter tableAdapter = getTableAdapter(tableView);
-        if(tableServiceConfig.isTableNumberAlreadyInUse(tableNumber)) {
-            if(canBeHosted(tableView.getType())) {
-                tableAdapter.setHost(tableNumber);
-            } else {
-                throw new IllegalTableStateException("The table number " + tableView.getNumber() + " is already in use");
-            }
-            return;
-        }
-        tableAdapter.removePreviousHost();
-        tableAdapter.setNumber(tableNumber);
+    public void setTableNumber(TableView tableView, int tableNumber) {
+        tableServiceConfig.setTableNumber(tableView, tableNumber);
     }
 
     @Override
     public void setTableParams(TableView tableView, TableParams tableParams) {
-        getTableAdapter(tableView).setTableParams(tableParams);
+        tableServiceConfig.setTableParams(tableView, tableParams);
     }
 
     @Override
     public void setGuestCount(TableView tableView, int guestCount) {
-        getTableAdapter(tableView).setGuestCount(guestCount);
+        tableServiceConfig.setGuestCount(tableView, guestCount);
     }
 
     @Override
     public void setTablePosition(TableView tableView, Point2D position) {
-        getTableAdapter(tableView).setPosition(position);
+        tableServiceConfig.setPosition(tableView, position);
     }
 
     @Override
     public void rotateTable(TableView tableView) {
-        getTableAdapter(tableView).rotateTable();
+        tableServiceConfig.rotateTable(tableView);
     }
 
     @Override

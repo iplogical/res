@@ -12,6 +12,7 @@ import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordService;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import org.slf4j.Logger;
@@ -30,6 +31,9 @@ import static java.util.stream.Collectors.toList;
 public class ManagerServiceImpl extends AbstractService implements ManagerService {
 
     final private static Logger logger = LoggerFactory.getLogger(ManagerServiceImpl.class);
+
+    @Autowired
+    private ReceiptService receiptService;
 
     @Autowired
     private ReceiptRecordService receiptRecordService;
@@ -81,8 +85,7 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Override
     public void updateStock(List<StockParams> params, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
-        TableAdapter.getTablesByType(TableType.getTableType(receiptType)).get(0)
-                .updateStock(params, receiptType, listener);
+        receiptService.updateStock(params, receiptType, listener);
     }
 
     @Override

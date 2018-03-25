@@ -2,18 +2,18 @@ package com.inspirationlogical.receipt.corelib.service.table;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
+import com.inspirationlogical.receipt.corelib.model.adapter.VATSerieAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.*;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
+import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
+import javafx.geometry.Point2D;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,12 +83,122 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         tableRepository.save(orphanage);
     }
 
+
     private void moveReceiptsToOrphanageTable(Table archiveTable, Table orphanage) {
         orphanage.getReceipts().addAll(archiveTable.getReceipts().stream()
                 .map(receipt -> {
                     receipt.setOwner(orphanage);
                     return receipt;
                 }).collect(toList()));
+    }
+
+    @Override
+    public void openTable(TableView tableView) {
+        Table table = tableRepository.getOne(tableView.getId());
+        if (isTableOpen(table)) {
+            throw new IllegalTableStateException("Open table for an open table. Table number: " + table.getNumber());
+        }
+        Receipt receipt = buildReceipt(ReceiptType.SALE);
+        receipt.setOwner(table);
+        table.getReceipts().add(receipt);
+        tableRepository.save(table);
+    }
+
+    private boolean isTableOpen(Table table) {
+        return receiptRepository.getOpenReceipt(table.getNumber()) != null;
+    }
+
+    private Receipt buildReceipt(ReceiptType type) {
+        return Receipt.builder()
+                .type(type)
+                .status(ReceiptStatus.OPEN)
+                .paymentMethod(PaymentMethod.CASH)
+                .openTime(now())
+                .VATSerie(VATSerieAdapter.getActiveVATSerieAdapter().getAdaptee())
+                .records(new ArrayList<>())
+                .build();
+    }
+
+    @Override
+    public void setTableNumber(TableView tableView, int tableNumber) {
+        Table table = tableRepository.getOne(tableView.getId());
+        if(isTableNumberAlreadyInUse(tableNumber)) {
+            if(canBeHosted(table.getType())) {
+                setHost(table, tableNumber);
+            } else {
+                throw new IllegalTableStateException("The table number " + tableView.getNumber() + " is already in use");
+            }
+            return;
+        }
+        removePreviousHost(table);
+        table.setNumber(tableNumber);
+        tableRepository.save(table);
+    }
+
+    private void setHost(Table table, int tableNumber) {
+        removePreviousHost(table);
+        setNewHost(table, tableNumber);
+    }
+
+    private void removePreviousHost(Table table) {
+        table.setHost(null);
+    }
+
+    private void setNewHost(Table table, int tableNumber) {
+        if(tableNumber != table.getNumber()) {    // Prevent a table being hosted by itself.
+            table.setHost(tableRepository.findByNumber(tableNumber));
+        }
+    }
+
+    @Override
+    public void setTableParams(TableView tableView, TableParams tableParams) {
+        Table table = tableRepository.getOne(tableView.getId());
+        table.setName(tableParams.getName());
+        table.setGuestCount(tableParams.getGuestCount());
+        table.setCapacity(tableParams.getCapacity());
+        table.setNote(tableParams.getNote());
+        table.setDimensionX((int)tableParams.getDimension().getWidth());
+        table.setDimensionY((int)tableParams.getDimension().getHeight());
+        tableRepository.save(table);
+    }
+
+    @Override
+    public void setGuestCount(TableView tableView, int guestCount) {
+        Table table = tableRepository.getOne(tableView.getId());
+        table.setGuestCount(guestCount);
+        tableRepository.save(table);
+    }
+
+    @Override
+    public void displayTable(TableView tableView) {
+        Table table = tableRepository.getOne(tableView.getId());
+        table.setVisible(true);
+        tableRepository.save(table);
+    }
+
+    @Override
+    public void hideTable(TableView tableView) {
+        Table table = tableRepository.getOne(tableView.getId());
+        table.setVisible(false);
+        tableRepository.save(table);
+    }
+
+    @Override
+    public void setPosition(TableView tableView, Point2D position) {
+        Table table = tableRepository.getOne(tableView.getId());
+        table.setCoordinateX((int) position.getX());
+        table.setCoordinateY((int) position.getY());
+        tableRepository.save(table);
+    }
+
+    @Override
+    public void rotateTable(TableView tableView) {
+        Table table = tableRepository.getOne(tableView.getId());
+        int dimensionX = table.getDimensionX();
+        int dimensionY = table.getDimensionY();
+        table.setDimensionX(dimensionY);
+        table.setDimensionY(dimensionX);
+        tableRepository.save(table);
     }
 
     @Override
@@ -101,26 +211,30 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     @Override
-    public void mergeTables(TableAdapter consumer, List<TableAdapter> consumed) {
+    public void mergeTables(TableView consumerView, List<TableView> consumedView) {
+        Table consumer = tableRepository.getOne(consumerView.getId());
+        List<Table> consumedTables = consumedView.stream()
+                .map(consumed -> tableRepository.getOne(consumed.getId()))
+                .collect(toList());
         openConsumerIfClosed(consumer);
-        addConsumedTablesToConsumer(consumer, consumed);
-        moveConsumedRecordsToConsumer(consumer, consumed);
-        tableRepository.save(consumer.getAdaptee());
+        addConsumedTablesToConsumer(consumer, consumedTables);
+        moveConsumedRecordsToConsumer(consumer, consumedTables);
+        tableRepository.save(consumer);
     }
 
-    private void openConsumerIfClosed(TableAdapter consumer) {
-        if (!consumer.isTableOpen()) {
-            consumer.openTable();
+    private void openConsumerIfClosed(Table consumer) {
+        if (!isTableOpen(consumer)) {
+            openTable(new TableViewImpl(consumer));
         }
     }
 
-    private void addConsumedTablesToConsumer(TableAdapter consumer, List<TableAdapter> consumed) {
-        consumed.forEach(consumedTableAdapter -> {
-            if (consumedTableAdapter.isConsumerTable()) {
+    private void addConsumedTablesToConsumer(Table consumer, List<Table> consumed) {
+        consumed.forEach(consumedTable -> {
+            if (!consumedTable.getConsumed().isEmpty()) {
                 throw new IllegalTableStateException("");
             }
-            consumedTableAdapter.hideTable();
-            bindConsumedToConsumer(consumer.getAdaptee(), consumedTableAdapter.getAdaptee());
+            consumedTable.setVisible(false);
+            bindConsumedToConsumer(consumer, consumedTable);
         });
     }
 
@@ -129,15 +243,13 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         consumer.getConsumed().add(consumedTable);
     }
 
-    private void moveConsumedRecordsToConsumer(TableAdapter consumer, List<TableAdapter> consumed) {
-        Receipt consumerReceipt = consumer.getOpenReceipt().getAdaptee();
-        List<ReceiptRecord> consumedRecords = consumed.stream()
-                .map(TableAdapter::getOpenReceipt)
+    private void moveConsumedRecordsToConsumer(Table consumer, List<Table> consumedTables) {
+        Receipt consumerReceipt = receiptRepository.getOpenReceipt(consumer.getNumber());
+        List<ReceiptRecord> consumedRecords = consumedTables.stream()
+                .map(consumedTable -> receiptRepository.getOpenReceipt(consumedTable.getNumber()))
                 .filter(Objects::nonNull)
-                .map(ReceiptAdapterBase::getAdaptee)
                 .map(receipt -> {
-                    List<ReceiptRecord> receiptRecords = new ArrayList<>();
-                    receiptRecords.addAll(receipt.getRecords());
+                    List<ReceiptRecord> receiptRecords = new ArrayList<>(receipt.getRecords());
                     receiptRecords.forEach(receiptRecord ->
                             receiptRecord.setOwner(consumerReceipt));
                     receipt.setStatus(ReceiptStatus.CANCELED);
@@ -150,16 +262,17 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     @Override
-    public List<TableAdapter> splitTables(TableAdapter consumer) {
-        List<Table> consumed = consumer.getConsumedTables();
-        consumer.getAdaptee().setConsumed(new ArrayList<>());
+    public List<TableView> splitTables(TableView consumerView) {
+        Table consumer = tableRepository.getOne(consumerView.getId());
+        List<Table> consumed = consumer.getConsumed();
+        consumer.setConsumed(new ArrayList<>());
         consumed.forEach(table -> {
             table.setConsumer(null);
             table.setVisible(true);
         });
-        tableRepository.save(consumer.getAdaptee());
+        tableRepository.save(consumer);
         tableRepository.saveAll(consumed);
-        return consumed.stream().map(TableAdapter::new).collect(Collectors.toList());
+        return consumed.stream().map(TableViewImpl::new).collect(Collectors.toList());
     }
 
     @Override

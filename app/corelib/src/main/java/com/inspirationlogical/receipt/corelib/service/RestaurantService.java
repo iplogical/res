@@ -33,7 +33,7 @@ public interface RestaurantService {
 
     void exchangeTables(List<TableView> tables);
 
-    void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant);
+    void setTableNumber(TableView tableView, int tableNumber);
 
     void setTableParams(TableView tableView, TableParams tableParams);
 

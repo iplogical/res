@@ -74,7 +74,7 @@ public class RestaurantServiceTest {
         when(tableView.getAdapter()).thenReturn(tableAdapter);
         when(restaurantView.getAdapter()).thenReturn(restaurantAdapter);
         //when
-        service.setTableNumber(tableView, 8, restaurantView);
+        service.setTableNumber(tableView, 8);
         //then
         verify(tableAdapter).setNumber(eq(8));
     }

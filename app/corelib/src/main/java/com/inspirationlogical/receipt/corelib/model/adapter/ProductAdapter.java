@@ -1,22 +1,16 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
-import com.inspirationlogical.receipt.corelib.exception.AdHocProductNotFoundException;
-import com.inspirationlogical.receipt.corelib.exception.GameFeeProductNotFoundException;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 import static com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter.getProductCategoryByName;
 import static java.util.stream.Collectors.toList;
@@ -46,39 +40,39 @@ public class ProductAdapter extends AbstractAdapter<Product> {
         return products.stream().map(ProductAdapter::new).collect(toList());
     }
 
-    public static List<ProductAdapter> getStorableProducts() {
-        return getActiveProducts().stream()
-                .flatMap(productAdapter -> productAdapter.getAdaptee().getRecipes().stream())
-                .map(recipe -> new ProductAdapter(recipe.getComponent()))
-                .filter(distinctByKey(productAdapter -> productAdapter.getAdaptee().getLongName()))
-                .collect(toList());
-    }
+//    public static List<ProductAdapter> getStorableProducts() {
+//        return getActiveProducts().stream()
+//                .flatMap(productAdapter -> productAdapter.getAdaptee().getRecipes().stream())
+//                .map(recipe -> new ProductAdapter(recipe.getComponent()))
+//                .filter(distinctByKey(productAdapter -> productAdapter.getAdaptee().getLongName()))
+//                .collect(toList());
+//    }
+//
+//    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+//        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
+//        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+//    }
 
-    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
-        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
-    }
-
-    public static ProductAdapter getAdHocProduct() {
-                List<Product> adHocProductList = GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_TYPE,
-                        query -> {
-                    query.setParameter("type", ProductType.AD_HOC_PRODUCT);
-                    return query;
-                });
-        if (adHocProductList.isEmpty()) {
-            throw new AdHocProductNotFoundException();
-        }
-        return new ProductAdapter(adHocProductList.get(0));
-    }
-
-    public static ProductAdapter getGameFeeProduct() {
-        List<Product> gameFeeProductList = GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_TYPE,
-                query -> query.setParameter("type", ProductType.GAME_FEE_PRODUCT));
-        if(gameFeeProductList.isEmpty()) {
-            throw new GameFeeProductNotFoundException();
-        }
-        return new ProductAdapter(gameFeeProductList.get(0));
-    }
+//    public static ProductAdapter getAdHocProduct() {
+//                List<Product> adHocProductList = GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_TYPE,
+//                        query -> {
+//                    query.setParameter("type", ProductType.AD_HOC_PRODUCT);
+//                    return query;
+//                });
+//        if (adHocProductList.isEmpty()) {
+//            throw new AdHocProductNotFoundException();
+//        }
+//        return new ProductAdapter(adHocProductList.get(0));
+//    }
+//
+//    public static ProductAdapter getGameFeeProduct() {
+//        List<Product> gameFeeProductList = GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_TYPE,
+//                query -> query.setParameter("type", ProductType.GAME_FEE_PRODUCT));
+//        if(gameFeeProductList.isEmpty()) {
+//            throw new GameFeeProductNotFoundException();
+//        }
+//        return new ProductAdapter(gameFeeProductList.get(0));
+//    }
     
     public ProductAdapter(Product adaptee) {
         super(adaptee);
