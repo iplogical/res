@@ -115,7 +115,7 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     @Override
     protected Collection<ReceiptRecordView> getSoldProducts() {
         receiptView = retailService.getAggregatedReceipt(restaurantView, startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
-        return receiptView.getAggregatedRecords();
+        return receiptView.getSoldProducts();
     }
 
     @Override

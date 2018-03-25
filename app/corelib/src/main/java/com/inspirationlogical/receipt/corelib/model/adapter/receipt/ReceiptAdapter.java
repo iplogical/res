@@ -7,9 +7,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
-import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 import java.util.ArrayList;
@@ -50,11 +48,11 @@ public interface ReceiptAdapter {
 
     Collection<ReceiptRecordAdapter> getSoldProducts();
 
-    void close(PaymentParams paymentParams);
-
-    void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams);
-
-    void payPartial(double partialValue, PaymentParams paymentParams);
+//    void close(PaymentParams paymentParams);
+//
+//    void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams);
+//
+//    void payPartial(double partialValue, PaymentParams paymentParams);
 
     ReceiptRecordAdapter cloneReceiptRecordAdapter(ReceiptRecordAdapter record, double amount);
 

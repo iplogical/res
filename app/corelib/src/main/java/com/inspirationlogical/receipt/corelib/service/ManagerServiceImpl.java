@@ -13,6 +13,7 @@ import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordService;
+import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Autowired
     private ReceiptRecordService receiptRecordService;
+
+    @Autowired
+    private StockService stockService;
 
     @Autowired
     ManagerServiceImpl(EntityViews entityViews) {
@@ -106,7 +110,7 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Override
     public List<StockView> getStockItems() {
-        return createViewsFromAdapters(StockAdapter.getItems(), StockViewImpl::new);
+        return stockService.getItems();
     }
 
     @Override
@@ -130,10 +134,6 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
     @Override
     public ReceiptRecordView decreaseReceiptRecord(ReceiptRecordView receiptRecordView, double quantity) {
         logger.info("A receipt record was decreased by the manager: " + receiptRecordView);
-        ReceiptRecordAdapter updated = getReceiptRecordAdapter(receiptRecordView).decreaseReceiptRecord(quantity);
-        if(updated == null) {
-            return null;
-        }
-        return new ReceiptRecordViewImpl(updated);
+        return receiptRecordService.decreaseReceiptRecord(receiptRecordView, quantity);
     }
 }

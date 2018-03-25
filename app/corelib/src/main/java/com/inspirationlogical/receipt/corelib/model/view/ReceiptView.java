@@ -15,8 +15,6 @@ public interface ReceiptView {
 
     List<ReceiptRecordView> getSoldProducts();
 
-    List<ReceiptRecordView> getAggregatedRecords();
-
     long getTotalPrice();
 
     ReceiptType getType();

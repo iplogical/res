@@ -8,7 +8,10 @@ import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
@@ -23,10 +26,11 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.canBeHosted;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
-public class TableServiceImpl implements TableService {
+public class TableServiceConfigImpl implements TableServiceConfig {
 
     @Autowired
     private TableRepository tableRepository;
@@ -63,6 +67,25 @@ public class TableServiceImpl implements TableService {
         tableRepository.save(newTable);
 
         return new TableAdapter(newTable);
+    }
+
+    public void deleteTable(TableView tableView) {
+        Table adaptee = tableRepository.getOne(tableView.getId());
+        Table orphanage = getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee();
+        moveReceiptsToOrphanageTable(adaptee, orphanage);
+        adaptee.getReceipts().clear();
+        adaptee.getReservations().forEach(reservation -> GuardedTransaction.delete(reservation, () -> {}));
+        adaptee.getReservations().clear();
+        adaptee.getOwner().getTables().remove(adaptee);
+        GuardedTransaction.delete(adaptee, () -> {});
+    }
+
+    private void moveReceiptsToOrphanageTable(Table archiveTable, Table orphanage) {
+        orphanage.getReceipts().addAll(archiveTable.getReceipts().stream()
+                .map(receipt -> {
+                    receipt.setOwner(orphanage);
+                    return receipt;
+                }).collect(toList()));
     }
 
     @Override

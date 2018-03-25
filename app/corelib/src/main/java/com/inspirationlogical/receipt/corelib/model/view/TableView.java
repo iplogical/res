@@ -13,6 +13,8 @@ import java.util.List;
  */
 public interface TableView extends AbstractView {
 
+    long getId();
+
     boolean isOpen();
 
     RecentConsumption getRecentConsumption();

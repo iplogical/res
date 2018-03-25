@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.service.receipt;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
@@ -21,6 +22,15 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Autowired
     private ReceiptServiceMerge receiptServiceMerge;
 
+    @Autowired
+    private ReceiptServicePay receiptServicePay;
+
+    @Autowired
+    private ReceiptServiceSell receiptServiceSell;
+
+    @Autowired
+    private ReceiptServiceStock receiptServiceStock;
+
     @Override
     public void sellProduct(ProductAdapter productAdapter, int amount, boolean isTakeAway, boolean isGift) {
 
@@ -38,7 +48,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public void addStockRecords(List<StockParams> paramsList) {
-
+        receiptServiceStock.addStockRecords();
     }
 
     @Override
@@ -47,18 +57,18 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public void close(PaymentParams paymentParams) {
-
+    public void close(Receipt receipt, PaymentParams paymentParams) {
+        receiptServicePay.close(receipt, paymentParams);
     }
 
     @Override
-    public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-
+    public void paySelective(Receipt receipt, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
+        receiptServicePay.paySelective(receipt, records, paymentParams);
     }
 
     @Override
-    public void payPartial(double partialValue, PaymentParams paymentParams) {
-
+    public void payPartial(Receipt receipt, double partialValue, PaymentParams paymentParams) {
+        receiptServicePay.payPartial(receipt, partialValue, paymentParams);
     }
 
     @Override
@@ -72,7 +82,12 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public void mergeReceiptRecords(ReceiptView reciptView) {
-        receiptServiceMerge.mergeReceiptRecords(reciptView);
+    public void mergeReceiptRecords(ReceiptView receiptView) {
+        receiptServiceMerge.mergeReceiptRecords(receiptView);
+    }
+
+    @Override
+    public void setSumValues(ReceiptView receiptView) {
+        receiptServicePay.setSumValues(receiptView);
     }
 }

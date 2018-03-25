@@ -6,7 +6,7 @@ import com.inspirationlogical.receipt.corelib.params.TableParams;
 
 import java.util.List;
 
-public interface TableService {
+public interface TableServiceConfig {
 
     TableAdapter addTable(RestaurantView restaurantView, TableParams tableParams);
 

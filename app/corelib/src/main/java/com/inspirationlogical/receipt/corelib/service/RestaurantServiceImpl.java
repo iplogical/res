@@ -18,7 +18,7 @@ import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
-import com.inspirationlogical.receipt.corelib.service.table.TableService;
+import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
 import javafx.geometry.Point2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +54,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     private DailyClosureRepository dailyClosureRepository;
 
     @Autowired
-    private TableService tableService;
+    private TableServiceConfig tableService;
 
     @Autowired
     private ApplicationContext applicationContext;

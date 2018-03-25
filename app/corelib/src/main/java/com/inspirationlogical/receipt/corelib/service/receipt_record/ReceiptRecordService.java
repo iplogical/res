@@ -10,5 +10,7 @@ public interface ReceiptRecordService {
 
     void cancelReceiptRecord(ReceiptRecordView receiptRecordView);
 
-    ReceiptRecordView cloneReceiptRecordAdapter(ReceiptRecordView record, double quantity);
+    ReceiptRecordView cloneReceiptRecord(ReceiptRecordView record, double quantity);
+
+    ReceiptRecordView decreaseReceiptRecord(ReceiptRecordView receiptRecordView, double quantity);
 }

@@ -1,26 +1,22 @@
 package com.inspirationlogical.receipt.corelib.model.listeners;
 
+import com.inspirationlogical.receipt.corelib.jaxb.ObjectFactory;
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
+import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
+import com.inspirationlogical.receipt.corelib.printing.*;
+import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptServicePay;
+import com.inspirationlogical.receipt.corelib.utility.Wrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inspirationlogical.receipt.corelib.jaxb.ObjectFactory;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
-import com.inspirationlogical.receipt.corelib.utility.Wrapper;
-import com.inspirationlogical.receipt.corelib.printing.ReceiptToXML;
-import com.inspirationlogical.receipt.corelib.printing.FilePrinter;
-import com.inspirationlogical.receipt.corelib.printing.FormatterService;
-import com.inspirationlogical.receipt.corelib.printing.PrintService;
-import com.inspirationlogical.receipt.corelib.printing.Printer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Created by Ferenc on 2017. 03. 10..
  */
-public class ReceiptPrinter implements ReceiptAdapterPay.Listener {
+public class ReceiptPrinter implements ReceiptServicePay.Listener {
 
     private final static Logger logger = LoggerFactory.getLogger(ReceiptPrinter.class);
 
@@ -33,12 +29,6 @@ public class ReceiptPrinter implements ReceiptAdapterPay.Listener {
         if(printService != null) {
             printers.add(printService.getPrinter());
         }
-    }
-
-
-    @Override
-    public void onOpen(ReceiptAdapterPay receipt) {
-        // No-op
     }
 
     /**

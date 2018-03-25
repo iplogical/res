@@ -1,22 +1,22 @@
 package com.inspirationlogical.receipt.corelib.model.listeners;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterPay;
-import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.utils.BackgroundThread;
+import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptServicePay;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Bálint on 2017.04.04..
  */
 @Component
-public class StockListener implements ReceiptAdapterPay.Listener {
+public class StockListener implements ReceiptServicePay.Listener {
 
     private static final Logger logger = LoggerFactory.getLogger(StockListener.class);
 
@@ -28,11 +28,6 @@ public class StockListener implements ReceiptAdapterPay.Listener {
         void finished();
     }
     private static List<StockUpdateListener> observerList = new ArrayList<>();
-
-    @Override
-    public void onOpen(ReceiptAdapterPay receipt) {
-
-    }
 
     @Override
     public void onClose(Receipt receipt) {

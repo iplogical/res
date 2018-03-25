@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordService;
+import com.inspirationlogical.receipt.corelib.service.table.TableServicePay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
 
     @Autowired
     private ReceiptRecordService receiptRecordService;
+
+    @Autowired
+    private TableServicePay tableServicePay;
 
     @Autowired
     RetailServiceImpl(EntityViews entityViews) {
@@ -71,25 +75,25 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     @Override
     public void payTable(TableView tableView, PaymentParams paymentParams) {
         logger.info("A table was paid: "  + tableView + ", " + paymentParams);
-        getTableAdapter(tableView).payTable(paymentParams);
+        tableServicePay.payTable(tableView, paymentParams);
     }
 
     @Override
     public void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
         logger.info("A table was selectively paid: "  + tableView + ", " + paymentParams);
-        getTableAdapter(tableView).paySelective(records, paymentParams);
+        tableServicePay.paySelective(tableView, records, paymentParams);
     }
 
     @Override
     public void payPartial(TableView tableView, double partialValue, PaymentParams paymentParams) {
         logger.info("A table was partially paid: partialValue:" + partialValue + ", " + tableView + ", " + paymentParams);
-        getTableAdapter(tableView).payPartial(partialValue, paymentParams);
+        tableServicePay.payPartial(tableView, partialValue, paymentParams);
     }
 
     @Override
     public ReceiptRecordView cloneReceiptRecordView(ReceiptRecordView receiptRecordView, double quantity) {
         logger.info("A receipt record was cloned: quantity:" + quantity + ", " + receiptRecordView);
-        return receiptRecordService.cloneReceiptRecordAdapter(receiptRecordView, quantity);
+        return receiptRecordService.cloneReceiptRecord(receiptRecordView, quantity);
     }
 
     @Override

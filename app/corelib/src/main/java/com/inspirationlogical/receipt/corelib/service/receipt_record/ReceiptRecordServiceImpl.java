@@ -1,11 +1,15 @@
 package com.inspirationlogical.receipt.corelib.service.receipt_record;
 
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRecordCreatedRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRecordRepository;
+import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
+import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,12 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
 
     @Autowired
     private ReceiptRecordCreatedRepository receiptRecordCreatedRepository;
+
+    @Autowired
+    private StockService stockService;
+
+    @Autowired
+    private ReceiptService receiptService;
 
     @Override
     public void increaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount, boolean isSale) {
@@ -70,7 +80,7 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
     }
 
     @Override
-    public ReceiptRecordView cloneReceiptRecordAdapter(ReceiptRecordView receiptRecordView, double quantity) {
+    public ReceiptRecordView cloneReceiptRecord(ReceiptRecordView receiptRecordView, double quantity) {
         ReceiptRecord receiptRecord = receiptRecordRepository.getOne(receiptRecordView.getId());
 
         ReceiptRecord cloneRecord = ReceiptRecord.builder()
@@ -89,5 +99,40 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
         receiptRecord.getOwner().getRecords().add(cloneRecord);
         receiptRecordRepository.save(cloneRecord);
         return new ReceiptRecordViewImpl(cloneRecord);
+    }
+
+    @Override
+    public ReceiptRecordView decreaseReceiptRecord(ReceiptRecordView receiptRecordView, double quantity) {
+        ReceiptRecord receiptRecord = receiptRecordRepository.getOne(receiptRecordView.getId());
+        decreaseStock(receiptRecord, quantity);
+        if(receiptRecord.getSoldQuantity() > quantity) {
+            return decreaseSoldQuantity(receiptRecord, quantity);
+        } else {
+            return deleteReceiptRecord(receiptRecord);
+        }
+    }
+
+    private void decreaseStock(ReceiptRecord receiptRecord, double quantity) {
+        ReceiptRecord clone = ReceiptRecord.cloneReceiptRecord(receiptRecord);
+        clone.setSoldQuantity(quantity);
+        clone.setProduct(receiptRecord.getProduct());
+        stockService.decreaseStock(clone, clone.getOwner().getType());
+    }
+
+    private ReceiptRecordView decreaseSoldQuantity(ReceiptRecord receiptRecord, double quantity) {
+        receiptRecord.setSoldQuantity(receiptRecord.getSoldQuantity() - quantity);
+        receiptService.setSumValues(new ReceiptViewImpl(receiptRecord.getOwner()));
+        receiptRecordRepository.save(receiptRecord);
+        return new ReceiptRecordViewImpl(receiptRecord);
+    }
+
+    private ReceiptRecordView deleteReceiptRecord(ReceiptRecord receiptRecord) {
+        Receipt owner = receiptRecord.getOwner();
+        owner.getRecords().remove(receiptRecord);
+        receiptRecord.setProduct(null);
+        receiptRecord.setOwner(null);
+        receiptService.setSumValues(new ReceiptViewImpl(receiptRecord.getOwner()));
+        receiptRecordRepository.delete(receiptRecord);
+        return null;
     }
 }

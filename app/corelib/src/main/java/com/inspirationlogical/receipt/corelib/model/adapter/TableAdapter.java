@@ -72,22 +72,22 @@ public class TableAdapter extends AbstractAdapter<Table> {
         return (ReceiptAdapterBase)ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
     }
 
-    public void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
-        ReceiptAdapterBase receiptAdapter = (ReceiptAdapterBase) ReceiptAdapter.receiptAdapterFactory(receiptType);
-        receiptAdapter.addStockRecords(paramsList);
-        bindReceiptToTable(receiptAdapter);
-        StockListener.addObserver(listener);
-        GuardedTransaction.persist(receiptAdapter.getAdaptee());
-        receiptAdapter.close(PaymentParams.builder().paymentMethod(PaymentMethod.CASH)
-                                                    .discountAbsolute(0)
-                                                    .discountPercent(0)
-                                                    .build());
-    }
-
-    private void bindReceiptToTable(ReceiptAdapterBase receiptAdapter) {
-        receiptAdapter.getAdaptee().setOwner(adaptee);
-        adaptee.getReceipts().add(receiptAdapter.getAdaptee());
-    }
+//    public void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
+//        ReceiptAdapterBase receiptAdapter = (ReceiptAdapterBase) ReceiptAdapter.receiptAdapterFactory(receiptType);
+//        receiptAdapter.addStockRecords(paramsList);
+//        bindReceiptToTable(receiptAdapter);
+//        StockListener.addObserver(listener);
+//        GuardedTransaction.persist(receiptAdapter.getAdaptee());
+//        receiptAdapter.close(PaymentParams.builder().paymentMethod(PaymentMethod.CASH)
+//                                                    .discountAbsolute(0)
+//                                                    .discountPercent(0)
+//                                                    .build());
+//    }
+//
+//    private void bindReceiptToTable(ReceiptAdapterBase receiptAdapter) {
+//        receiptAdapter.getAdaptee().setOwner(adaptee);
+//        adaptee.getReceipts().add(receiptAdapter.getAdaptee());
+//    }
 
     public TableAdapter getConsumer() {
         if(adaptee.getConsumer() == null) {
@@ -203,59 +203,59 @@ public class TableAdapter extends AbstractAdapter<Table> {
         });
     }
 
-    public void payTable(PaymentParams paymentParams) {
-        ReceiptAdapter openReceipt = ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
-        if (openReceipt == null) {
-            throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
-        }
-        openReceipt.close(paymentParams);
-        setDefaultTableParams();
-    }
+//    public void payTable(PaymentParams paymentParams) {
+//        ReceiptAdapter openReceipt = ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
+//        if (openReceipt == null) {
+//            throw new IllegalTableStateException("Pay table for a closed table. Table number: " + adaptee.getNumber());
+//        }
+//        openReceipt.close(paymentParams);
+//        setDefaultTableParams();
+//    }
+//
+//    private void setDefaultTableParams() {
+//        if(TableType.isVirtualTable(adaptee.getType())) return;
+//        GuardedTransaction.run(() -> {
+//            adaptee.setName("");
+//            adaptee.setGuestCount(0);
+//            adaptee.setNote("");
+//        });
+//    }
 
-    private void setDefaultTableParams() {
-        if(TableType.isVirtualTable(adaptee.getType())) return;
-        GuardedTransaction.run(() -> {
-            adaptee.setName("");
-            adaptee.setGuestCount(0);
-            adaptee.setNote("");
-        });
-    }
+//    public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
+//        ReceiptAdapter openReceipt = ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
+//        if(openReceipt == null) {
+//            throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
+//        }
+//        openReceipt.paySelective(records, paymentParams);
+//    }
+//
+//    public void payPartial(double partialValue, PaymentParams paymentParams) {
+//        ReceiptAdapter openReceipt = ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
+//        if(openReceipt == null) {
+//            throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
+//        }
+//        openReceipt.payPartial(partialValue, paymentParams);
+//    }
 
-    public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-        ReceiptAdapter openReceipt = ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
-        if(openReceipt == null) {
-            throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
-        }
-        openReceipt.paySelective(records, paymentParams);
-    }
-
-    public void payPartial(double partialValue, PaymentParams paymentParams) {
-        ReceiptAdapter openReceipt = ReceiptAdapter.getOpenReceipt(adaptee.getNumber());
-        if(openReceipt == null) {
-            throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + adaptee.getNumber());
-        }
-        openReceipt.payPartial(partialValue, paymentParams);
-    }
-
-    public void deleteTable() {
-        GuardedTransaction.run(() -> {
-            Table orphanage = getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee();
-            moveReceiptsToOrphanageTable(adaptee, orphanage);
-            adaptee.getReceipts().clear();
-            adaptee.getReservations().forEach(reservation -> GuardedTransaction.delete(reservation, () -> {}));
-            adaptee.getReservations().clear();
-            adaptee.getOwner().getTables().remove(adaptee);
-            GuardedTransaction.delete(adaptee, () -> {});
-        });
-    }
-
-    private void moveReceiptsToOrphanageTable(Table archiveTable, Table orphanage) {
-        orphanage.getReceipts().addAll(archiveTable.getReceipts().stream()
-                .map(receipt -> {
-                    receipt.setOwner(orphanage);
-                    return receipt;
-                }).collect(toList()));
-    }
+//    public void deleteTable() {
+//        GuardedTransaction.run(() -> {
+//            Table orphanage = getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee();
+//            moveReceiptsToOrphanageTable(adaptee, orphanage);
+//            adaptee.getReceipts().clear();
+//            adaptee.getReservations().forEach(reservation -> GuardedTransaction.delete(reservation, () -> {}));
+//            adaptee.getReservations().clear();
+//            adaptee.getOwner().getTables().remove(adaptee);
+//            GuardedTransaction.delete(adaptee, () -> {});
+//        });
+//    }
+//
+//    private void moveReceiptsToOrphanageTable(Table archiveTable, Table orphanage) {
+//        orphanage.getReceipts().addAll(archiveTable.getReceipts().stream()
+//                .map(receipt -> {
+//                    receipt.setOwner(orphanage);
+//                    return receipt;
+//                }).collect(toList()));
+//    }
 
     public boolean isTableOpen() {
         return ReceiptAdapter.getOpenReceipt(adaptee.getNumber()) != null;

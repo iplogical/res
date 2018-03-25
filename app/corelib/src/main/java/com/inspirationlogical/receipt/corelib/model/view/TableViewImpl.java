@@ -28,7 +28,7 @@ import static java.time.LocalDateTime.now;
 public class TableViewImpl implements TableView {
 
     private TableAdapter adapter;
-    private long tableId;
+    private long id;
     private boolean open;
     private RecentConsumption recentConsumption;
     private boolean isVisible;
@@ -64,7 +64,7 @@ public class TableViewImpl implements TableView {
 
     public TableViewImpl(TableAdapter table) {
         this.adapter = table;
-        tableId = table.getAdaptee().getId();
+        id = table.getAdaptee().getId();
         open = ReceiptAdapter.getOpenReceipt(table.getAdaptee().getNumber()) != null;
         recentConsumption = initHasRecentConsumption(table);
         isVisible = table.getAdaptee().isVisible();

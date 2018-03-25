@@ -28,13 +28,11 @@ import static java.util.stream.Collectors.toList;
 
 public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements ReceiptAdapter {
 
-    private ReceiptAdapterPay receiptAdapterPay;
     private ReceiptAdapterSell receiptAdapterSell;
     private ReceiptAdapterStock receiptAdapterStock;
 
     public ReceiptAdapterBase(Receipt adaptee) {
         super(adaptee);
-        receiptAdapterPay = new ReceiptAdapterPay(adaptee);
         receiptAdapterSell = new ReceiptAdapterSell(adaptee);
         receiptAdapterStock = new ReceiptAdapterStock(adaptee);
     }
@@ -116,31 +114,31 @@ public class ReceiptAdapterBase extends AbstractAdapter<Receipt> implements Rece
         receiptAdapterStock.addStockRecords(paramsList);
     }
 
-    @Override
-    public Collection<ReceiptRecordAdapter> getSoldProducts() {
-        List<ReceiptRecord> records = getReceiptRecords();
-        return records.stream().map(ReceiptRecordAdapter::new).collect(toList());
-    }
+//    @Override
+//    public Collection<ReceiptRecordAdapter> getSoldProducts() {
+//        List<ReceiptRecord> records = getReceiptRecords();
+//        return records.stream().map(ReceiptRecordAdapter::new).collect(toList());
+//    }
 
-    public List<ReceiptRecordAdapter> getAggregatedRecords() {
-        List<ReceiptRecord> records = adaptee.getRecords();
-        return records.stream().map(ReceiptRecordAdapter::new).collect(toList());
-    }
+//    public List<ReceiptRecordAdapter> getAggregatedRecords() {
+//        List<ReceiptRecord> records = adaptee.getRecords();
+//        return records.stream().map(ReceiptRecordAdapter::new).collect(toList());
+//    }
 
-    @Override
-    public void close(PaymentParams paymentParams) {
-        receiptAdapterPay.close(paymentParams);
-    }
-
-    @Override
-    public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-        receiptAdapterPay.paySelective(records, paymentParams);
-    }
-
-    @Override
-    public void payPartial(double partialValue, PaymentParams paymentParams) {
-        receiptAdapterPay.payPartial(partialValue, paymentParams);
-    }
+//    @Override
+//    public void close(PaymentParams paymentParams) {
+//        receiptAdapterPay.close(paymentParams);
+//    }
+//
+//    @Override
+//    public void paySelective(Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
+//        receiptAdapterPay.paySelective(records, paymentParams);
+//    }
+//
+//    @Override
+//    public void payPartial(double partialValue, PaymentParams paymentParams) {
+//        receiptAdapterPay.payPartial(partialValue, paymentParams);
+//    }
 
 //    @Override
 //    public void mergeReceiptRecords() {
