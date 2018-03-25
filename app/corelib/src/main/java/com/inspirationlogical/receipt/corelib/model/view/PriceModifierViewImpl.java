@@ -1,7 +1,9 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.PriceModifierAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -9,82 +11,65 @@ import java.util.Locale;
 /**
  * Created by régiDAGi on 2017. 04. 08..
  */
-public class PriceModifierViewImpl extends AbstractModelViewImpl<PriceModifierAdapter>
-        implements PriceModifierView {
+@Getter
+@ToString
+public class PriceModifierViewImpl implements PriceModifierView {
 
-    public PriceModifierViewImpl(PriceModifierAdapter adapter) {
-        super(adapter);
+    private long id;
+    private String name;
+    private String ownerName;
+    private String type;
+    private String quantityLimit;
+    private String discountPercent;
+    private String startDate;
+    private String endDate;
+    private String repeatPeriod;
+    private String periodMultiplier;
+    private String startTime;
+    private String endTime;
+    private String dayOfWeek;
+    
+    public PriceModifierViewImpl(PriceModifier priceModifier) {
+        id = priceModifier.getId();
+        name = priceModifier.getName();
+        ownerName = initOwnerName(priceModifier);
+        type = priceModifier.getType().toI18nString();
+        quantityLimit = String.valueOf(priceModifier.getQuantityLimit());
+        discountPercent = String.valueOf(priceModifier.getDiscountPercent());
+        startDate = priceModifier.getStartDate().toString();
+        endDate = priceModifier.getEndDate().toString();
+        repeatPeriod = priceModifier.getRepeatPeriod().toI18nString();
+        periodMultiplier = String.valueOf(priceModifier.getRepeatPeriodMultiplier());
+        startTime = initStartTime(priceModifier);
+        endTime = initEndTime(priceModifier);
+        dayOfWeek = initDayOfWeek(priceModifier);
     }
 
-    @Override
-    public String getName() {
-        return adapter.getAdaptee().getName();
-    }
-
-    @Override
-    public String getOwnerName() {
-        if(adapter.getAdaptee().getOwner().getType().equals(ProductCategoryType.PSEUDO)) {
-            return adapter.getAdaptee().getOwner().getProduct().getLongName();
+    private String initOwnerName(PriceModifier priceModifier) {
+        if(priceModifier.getOwner().getType().equals(ProductCategoryType.PSEUDO)) {
+            return priceModifier.getOwner().getProduct().getLongName();
         }
-        return adapter.getAdaptee().getOwner().getName();
+        return priceModifier.getOwner().getName();
     }
 
-    @Override
-    public String getType() {
-        return adapter.getAdaptee().getType().toI18nString();
-    }
-
-    @Override
-    public String getQuantityLimit() {
-        return String.valueOf(adapter.getAdaptee().getQuantityLimit());
-    }
-
-    @Override
-    public String getDiscountPercent() {
-        return String.valueOf(adapter.getAdaptee().getDiscountPercent());
-    }
-
-    @Override
-    public String getStartDate() {
-        return adapter.getAdaptee().getStartDate().toString();
-    }
-
-    @Override
-    public String getEndDate() {
-        return adapter.getAdaptee().getEndDate().toString();
-    }
-
-    @Override
-    public String getRepeatPeriod() {
-        return adapter.getAdaptee().getRepeatPeriod().toI18nString();
-    }
-
-    @Override
-    public String getPeriodMultiplier() {
-        return String.valueOf(adapter.getAdaptee().getRepeatPeriodMultiplier());
-    }
-
-    @Override
-    public String getStartTime() {
-        if(adapter.getAdaptee().getStartTime() == null) {
+    private String initStartTime(PriceModifier priceModifier) {
+        if(priceModifier.getStartTime() == null) {
             return "";
         }
-        return adapter.getAdaptee().getStartTime().toString();
+        return priceModifier.getStartTime().toString();
     }
 
-    @Override
-    public String getEndTime() {
-        if(adapter.getAdaptee().getEndTime() == null) {
+    private String initEndTime(PriceModifier priceModifier) {
+        if(priceModifier.getEndTime() == null) {
             return "";
         }
-        return adapter.getAdaptee().getEndTime().toString();
+        return priceModifier.getEndTime().toString();
     }
 
-    @Override
-    public String getDayOfWeek() {
-        if(adapter.getAdaptee().getDayOfWeek() == null) {
+    private String initDayOfWeek(PriceModifier priceModifier) {
+        if(priceModifier.getDayOfWeek() == null) {
             return "";
         }
-        return adapter.getAdaptee().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("hu"));
+        return priceModifier.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("hu"));
     }
 }

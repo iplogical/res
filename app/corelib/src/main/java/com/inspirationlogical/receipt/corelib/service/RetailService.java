@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service;
 
+import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
@@ -46,4 +47,8 @@ public interface RetailService {
     void increaseSoldQuantity(ReceiptRecordView receiptRecord, double amount, boolean isSale);
 
     void decreaseSoldQuantity(ReceiptRecordView receiptRecord, double amount);
+
+    int getTotalPrice(TableView tableView);
+
+    RecentConsumption getRecentConsumption(TableView tableView);
 }

@@ -1,59 +1,35 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * Created by TheDagi on 2017. 04. 26..
  */
-public class ReservationViewImpl extends AbstractModelViewImpl<ReservationAdapter>
-    implements ReservationView {
+@Getter
+@ToString
+public class ReservationViewImpl implements ReservationView {
 
-    public ReservationViewImpl(ReservationAdapter adapter) {
-        super(adapter);
-    }
+    private long id;
+    private String name;
+    private String tableNumber;
+    private String guestCount;
+    private String note;
+    private String phoneNumber;
+    private String date;
+    private String startTime;
+    private String endTime;
 
-    @Override
-    public String getName() {
-        return adapter.getAdaptee().getName();
-    }
-
-    @Override
-    public String getTableNumber() {
-        return String.valueOf(adapter.getAdaptee().getTableNumber());
-    }
-
-    @Override
-    public String getGuestCount() {
-        return String.valueOf(adapter.getAdaptee().getGuestCount());
-    }
-
-    @Override
-    public String getNote() {
-        return adapter.getAdaptee().getNote();
-    }
-
-    @Override
-    public String getPhoneNumber() {
-        return adapter.getAdaptee().getPhoneNumber();
-    }
-
-    @Override
-    public String getDate() {
-        return adapter.getAdaptee().getDate().toString();
-    }
-
-    @Override
-    public String getStartTime() {
-        return adapter.getAdaptee().getStartTime().toLocalTime().toString();
-    }
-
-    @Override
-    public String getEndTime() {
-        return adapter.getAdaptee().getEndTime().toLocalTime().toString();
-    }
-
-    @Override
-    public long getId() {
-        return adapter.getAdaptee().getId();
+    public ReservationViewImpl(Reservation reservation) {
+        id = reservation.getId();
+        name = reservation.getName();
+        tableNumber = String.valueOf(reservation.getTableNumber());
+        guestCount = String.valueOf(reservation.getGuestCount());
+        note = reservation.getNote();
+        phoneNumber = reservation.getPhoneNumber();
+        date = reservation.getDate().toString();
+        startTime = reservation.getStartTime().toLocalTime().toString();
+        endTime = reservation.getEndTime().toLocalTime().toString();
     }
 }

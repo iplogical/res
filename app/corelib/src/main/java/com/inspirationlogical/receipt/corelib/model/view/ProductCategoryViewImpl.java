@@ -1,55 +1,37 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.ProductCategoryAdapter;
+import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
+import lombok.Getter;
+import lombok.ToString;
 
-public class ProductCategoryViewImpl extends AbstractModelViewImpl<ProductCategoryAdapter>
-        implements ProductCategoryView {
+@Getter
+@ToString
+public class ProductCategoryViewImpl implements ProductCategoryView {
 
-    public ProductCategoryViewImpl(ProductCategoryAdapter adapter) {
-        super(adapter);
+    private long id;
+    private String name;
+    private int orderNumber;
+    private ProductCategoryView parent;
+    private ProductView product;
+    private ProductCategoryType type;
+    private ProductStatus status;
+
+    public ProductCategoryViewImpl(ProductCategory productCategory) {
+        id = productCategory.getId();
+        name = productCategory.getName();
+        orderNumber = productCategory.getOrderNumber();
+        parent = new ProductCategoryViewImpl(productCategory.getParent());
+        product = initProduct(productCategory);
+        type = productCategory.getType();
+        status = productCategory.getStatus();
     }
 
-    @Override
-    public String getName() {
-        return adapter.getAdaptee().getName();
-    }
-
-    @Override
-    public int getOrderNumber() {
-        return adapter.getAdaptee().getOrderNumber();
-    }
-
-    @Override
-    public String getCategoryName() {
-        return adapter.getAdaptee().getName();
-    }
-
-    @Override
-    public ProductCategoryView getParent() {
-        return new ProductCategoryViewImpl(new ProductCategoryAdapter(adapter.getAdaptee().getParent()));
-    }
-
-
-    @Override
-    public ProductView getProduct() {
-        if(adapter.getAdaptee().getProduct() != null)
-            return new ProductViewImpl(new ProductAdapter(adapter.getAdaptee().getProduct()));
+    private ProductView initProduct(ProductCategory productCategory) {
+        if(productCategory.getProduct() != null) {
+            return new ProductViewImpl(productCategory.getProduct());
+        }
         return null;
-    }
-
-    @Override
-    public ProductCategoryType getType() {
-        return adapter.getAdaptee().getType();
-    }
-
-    @Override
-    public ProductStatus getStatus() {
-        return adapter.getAdaptee().getStatus();
     }
 }

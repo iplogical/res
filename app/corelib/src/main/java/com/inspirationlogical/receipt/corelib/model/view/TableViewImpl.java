@@ -1,36 +1,25 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
-import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import static java.time.LocalDateTime.now;
-
-/**
- * Created by Bálint on 2017.03.13..
- */
 @Getter
 @ToString
 public class TableViewImpl implements TableView {
 
-    private TableAdapter adapter;
     private long id;
     private boolean open;
-    private RecentConsumption recentConsumption;
     private boolean isVisible;
     private boolean isDisplayable;
     private boolean isNormal;
@@ -48,7 +37,6 @@ public class TableViewImpl implements TableView {
     private int displayedNumber;
     private int guestCount;
     private int capacity;
-    private int totalPrice;
 
     private String name;
     private String note;
@@ -62,32 +50,29 @@ public class TableViewImpl implements TableView {
     private TableView host;
     private List<TableView> hostedTables;
 
-    public TableViewImpl(TableAdapter table) {
-        this.adapter = table;
-        id = table.getAdaptee().getId();
-        open = ReceiptAdapter.getOpenReceipt(table.getAdaptee().getNumber()) != null;
-        recentConsumption = initHasRecentConsumption(table);
-        isVisible = table.getAdaptee().isVisible();
-        isDisplayable = TableType.isDisplayable(table.getAdaptee().getType());
-        isNormal = table.getAdaptee().getType().equals(TableType.NORMAL);
-        isConsumer = table.isConsumerTable();
-        isConsumed = table.isTableConsumed();
-        isHost = table.isTableHost();
-        isHosted = table.isTableHosted();
-        isLoiterer = table.getAdaptee().getType().equals(TableType.LOITERER);
-        isFrequenter = table.getAdaptee().getType().equals(TableType.FREQUENTER);
-        isEmployee = table.getAdaptee().getType().equals(TableType.EMPLOYEE);
-        canBeHosted = TableType.canBeHosted(table.getAdaptee().getType());
+    public TableViewImpl(Table table) {
+        id = table.getId();
+        open = ReceiptAdapter.getOpenReceipt(table.getNumber()) != null;
+        isVisible = table.isVisible();
+        isDisplayable = TableType.isDisplayable(table.getType());
+        isNormal = table.getType().equals(TableType.NORMAL);
+        isConsumer = isConsumerTable(table);
+        isConsumed = isTableConsumed(table);
+        isHost = isTableHost(table);
+        isHosted = isTableHosted(table);
+        isLoiterer = table.getType().equals(TableType.LOITERER);
+        isFrequenter = table.getType().equals(TableType.FREQUENTER);
+        isEmployee = table.getType().equals(TableType.EMPLOYEE);
+        canBeHosted = TableType.canBeHosted(table.getType());
 
-        type = table.getAdaptee().getType();
-        number = table.getAdaptee().getNumber();
+        type = table.getType();
+        number = table.getNumber();
         displayedNumber = initDisplayedNumber(table);
-        guestCount = table.getAdaptee().getGuestCount();
-        capacity = table.getAdaptee().getCapacity();
-        totalPrice = initTotalPrice(table);
+        guestCount = table.getGuestCount();
+        capacity = table.getCapacity();
 
-        name = table.getAdaptee().getName();
-        note = table.getAdaptee().getNote();
+        name = table.getName();
+        note = table.getNote();
 
         position = initPosition(table);
         dimension = initDimension(table);
@@ -99,70 +84,61 @@ public class TableViewImpl implements TableView {
         hostedTables = initHostedTables(table);
     }
 
-    private RecentConsumption initHasRecentConsumption(TableAdapter adapter) {
-        ReceiptAdapterBase openReceipt = adapter.getOpenReceipt();
-        if(openReceipt == null) {
-            return RecentConsumption.NO_RECENT;
+    private boolean isConsumerTable(Table table) {
+        return !table.getConsumed().isEmpty();
+    }
+
+    private boolean isTableConsumed(Table table) {
+        return table.getConsumer() != null;
+    }
+
+    private boolean isTableHost(Table table) {
+        return !table.getHosted().isEmpty();
+    }
+
+    private boolean isTableHosted(Table table) {
+        return table.getHost() != null;
+    }
+
+    private int initDisplayedNumber(Table table) {
+        if (table.getHost() != null) {
+            return table.getHost().getNumber();
         }
-        LocalDateTime latestSellTime = adapter.getOpenReceipt().getLatestSellTime();
-        if(latestSellTime.isAfter(now().minusMinutes(10))) {
-            return RecentConsumption.RECENT_10_MINUTES;
-        } else if(latestSellTime.isAfter(now().minusMinutes(30))) {
-            return RecentConsumption.RECENT_30_MINUTES;
-        } else {
-            return RecentConsumption.NO_RECENT;
-        }
+        return table.getNumber();
     }
 
-    private int initDisplayedNumber(TableAdapter adapter) {
-        if(adapter.getHost() != null) {
-            return adapter.getAdaptee().getHost().getNumber();
-        }
-        return adapter.getAdaptee().getNumber();
+    private Point2D initPosition(Table adapter) {
+        return new Point2D(adapter.getCoordinateX(), adapter.getCoordinateY());
     }
 
-    private int initTotalPrice(TableAdapter adapter) {
-        ReceiptAdapterBase openReceipt = ((ReceiptAdapterBase)ReceiptAdapter.getOpenReceipt(adapter.getAdaptee().getNumber()));
-        if(adapter == null || openReceipt == null ) {
-            return 0;
-        }
-        return openReceipt.getTotalPrice();
+    private Dimension2D initDimension(Table adapter) {
+        return new Dimension2D(adapter.getDimensionX(), adapter.getDimensionY());
     }
 
-    private Point2D initPosition(TableAdapter adapter) {
-        return new Point2D(adapter.getAdaptee().getCoordinateX(), adapter.getAdaptee().getCoordinateY());
-    }
-
-    private Dimension2D initDimension(TableAdapter adapter) {
-        return new Dimension2D(adapter.getAdaptee().getDimensionX(), adapter.getAdaptee().getDimensionY());
-    }
-
-    private TableViewImpl initConsumer(TableAdapter table) {
-        if(table.getConsumer() == null) {
+    private TableViewImpl initConsumer(Table table) {
+        if (table.getConsumer() == null) {
             return null;
         }
         return new TableViewImpl(table.getConsumer());
     }
 
-    private List<TableView> initConsumedTables(TableAdapter adapter) {
-        return adapter.getConsumedTables()
+    private List<TableView> initConsumedTables(Table table) {
+        return table.getConsumed()
                 .stream()
-                .map(TableAdapter::new)
                 .map(TableViewImpl::new)
                 .collect(Collectors.toList());
     }
 
-    private TableView initHost(TableAdapter adapter) {
-        if(adapter.getHost() == null) {
+    private TableView initHost(Table table) {
+        if (table.getHost() == null) {
             return null;
         }
-        return new TableViewImpl(adapter.getHost());
+        return new TableViewImpl(table.getHost());
     }
 
-    private List<TableView> initHostedTables(TableAdapter adapter) {
-        return adapter.getHostedTables()
+    private List<TableView> initHostedTables(Table table) {
+        return table.getHosted()
                 .stream()
-                .map(TableAdapter::new)
                 .map(TableViewImpl::new)
                 .collect(Collectors.toList());
     }

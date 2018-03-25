@@ -27,39 +27,4 @@ public class StockViewImpl implements StockView {
         disposedQuantity = stock.getDisposedQuantity();
         date = stock.getDate();
     }
-
-//    @Override
-//    public ProductView getProduct() {
-//        return new ProductViewImpl(new ProductAdapter(adapter.getAdaptee().getOwner()));
-//    }
-//
-//    @Override
-//    public double getInitialQuantity() {
-//        return adapter.getAdaptee().getInitialQuantity();
-//    }
-//
-//    @Override
-//    public double getSoldQuantity() {
-//        return adapter.getAdaptee().getSoldQuantity();
-//    }
-//
-//    @Override
-//    public double getPurchasedQuantity() {
-//        return adapter.getAdaptee().getPurchasedQuantity();
-//    }
-//
-//    @Override
-//    public double getInventoryQuantity() {
-//        return adapter.getAdaptee().getInventoryQuantity();
-//    }
-//
-//    @Override
-//    public double getDisposedQuantity() {
-//        return adapter.getAdaptee().getDisposedQuantity();
-//    }
-//
-//    @Override
-//    public LocalDateTime getDate() {
-//        return adapter.getAdaptee().getDate();
-//    }
 }

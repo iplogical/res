@@ -187,7 +187,7 @@ public class TableControllerImpl implements TableController {
                 consumeTables();
             }
             updateTableParams();
-            CSSUtilities.setBackgroundColor(tableViewState, tableStackPane);
+            CSSUtilities.setBackgroundColor(tableViewState, retailService.getRecentConsumption(tableView), tableStackPane);
             showNode(rootTable, tableView.getPosition());
         } else {
             hideNode(rootTable);
@@ -286,6 +286,11 @@ public class TableControllerImpl implements TableController {
     @Override
     public LocalDateTime getOrderDeliveredTime() {
         return tableViewState.getOrderDeliveredTime();
+    }
+
+    @Override
+    public int getTotalPrice() {
+        return retailService.getTotalPrice(tableView);
     }
 
     @FXML

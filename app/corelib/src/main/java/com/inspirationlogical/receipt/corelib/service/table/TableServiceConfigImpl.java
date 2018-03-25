@@ -3,29 +3,27 @@ package com.inspirationlogical.receipt.corelib.service.table;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
-import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
+import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
+import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.inspirationlogical.receipt.corelib.model.enums.TableType.canBeHosted;
+import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -38,8 +36,11 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
+    @Autowired
+    private ReceiptRepository receiptRepository;
+
     @Override
-    public TableAdapter addTable(RestaurantView restaurantView, TableParams tableParams) {
+    public Table addTable(RestaurantView restaurantView, TableParams tableParams) {
         Table newTable = Table.builder()
                 .type(tableParams.getType())
                 .name(tableParams.getName())
@@ -66,18 +67,20 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         newTable.setOwner(restaurant);
         tableRepository.save(newTable);
 
-        return new TableAdapter(newTable);
+        return newTable;
     }
 
+    @Override
     public void deleteTable(TableView tableView) {
         Table adaptee = tableRepository.getOne(tableView.getId());
-        Table orphanage = getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee();
+        Table orphanage = tableRepository.findAllByType(TableType.ORPHANAGE).get(0);
         moveReceiptsToOrphanageTable(adaptee, orphanage);
         adaptee.getReceipts().clear();
         adaptee.getReservations().forEach(reservation -> GuardedTransaction.delete(reservation, () -> {}));
         adaptee.getReservations().clear();
         adaptee.getOwner().getTables().remove(adaptee);
-        GuardedTransaction.delete(adaptee, () -> {});
+        tableRepository.delete(adaptee);
+        tableRepository.save(orphanage);
     }
 
     private void moveReceiptsToOrphanageTable(Table archiveTable, Table orphanage) {
@@ -157,5 +160,44 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         tableRepository.save(consumer.getAdaptee());
         tableRepository.saveAll(consumed);
         return consumed.stream().map(TableAdapter::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public int getTotalPrice(TableView tableView) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
+        if(tableView == null || openReceipt == null ) {
+            return 0;
+        }
+        return openReceipt.getRecords().stream()
+                .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum();
+
+    }
+
+    @Override
+    public RecentConsumption getRecentConsumption(TableView tableView) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
+        if(openReceipt == null) {
+            return RecentConsumption.NO_RECENT;
+        }
+        LocalDateTime latestSellTime = getLatestSellTime(openReceipt);
+        if(latestSellTime.isAfter(now().minusMinutes(10))) {
+            return RecentConsumption.RECENT_10_MINUTES;
+        } else if(latestSellTime.isAfter(now().minusMinutes(30))) {
+            return RecentConsumption.RECENT_30_MINUTES;
+        } else {
+            return RecentConsumption.NO_RECENT;
+        }
+    }
+
+    private LocalDateTime getLatestSellTime(Receipt receipt) {
+        Optional<ReceiptRecordCreated> latest = receipt.getRecords().stream()
+                .map(ReceiptRecord::getCreatedList)
+                .flatMap(Collection::stream)
+                .max(Comparator.comparing(ReceiptRecordCreated::getCreated));
+        if(latest.isPresent()) {
+            return latest.get().getCreated();
+        } else {
+            return now().minusDays(1);
+        }
     }
 }

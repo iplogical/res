@@ -2,11 +2,13 @@ package com.inspirationlogical.receipt.corelib.service;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.DailyConsumptionAdapter;
+import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordService;
+import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
 import com.inspirationlogical.receipt.corelib.service.table.TableServicePay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,9 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
 
     @Autowired
     private TableServicePay tableServicePay;
+
+    @Autowired
+    private TableServiceConfig tableServiceConfig;
 
     @Autowired
     RetailServiceImpl(EntityViews entityViews) {
@@ -141,5 +146,15 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     @Override
     public void decreaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount) {
         receiptRecordService.decreaseSoldQuantity(receiptRecordView, amount);
+    }
+
+    @Override
+    public int getTotalPrice(TableView tableView) {
+        return tableServiceConfig.getTotalPrice(tableView);
+    }
+
+    @Override
+    public RecentConsumption getRecentConsumption(TableView tableView) {
+        return tableServiceConfig.getRecentConsumption(tableView);
     }
 }

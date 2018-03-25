@@ -54,7 +54,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     private DailyClosureRepository dailyClosureRepository;
 
     @Autowired
-    private TableServiceConfig tableService;
+    private TableServiceConfig tableServiceConfig;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -116,13 +116,13 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     @Override
     public TableView addTable(RestaurantView restaurant, TableParams tableParams) {
         logger.info("A table was added: " + tableParams);
-        return new TableViewImpl(tableService.addTable(restaurant, tableParams));
+        return new TableViewImpl(tableServiceConfig.addTable(restaurant, tableParams));
 
     }
 
     @Override
     public void deleteTable(TableView tableView) {
-        getTableAdapter(tableView).deleteTable();
+        tableServiceConfig.deleteTable(tableView);
     }
 
     @Override
@@ -132,13 +132,13 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
                 .map(this::getTableAdapter)
                 .collect(toList());
 //        getRestaurantAdapter(getActiveRestaurant()).mergeTables(consumerTableAdapter, consumedTableAdapters);
-        tableService.mergeTables(consumerTableAdapter, consumedTableAdapters);
+        tableServiceConfig.mergeTables(consumerTableAdapter, consumedTableAdapters);
     }
 
     @Override
     public List<TableView> splitTables(TableView consumer) {
         TableAdapter consumerTableAdapter = getTableAdapter(consumer);
-        return tableService.splitTables(consumerTableAdapter)
+        return tableServiceConfig.splitTables(consumerTableAdapter)
                 .stream()
                 .map(TableViewImpl::new)
                 .collect(toList());
@@ -153,7 +153,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     @Override
     public void setTableNumber(TableView tableView, int tableNumber, RestaurantView restaurant) {
         TableAdapter tableAdapter = getTableAdapter(tableView);
-        if(tableService.isTableNumberAlreadyInUse(tableNumber)) {
+        if(tableServiceConfig.isTableNumberAlreadyInUse(tableNumber)) {
             if(canBeHosted(tableView.getType())) {
                 tableAdapter.setHost(tableNumber);
             } else {

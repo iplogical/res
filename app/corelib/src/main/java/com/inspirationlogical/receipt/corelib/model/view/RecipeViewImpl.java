@@ -19,25 +19,4 @@ public class RecipeViewImpl implements RecipeView {
         quantity = recipe.getQuantityMultiplier();
         isTrivial = recipe.getOwner().equals(recipe.getComponent());
     }
-
-//    @Override
-//    public ProductView getOwner() {
-//        return new ProductViewImpl(new ProductAdapter(adapter.getAdaptee().getOwner()));
-//    }
-//
-//    @Override
-//    public ProductView getComponent() {
-//        return new ProductViewImpl(new ProductAdapter(adapter.getAdaptee().getComponent()));
-//    }
-//
-//    @Override
-//    public double getQuantity() {
-//        return adapter.getAdaptee().getQuantityMultiplier();
-//    }
-//
-//    @Override
-//    public boolean isTrivial() {
-//        Recipe recipe = adapter.getAdaptee();
-//        return recipe.getOwner().equals(recipe.getComponent());
-//    }
 }

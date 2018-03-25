@@ -261,21 +261,21 @@ public class TableAdapter extends AbstractAdapter<Table> {
         return ReceiptAdapter.getOpenReceipt(adaptee.getNumber()) != null;
     }
 
-    public boolean isConsumerTable() {
-        return !this.getConsumedTables().isEmpty();
-    }
-
-    public boolean isTableConsumed() {
-        return adaptee.getConsumer() != null;
-    }
-
-    public boolean isTableHost() {
-        return !this.getHostedTables().isEmpty();
-    }
-
-    public boolean isTableHosted() {
-        return adaptee.getHost() != null;
-    }
+//    public boolean isConsumerTable() {
+//        return !this.getConsumedTables().isEmpty();
+//    }
+//
+//    public boolean isTableConsumed() {
+//        return adaptee.getConsumer() != null;
+//    }
+//
+//    public boolean isTableHost() {
+//        return !this.getHostedTables().isEmpty();
+//    }
+//
+//    public boolean isTableHosted() {
+//        return adaptee.getHost() != null;
+//    }
 
     public List<Table> getConsumedTables() {
         return GuardedTransaction.runNamedQuery(Table.GET_TABLE_BY_CONSUMER, query ->
