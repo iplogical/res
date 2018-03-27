@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.*;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 
 import java.util.List;
@@ -22,20 +21,12 @@ abstract class AbstractService {
         this.entityViews = entityViews;
     }
 
-    TableAdapter getTableAdapter(TableView tableView) {
-        return ((TableViewImpl)tableView).getAdapter();
-    }
-
     ProductAdapter getProductAdapter(ProductView productView) {
         return ((ProductViewImpl)productView).getAdapter();
     }
 
     ProductCategoryAdapter getProductCategoryAdapter(ProductCategoryView category) {
         return ((ProductCategoryViewImpl)category).getAdapter();
-    }
-
-    ReceiptRecordAdapter getReceiptRecordAdapter(ReceiptRecordView receiptRecordView) {
-        return ((ReceiptRecordViewImpl)receiptRecordView).getAdapter();
     }
 
     ReservationAdapter getReservationAdapter(ReservationView reservationView) {

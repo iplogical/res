@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service.table;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.VATSerieAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
@@ -13,6 +12,7 @@ import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
+import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import javafx.geometry.Point2D;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,9 @@ import static java.util.stream.Collectors.toList;
 public class TableServiceConfigImpl implements TableServiceConfig {
 
     @Autowired
+    private StockService stockService;
+
+    @Autowired
     private TableRepository tableRepository;
 
     @Autowired
@@ -38,6 +41,11 @@ public class TableServiceConfigImpl implements TableServiceConfig {
 
     @Autowired
     private ReceiptRepository receiptRepository;
+
+    @Override
+    public List<TableView> getDisplayableTables() {
+        return tableRepository.findAllByVisibleIsTrue().stream().map(TableViewImpl::new).collect(toList());
+    }
 
     @Override
     public Table addTable(RestaurantView restaurantView, TableParams tableParams) {
@@ -117,6 +125,34 @@ public class TableServiceConfigImpl implements TableServiceConfig {
                 .VATSerie(VATSerieAdapter.getActiveVATSerieAdapter().getAdaptee())
                 .records(new ArrayList<>())
                 .build();
+    }
+
+    @Override
+    public boolean reOpenTable(TableView tableView) {
+        Table table = tableRepository.getOne(tableView.getId());
+        if (isTableOpen(table)) {
+            throw new IllegalTableStateException("Re-open table for an open table. Table number: " + table.getNumber());
+        }
+        List<Receipt> receipts = receiptRepository.getReceiptByStatusAndOwner(ReceiptStatus.CLOSED, table.getNumber());
+        if(receipts.isEmpty()) {
+            return false;
+        }
+        Receipt latestReceipt = receipts.stream().sorted(Comparator.comparing(Receipt::getClosureTime).reversed())
+                .collect(toList()).get(0);
+        reopenReceipt(latestReceipt);
+        updateStockRecords(latestReceipt);
+        return true;
+    }
+
+    private void reopenReceipt(Receipt latestReceipt) {
+        latestReceipt.setStatus(ReceiptStatus.OPEN);
+        latestReceipt.setClosureTime(null);
+    }
+
+    private void updateStockRecords(Receipt latestReceipt) {
+        latestReceipt.getRecords().forEach(receiptRecord -> {
+            stockService.decreaseStock(receiptRecord, latestReceipt.getType());
+        });
     }
 
     @Override
@@ -273,6 +309,62 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         tableRepository.save(consumer);
         tableRepository.saveAll(consumed);
         return consumed.stream().map(TableViewImpl::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public void exchangeTables(TableView selectedView, TableView otherView) {
+        Table selected = tableRepository.getOne(selectedView.getId());
+        Table other = tableRepository.getOne(otherView.getId());
+        Receipt receiptOfSelected = receiptRepository.getOpenReceipt(selected.getNumber());
+        Receipt receiptOfOther = receiptRepository.getOpenReceipt(other.getNumber());
+        if(bothAreOpen(receiptOfSelected, receiptOfOther)) {
+            exchangeOwners(selected, other, receiptOfSelected, receiptOfOther);
+        } else if(oneIsOpen(receiptOfSelected, receiptOfOther)) {
+            Receipt openReceipt = getTheOpenReceipt(receiptOfSelected, receiptOfOther);
+            changeOwner(selected, other, openReceipt);
+        }
+    }
+
+    private boolean bothAreOpen(Receipt receiptOfThis, Receipt receiptOfOther) {
+        return receiptOfThis != null && receiptOfOther != null;
+    }
+
+    private void exchangeOwners(Table selected, Table other, Receipt receiptOfThis, Receipt receiptOfOther) {
+        removeFromSelectedAndAddToOther(selected, other, receiptOfThis);
+        receiptOfThis.setOwner(other);
+        removeFromOtherAndAddToSelected(selected, other, receiptOfOther);
+        receiptOfOther.setOwner(selected);
+    }
+
+    private void removeFromSelectedAndAddToOther(Table selected, Table other, Receipt receiptOfThis) {
+        selected.getReceipts().remove(receiptOfThis);
+        other.getReceipts().add(receiptOfThis);
+    }
+
+    private void removeFromOtherAndAddToSelected(Table selected, Table other, Receipt receiptOfOther) {
+        other.getReceipts().remove(receiptOfOther);
+        selected.getReceipts().add(receiptOfOther);
+    }
+
+    private boolean oneIsOpen(Receipt receiptOfThis, Receipt receiptOfOther) {
+        return receiptOfThis != null || receiptOfOther != null;
+    }
+
+    private Receipt getTheOpenReceipt(Receipt receiptOfThis, Receipt receiptOfOther) {
+        if(receiptOfThis != null) {
+            return receiptOfThis;
+        }
+        return receiptOfOther;
+    }
+
+    private void changeOwner(Table selected, Table other, Receipt openReceipt) {
+        if(openReceipt.getOwner().equals(selected)) {
+            removeFromSelectedAndAddToOther(selected, other, openReceipt);
+            openReceipt.setOwner(other);
+        } else {
+            removeFromOtherAndAddToSelected(selected, other, openReceipt);
+            openReceipt.setOwner(selected);
+        }
     }
 
     @Override

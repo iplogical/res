@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import javafx.geometry.Dimension2D;

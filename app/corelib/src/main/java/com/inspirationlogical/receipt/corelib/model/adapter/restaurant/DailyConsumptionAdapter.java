@@ -1,9 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.adapter.restaurant;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.VATSerieAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.*;

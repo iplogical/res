@@ -14,7 +14,6 @@ import java.util.List;
 import javax.persistence.RollbackException;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import javafx.geometry.Dimension2D;

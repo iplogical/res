@@ -273,7 +273,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
             selectedTables.clear();
             return;
         }
-        restaurantService.exchangeTables(tablesToExchange);
+        restaurantService.exchangeTables(tablesToExchange.get(0), tablesToExchange.get(1));
         selectedTables.forEach(TableController::updateTable);
         selectedTables.clear();
     }

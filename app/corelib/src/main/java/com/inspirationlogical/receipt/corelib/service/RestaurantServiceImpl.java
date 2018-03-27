@@ -3,9 +3,6 @@ package com.inspirationlogical.receipt.corelib.service;
 import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.StockAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase;
 import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
@@ -17,12 +14,12 @@ import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
+import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
 import javafx.geometry.Point2D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +52,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     private TableServiceConfig tableServiceConfig;
 
     @Autowired
-    private ApplicationContext applicationContext;
+    private StockService stockService;
 
     @Autowired
     RestaurantServiceImpl(EntityViews entityViews) {
@@ -103,7 +100,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public List<TableView> getTables() {
-        return createViewsFromAdapters(TableAdapter.getDisplayableTables(), TableViewImpl::new);
+        return tableServiceConfig.getDisplayableTables();
     }
 
     @Override
@@ -134,9 +131,8 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
-    public void exchangeTables(List<TableView> tables) {
-        TableAdapter firstTable = getTableAdapter(tables.get(0));
-        firstTable.exchangeTables(getTableAdapter(tables.get(1)));
+    public void exchangeTables(TableView selected, TableView other) {
+        tableServiceConfig.exchangeTables(selected, other);
     }
 
     @Override
@@ -166,7 +162,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public void closeDay() {
-        StockAdapter.closeLatestStockEntries();
+        stockService.closeLatestStockEntries();
 //        ReceiptAdapterBase.deleteReceipts();
         DailyClosureAdapter.getOpenDailyClosure().close();
     }

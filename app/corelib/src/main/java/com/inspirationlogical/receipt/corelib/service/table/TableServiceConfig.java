@@ -11,11 +11,15 @@ import java.util.List;
 
 public interface TableServiceConfig {
 
+    List<TableView> getDisplayableTables();
+
     Table addTable(RestaurantView restaurantView, TableParams tableParams);
 
     void deleteTable(TableView tableView);
 
     void openTable(TableView tableView);
+
+    boolean reOpenTable(TableView tableView);
 
     void setTableNumber(TableView tableView, int tableNumber);
 
@@ -36,6 +40,8 @@ public interface TableServiceConfig {
     void mergeTables(TableView consumer, List<TableView> consumed);
 
     List<TableView> splitTables(TableView consumer);
+
+    void exchangeTables(TableView selectedView, TableView otherView);
 
     int getTotalPrice(TableView tableView);
 

@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.corelib.service.receipt;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.ReceiptRecordAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
@@ -54,11 +53,6 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public Collection<ReceiptRecordAdapter> getSoldProducts() {
-        return null;
-    }
-
-    @Override
     public void close(Receipt receipt, PaymentParams paymentParams) {
         receiptServicePay.close(receipt, paymentParams);
     }
@@ -74,22 +68,12 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public ReceiptRecordAdapter cloneReceiptRecordAdapter(ReceiptRecordAdapter record, double amount) {
-        return null;
-    }
-
-    @Override
-    public void cancelReceiptRecord(ReceiptRecordAdapter receiptRecordAdapter) {
-
+    public void setSumValues(ReceiptView receiptView) {
+        receiptServicePay.setSumValues(receiptView);
     }
 
     @Override
     public void mergeReceiptRecords(ReceiptView receiptView) {
         receiptServiceMerge.mergeReceiptRecords(receiptView);
-    }
-
-    @Override
-    public void setSumValues(ReceiptView receiptView) {
-        receiptServicePay.setSumValues(receiptView);
     }
 }

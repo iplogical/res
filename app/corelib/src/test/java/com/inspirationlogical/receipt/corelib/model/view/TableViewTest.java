@@ -8,7 +8,6 @@ import com.inspirationlogical.receipt.corelib.model.TestBase;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 
 import javafx.geometry.Point2D;

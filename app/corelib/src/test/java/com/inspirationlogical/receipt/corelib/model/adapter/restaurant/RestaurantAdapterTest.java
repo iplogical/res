@@ -11,7 +11,6 @@ import static org.junit.Assert.assertTrue;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.TestBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.TableAdapter;
 import org.junit.Before;
 import org.junit.Test;
 

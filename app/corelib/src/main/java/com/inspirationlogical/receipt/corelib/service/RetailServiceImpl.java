@@ -51,13 +51,13 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
 
     @Override
     public void openTable(TableView tableView) {
-        getTableAdapter(tableView).openTable();
+        tableServiceConfig.openTable(tableView);
         logger.info("A table was opened: " + tableView);
     }
 
     @Override
     public boolean reOpenTable(TableView tableView) {
-        if(getTableAdapter(tableView).reOpenTable()) {
+        if(tableServiceConfig.reOpenTable(tableView)) {
             logger.info("A table was re-opened: " + tableView);
             return true;
         }
