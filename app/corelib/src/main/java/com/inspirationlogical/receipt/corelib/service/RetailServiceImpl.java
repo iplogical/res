@@ -1,13 +1,13 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.DailyConsumptionAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyConsumptionService;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordService;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
@@ -43,6 +43,12 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
 
     @Autowired
     private ReceiptRepository receiptRepository;
+
+    @Autowired
+    private DailyClosureService dailyClosureService;
+
+    @Autowired
+    private DailyConsumptionService dailyConsumptionService;
 
     @Autowired
     RetailServiceImpl(EntityViews entityViews) {
@@ -123,18 +129,18 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
 
     @Override
     public List<LocalDateTime> getClosureTimes(LocalDate startDate, LocalDate endDate) {
-        return DailyClosureAdapter.getClosureTimes(startDate, endDate);
+        return dailyClosureService.getClosureTimes(startDate, endDate);
     }
 
     @Override
     public void printAggregateConsumption(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate) {
-        new DailyConsumptionAdapter().printAggregatedConsumption(startDate, endDate);
+        dailyConsumptionService.printAggregatedConsumption(startDate, endDate);
         logger.info("The aggregated consumption was printed between: " + startDate + " - " + endDate + ", for restaurant" + restaurantView);
     }
 
     @Override
     public ReceiptView getAggregatedReceipt(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate) {
-        return new DailyConsumptionAdapter().getAggregatedReceipt(startDate, endDate);
+        return dailyConsumptionService.getAggregatedReceipt(startDate, endDate);
     }
 
     @Override

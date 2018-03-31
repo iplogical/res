@@ -1,7 +1,8 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
-import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureServiceImpl;
 import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
@@ -47,6 +48,9 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Autowired
     private DailyClosureRepository dailyClosureRepository;
+
+    @Autowired
+    private DailyClosureService dailyClosureService;
 
     @Autowired
     private TableServiceConfig tableServiceConfig;
@@ -163,8 +167,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     @Override
     public void closeDay() {
         stockService.closeLatestStockEntries();
-//        ReceiptAdapterBase.deleteReceipts();
-        DailyClosureAdapter.getOpenDailyClosure().close();
+        dailyClosureService.close();
     }
 
     @Override

@@ -8,10 +8,13 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public interface DailyClosureRepository extends JpaRepository<DailyClosure, Long>, DailyClosureCustomRepository {
+public interface DailyClosureRepository extends JpaRepository<DailyClosure, Long> {
 
     DailyClosure findByClosureTimeIsNull();
 
     @Query("FROM DailyClosure dc WHERE dc.closureTime < :closureTime ORDER BY dc.closureTime desc")
     DailyClosure getDailyClosureBeforeDate(@Param(value = "closureTime")LocalDateTime closureTime);
+
+    @Query("FROM DailyClosure dc WHERE dc.closureTime > :closureTime ORDER BY dc.closureTime asc")
+    DailyClosure getDailyClosureAfterDate(@Param(value = "closureTime")LocalDateTime closureTime);
 }

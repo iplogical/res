@@ -2,14 +2,12 @@ package com.inspirationlogical.receipt.corelib.service.receipt;
 
 import com.inspirationlogical.receipt.corelib.exception.AdHocProductNotFoundException;
 import com.inspirationlogical.receipt.corelib.exception.GameFeeProductNotFoundException;
-import com.inspirationlogical.receipt.corelib.model.adapter.VATAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
-import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
@@ -18,6 +16,7 @@ import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRecordRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.service.product_category.ProductCategoryService;
+import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +40,9 @@ public class ReceiptServiceSell {
 
     @Autowired
     private ProductCategoryService productCategoryService;
+
+    @Autowired
+    private VATService vatService;
 
     public void sellProduct(Receipt receipt, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {
         Product product = productRepository.getOne(productView.getId());
@@ -86,7 +88,7 @@ public class ReceiptServiceSell {
                 .soldQuantity(amount)
                 .purchasePrice(product.getPurchasePrice())
                 .salePrice(product.getSalePrice())
-                .VAT(VATAdapter.getVatByName(isTakeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
+                .VAT(vatService.getVatByName(isTakeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE).getVAT())
                 .createdList(new ArrayList<>())
                 .build();
     }
@@ -116,7 +118,7 @@ public class ReceiptServiceSell {
                 .soldQuantity(adHocProductParams.getQuantity())
                 .purchasePrice(adHocProductParams.getPurchasePrice())
                 .salePrice(adHocProductParams.getSalePrice())
-                .VAT(VATAdapter.getVatByName(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
+                .VAT(vatService.getVatByName(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE).getVAT())
                 .discountPercent(0)
                 .createdList(new ArrayList<>())
                 .build();
@@ -161,7 +163,7 @@ public class ReceiptServiceSell {
                 .soldQuantity(quantity)
                 .purchasePrice(gameFeeProduct.getPurchasePrice())
                 .salePrice(gameFeeProduct.getSalePrice())
-                .VAT(VATAdapter.getVatByName(ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
+                .VAT(vatService.getVatByName(ReceiptRecordType.HERE).getVAT())
                 .discountPercent(0)
                 .createdList(new ArrayList<>())
                 .build();

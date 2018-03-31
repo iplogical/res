@@ -6,13 +6,12 @@ import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptAdapterListeners;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
-import com.inspirationlogical.receipt.corelib.repository.VATSerieRepository;
+import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import com.inspirationlogical.receipt.corelib.utility.Round;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +35,7 @@ public class ReceiptServicePay {
     private ReceiptRepository receiptRepository;
 
     @Autowired
-    private VATSerieRepository vatSerieRepository;
+    private VATService vatService;
 
     public interface Listener{
         void onClose(Receipt receipt);
@@ -121,7 +120,7 @@ public class ReceiptServicePay {
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(now())
-                .VATSerie(vatSerieRepository.findFirstByStatus(VATStatus.VALID))
+                .VATSerie(vatService.findValidVATSerie())
                 .records(new ArrayList<>())
                 .build();
     }

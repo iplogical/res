@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller.dailysummary;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.DailyConsumptionAdapter;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import com.inspirationlogical.receipt.waiter.utility.DailySummaryUtils;
 import org.junit.After;

@@ -1,9 +1,9 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
-import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,40 +18,40 @@ import static org.junit.Assert.assertNull;
  */
 public class DailyClosureAdapterTest extends TestBase {
 
-    private DailyClosureAdapter openDailyClosure;
-    private DailyClosureAdapter dailyClosureOne;
-    private DailyClosureAdapter dailyClosureTwo;
+    private DailyClosureServiceImpl openDailyClosure;
+    private DailyClosureServiceImpl dailyClosureOne;
+    private DailyClosureServiceImpl dailyClosureTwo;
     private Receipt receipt;
 
     @Before
     public void setUp() {
-        openDailyClosure = new DailyClosureAdapter(schema.getOpenDailyClosure());
-        dailyClosureOne = new DailyClosureAdapter(schema.getDailyClosureOne());
-        dailyClosureTwo = new DailyClosureAdapter(schema.getDailyClosureTwo());
+        openDailyClosure = new DailyClosureServiceImpl(schema.getOpenDailyClosure());
+        dailyClosureOne = new DailyClosureServiceImpl(schema.getDailyClosureOne());
+        dailyClosureTwo = new DailyClosureServiceImpl(schema.getDailyClosureTwo());
         receipt = schema.getReceiptSaleOne();
     }
 
     @Test
     public void testGetLatestClosureTime() {
-        assertNotNull(DailyClosureAdapter.getLatestClosureTime());
+        assertNotNull(DailyClosureServiceImpl.getLatestClosureTime());
     }
 
     @Test
     public void testGetClosureTimesBefore() {
-        assertEquals(dailyClosureOne.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimes(now(), now()).get(0));
-        assertEquals(dailyClosureTwo.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimes(now().minusDays(1), now()).get(0));
+        assertEquals(dailyClosureOne.getAdaptee().getClosureTime(), DailyClosureServiceImpl.getClosureTimes(now(), now()).get(0));
+        assertEquals(dailyClosureTwo.getAdaptee().getClosureTime(), DailyClosureServiceImpl.getClosureTimes(now().minusDays(1), now()).get(0));
     }
 
     @Test
     public void testGetClosureTimesAfter() {
-        assertEquals(now().plusDays(1).atTime(21, 0), DailyClosureAdapter.getClosureTimes(now(), now()).get(1));
-        assertEquals(dailyClosureOne.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimes(now().minusDays(3), now().minusDays(2)).get(1));
-        assertEquals(dailyClosureTwo.getAdaptee().getClosureTime(), DailyClosureAdapter.getClosureTimes(now().minusDays(4), now().minusDays(3)).get(1));
+        assertEquals(now().plusDays(1).atTime(21, 0), DailyClosureServiceImpl.getClosureTimes(now(), now()).get(1));
+        assertEquals(dailyClosureOne.getAdaptee().getClosureTime(), DailyClosureServiceImpl.getClosureTimes(now().minusDays(3), now().minusDays(2)).get(1));
+        assertEquals(dailyClosureTwo.getAdaptee().getClosureTime(), DailyClosureServiceImpl.getClosureTimes(now().minusDays(4), now().minusDays(3)).get(1));
     }
 
     @Test
     public void testGetOpenDailyClosure() {
-        DailyClosureAdapter openDailyClosure = DailyClosureAdapter.getOpenDailyClosure();
+        DailyClosureServiceImpl openDailyClosure = DailyClosureServiceImpl.getOpenDailyClosure();
         assertNotNull(openDailyClosure);
         assertNull(openDailyClosure.getAdaptee().getClosureTime());
     }
@@ -64,7 +64,7 @@ public class DailyClosureAdapterTest extends TestBase {
         assertEquals(75.09, openDailyClosure.getAdaptee().getMarkup(), 0.001);
         assertEquals(20700, openDailyClosure.getAdaptee().getReceiptAverage());
         assertEquals(1, openDailyClosure.getAdaptee().getNumberOfReceipts());
-        assertNotNull(DailyClosureAdapter.getOpenDailyClosure());
+        assertNotNull(DailyClosureServiceImpl.getOpenDailyClosure());
     }
     
     @Test

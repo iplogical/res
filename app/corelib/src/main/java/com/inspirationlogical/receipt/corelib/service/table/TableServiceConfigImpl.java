@@ -11,8 +11,8 @@ import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
-import com.inspirationlogical.receipt.corelib.repository.VATSerieRepository;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
+import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import javafx.geometry.Point2D;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,8 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     private StockService stockService;
 
     @Autowired
-    private VATSerieRepository vatSerieRepository;
+    private VATService vatSevice;
+
     @Autowired
     private TableRepository tableRepository;
 
@@ -72,7 +73,7 @@ public class TableServiceConfigImpl implements TableServiceConfig {
                 throw new IllegalTableStateException("The table number " + newTable.getNumber() + " is already in use");
             }
         }
-        Restaurant restaurant = restaurantRepository.findById(restaurantView.getRestaurantId());
+        Restaurant restaurant = restaurantRepository.getOne(restaurantView.getRestaurantId());
         restaurant.getTables().add(newTable);
         newTable.setOwner(restaurant);
         tableRepository.save(newTable);
@@ -124,7 +125,7 @@ public class TableServiceConfigImpl implements TableServiceConfig {
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(now())
-                .VATSerie(vatSerieRepository.findFirstByStatus(VATStatus.VALID))
+                .VATSerie(vatSevice.findValidVATSerie())
                 .records(new ArrayList<>())
                 .build();
     }

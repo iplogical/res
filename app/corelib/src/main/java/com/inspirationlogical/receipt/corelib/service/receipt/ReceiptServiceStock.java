@@ -1,15 +1,13 @@
 package com.inspirationlogical.receipt.corelib.service.receipt;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.VATAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
-import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
-import com.inspirationlogical.receipt.corelib.repository.VATSerieRepository;
+import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,16 +20,13 @@ import static java.time.LocalDateTime.now;
 public class ReceiptServiceStock {
 
     @Autowired
-    private ReceiptRepository receiptRepository;
-
-    @Autowired
     private ProductRepository productRepository;
 
     @Autowired
     private TableRepository tableRepository;
 
     @Autowired
-    private VATSerieRepository vatSerieRepository;
+    private VATService vatService;
 
     @Autowired
     private ReceiptService receiptService;
@@ -54,7 +49,7 @@ public class ReceiptServiceStock {
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(now())
-                .VATSerie(vatSerieRepository.findFirstByStatus(VATStatus.VALID))
+                .VATSerie(vatService.findValidVATSerie())
                 .records(new ArrayList<>())
                 .build();
     }
@@ -83,7 +78,7 @@ public class ReceiptServiceStock {
                 .absoluteQuantity(params.isAbsoluteQuantity() ? params.getQuantity() : params.getQuantity() * product.getStorageMultiplier())
                 .purchasePrice(product.getPurchasePrice())
                 .salePrice(product.getSalePrice())
-                .VAT(VATAdapter.getVatByName(ReceiptRecordType.HERE, VATStatus.VALID).getAdaptee().getVAT())
+                .VAT(vatService.getVatByName(ReceiptRecordType.HERE).getVAT())
                 .discountPercent(0)
                 .createdList(new ArrayList<>())
                 .build();

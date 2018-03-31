@@ -1,9 +1,10 @@
 package com.inspirationlogical.receipt.corelib.model.adapter.restaurant;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
-import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureServiceImpl;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyConsumptionServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +35,7 @@ public class DailyConsumptionAdapterTest extends TestBase {
                 receiptSaleClosedTable.getRecords().size() +
                 generatedRecords;
 
-        latestClosure = DailyClosureAdapter.getLatestClosureTime();
+        latestClosure = DailyClosureServiceImpl.getLatestClosureTime();
     }
 
     @Test
@@ -47,7 +48,7 @@ public class DailyConsumptionAdapterTest extends TestBase {
 
     @Test
     public void testCreateReceiptOfDailyConsumptionNumberOfRecords() {
-        Receipt receipt = new DailyConsumptionAdapter().createReceiptOfAggregatedConsumption(latestClosure, now().plusDays(1));
+        Receipt receipt = new DailyConsumptionServiceImpl().createReceiptOfAggregatedConsumption(latestClosure, now().plusDays(1));
         assertEquals(totalRecordsOfTheDay, receipt.getRecords().size());
     }
 
@@ -57,7 +58,7 @@ public class DailyConsumptionAdapterTest extends TestBase {
         receiptSaleTwo.getRecords().get(0).setDiscountPercent(20);
         receiptSaleFour.getRecords().get(0).setName("testRecord");
         receiptSaleFour.getRecords().get(0).setDiscountPercent(0);
-        Receipt receipt = new DailyConsumptionAdapter().createReceiptOfAggregatedConsumption(latestClosure, now().plusDays(1));
+        Receipt receipt = new DailyConsumptionServiceImpl().createReceiptOfAggregatedConsumption(latestClosure, now().plusDays(1));
         assertEquals(totalRecordsOfTheDay - 1, receipt.getRecords().size());
     }
 
@@ -66,7 +67,7 @@ public class DailyConsumptionAdapterTest extends TestBase {
         int totalCash = receiptSaleFour.getSumSaleGrossPrice() + receiptSaleClosedTable.getSumSaleGrossPrice();
         int totalCreditCard = receiptSaleTwo.getSumSaleGrossPrice();
         int totalCoupon = 0;
-        Receipt receipt = new DailyConsumptionAdapter().createReceiptOfAggregatedConsumption(latestClosure, now().plusDays(1));
+        Receipt receipt = new DailyConsumptionServiceImpl().createReceiptOfAggregatedConsumption(latestClosure, now().plusDays(1));
         assertEquals(totalCash, getSalePrice(receipt, PaymentMethod.CASH));
         assertEquals(totalCreditCard, getSalePrice(receipt, PaymentMethod.CREDIT_CARD));
         assertEquals(totalCoupon, getSalePrice(receipt, PaymentMethod.COUPON));

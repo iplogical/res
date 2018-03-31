@@ -1,6 +1,5 @@
-package com.inspirationlogical.receipt.corelib.model.adapter.restaurant;
+package com.inspirationlogical.receipt.corelib.service.daily_closure;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
@@ -10,7 +9,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
 import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
-import com.inspirationlogical.receipt.corelib.repository.VATSerieRepository;
+import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +24,11 @@ import static com.inspirationlogical.receipt.corelib.service.receipt.ReceiptServ
 import static java.time.LocalDateTime.now;
 
 @Service
-public class DailyConsumptionAdapter {
+public class DailyConsumptionServiceImpl implements DailyConsumptionService {
 
     @Autowired
-    private DailyClosureRepository dailyClosureRepository;
+    private DailyClosureService dailyClosureRepository;
+
     @Autowired
     private ReceiptRepository receiptRepository;
 
@@ -36,17 +36,18 @@ public class DailyConsumptionAdapter {
     private TableRepository tableRepository;
 
     @Autowired
-    private VATSerieRepository vatSerieRepository;
+    private VATService vatService;
 
+    @Override
     public void printAggregatedConsumption(LocalDate startTime, LocalDate endTime) {
-        List<LocalDateTime> closureTimes = DailyClosureAdapter.getClosureTimes(startTime, endTime);
-        List<LocalDateTime> closureTimes = dailyClosureRepository.
+        List<LocalDateTime> closureTimes = dailyClosureRepository.getClosureTimes(startTime, endTime);
         Receipt aggregatedReceipt = createReceiptOfAggregatedConsumption(closureTimes.get(0), closureTimes.get(1));
         new ReceiptPrinter().onClose(aggregatedReceipt);
     }
 
+    @Override
     public ReceiptView getAggregatedReceipt(LocalDate startTime, LocalDate endTime) {
-        List<LocalDateTime> closureTimes = DailyClosureAdapter.getClosureTimes(startTime, endTime);
+        List<LocalDateTime> closureTimes = dailyClosureRepository.getClosureTimes(startTime, endTime);
         Receipt aggregatedReceipt = createReceiptOfAggregatedConsumption(closureTimes.get(0), closureTimes.get(1));
         return new ReceiptViewImpl(aggregatedReceipt);
     }
@@ -85,7 +86,7 @@ public class DailyConsumptionAdapter {
                 .owner(tableRepository.findAllByType(TableType.ORPHANAGE).get(0))
                 .paymentMethod(PaymentMethod.CASH)
                 .status(ReceiptStatus.OPEN)
-                .VATSerie(vatSerieRepository.findFirstByStatus(VATStatus.VALID))
+                .VATSerie(vatService.findValidVATSerie())
                 .type(ReceiptType.SALE)
                 .paymentMethod(PaymentMethod.CASH)
                 .build();

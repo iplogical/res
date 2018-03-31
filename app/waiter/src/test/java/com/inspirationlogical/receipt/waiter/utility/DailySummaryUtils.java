@@ -1,6 +1,6 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.restaurant.DailyConsumptionAdapter;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyConsumptionServiceImpl;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickButtonThenWait;
@@ -91,14 +91,14 @@ public class DailySummaryUtils {
     }
 
     public static void assertProductDiscount(int deltaRow, int deltaDiscount) {
-        assertSoldProduct(8 + deltaRow, DailyConsumptionAdapter.DiscountType.PRODUCT.toI18nString(), 0, INITIAL_PRODUCT_DISCOUNT + deltaDiscount, 0);
+        assertSoldProduct(8 + deltaRow, DailyConsumptionServiceImpl.DiscountType.PRODUCT.toI18nString(), 0, INITIAL_PRODUCT_DISCOUNT + deltaDiscount, 0);
     }
 
     public static void assertTableDiscount(int deltaRow, int deltaDiscount) {
-        assertSoldProduct(9 + deltaRow, DailyConsumptionAdapter.DiscountType.TABLE.toI18nString(), 0, INITIAL_TABLE_DISCOUNT + deltaDiscount, 0);
+        assertSoldProduct(9 + deltaRow, DailyConsumptionServiceImpl.DiscountType.TABLE.toI18nString(), 0, INITIAL_TABLE_DISCOUNT + deltaDiscount, 0);
     }
 
     public static void assertTotalDiscount(int deltaRow, int deltaDiscount) {
-        assertSoldProduct(10 + deltaRow, DailyConsumptionAdapter.DiscountType.TOTAL.toI18nString(), 0, INITIAL_TOTAL_DISCOUNT + deltaDiscount, 0);
+        assertSoldProduct(10 + deltaRow, DailyConsumptionServiceImpl.DiscountType.TOTAL.toI18nString(), 0, INITIAL_TOTAL_DISCOUNT + deltaDiscount, 0);
     }
 }
