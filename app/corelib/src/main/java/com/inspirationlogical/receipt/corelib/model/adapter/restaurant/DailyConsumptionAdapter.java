@@ -1,15 +1,19 @@
 package com.inspirationlogical.receipt.corelib.model.adapter.restaurant;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.DailyClosureAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.VATSerieAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
-import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
+import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
+import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
+import com.inspirationlogical.receipt.corelib.repository.TableRepository;
+import com.inspirationlogical.receipt.corelib.repository.VATSerieRepository;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,14 +21,26 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase.getDiscountMultiplier;
-import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase.getReceiptsByClosureTime;
+import static com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService.getDiscountMultiplier;
 import static java.time.LocalDateTime.now;
 
+@Service
 public class DailyConsumptionAdapter {
+
+    @Autowired
+    private DailyClosureRepository dailyClosureRepository;
+    @Autowired
+    private ReceiptRepository receiptRepository;
+
+    @Autowired
+    private TableRepository tableRepository;
+
+    @Autowired
+    private VATSerieRepository vatSerieRepository;
 
     public void printAggregatedConsumption(LocalDate startTime, LocalDate endTime) {
         List<LocalDateTime> closureTimes = DailyClosureAdapter.getClosureTimes(startTime, endTime);
+        List<LocalDateTime> closureTimes = dailyClosureRepository.
         Receipt aggregatedReceipt = createReceiptOfAggregatedConsumption(closureTimes.get(0), closureTimes.get(1));
         new ReceiptPrinter().onClose(aggregatedReceipt);
     }
@@ -32,20 +48,20 @@ public class DailyConsumptionAdapter {
     public ReceiptView getAggregatedReceipt(LocalDate startTime, LocalDate endTime) {
         List<LocalDateTime> closureTimes = DailyClosureAdapter.getClosureTimes(startTime, endTime);
         Receipt aggregatedReceipt = createReceiptOfAggregatedConsumption(closureTimes.get(0), closureTimes.get(1));
-        return new ReceiptViewImpl(new ReceiptAdapterBase(aggregatedReceipt));
+        return new ReceiptViewImpl(aggregatedReceipt);
     }
 
     Receipt createReceiptOfAggregatedConsumption(LocalDateTime startTime, LocalDateTime endTime) {
-        List<ReceiptAdapterBase> receipts = getReceiptsByClosureTime(startTime, endTime);
+        List<Receipt> receipts = receiptRepository.getReceiptsByClosureTime(startTime, endTime);
         Receipt aggregatedReceipt = buildAggregatedReceipt(startTime);
         Map<PaymentMethod, Integer> incomesByPaymentMethod = initIncomes();
         Map<DiscountType, Integer> discountsByType = initDiscounts();
         receipts.forEach(receipt -> {
             updateIncomes(receipt, incomesByPaymentMethod);
             updateTableDiscount(receipt, discountsByType);
-            receipt.getAdaptee().getRecords().forEach(receiptRecord -> {
+            receipt.getRecords().forEach(receiptRecord -> {
                 updateProductDiscount(receiptRecord, discountsByType);
-                receiptRecord.setDiscountPercent(receipt.getAdaptee().getDiscountPercent() + receiptRecord.getDiscountPercent());
+                receiptRecord.setDiscountPercent(receipt.getDiscountPercent() + receiptRecord.getDiscountPercent());
                 receiptRecord.setSalePrice((int)(receiptRecord.getSalePrice() * getDiscountMultiplier(receiptRecord.getDiscountPercent())));
                 mergeReceiptRecords(aggregatedReceipt, receiptRecord);
             });
@@ -53,7 +69,6 @@ public class DailyConsumptionAdapter {
         aggregatedReceipt.getRecords().sort(Comparator.comparing(ReceiptRecord::getSoldQuantity).reversed());
         addIncomesAsReceiptRecord(aggregatedReceipt, incomesByPaymentMethod);
         addDiscountsAsReceiptRecord(aggregatedReceipt, discountsByType);
-        receipts.forEach(receiptAdapter -> GuardedTransaction.detach(receiptAdapter.getAdaptee()));
         return aggregatedReceipt;
     }
 
@@ -67,10 +82,10 @@ public class DailyConsumptionAdapter {
                 .records(new ArrayList<>())
                 .openTime(startTime)
                 .closureTime(now())
-                .owner(TableAdapter.getTablesByType(TableType.ORPHANAGE).get(0).getAdaptee())
+                .owner(tableRepository.findAllByType(TableType.ORPHANAGE).get(0))
                 .paymentMethod(PaymentMethod.CASH)
                 .status(ReceiptStatus.OPEN)
-                .VATSerie(VATSerieAdapter.getActiveVATSerieAdapter().getAdaptee())
+                .VATSerie(vatSerieRepository.findFirstByStatus(VATStatus.VALID))
                 .type(ReceiptType.SALE)
                 .paymentMethod(PaymentMethod.CASH)
                 .build();
@@ -93,13 +108,13 @@ public class DailyConsumptionAdapter {
         return discounts;
     }
 
-    private void updateIncomes(ReceiptAdapterBase receipt, Map<PaymentMethod, Integer> incomes) {
-        int salePrice = incomes.get(receipt.getAdaptee().getPaymentMethod());
-        incomes.put(receipt.getAdaptee().getPaymentMethod(), salePrice + receipt.getAdaptee().getSumSaleGrossPrice());
+    private void updateIncomes(Receipt receipt, Map<PaymentMethod, Integer> incomes) {
+        int salePrice = incomes.get(receipt.getPaymentMethod());
+        incomes.put(receipt.getPaymentMethod(), salePrice + receipt.getSumSaleGrossPrice());
     }
 
-    private void updateTableDiscount(ReceiptAdapterBase receipt, Map<DiscountType, Integer> discountsByType) {
-        int discount = receipt.getAdaptee().getSumSaleGrossOriginalPrice() - receipt.getAdaptee().getSumSaleGrossPrice();
+    private void updateTableDiscount(Receipt receipt, Map<DiscountType, Integer> discountsByType) {
+        int discount = receipt.getSumSaleGrossOriginalPrice() - receipt.getSumSaleGrossPrice();
         discountsByType.put(DiscountType.TABLE, discount + discountsByType.get(DiscountType.TABLE));
     }
 

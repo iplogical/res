@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service.receipt;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.VATAdapter;
-import com.inspirationlogical.receipt.corelib.model.adapter.VATSerieAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
@@ -10,6 +9,7 @@ import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
+import com.inspirationlogical.receipt.corelib.repository.VATSerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +29,9 @@ public class ReceiptServiceStock {
 
     @Autowired
     private TableRepository tableRepository;
+
+    @Autowired
+    private VATSerieRepository vatSerieRepository;
 
     @Autowired
     private ReceiptService receiptService;
@@ -51,7 +54,7 @@ public class ReceiptServiceStock {
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(now())
-                .VATSerie(VATSerieAdapter.getActiveVATSerieAdapter().getAdaptee())
+                .VATSerie(vatSerieRepository.findFirstByStatus(VATStatus.VALID))
                 .records(new ArrayList<>())
                 .build();
     }

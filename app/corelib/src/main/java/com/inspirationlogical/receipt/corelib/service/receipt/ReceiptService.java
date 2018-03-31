@@ -15,6 +15,10 @@ import java.util.List;
 
 public interface ReceiptService {
 
+    static double getDiscountMultiplier(double discountPercent) {
+        return (100D - discountPercent) / 100;
+    }
+
     void sellProduct(Receipt receipt, ProductView productView, int amount, boolean isTakeAway, boolean isGift);
 
     void sellAdHocProduct(Receipt receipt, AdHocProductParams adHocProductParams, boolean takeAway);

@@ -1,17 +1,18 @@
 package com.inspirationlogical.receipt.corelib.service.receipt;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
-import com.inspirationlogical.receipt.corelib.model.adapter.VATSerieAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptAdapterListeners;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
+import com.inspirationlogical.receipt.corelib.repository.VATSerieRepository;
 import com.inspirationlogical.receipt.corelib.utility.Round;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
-import static com.inspirationlogical.receipt.corelib.model.adapter.receipt.ReceiptAdapterBase.getDiscountMultiplier;
+import static com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService.getDiscountMultiplier;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
@@ -33,6 +34,9 @@ public class ReceiptServicePay {
 
     @Autowired
     private ReceiptRepository receiptRepository;
+
+    @Autowired
+    private VATSerieRepository vatSerieRepository;
 
     public interface Listener{
         void onClose(Receipt receipt);
@@ -117,7 +121,7 @@ public class ReceiptServicePay {
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(now())
-                .VATSerie(VATSerieAdapter.getActiveVATSerieAdapter().getAdaptee())
+                .VATSerie(vatSerieRepository.findFirstByStatus(VATStatus.VALID))
                 .records(new ArrayList<>())
                 .build();
     }

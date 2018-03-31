@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service.table;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
-import com.inspirationlogical.receipt.corelib.model.adapter.VATSerieAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
@@ -12,6 +11,7 @@ import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
+import com.inspirationlogical.receipt.corelib.repository.VATSerieRepository;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import javafx.geometry.Point2D;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +33,8 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     @Autowired
     private StockService stockService;
 
+    @Autowired
+    private VATSerieRepository vatSerieRepository;
     @Autowired
     private TableRepository tableRepository;
 
@@ -122,7 +124,7 @@ public class TableServiceConfigImpl implements TableServiceConfig {
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(now())
-                .VATSerie(VATSerieAdapter.getActiveVATSerieAdapter().getAdaptee())
+                .VATSerie(vatSerieRepository.findFirstByStatus(VATStatus.VALID))
                 .records(new ArrayList<>())
                 .build();
     }
