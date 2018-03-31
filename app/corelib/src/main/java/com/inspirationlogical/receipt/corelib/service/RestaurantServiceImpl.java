@@ -1,9 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
-import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
-import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureServiceImpl;
-import com.inspirationlogical.receipt.corelib.model.adapter.ReservationAdapter;
 import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
@@ -15,6 +12,8 @@ import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
+import com.inspirationlogical.receipt.corelib.service.reservation.ReservationService;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
 import javafx.geometry.Point2D;
@@ -54,6 +53,9 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Autowired
     private TableServiceConfig tableServiceConfig;
+
+    @Autowired
+    private ReservationService reservationService;
 
     @Autowired
     private StockService stockService;
@@ -172,7 +174,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public List<ReservationView> getReservations() {
-        return ReservationAdapter.getReservations()
+        return reservationService.getReservations()
                 .stream()
                 .map(ReservationViewImpl::new)
                 .collect(toList());
@@ -180,7 +182,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public List<ReservationView> getReservations(LocalDate date) {
-        return ReservationAdapter.getReservationsByDate(date)
+        return reservationService.getReservationsByDate(date)
                 .stream()
                 .map(ReservationViewImpl::new)
                 .collect(toList());
@@ -188,21 +190,21 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
 
     @Override
     public long addReservation(ReservationParams params) {
-        return ReservationAdapter.addReservation(params);
+        return reservationService.addReservation(params);
     }
 
     @Override
     public void updateReservation(ReservationView selectedReservation, ReservationParams reservationParams) {
-        getReservationAdapter(selectedReservation).updateReservation(reservationParams);
+        reservationService.updateReservation(selectedReservation.getId(), reservationParams);
     }
 
     @Override
     public void updateReservation(long reservationId, ReservationParams reservationParams) {
-        ReservationAdapter.getReservationById(reservationId).updateReservation(reservationParams);
+        reservationService.updateReservation(reservationId, reservationParams);
     }
 
     @Override
     public void deleteReservation(long reservationId) {
-        ReservationAdapter.getReservationById(reservationId).deleteReservation();
+        reservationService.deleteReservation(reservationId);
     }
 }

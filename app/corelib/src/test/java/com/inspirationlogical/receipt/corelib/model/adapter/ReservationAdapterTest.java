@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
+import com.inspirationlogical.receipt.corelib.service.reservation.ReservationServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,12 +34,12 @@ public class ReservationAdapterTest extends TestBase {
 
     @Test
     public void testGetReservationsByDate() {
-        assertEquals(NUMBER_OF_RESERVATIONS, ReservationAdapter.getReservationsByDate(LocalDate.now()).size());
+        assertEquals(NUMBER_OF_RESERVATIONS, ReservationServiceImpl.getReservationsByDate(LocalDate.now()).size());
     }
 
     @Test
     public void testAddReservation() {
-        ReservationAdapter.addReservation(params);
-        assertEquals(NUMBER_OF_RESERVATIONS + 1, ReservationAdapter.getReservationsByDate(LocalDate.now()).size());
+        ReservationServiceImpl.addReservation(params);
+        assertEquals(NUMBER_OF_RESERVATIONS + 1, ReservationServiceImpl.getReservationsByDate(LocalDate.now()).size());
     }
 }

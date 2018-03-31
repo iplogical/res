@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.service;
 
 import com.inspirationlogical.receipt.corelib.model.adapter.*;
 import com.inspirationlogical.receipt.corelib.model.view.*;
+import com.inspirationlogical.receipt.corelib.service.reservation.ReservationServiceImpl;
 
 import java.util.List;
 import java.util.function.Function;
@@ -27,9 +28,5 @@ abstract class AbstractService {
 
     ProductCategoryAdapter getProductCategoryAdapter(ProductCategoryView category) {
         return ((ProductCategoryViewImpl)category).getAdapter();
-    }
-
-    ReservationAdapter getReservationAdapter(ReservationView reservationView) {
-        return ((ReservationViewImpl)reservationView).getAdapter();
     }
 }
