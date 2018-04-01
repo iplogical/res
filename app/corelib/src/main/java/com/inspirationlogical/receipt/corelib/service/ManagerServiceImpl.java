@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.*;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
@@ -12,6 +11,7 @@ import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.service.price_modifier.PriceModifierService;
 import com.inspirationlogical.receipt.corelib.service.product.ProductService;
+import com.inspirationlogical.receipt.corelib.service.product_category.ProductCategoryService;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordService;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
@@ -45,6 +45,9 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
     private ProductService productService;
 
     @Autowired
+    private ProductCategoryService productCategoryService;
+
+    @Autowired
     private PriceModifierService priceModifierService;
 
     @Autowired
@@ -75,18 +78,18 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Override
     public void addProductCategory(ProductCategoryParams params) {
-        getProductCategoryAdapter(params.getParent()).addChildCategory(params);
+        productCategoryService.addProductCategory(params);
         entityViews.initEntityViews();
     }
 
     @Override
     public void updateProductCategory(ProductCategoryParams params) {
-        ProductCategoryAdapter.getProductCategoryByName(params.getOriginalName()).updateProductCategory(params);
+        productCategoryService.updateProductCategory(params);
     }
 
     @Override
     public void deleteProductCategory(String name) {
-        ProductCategoryAdapter.getProductCategoryByName(name).deleteProductCategory();
+        productCategoryService.deleteProductCategory(name);
     }
 
     @Override
