@@ -10,6 +10,7 @@ import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+import com.inspirationlogical.receipt.corelib.service.product.ProductService;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordService;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
@@ -40,6 +41,9 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
     private StockService stockService;
 
     @Autowired
+    private ProductService productService;
+
+    @Autowired
     ManagerServiceImpl(EntityViews entityViews) {
         super(entityViews);
     }
@@ -51,18 +55,18 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Override
     public void addProduct(ProductCategoryView parent, Product.ProductBuilder builder) {
-        getProductCategoryAdapter(parent).addProduct(builder);
+        productService.addProduct(parent, builder);
         entityViews.initEntityViews();
     }
 
     @Override
     public void updateProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
-        ProductAdapter.getProductById(productId).updateProduct(parent.getCategoryName(), builder);
+        productService.updateProduct(productId, parent.getCategoryName(), builder);
     }
 
     @Override
     public void deleteProduct(String longName) {
-        ProductAdapter.getProductByName(longName).deleteProduct();
+        productService.deleteProduct(longName);
     }
 
     @Override
@@ -103,10 +107,7 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Override
     public void updateRecipe(ProductView owner, List<RecipeParams> recipeParamsList) {
-        ProductAdapter ownerProduct = getProductAdapter(owner);
-        ownerProduct.updateRecipes(recipeParamsList);
-        ownerProduct.addRecipes(recipeParamsList);
-        ownerProduct.deleteRecipes(recipeParamsList);
+        productService.updateRecipe(owner, recipeParamsList);
     }
 
     @Override

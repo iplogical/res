@@ -1,11 +1,11 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import java.util.List;
-
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 
 public interface ProductCategoryView extends AbstractView {
+
+    long getId();
 
     default String getCategoryName() { return null;}
 

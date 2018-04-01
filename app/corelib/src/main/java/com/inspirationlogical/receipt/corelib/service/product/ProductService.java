@@ -1,0 +1,19 @@
+package com.inspirationlogical.receipt.corelib.service.product;
+
+import com.inspirationlogical.receipt.corelib.model.entity.Product;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.params.RecipeParams;
+
+import java.util.List;
+
+public interface ProductService {
+
+    void addProduct(ProductCategoryView parent, Product.ProductBuilder builder);
+
+    void updateProduct(long productId, String parentCategoryName, Product.ProductBuilder builder);
+
+    void deleteProduct(String longName);
+
+    void updateRecipe(ProductView owner, List<RecipeParams> recipeParamsList);
+}

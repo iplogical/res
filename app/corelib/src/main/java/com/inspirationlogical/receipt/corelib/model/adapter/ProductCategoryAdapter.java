@@ -1,20 +1,14 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
-import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
 import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundException;
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.entity.Product.ProductBuilder;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
-import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -138,45 +132,45 @@ public class ProductCategoryAdapter extends AbstractAdapter<ProductCategory>
         });
     }
 
-    public void addProduct(ProductBuilder builder) {
-        Product newProduct = builder.build();
-        if(isProductNameUsed(newProduct))
-            throw new IllegalProductStateException(Resources.CONFIG.getString("ProductNameAlreadyUsed") + newProduct.getLongName());
-        ProductCategory pseudo = buildPseudoCategory(newProduct);
-        bindProductToPseudo(newProduct, pseudo);
-        addDefaultRecipe(newProduct);
-        GuardedTransaction.persist(newProduct);
-    }
-
-    private boolean isProductNameUsed(Product product) {
-        return GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_NAME, query ->
-            query.setParameter("longName", product.getLongName())).size() != 0;
-    }
-
-    private ProductCategory buildPseudoCategory(Product newProduct) {
-        return ProductCategory.builder()
-                .name(newProduct.getLongName() + "pseudo")
-                .type(ProductCategoryType.PSEUDO)
-                .status(ProductStatus.ACTIVE)
-                .parent(adaptee)
-                .product(newProduct)
-                .build();
-    }
-
-    private void bindProductToPseudo(Product newProduct, ProductCategory pseudo) {
-        adaptee.getChildren().add(pseudo);
-        newProduct.setCategory(pseudo);
-    }
-
-    private void addDefaultRecipe(Product newProduct) {
-        newProduct.setRecipes(new ArrayList<>(Collections.singletonList(buildRecipe(newProduct))));
-    }
-
-    private Recipe buildRecipe(Product newProduct) {
-        return Recipe.builder()
-                .component(newProduct)
-                .quantityMultiplier(1)
-                .owner(newProduct)
-                .build();
-    }
+//    public void addProduct(ProductBuilder builder) {
+//        Product newProduct = builder.build();
+//        if(isProductNameUsed(newProduct))
+//            throw new IllegalProductStateException(Resources.CONFIG.getString("ProductNameAlreadyUsed") + newProduct.getLongName());
+//        ProductCategory pseudo = buildPseudoCategory(newProduct);
+//        bindProductToPseudo(newProduct, pseudo);
+//        addDefaultRecipe(newProduct);
+//        GuardedTransaction.persist(newProduct);
+//    }
+//
+//    private boolean isProductNameUsed(Product product) {
+//        return GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_NAME, query ->
+//            query.setParameter("longName", product.getLongName())).size() != 0;
+//    }
+//
+//    private ProductCategory buildPseudoCategory(Product newProduct) {
+//        return ProductCategory.builder()
+//                .name(newProduct.getLongName() + "pseudo")
+//                .type(ProductCategoryType.PSEUDO)
+//                .status(ProductStatus.ACTIVE)
+//                .parent(adaptee)
+//                .product(newProduct)
+//                .build();
+//    }
+//
+//    private void bindProductToPseudo(Product newProduct, ProductCategory pseudo) {
+//        adaptee.getChildren().add(pseudo);
+//        newProduct.setCategory(pseudo);
+//    }
+//
+//    private void addDefaultRecipe(Product newProduct) {
+//        newProduct.setRecipes(new ArrayList<>(Collections.singletonList(buildRecipe(newProduct))));
+//    }
+//
+//    private Recipe buildRecipe(Product newProduct) {
+//        return Recipe.builder()
+//                .component(newProduct)
+//                .quantityMultiplier(1)
+//                .owner(newProduct)
+//                .build();
+//    }
 }
