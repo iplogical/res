@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
@@ -51,6 +52,10 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Autowired
     private RestaurantService restaurantService;
+
+    @Autowired
+    private RetailService retailService;
+
     @Getter
     private Set<TableController> tableControllers;
     private List<TableController> selectedTables;
@@ -313,7 +318,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         }
         TableController tableController = filteredControllers.get(0);
         TableView tableView = tableController.getView();
-        if(tableView.isOpen()) {
+        if(retailService.isTableOpen(tableView)) {
 //            viewLoader.loadViewIntoScene(restaurantController);
             WaiterApp.showView(RestaurantFxmlView.class);
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),

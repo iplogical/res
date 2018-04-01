@@ -66,6 +66,11 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     }
 
     @Override
+    public boolean isTableOpen(TableView tableView) {
+        return tableServiceConfig.isTableOpen(tableView);
+    }
+
+    @Override
     public void sellProduct(TableView tableView, ProductView productView, int quantity, boolean isTakeAway, boolean isGift) {
         receiptService.sellProduct(tableView, productView, quantity, isTakeAway, isGift);
         logger.info("A product was sold: quantity: " + quantity + ", takeAway: " + isTakeAway + " isGift: " + isGift + " " + productView + " ," + tableView);

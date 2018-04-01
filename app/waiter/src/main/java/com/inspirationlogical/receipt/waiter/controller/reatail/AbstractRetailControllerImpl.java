@@ -104,7 +104,6 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected void backToRestaurantView() {
         tableConfigurationController.getTableController(tableView).updateTable();
-//        viewLoader.loadViewIntoScene(restaurantController);
         WaiterApp.showView(RestaurantFxmlView.class);
     }
 

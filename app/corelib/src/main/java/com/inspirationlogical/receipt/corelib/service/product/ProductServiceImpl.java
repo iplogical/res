@@ -19,6 +19,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static com.inspirationlogical.receipt.corelib.model.enums.ProductType.STORABLE;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -143,5 +150,28 @@ public class ProductServiceImpl implements ProductService {
         recipeService.updateRecipes(owner, recipeParamsList);
         recipeService.addRecipes(owner, recipeParamsList);
         recipeService.deleteRecipes(owner, recipeParamsList);
+    }
+
+    @Override
+    public List<Product> getStorableProducts() {
+        List<Product> activeProducts = productRepository.findAllByStatus(ProductStatus.ACTIVE);
+
+        List<Product> productsAsRecipe = activeProducts.stream()
+                .flatMap(product -> product.getRecipes().stream())
+                .map(Recipe::getComponent)
+                .filter(distinctByKey(Product::getLongName))
+                .collect(toList());
+        List<Product> storableProducts = activeProducts.stream()
+                .filter(product -> product.getType().equals(STORABLE))
+                .collect(toList());
+        productsAsRecipe.addAll(storableProducts);
+        return productsAsRecipe.stream()
+                .filter(distinctByKey(Product::getLongName))
+                .collect(toList());
+    }
+
+    private  <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 }

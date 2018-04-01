@@ -4,7 +4,8 @@ import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundExce
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
-import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
+import com.inspirationlogical.receipt.corelib.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter.distinctByKey;
 import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType.*;
 import static com.inspirationlogical.receipt.corelib.model.enums.ProductStatus.ACTIVE;
 import static com.inspirationlogical.receipt.corelib.model.enums.ProductType.*;
@@ -22,6 +22,9 @@ import static java.util.stream.Collectors.toList;
 @Service
 @Transactional
 public class CommonServiceImpl extends AbstractService implements CommonService {
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     public CommonServiceImpl(EntityViews entityViews) {
@@ -62,7 +65,8 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     @Override
     public List<ProductCategoryView> getChildCategories(ProductCategoryView productCategoryView) {
         return entityViews.getCategoryViews().stream()
-                .filter(categoryView -> isNotRootCategory(categoryView) && isMyChild(productCategoryView, categoryView))
+                .filter(this::isNotRootCategory)
+                .filter(categoryView -> isMyChild(productCategoryView, categoryView))
                 .collect(toList());
     }
 
@@ -118,17 +122,6 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public List<ProductView> getStorableProducts() {
-        List<ProductView> productsAsRecipe = getActiveProducts().stream()
-                .flatMap(productView -> productView.getRecipes().stream())
-                .map(RecipeView::getComponent)
-                .filter(distinctByKey(ProductView::getLongName))
-                .collect(toList());
-        List<ProductView> storableProducts = getActiveProducts().stream()
-                .filter(productView -> productView.getType().equals(STORABLE))
-                .collect(toList());
-        productsAsRecipe.addAll(storableProducts);
-        return productsAsRecipe.stream()
-                .filter(distinctByKey(ProductView::getLongName))
-                .collect(toList());
+        return productService.getStorableProducts().stream().map(ProductViewImpl::new).collect(toList());
     }
 }

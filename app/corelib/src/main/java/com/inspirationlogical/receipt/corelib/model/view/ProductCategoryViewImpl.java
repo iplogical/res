@@ -22,7 +22,7 @@ public class ProductCategoryViewImpl implements ProductCategoryView {
         id = productCategory.getId();
         name = productCategory.getName();
         orderNumber = productCategory.getOrderNumber();
-        parent = new ProductCategoryViewImpl(productCategory.getParent());
+        parent = productCategory.getParent() == null ? null : new ProductCategoryViewImpl(productCategory.getParent());
         product = initProduct(productCategory);
         type = productCategory.getType();
         status = productCategory.getStatus();
@@ -33,5 +33,10 @@ public class ProductCategoryViewImpl implements ProductCategoryView {
             return new ProductViewImpl(productCategory.getProduct());
         }
         return null;
+    }
+
+    @Override
+    public String getCategoryName() {
+        return name;
     }
 }

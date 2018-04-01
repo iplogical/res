@@ -19,6 +19,8 @@ public interface TableServiceConfig {
 
     void openTable(TableView tableView);
 
+    boolean isTableOpen(TableView tableView);
+
     boolean reOpenTable(TableView tableView);
 
     void setTableNumber(TableView tableView, int tableNumber);

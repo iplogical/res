@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 public class TableViewImpl implements TableView {
 
     private long id;
-    private boolean open;
     private boolean isVisible;
     private boolean isDisplayable;
     private boolean isNormal;
@@ -50,7 +49,6 @@ public class TableViewImpl implements TableView {
 
     public TableViewImpl(Table table) {
         id = table.getId();
-        open = ReceiptAdapter.getOpenReceipt(table.getNumber()) != null;
         isVisible = table.isVisible();
         isDisplayable = TableType.isDisplayable(table.getType());
         isNormal = table.getType().equals(TableType.NORMAL);

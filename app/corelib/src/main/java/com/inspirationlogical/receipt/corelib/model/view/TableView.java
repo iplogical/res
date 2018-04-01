@@ -14,8 +14,6 @@ public interface TableView extends AbstractView {
 
     long getId();
 
-    boolean isOpen();
-
     boolean isVisible();
 
     boolean isDisplayable();

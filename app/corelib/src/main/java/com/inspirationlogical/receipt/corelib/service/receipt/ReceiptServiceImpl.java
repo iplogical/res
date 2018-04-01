@@ -3,23 +3,27 @@ package com.inspirationlogical.receipt.corelib.service.receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
-import com.inspirationlogical.receipt.corelib.model.view.ProductView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
-import com.inspirationlogical.receipt.corelib.model.view.TableView;
+import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
 public class ReceiptServiceImpl implements ReceiptService {
+
+    @Autowired
+    private ReceiptRepository receiptRepository;
 
     @Autowired
     private ReceiptServiceMerge receiptServiceMerge;
@@ -76,5 +80,11 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public void mergeReceiptRecords(ReceiptView receiptView) {
         receiptServiceMerge.mergeReceiptRecords(receiptView);
+    }
+
+    @Override
+    public List<ReceiptView> getReceipts(LocalDate startDate, LocalDate endDate) {
+        return receiptRepository.getReceiptsByClosureTime(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay())
+                .stream().map(ReceiptViewImpl::new).collect(toList());
     }
 }

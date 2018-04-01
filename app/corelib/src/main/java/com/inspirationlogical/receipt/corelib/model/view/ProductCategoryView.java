@@ -5,7 +5,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 
 public interface ProductCategoryView extends AbstractView {
 
-    long getId();
+    default long getId() {return -1L;}
 
     default String getCategoryName() { return null;}
 

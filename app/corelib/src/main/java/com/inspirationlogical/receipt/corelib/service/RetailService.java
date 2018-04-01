@@ -16,6 +16,8 @@ public interface RetailService {
 
     boolean reOpenTable(TableView tableView);
 
+    boolean isTableOpen(TableView tableView);
+
     void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift);
 
     void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean isTakeAway);

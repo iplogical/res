@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
-import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
@@ -25,17 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
-import java.net.URL;
-import java.time.LocalDateTime;
-import java.util.ResourceBundle;
-
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
-import static java.lang.String.valueOf;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
@@ -75,9 +63,6 @@ public class TableControllerImpl implements TableController {
     @FXML
     private Label hostedCount;
 
-//    @Autowired
-//    private ViewLoader viewLoader;
-
     @Autowired
     private RetailService retailService;
 
@@ -96,7 +81,7 @@ public class TableControllerImpl implements TableController {
 
     public void setView(TableView tableView) {
         this.tableView = tableView;
-        this.tableViewState = new TableViewState(restaurantController.getViewState(), tableView);
+        this.tableViewState = new TableViewState(restaurantController.getViewState(), tableView, retailService.isTableOpen(tableView));
     }
 
     @Override
@@ -176,7 +161,7 @@ public class TableControllerImpl implements TableController {
     }
 
     @Override
-    public ViewState getViewState() {
+    public TableViewState getViewState() {
         return tableViewState;
     }
 
@@ -300,7 +285,7 @@ public class TableControllerImpl implements TableController {
         } else if(isConfigurationMode()) {
             invertSelectionState();
         } else {
-            if(tableView.isOpen()) {
+            if(retailService.isTableOpen(tableView)) {
                 enterSaleView();
             }
         }

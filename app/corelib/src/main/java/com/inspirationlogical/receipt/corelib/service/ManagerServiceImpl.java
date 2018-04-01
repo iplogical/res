@@ -24,8 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-
 @Service
 @Transactional
 public class ManagerServiceImpl extends AbstractService implements ManagerService {
@@ -134,10 +132,7 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Override
     public List<ReceiptView> getReceipts(LocalDate startDate, LocalDate endDate) {
-        return ReceiptAdapterBase.getReceipts(startDate, endDate)
-                .stream()
-                .map(ReceiptViewImpl::new)
-                .collect(toList());
+        return receiptService.getReceipts(startDate, endDate);
     }
 
     @Override

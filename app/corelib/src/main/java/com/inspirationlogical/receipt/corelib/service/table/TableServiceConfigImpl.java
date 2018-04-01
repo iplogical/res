@@ -115,6 +115,12 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         tableRepository.save(table);
     }
 
+    @Override
+    public boolean isTableOpen(TableView tableView) {
+        Table table = tableRepository.getOne(tableView.getId());
+        return isTableOpen(table);
+    }
+
     private boolean isTableOpen(Table table) {
         return receiptRepository.getOpenReceipt(table.getNumber()) != null;
     }

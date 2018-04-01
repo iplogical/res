@@ -19,4 +19,6 @@ public interface ProductService {
     List<RecipeView> getRecipeComponents(ProductView product);
 
     void updateRecipe(ProductView owner, List<RecipeParams> recipeParamsList);
+
+    List<Product> getStorableProducts();
 }

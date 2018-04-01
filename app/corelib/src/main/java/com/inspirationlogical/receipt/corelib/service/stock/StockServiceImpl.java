@@ -8,9 +8,9 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.StockView;
 import com.inspirationlogical.receipt.corelib.model.view.StockViewImpl;
-import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
 import com.inspirationlogical.receipt.corelib.repository.RecipeRepository;
 import com.inspirationlogical.receipt.corelib.repository.StockRepository;
+import com.inspirationlogical.receipt.corelib.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,11 +31,11 @@ public class StockServiceImpl implements StockService {
     private RecipeRepository recipeRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
     @Override
     public List<StockView> getItems() {
-        return productRepository.getStorableProducts().stream()
+        return productService.getStorableProducts().stream()
                 .map(this::getLatestItemByProduct)
                 .map(StockViewImpl::new)
                 .collect(toList());
@@ -96,7 +96,7 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public void closeLatestStockEntries() {
-        productRepository.getStorableProducts().forEach(productAdapter ->
+        productService.getStorableProducts().forEach(productAdapter ->
                 {
                     Stock stock = getLatestItemByProduct(productAdapter);
                     if(isStockChanged(stock)) {

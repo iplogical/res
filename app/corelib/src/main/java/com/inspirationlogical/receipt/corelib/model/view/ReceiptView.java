@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
-import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
@@ -38,8 +37,6 @@ public interface ReceiptView {
     int getSumSaleGrossPrice();
 
     double getDiscountPercent();
-
-    VATSerie getVATSerie();
 
     Client getClient();
 }

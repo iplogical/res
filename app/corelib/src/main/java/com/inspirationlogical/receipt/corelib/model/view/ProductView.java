@@ -1,14 +1,14 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import java.util.List;
-
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
 
+import java.util.List;
+
 public interface ProductView extends AbstractView {
 
-    Long getId();
+    long getId();
 
     ProductType getType();
 

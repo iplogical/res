@@ -1,26 +1,37 @@
 package com.inspirationlogical.receipt.corelib.service;
 
+import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
+import com.inspirationlogical.receipt.corelib.repository.ProductCategoryRepository;
+import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
-import static com.inspirationlogical.receipt.corelib.service.AbstractService.createViewsFromAdapters;
+import java.util.stream.Collectors;
 
 @Component
 public class EntityViewsImpl implements EntityViews {
 
-    private static List<ProductView> productViews;
+    @Autowired
+    private ProductRepository productRepository;
 
-    private static List<ProductCategoryView> categoryViews;
+    @Autowired
+    private ProductCategoryRepository productCategoryRepository;
+
+    private List<ProductView> productViews;
+
+    private List<ProductCategoryView> categoryViews;
 
     @Override
     public void initEntityViews() {
-        productViews = createViewsFromAdapters(ProductAdapter.getActiveProducts(), ProductViewImpl::new);
-        categoryViews = createViewsFromAdapters(ProductCategoryAdapter.getProductCategories(), ProductCategoryViewImpl::new);
+        productViews = productRepository.findAllByStatus(ProductStatus.ACTIVE).stream().map(ProductViewImpl::new).collect(Collectors.toList());
+        List<ProductCategory> categories = productCategoryRepository.findAllByStatus(ProductStatus.ACTIVE);
+        categoryViews = categories.stream().map(ProductCategoryViewImpl::new).collect(Collectors.toList());
     }
 
     @Override

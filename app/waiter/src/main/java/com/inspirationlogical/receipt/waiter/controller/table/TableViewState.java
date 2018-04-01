@@ -17,21 +17,24 @@ public class TableViewState implements ViewState {
 
     private TableView tableView;
 
+    private boolean isOpen;
+
     private boolean selected;
 
     private boolean orderDelivered;
 
     private LocalDateTime orderDeliveredTime;
 
-    public TableViewState(RestaurantViewState restaurantViewState, TableView tableView) {
+    public TableViewState(RestaurantViewState restaurantViewState, TableView tableView, boolean isOpen) {
         this.restaurantViewState = restaurantViewState;
         this.tableView = tableView;
+        this.isOpen = isOpen;
         orderDelivered = tableView.isOrderDelivered();
         orderDeliveredTime = tableView.getOrderDeliveryTime();
     }
 
     public boolean isOpen() {
-        return tableView.isOpen();
+        return isOpen;
     }
 
     public boolean isVisible() {
