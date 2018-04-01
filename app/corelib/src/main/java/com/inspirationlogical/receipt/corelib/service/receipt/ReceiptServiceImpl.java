@@ -6,6 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
@@ -33,18 +34,18 @@ public class ReceiptServiceImpl implements ReceiptService {
     private ReceiptServiceStock receiptServiceStock;
 
     @Override
-    public void sellProduct(Receipt receipt, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {
-        receiptServiceSell.sellProduct(receipt, productView, amount, isTakeAway, isGift);
+    public void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {
+        receiptServiceSell.sellProduct(tableView, productView, amount, isTakeAway, isGift);
     }
 
     @Override
-    public void sellAdHocProduct(Receipt receipt, AdHocProductParams adHocProductParams, boolean isTakeAway) {
-        receiptServiceSell.sellAdHocProduct(receipt, adHocProductParams, isTakeAway);
+    public void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean isTakeAway) {
+        receiptServiceSell.sellAdHocProduct(tableView, adHocProductParams, isTakeAway);
     }
 
     @Override
-    public ReceiptRecordView sellGameFee(Receipt receipt, int quantity) {
-        return receiptServiceSell.sellGameFee(receipt, quantity);
+    public ReceiptRecordView sellGameFee(TableView tableView, int quantity) {
+        return receiptServiceSell.sellGameFee(tableView, quantity);
     }
 
     @Override

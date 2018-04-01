@@ -6,6 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
@@ -19,11 +20,11 @@ public interface ReceiptService {
         return (100D - discountPercent) / 100;
     }
 
-    void sellProduct(Receipt receipt, ProductView productView, int amount, boolean isTakeAway, boolean isGift);
+    void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift);
 
-    void sellAdHocProduct(Receipt receipt, AdHocProductParams adHocProductParams, boolean takeAway);
+    void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean takeAway);
 
-    ReceiptRecordView sellGameFee(Receipt receipt, int quantity);
+    ReceiptRecordView sellGameFee(TableView tableView, int quantity);
 
     void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener);
 

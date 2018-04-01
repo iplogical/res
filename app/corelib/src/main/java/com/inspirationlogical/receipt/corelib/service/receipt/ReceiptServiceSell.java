@@ -11,6 +11,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRecordRepository;
@@ -44,15 +45,16 @@ public class ReceiptServiceSell {
     @Autowired
     private VATService vatService;
 
-    public void sellProduct(Receipt receipt, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {
+    void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         Product product = productRepository.getOne(productView.getId());
         List<ReceiptRecord> records = receiptRecordRepository.getReceiptRecordByTimestamp(productView.getLongName(), now().minusSeconds(5));
         if(records.size() > 0) {
             increaseReceiptRecordSoldQuantity(product, records.get(0));
             return;
         }
-        addNewReceiptRecord(receipt, product, amount, isTakeAway, isGift);
-        receiptRepository.save(receipt);
+        addNewReceiptRecord(openReceipt, product, amount, isTakeAway, isGift);
+        receiptRepository.save(openReceipt);
     }
 
     private void increaseReceiptRecordSoldQuantity(Product product, ReceiptRecord record) {
@@ -93,13 +95,14 @@ public class ReceiptServiceSell {
                 .build();
     }
 
-    public void sellAdHocProduct(Receipt receipt, AdHocProductParams adHocProductParams, boolean takeAway) {
+    void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean takeAway) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         Product adHocProduct = getAdHocProduct();
         ReceiptRecord record = buildReceiptRecord(adHocProductParams, takeAway, adHocProduct);
         addCreatedListEntries(adHocProductParams.getQuantity(), record);
-        record.setOwner(receipt);
-        receipt.getRecords().add(record);
-        receiptRepository.save(receipt);
+        record.setOwner(openReceipt);
+        openReceipt.getRecords().add(record);
+        receiptRepository.save(openReceipt);
     }
 
     private Product getAdHocProduct() {
@@ -130,7 +133,8 @@ public class ReceiptServiceSell {
         }
     }
 
-    public ReceiptRecordView sellGameFee(Receipt receipt, int quantity) {
+    ReceiptRecordView sellGameFee(TableView tableView, int quantity) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         Product gameFeeProduct = getGameFeeProduct();
         List<ReceiptRecord> records = receiptRecordRepository.getReceiptRecordByTimestamp(gameFeeProduct.getLongName(), now().minusSeconds(2));
 
@@ -142,8 +146,8 @@ public class ReceiptServiceSell {
         }
         ReceiptRecord record = buildReceiptRecord(quantity, gameFeeProduct);
         addCreatedListEntries(quantity, record);
-        record.setOwner(receipt);
-        receipt.getRecords().add(record);
+        record.setOwner(openReceipt);
+        openReceipt.getRecords().add(record);
         return new ReceiptRecordViewImpl(record);
     }
 
