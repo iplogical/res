@@ -10,6 +10,7 @@ import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+import com.inspirationlogical.receipt.corelib.service.price_modifier.PriceModifierService;
 import com.inspirationlogical.receipt.corelib.service.product.ProductService;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordService;
@@ -42,6 +43,9 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private PriceModifierService priceModifierService;
 
     @Autowired
     ManagerServiceImpl(EntityViews entityViews) {
@@ -92,17 +96,17 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Override
     public void addPriceModifier(PriceModifierParams params) {
-        PriceModifierAdapter.addPriceModifier(params);
+        priceModifierService.addPriceModifier(params);
     }
 
     @Override
     public void updatePriceModifier(PriceModifierParams params) {
-        PriceModifierAdapter.updatePriceModifier(params);
+        priceModifierService.updatePriceModifier(params);
     }
 
     @Override
     public void deletePriceModifier(PriceModifierParams params) {
-        PriceModifierAdapter.deletePriceModifier(params);
+        priceModifierService.deletePriceModifier(params);
     }
 
     @Override
@@ -117,12 +121,12 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Override
     public List<PriceModifierView> getPriceModifiers() {
-        return createViewsFromAdapters(PriceModifierAdapter.getPriceModifiers(), PriceModifierViewImpl::new);
+        return priceModifierService.getPriceModifiers();
     }
 
     @Override
-    public List<RecipeView> getRecipeComponents(ProductView product) {
-        return createViewsFromAdapters(RecipeAdapter.getRecipesOfProduct(getProductAdapter(product)), RecipeViewImpl::new);
+    public List<RecipeView> getRecipeComponents(ProductView productView) {
+        return productService.getRecipeComponents(productView);
     }
 
     @Override

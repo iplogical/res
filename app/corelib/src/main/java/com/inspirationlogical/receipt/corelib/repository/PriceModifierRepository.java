@@ -14,4 +14,6 @@ public interface PriceModifierRepository extends JpaRepository<PriceModifier, Lo
     List<PriceModifier> getPriceModifierByProductAndDates(
             @Param(value = "ownerId") long ownerId,
             @Param(value = "time")LocalDateTime time);
+
+    PriceModifier findByName(String name);
 }

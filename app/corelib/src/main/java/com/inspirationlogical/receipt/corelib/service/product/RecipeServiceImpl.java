@@ -4,6 +4,8 @@ import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
+import com.inspirationlogical.receipt.corelib.model.view.RecipeViewImpl;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
 import com.inspirationlogical.receipt.corelib.repository.RecipeRepository;
@@ -25,7 +27,7 @@ public class RecipeServiceImpl {
     @Autowired
     private ProductRepository productRepository;
 
-    public void updateRecipes(ProductView ownerView, List<RecipeParams> recipeParamsList) {
+    void updateRecipes(ProductView ownerView, List<RecipeParams> recipeParamsList) {
         Product owner = productRepository.getOne(ownerView.getId());
         List<Recipe> components = recipeRepository.findAllByOwner(owner);
         Map<String, Double> recipeParamsMap = getRecipesMap(recipeParamsList);
@@ -35,7 +37,7 @@ public class RecipeServiceImpl {
         updateComponents(components, recipeParamsMap);
     }
 
-    public void addRecipes(ProductView ownerView, List<RecipeParams> recipeParamsList) {
+    void addRecipes(ProductView ownerView, List<RecipeParams> recipeParamsList) {
         Product owner = productRepository.getOne(ownerView.getId());
         List<Recipe> components = recipeRepository.findAllByOwner(owner);
         Map<String, Double> componentsMap = getComponentsMap(components);
@@ -44,7 +46,7 @@ public class RecipeServiceImpl {
         addComponents(owner, recipesToAdd);
     }
 
-    public void deleteRecipes(ProductView ownerView, List<RecipeParams> recipeParamsList) {
+    void deleteRecipes(ProductView ownerView, List<RecipeParams> recipeParamsList) {
         Product owner = productRepository.getOne(ownerView.getId());
         List<Recipe> components = recipeRepository.findAllByOwner(owner);
         Map<String, Double> recipeParamsMap = getRecipesMap(recipeParamsList);
@@ -99,6 +101,11 @@ public class RecipeServiceImpl {
         Recipe newComponent = Recipe.builder().component(component).quantityMultiplier(value).owner(owner).build();
         owner.getRecipes().add(newComponent);
         GuardedTransaction.persist(newComponent);
+    }
+
+    List<RecipeView> getRecipeComponents(ProductView productView) {
+        Product product = productRepository.getOne(productView.getId());
+        return recipeRepository.findAllByOwner(product).stream().map(RecipeViewImpl::new).collect(toList());
     }
 
 }

@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.repository.ProductCategoryRepository;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
@@ -18,8 +19,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.inspirationlogical.receipt.corelib.model.adapter.ProductAdapter.getProductByName;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -90,8 +89,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private boolean isProductNameAlreadyUsed(Product originalProduct, Product updatedProduct) {
-        ProductAdapter product = getProductByName(updatedProduct.getLongName());
-        return !(product == null || product.getAdaptee().getId().equals(updatedProduct.getId()));
+        Product product = productRepository.findByLongName(updatedProduct.getLongName());
+        return !(product == null || product.getId().equals(originalProduct.getId()));
     }
 
     private void setProductParameters(Product originalProduct, Product updatedProduct) {
@@ -132,6 +131,11 @@ public class ProductServiceImpl implements ProductService {
         Product toDelete = productRepository.findByLongName(longName);
         setAdapteeAndPseudoStatus(toDelete, ProductStatus.DELETED);
         productRepository.save(toDelete);
+    }
+
+    @Override
+    public List<RecipeView> getRecipeComponents(ProductView productView) {
+        return recipeService.getRecipeComponents(productView);
     }
 
     @Override
