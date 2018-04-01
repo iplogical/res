@@ -29,10 +29,6 @@ public interface TableServiceConfig {
 
     void setGuestCount(TableView tableView, int guestCount);
 
-    void displayTable(TableView tableView);
-
-    void hideTable(TableView tableView);
-
     void setPosition(TableView tableView, Point2D position);
 
     void rotateTable(TableView tableView);

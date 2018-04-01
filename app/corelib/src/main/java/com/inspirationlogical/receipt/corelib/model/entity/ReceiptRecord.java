@@ -32,7 +32,7 @@ import lombok.experimental.Tolerate;
             query="FROM ReceiptRecord r WHERE r.owner.id =:owner_id ORDER BY id")
 })
 @AttributeOverride(name = "id", column = @Column(name = "RECEIPT_RECORD_ID"))
-@ValidProduct
+//@ValidProduct
 public @Data class ReceiptRecord extends AbstractEntity {
 
     public static final String GET_TEST_RECEIPT_RECORDS = "ReceiptRecord.GetTestReceiptsRecords";

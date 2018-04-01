@@ -48,7 +48,7 @@ import lombok.experimental.Tolerate;
             query = "SELECT p FROM Product p WHERE p.status=:status")
 })
 @AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))
-@ValidCategory
+//@ValidCategory
 //@ValidRecipe
 public @Data class Product extends AbstractEntity {
 

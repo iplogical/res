@@ -16,7 +16,6 @@ import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import javafx.geometry.Point2D;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -27,7 +26,6 @@ import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
 @Service
-@Transactional
 public class TableServiceConfigImpl implements TableServiceConfig {
 
     @Autowired
@@ -97,15 +95,12 @@ public class TableServiceConfigImpl implements TableServiceConfig {
 
     private void moveReceiptsToOrphanageTable(Table archiveTable, Table orphanage) {
         orphanage.getReceipts().addAll(archiveTable.getReceipts().stream()
-                .map(receipt -> {
-                    receipt.setOwner(orphanage);
-                    return receipt;
-                }).collect(toList()));
+                .peek(receipt -> receipt.setOwner(orphanage)).collect(toList()));
     }
 
     @Override
     public void openTable(TableView tableView) {
-        Table table = tableRepository.getOne(tableView.getId());
+        Table table = tableRepository.findByNumber(tableView.getNumber());
         if (isTableOpen(table)) {
             throw new IllegalTableStateException("Open table for an open table. Table number: " + table.getNumber());
         }
@@ -211,20 +206,6 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     public void setGuestCount(TableView tableView, int guestCount) {
         Table table = tableRepository.getOne(tableView.getId());
         table.setGuestCount(guestCount);
-        tableRepository.save(table);
-    }
-
-    @Override
-    public void displayTable(TableView tableView) {
-        Table table = tableRepository.getOne(tableView.getId());
-        table.setVisible(true);
-        tableRepository.save(table);
-    }
-
-    @Override
-    public void hideTable(TableView tableView) {
-        Table table = tableRepository.getOne(tableView.getId());
-        table.setVisible(false);
         tableRepository.save(table);
     }
 

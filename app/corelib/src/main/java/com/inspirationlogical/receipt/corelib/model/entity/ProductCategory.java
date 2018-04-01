@@ -53,9 +53,9 @@ import lombok.experimental.Tolerate;
             query="SELECT pc FROM ProductCategory pc WHERE pc.parent.id=:parent_id")
 })
 @AttributeOverride(name = "id", column = @Column(name = "CATEGORY_ID"))
-@ValidProduct
-@ValidParent
-@ValidCategory
+//@ValidProduct
+//@ValidParent
+//@ValidCategory
 public @Data class ProductCategory extends AbstractEntity {
 
     public static final String GET_ALL_CATEGORIES = "ProductCategory.GetAllCategories";

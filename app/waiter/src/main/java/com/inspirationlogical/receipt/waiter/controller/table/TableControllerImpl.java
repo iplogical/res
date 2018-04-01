@@ -238,12 +238,14 @@ public class TableControllerImpl implements TableController {
     @Override
     public void openTable(Control control) {
         retailService.openTable(tableView);
+        tableViewState.setOpen(true);
         updateTable();
     }
 
     @Override
     public void reOpenTable(Control control) {
         if (retailService.reOpenTable(tableView)) {
+            tableViewState.setOpen(true);
             updateTable();
         } else {
             ErrorMessage.showErrorMessage(restaurantController.getRootNode(),
