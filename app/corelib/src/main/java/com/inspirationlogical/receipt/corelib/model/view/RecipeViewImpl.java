@@ -3,10 +3,8 @@ package com.inspirationlogical.receipt.corelib.model.view;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-@ToString
 public class RecipeViewImpl implements RecipeView {
 
     private Product component;
@@ -22,5 +20,14 @@ public class RecipeViewImpl implements RecipeView {
     @Override
     public ProductView getComponent() {
         return new ProductViewImpl(component);
+    }
+
+    @Override
+    public String toString() {
+        return "RecipeViewImpl{" +
+                "component=" + component.getLongName() +
+                ", quantity=" + quantity +
+                ", isTrivial=" + isTrivial +
+                '}';
     }
 }

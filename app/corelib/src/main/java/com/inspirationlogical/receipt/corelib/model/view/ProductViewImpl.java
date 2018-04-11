@@ -5,13 +5,11 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@ToString
 public class ProductViewImpl implements ProductView {
 
     private long id;
@@ -56,5 +54,28 @@ public class ProductViewImpl implements ProductView {
         return product.getRecipes().stream()
                 .map(RecipeViewImpl::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String toString() {
+        return "ProductViewImpl{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", orderNumber=" + orderNumber +
+                ", type=" + type +
+                ", status=" + status +
+                ", shortName='" + shortName + '\'' +
+                ", longName='" + longName + '\'' +
+                ", rapidCode=" + rapidCode +
+                ", quantityUnit=" + quantityUnit +
+                ", storageMultiplier=" + storageMultiplier +
+                ", purchasePrice=" + purchasePrice +
+                ", salePrice=" + salePrice +
+                ", VATLocal=" + VATLocal +
+                ", VATTakeAway=" + VATTakeAway +
+                ", minimumStock=" + minimumStock +
+                ", stockWindow=" + stockWindow +
+                ", recipes=" + recipes +
+                '}';
     }
 }

@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+    Product findById(long id);
+
     List<Product> findAllByType(ProductType type);
 
     List<Product> findAllByStatus(ProductStatus status);

@@ -47,7 +47,7 @@ public class ReceiptServiceSell {
 
     void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
-        Product product = productRepository.getOne(productView.getId());
+        Product product = productRepository.findById(productView.getId());
         List<ReceiptRecord> records = receiptRecordRepository.getReceiptRecordByTimestamp(productView.getLongName(), now().minusSeconds(5));
         if(records.size() > 0) {
             increaseReceiptRecordSoldQuantity(product, records.get(0));
