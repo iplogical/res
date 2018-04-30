@@ -14,7 +14,7 @@ mainClassName = 'com.inspirationlogical.receipt.waiter.application.WaiterApp'
 
 run {
     main = project.getProperty('mainClassName')
-    applicationDefaultJvmArgs = ["-Xms2G","-Xmx2G"]
+    applicationDefaultJvmArgs = ["-Xms1024m","-Xmx4096m", "-XX:+HeapDumpOnOutOfMemoryError", "-XX:HeapDumpPath=/home/waiter/heap_dump"]
 }
 
 // In this section you declare the dependencies for your production and test code
