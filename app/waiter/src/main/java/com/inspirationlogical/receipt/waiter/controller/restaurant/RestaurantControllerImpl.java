@@ -6,7 +6,6 @@ import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.contextmenu.RestaurantContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryController;
@@ -17,11 +16,6 @@ import com.inspirationlogical.receipt.waiter.registry.WaiterRegistry;
 import com.inspirationlogical.receipt.waiter.utility.ConfirmMessage;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -95,27 +89,6 @@ public class RestaurantControllerImpl implements RestaurantController {
     Label employeesControl;
 
     @FXML
-    private Label openTableNumber;
-
-    @FXML
-    private Label totalTableNumber;
-
-    @FXML
-    private Label totalGuests;
-
-    @FXML
-    private Label totalCapacity;
-
-    @FXML
-    private Label openConsumption;
-
-    @FXML
-    private Label paidConsumption;
-
-    @FXML
-    private Label totalIncome;
-
-    @FXML
     Label liveTime;
 
     @Inject
@@ -152,7 +125,6 @@ public class RestaurantControllerImpl implements RestaurantController {
         initRestaurant();
         tableConfigurationController.initialize();
         initLiveTime(liveTime);
-        updateRestaurantSummary();
     }
 
     private void initContextMenu(Label control) {
@@ -178,11 +150,6 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @Override
-    public void updateRestaurant() {
-        updateRestaurantSummary();
-    }
-
-    @Override
     public RestaurantViewState getViewState() {
         return restaurantViewState;
     }
@@ -199,17 +166,22 @@ public class RestaurantControllerImpl implements RestaurantController {
     public void onDailyClosure(Event event) {
         logger.info("The Daily Closure was pressed in the RestaurantView.");
         ConfirmMessage.showConfirmDialog(WaiterResources.WAITER.getString("Restaurant.DailyClosureConfirm"), () -> restaurantService.closeDay());
-        updateRestaurantSummary();
     }
 
     @FXML
     public void onDailySummary(Event event) {
         DailySummaryController dailySummaryController = WaiterRegistry.getInstance(DailySummaryController.class);
         dailySummaryController.setRestaurantView(restaurantView);
-        dailySummaryController.setOpenConsumption(openConsumption.getText());
+        dailySummaryController.setOpenConsumption(getOpenConsumption());
         viewLoader.loadViewIntoScene(dailySummaryController);
         dailySummaryController.updatePriceFields();
         logger.info("Entering the Daily Summary.");
+    }
+
+    private String getOpenConsumption() {
+        return String.valueOf(tableConfigurationController.getTableControllers().stream()
+                .filter(tableController -> tableController.getView().isOpen())
+                .mapToInt(tableController -> tableController.getView().getTotalPrice()).sum());
     }
 
     @FXML
@@ -293,27 +265,4 @@ public class RestaurantControllerImpl implements RestaurantController {
         return rootRestaurant;
     }
 
-    @Override
-    public void updateRestaurantSummary() {
-        final Task task = new RestaurantSummaryController(tableConfigurationController.getTableControllers(), restaurantView).getTask();
-
-        task.stateProperty().addListener(new ChangeListener<Worker.State>() {
-            @Override public void changed(ObservableValue<? extends Worker.State> observableValue, Worker.State oldState, Worker.State newState) {
-                if (newState == Worker.State.SUCCEEDED) {
-                    ObservableList<String> values = (ObservableList<String>)task.valueProperty().getValue();
-                    totalTableNumber.setText(values.get(0));
-                    openTableNumber.setText(values.get(1));
-                    totalGuests.setText(values.get(2));
-                    totalCapacity.setText(values.get(3));
-                    openConsumption.setText(values.get(4));
-                    paidConsumption.setText(values.get(5));
-                    totalIncome.setText(String.valueOf(Integer.valueOf(openConsumption.getText()) + Integer.valueOf(paidConsumption.getText())));
-                    logger.info("The restaurant summary was updated. Tables: " + openTableNumber.getText() + "/" + totalTableNumber.getText() +
-                                ", Guests: " + totalGuests.getText() + "/" + totalCapacity.getText() +
-                                ", Income:" + openConsumption.getText() + " / " + paidConsumption.getText() + " / " + totalIncome.getText());
-                }
-            }
-        });
-        new Thread(task).start();
-    }
 }

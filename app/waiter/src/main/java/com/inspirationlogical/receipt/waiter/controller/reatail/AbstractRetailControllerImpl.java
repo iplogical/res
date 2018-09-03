@@ -1,11 +1,5 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.google.inject.Inject;
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
@@ -18,7 +12,6 @@ import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantCon
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -33,6 +26,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
@@ -92,7 +90,6 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     }
 
     protected void backToRestaurantView() {
-        restaurantController.updateRestaurant();
         tableConfigurationController.getTableController(tableView).updateTable();
         viewLoader.loadViewIntoScene(restaurantController);
     }

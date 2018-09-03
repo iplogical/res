@@ -12,7 +12,6 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.contextmenu.TableContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
@@ -115,7 +114,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
             hideTableForm();
             drawTable(tableView);
             updateHostTable(tableView);
-            restaurantController.updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
                     WaiterResources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
@@ -157,7 +155,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
             restaurantController.addNodeToPane(tableController.getRoot(), restaurantViewState.getTableType());
             tableController.updateTable();
             updateHostNodes(tableView, previousHost);
-            restaurantController.updateRestaurantSummary();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
                     WaiterResources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
+<?import java.net.URL?>
 <AnchorPane fx:id="rootRestaurant" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets>
       <URL value="@../css/Common.css" />
@@ -17,70 +16,6 @@
          <center>
             <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="25.0" prefWidth="1014.0">
-                     <children>
-                        <HBox>
-                           <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="75.0" text="%Restaurant.RestaurantSummaryTables" textAlignment="CENTER" />
-                              <Label fx:id="openTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" text="/">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="totalTableNumber" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="75.0" text="%Restaurant.RestaurantSummaryGuests" textAlignment="CENTER" />
-                              <Label fx:id="totalGuests" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" text="/">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="totalCapacity" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="25.0" prefWidth="540.0">
-                           <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" text="%Restaurant.RestaurantSummaryCashFlow" textAlignment="CENTER" />
-                              <Label fx:id="openConsumption" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="60.0" text="0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="paidConsumption" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="60.0" text="0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="totalIncome" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="60.0" text="0">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>
-                     </children>
-                  </HBox>
                   <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab closable="false" onSelectionChanged="#onTablesSelected" text="%Restaurant.Tables">
