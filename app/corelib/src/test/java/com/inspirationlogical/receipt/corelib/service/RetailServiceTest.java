@@ -15,7 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 /**
  * Created by Bálint on 2017.03.15..
@@ -28,7 +28,7 @@ public class RetailServiceTest {
     private EntityViews entityViews;
 
     @Mock
-    private TableViewImpl tableView;
+    private TableView tableView;
 
     @Mock
     private TableAdapter tableAdapter;

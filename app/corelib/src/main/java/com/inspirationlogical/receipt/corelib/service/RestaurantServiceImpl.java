@@ -107,7 +107,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
-    public List<TableView> getTables() {
+    public List<TableView> getDisplayableTables() {
         return tableServiceConfig.getDisplayableTables();
     }
 
@@ -119,23 +119,13 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     @Override
     public TableView addTable(RestaurantView restaurant, TableParams tableParams) {
         logger.info("A table was added: " + tableParams);
-        return new TableViewImpl(tableServiceConfig.addTable(restaurant, tableParams));
+        return tableServiceConfig.addTable(restaurant, tableParams);
 
     }
 
     @Override
     public void deleteTable(TableView tableView) {
         tableServiceConfig.deleteTable(tableView);
-    }
-
-    @Override
-    public void mergeTables(TableView consumer, List<TableView> consumed) {
-        tableServiceConfig.mergeTables(consumer, consumed);
-    }
-
-    @Override
-    public List<TableView> splitTables(TableView consumer) {
-        return tableServiceConfig.splitTables(consumer);
     }
 
     @Override

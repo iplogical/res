@@ -17,7 +17,7 @@ public interface RestaurantService {
 
     ReceiptView getOpenReceipt(TableView tableView);
 
-    List<TableView> getTables();
+    List<TableView> getDisplayableTables();
 
     int getFirstUnusedNumber();
 
@@ -26,10 +26,6 @@ public interface RestaurantService {
     void deleteTable(TableView tableView);
 
     void rotateTable(TableView tableView);
-
-    void mergeTables(TableView consumer, List<TableView> consumed);
-
-    List<TableView> splitTables(TableView consumer);
 
     void exchangeTables(TableView selected, TableView other);
 

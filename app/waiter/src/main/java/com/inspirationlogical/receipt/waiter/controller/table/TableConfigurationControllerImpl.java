@@ -29,7 +29,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
-import java.util.function.Predicate;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.*;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.HOLD_DURATION_MILLIS;
@@ -44,8 +43,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     private RestaurantController restaurantController;
 
     private RestaurantViewState restaurantViewState;
-
-    private static Predicate<TableView> DISPLAYABLE_TABLE = TableView::isDisplayable;
 
     @Autowired
     private TableFormController tableFormController;
@@ -82,9 +79,8 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     }
 
     private void initTables() {
-        List<TableView> tables = restaurantService.getTables();
-        tables.sort(Comparator.comparing(TableView::isConsumed));   // Put consumed tables to the end so the consumer is loaded in advance.
-        tables.stream().filter(DISPLAYABLE_TABLE).forEach(this::drawTable);
+        List<TableView> tables = restaurantService.getDisplayableTables();
+        tables.forEach(this::drawTable);
     }
 
     @Override
@@ -117,7 +113,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
             TableView tableView = restaurantService.addTable(restaurantView, buildTableParams(tableParams));
             hideTableForm();
             drawTable(tableView);
-            updateHostTable(tableView);
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
                     WaiterResources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
@@ -128,27 +123,19 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         TableType tableType = restaurantViewState.getTableType();
         Point2D position = calculateTablePosition(tableFormController.getRootNode(), restaurantController.getActiveTab());
         params.setType(tableType);
-        params.setPosition(position);
+        params.setPositionX((int)position.getX());
+        params.setPositionY((int)position.getY());
         return params;
-    }
-
-    private void updateHostTable(TableView tableView) {
-        if (tableView.isHosted()) {
-            getTableController(tableView.getHost()).updateTable();
-        }
     }
 
     @Override
     public void editTable(TableController tableController, TableParams tableParams) {
         TableView tableView = tableController.getView();
-        TableView previousHost = tableView.getHost();
-
         try {
-            setTableParams(tableView, tableParams);
+            restaurantService.setTableParams(tableView, tableParams);
             hideTableForm();
             restaurantController.addNodeToPane(tableController.getRoot(), restaurantViewState.getTableType());
             tableController.updateTable();
-            updateHostNodes(tableView, previousHost);
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
                     WaiterResources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
@@ -156,23 +143,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     }
 
     private void setTableParams(TableView tableView, TableParams tableParams) {
-        if (notOwnNumberIsDisplayed(tableView, tableParams)) {
-            restaurantService.setTableNumber(tableView, tableParams.getNumber());
-        }
-        restaurantService.setTableParams(tableView, tableParams);
-    }
 
-    private boolean notOwnNumberIsDisplayed(TableView tableView, TableParams tableParams) {
-        return tableView.getDisplayedNumber() != tableParams.getNumber();
-    }
-
-    private void updateHostNodes(TableView tableView, TableView previousHost) {
-        if(tableView.getHost() != null) {
-            getTableController(tableView.getHost()).updateTable();
-        }
-        if(previousHost != null) {
-            getTableController(previousHost).updateTable();
-        }
     }
 
     @Override
@@ -182,7 +153,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         restaurantService.deleteTable(tableView);
         removeNode((Pane) node.getParent(), node);
         tableControllers.remove(tableController);
-        updateHostTable(tableView);
     }
 
     @Override
@@ -204,67 +174,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @Override
     public void moveTable(TableView tableView, Point2D position) {
         restaurantService.setTablePosition(tableView, position);
-    }
-
-    @Override
-    public void mergeTables() {
-        filterNormalSelectedTables();
-        if(insufficientSelection()) {
-            ErrorMessage.showErrorMessage(restaurantController.getActiveTab(), WaiterResources.WAITER.getString("InsufficientSelection"));
-            return;
-        }
-        TableController consumerController = selectedTables.get(0);
-        try {
-            List<TableView> consumedTables = getConsumedTables(consumerController);
-            restaurantService.mergeTables(consumerController.getView(), consumedTables);
-            updateConsumer(consumerController);
-            updateConsumed();
-        } catch (IllegalTableStateException e) {
-            ErrorMessage.showErrorMessage(restaurantController.getActiveTab(), WaiterResources.WAITER.getString("ConsumerSelectedForMerge"));
-        }
-    }
-
-    private boolean insufficientSelection() {
-        return selectedTables.size() < 2;
-    }
-
-    private void filterNormalSelectedTables() {
-        selectedTables = selectedTables.stream()
-                .filter(tableController -> tableController.getView().getType().equals(TableType.NORMAL))
-                .collect(toList());
-    }
-
-    private List<TableView> getConsumedTables(TableController consumerController) {
-        List<TableView> consumed = new ArrayList<>();
-        selectedTables.stream()
-                .filter(tableController -> !tableController.equals(consumerController))
-                .forEach(tableController -> consumed.add(tableController.getView()));
-        return consumed;
-    }
-
-    private void updateConsumer(TableController consumerController) {
-        consumerController.consumeTables();
-        consumerController.updateTable();
-        consumerController.deselectTable();
-        selectedTables.remove(consumerController);
-    }
-
-    private void updateConsumed() {
-        selectedTables.forEach(tableController -> {
-            tableControllers.remove(tableController);
-            restaurantController.getActiveTab().getChildren().remove(tableController.getRoot());
-        });
-        selectedTables.clear();
-    }
-
-    @Override
-    public void splitTables(Node node) {
-        TableController tableController = getTableController(node);
-        TableView tableView = tableController.getView();
-        List<TableView> tables = restaurantService.splitTables(tableView);
-        tables.forEach(this::drawTable);
-        tableController.releaseConsumedTables();
-        tableController.updateTable();
     }
 
     @Override
@@ -339,7 +248,8 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
                 .note(reservation.getNote())
                 .guestCount(Integer.valueOf(reservation.getGuestCount()))
                 .capacity(tableView.getCapacity())
-                .dimension(tableView.getDimension())
+                .width(tableView.getWidth())
+                .height(tableView.getHeight())
                 .build();
     }
 

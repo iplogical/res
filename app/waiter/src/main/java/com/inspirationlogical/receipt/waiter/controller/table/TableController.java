@@ -11,8 +11,6 @@ public interface TableController extends Controller {
 
     void setView(TableView tableView);
 
-    void consumeTables();
-
     TableView getView();
 
     Control getRoot();
@@ -20,8 +18,6 @@ public interface TableController extends Controller {
     TableViewState getViewState();
 
     void updateTable();
-
-    void releaseConsumedTables();
 
     void openTable(Control control);
 
@@ -32,6 +28,4 @@ public interface TableController extends Controller {
     void setOrderDelivered(boolean delivered);
 
     LocalDateTime getOrderDeliveredTime();
-
-    int getTotalPrice();
 }

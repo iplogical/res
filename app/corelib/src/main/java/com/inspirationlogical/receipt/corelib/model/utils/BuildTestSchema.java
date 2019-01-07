@@ -168,17 +168,12 @@ public class BuildTestSchema {
     
     private @Getter Table tableNormal;
     private @Getter Table tableNormalClosed;
-    private @Getter Table tableConsumer;
-    private @Getter Table tableConsumed;
     private @Getter Table tableLoiterer;
     private @Getter Table tableFrequenter;
     private @Getter Table tableEmployee;
 
     private @Getter Table tableReservationTest;
     private @Getter Table tableRestaurantTest;
-    private @Getter Table tableConsumerTest;
-    private @Getter Table tableConsumedOneTest;
-    private @Getter Table tableConsumedTwoTest;
     private @Getter Table tableSaleTest;
     private @Getter Table tablePaymentTest;
     private @Getter Table tableTableTest;
@@ -247,7 +242,6 @@ public class BuildTestSchema {
         productsAndRecipes();
         recipesAndProducts();
         productFourAndStocks();
-        tables();
         tablesAndReceipts();
         tablesAndReservations();
         receiptsAndReceiptRecords();
@@ -389,17 +383,12 @@ public class BuildTestSchema {
     private void buildTables() {
         buildTableNormal();
         buildTableNormalClosed();
-        buildTableConsumer();
-        buildTableConsumed();
         buildTableLoiterer();
         buildTableFrequenter();
         buildTableEmployee();
 
         buildTableReservationTest();
         buildTableRestaurantTest();
-        buildTableConsumerTest();
-        buildTableConsumedOneTest();
-        buildTableConsumedTwoTest();
         buildTableSaleTest();
         buildTablePaymentTest();
         buildTableTableTest();
@@ -1543,34 +1532,6 @@ public class BuildTestSchema {
                 .build();
     }
 
-    private void buildTableConsumer() {
-        tableConsumer = Table.builder()
-                .number(4)
-                .name("Összetolt Ödön")
-                .type(TableType.NORMAL)
-                .visible(true)
-                .capacity(1)
-                .guestCount(1)
-                .coordinateX(100)
-                .coordinateY(250)
-                .reservations(new ArrayList<>())
-                .build();
-    }
-
-    private void buildTableConsumed() {
-        tableConsumed = Table.builder()
-                .number(5)
-                .name("Bekebelezett Bence")
-                .type(TableType.NORMAL)
-                .visible(false)
-                .capacity(1)
-                .guestCount(1)
-                .coordinateX(250)
-                .coordinateY(250)
-                .reservations(new ArrayList<>())
-                .build();
-    }
-
     private void buildTableLoiterer() {
         tableLoiterer = Table.builder()
                 .number(2)
@@ -1637,48 +1598,6 @@ public class BuildTestSchema {
                 .guestCount(0)
                 .coordinateX(600)
                 .coordinateY(200)
-                .reservations(new ArrayList<>())
-                .build();
-    }
-
-    private void buildTableConsumerTest() {
-        tableConsumerTest = Table.builder()
-                .number(Integer.valueOf(CONSUMER_TEST_TABLE))
-                .name("tableConsumerTest")
-                .type(TableType.NORMAL)
-                .visible(true)
-                .capacity(6)
-                .guestCount(0)
-                .coordinateX(700)
-                .coordinateY(200)
-                .reservations(new ArrayList<>())
-                .build();
-    }
-
-    private void buildTableConsumedOneTest() {
-        tableConsumedOneTest = Table.builder()
-                .number(Integer.valueOf(CONSUMED_TEST_TABLE_ONE))
-                .name("tableConsumedOneTest")
-                .type(TableType.NORMAL)
-                .visible(true)
-                .capacity(6)
-                .guestCount(0)
-                .coordinateX(800)
-                .coordinateY(200)
-                .reservations(new ArrayList<>())
-                .build();
-    }
-
-    private void buildTableConsumedTwoTest() {
-        tableConsumedTwoTest= Table.builder()
-                .number(Integer.valueOf(CONSUMED_TEST_TABLE_TWO))
-                .name("tableConsumedTwoTest")
-                .type(TableType.NORMAL)
-                .visible(true)
-                .capacity(6)
-                .guestCount(0)
-                .coordinateX(500)
-                .coordinateY(400)
                 .reservations(new ArrayList<>())
                 .build();
     }
@@ -1973,12 +1892,6 @@ public class BuildTestSchema {
         stockThree.setOwner(productRecipeElementOne);
     }
 
-    private void tables() {
-        tableConsumer.setConsumed(Collections.singletonList(tableConsumed));
-        tableConsumed.setConsumer(tableConsumer);
-        tableFrequenter.setHost(tableNormal);
-    }
-
     private void tablesAndReceipts() {
         receiptsToTables();
         tablesToReceipts();
@@ -2074,26 +1987,20 @@ public class BuildTestSchema {
     private void restaurantAndTables() {
         //FIXME: Add service for building special tables in production
         restaurant.setTables(new HashSet<>(
-                Arrays.asList(tableNormal, tableNormalClosed, tableConsumer, tableConsumed, tableLoiterer,
+                Arrays.asList(tableNormal, tableNormalClosed, tableLoiterer,
                         tableFrequenter, tableEmployee,
-                        tableReservationTest, tableRestaurantTest, tableConsumerTest, tableConsumedOneTest,
-                        tableConsumedTwoTest, tableSaleTest, tablePaymentTest, tableTableTest,
+                        tableReservationTest, tableRestaurantTest, tableSaleTest, tablePaymentTest, tableTableTest,
                         tablePurchase, tableInventory, tableDisposal, tableOther,
                         tableOrphanage)));
 
         tableNormal.setOwner(restaurant);
         tableNormalClosed.setOwner(restaurant);
-        tableConsumer.setOwner(restaurant);
-        tableConsumed.setOwner(restaurant);
         tableLoiterer.setOwner(restaurant);
         tableFrequenter.setOwner(restaurant);
         tableEmployee.setOwner(restaurant);
 
         tableReservationTest.setOwner(restaurant);
         tableRestaurantTest.setOwner(restaurant);
-        tableConsumerTest.setOwner(restaurant);
-        tableConsumedOneTest.setOwner(restaurant);
-        tableConsumedTwoTest.setOwner(restaurant);
         tableSaleTest.setOwner(restaurant);
         tablePaymentTest.setOwner(restaurant);
         tableTableTest.setOwner(restaurant);

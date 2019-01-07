@@ -142,12 +142,12 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
 
     @Override
     public void setOrderDelivered(TableView tableView, boolean delivered) {
-        getTableAdapter(tableView).getOpenReceipt().setOrderDelivered(delivered);
+        receiptService.setOrderDelivered(tableView, delivered);
     }
 
     @Override
-    public void setOrderDeliveredTime(TableView tableView, LocalDateTime now) {
-        getTableAdapter(tableView).getOpenReceipt().setOrderDeliveredTime(now);
+    public void setOrderDeliveredTime(TableView tableView, LocalDateTime deliveredTime) {
+        receiptService.setOrderDeliveredTime(tableView, deliveredTime);
     }
 
     public void increaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount, boolean isSale) {
@@ -157,11 +157,6 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     @Override
     public void decreaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount) {
         receiptRecordService.decreaseSoldQuantity(receiptRecordView, amount);
-    }
-
-    @Override
-    public int getTotalPrice(TableView tableView) {
-        return tableServiceConfig.getTotalPrice(tableView);
     }
 
     @Override

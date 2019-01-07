@@ -12,6 +12,7 @@ import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -38,6 +39,10 @@ public interface ReceiptService {
     void setSumValues(ReceiptView receiptView);
 
     void mergeReceiptRecords(ReceiptView receiptView);
+
+    void setOrderDelivered(TableView tableView, boolean delivered);
+
+    void setOrderDeliveredTime(TableView tableView, LocalDateTime now);
 
     List<ReceiptView> getReceipts(LocalDate startDate, LocalDate endDate);
 }

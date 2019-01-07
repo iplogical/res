@@ -6,7 +6,6 @@ import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
@@ -19,9 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static com.inspirationlogical.receipt.corelib.model.enums.TableType.canBeHosted;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
@@ -32,7 +29,7 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     private StockService stockService;
 
     @Autowired
-    private VATService vatSevice;
+    private VATService vatService;
 
     @Autowired
     private TableRepository tableRepository;
@@ -45,12 +42,41 @@ public class TableServiceConfigImpl implements TableServiceConfig {
 
     @Override
     public List<TableView> getDisplayableTables() {
-        return tableRepository.findAllByVisibleIsTrue().stream().map(TableViewImpl::new).collect(toList());
+        return tableRepository.findAllByVisibleIsTrue().stream().map(this::buildTableView).collect(toList());
+    }
+
+    private TableView buildTableView(Table table) {
+        return TableView.builder()
+                .type(table.getType())
+                .number(table.getNumber())
+                .guestCount(table.getGuestCount())
+                .capacity(table.getCapacity())
+                .name(table.getName())
+                .note(table.getNote())
+                .coordinateX(table.getCoordinateX())
+                .coordinateY(table.getCoordinateY())
+                .width(table.getDimensionX())
+                .height(table.getDimensionY())
+                .orderDelivered(true)
+                .orderDeliveryTime(now())
+                .build();
     }
 
     @Override
-    public Table addTable(RestaurantView restaurantView, TableParams tableParams) {
-        Table newTable = Table.builder()
+    public TableView addTable(RestaurantView restaurantView, TableParams tableParams) {
+        if (isTableNumberAlreadyInUse(tableParams.getNumber())) {
+            throw new IllegalTableStateException("The table number " + tableParams.getNumber() + " is already in use");
+        }
+        Table newTable = buildTable(tableParams);
+        Restaurant restaurant = restaurantRepository.getOne(restaurantView.getRestaurantId());
+        restaurant.getTables().add(newTable);
+        newTable.setOwner(restaurant);
+        tableRepository.save(newTable);
+        return buildTableView(newTable);
+    }
+
+    private Table buildTable(TableParams tableParams) {
+        return Table.builder()
                 .type(tableParams.getType())
                 .name(tableParams.getName())
                 .number(tableParams.getNumber())
@@ -58,37 +84,24 @@ public class TableServiceConfigImpl implements TableServiceConfig {
                 .guestCount(tableParams.getGuestCount())
                 .capacity(tableParams.getCapacity())
                 .visible(true)
-                .coordinateX((int) tableParams.getPosition().getX())
-                .coordinateY((int) tableParams.getPosition().getY())
-                .dimensionX((int) tableParams.getDimension().getWidth())
-                .dimensionY((int) tableParams.getDimension().getHeight())
+                .coordinateX(tableParams.getPositionX())
+                .coordinateY(tableParams.getPositionY())
+                .dimensionX(tableParams.getWidth())
+                .dimensionY(tableParams.getHeight())
                 .build();
-        if (isTableNumberAlreadyInUse(newTable.getNumber())) {
-            if (canBeHosted(newTable.getType())) {
-                newTable.setHost(tableRepository.findByNumber(newTable.getNumber()));
-                newTable.setNumber(tableRepository.getFirstUnusedNumber());
-            } else {
-                throw new IllegalTableStateException("The table number " + newTable.getNumber() + " is already in use");
-            }
-        }
-        Restaurant restaurant = restaurantRepository.getOne(restaurantView.getRestaurantId());
-        restaurant.getTables().add(newTable);
-        newTable.setOwner(restaurant);
-        tableRepository.save(newTable);
-
-        return newTable;
     }
 
     @Override
     public void deleteTable(TableView tableView) {
-        Table adaptee = tableRepository.getOne(tableView.getId());
+        Table table = tableRepository.findByNumber(tableView.getNumber());
         Table orphanage = tableRepository.findAllByType(TableType.ORPHANAGE).get(0);
-        moveReceiptsToOrphanageTable(adaptee, orphanage);
-        adaptee.getReceipts().clear();
-        adaptee.getReservations().forEach(reservation -> GuardedTransaction.delete(reservation, () -> {}));
-        adaptee.getReservations().clear();
-        adaptee.getOwner().getTables().remove(adaptee);
-        tableRepository.delete(adaptee);
+        moveReceiptsToOrphanageTable(table, orphanage);
+        table.getReceipts().clear();
+        table.getReservations().forEach(reservation -> GuardedTransaction.delete(reservation, () -> {
+        }));
+        table.getReservations().clear();
+        table.getOwner().getTables().remove(table);
+        tableRepository.delete(table);
         tableRepository.save(orphanage);
     }
 
@@ -112,7 +125,7 @@ public class TableServiceConfigImpl implements TableServiceConfig {
 
     @Override
     public boolean isTableOpen(TableView tableView) {
-        Table table = tableRepository.getOne(tableView.getId());
+        Table table = tableRepository.findByNumber(tableView.getNumber());
         return isTableOpen(table);
     }
 
@@ -126,19 +139,19 @@ public class TableServiceConfigImpl implements TableServiceConfig {
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
                 .openTime(now())
-                .VATSerie(vatSevice.findValidVATSerie())
+                .VATSerie(vatService.findValidVATSerie())
                 .records(new ArrayList<>())
                 .build();
     }
 
     @Override
     public boolean reOpenTable(TableView tableView) {
-        Table table = tableRepository.getOne(tableView.getId());
+        Table table = tableRepository.findByNumber(tableView.getNumber());
         if (isTableOpen(table)) {
             throw new IllegalTableStateException("Re-open table for an open table. Table number: " + table.getNumber());
         }
         List<Receipt> receipts = receiptRepository.getReceiptByStatusAndOwner(ReceiptStatus.CLOSED, table.getNumber());
-        if(receipts.isEmpty()) {
+        if (receipts.isEmpty()) {
             return false;
         }
         Receipt latestReceipt = receipts.stream().sorted(Comparator.comparing(Receipt::getClosureTime).reversed())
@@ -161,57 +174,36 @@ public class TableServiceConfigImpl implements TableServiceConfig {
 
     @Override
     public void setTableNumber(TableView tableView, int tableNumber) {
-        Table table = tableRepository.getOne(tableView.getId());
-        if(isTableNumberAlreadyInUse(tableNumber)) {
-            if(canBeHosted(table.getType())) {
-                setHost(table, tableNumber);
-            } else {
+        Table table = tableRepository.findByNumber(tableView.getNumber());
+        if (isTableNumberAlreadyInUse(tableNumber)) {
                 throw new IllegalTableStateException("The table number " + tableView.getNumber() + " is already in use");
-            }
-            return;
         }
-        removePreviousHost(table);
         table.setNumber(tableNumber);
         tableRepository.save(table);
     }
 
-    private void setHost(Table table, int tableNumber) {
-        removePreviousHost(table);
-        setNewHost(table, tableNumber);
-    }
-
-    private void removePreviousHost(Table table) {
-        table.setHost(null);
-    }
-
-    private void setNewHost(Table table, int tableNumber) {
-        if(tableNumber != table.getNumber()) {    // Prevent a table being hosted by itself.
-            table.setHost(tableRepository.findByNumber(tableNumber));
-        }
-    }
-
     @Override
     public void setTableParams(TableView tableView, TableParams tableParams) {
-        Table table = tableRepository.getOne(tableView.getId());
+        Table table = tableRepository.findByNumber(tableView.getNumber());
         table.setName(tableParams.getName());
         table.setGuestCount(tableParams.getGuestCount());
         table.setCapacity(tableParams.getCapacity());
         table.setNote(tableParams.getNote());
-        table.setDimensionX((int)tableParams.getDimension().getWidth());
-        table.setDimensionY((int)tableParams.getDimension().getHeight());
+        table.setDimensionX(tableParams.getWidth());
+        table.setDimensionY( tableParams.getHeight());
         tableRepository.save(table);
     }
 
     @Override
     public void setGuestCount(TableView tableView, int guestCount) {
-        Table table = tableRepository.getOne(tableView.getId());
+        Table table = tableRepository.findByNumber(tableView.getNumber());
         table.setGuestCount(guestCount);
         tableRepository.save(table);
     }
 
     @Override
     public void setPosition(TableView tableView, Point2D position) {
-        Table table = tableRepository.getOne(tableView.getId());
+        Table table = tableRepository.findByNumber(tableView.getNumber());
         table.setCoordinateX((int) position.getX());
         table.setCoordinateY((int) position.getY());
         tableRepository.save(table);
@@ -219,7 +211,7 @@ public class TableServiceConfigImpl implements TableServiceConfig {
 
     @Override
     public void rotateTable(TableView tableView) {
-        Table table = tableRepository.getOne(tableView.getId());
+        Table table = tableRepository.findByNumber(tableView.getNumber());
         int dimensionX = table.getDimensionX();
         int dimensionY = table.getDimensionY();
         table.setDimensionX(dimensionY);
@@ -237,79 +229,14 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     @Override
-    public void mergeTables(TableView consumerView, List<TableView> consumedView) {
-        Table consumer = tableRepository.getOne(consumerView.getId());
-        List<Table> consumedTables = consumedView.stream()
-                .map(consumed -> tableRepository.getOne(consumed.getId()))
-                .collect(toList());
-        openConsumerIfClosed(consumer);
-        addConsumedTablesToConsumer(consumer, consumedTables);
-        moveConsumedRecordsToConsumer(consumer, consumedTables);
-        tableRepository.save(consumer);
-    }
-
-    private void openConsumerIfClosed(Table consumer) {
-        if (!isTableOpen(consumer)) {
-            openTable(new TableViewImpl(consumer));
-        }
-    }
-
-    private void addConsumedTablesToConsumer(Table consumer, List<Table> consumed) {
-        consumed.forEach(consumedTable -> {
-            if (!consumedTable.getConsumed().isEmpty()) {
-                throw new IllegalTableStateException("");
-            }
-            consumedTable.setVisible(false);
-            bindConsumedToConsumer(consumer, consumedTable);
-        });
-    }
-
-    private void bindConsumedToConsumer(Table consumer, Table consumedTable) {
-        consumedTable.setConsumer(consumer);
-        consumer.getConsumed().add(consumedTable);
-    }
-
-    private void moveConsumedRecordsToConsumer(Table consumer, List<Table> consumedTables) {
-        Receipt consumerReceipt = receiptRepository.getOpenReceipt(consumer.getNumber());
-        List<ReceiptRecord> consumedRecords = consumedTables.stream()
-                .map(consumedTable -> receiptRepository.getOpenReceipt(consumedTable.getNumber()))
-                .filter(Objects::nonNull)
-                .map(receipt -> {
-                    List<ReceiptRecord> receiptRecords = new ArrayList<>(receipt.getRecords());
-                    receiptRecords.forEach(receiptRecord ->
-                            receiptRecord.setOwner(consumerReceipt));
-                    receipt.setStatus(ReceiptStatus.CANCELED);
-                    receipt.getRecords().clear();
-                    return receiptRecords;
-                })
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-        consumerReceipt.getRecords().addAll(consumedRecords);
-    }
-
-    @Override
-    public List<TableView> splitTables(TableView consumerView) {
-        Table consumer = tableRepository.getOne(consumerView.getId());
-        List<Table> consumed = consumer.getConsumed();
-        consumer.setConsumed(new ArrayList<>());
-        consumed.forEach(table -> {
-            table.setConsumer(null);
-            table.setVisible(true);
-        });
-        tableRepository.save(consumer);
-        tableRepository.saveAll(consumed);
-        return consumed.stream().map(TableViewImpl::new).collect(Collectors.toList());
-    }
-
-    @Override
     public void exchangeTables(TableView selectedView, TableView otherView) {
-        Table selected = tableRepository.getOne(selectedView.getId());
-        Table other = tableRepository.getOne(otherView.getId());
+        Table selected = tableRepository.findByNumber(selectedView.getNumber());
+        Table other = tableRepository.findByNumber(otherView.getNumber());
         Receipt receiptOfSelected = receiptRepository.getOpenReceipt(selected.getNumber());
         Receipt receiptOfOther = receiptRepository.getOpenReceipt(other.getNumber());
-        if(bothAreOpen(receiptOfSelected, receiptOfOther)) {
+        if (bothAreOpen(receiptOfSelected, receiptOfOther)) {
             exchangeOwners(selected, other, receiptOfSelected, receiptOfOther);
-        } else if(oneIsOpen(receiptOfSelected, receiptOfOther)) {
+        } else if (oneIsOpen(receiptOfSelected, receiptOfOther)) {
             Receipt openReceipt = getTheOpenReceipt(receiptOfSelected, receiptOfOther);
             changeOwner(selected, other, openReceipt);
         }
@@ -341,14 +268,14 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     private Receipt getTheOpenReceipt(Receipt receiptOfThis, Receipt receiptOfOther) {
-        if(receiptOfThis != null) {
+        if (receiptOfThis != null) {
             return receiptOfThis;
         }
         return receiptOfOther;
     }
 
     private void changeOwner(Table selected, Table other, Receipt openReceipt) {
-        if(openReceipt.getOwner().equals(selected)) {
+        if (openReceipt.getOwner().equals(selected)) {
             removeFromSelectedAndAddToOther(selected, other, openReceipt);
             openReceipt.setOwner(other);
         } else {
@@ -358,26 +285,15 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     @Override
-    public int getTotalPrice(TableView tableView) {
-        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
-        if(tableView == null || openReceipt == null ) {
-            return 0;
-        }
-        return openReceipt.getRecords().stream()
-                .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum();
-
-    }
-
-    @Override
     public RecentConsumption getRecentConsumption(TableView tableView) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
-        if(openReceipt == null) {
+        if (openReceipt == null) {
             return RecentConsumption.NO_RECENT;
         }
         LocalDateTime latestSellTime = getLatestSellTime(openReceipt);
-        if(latestSellTime.isAfter(now().minusMinutes(10))) {
+        if (latestSellTime.isAfter(now().minusMinutes(10))) {
             return RecentConsumption.RECENT_10_MINUTES;
-        } else if(latestSellTime.isAfter(now().minusMinutes(30))) {
+        } else if (latestSellTime.isAfter(now().minusMinutes(30))) {
             return RecentConsumption.RECENT_30_MINUTES;
         } else {
             return RecentConsumption.NO_RECENT;
@@ -389,7 +305,7 @@ public class TableServiceConfigImpl implements TableServiceConfig {
                 .map(ReceiptRecord::getCreatedList)
                 .flatMap(Collection::stream)
                 .max(Comparator.comparing(ReceiptRecordCreated::getCreated));
-        if(latest.isPresent()) {
+        if (latest.isPresent()) {
             return latest.get().getCreated();
         } else {
             return now().minusDays(1);

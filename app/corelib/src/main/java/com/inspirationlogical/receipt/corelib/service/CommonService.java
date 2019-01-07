@@ -1,22 +1,15 @@
 package com.inspirationlogical.receipt.corelib.service;
 
-import java.util.List;
-
 import com.inspirationlogical.receipt.corelib.model.entity.Product.ProductBuilder;
-import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier.PriceModifierBuilder;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.view.*;
-import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
-import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
-import com.inspirationlogical.receipt.corelib.params.RecipeParams;
-import com.inspirationlogical.receipt.corelib.params.StockParams;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+
+import java.util.List;
 
 public interface CommonService {
     ProductBuilder productBuilder();
 
     ProductCategoryView getRootProductCategory();
-
-    List<ProductCategoryView> getAllCategories();
 
     List<ProductCategoryView> getAggregateCategories();
 

@@ -29,10 +29,6 @@ public enum TableType {
                 type.equals(TableType.EMPLOYEE);
     }
 
-    public static boolean canBeHosted(TableType tableType) {
-        return tableType.equals(TableType.LOITERER) || tableType.equals(TableType.FREQUENTER);
-    }
-
     public static List<Map.Entry<TableType, Long>> specialTypes() {
         List<Map.Entry<TableType, Long>> list = Arrays.asList(
                 new AbstractMap.SimpleEntry<TableType, Long>(PURCHASE, 1L),

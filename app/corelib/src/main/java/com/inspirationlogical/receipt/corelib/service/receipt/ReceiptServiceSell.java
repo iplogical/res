@@ -21,6 +21,7 @@ import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -148,6 +149,7 @@ public class ReceiptServiceSell {
         addCreatedListEntries(quantity, record);
         record.setOwner(openReceipt);
         openReceipt.getRecords().add(record);
+        receiptRepository.save(openReceipt);
         return new ReceiptRecordViewImpl(record);
     }
 
@@ -171,5 +173,17 @@ public class ReceiptServiceSell {
                 .discountPercent(0)
                 .createdList(new ArrayList<>())
                 .build();
+    }
+
+    void setOrderDelivered(TableView tableView, boolean delivered) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
+        openReceipt.setDelivered(delivered);
+        receiptRepository.save(openReceipt);
+    }
+
+    void setOrderDelvierdTime(TableView tableView, LocalDateTime now) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
+        openReceipt.setDeliveryTime(now);
+        receiptRepository.save(openReceipt);
     }
 }

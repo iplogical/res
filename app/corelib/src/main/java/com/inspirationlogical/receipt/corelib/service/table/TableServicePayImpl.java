@@ -29,7 +29,7 @@ public class TableServicePayImpl implements TableServicePay {
 
     @Override
     public void payTable(TableView tableView, PaymentParams paymentParams) {
-        Table table = tableRepository.getOne(tableView.getId());
+        Table table = tableRepository.findByNumber(tableView.getNumber());
         Receipt openReceipt = receiptRepository.getOpenReceipt(table.getNumber());
         if (openReceipt == null) {
             throw new IllegalTableStateException("Pay table for a closed table. Table number: " + table.getNumber());
@@ -48,21 +48,22 @@ public class TableServicePayImpl implements TableServicePay {
 
     @Override
     public void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-        Table table = tableRepository.getOne(tableView.getId());
+        Receipt openReceipt = getOpenReceipt(tableView);
+        receiptService.paySelective(openReceipt, records, paymentParams);
+    }
+
+    private Receipt getOpenReceipt(TableView tableView) {
+        Table table = tableRepository.findByNumber(tableView.getNumber());
         Receipt openReceipt = receiptRepository.getOpenReceipt(table.getNumber());
-        if(openReceipt == null) {
+        if (openReceipt == null) {
             throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + table.getNumber());
         }
-        receiptService.paySelective(openReceipt, records, paymentParams);
+        return openReceipt;
     }
 
     @Override
     public void payPartial(TableView tableView, double partialValue, PaymentParams paymentParams) {
-        Table table = tableRepository.getOne(tableView.getId());
-        Receipt openReceipt = receiptRepository.getOpenReceipt(table.getNumber());
-        if(openReceipt == null) {
-            throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + table.getNumber());
-        }
+        Receipt openReceipt = getOpenReceipt(tableView);
         receiptService.payPartial(openReceipt, partialValue, paymentParams);
     }
 }

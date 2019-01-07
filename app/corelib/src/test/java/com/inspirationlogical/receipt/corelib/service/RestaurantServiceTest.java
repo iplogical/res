@@ -17,7 +17,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Table.TableBuilder;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantViewImpl;
-import com.inspirationlogical.receipt.corelib.model.view.TableViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
 import javafx.geometry.Point2D;
 
@@ -39,7 +39,7 @@ public class RestaurantServiceTest {
     private RestaurantAdapterImpl restaurantAdapter;
 
     @Mock
-    private TableViewImpl tableView;
+    private TableView tableView;
 
     @Mock
     private TableAdapter tableAdapter;

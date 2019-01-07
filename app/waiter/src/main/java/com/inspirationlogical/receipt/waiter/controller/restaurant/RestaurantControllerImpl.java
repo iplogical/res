@@ -184,17 +184,12 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     public void onDailySummary(Event event) {
         dailySummaryController.setRestaurantView(restaurantView);
-        dailySummaryController.setOpenConsumption(openConsumption.getText());
+        // TODO: Daily summary
+//        dailySummaryController.setOpenConsumption(openConsumption.getText());
 //        viewLoader.loadViewIntoScene(dailySummaryController);
         WaiterApp.showView(DailySummaryFxmlView.class);
         dailySummaryController.updatePriceFields();
         logger.info("Entering the Daily Summary.");
-    }
-
-    private String getOpenConsumption() {
-        return String.valueOf(tableConfigurationController.getTableControllers().stream()
-                .filter(tableController -> tableController.getView().isOpen())
-                .mapToInt(tableController -> tableController.getView().getTotalPrice()).sum());
     }
 
     @FXML

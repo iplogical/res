@@ -20,7 +20,7 @@ public class TableViewTest extends TestBase {
 
     @Before
     public void createTableView() {
-        tableView = new TableViewImpl(new TableAdapter(schema.getTableNormal()));
+        tableView = new TableView(new TableAdapter(schema.getTableNormal()));
     }
 
     @Test

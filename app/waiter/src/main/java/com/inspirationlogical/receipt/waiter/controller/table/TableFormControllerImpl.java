@@ -31,15 +31,24 @@ public class TableFormControllerImpl implements TableFormController {
     private static final Integer TABLE_DEFAULT_WIDTH = 80;
     private static final Integer TABLE_DEFAULT_HEIGHT = 80;
 
-    @FXML private VBox root;
-    @FXML private Label title;
-    @FXML private TextField tableName;
-    @FXML private TextField guestCount;
-    @FXML private TextArea tableNote;
-    @FXML private TextField tableNumber;
-    @FXML private TextField tableCapacity;
-    @FXML private TextField width;
-    @FXML private TextField height;
+    @FXML
+    private VBox root;
+    @FXML
+    private Label title;
+    @FXML
+    private TextField tableName;
+    @FXML
+    private TextField guestCount;
+    @FXML
+    private TextArea tableNote;
+    @FXML
+    private TextField tableNumber;
+    @FXML
+    private TextField tableCapacity;
+    @FXML
+    private TextField width;
+    @FXML
+    private TextField height;
 
     private TableController tableController = null;
 
@@ -89,7 +98,8 @@ public class TableFormControllerImpl implements TableFormController {
                 .note(tableNote.getText())
                 .guestCount(tableGuestCount)
                 .capacity(tableCapacity)
-                .dimension(dimension)
+                .width((int) dimension.getWidth())
+                .height((int) dimension.getHeight())
                 .build();
     }
 
@@ -116,17 +126,13 @@ public class TableFormControllerImpl implements TableFormController {
         this.tableController = tableController;
         title.setText(resourceBundle.getString("TableForm.Edit"));
         TableView tableView = tableController.getView();
-        if (tableView.canBeHosted() && tableView.isHosted()) {
-            tableNumber.setText(String.valueOf(tableView.getHost().getNumber()));
-        } else {
-            tableNumber.setText(String.valueOf(tableView.getNumber()));
-        }
+        tableNumber.setText(String.valueOf(tableView.getNumber()));
         tableCapacity.setText(String.valueOf(tableView.getCapacity()));
         tableName.setText(tableView.getName());
         guestCount.setText(String.valueOf(tableView.getGuestCount()));
         tableNote.setText(tableView.getNote());
-        width.setText(String.valueOf((int) tableView.getDimension().getWidth()));
-        height.setText(String.valueOf((int) tableView.getDimension().getHeight()));
+        width.setText(String.valueOf((int) tableView.getWidth()));
+        height.setText(String.valueOf((int) tableView.getHeight()));
     }
 
     @Override

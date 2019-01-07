@@ -25,7 +25,7 @@ public class TableViewState implements ViewState {
 
     private LocalDateTime orderDeliveredTime;
 
-    public TableViewState(RestaurantViewState restaurantViewState, TableView tableView, boolean isOpen) {
+    TableViewState(RestaurantViewState restaurantViewState, TableView tableView, boolean isOpen) {
         this.restaurantViewState = restaurantViewState;
         this.tableView = tableView;
         this.isOpen = isOpen;
@@ -35,37 +35,5 @@ public class TableViewState implements ViewState {
 
     public boolean isOpen() {
         return isOpen;
-    }
-
-    public boolean isVisible() {
-        return tableView.isVisible();
-    }
-
-    public boolean isNormal() {
-        return tableView.isNormal();
-    }
-
-    public boolean isAggregate() {
-        return tableView.isConsumer();
-    }
-
-    public boolean isConsumed() {
-        return tableView.isConsumed();
-    }
-
-    public boolean isLoiterer() {
-        return tableView.isLoiterer();
-    }
-
-    public boolean isFrequenter() {
-        return tableView.isFrequenter();
-    }
-
-    public boolean isEmployee() {
-        return tableView.isEmployee();
-    }
-
-    public boolean isHost() {
-        return tableView.isHost();
     }
 }

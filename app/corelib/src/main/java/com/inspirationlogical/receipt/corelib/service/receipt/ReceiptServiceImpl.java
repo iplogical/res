@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -53,6 +54,16 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
+    public void setOrderDelivered(TableView tableView, boolean delivered) {
+        receiptServiceSell.setOrderDelivered(tableView, delivered);
+    }
+
+    @Override
+    public void setOrderDeliveredTime(TableView tableView, LocalDateTime now) {
+        receiptServiceSell.setOrderDelvierdTime(tableView, now);
+    }
+
+    @Override
     public void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
         receiptServiceStock.updateStock(paramsList, receiptType, listener);
     }
@@ -61,6 +72,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     public void close(Receipt receipt, PaymentParams paymentParams) {
         receiptServicePay.close(receipt, paymentParams);
     }
+
 
     @Override
     public void paySelective(Receipt receipt, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
@@ -80,7 +92,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public void mergeReceiptRecords(ReceiptView receiptView) {
         receiptServiceMerge.mergeReceiptRecords(receiptView);
-    }
+    };
 
     @Override
     public List<ReceiptView> getReceipts(LocalDate startDate, LocalDate endDate) {

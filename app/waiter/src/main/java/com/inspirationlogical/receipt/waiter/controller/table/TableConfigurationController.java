@@ -31,10 +31,6 @@ public interface TableConfigurationController {
 
     void moveTable(TableView tableView, Point2D position);
 
-    void mergeTables();
-
-    void splitTables(Node node);
-
     void exchangeTables();
 
     void selectTable(TableController tableController, boolean selected);

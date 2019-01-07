@@ -13,7 +13,7 @@ public interface TableServiceConfig {
 
     List<TableView> getDisplayableTables();
 
-    Table addTable(RestaurantView restaurantView, TableParams tableParams);
+    TableView addTable(RestaurantView restaurantView, TableParams tableParams);
 
     void deleteTable(TableView tableView);
 
@@ -35,13 +35,7 @@ public interface TableServiceConfig {
 
     boolean isTableNumberAlreadyInUse(int tableNumber);
 
-    void mergeTables(TableView consumer, List<TableView> consumed);
-
-    List<TableView> splitTables(TableView consumer);
-
     void exchangeTables(TableView selectedView, TableView otherView);
-
-    int getTotalPrice(TableView tableView);
 
     RecentConsumption getRecentConsumption(TableView tableView);
 }

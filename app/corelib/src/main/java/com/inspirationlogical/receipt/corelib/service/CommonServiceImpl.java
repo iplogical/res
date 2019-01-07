@@ -43,10 +43,6 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
                 .findFirst().orElseThrow(RootCategoryNotFoundException::new);
     }
 
-    @Override
-    public List<ProductCategoryView> getAllCategories() {
-        return entityViews.getCategoryViews();
-    }
 
     @Override
     public List<ProductCategoryView> getAggregateCategories() {

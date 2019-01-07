@@ -38,16 +38,10 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
             MenuItem rotateTable = buildMenuItem("ContextMenu.RotateTable", tableConfigurationController::rotateTable);
             contextMenu.getItems().add(rotateTable);
             if (tableViewState.isSelected()) {
-                MenuItem mergeTables = buildMenuItem("ContextMenu.MergeTable",tableConfigurationController::mergeTables);
                 MenuItem exchangeTables = buildMenuItem("ContextMenu.ExchangeTable",tableConfigurationController::exchangeTables);
-                contextMenu.getItems().addAll(mergeTables, exchangeTables);
+                contextMenu.getItems().add(exchangeTables);
             }
-            if (tableViewState.isAggregate()) {
-                MenuItem splitTables = buildMenuItem("ContextMenu.SplitTable", tableConfigurationController::splitTables);
-                contextMenu.getItems().add(splitTables);
-            } else if(tableViewState.isOpen() || tableViewState.isHost()) {
-                // Delete is not allowed for open and host tables.
-            } else {
+            if(!tableViewState.isOpen()) {
                 MenuItem deleteTable = buildMenuItem("ContextMenu.DeleteTable", tableConfigurationController::deleteTable);
                 contextMenu.getItems().add(deleteTable);
                 MenuItem reOpenTable = buildMenuItem("ContextMenu.ReOpenTable", tableController::reOpenTable);

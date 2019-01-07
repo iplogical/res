@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.reserver.registry;
 
-import com.google.inject.TypeLiteral;
 import com.inspirationlogical.receipt.corelib.frontend.registry.Registry;
 import com.inspirationlogical.receipt.corelib.security.BasicAuthenticator;
 import com.inspirationlogical.receipt.corelib.security.BasicAuthorizer;

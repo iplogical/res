@@ -44,13 +44,11 @@ public interface RetailService {
 
     void setOrderDelivered(TableView tableView, boolean delivered);
 
-    void setOrderDeliveredTime(TableView tableView, LocalDateTime now);
+    void setOrderDeliveredTime(TableView tableView, LocalDateTime deliveredTime);
 
     void increaseSoldQuantity(ReceiptRecordView receiptRecord, double amount, boolean isSale);
 
     void decreaseSoldQuantity(ReceiptRecordView receiptRecord, double amount);
-
-    int getTotalPrice(TableView tableView);
 
     RecentConsumption getRecentConsumption(TableView tableView);
 }

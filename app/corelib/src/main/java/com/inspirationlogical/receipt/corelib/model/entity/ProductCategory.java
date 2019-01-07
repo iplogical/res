@@ -97,6 +97,7 @@ public @Data class ProductCategory extends AbstractEntity {
     private ProductStatus status;
 
     private int orderNumber;
+
     @Tolerate
     ProductCategory(){}
 

@@ -30,9 +30,8 @@ public class RestaurantContextMenuBuilderDecorator extends ContextMenuBuilderDec
                     .build();
             contextMenu.getItems().add(addTable);
             if (restaurantViewState.getTableType().equals(TableType.NORMAL) && tableConfigurationController.hasSelection()) {
-                MenuItem mergeTables = buildMenuItem("ContextMenu.MergeTable", tableConfigurationController::mergeTables);
                 MenuItem exchangeTables = buildMenuItem("ContextMenu.ExchangeTable",tableConfigurationController::exchangeTables);
-                contextMenu.getItems().addAll(mergeTables, exchangeTables);
+                contextMenu.getItems().add(exchangeTables);
             }
         }
         return contextMenu;

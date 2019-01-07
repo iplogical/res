@@ -24,9 +24,9 @@ public class TableParams {
 
     private TableType type;
 
-    private Point2D position;
+    private int positionX;
+    private int positionY;
 
-    private Dimension2D dimension;
-
-
+    private int height;
+    private int width;
 }

@@ -1,68 +1,37 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
+
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-/**
- * Created by Bálint on 2017.03.13..
- */
-public interface TableView extends AbstractView {
+@Getter
+@Builder
+@ToString
+public class TableView {
 
-    long getId();
+//    private long id;
 
-    boolean isVisible();
+    private TableType type;
+    private int number;
+    private int guestCount;
+    private int capacity;
 
-    boolean isDisplayable();
+    private String name;
+    private String note;
 
-    boolean isNormal();
+    private int coordinateX;
+    private int coordinateY;
 
-    boolean isConsumer();
+    private int height;
+    private int width;
 
-    boolean isConsumed();
-
-    boolean isHost();
-
-    boolean isHosted();
-
-    boolean isLoiterer();
-
-    boolean isFrequenter();
-
-    boolean isEmployee();
-
-    boolean canBeHosted();
-
-    TableType getType();
-
-    int getNumber();
-
-    int getDisplayedNumber();
-
-    int getGuestCount();
-
-    int getCapacity();
-
-    String getName();
-
-    String getNote();
-
-    Point2D getPosition();
-
-    Dimension2D getDimension();
-
-    TableView getConsumer();
-
-    List<TableView> getConsumedTables();
-
-    TableView getHost();
-
-    List<TableView> getHostedTables();
-
-    boolean isOrderDelivered();
-
-    LocalDateTime getOrderDeliveryTime();
+    private boolean orderDelivered;
+    private LocalDateTime orderDeliveryTime;
 }
