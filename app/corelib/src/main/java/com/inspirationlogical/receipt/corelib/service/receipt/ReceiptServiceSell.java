@@ -23,7 +23,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService.getDiscountMultiplier;
 import static java.time.LocalDateTime.now;
@@ -50,6 +52,12 @@ public class ReceiptServiceSell {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         Product product = productRepository.findById(productView.getId());
         List<ReceiptRecord> records = receiptRecordRepository.getReceiptRecordByTimestamp(productView.getLongName(), now().minusSeconds(5));
+        //TODO: double click selling
+//        List<ReceiptRecord> records1 = receiptRecordRepository.findByName(productView.getLongName());
+//        if (records1.stream().map(ReceiptRecord::getCreatedList).flatMap(Collection::stream)
+//                .anyMatch(receiptRecordCreated -> receiptRecordCreated.getCreated().isAfter(now().minusSeconds(5)))) {
+//
+//        }
         if(records.size() > 0) {
             increaseReceiptRecordSoldQuantity(product, records.get(0));
             return;

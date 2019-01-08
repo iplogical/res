@@ -15,10 +15,6 @@ public interface TableRepository extends JpaRepository<Table, Long> {
 
     List<Table> findAllByType(TableType type);
 
-    List<Table> findAllByConsumer(Table consumer);
-
-    List<Table> findAllByHost(Table host);
-
     @Query("SELECT max(t.number) + 1 FROM Table t WHERE (t.type = 'NORMAL' OR t.type = 'LOITERER' OR t.type = 'FREQUENTER' OR t.type = 'EMPLOYEE')")
     int getFirstUnusedNumber();
 }

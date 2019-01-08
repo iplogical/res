@@ -55,10 +55,6 @@ public class TableControllerImpl implements TableController {
     private Label capacity;
     @FXML
     private ImageView note;
-    @FXML
-    private ImageView meeple;
-    @FXML
-    private Label hostedCount;
 
     @Autowired
     private RetailService retailService;
