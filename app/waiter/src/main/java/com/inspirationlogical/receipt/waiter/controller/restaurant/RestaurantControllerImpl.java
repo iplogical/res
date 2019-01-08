@@ -54,47 +54,47 @@ public class RestaurantControllerImpl implements RestaurantController {
     private Button reservation;
 
     @FXML
-    ToggleButton configuration;
+    private ToggleButton configuration;
     @FXML
-    ToggleButton motion;
+    private ToggleButton motion;
     @FXML
-    CheckBox snapToGrid;
+    private CheckBox snapToGrid;
     @FXML
-    Slider setGridSize;
+    private Slider setGridSize;
     @FXML
-    Label getGridSize;
+    private Label getGridSize;
 
     @FXML
-    AnchorPane tablesTab;
+    private AnchorPane tablesTab;
 
     @FXML
-    Label tablesControl;
+    private Label tablesControl;
 
     @FXML
-    AnchorPane loiterersTab;
+    private AnchorPane loiterersTab;
 
     @FXML
-    Label loiterersControl;
+    private Label loiterersControl;
 
     @FXML
-    AnchorPane frequentersTab;
+    private AnchorPane frequentersTab;
 
     @FXML
-    Label frequentersControl;
+    private Label frequentersControl;
 
     @FXML
-    AnchorPane employeesTab;
+    private AnchorPane employeesTab;
 
     @FXML
-    Label employeesControl;
+    private Label employeesControl;
 
     @FXML
-    Label liveTime;
+    private Label liveTime;
 
 //    @Autowired
 //    ViewLoader viewLoader;
 
-    Popup tableForm;
+    private Popup tableForm;
 
     private Set<TableController> selectedTables;
 
