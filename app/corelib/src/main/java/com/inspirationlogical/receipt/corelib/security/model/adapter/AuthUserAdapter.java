@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.corelib.security.model.adapter;
 
 import java.util.List;
 
-import com.inspirationlogical.receipt.corelib.model.adapter.AbstractAdapter;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.security.model.entity.AuthUser;
 

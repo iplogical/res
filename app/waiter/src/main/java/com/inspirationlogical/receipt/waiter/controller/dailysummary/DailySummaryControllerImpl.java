@@ -123,7 +123,6 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void onBackToRestaurantView(Event event) {
-//        viewLoader.loadViewIntoScene(restaurantController);
         WaiterApp.showView(RestaurantFxmlView.class);
     }
 

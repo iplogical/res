@@ -40,7 +40,8 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
     @Override
     public void increaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount, boolean isSale) {
         ReceiptRecord receiptRecord  = receiptRecordRepository.getOne(receiptRecordView.getId());
-        logger.info("Increase quantity of a receiptRecord: name: {} soldQuantity: {}, amount: {}, size {}",  receiptRecord.getName(), receiptRecord.getSoldQuantity(), amount,  receiptRecord.getCreatedList().size());
+        logger.info("Increase quantity of a receiptRecord: name: {} soldQuantity: {}, amount: {}, size {}",
+                receiptRecord.getName(), receiptRecord.getSoldQuantity(), amount,  receiptRecord.getCreatedList().size());
         receiptRecord.setSoldQuantity(roundToTwoDecimals(receiptRecord.getSoldQuantity() + amount));
         if(isSale) {
             receiptRecord.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(receiptRecord).build());
@@ -61,7 +62,8 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
             receiptRecordRepository.delete(receiptRecord);
         } else {
             int size = receiptRecord.getCreatedList().size() - 1;
-            logger.info("Decrease quantity of a receiptRecord: name: {} soldQuantity: {}, amount: {}, size: {}", receiptRecord.getName(), receiptRecord.getSoldQuantity(), amount, size);
+            logger.info("Decrease quantity of a receiptRecord: name: {} soldQuantity: {}, amount: {}, size: {}",
+                    receiptRecord.getName(), receiptRecord.getSoldQuantity(), amount, size);
             ReceiptRecordCreated toDelete = receiptRecord.getCreatedList().get(size);
             toDelete.setOwner(null);
             receiptRecord.getCreatedList().remove(toDelete);

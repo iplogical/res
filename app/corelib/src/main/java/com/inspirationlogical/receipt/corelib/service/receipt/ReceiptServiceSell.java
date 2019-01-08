@@ -14,6 +14,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
+import com.inspirationlogical.receipt.corelib.repository.ReceiptRecordCreatedRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRecordRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.service.product_category.ProductCategoryService;
@@ -23,9 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService.getDiscountMultiplier;
 import static java.time.LocalDateTime.now;
@@ -40,6 +39,9 @@ public class ReceiptServiceSell {
     private ReceiptRecordRepository receiptRecordRepository;
 
     @Autowired
+    private ReceiptRecordCreatedRepository receiptRecordCreatedRepository;
+
+    @Autowired
     private ProductRepository productRepository;
 
     @Autowired
@@ -51,15 +53,10 @@ public class ReceiptServiceSell {
     void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         Product product = productRepository.findById(productView.getId());
-        List<ReceiptRecord> records = receiptRecordRepository.getReceiptRecordByTimestamp(productView.getLongName(), now().minusSeconds(5));
-        //TODO: double click selling
-//        List<ReceiptRecord> records1 = receiptRecordRepository.findByName(productView.getLongName());
-//        if (records1.stream().map(ReceiptRecord::getCreatedList).flatMap(Collection::stream)
-//                .anyMatch(receiptRecordCreated -> receiptRecordCreated.getCreated().isAfter(now().minusSeconds(5)))) {
-//
-//        }
-        if(records.size() > 0) {
-            increaseReceiptRecordSoldQuantity(product, records.get(0));
+        List<ReceiptRecordCreated>  recordsCreated =
+                receiptRecordCreatedRepository.findRecentByTimestamp(productView.getLongName(), now().minusSeconds(5));
+        if(recordsCreated.size() > 0) {
+            increaseReceiptRecordSoldQuantity(product, recordsCreated.get(0).getOwner());
             return;
         }
         addNewReceiptRecord(openReceipt, product, amount, isTakeAway, isGift);
@@ -145,10 +142,10 @@ public class ReceiptServiceSell {
     ReceiptRecordView sellGameFee(TableView tableView, int quantity) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         Product gameFeeProduct = getGameFeeProduct();
-        List<ReceiptRecord> records = receiptRecordRepository.getReceiptRecordByTimestamp(gameFeeProduct.getLongName(), now().minusSeconds(2));
+        List<ReceiptRecordCreated>  records = receiptRecordCreatedRepository.findRecentByTimestamp(gameFeeProduct.getLongName(), now().minusSeconds(5));
 
         if(records.size() > 0) {
-            ReceiptRecord record = records.get(0);
+            ReceiptRecord record = records.get(0).getOwner();
             record.setSoldQuantity(record.getSoldQuantity() + 1);
             record.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(record).build());
             return new ReceiptRecordViewImpl(record);

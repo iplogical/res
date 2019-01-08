@@ -97,7 +97,7 @@ public @Data class SoldProductViewModel {
         double quantity = Double.valueOf(productQuantity.split(" ")[0]);
         long recent = getRecentClickCount();
         int totalPrice = (int)(Integer.valueOf(productUnitPrice) * (quantity + amount));
-        productQuantity = valueOf(roundToTwoDecimals(quantity + amount)) + " (" + valueOf(recent) + ")";
+        productQuantity = roundToTwoDecimals(quantity + amount) + " (" +recent + ")";
         productTotalPrice = valueOf(totalPrice);
     }
 

@@ -1,4 +1,4 @@
-package com.inspirationlogical.receipt.corelib.model.adapter;
+package com.inspirationlogical.receipt.corelib.security.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.entity.AbstractEntity;
 

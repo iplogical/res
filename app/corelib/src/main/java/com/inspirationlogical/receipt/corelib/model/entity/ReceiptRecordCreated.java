@@ -36,7 +36,7 @@ public @Data class ReceiptRecordCreated extends AbstractEntity {
 
     @Override
     public String toString() {
-        return owner.getName() + ": " +created.toString();
+        return owner.getName() + ": " + created.toString();
     }
 
 }
