@@ -34,12 +34,12 @@ public class ReservationAdapterTest extends TestBase {
 
     @Test
     public void testGetReservationsByDate() {
-        assertEquals(NUMBER_OF_RESERVATIONS, ReservationServiceImpl.getReservationsByDate(LocalDate.now()).size());
+        assertEquals(NUMBER_OF_RESERVATIONS, ReservationServiceImpl.getReservations(LocalDate.now()).size());
     }
 
     @Test
     public void testAddReservation() {
         ReservationServiceImpl.addReservation(params);
-        assertEquals(NUMBER_OF_RESERVATIONS + 1, ReservationServiceImpl.getReservationsByDate(LocalDate.now()).size());
+        assertEquals(NUMBER_OF_RESERVATIONS + 1, ReservationServiceImpl.getReservations(LocalDate.now()).size());
     }
 }

@@ -9,6 +9,7 @@ import com.inspirationlogical.receipt.waiter.contextmenu.RestaurantContextMenuBu
 import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryController;
 import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationController;
+import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import com.inspirationlogical.receipt.waiter.utility.ConfirmMessage;
@@ -184,9 +185,6 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     public void onDailySummary(Event event) {
         dailySummaryController.setRestaurantView(restaurantView);
-        // TODO: Daily summary
-//        dailySummaryController.setOpenConsumption(openConsumption.getText());
-//        viewLoader.loadViewIntoScene(dailySummaryController);
         WaiterApp.showView(DailySummaryFxmlView.class);
         dailySummaryController.updatePriceFields();
         logger.info("Entering the Daily Summary.");
@@ -195,7 +193,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     public void onReservationClicked(Event event) {
         reservationController.setRestaurantView(restaurantView);
-//        viewLoader.loadViewIntoScene(reservationController);
+        WaiterApp.showView(ReservationFxmlView.class);
         logger.info("Entering the Reservations.");
     }
 

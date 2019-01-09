@@ -55,9 +55,6 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     private TableServiceConfig tableServiceConfig;
 
     @Autowired
-    private ReservationService reservationService;
-
-    @Autowired
     private StockService stockService;
 
     @Autowired
@@ -162,41 +159,5 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     public void closeDay() {
         stockService.closeLatestStockEntries();
         dailyClosureService.close();
-    }
-
-    @Override
-    public List<ReservationView> getReservations() {
-        return reservationService.getReservations()
-                .stream()
-                .map(ReservationViewImpl::new)
-                .collect(toList());
-    }
-
-    @Override
-    public List<ReservationView> getReservations(LocalDate date) {
-        return reservationService.getReservationsByDate(date)
-                .stream()
-                .map(ReservationViewImpl::new)
-                .collect(toList());
-    }
-
-    @Override
-    public long addReservation(ReservationParams params) {
-        return reservationService.addReservation(params);
-    }
-
-    @Override
-    public void updateReservation(ReservationView selectedReservation, ReservationParams reservationParams) {
-        reservationService.updateReservation(selectedReservation.getId(), reservationParams);
-    }
-
-    @Override
-    public void updateReservation(long reservationId, ReservationParams reservationParams) {
-        reservationService.updateReservation(reservationId, reservationParams);
-    }
-
-    @Override
-    public void deleteReservation(long reservationId) {
-        reservationService.deleteReservation(reservationId);
     }
 }

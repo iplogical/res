@@ -38,16 +38,4 @@ public interface RestaurantService {
     void setTablePosition(TableView tableView, Point2D position);
 
     void closeDay();
-
-    List<ReservationView> getReservations();
-
-    List<ReservationView> getReservations(LocalDate date);
-
-    long addReservation(ReservationParams params);
-
-    void updateReservation(ReservationView selectedReservation, ReservationParams reservationParams);
-
-    void updateReservation(long reservationId, ReservationParams reservationParams);
-
-    void deleteReservation(long reservationId);
 }

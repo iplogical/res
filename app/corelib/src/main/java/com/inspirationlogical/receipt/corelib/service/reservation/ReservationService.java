@@ -10,7 +10,7 @@ import java.util.List;
 public interface ReservationService {
     List<Reservation> getReservations();
 
-    List<Reservation> getReservationsByDate(LocalDate date);
+    List<ReservationView> getReservations(LocalDate date);
 
     Reservation getReservationById(long id);
 

@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
+import com.inspirationlogical.receipt.corelib.service.reservation.ReservationService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
@@ -96,12 +97,11 @@ public class ReservationControllerImpl extends AbstractController
     private CalendarTimePicker startTime;
     private CalendarTimePicker endTime;
 
-//    @Autowired
-//    private ViewLoader viewLoader;
-
     private RestaurantService restaurantService;
 
-    private RetailService retailService;
+//    private RetailService retailService;
+
+    private ReservationService reservationService;
 
     private RestaurantController restaurantController;
 
@@ -118,10 +118,12 @@ public class ReservationControllerImpl extends AbstractController
     @Autowired
     public ReservationControllerImpl(RestaurantService restaurantService,
                                      RetailService retailService,
+                                     ReservationService reservationService,
                                      RestaurantController restaurantController,
                                      TableConfigurationController tableConfigurationController) {
         this.restaurantService = restaurantService;
-        this.retailService = retailService;
+//        this.retailService = retailService;
+        this.reservationService = reservationService;
         this.restaurantController = restaurantController;
         this.tableConfigurationController = tableConfigurationController;
         this.startTime = new CalendarTimePicker();
@@ -179,7 +181,7 @@ public class ReservationControllerImpl extends AbstractController
     }
 
     private void initReservations() {
-        reservationViews = restaurantService.getReservations(datePickerWrapper.getSelectedDate());
+        reservationViews = reservationService.getReservations(datePickerWrapper.getSelectedDate());
         List<ReservationViewModel> models = reservationViews.stream().map(ReservationViewModel::new).collect(toList());
         models.sort(Comparator.comparing(ReservationViewModel::getTableNumberAsInt));
         reservationModels = FXCollections.observableArrayList(models);
@@ -237,14 +239,13 @@ public class ReservationControllerImpl extends AbstractController
 
     @FXML
     public void onBackToRestaurantView(Event event) {
-//        viewLoader.loadViewIntoScene(restaurantController);
         WaiterApp.showView(RestaurantFxmlView.class);
     }
 
     @FXML
     public void onConfirm(Event event) {
         try {
-            restaurantService.addReservation(initReservationParams());
+            reservationService.addReservation(initReservationParams());
             initReservations();
             clearForm();
         } catch (NumberFormatException e) {
@@ -286,7 +287,7 @@ public class ReservationControllerImpl extends AbstractController
         try {
             List<ReservationView> selectedReservations = getSelectedReservation();
             if(selectedReservations.size() == 0) return;
-            restaurantService.updateReservation(selectedReservations.get(0), initReservationParams());
+            reservationService.updateReservation(selectedReservations.get(0).getId(), initReservationParams());
             initReservations();
             clearForm();
         } catch (NumberFormatException e) {
@@ -304,7 +305,7 @@ public class ReservationControllerImpl extends AbstractController
     public void onDelete(Event event) {
         List<ReservationView> selectedReservations = getSelectedReservation();
         if(selectedReservations.size() == 0) return;
-        restaurantService.deleteReservation(selectedReservations.get(0).getId());
+        reservationService.deleteReservation(selectedReservations.get(0).getId());
         initReservations();
         clearForm();
     }

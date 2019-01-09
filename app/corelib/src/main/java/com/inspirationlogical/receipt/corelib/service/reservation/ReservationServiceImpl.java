@@ -3,6 +3,8 @@ package com.inspirationlogical.receipt.corelib.service.reservation;
 import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
+import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
+import com.inspirationlogical.receipt.corelib.model.view.ReservationViewImpl;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.repository.ReservationRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
@@ -13,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -30,9 +34,9 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> getReservationsByDate(LocalDate date) {
+    public List<ReservationView> getReservations(LocalDate date) {
         List<Reservation> reservations = reservationRepository.findAllByDate(date);
-        return reservations;
+        return reservations.stream().map(ReservationViewImpl::new).collect(toList());
     }
 
     @Override
