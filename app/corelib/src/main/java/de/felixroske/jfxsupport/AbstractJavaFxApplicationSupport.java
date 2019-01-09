@@ -24,11 +24,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * The Class AbstractJavaFxApplicationSupport.
- *
- * @author Felix Roske
- */
 @SuppressWarnings("WeakerAccess")
 public abstract class AbstractJavaFxApplicationSupport extends Application {
     private static Logger LOGGER = LoggerFactory.getLogger(AbstractJavaFxApplicationSupport.class);
@@ -76,7 +71,7 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
                             icons.add(img);
                         }
                 );
-            } else { // add factory images
+            } else {
                 icons.addAll(defaultIcons);
             }
         } catch (Exception e) {
@@ -86,14 +81,8 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
 
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see javafx.application.Application#init()
-     */
     @Override
     public void init() throws Exception {
-        // Load in JavaFx Thread and reused by Completable Future, but should no be a big deal.
         defaultIcons.addAll(loadDefaultIcons());
         CompletableFuture.supplyAsync(() ->
                 SpringApplication.run(this.getClass(), savedArgs)
@@ -112,12 +101,6 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
         });
     }
 
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see javafx.application.Application#start(javafx.stage.Stage)
-     */
     @Override
     public void start(final Stage stage) throws Exception {
 
@@ -143,10 +126,6 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
         });
     }
 
-
-    /**
-     * Show initial view.
-     */
     private void showInitialView() {
         final String stageStyle = applicationContext.getEnvironment().getProperty(Constant.KEY_STAGE_STYLE);
         if (stageStyle != null) {
@@ -160,19 +139,10 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
         showView(savedInitialView);
     }
 
-
-    /**
-     * Launch application view.
-     */
     private void launchApplicationView(final ConfigurableApplicationContext ctx) {
         AbstractJavaFxApplicationSupport.applicationContext = ctx;
     }
 
-    /**
-     * Show view.
-     *
-     * @param newView the new view
-     */
     public static void showView(final Class<? extends AbstractFxmlView> newView) {
         try {
             final AbstractFxmlView view = applicationContext.getBean(newView);
@@ -195,18 +165,12 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
         }
     }
 
-    /**
-     * @param window The FxmlView derived class that should be shown.
-     * @param mode   See {@code javafx.stage.Modality}.
-     */
     public static Node showView(final Class<? extends AbstractFxmlView> window, final Modality mode) {
         final AbstractFxmlView view = applicationContext.getBean(window);
         Stage newStage = new Stage();
 
         Scene newScene;
-        if (view.getView().getScene() != null) {
-            // This view was already shown so
-            // we have a scene for it and use this one.
+        if (sceneAlreadyShown(view)) {
             newScene = view.getView().getScene();
         } else {
             newScene = new Scene(view.getView());
@@ -218,9 +182,12 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
         newStage.setTitle(view.getDefaultTitle());
         newStage.initStyle(view.getDefaultStyle());
 
-//        newStage.showAndWait();
         newStage.show();
         return view.getView();
+    }
+
+    private static boolean sceneAlreadyShown(AbstractFxmlView view) {
+        return view.getView().getScene() != null;
     }
 
     public static Node getRootNode(final Class<? extends AbstractFxmlView> window) {
@@ -228,11 +195,6 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
         return view.getView();
     }
 
-    /**
-     * Show error alert that close app.
-     *
-     * @param throwable cause of error
-     */
     private static void showErrorAlert(Throwable throwable) {
         Alert alert = new Alert(AlertType.ERROR, "Oops! An unrecoverable error occurred.\n" +
                 "Please contact your software vendor.\n\n" +
@@ -241,9 +203,6 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
         alert.showAndWait().ifPresent(response -> Platform.exit());
     }
 
-    /**
-     * Apply env props to view.
-     */
     private static void applyEnvPropsToView() {
         PropertyReaderHelper.setIfPresent(applicationContext.getEnvironment(), Constant.KEY_TITLE, String.class,
                 GUIState.getStage()::setTitle);
@@ -258,63 +217,26 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
                 GUIState.getStage()::setResizable);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see javafx.application.Application#stop()
-     */
     @Override
     public void stop() throws Exception {
         super.stop();
         if (applicationContext != null) {
             applicationContext.close();
-        } // else: someone did it already
+        }
     }
 
-    /**
-     * Sets the title. Allows to overwrite values applied during construction at
-     * a later time.
-     *
-     * @param title the new title
-     */
+
     protected static void setTitle(final String title) {
         GUIState.getStage().setTitle(title);
     }
 
-    /**
-     * Launch app.
-     *
-     * @param appClass the app class
-     * @param view     the view
-     * @param args     the args
-     */
+
     public static void launch(final Class<? extends Application> appClass,
                               final Class<? extends AbstractFxmlView> view, final String[] args) {
 
         launch(appClass, view, new SplashScreen(), args);
     }
-    /**
-     * Launch app.
-     * @deprecated To be more in line with javafx.application please use launch
-     * @param appClass the app class
-     * @param view     the view
-     * @param args     the args
-     */
-    @Deprecated
-    public static void launchApp(final Class<? extends Application> appClass,
-                                 final Class<? extends AbstractFxmlView> view, final String[] args) {
 
-        launch(appClass, view, new SplashScreen(), args);
-    }
-
-    /**
-     * Launch app.
-     *
-     * @param appClass     the app class
-     * @param view         the view
-     * @param splashScreen the splash screen
-     * @param args         the args
-     */
     public static void launch(final Class<? extends Application> appClass,
                               final Class<? extends AbstractFxmlView> view, final SplashScreen splashScreen, final String[] args) {
         savedInitialView = view;
@@ -331,20 +253,6 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
         }
 
         Application.launch(appClass, args);
-    }
-    /**
-     * Launch app.
-     *
-     * @deprecated To be more in line with javafx.application please use launch
-     * @param appClass     the app class
-     * @param view         the view
-     * @param splashScreen the splash screen
-     * @param args         the args
-     */
-    @Deprecated
-    public static void launchApp(final Class<? extends Application> appClass,
-                                 final Class<? extends AbstractFxmlView> view, final SplashScreen splashScreen, final String[] args) {
-        launch(appClass, view, splashScreen, args);
     }
 
     /**

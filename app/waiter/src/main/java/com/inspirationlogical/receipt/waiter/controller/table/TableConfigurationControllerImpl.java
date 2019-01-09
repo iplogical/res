@@ -35,7 +35,6 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldH
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 import static java.util.stream.Collectors.toList;
 
-//@Singleton
 @Component
 public class TableConfigurationControllerImpl implements TableConfigurationController {
 
@@ -172,11 +171,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     }
 
     @Override
-    public void moveTable(TableView tableView, Point2D position) {
-        restaurantService.setTablePosition(tableView, position);
-    }
-
-    @Override
     public void exchangeTables() {
         List<TableView> tablesToExchange = selectedTables.stream()
                 .map(TableController::getView)
@@ -261,8 +255,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 //        tableControllers.add(tableController);
 
         WaiterApp.showView(TableFxmlView.class);
-
-//        viewLoader.loadView(tableController);
         addPressAndHold(tableControllerBeingDrawn.getViewState(), tableControllerBeingDrawn.getRoot(),
                 new TableContextMenuBuilderDecorator(this, tableControllerBeingDrawn, new BaseContextMenuBuilder()),
                 Duration.millis(HOLD_DURATION_MILLIS));

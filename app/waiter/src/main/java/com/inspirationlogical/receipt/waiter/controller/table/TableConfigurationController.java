@@ -29,8 +29,6 @@ public interface TableConfigurationController {
 
     void moveTable(TableController tableController);
 
-    void moveTable(TableView tableView, Point2D position);
-
     void exchangeTables();
 
     void selectTable(TableController tableController, boolean selected);
