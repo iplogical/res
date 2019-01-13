@@ -104,8 +104,6 @@ public class ReservationControllerImpl extends AbstractController
 
     private TableConfigurationController tableConfigurationController;
 
-    private RestaurantView restaurantView;
-
     private List<ReservationView> reservationViews;
 
     private ObservableList<ReservationViewModel> reservationModels;
@@ -225,11 +223,6 @@ public class ReservationControllerImpl extends AbstractController
         reservationNote.clear();
         startTime.setCalendar(Calendar.getInstance());
         endTime.setCalendar(Calendar.getInstance());
-    }
-
-    @Override
-    public void setRestaurantView(RestaurantView restaurantView) {
-        this.restaurantView = restaurantView;
     }
 
     @FXML

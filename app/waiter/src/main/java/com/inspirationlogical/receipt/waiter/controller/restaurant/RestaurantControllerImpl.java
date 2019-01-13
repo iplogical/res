@@ -92,9 +92,6 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     private Label liveTime;
 
-//    @Autowired
-//    ViewLoader viewLoader;
-
     private Popup tableForm;
 
     private Set<TableController> selectedTables;
@@ -114,15 +111,6 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Autowired
     private ReservationController reservationController;
-
-//    @Inject
-//    public RestaurantControllerImpl(RestaurantService restaurantService,
-//                                    @Lazy TableConfigurationController tableConfigurationController) {
-//        this.restaurantService = restaurantService;
-//        this.tableConfigurationController = tableConfigurationController;
-//        selectedTables = new LinkedHashSet<>();
-//        restaurantViewState = new RestaurantViewState(selectedTables);
-//    }
 
     @Autowired
     public RestaurantControllerImpl() {
@@ -184,7 +172,6 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     public void onDailySummary(Event event) {
-        dailySummaryController.setRestaurantView(restaurantView);
         WaiterApp.showView(DailySummaryFxmlView.class);
         dailySummaryController.updatePriceFields();
         logger.info("Entering the Daily Summary.");
@@ -192,7 +179,6 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     public void onReservationClicked(Event event) {
-        reservationController.setRestaurantView(restaurantView);
         WaiterApp.showView(ReservationFxmlView.class);
         logger.info("Entering the Reservations.");
     }

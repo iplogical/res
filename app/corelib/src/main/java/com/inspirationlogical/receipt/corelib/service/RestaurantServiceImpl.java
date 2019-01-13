@@ -5,7 +5,9 @@ import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.view.*;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
+import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
@@ -63,36 +65,13 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
         if (restaurants.isEmpty()) {
             throw new RestaurantNotFoundException();
         }
-        return new RestaurantView(restaurants.get(0), getConsumptionOfTheDay());
-    }
-
-    private Map<PaymentMethod, Integer> getConsumptionOfTheDay() {
-        Map<PaymentMethod, Integer> consumptionOfTheDay = new HashMap<>();
-        consumptionOfTheDay.put(PaymentMethod.CASH, getConsumptionOfTheDay(PaymentMethod.CASH));
-        consumptionOfTheDay.put(PaymentMethod.CREDIT_CARD, getConsumptionOfTheDay(PaymentMethod.CREDIT_CARD));
-        consumptionOfTheDay.put(PaymentMethod.COUPON, getConsumptionOfTheDay(PaymentMethod.COUPON));
-        consumptionOfTheDay.put(null, getConsumptionOfTheDay(null));
-        return consumptionOfTheDay;
-    }
-
-    private int getConsumptionOfTheDay(PaymentMethod paymentMethod) {
-        DailyClosure openDailyClosure = dailyClosureRepository.findByClosureTimeIsNull();
-        if(paymentMethod == null)
-            return openDailyClosure.getSumSaleGrossPriceCash() + openDailyClosure.getSumSaleGrossPriceCreditCard();
-        if(paymentMethod.equals(PaymentMethod.CASH))
-            return openDailyClosure.getSumSaleGrossPriceCash();
-        if(paymentMethod.equals(PaymentMethod.CREDIT_CARD))
-            return openDailyClosure.getSumSaleGrossPriceCreditCard();
-        if(paymentMethod.equals(PaymentMethod.COUPON))
-            return openDailyClosure.getSumSaleGrossPriceCoupon();
-        else
-            return 0;
+        return new RestaurantView(restaurants.get(0));
     }
 
     @Override
     public ReceiptView getOpenReceipt(TableView tableView) {
         Receipt receipt = receiptRepository.getOpenReceipt(tableView.getNumber());
-        if(receipt == null) {
+        if (receipt == null) {
             return null;
         }
         return new ReceiptView(receipt);

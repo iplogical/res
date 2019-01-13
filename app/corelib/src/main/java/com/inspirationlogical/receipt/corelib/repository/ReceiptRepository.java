@@ -16,6 +16,9 @@ public interface ReceiptRepository extends JpaRepository<Receipt, Long> {
     @Query("SELECT r FROM Receipt r WHERE r.status='OPEN' AND r.owner.number=:number")
     Receipt getOpenReceipt(@Param(value = "number") Integer number);
 
+    @Query("SELECT r FROM Receipt r WHERE r.status='OPEN'")
+    List<Receipt> getAllOpenReceipts();
+
     @Query("SELECT r FROM Receipt r WHERE r.status=:status AND r.owner.number=:number")
     List<Receipt> getReceiptByStatusAndOwner(@Param(value = "status")ReceiptStatus status, @Param(value = "number") Integer number);
 

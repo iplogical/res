@@ -12,16 +12,10 @@ public class RestaurantView {
     private long restaurantId;
     private String restaurantName;
     private String companyName;
-    private Map<PaymentMethod, Integer> consumptionOfTheDay;
 
-    public RestaurantView(Restaurant restaurant, Map<PaymentMethod, Integer> consumptionOfTheDay) {
+    public RestaurantView(Restaurant restaurant) {
         restaurantId = restaurant.getId();
         restaurantName = restaurant.getRestaurantName();;
         companyName = restaurant.getCompanyName();
-        this.consumptionOfTheDay = consumptionOfTheDay;
-    }
-
-    public int getConsumptionOfTheDay(PaymentMethod paymentMethod) {
-        return consumptionOfTheDay.get(paymentMethod);
     }
 }

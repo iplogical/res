@@ -3,6 +3,8 @@ package com.inspirationlogical.receipt.waiter.controller.dailysummary;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyConsumptionService;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reservation.CalendarPickerWrapper;
@@ -16,16 +18,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
-/**
- * Created by TheDagi on 2017. 04. 21..
- */
 @FXMLController
 public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     implements DailySummaryController {
@@ -62,13 +63,12 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     @FXML
     private Label liveTime;
 
+    @Autowired
+    private DailyConsumptionService dailyConsumptionService;
+
     private CalendarPickerWrapper startDatePicker;
 
     private CalendarPickerWrapper endDatePicker;
-
-    private RestaurantView restaurantView;
-
-    private String openConsumptionString;
 
     @Override
     public String getViewPath() {
@@ -114,7 +114,7 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     protected Collection<ReceiptRecordView> getSoldProducts() {
-        receiptView = retailService.getAggregatedReceipt(restaurantView, startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
+        receiptView = dailyConsumptionService.getAggregatedReceipt(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
         return receiptView.getSoldProducts();
     }
 
@@ -127,31 +127,20 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    public void setRestaurantView(RestaurantView restaurantView) {
-        this.restaurantView = restaurantView;
-    }
-
-    @Override
-    public void setOpenConsumption(String openConsumption) {
-        openConsumptionString = openConsumption;
-    }
-
-    @Override
     public void updatePriceFields() {
-        cashTotalPrice.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(PaymentMethod.CASH)));
-        creditCardTotalPrice.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(PaymentMethod.CREDIT_CARD)));
-        couponTotalPrice.setText(String.valueOf(restaurantView.getConsumptionOfTheDay(PaymentMethod.COUPON)));
-        openConsumption.setText(openConsumptionString);
-        int totalPriceInt  = Integer.valueOf(openConsumption.getText()) +
-                + Integer.valueOf(cashTotalPrice.getText())
-                + Integer.valueOf(creditCardTotalPrice.getText())
-                + Integer.valueOf(couponTotalPrice.getText());
+        Map<PaymentMethod, Integer> dailyConsumptionMap = dailyConsumptionService.getConsumptionOfTheDay();
+        cashTotalPrice.setText(String.valueOf(dailyConsumptionMap.get(PaymentMethod.CASH)));
+        creditCardTotalPrice.setText(String.valueOf(dailyConsumptionMap.get(PaymentMethod.CREDIT_CARD)));
+        couponTotalPrice.setText(String.valueOf(dailyConsumptionMap.get(PaymentMethod.COUPON)));
+        int openConsumptionValue = dailyConsumptionService.getOpenConsumption();
+        openConsumption.setText(String.valueOf(openConsumptionValue));
+        int totalPriceInt  = dailyConsumptionMap.values().stream().mapToInt(Integer::intValue).sum() + openConsumptionValue;
         dailySummaryTotalPrice.setText(String.valueOf(totalPriceInt));
         getSoldProductsAndRefreshTable();
     }
 
     @FXML
     public void onPrintDailyConsumption(Event event) {
-        retailService.printAggregateConsumption(restaurantView, startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
+        dailyConsumptionService.printAggregatedConsumption(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
     }
 }

@@ -38,10 +38,6 @@ public interface RetailService {
 
     List<LocalDateTime> getClosureTimes(LocalDate startDate, LocalDate endDate);
 
-    void printAggregateConsumption(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate);
-
-    ReceiptView getAggregatedReceipt(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate);
-
     void setOrderDelivered(TableView tableView, boolean delivered);
 
     void setOrderDeliveredTime(TableView tableView, LocalDateTime deliveredTime);

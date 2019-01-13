@@ -130,17 +130,6 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     }
 
     @Override
-    public void printAggregateConsumption(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate) {
-        dailyConsumptionService.printAggregatedConsumption(startDate, endDate);
-        logger.info("The aggregated consumption was printed between: " + startDate + " - " + endDate + ", for restaurant" + restaurantView);
-    }
-
-    @Override
-    public ReceiptView getAggregatedReceipt(RestaurantView restaurantView, LocalDate startDate, LocalDate endDate) {
-        return dailyConsumptionService.getAggregatedReceipt(startDate, endDate);
-    }
-
-    @Override
     public void setOrderDelivered(TableView tableView, boolean delivered) {
         receiptService.setOrderDelivered(tableView, delivered);
     }

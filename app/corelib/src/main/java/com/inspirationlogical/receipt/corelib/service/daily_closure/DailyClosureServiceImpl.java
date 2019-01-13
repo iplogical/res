@@ -18,9 +18,6 @@ import java.util.stream.Collectors;
 import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
 import static java.time.LocalDateTime.now;
 
-/**
- * Created by TheDagi on 2017. 04. 17..
- */
 @Service
 public class DailyClosureServiceImpl implements DailyClosureService{
 
