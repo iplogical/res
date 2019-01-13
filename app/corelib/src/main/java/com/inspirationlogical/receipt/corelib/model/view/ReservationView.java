@@ -1,24 +1,32 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-/**
- * Created by TheDagi on 2017. 04. 26..
- */
-public interface ReservationView {
-    String getName();
+import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
+import lombok.Getter;
+import lombok.ToString;
 
-    String getTableNumber();
+@Getter
+@ToString
+public class ReservationView {
 
-    String getGuestCount();
+    private long id;
+    private String name;
+    private String tableNumber;
+    private String guestCount;
+    private String note;
+    private String phoneNumber;
+    private String date;
+    private String startTime;
+    private String endTime;
 
-    String getNote();
-
-    String getPhoneNumber();
-
-    String getDate();
-
-    String getStartTime();
-
-    String getEndTime();
-
-    long getId();
+    public ReservationView(Reservation reservation) {
+        id = reservation.getId();
+        name = reservation.getName();
+        tableNumber = String.valueOf(reservation.getTableNumber());
+        guestCount = String.valueOf(reservation.getGuestCount());
+        note = reservation.getNote();
+        phoneNumber = reservation.getPhoneNumber();
+        date = reservation.getDate().toString();
+        startTime = reservation.getStartTime().toLocalTime().toString();
+        endTime = reservation.getEndTime().toLocalTime().toString();
+    }
 }
