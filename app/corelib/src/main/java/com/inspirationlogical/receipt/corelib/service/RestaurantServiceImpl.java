@@ -63,7 +63,7 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
         if (restaurants.isEmpty()) {
             throw new RestaurantNotFoundException();
         }
-        return new RestaurantViewImpl(restaurants.get(0), getConsumptionOfTheDay());
+        return new RestaurantView(restaurants.get(0), getConsumptionOfTheDay());
     }
 
     private Map<PaymentMethod, Integer> getConsumptionOfTheDay() {
@@ -112,7 +112,6 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     public TableView addTable(RestaurantView restaurant, TableParams tableParams) {
         logger.info("A table was added: " + tableParams);
         return tableServiceConfig.addTable(restaurant, tableParams);
-
     }
 
     @Override

@@ -1,18 +1,27 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
+import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import lombok.Getter;
 
-/**
- * Created by Bálint on 2017.03.13..
- */
-public interface RestaurantView {
+import java.util.Map;
 
-    long getRestaurantId();
+@Getter
+public class RestaurantView {
 
-    String getRestaurantName();
+    private long restaurantId;
+    private String restaurantName;
+    private String companyName;
+    private Map<PaymentMethod, Integer> consumptionOfTheDay;
 
-    String getCompanyName();
+    public RestaurantView(Restaurant restaurant, Map<PaymentMethod, Integer> consumptionOfTheDay) {
+        restaurantId = restaurant.getId();
+        restaurantName = restaurant.getRestaurantName();;
+        companyName = restaurant.getCompanyName();
+        this.consumptionOfTheDay = consumptionOfTheDay;
+    }
 
-    int getConsumptionOfTheDay(PaymentMethod paymentMethod);
-
+    public int getConsumptionOfTheDay(PaymentMethod paymentMethod) {
+        return consumptionOfTheDay.get(paymentMethod);
+    }
 }
