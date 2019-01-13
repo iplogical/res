@@ -5,7 +5,6 @@ import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
 import com.inspirationlogical.receipt.corelib.service.vat.VATService;
@@ -48,7 +47,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
     public ReceiptView getAggregatedReceipt(LocalDate startTime, LocalDate endTime) {
         List<LocalDateTime> closureTimes = dailyClosureRepository.getClosureTimes(startTime, endTime);
         Receipt aggregatedReceipt = createReceiptOfAggregatedConsumption(closureTimes.get(0), closureTimes.get(1));
-        return new ReceiptViewImpl(aggregatedReceipt);
+        return new ReceiptView(aggregatedReceipt);
     }
 
     private Receipt createReceiptOfAggregatedConsumption(LocalDateTime startTime, LocalDateTime endTime) {

@@ -97,6 +97,6 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public List<ReceiptView> getReceipts(LocalDate startDate, LocalDate endDate) {
         return receiptRepository.getReceiptsByClosureTime(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay())
-                .stream().map(ReceiptViewImpl::new).collect(toList());
+                .stream().map(ReceiptView::new).collect(toList());
     }
 }

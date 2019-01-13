@@ -4,7 +4,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRecordCreatedRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRecordRepository;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
@@ -122,7 +122,7 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
 
     private ReceiptRecordView decreaseSoldQuantity(ReceiptRecord receiptRecord, double quantity) {
         receiptRecord.setSoldQuantity(receiptRecord.getSoldQuantity() - quantity);
-        receiptService.setSumValues(new ReceiptViewImpl(receiptRecord.getOwner()));
+        receiptService.setSumValues(new ReceiptView(receiptRecord.getOwner()));
         receiptRecordRepository.save(receiptRecord);
         return new ReceiptRecordView(receiptRecord);
     }
@@ -132,7 +132,7 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
         owner.getRecords().remove(receiptRecord);
         receiptRecord.setProduct(null);
         receiptRecord.setOwner(null);
-        receiptService.setSumValues(new ReceiptViewImpl(receiptRecord.getOwner()));
+        receiptService.setSumValues(new ReceiptView(receiptRecord.getOwner()));
         receiptRecordRepository.delete(receiptRecord);
         return null;
     }
