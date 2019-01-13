@@ -6,14 +6,12 @@ import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
 import com.inspirationlogical.receipt.corelib.model.view.PriceModifierView;
-import com.inspirationlogical.receipt.corelib.model.view.PriceModifierViewImpl;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.repository.PriceModifierRepository;
 import com.inspirationlogical.receipt.corelib.repository.ProductCategoryRepository;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -34,7 +32,7 @@ public class PriceModifierServiceImpl implements PriceModifierService {
 
     @Override
     public List<PriceModifierView> getPriceModifiers() {
-        return priceModifierRepository.findAll().stream().map(PriceModifierViewImpl::new).collect(Collectors.toList());
+        return priceModifierRepository.findAll().stream().map(PriceModifierView::new).collect(Collectors.toList());
     }
 
     @Override

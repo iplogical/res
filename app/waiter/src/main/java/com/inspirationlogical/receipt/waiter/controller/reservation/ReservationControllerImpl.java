@@ -6,7 +6,6 @@ import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
-import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.service.reservation.ReservationService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
@@ -99,8 +98,6 @@ public class ReservationControllerImpl extends AbstractController
 
     private RestaurantService restaurantService;
 
-//    private RetailService retailService;
-
     private ReservationService reservationService;
 
     private RestaurantController restaurantController;
@@ -117,12 +114,10 @@ public class ReservationControllerImpl extends AbstractController
 
     @Autowired
     public ReservationControllerImpl(RestaurantService restaurantService,
-                                     RetailService retailService,
                                      ReservationService reservationService,
                                      RestaurantController restaurantController,
                                      TableConfigurationController tableConfigurationController) {
         this.restaurantService = restaurantService;
-//        this.retailService = retailService;
         this.reservationService = reservationService;
         this.restaurantController = restaurantController;
         this.tableConfigurationController = tableConfigurationController;

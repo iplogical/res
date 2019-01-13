@@ -1,20 +1,30 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
+import com.inspirationlogical.receipt.corelib.model.entity.Stock;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.time.LocalDateTime;
 
-public interface StockView {
+@Getter
+@ToString
+public class StockView {
 
-    ProductView getProduct();
+    private ProductView product;
+    private double initialQuantity;
+    private double soldQuantity;
+    private double purchasedQuantity;
+    private double inventoryQuantity;
+    private double disposedQuantity;
+    private LocalDateTime date;
 
-    double getInitialQuantity();
-
-    double getSoldQuantity();
-
-    double getPurchasedQuantity();
-
-    double getInventoryQuantity();
-
-    double getDisposedQuantity();
-
-    LocalDateTime getDate();
+    public StockView(Stock stock) {
+        product = new ProductView(stock.getOwner());
+        initialQuantity = stock.getInitialQuantity();
+        soldQuantity = stock.getSoldQuantity();
+        purchasedQuantity = stock.getPurchasedQuantity();
+        inventoryQuantity = stock.getInventoryQuantity();
+        disposedQuantity = stock.getDisposedQuantity();
+        date = stock.getDate();
+    }
 }

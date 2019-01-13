@@ -5,13 +5,11 @@ import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
-import com.inspirationlogical.receipt.corelib.model.view.RecipeViewImpl;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
 import com.inspirationlogical.receipt.corelib.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -106,7 +104,7 @@ public class RecipeServiceImpl {
 
     List<RecipeView> getRecipeComponents(ProductView productView) {
         Product product = productRepository.getOne(productView.getId());
-        return recipeRepository.findAllByOwner(product).stream().map(RecipeViewImpl::new).collect(toList());
+        return recipeRepository.findAllByOwner(product).stream().map(RecipeView::new).collect(toList());
     }
 
 }

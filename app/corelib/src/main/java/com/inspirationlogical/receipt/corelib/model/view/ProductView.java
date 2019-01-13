@@ -50,7 +50,7 @@ public class ProductView implements AbstractView {
 
     private List<RecipeView> initRecipeViews(Product product) {
         return product.getRecipes().stream()
-                .map(RecipeViewImpl::new)
+                .map(RecipeView::new)
                 .collect(Collectors.toList());
     }
 }

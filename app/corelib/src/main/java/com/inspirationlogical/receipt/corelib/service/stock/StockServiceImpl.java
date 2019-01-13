@@ -7,7 +7,6 @@ import com.inspirationlogical.receipt.corelib.model.entity.Stock;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.StockView;
-import com.inspirationlogical.receipt.corelib.model.view.StockViewImpl;
 import com.inspirationlogical.receipt.corelib.repository.RecipeRepository;
 import com.inspirationlogical.receipt.corelib.repository.StockRepository;
 import com.inspirationlogical.receipt.corelib.service.product.ProductService;
@@ -37,7 +36,7 @@ public class StockServiceImpl implements StockService {
     public List<StockView> getItems() {
         return productService.getStorableProducts().stream()
                 .map(this::getLatestItemByProduct)
-                .map(StockViewImpl::new)
+                .map(StockView::new)
                 .collect(toList());
     }
 
