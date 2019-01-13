@@ -5,7 +5,6 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
 import com.inspirationlogical.receipt.corelib.repository.ProductCategoryRepository;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class EntityViewsImpl implements EntityViews {
 
     @Override
     public void initEntityViews() {
-        productViews = productRepository.findAllByStatus(ProductStatus.ACTIVE).stream().map(ProductViewImpl::new).collect(Collectors.toList());
+        productViews = productRepository.findAllByStatus(ProductStatus.ACTIVE).stream().map(ProductView::new).collect(Collectors.toList());
         List<ProductCategory> categories = productCategoryRepository.findAllByStatus(ProductStatus.ACTIVE);
         categoryViews = categories.stream().map(ProductCategoryViewImpl::new).collect(Collectors.toList());
     }

@@ -19,7 +19,7 @@ public class RecipeViewImpl implements RecipeView {
 
     @Override
     public ProductView getComponent() {
-        return new ProductViewImpl(component);
+        return new ProductView(component);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class ProductCategoryViewImpl implements ProductCategoryView {
 
     private ProductView initProduct(ProductCategory productCategory) {
         if(productCategory.getProduct() != null) {
-            return new ProductViewImpl(productCategory.getProduct());
+            return new ProductView(productCategory.getProduct());
         }
         return null;
     }

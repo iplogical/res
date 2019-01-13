@@ -4,7 +4,6 @@ import com.inspirationlogical.receipt.corelib.exception.RootCategoryNotFoundExce
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
 import com.inspirationlogical.receipt.corelib.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -118,6 +117,6 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
 
     @Override
     public List<ProductView> getStorableProducts() {
-        return productService.getStorableProducts().stream().map(ProductViewImpl::new).collect(toList());
+        return productService.getStorableProducts().stream().map(ProductView::new).collect(toList());
     }
 }

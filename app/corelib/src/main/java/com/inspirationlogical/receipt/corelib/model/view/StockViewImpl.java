@@ -19,7 +19,7 @@ public class StockViewImpl implements StockView {
     private LocalDateTime date;
 
     public StockViewImpl(Stock stock) {
-        product = new ProductViewImpl(stock.getOwner());
+        product = new ProductView(stock.getOwner());
         initialQuantity = stock.getInitialQuantity();
         soldQuantity = stock.getSoldQuantity();
         purchasedQuantity = stock.getPurchasedQuantity();

@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.inspirationlogical.receipt.corelib.model.view.ProductViewImpl;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 
@@ -37,7 +37,7 @@ public class RetailServiceTest {
     private ReceiptAdapterBase receiptAdapter;
 
     @Mock
-    private ProductViewImpl productView;
+    private ProductView productView;
 
     @Mock
     private Collection<ReceiptRecordView> records;
