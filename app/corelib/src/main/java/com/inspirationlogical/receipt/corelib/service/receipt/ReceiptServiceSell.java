@@ -10,7 +10,6 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
@@ -148,14 +147,14 @@ public class ReceiptServiceSell {
             ReceiptRecord record = records.get(0).getOwner();
             record.setSoldQuantity(record.getSoldQuantity() + 1);
             record.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(record).build());
-            return new ReceiptRecordViewImpl(record);
+            return new ReceiptRecordView(record);
         }
         ReceiptRecord record = buildReceiptRecord(quantity, gameFeeProduct);
         addCreatedListEntries(quantity, record);
         record.setOwner(openReceipt);
         openReceipt.getRecords().add(record);
         receiptRepository.save(openReceipt);
-        return new ReceiptRecordViewImpl(record);
+        return new ReceiptRecordView(record);
     }
 
     private Product getGameFeeProduct() {

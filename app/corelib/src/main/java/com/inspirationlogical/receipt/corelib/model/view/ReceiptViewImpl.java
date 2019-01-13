@@ -57,7 +57,7 @@ public class ReceiptViewImpl implements ReceiptView {
             return Collections.emptyList();
         }
         return receipt.getRecords().stream()
-                .map(ReceiptRecordViewImpl::new)
+                .map(ReceiptRecordView::new)
                 .collect(toList());
     }
 

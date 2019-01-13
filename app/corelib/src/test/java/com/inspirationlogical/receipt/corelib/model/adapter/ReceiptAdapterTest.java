@@ -8,7 +8,6 @@ import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordViewImpl;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
@@ -227,9 +226,9 @@ public class ReceiptAdapterTest extends TestBase {
 
     @Test
     public void testPaySelective() {
-        ReceiptRecordView receiptRecordViewTwo = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordTwo()));
-        ReceiptRecordView receiptRecordViewFive = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordThree()));
-        ReceiptRecordView receiptRecordViewSix = new ReceiptRecordViewImpl(new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordFour()));
+        ReceiptRecordView receiptRecordViewTwo = new ReceiptRecordView(new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordTwo()));
+        ReceiptRecordView receiptRecordViewFive = new ReceiptRecordView(new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordThree()));
+        ReceiptRecordView receiptRecordViewSix = new ReceiptRecordView(new ReceiptRecordAdapter(schema.getReceiptSaleOneRecordFour()));
         List<ReceiptRecordView> recordsToPay = new ArrayList<>(Arrays.asList(receiptRecordViewTwo, receiptRecordViewFive, receiptRecordViewSix));
         receiptSaleOne.paySelective(recordsToPay, paymentParams);
         // 1 x Soproni

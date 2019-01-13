@@ -38,7 +38,7 @@ public class PersistenceJPAConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/ReceiptActual");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/receipt_copy");
         dataSource.setUsername("postgres");
         dataSource.setPassword("test");
         return dataSource;
@@ -46,7 +46,7 @@ public class PersistenceJPAConfig {
 
     private Map<String, String> additionalProperties() {
         Map<String, String> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("hibernate.hbm2ddl.auto", "none");
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL94Dialect");
 //        properties.setProperty("hibernate.c3p0.min_size", "5");
 //        properties.setProperty("hibernate.c3p0.max_size", "20");
