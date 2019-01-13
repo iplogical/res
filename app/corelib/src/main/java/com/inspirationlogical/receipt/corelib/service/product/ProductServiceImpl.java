@@ -98,7 +98,7 @@ public class ProductServiceImpl implements ProductService {
 
     private boolean isProductNameAlreadyUsed(Product originalProduct, Product updatedProduct) {
         Product product = productRepository.findByLongName(updatedProduct.getLongName());
-        return !(product == null || product.getId().equals(originalProduct.getId()));
+        return !(product == null || product.getId() == originalProduct.getId());
     }
 
     private void setProductParameters(Product originalProduct, Product updatedProduct) {

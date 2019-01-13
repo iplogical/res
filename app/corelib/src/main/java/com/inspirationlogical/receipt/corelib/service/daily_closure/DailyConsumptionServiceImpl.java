@@ -12,7 +12,6 @@ import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -52,7 +51,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
         return new ReceiptViewImpl(aggregatedReceipt);
     }
 
-    Receipt createReceiptOfAggregatedConsumption(LocalDateTime startTime, LocalDateTime endTime) {
+    private Receipt createReceiptOfAggregatedConsumption(LocalDateTime startTime, LocalDateTime endTime) {
         List<Receipt> receipts = receiptRepository.getReceiptsByClosureTime(startTime, endTime);
         Receipt aggregatedReceipt = buildAggregatedReceipt(startTime);
         Map<PaymentMethod, Integer> incomesByPaymentMethod = initIncomes();
@@ -153,13 +152,14 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
     }
 
     private void addIncomesAsReceiptRecord(Receipt aggregatedReceipt, Map<PaymentMethod, Integer> salePrices) {
-        aggregatedReceipt.getRecords().add(buildIncomeReceiptRecord(PaymentMethod.CASH, salePrices.get(PaymentMethod.CASH)));
-        aggregatedReceipt.getRecords().add(buildIncomeReceiptRecord(PaymentMethod.CREDIT_CARD, salePrices.get(PaymentMethod.CREDIT_CARD)));
-        aggregatedReceipt.getRecords().add(buildIncomeReceiptRecord(PaymentMethod.COUPON, salePrices.get(PaymentMethod.COUPON)));
+        aggregatedReceipt.getRecords().add(buildIncomeReceiptRecord(aggregatedReceipt, PaymentMethod.CASH, salePrices.get(PaymentMethod.CASH)));
+        aggregatedReceipt.getRecords().add(buildIncomeReceiptRecord(aggregatedReceipt, PaymentMethod.CREDIT_CARD, salePrices.get(PaymentMethod.CREDIT_CARD)));
+        aggregatedReceipt.getRecords().add(buildIncomeReceiptRecord(aggregatedReceipt, PaymentMethod.COUPON, salePrices.get(PaymentMethod.COUPON)));
     }
 
-    private ReceiptRecord buildIncomeReceiptRecord(PaymentMethod paymentMethod, int salePrice) {
+    private ReceiptRecord buildIncomeReceiptRecord(Receipt aggregatedReceipt, PaymentMethod paymentMethod, int salePrice) {
         return ReceiptRecord.builder()
+                .owner(aggregatedReceipt)
                 .product(null)
                 .createdList(new ArrayList<>())
                 .type(ReceiptRecordType.HERE)
@@ -173,14 +173,15 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
     }
 
     private void addDiscountsAsReceiptRecord(Receipt aggregatedReceipt, Map<DiscountType, Integer> totalDiscounts) {
-        aggregatedReceipt.getRecords().add(buildDiscountReceiptRecord(DiscountType.PRODUCT, totalDiscounts.get(DiscountType.PRODUCT)));
-        aggregatedReceipt.getRecords().add(buildDiscountReceiptRecord(DiscountType.TABLE, totalDiscounts.get(DiscountType.TABLE)));
-        aggregatedReceipt.getRecords().add(buildDiscountReceiptRecord(DiscountType.TOTAL,
-                totalDiscounts.get(DiscountType.PRODUCT) + totalDiscounts.get(DiscountType.TABLE)));
+        aggregatedReceipt.getRecords().add(buildDiscountReceiptRecord(aggregatedReceipt, DiscountType.PRODUCT, totalDiscounts.get(DiscountType.PRODUCT)));
+        aggregatedReceipt.getRecords().add(buildDiscountReceiptRecord(aggregatedReceipt, DiscountType.TABLE, totalDiscounts.get(DiscountType.TABLE)));
+        aggregatedReceipt.getRecords().add(buildDiscountReceiptRecord(aggregatedReceipt,
+                DiscountType.TOTAL, totalDiscounts.get(DiscountType.PRODUCT) + totalDiscounts.get(DiscountType.TABLE)));
     }
 
-    private ReceiptRecord buildDiscountReceiptRecord(DiscountType type, Integer totalDiscount) {
+    private ReceiptRecord buildDiscountReceiptRecord(Receipt aggregatedReceipt, DiscountType type, Integer totalDiscount) {
         return ReceiptRecord.builder()
+                .owner(aggregatedReceipt)
                 .product(null)
                 .createdList(new ArrayList<>())
                 .type(ReceiptRecordType.HERE)

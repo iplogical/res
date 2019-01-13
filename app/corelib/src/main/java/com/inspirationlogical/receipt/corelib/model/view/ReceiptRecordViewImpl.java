@@ -49,7 +49,7 @@ public class ReceiptRecordViewImpl implements ReceiptRecordView {
         discountPercent = receiptRecord.getDiscountPercent();
         vat = receiptRecord.getVAT();
         created = initCreated(receiptRecord);
-        isPartiallyPayable = receiptRecord.getProduct().getType().equals(ProductType.PARTIALLY_PAYABLE);
+        isPartiallyPayable = receiptRecord.getProduct() != null && receiptRecord.getProduct().getType().equals(ProductType.PARTIALLY_PAYABLE);
         ownerStatus = receiptRecord.getOwner().getStatus();
     }
 

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
@@ -27,10 +29,21 @@ public class DailyClosureServiceImpl implements DailyClosureService{
 
     @Override
     public List<LocalDateTime> getClosureTimes(LocalDate startDate, LocalDate endDate) {
-        List<DailyClosure> closureTimes = new ArrayList<>();
-        closureTimes.add(dailyClosureRepository.getDailyClosureBeforeDate(startDate.atTime(5, 0)));
-        closureTimes.add(dailyClosureRepository.getDailyClosureAfterDate(endDate.atTime(21, 0)));
-        return closureTimes.stream().map(DailyClosure::getClosureTime).collect(Collectors.toList());
+        LocalDateTime startClosureTime = getStartClosureTime(startDate);
+        LocalDateTime endClosureTime = getEndClosureTime(endDate);
+        return Arrays.asList(startClosureTime, endClosureTime);
+    }
+
+    private LocalDateTime getStartClosureTime(LocalDate startDate) {
+        LocalDateTime startTime = startDate.atTime(5, 0);
+        Optional<DailyClosure> startDailyClosure = dailyClosureRepository.findTopByClosureTimeBeforeOrderByClosureTimeDesc(startTime);
+        return startDailyClosure.map(DailyClosure::getClosureTime).orElse(startTime);
+    }
+
+    private LocalDateTime getEndClosureTime(LocalDate endDate) {
+        LocalDateTime endTime = endDate.atTime(21, 0);
+        Optional<DailyClosure> endDailyClosure = dailyClosureRepository.findTopByClosureTimeAfterOrderByClosureTimeAsc(endTime);
+        return endDailyClosure.map(DailyClosure::getClosureTime).orElse(endTime.plusDays(1));
     }
 
     @Override

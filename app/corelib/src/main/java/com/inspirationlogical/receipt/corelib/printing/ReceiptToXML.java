@@ -283,7 +283,7 @@ public class ReceiptToXML {
         setOptionalString(footer::setGreet, restaurant.getReceiptGreet());
         GregorianCalendar gc = GregorianCalendar.from(receipt.getClosureTime().atZone(ZoneId.systemDefault()));
         footer.setDatetime(new XMLGregorianCalendarImpl(gc));
-        footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag") + ":" + receipt.getId().toString());
+        footer.setReceiptIdTag(Resources.PRINTER.getString("ReceipIDTag") + ":" + receipt.getId());
         footer.setVendorInfo(Resources.PRINTER.getString("VendorInfo"));
         return footer;
     }

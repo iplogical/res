@@ -96,7 +96,7 @@ create table daily_closure
 	sumsalenetpricecreditcard integer not null,
 	sumsalenetpricetotal integer not null,
 	restaurant_id bigint not null
-		constraint fkak9gguivmhaf0nugbd2o9n6fj
+		constraint daily_closure_restaurant_fkey
 			references restaurant
 );
 
