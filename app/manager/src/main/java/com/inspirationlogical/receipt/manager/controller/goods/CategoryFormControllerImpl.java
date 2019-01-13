@@ -133,7 +133,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
         type.setValue(converterAll.fromString(goodsTableViewModel.getName()).getType());
         type.setDisable(true);
         status.setValue(status.getConverter().fromString(goodsTableViewModel.getStatus()));
-        String parentName = converterAll.fromString(goodsTableViewModel.getName()).getParent().getName();
+        String parentName = converterAll.fromString(goodsTableViewModel.getName()).getParent().getCategoryName();
         parent.setValue(converterParent.fromString(parentName));
         parent.setDisable(true);
     }

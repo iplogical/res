@@ -151,7 +151,7 @@ public class ProductsAndCategoriesControllerImpl implements ProductsAndCategorie
 
     private void setSelectedCategory() {
         categoryControllers.stream()
-                .filter(controller -> controller.getView().getName().equals(selectedCategory.getName()))
+                .filter(controller -> controller.getView().getCategoryName().equals(selectedCategory.getCategoryName()))
                 .forEach(CategoryController::select);
     }
 

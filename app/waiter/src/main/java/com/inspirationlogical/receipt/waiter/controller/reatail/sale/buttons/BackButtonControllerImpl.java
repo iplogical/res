@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
 
+import static com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView.getBackButtonCategoryView;
+
 @FXMLController
 @Scope("prototype")
 public class BackButtonControllerImpl implements CategoryController {
@@ -37,7 +39,7 @@ public class BackButtonControllerImpl implements CategoryController {
 
     @PostConstruct
     private void init() {
-        view = (ProductCategoryView) () -> WaiterResources.WAITER.getString("SaleView.BackButton");
+        view = getBackButtonCategoryView(WaiterResources.WAITER.getString("SaleView.BackButton"));
         productsAndCategoriesController.setCategoryControllerBeingDrawn(this);
     }
 

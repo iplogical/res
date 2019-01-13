@@ -1,21 +1,50 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
+import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
+import lombok.Getter;
+import lombok.ToString;
 
-public interface ProductCategoryView extends AbstractView {
+@Getter
+@ToString
+public class ProductCategoryView implements AbstractView {
 
-    default long getId() {return -1L;}
+    public static ProductCategoryView getBackButtonCategoryView(String backButtonText) {
+        return new ProductCategoryView(backButtonText);
+    }
 
-    default String getCategoryName() { return null;}
+    private long id;
+    private String categoryName;
+    private int orderNumber;
+    private ProductCategoryView parent;
+    private ProductView product;
+    private ProductCategoryType type;
+    private ProductStatus status;
 
-    default ProductCategoryView getParent() { return null;}
+    private ProductCategoryView(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
-    default ProductView getProduct() { return null;}
+    public ProductCategoryView(ProductCategory productCategory) {
+        id = productCategory.getId();
+        categoryName = productCategory.getName();
+        orderNumber = productCategory.getOrderNumber();
+        parent = productCategory.getParent() == null ? null : new ProductCategoryView(productCategory.getParent());
+        product = initProduct(productCategory);
+        type = productCategory.getType();
+        status = productCategory.getStatus();
+    }
 
-    default ProductCategoryType getType() { return null;}
+    private ProductView initProduct(ProductCategory productCategory) {
+        if(productCategory.getProduct() != null) {
+            return new ProductView(productCategory.getProduct());
+        }
+        return null;
+    }
 
-    default ProductStatus getStatus() { return null;}
-
-    default int getOrderNumber() { return 0;}
+    @Override
+    public String getName() {
+        return categoryName;
+    }
 }

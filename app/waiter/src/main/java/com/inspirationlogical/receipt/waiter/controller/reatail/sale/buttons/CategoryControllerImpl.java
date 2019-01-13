@@ -72,6 +72,6 @@ public class CategoryControllerImpl implements CategoryController {
 
     @Override
     public void updateNode() {
-        categoryName.setText(view.getName());
+        categoryName.setText(view.getCategoryName());
     }
 }

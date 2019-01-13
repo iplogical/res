@@ -3,7 +3,6 @@ package com.inspirationlogical.receipt.corelib.service;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryViewImpl;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.repository.ProductCategoryRepository;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
@@ -30,7 +29,7 @@ public class EntityViewsImpl implements EntityViews {
     public void initEntityViews() {
         productViews = productRepository.findAllByStatus(ProductStatus.ACTIVE).stream().map(ProductView::new).collect(Collectors.toList());
         List<ProductCategory> categories = productCategoryRepository.findAllByStatus(ProductStatus.ACTIVE);
-        categoryViews = categories.stream().map(ProductCategoryViewImpl::new).collect(Collectors.toList());
+        categoryViews = categories.stream().map(ProductCategoryView::new).collect(Collectors.toList());
     }
 
     @Override
