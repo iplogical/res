@@ -9,9 +9,6 @@ import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.*;
 
-/**
- * Created by TheDagi on 2017. 07. 17..
- */
 public class SearchProduct implements Search {
 
     private List<ProductView> allProducts;

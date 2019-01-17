@@ -2,29 +2,29 @@ package com.inspirationlogical.receipt.waiter.controller.reservation;
 
 import javafx.beans.value.ChangeListener;
 import jfxtras.scene.control.CalendarPicker;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.ws.rs.GET;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.function.Function;
 
 public class CalendarPickerWrapper {
 
-    private @Getter CalendarPicker date;
-    private @Getter LocalDate selectedDate;
-    private @Setter Runnable onChange;
+    private @Getter
+    CalendarPicker date;
+    private @Getter
+    LocalDate selectedDate;
+    private @Setter
+    Runnable onChange;
 
     public static CalendarPickerWrapper getInstance() {
         CalendarPickerWrapper instance = new CalendarPickerWrapper();
         instance.initDate();
         instance.addDateListener((observable, oldValue, newValue) -> {
-            if(newValue == null) {
+            if (newValue == null) {
                 return;
             }
             instance.selectedDate = LocalDateTime.ofInstant(newValue.getTime().toInstant(), ZoneId.systemDefault()).toLocalDate();
@@ -42,7 +42,8 @@ public class CalendarPickerWrapper {
         selectedDate = LocalDate.now();
         date.setLocale(Locale.forLanguageTag("hu-HU"));
         date.setPrefWidth(400);
-        onChange = () -> {};
+        onChange = () -> {
+        };
     }
 
     private void addDateListener(ChangeListener<? super Calendar> listener) {

@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.model.adapter;
 
 import com.inspirationlogical.receipt.corelib.model.TestBase;
-import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.service.reservation.ReservationServiceImpl;
 import org.junit.Before;
 import org.junit.Test;

@@ -19,6 +19,7 @@ app/.project
 app/bin/*
 app/**/build/*
 app/gradleBuild/*
+target/
 
 # IntelliJ IDEA Files #
 app/.idea/*

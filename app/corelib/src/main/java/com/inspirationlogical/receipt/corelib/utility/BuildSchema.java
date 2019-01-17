@@ -39,8 +39,6 @@ import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
 import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.security.Role;
-import com.inspirationlogical.receipt.corelib.security.model.entity.AuthUser;
 
 import lombok.Getter;
 
@@ -1204,9 +1202,6 @@ public class BuildSchema  {
     private @Getter DailyClosure dailyClosureOne;
     private @Getter DailyClosure dailyClosureTwo;
 
-    private @Getter AuthUser admin;
-    private @Getter AuthUser user;
-
     public BuildSchema() {
         entityManager = EntityManagerProvider.getEntityManager();
     }
@@ -1258,12 +1253,6 @@ public class BuildSchema  {
 //        buildReservations();
         buildRestaurant();
         buildDailyClosures();
-        buildAuthUsers();
-    }
-
-    private void buildAuthUsers() {
-        buildAdmin();
-        buildUser();
     }
 
     private void buildDailyClosures() {
@@ -1277,9 +1266,7 @@ public class BuildSchema  {
         productsAndCategories();
         productsAndRecipes();
         vatSerieAndVatValues();
-        restaurantAndTables();
-//        tablesAndReservations();
-        tablesAndReceipt();
+        restaurantAndTables();tablesAndReceipt();
         receiptsAndVatSerie();
         restaurantAndDailyClosures();
     }
@@ -1288,8 +1275,6 @@ public class BuildSchema  {
         GuardedTransaction.run(() -> entityManager.persist(restaurant));
         GuardedTransaction.run(() -> entityManager.persist(root));
         GuardedTransaction.run(() -> entityManager.persist(vatSerie));
-        GuardedTransaction.run(() -> entityManager.persist(admin));
-        GuardedTransaction.run(() -> entityManager.persist(user));
         GuardedTransaction.run(this::persistReceipts);
         GuardedTransaction.run(this::persistRecipes);
     }
@@ -10680,22 +10665,6 @@ public class BuildSchema  {
                 .receiptAverage(0)
                 .numberOfReceipts(0)
                 .discount(0)
-                .build();
-    }
-
-    private void buildAdmin() {
-        admin = AuthUser.builder()
-                .username("gameup")
-                .password("b2gate")
-                .role(Role.ADMIN)
-                .build();
-    }
-
-    private void buildUser() {
-        user = AuthUser.builder()
-                .username("user")
-                .password("userb2gate")
-                .role(Role.USER)
                 .build();
     }
 

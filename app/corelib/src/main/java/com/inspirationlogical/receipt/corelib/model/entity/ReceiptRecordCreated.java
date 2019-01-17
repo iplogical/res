@@ -1,12 +1,10 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import com.inspirationlogical.receipt.corelib.model.annotations.ValidProduct;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -24,7 +22,6 @@ public @Data class ReceiptRecordCreated extends AbstractEntity {
 
     public static final String GET_TEST_RECEIPT_RECORDS_CREATED = "ReceiptRecordCreated.Test";
 
-    @NotNull
     @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST ,CascadeType.REFRESH})
     @JoinColumn(name = "RECEIPT_RECORD_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private ReceiptRecord owner;
