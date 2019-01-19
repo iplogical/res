@@ -6,7 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptAdapterListeners;
+import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptCloseListeners;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
@@ -37,6 +37,9 @@ public class ReceiptServicePay {
     @Autowired
     private VATService vatService;
 
+    @Autowired
+    ReceiptCloseListeners receiptCloseListeners;
+
     public interface Listener{
         void onClose(Receipt receipt);
     }
@@ -54,9 +57,9 @@ public class ReceiptServicePay {
         receipt.setUserCode(paymentParams.getUserCode());
         receipt.setPaymentMethod(paymentParams.getPaymentMethod());
         applyDiscountOnSalePrices(receipt);
-        ReceiptAdapterListeners.getAllListeners().forEach((l) -> {l.onClose(receipt);});
+        receiptCloseListeners.getAllListeners().forEach((listener) -> listener.onClose(receipt));
         if(paymentParams.isDoublePrint()) {
-            ReceiptAdapterListeners.getPrinterListener().onClose(receipt);
+            receiptCloseListeners.getPrinterListener().onClose(receipt);
         }
         receiptRepository.save(receipt);
     }

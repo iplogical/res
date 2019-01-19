@@ -8,14 +8,13 @@ import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptServicePay;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Ferenc on 2017. 03. 10..
- */
+@Component
 public class ReceiptPrinter implements ReceiptServicePay.Listener {
 
     private final static Logger logger = LoggerFactory.getLogger(ReceiptPrinter.class);
