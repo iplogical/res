@@ -72,9 +72,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     ToggleGroup cancellationTypeToggleGroup;
 
     @FXML
-    ToggleButton sortByClickTime;
-
-    @FXML
     TextField searchField;
 
     @FXML
@@ -216,8 +213,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private void resetToggleGroups() {
         cancellationTypeToggleGroup.selectToggle(null);
         giftProduct.setSelected(false);
-        sortByClickTime.setSelected(false);
-        sortByClickTime.requestFocus();
     }
 
     ChangeListener<Boolean> takeAwayChangeListener = (observable, oldValue, newValue) -> {
@@ -240,13 +235,5 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         SaleViewState.CancellationType type = (SaleViewState.CancellationType)cancellationTypeToggleGroup.getSelectedToggle().getUserData();
         logger.info("The cancellation type was changed to " + type.toString());
         saleViewState.setCancellationType(type);
-    };
-
-    ChangeListener<Boolean> sortByClickTimeToggleListener = (observable, oldValue, newValue) -> {
-        if(newValue) {
-            sortSoldProductByLatestClickTime();
-        } else {
-            getSoldProductsAndRefreshTable();
-        }
     };
 }

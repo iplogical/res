@@ -23,8 +23,6 @@ public class SaleControllerInitializer {
         s.productController.setCategoriesGrid(s.categoriesGrid);
         s.productController.setSubCategoriesGrid(s.subCategoriesGrid);
         s.productController.setProductsGrid(s.productsGrid);
-//        s.productController.setSaleController(s);
-//        s.productController.setViewLoader(s.getViewLoader());
     }
 
     private void initializeToggles() {
@@ -33,7 +31,6 @@ public class SaleControllerInitializer {
         s.saleViewState.setCancellationType(NONE);
         s.giftProduct.selectedProperty().addListener(s.giftProductToggleListener);
         s.cancellationTypeToggleGroup.selectedToggleProperty().addListener(s.cancellationTypeToggleListener);
-        s.sortByClickTime.selectedProperty().addListener(s.sortByClickTimeToggleListener);
         s.takeAway.selectedProperty().addListener(s.takeAwayChangeListener);
     }
 

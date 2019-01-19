@@ -197,10 +197,6 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         updateSoldTotalPrice();
     }
 
-    protected void sortSoldProductByLatestClickTime() {
-        soldProductsModel.sort(Comparator.comparing(SoldProductViewModel::getLatestClickTime));
-    }
-
     protected void updateSoldTotalPrice() {
         totalPrice.setText(SoldProductViewModel.getTotalPrice(soldProductsModel) + " Ft");
     }
