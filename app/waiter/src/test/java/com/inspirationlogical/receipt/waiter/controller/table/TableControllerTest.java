@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
-import com.inspirationlogical.receipt.waiter.controller.GuiTest;
+import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = WaiterApp.class)
-public class TableControllerTest extends GuiTest {
+public class TableControllerTest extends TestFXBase {
 
     @Test
     public void testMeepleVisible() {

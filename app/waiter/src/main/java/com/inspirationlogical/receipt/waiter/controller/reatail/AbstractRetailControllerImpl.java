@@ -167,12 +167,12 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected void updateTableSummary() {
         tableName.setText(tableView.getName());
-        tableNumber.setText(String.valueOf(tableView.getNumber()) + getGuestPerCapacity());
+        tableNumber.setText(tableView.getNumber() + getGuestPerCapacity());
         note.setText(tableView.getNote());
     }
 
      private String getGuestPerCapacity() {
-        return " (" + String.valueOf(tableView.getGuestCount()) + "/" + String.valueOf(tableView.getCapacity()) + ")";
+        return " (" + tableView.getGuestCount() + "/" + tableView.getCapacity() + ")";
     }
 
     protected ObservableList<SoldProductViewModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {

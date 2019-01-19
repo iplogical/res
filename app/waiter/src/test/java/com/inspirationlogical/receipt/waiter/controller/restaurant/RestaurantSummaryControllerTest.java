@@ -2,8 +2,6 @@ package com.inspirationlogical.receipt.waiter.controller.restaurant;
 
 
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
-import com.inspirationlogical.receipt.waiter.controller.GuiTest;
-import org.junit.Before;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -21,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RestaurantSummaryControllerTest extends GuiTest {
+public class RestaurantSummaryControllerTest extends TestFXBase {
 
     private static final String TABLE_NUMBER = RESTAURANT_TEST_TABLE;
     static final int OPEN_CONSUMPTION = 13100;

@@ -1,13 +1,9 @@
 package com.inspirationlogical.receipt.waiter.controller.restaurant;
 
-import com.inspirationlogical.receipt.waiter.controller.GuiTest;
+import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.geometry.Point2D;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.PostConstruct;
 
@@ -24,19 +20,9 @@ import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by TheDagi on 2017. 05. 09..
- */
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class RestaurantControllerTest extends GuiTest {
+public class RestaurantControllerTest extends TestFXBase {
 
-    @PostConstruct
-    public void init() throws Exception {
-        init(RestaurantFxmlView.class);
-    }
-
-    @Ignore
+//    @Ignore
     @Test
     public void launchAppWithTestDataBase() {
         while (true) {}
