@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -52,11 +54,21 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
     public void start(final Stage stage) throws Exception {
         GUIState.setStage(stage);
         GUIState.setHostServices(this.getHostServices());
+        addFullScreenListener();
         showInitialView();
+        GUIState.getStage().setFullScreen(true);
     }
 
     private void showInitialView() {
         showView(savedInitialView);
+    }
+
+    private void addFullScreenListener() {
+        GUIState.getStage().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.F11) {
+                GUIState.getStage().setFullScreen(!GUIState.getStage().isFullScreen());
+            }
+        });
     }
 
     public static void showView(final Class<? extends AbstractFxmlView> newView) {
