@@ -21,20 +21,28 @@ class Reservation extends AbstractEntity {
     @JoinColumn(name = "TABLE_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Table owner;
 
+    @Column(name = "TABLENUMBER")
     private int tableNumber;
 
+    @Column(name = "DATE")
     private LocalDate date;
 
+    @Column(name = "STARTTIME")
     private LocalDateTime startTime;
 
+    @Column(name = "ENDTIME")
     private LocalDateTime endTime;
 
+    @Column(name = "NAME")
     private String name;
 
+    @Column(name = "GUESTCOUNT")
     private int guestCount;
 
+    @Column(name = "NOTE")
     private String note;
 
+    @Column(name = "PHONENUMBER")
     private String phoneNumber;
 
     @Tolerate

@@ -25,6 +25,7 @@ public class WaiterApp extends AbstractJavaFxApplicationSupport {
     final private static Logger logger = LoggerFactory.getLogger(WaiterApp.class);
 
     public static void main(String[] args) {
+        logger.info("Starting WaiterApp...");
         launch(WaiterApp.class, RestaurantFxmlView.class, args);
     }
 

@@ -21,16 +21,22 @@ class Stock extends AbstractEntity {
     @JoinColumn(name = "PRODUCT_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Product owner;
 
+    @Column(name = "INITIALQUANTITY")
     private double initialQuantity;
 
+    @Column(name = "SOLDQUANTITY")
     private double soldQuantity;
 
+    @Column(name = "PURCHASEDQUANTITY")
     private double purchasedQuantity;
 
+    @Column(name = "INVENTORYQUANTITY")
     private double inventoryQuantity;
 
+    @Column(name = "DISPOSEDQUANTITY")
     private double disposedQuantity;
 
+    @Column(name = "DATE")
     private LocalDateTime date;
 
     @Tolerate

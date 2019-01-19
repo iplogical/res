@@ -25,28 +25,39 @@ class PriceModifier extends AbstractEntity {
     @JoinColumn(name = "PRODUCT_CATEGORY_ID")
     private ProductCategory owner;
 
+    @Column(name = "NAME")
     private String name;
 
+    @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
     private PriceModifierType type;
 
+    @Column(name = "REPEATPERIOD")
     @Enumerated(EnumType.STRING)
     private PriceModifierRepeatPeriod repeatPeriod;
 
+    @Column(name = "REPEATPERIODMULTIPLIER")
     private int repeatPeriodMultiplier;
 
+    @Column(name = "STARTDATE")
     private LocalDateTime startDate;
 
+    @Column(name = "ENDDATE")
     private LocalDateTime endDate;
 
+    @Column(name = "DAYOFWEEK")
     private DayOfWeek dayOfWeek;
 
+    @Column(name = "STARTTIME")
     private LocalTime startTime;
 
+    @Column(name = "ENDTIME")
     private LocalTime endTime;
 
+    @Column(name = "QUANTITYLIMIT")
     private int quantityLimit;
 
+    @Column(name = "DISCOUNTPERCENT")
     private double discountPercent;
 
     @Tolerate

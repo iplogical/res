@@ -21,6 +21,7 @@ class VATSerie extends AbstractEntity {
     @OneToMany(mappedBy = "serie", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private Collection<VAT> vat;
 
+    @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
     private VATStatus status;
 

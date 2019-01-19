@@ -31,12 +31,15 @@ class VAT extends AbstractEntity {
     @JoinColumn(name = "VAT_SERIE_ID")
     private VATSerie serie;
 
+    @Column(name = "NAME")
     @Enumerated(EnumType.STRING)
     private VATName name;
 
+    @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
     VATStatus status;
 
+    @Column(name = "VAT")
     private double VAT;
 
     @Tolerate
