@@ -35,8 +35,10 @@ public @Data class Recipe extends AbstractEntity {
     private Product owner;
 
     @OneToOne
+    @JoinColumn(name = "COMPONENT_PRODUCT_ID")
     private Product component;
 
+    @Column(name = "QUANTITYMULTIPLIER")
     private double quantityMultiplier;
 
     @Tolerate

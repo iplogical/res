@@ -26,6 +26,7 @@ public @Data class ReceiptRecordCreated extends AbstractEntity {
     @JoinColumn(name = "RECEIPT_RECORD_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private ReceiptRecord owner;
 
+    @Column(name = "CREATED")
     private LocalDateTime created;
 
     @Tolerate

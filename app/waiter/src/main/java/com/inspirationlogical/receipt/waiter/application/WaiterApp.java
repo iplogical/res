@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -15,6 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         "com.inspirationlogical.receipt.corelib",
         "com.inspirationlogical.receipt.waiter"
 })
+@EntityScan("com.inspirationlogical.receipt.corelib.model.entity")
 public class WaiterApp extends AbstractJavaFxApplicationSupport {
 
     @Setter

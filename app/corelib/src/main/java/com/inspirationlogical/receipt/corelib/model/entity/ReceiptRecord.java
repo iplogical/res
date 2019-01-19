@@ -30,23 +30,32 @@ class ReceiptRecord extends AbstractEntity {
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ReceiptRecordCreated> createdList;
 
+    @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
     private ReceiptRecordType type;
 
+    @Column(name = "NAME")
     private String name;
 
+    @Column(name = "SOLDQUANTITY")
     private double soldQuantity;
 
+    @Column(name = "ABSOLUTEQUANTITY")
     private double absoluteQuantity;
 
+    @Column(name = "PURCHASEPRICE")
     private int purchasePrice;
 
+    @Column(name = "SALEPRICE")
     private int salePrice;
 
+    @Column(name = "ORIGINALSALEPRICE")
     private int originalSalePrice;
 
+    @Column(name = "VAT")
     private double VAT;
 
+    @Column(name = "DISCOUNTPERCENT")
     private double discountPercent;
 
     @Tolerate

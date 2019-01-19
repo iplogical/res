@@ -25,7 +25,7 @@ class ProductCategory extends AbstractEntity {
         return new ProductCategory().toBuilder();
     }
 
-    @Column(unique = true)
+    @Column(name = "NAME", unique = true)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
@@ -46,12 +46,15 @@ class ProductCategory extends AbstractEntity {
     @JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Product product;
 
+    @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
     private ProductCategoryType type;
 
+    @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
+    @Column(name = "ORDERNUMBER")
     private int orderNumber;
 
     @Tolerate

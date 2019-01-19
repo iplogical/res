@@ -31,37 +31,52 @@ public @Data class Receipt extends AbstractEntity {
     @JoinColumn(name = "VAT_SERIE_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private VATSerie VATSerie;
 
+    @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
     private ReceiptType type;
 
+    @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
     private ReceiptStatus status;
 
+    @Column(name = "PAYMENTMETHOD")
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
+    @Column(name = "OPENTIME")
     private LocalDateTime openTime;
 
+    @Column(name = "CLOSURETIME")
     private LocalDateTime closureTime;
 
+    @Column(name = "USERCODE")
     private int userCode;
 
+    @Column(name = "SUMPURCHASENETPRICE")
     private int sumPurchaseNetPrice;
 
+    @Column(name = "SUMPURCHASEGROSSPRICE")
     private int sumPurchaseGrossPrice;
 
+    @Column(name = "SUMSALENETPRICE")
     private int sumSaleNetPrice;
 
+    @Column(name = "SUMSALEGROSSPRICE")
     private int sumSaleGrossPrice;
 
+    @Column(name = "SUMSALENETORIGINALPRICE")
     private int sumSaleNetOriginalPrice;
 
+    @Column(name = "SUMSALEGROSSORIGINALPRICE")
     private int sumSaleGrossOriginalPrice;
 
+    @Column(name = "DISCOUNTPERCENT")
     private double discountPercent;
 
+    @Column(name = "DELIVERYTIME")
     private LocalDateTime deliveryTime;
 
+    @Column(name = "ISDELIVERED")
     private boolean isDelivered;
 
     @Embedded

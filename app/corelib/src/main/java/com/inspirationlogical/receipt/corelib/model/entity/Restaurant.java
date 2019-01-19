@@ -22,39 +22,48 @@ class Restaurant extends AbstractEntity {
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST}, orphanRemoval = true)
     private Collection<DailyClosure> dailyClosures = new HashSet<>();
 
+    @Column(name = "RESTAURANTNAME")
     private String restaurantName;
 
+    @Column(name = "COMPANYNAME")
     private String companyName;
 
+    @Column(name = "COMPANYTAXPAYERID")
     private String companyTaxPayerId;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "ZIPCode", column = @Column(name = "restaurantZIPCode", nullable = false)),
-            @AttributeOverride(name = "city", column = @Column(name = "restaurantCity", nullable = false)),
-            @AttributeOverride(name = "street", column = @Column(name = "restaurantStreet", nullable = false))
+            @AttributeOverride(name = "ZIPCode", column = @Column(name = "RESTAURANTZIPCODE", nullable = false)),
+            @AttributeOverride(name = "city", column = @Column(name = "RESTAURANTCITY", nullable = false)),
+            @AttributeOverride(name = "street", column = @Column(name = "RESTAURANTSTREET", nullable = false))
     })
     private Address restaurantAddress;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "ZIPCode", column = @Column(name = "companyZIPCode", nullable = false)),
-            @AttributeOverride(name = "city", column = @Column(name = "companyCity", nullable = false)),
-            @AttributeOverride(name = "street", column = @Column(name = "companyStreet", nullable = false))
+            @AttributeOverride(name = "ZIPCode", column = @Column(name = "COMPANYZIPCODE", nullable = false)),
+            @AttributeOverride(name = "city", column = @Column(name = "COMPANYCITY", nullable = false)),
+            @AttributeOverride(name = "street", column = @Column(name = "COMPANYSTREET", nullable = false))
     })
     private Address companyAddress;
 
+    @Column(name = "PHONENUMBER")
     private String phoneNumber;
 
+    @Column(name = "WEBSITE")
     private String webSite;
 
+    @Column(name = "SOCIALMEDIAINFO")
     private String socialMediaInfo;
 
+    @Column(name = "RECEIPTNOTE")
     private String receiptNote;
 
-    private String receiptDisclaimer = Resources.PRINTER.getString("Disclaimer");
+    @Column(name = "RECEIPTDISCLAIMER")
+    private String receiptDisclaimer;
 
-    private String receiptGreet = Resources.PRINTER.getString("Greet");
+    @Column(name = "RECEIPTGREET")
+    private String receiptGreet;
 
     @Tolerate
     Restaurant() {

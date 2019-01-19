@@ -30,35 +30,49 @@ class Product extends AbstractEntity {
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private Collection<Stock> stocks;
 
+    @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
     private ProductType type;
 
+    @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
+    @Column(name = "SHORTNAME")
     private String shortName;
 
+    @Column(name = "LONGNAME")
     private String longName;
 
+    @Column(name = "RAPIDCODE")
     private int rapidCode;
 
+    @Column(name = "QUANTITYUNIT")
     @Enumerated(EnumType.STRING)
     private QuantityUnit quantityUnit;
 
+    @Column(name = "STORAGEMULTIPLIER")
     private double storageMultiplier;
 
+    @Column(name = "PURCHASEPRICE")
     private int purchasePrice;
 
+    @Column(name = "SALEPRICE")
     private int salePrice;
 
+    @Column(name = "VATLOCAL")
     private double VATLocal;
 
+    @Column(name = "VATTAKEAWAY")
     private double VATTakeAway;
 
+    @Column(name = "MINIMUMSTOCK")
     private int minimumStock;
 
+    @Column(name = "STOCKWINDOW")
     private int stockWindow;
 
+    @Column(name = "ORDERNUMBER")
     private int orderNumber;
 
     @Tolerate
