@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,12 @@ public class StockListener implements ReceiptServicePay.Listener {
     public interface StockUpdateListener {
         void finished();
     }
+
     private static List<StockUpdateListener> observerList = new ArrayList<>();
+
+    public static void addObserver(StockUpdateListener o) {
+        observerList.add(o);
+    }
 
     @Override
     public void onClose(Receipt receipt) {
@@ -41,9 +48,5 @@ public class StockListener implements ReceiptServicePay.Listener {
             observerList.clear();
             logger.info("StockListener executed successfully");
         });
-    }
-
-    public static void addObserver(StockUpdateListener o) {
-        observerList.add(o);
     }
 }

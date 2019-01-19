@@ -8,6 +8,8 @@ import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptServicePay;
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -20,6 +22,9 @@ public class ReceiptPrinter implements ReceiptServicePay.Listener {
     private final static Logger logger = LoggerFactory.getLogger(ReceiptPrinter.class);
 
     private static List<Printer> printers;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     static {
         printers = new ArrayList<>();
@@ -41,8 +46,8 @@ public class ReceiptPrinter implements ReceiptServicePay.Listener {
             InputStream xmlReceipt = null;
             try {
                 logger.info("Starting the process of printing the receipt: " +  receipt.toString());
-                ReceiptToXML converter = new ReceiptToXML(new ObjectFactory());
-                xmlReceipt = converter.convertToXMLStream(receipt);
+                ReceiptToXML converter = applicationContext.getBean(ReceiptToXML.class, new ObjectFactory());
+                xmlReceipt = converter.convertToXMLStream(receipt.getId());
                 out = FormatterService.create().convertToPDF(xmlReceipt);
                 Wrapper<ByteArrayOutputStream> outWrapper = new Wrapper<>();
                 outWrapper.setContent(out);

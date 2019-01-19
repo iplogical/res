@@ -12,6 +12,7 @@ import com.inspirationlogical.receipt.corelib.repository.StockRepository;
 import com.inspirationlogical.receipt.corelib.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,7 @@ import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
 @Service
+@Transactional
 public class StockServiceImpl implements StockService {
 
     @Autowired
@@ -42,32 +44,31 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public void increaseStock(ReceiptRecord receiptRecord, ReceiptType receiptType) {
-        updateStockRecords(receiptRecord, receiptType, true);
-    }
-
-    @Override
-    public void decreaseStock(ReceiptRecord receiptRecord, ReceiptType receiptType) {
-        updateStockRecords(receiptRecord, receiptType, false);
-    }
-
-    private void updateStockRecords(ReceiptRecord receiptRecord, ReceiptType receiptType, boolean increase) {
         List<Recipe> recipes = recipeRepository.findAllByOwner(receiptRecord.getProduct());
         recipes.forEach(recipe ->
         {
             Stock stock = getLatestItemByProduct(recipe.getComponent());
             double quantity = calculateStockQuantity(receiptRecord, receiptType, recipe);
-            if(increase) {
-                increaseStock(stock, roundToTwoDecimals(quantity), receiptType);
-            } else {
-                decreaseStock(stock, roundToTwoDecimals(quantity), receiptType);
-            }
+            increaseStock(stock, roundToTwoDecimals(quantity), receiptType);
+            stockRepository.save(stock);
+        });
+    }
+
+    @Override
+    public void decreaseStock(ReceiptRecord receiptRecord, ReceiptType receiptType) {
+        List<Recipe> recipes = recipeRepository.findAllByOwner(receiptRecord.getProduct());
+        recipes.forEach(recipe ->
+        {
+            Stock stock = getLatestItemByProduct(recipe.getComponent());
+            double quantity = calculateStockQuantity(receiptRecord, receiptType, recipe);
+            decreaseStock(stock, roundToTwoDecimals(quantity), receiptType);
             stockRepository.save(stock);
         });
     }
 
     private Stock getLatestItemByProduct(Product product) {
         Stock latestStock = stockRepository.findFirstByOwnerOrderByDateDesc(product);
-        if(latestStock == null) {
+        if (latestStock == null) {
             return createStockEntry(product, 0);
         }
         return latestStock;
@@ -98,7 +99,7 @@ public class StockServiceImpl implements StockService {
         productService.getStorableProducts().forEach(productAdapter ->
                 {
                     Stock stock = getLatestItemByProduct(productAdapter);
-                    if(isStockChanged(stock)) {
+                    if (isStockChanged(stock)) {
                         createStockEntry(productAdapter, getInitialQuantity(stock));
                     }
                 }
@@ -118,13 +119,13 @@ public class StockServiceImpl implements StockService {
     }
 
     private void increaseStock(Stock stock, double quantity, ReceiptType type) {
-        if(ReceiptType.isSale(type)) {
+        if (ReceiptType.isSale(type)) {
             increaseSoldQuantity(stock, quantity);
-        } else if(ReceiptType.isPurchase(type)){
+        } else if (ReceiptType.isPurchase(type)) {
             increasePurchasedQuantity(stock, quantity);
-        } else if(ReceiptType.isInventory(type)) {
+        } else if (ReceiptType.isInventory(type)) {
             increaseInventoryQuantity(stock, quantity);
-        } else if(ReceiptType.isDisposal(type)) {
+        } else if (ReceiptType.isDisposal(type)) {
             increaseDisposedQuantity(stock, quantity);
         } else {
             // OTHER type Receipt, do nothing.
@@ -148,7 +149,7 @@ public class StockServiceImpl implements StockService {
     }
 
     private void decreaseStock(Stock stock, double quantity, ReceiptType type) {
-        if(ReceiptType.isSale(type)) {
+        if (ReceiptType.isSale(type)) {
             decreaseSoldQuantity(stock, quantity);
         } else {
             // ONLY SALE RECEIPTS CAN BE REOPENED.

@@ -29,9 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -258,7 +256,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected Collection<ReceiptRecordView> getSoldProducts() {
         receiptView = restaurantService.getOpenReceipt(tableView);
-        return receiptView.getSoldProducts();
+        return receiptView == null ? Collections.emptyList() : receiptView.getSoldProducts();
     }
 
     protected TableController getTableController() {

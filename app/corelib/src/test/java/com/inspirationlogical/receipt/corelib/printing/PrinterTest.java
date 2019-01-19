@@ -19,7 +19,7 @@ public class PrinterTest extends TestBase {
     public void closeReceiptSaleOneAndGeneratePDF(){
         Receipt receipt = schema.getReceiptSaleTwo();
         ByteArrayOutputStream out = new ReceiptFormatterEpsonTMT20II().convertToPDF(
-                new ReceiptToXML(new ObjectFactory()).convertToXMLStream(receipt)
+                new ReceiptToXML(new ObjectFactory()).convertToXMLStream(receipt.getId())
         );
         pdf = new ByteArrayInputStream(out.toByteArray(),0,out.size());
     }

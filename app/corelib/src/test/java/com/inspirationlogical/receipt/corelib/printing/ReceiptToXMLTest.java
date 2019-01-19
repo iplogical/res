@@ -21,7 +21,7 @@ public class ReceiptToXMLTest extends TestBase {
     public void test_receipt_XML_created_from_a_closed_recipt_can_be_validated_against_the_schema() {
         try {
             Receipt receipt = schema.getReceiptSaleTwo();
-            String xml_doc =  new BufferedReader(new InputStreamReader(new ReceiptToXML(new ObjectFactory()).convertToXMLStream(receipt)))
+            String xml_doc =  new BufferedReader(new InputStreamReader(new ReceiptToXML(new ObjectFactory()).convertToXMLStream(receipt.getId())))
                     .lines().collect(Collectors.joining("\n"));
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
@@ -38,7 +38,7 @@ public class ReceiptToXMLTest extends TestBase {
         try {
             Receipt receipt = schema.getReceiptSaleTwo();
             new ReceiptFormatterEpsonTMT20II().convertToPDF(
-                    new ReceiptToXML(new ObjectFactory()).convertToXMLStream(receipt)
+                    new ReceiptToXML(new ObjectFactory()).convertToXMLStream(receipt.getId())
             );
 
         } catch(Exception e){
@@ -49,7 +49,7 @@ public class ReceiptToXMLTest extends TestBase {
     @Test
     public void test_receipt_formatting_through_dependency_injection(){
         Receipt receipt = schema.getReceiptSaleTwo();
-        FormatterService.create().convertToPDF(new ReceiptToXML(new ObjectFactory()).convertToXMLStream(receipt));
+        FormatterService.create().convertToPDF(new ReceiptToXML(new ObjectFactory()).convertToXMLStream(receipt.getId()));
     }
 
 }

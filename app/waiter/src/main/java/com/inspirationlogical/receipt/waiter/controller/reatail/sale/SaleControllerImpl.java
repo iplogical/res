@@ -182,7 +182,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         logger.info("Entering the payment view for table: " + tableView.toString());
         retailService.mergeReceiptRecords(receiptView);
         paymentController.setTableView(tableView);
-//        viewLoader.loadViewIntoScene(paymentController);
         WaiterApp.showView(PaymentFxmlView.class);
         paymentController.enterPaymentView();
     }
@@ -190,8 +189,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onSellAdHocProduct(Event event) {
         logger.info("The sell ad hoc product button was clicked.");
-//        adHocProductForm.getContent().add(viewLoader.loadView(adHocProductFormController));
-//        adHocProductFormController.loadAdHocProductForm(this);
         showPopup(adHocProductForm, adHocProductFormController, rootSale, new Point2D(520, 200));
     }
 

@@ -30,18 +30,29 @@ import com.inspirationlogical.receipt.corelib.jaxb.TagCurrencyValue;
 import com.inspirationlogical.receipt.corelib.jaxb.TagValuePair;
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
+import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.utility.RoundingLogic;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
 
+@Component
+@Scope("prototype")
 public class ReceiptToXML {
 
     private final static Logger logger = LoggerFactory.getLogger(ReceiptToXML.class);
 
     private static Schema schema;
+
+    @Autowired
+    private ReceiptRepository receiptRepository;
 
     static {
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -65,11 +76,15 @@ public class ReceiptToXML {
 
     private ObjectFactory factory;
 
+    private ReceiptToXML() {}
+
     public ReceiptToXML(ObjectFactory factory) {
         this.factory = factory;
     }
 
-    public InputStream convertToXMLStream(com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public InputStream convertToXMLStream(long receiptId) {
+        com.inspirationlogical.receipt.corelib.model.entity.Receipt receipt = receiptRepository.findById(receiptId);
         logger.info("Create the Receipt content tree from the entity: " + receipt.toString());
         Receipt r = createReceipt(receipt);
         ByteArrayOutputStream baos = null;
