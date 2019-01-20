@@ -78,22 +78,6 @@ public class RestaurantUtils  extends AbstractUtils {
         selectTab("Restaurant.Tables");
     }
 
-    public static void splitTables(String table) {
-        runInConfigurationMode(() -> {
-            longClickOn(table);
-            clickMenuThenWait("ContextMenu.SplitTable", 100);
-        });
-    }
-
-    public static void mergeTables(String firstTable, String secondTable) {
-        runInConfigurationMode(() -> {
-            clickOnThenWait(firstTable, 100);
-            clickOnThenWait(secondTable, 100);
-            longClickOn(new Point2D(150, 150));
-            clickMenuThenWait("ContextMenu.MergeTable", 100);
-        });
-    }
-
     public static int getOpenTableNumber() {
         return Integer.valueOf(getLabel(OPEN_TABLE_NUMBER));
     }

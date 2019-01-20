@@ -120,13 +120,6 @@ public class TableConfigurationControllerTest extends TestFXBase {
     }
 
     @Test
-    public void testMergeAndSplitTables() {
-        mergeTables(CONSUMER_TEST_TABLE, CONSUMED_TEST_TABLE_ONE);
-        splitTables(CONSUMER_TEST_TABLE);
-        closeTable(CONSUMER_TEST_TABLE);
-    }
-
-    @Test
     public void testVirtualTableNotAllowedForMerge() {
         addTableToTab("TestTable", "100", "Restaurant.Frequenters");
         selectTab("Restaurant.Frequenters");

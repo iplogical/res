@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.waiter.controller.restaurant;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.geometry.Point2D;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 
 public class RestaurantControllerTest extends TestFXBase {
 
-//    @Ignore
+    @Ignore
     @Test
     public void launchAppWithTestDataBase() {
         while (true) {}
@@ -57,37 +58,6 @@ public class RestaurantControllerTest extends TestFXBase {
             verifyMenuItemNotVisible("ContextMenu.ReOpenTable");
         });
         closeTable(RESTAURANT_TEST_TABLE);
-    }
-
-    @Test
-    public void testContextMenuNoDeleteForMergedTable() {
-        mergeTables(RESTAURANT_TEST_TABLE, CONSUMED_TEST_TABLE_ONE);
-        runInConfigurationMode(() -> {
-            longClickOn(RESTAURANT_TEST_TABLE);
-            verifyMenuItemNotVisible("ContextMenu.DeleteTable");
-            verifyMenuItemVisible("ContextMenu.RotateTable");
-            verifyMenuItemVisible("ContextMenu.SplitTable");
-            verifyMenuItemVisible("ContextMenu.EditTable");
-            longClickOn(CONSUMED_TEST_TABLE_ONE);
-            verifyMenuItemNotVisible("ContextMenu.DeleteTable");
-            verifyMenuItemVisible("ContextMenu.RotateTable");
-            verifyMenuItemVisible("ContextMenu.SplitTable");
-            verifyMenuItemVisible("ContextMenu.EditTable");
-        });
-        splitTables(RESTAURANT_TEST_TABLE);
-        closeTable(RESTAURANT_TEST_TABLE);
-    }
-
-    @Test
-    public void testContextMenuNoDeleteForHostTable() {
-        addTableToTab("TestTableOne", RESTAURANT_TEST_TABLE, "Restaurant.Frequenters");
-        runInConfigurationMode(() -> {
-            longClickOn(RESTAURANT_TEST_TABLE);
-            verifyMenuItemNotVisible("ContextMenu.DeleteTable");
-            verifyMenuItemVisible("ContextMenu.RotateTable");
-            verifyMenuItemVisible("ContextMenu.EditTable");
-        });
-        deleteTableFromTab("TestTableOne", "Restaurant.Frequenters");
     }
 
     @Test
