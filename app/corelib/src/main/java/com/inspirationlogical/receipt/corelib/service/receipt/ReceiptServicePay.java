@@ -1,16 +1,22 @@
 package com.inspirationlogical.receipt.corelib.service.receipt;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
+import com.inspirationlogical.receipt.corelib.model.entity.Address;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
+import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.listeners.ReceiptCloseListeners;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+import com.inspirationlogical.receipt.corelib.params.ReceiptPrintModel;
+import com.inspirationlogical.receipt.corelib.params.ReceiptRecordPrintModel;
+import com.inspirationlogical.receipt.corelib.printing.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
+import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import com.inspirationlogical.receipt.corelib.utility.Round;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +44,13 @@ public class ReceiptServicePay {
     private VATService vatService;
 
     @Autowired
-    ReceiptCloseListeners receiptCloseListeners;
+    private DailyClosureService dailyClosureService;
 
-    public interface Listener{
-        void onClose(Receipt receipt);
-    }
+    @Autowired
+    private StockService stockService;
+
+    @Autowired
+    private ReceiptPrinter receiptPrinter;
 
     public void close(Receipt receipt, PaymentParams paymentParams) {
         if(receipt.getRecords().isEmpty()) {
@@ -57,11 +65,20 @@ public class ReceiptServicePay {
         receipt.setUserCode(paymentParams.getUserCode());
         receipt.setPaymentMethod(paymentParams.getPaymentMethod());
         applyDiscountOnSalePrices(receipt);
-        receiptCloseListeners.getAllListeners().forEach((listener) -> listener.onClose(receipt));
-        if(paymentParams.isDoublePrint()) {
-            receiptCloseListeners.getPrinterListener().onClose(receipt);
-        }
+        dailyClosureService.update(receipt);
+        receipt.getRecords().forEach(receiptRecord -> {
+            stockService.increaseStock(receiptRecord, receipt.getType());
+        });
+        printReceipt(receipt, paymentParams.isDoublePrint());
         receiptRepository.save(receipt);
+    }
+
+    private void printReceipt(Receipt receipt, boolean doublePrint) {
+        ReceiptPrintModel receiptPrintModel = buildReceiptPrintModel(receipt);
+        receiptPrinter.printReceipt(receiptPrintModel);
+        if(doublePrint) {
+            receiptPrinter.printReceipt(receiptPrintModel);
+        }
     }
 
     private void deleteReceipt(Receipt receipt) {
@@ -92,6 +109,55 @@ public class ReceiptServicePay {
         receipt.setSumSaleNetOriginalPrice(receipt.getSumSaleNetPrice());
         receipt.setSumSaleGrossPrice((int)(receipt.getSumSaleGrossPrice() * getDiscountMultiplier(receipt.getDiscountPercent())));
         receipt.setSumSaleNetPrice((int)(receipt.getSumSaleNetPrice() * getDiscountMultiplier(receipt.getDiscountPercent())));
+    }
+
+    private  ReceiptPrintModel buildReceiptPrintModel(Receipt receipt) {
+        Restaurant restaurant = receipt.getOwner().getOwner();
+        ReceiptPrintModel receiptPrintModel = buildReceiptPrintModel(receipt, restaurant);
+        List<ReceiptRecordPrintModel> receiptRecordPrintModels = buildReceiptRecordPrintModels(receipt);
+        receiptPrintModel.getReceiptRecordsPrintModels().addAll(receiptRecordPrintModels);
+        return receiptPrintModel;
+    }
+
+    private ReceiptPrintModel buildReceiptPrintModel(Receipt receipt, Restaurant restaurant) {
+        return ReceiptPrintModel.builder()
+                .restaurantName(restaurant.getRestaurantName())
+                .restaurantAddress(getRestaurantAddress(restaurant.getRestaurantAddress()))
+                .restaurantSocialMediaInfo(restaurant.getSocialMediaInfo())
+                .restaurantWebsite(restaurant.getWebSite())
+                .restaurantPhoneNumber(restaurant.getPhoneNumber())
+                .receiptRecordsPrintModels(new ArrayList<>())
+                .receiptType(receipt.getType().toString().toUpperCase())
+                .totalPrice(receipt.getSumSaleGrossOriginalPrice())
+                .totalDiscount(receipt.getSumSaleGrossOriginalPrice() - receipt.getSumSaleGrossPrice())
+                .discountedTotalPrice(receipt.getSumSaleGrossPrice())
+                .roundedTotalPrice(receipt.getSumSaleGrossPrice())
+                .paymentMethod(receipt.getPaymentMethod().toI18nString())
+                .receiptDisclaimer(restaurant.getReceiptDisclaimer())
+                .receiptNote(restaurant.getReceiptNote())
+                .receiptGreet(restaurant.getReceiptGreet())
+                .closureTime(receipt.getClosureTime())
+                .receiptId(receipt.getId())
+                .build();
+    }
+
+    private String getRestaurantAddress(Address address) {
+        return address.getZIPCode() + " " + address.getCity() + ", " + address.getStreet();
+    }
+
+    private List<ReceiptRecordPrintModel> buildReceiptRecordPrintModels(Receipt receipt) {
+        return receipt.getRecords().stream()
+                .map(this::buildReceiptRecordPrintModel).collect(Collectors.toList());
+    }
+
+    private ReceiptRecordPrintModel buildReceiptRecordPrintModel(ReceiptRecord record) {
+        return ReceiptRecordPrintModel.builder()
+                .productName(record.getName())
+                .soldQuantity(record.getSoldQuantity())
+                .productPrice(record.getSalePrice())
+                .totalPrice((int) (record.getSalePrice() * record.getSoldQuantity()))
+                .discount(record.getSalePrice() != record.getOriginalSalePrice())
+                .build();
     }
 
     public void paySelective(Receipt receipt, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {

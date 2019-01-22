@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by Bálint on 2017.04.04..
  */
 @Component
-public class StockListener implements ReceiptServicePay.Listener {
+public class StockListener {
 
     private static final Logger logger = LoggerFactory.getLogger(StockListener.class);
 
@@ -36,9 +37,9 @@ public class StockListener implements ReceiptServicePay.Listener {
         observerList.add(o);
     }
 
-    @Override
     public void onClose(Receipt receipt) {
         BackgroundThread.execute(() -> {
+            logger.info("Stock listener startTime: " + LocalDateTime.now());
             logger.info("Updating stock record for receipt: " + receipt.toString());
             receipt.getRecords().forEach(receiptRecord -> {
                     logger.info("Updating stock record for receiptRecord: " + receiptRecord.toString());
@@ -47,6 +48,7 @@ public class StockListener implements ReceiptServicePay.Listener {
             observerList.forEach(StockUpdateListener::finished);
             observerList.clear();
             logger.info("StockListener executed successfully");
+            logger.info("Stock listener endTime: " + LocalDateTime.now());
         });
     }
 }
