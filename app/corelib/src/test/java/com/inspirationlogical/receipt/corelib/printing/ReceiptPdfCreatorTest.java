@@ -88,7 +88,7 @@ public class ReceiptPdfCreatorTest {
         byte[] receiptPdf = receiptPdfCreator.createReceiptPdf(receiptPrintModel);
         File receiptPdfFile = new File("temp/receipt.pdf");
         FileUtils.writeByteArrayToFile(receiptPdfFile, receiptPdf);
-        printPdf(receiptPdfFile);
+   //     printPdf(receiptPdfFile);
     }
 
     private void printPdf(byte[] receiptPdf) {

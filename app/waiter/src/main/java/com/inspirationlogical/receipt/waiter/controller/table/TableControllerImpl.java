@@ -126,6 +126,7 @@ public class TableControllerImpl implements TableController {
         guests.setText(valueOf(tableView.getGuestCount()));
         capacity.setText(valueOf(tableView.getCapacity()));
         note.setVisible(isNotEmpty(tableView.getNote()));
+        tableViewState.setOpen(retailService.isTableOpen(tableView));
     }
 
 
