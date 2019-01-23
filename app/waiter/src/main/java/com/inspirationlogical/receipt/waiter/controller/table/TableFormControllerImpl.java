@@ -131,8 +131,8 @@ public class TableFormControllerImpl implements TableFormController {
         tableName.setText(tableView.getName());
         guestCount.setText(String.valueOf(tableView.getGuestCount()));
         tableNote.setText(tableView.getNote());
-        width.setText(String.valueOf((int) tableView.getWidth()));
-        height.setText(String.valueOf((int) tableView.getHeight()));
+        width.setText(String.valueOf(tableView.getWidth()));
+        height.setText(String.valueOf(tableView.getHeight()));
     }
 
     @Override

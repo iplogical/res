@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
+import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
@@ -60,18 +61,15 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected Button guestMinus;
 
     @FXML
-    protected javafx.scene.control.TableView<SoldProductViewModel> soldProductsTable;
+    private javafx.scene.control.TableView<SoldProductViewModel> soldProductsTable;
     @FXML
     protected TableColumn<SoldProductViewModel, String> productName;
     @FXML
-    protected TableColumn<SoldProductViewModel, String> productQuantity;
+    private TableColumn<SoldProductViewModel, String> productQuantity;
     @FXML
-    protected TableColumn<SoldProductViewModel, String> productUnitPrice;
+    private TableColumn<SoldProductViewModel, String> productUnitPrice;
     @FXML
-    protected TableColumn<SoldProductViewModel, String> productTotalPrice;
-
-//    @Autowired
-//    protected @Getter ViewLoader viewLoader;
+    private TableColumn<SoldProductViewModel, String> productTotalPrice;
 
     @Autowired
     private RestaurantService restaurantService;
@@ -107,16 +105,20 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     @FXML
     public void onGuestPlus(Event event) {
-        restaurantService.setGuestCount(tableView, tableView.getGuestCount() + 1);
+        tableView = restaurantService.setGuestCount(tableView.getNumber(), tableView.getGuestCount() + 1);
         updateTableSummary();
+        tableConfigurationController.getTableController(tableView).setView(tableView);
         logger.info("The guest plus button was clicked. Guest count: " + tableView.getGuestCount());
     }
 
     @FXML
     public void onGuestMinus(Event event) {
-        if(tableView.getGuestCount() == 0) return;
-        restaurantService.setGuestCount(tableView, tableView.getGuestCount() - 1);
+        if(tableView.getGuestCount() == 0) {
+            return;
+        }
+        tableView = restaurantService.setGuestCount(tableView.getNumber(), tableView.getGuestCount() - 1);
         updateTableSummary();
+        tableConfigurationController.getTableController(tableView).setView(tableView);
         logger.info("The guest minus button was clicked. Guest count: " + tableView.getGuestCount());
     }
 

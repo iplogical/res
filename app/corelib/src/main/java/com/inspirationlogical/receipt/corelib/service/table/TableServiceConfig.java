@@ -23,15 +23,13 @@ public interface TableServiceConfig {
 
     boolean reOpenTable(TableView tableView);
 
-    void setTableNumber(TableView tableView, int tableNumber);
+    TableView setTableParams(int tableNumber, TableParams tableParams);
 
-    void setTableParams(TableView tableView, TableParams tableParams);
+    TableView setGuestCount(int tableNumber, int guestCount);
 
-    void setGuestCount(TableView tableView, int guestCount);
+    TableView setPosition(int tableNumber, Point2D position);
 
-    void setPosition(TableView tableView, Point2D position);
-
-    void rotateTable(TableView tableView);
+    TableView rotateTable(int tableNumber);
 
     boolean isTableNumberAlreadyInUse(int tableNumber);
 

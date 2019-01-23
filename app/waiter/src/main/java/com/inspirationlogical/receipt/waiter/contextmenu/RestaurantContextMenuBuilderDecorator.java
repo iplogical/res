@@ -29,10 +29,6 @@ public class RestaurantContextMenuBuilderDecorator extends ContextMenuBuilderDec
                     .withClickHandlerPoint2D(tableConfigurationController::showCreateTableForm)
                     .build();
             contextMenu.getItems().add(addTable);
-            if (restaurantViewState.getTableType().equals(TableType.NORMAL) && tableConfigurationController.hasSelection()) {
-                MenuItem exchangeTables = buildMenuItem("ContextMenu.ExchangeTable",tableConfigurationController::exchangeTables);
-                contextMenu.getItems().add(exchangeTables);
-            }
         }
         return contextMenu;
     }

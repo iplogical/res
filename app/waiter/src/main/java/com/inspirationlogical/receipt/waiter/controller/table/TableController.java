@@ -13,6 +13,8 @@ public interface TableController extends Controller {
 
     TableView getView();
 
+    int getTableNumber();
+
     Control getRoot();
 
     TableViewState getViewState();

@@ -22,17 +22,15 @@ public interface RestaurantService {
 
     void deleteTable(TableView tableView);
 
-    void rotateTable(TableView tableView);
+    TableView rotateTable(int tableNumber);
 
     void exchangeTables(TableView selected, TableView other);
 
-    void setTableNumber(TableView tableView, int tableNumber);
+    TableView setTableParams(int number, TableParams tableParams);
 
-    void setTableParams(TableView tableView, TableParams tableParams);
+    TableView setGuestCount(int tableNumber, int guestCount);
 
-    void setGuestCount(TableView tableView, int guestCount);
-
-    void setTablePosition(TableView tableView, Point2D position);
+    TableView setTablePosition(int tableNumber, Point2D position);
 
     void closeDay();
 }

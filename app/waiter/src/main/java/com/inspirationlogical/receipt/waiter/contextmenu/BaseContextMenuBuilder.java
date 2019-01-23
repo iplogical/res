@@ -7,9 +7,6 @@ import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
 import javafx.scene.control.ContextMenu;
 
-/**
- * Created by Ferenc on 2017. 03. 19..
- */
 public class BaseContextMenuBuilder implements ContextMenuBuilder {
     @Override
     public ContextMenu build(ViewState viewState) {

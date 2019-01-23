@@ -46,6 +46,7 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     private TableView buildTableView(Table table) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(table.getNumber());
         return TableView.builder()
                 .type(table.getType())
                 .number(table.getNumber())
@@ -57,8 +58,8 @@ public class TableServiceConfigImpl implements TableServiceConfig {
                 .coordinateY(table.getCoordinateY())
                 .width(table.getDimensionX())
                 .height(table.getDimensionY())
-                .orderDelivered(true)
-                .orderDeliveryTime(now())
+                .orderDelivered(openReceipt == null || openReceipt.isDelivered())
+                .orderDeliveryTime(openReceipt == null ? now() : openReceipt.getDeliveryTime())
                 .build();
     }
 
@@ -173,18 +174,8 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     @Override
-    public void setTableNumber(TableView tableView, int tableNumber) {
-        Table table = tableRepository.findByNumber(tableView.getNumber());
-        if (isTableNumberAlreadyInUse(tableNumber)) {
-                throw new IllegalTableStateException("The table number " + tableView.getNumber() + " is already in use");
-        }
-        table.setNumber(tableNumber);
-        tableRepository.save(table);
-    }
-
-    @Override
-    public void setTableParams(TableView tableView, TableParams tableParams) {
-        Table table = tableRepository.findByNumber(tableView.getNumber());
+    public TableView setTableParams(int tableNumber, TableParams tableParams) {
+        Table table = tableRepository.findByNumber(tableNumber);
         table.setName(tableParams.getName());
         table.setGuestCount(tableParams.getGuestCount());
         table.setCapacity(tableParams.getCapacity());
@@ -192,40 +183,41 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         table.setDimensionX(tableParams.getWidth());
         table.setDimensionY( tableParams.getHeight());
         tableRepository.save(table);
+        return buildTableView(table);
     }
 
     @Override
-    public void setGuestCount(TableView tableView, int guestCount) {
-        Table table = tableRepository.findByNumber(tableView.getNumber());
+    public TableView setGuestCount(int tableNumber, int guestCount) {
+        Table table = tableRepository.findByNumber(tableNumber);
         table.setGuestCount(guestCount);
         tableRepository.save(table);
+        return buildTableView(table);
     }
 
     @Override
-    public void setPosition(TableView tableView, Point2D position) {
-        Table table = tableRepository.findByNumber(tableView.getNumber());
+    public TableView setPosition(int tableNumber, Point2D position) {
+        Table table = tableRepository.findByNumber(tableNumber);
         table.setCoordinateX((int) position.getX());
         table.setCoordinateY((int) position.getY());
         tableRepository.save(table);
+        return buildTableView(table);
     }
 
     @Override
-    public void rotateTable(TableView tableView) {
-        Table table = tableRepository.findByNumber(tableView.getNumber());
+    public TableView rotateTable(int tableNumber) {
+        Table table = tableRepository.findByNumber(tableNumber);
         int dimensionX = table.getDimensionX();
         int dimensionY = table.getDimensionY();
         table.setDimensionX(dimensionY);
         table.setDimensionY(dimensionX);
         tableRepository.save(table);
+        return buildTableView(table);
     }
 
     @Override
     public boolean isTableNumberAlreadyInUse(int tableNumber) {
         Table table = tableRepository.findByNumber(tableNumber);
-        if (table == null) {
-            return false;
-        }
-        return true;
+        return table != null;
     }
 
     @Override

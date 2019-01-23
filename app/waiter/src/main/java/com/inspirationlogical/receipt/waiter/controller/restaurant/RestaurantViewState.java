@@ -21,8 +21,4 @@ public class RestaurantViewState implements ViewState {
         this.tableType = TableType.NORMAL;
         motionViewState = new MotionViewState();
     }
-
-//    public boolean hasSelection() {
-//        return selectedTables.size() > 1;
-//    }
 }

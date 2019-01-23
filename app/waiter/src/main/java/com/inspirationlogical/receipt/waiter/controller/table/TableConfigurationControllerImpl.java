@@ -129,20 +129,17 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void editTable(TableController tableController, TableParams tableParams) {
-        TableView tableView = tableController.getView();
+
         try {
-            restaurantService.setTableParams(tableView, tableParams);
+            TableView tableView = restaurantService.setTableParams(tableController.getTableNumber(), tableParams);
             hideTableForm();
             restaurantController.addNodeToPane(tableController.getRoot(), restaurantViewState.getTableType());
+            tableController.setView(tableView);
             tableController.updateTable();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
                     WaiterResources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
         }
-    }
-
-    private void setTableParams(TableView tableView, TableParams tableParams) {
-
     }
 
     @Override
@@ -157,8 +154,8 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @Override
     public void rotateTable(Node node) {
         TableController tableController = getTableController(node);
-        TableView tableView = tableController.getView();
-        restaurantService.rotateTable(tableView);
+        TableView tableView = restaurantService.rotateTable(tableController.getView().getNumber());
+        tableController.setView(tableView);
         tableController.updateTable();
     }
 
@@ -166,7 +163,8 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     public void moveTable(TableController tableController) {
         Node view = tableController.getRoot();
         Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
-        restaurantService.setTablePosition(tableController.getView(), position);
+        TableView tableView = restaurantService.setTablePosition(tableController.getView().getNumber(), position);
+        tableController.setView(tableView);
         tableController.updateTable();
     }
 
@@ -213,7 +211,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
                 .limit(1)
                 .collect(toList());
         if(filteredControllers.isEmpty()) {
-//            viewLoader.loadViewIntoScene(restaurantController);
             WaiterApp.showView(RestaurantFxmlView.class);
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
                     WaiterResources.WAITER.getString("TableDoesNotExist") + reservation.getTableNumber());
@@ -222,7 +219,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         TableController tableController = filteredControllers.get(0);
         TableView tableView = tableController.getView();
         if(retailService.isTableOpen(tableView)) {
-//            viewLoader.loadViewIntoScene(restaurantController);
             WaiterApp.showView(RestaurantFxmlView.class);
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
                     WaiterResources.WAITER.getString("TableIsOpenReservation") + tableView.getNumber());
@@ -231,7 +227,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         TableParams tableParams = buildTableParams(reservation, tableView);
         editTable(tableController, tableParams);
         tableController.openTable(null);
-//        viewLoader.loadViewIntoScene(restaurantController);
         WaiterApp.showView(RestaurantFxmlView.class);
     }
 
@@ -250,10 +245,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @Override
     public void drawTable(TableView tableView) {
         tableViewBeingDrawn = tableView;
-//        TableController tableController = appCtx.getBean(TableController.class);
-//        tableController.setView(tableView);
-//        tableControllers.add(tableController);
-
         WaiterApp.showView(TableFxmlView.class);
         addPressAndHold(tableControllerBeingDrawn.getViewState(), tableControllerBeingDrawn.getRoot(),
                 new TableContextMenuBuilderDecorator(this, tableControllerBeingDrawn, new BaseContextMenuBuilder()),

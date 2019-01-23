@@ -16,8 +16,6 @@ import java.time.LocalDateTime;
 @ToString
 public class TableView {
 
-//    private long id;
-
     private TableType type;
     private int number;
     private int guestCount;

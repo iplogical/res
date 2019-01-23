@@ -1,10 +1,8 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
-import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
@@ -23,9 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -104,28 +100,23 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
-    public void setTableNumber(TableView tableView, int tableNumber) {
-        tableServiceConfig.setTableNumber(tableView, tableNumber);
+    public TableView setTableParams(int number, TableParams tableParams) {
+        return tableServiceConfig.setTableParams(number, tableParams);
     }
 
     @Override
-    public void setTableParams(TableView tableView, TableParams tableParams) {
-        tableServiceConfig.setTableParams(tableView, tableParams);
+    public TableView setGuestCount(int tableNumber, int guestCount) {
+        return tableServiceConfig.setGuestCount(tableNumber, guestCount);
     }
 
     @Override
-    public void setGuestCount(TableView tableView, int guestCount) {
-        tableServiceConfig.setGuestCount(tableView, guestCount);
+    public TableView setTablePosition(int tableNumber, Point2D position) {
+        return tableServiceConfig.setPosition(tableNumber, position);
     }
 
     @Override
-    public void setTablePosition(TableView tableView, Point2D position) {
-        tableServiceConfig.setPosition(tableView, position);
-    }
-
-    @Override
-    public void rotateTable(TableView tableView) {
-        tableServiceConfig.rotateTable(tableView);
+    public TableView rotateTable(int tableNumber) {
+        return tableServiceConfig.rotateTable(tableNumber);
     }
 
     @Override

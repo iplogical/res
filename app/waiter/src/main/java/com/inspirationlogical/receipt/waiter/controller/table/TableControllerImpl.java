@@ -37,7 +37,6 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 public class TableControllerImpl implements TableController {
 
     private static final String TABLE_VIEW_PATH = "/view/fxml/Table.fxml";
-    private static final String CONSUMED_VIEW_PATH = "/view/fxml/ConsumedTable.fxml";
 
     @FXML
     private Label rootTable;
@@ -93,13 +92,18 @@ public class TableControllerImpl implements TableController {
     }
 
     private void setPreferredSize() {
-        tableStackPane.setPrefWidth(tableView.getHeight());
+        tableStackPane.setPrefWidth(tableView.getWidth());
         tableStackPane.setPrefHeight(tableView.getHeight());
     }
 
     @Override
     public TableView getView() {
         return tableView;
+    }
+
+    @Override
+    public int getTableNumber() {
+        return tableView.getNumber();
     }
 
     @Override
@@ -196,7 +200,6 @@ public class TableControllerImpl implements TableController {
     private void enterSaleView() {
         saleController.setTableView(tableView);
         WaiterApp.showView(SaleFxmlView.class);
-//        viewLoader.loadViewIntoScene(saleController);
         saleController.enterSaleView();
     }
 
