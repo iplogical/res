@@ -40,9 +40,5 @@ public interface ReceiptService {
 
     void mergeReceiptRecords(ReceiptView receiptView);
 
-    void setOrderDelivered(TableView tableView, boolean delivered);
-
-    void setOrderDeliveredTime(TableView tableView, LocalDateTime now);
-
     List<ReceiptView> getReceipts(LocalDate startDate, LocalDate endDate);
 }

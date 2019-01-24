@@ -13,6 +13,8 @@ import com.inspirationlogical.receipt.corelib.repository.TableRepository;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import javafx.geometry.Point2D;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,8 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class TableServiceConfigImpl implements TableServiceConfig {
+
+    private static final Logger logger = LoggerFactory.getLogger(TableServiceConfigImpl.class);
 
     @Autowired
     private StockService stockService;
@@ -45,9 +49,10 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         return tableRepository.findAllByVisibleIsTrue().stream().map(this::buildTableView).collect(toList());
     }
 
-    private TableView buildTableView(Table table) {
+    TableView buildTableView(Table table) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(table.getNumber());
         return TableView.builder()
+                .open(openReceipt != null)
                 .type(table.getType())
                 .number(table.getNumber())
                 .guestCount(table.getGuestCount())
@@ -113,8 +118,8 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     @Override
-    public void openTable(TableView tableView) {
-        Table table = tableRepository.findByNumber(tableView.getNumber());
+    public TableView openTable(int tableNumber) {
+        Table table = tableRepository.findByNumber(tableNumber);
         if (isTableOpen(table)) {
             throw new IllegalTableStateException("Open table for an open table. Table number: " + table.getNumber());
         }
@@ -122,6 +127,8 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         receipt.setOwner(table);
         table.getReceipts().add(receipt);
         tableRepository.save(table);
+        logger.info("A table was opened: " + tableNumber);
+        return buildTableView(table);
     }
 
     @Override
@@ -146,20 +153,22 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     @Override
-    public boolean reOpenTable(TableView tableView) {
-        Table table = tableRepository.findByNumber(tableView.getNumber());
+    public TableView reOpenTable(int tableNumber) {
+        Table table = tableRepository.findByNumber(tableNumber);
         if (isTableOpen(table)) {
             throw new IllegalTableStateException("Re-open table for an open table. Table number: " + table.getNumber());
         }
         List<Receipt> receipts = receiptRepository.getReceiptByStatusAndOwner(ReceiptStatus.CLOSED, table.getNumber());
         if (receipts.isEmpty()) {
-            return false;
+            return openTable(tableNumber);
         }
         Receipt latestReceipt = receipts.stream().sorted(Comparator.comparing(Receipt::getClosureTime).reversed())
                 .collect(toList()).get(0);
         reopenReceipt(latestReceipt);
         updateStockRecords(latestReceipt);
-        return true;
+        tableRepository.save(table);
+        logger.info("A table was re-opened: " + tableNumber);
+        return buildTableView(table);
     }
 
     private void reopenReceipt(Receipt latestReceipt) {
@@ -302,5 +311,24 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         } else {
             return now().minusDays(1);
         }
+    }
+
+
+    @Override
+    public TableView setOrderDelivered(int tableNumber, boolean delivered) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableNumber);
+        Table table = tableRepository.findByNumber(tableNumber);
+        openReceipt.setDelivered(delivered);
+        receiptRepository.save(openReceipt);
+        return buildTableView(table);
+    }
+
+    @Override
+    public TableView setOrderDeliveredTime(int tableNumber, LocalDateTime now) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableNumber);
+        Table table = tableRepository.findByNumber(tableNumber);
+        openReceipt.setDeliveryTime(now);
+        receiptRepository.save(openReceipt);
+        return buildTableView(table);
     }
 }

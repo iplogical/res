@@ -1,7 +1,10 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
-import com.inspirationlogical.receipt.corelib.model.view.*;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
@@ -51,18 +54,13 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     }
 
     @Override
-    public void openTable(TableView tableView) {
-        tableServiceConfig.openTable(tableView);
-        logger.info("A table was opened: " + tableView);
+    public TableView openTable(int tableNumber) {
+        return tableServiceConfig.openTable(tableNumber);
     }
 
     @Override
-    public boolean reOpenTable(TableView tableView) {
-        if(tableServiceConfig.reOpenTable(tableView)) {
-            logger.info("A table was re-opened: " + tableView);
-            return true;
-        }
-        return false;
+    public TableView reOpenTable(int tableNumber) {
+        return tableServiceConfig.reOpenTable(tableNumber);
     }
 
     @Override
@@ -89,14 +87,14 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     }
 
     @Override
-    public void payTable(TableView tableView, PaymentParams paymentParams) {
-        logger.info("A table was paid: "  + tableView + ", " + paymentParams);
-        tableServicePay.payTable(tableView, paymentParams);
+    public TableView payTable(int tableNumber, PaymentParams paymentParams) {
+        logger.info("A table was paid: " + tableNumber + ", " + paymentParams);
+        return tableServicePay.payTable(tableNumber, paymentParams);
     }
 
     @Override
     public void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-        logger.info("A table was selectively paid: "  + tableView + ", " + paymentParams);
+        logger.info("A table was selectively paid: " + tableView + ", " + paymentParams);
         tableServicePay.paySelective(tableView, records, paymentParams);
     }
 
@@ -129,16 +127,6 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
         return dailyClosureService.getClosureTimes(startDate, endDate);
     }
 
-    @Override
-    public void setOrderDelivered(TableView tableView, boolean delivered) {
-        receiptService.setOrderDelivered(tableView, delivered);
-    }
-
-    @Override
-    public void setOrderDeliveredTime(TableView tableView, LocalDateTime deliveredTime) {
-        receiptService.setOrderDeliveredTime(tableView, deliveredTime);
-    }
-
     public void increaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount, boolean isSale) {
         receiptRecordService.increaseSoldQuantity(receiptRecordView, amount, isSale);
     }
@@ -152,4 +140,16 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     public RecentConsumption getRecentConsumption(TableView tableView) {
         return tableServiceConfig.getRecentConsumption(tableView);
     }
+
+    @Override
+    public TableView setOrderDelivered(int tableNumber, boolean delivered) {
+        return tableServiceConfig.setOrderDelivered(tableNumber, delivered);
+    }
+
+    @Override
+    public TableView setOrderDeliveredTime(int tableNumber, LocalDateTime deliveredTime) {
+        return tableServiceConfig.setOrderDeliveredTime(tableNumber, deliveredTime);
+    }
+
+
 }

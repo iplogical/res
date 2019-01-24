@@ -178,16 +178,4 @@ public class ReceiptServiceSell {
                 .createdList(new ArrayList<>())
                 .build();
     }
-
-    void setOrderDelivered(TableView tableView, boolean delivered) {
-        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
-        openReceipt.setDelivered(delivered);
-        receiptRepository.save(openReceipt);
-    }
-
-    void setOrderDelvierdTime(TableView tableView, LocalDateTime now) {
-        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
-        openReceipt.setDeliveryTime(now);
-        receiptRepository.save(openReceipt);
-    }
 }

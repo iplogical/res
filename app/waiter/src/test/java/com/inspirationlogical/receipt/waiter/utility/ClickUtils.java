@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import org.testfx.api.FxRobotInterface;
+import org.testfx.service.query.EmptyNodeQueryException;
 
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 import static org.junit.Assert.fail;
@@ -81,7 +82,7 @@ public class ClickUtils extends AbstractUtils {
         try {
             verifyThat(nodeQuery, Node::isVisible);
             fail("Should not find the node");
-        } catch (NullPointerException e) {}
+        } catch (EmptyNodeQueryException e) {}
     }
 
     public static void verifyErrorMessage(String error) {

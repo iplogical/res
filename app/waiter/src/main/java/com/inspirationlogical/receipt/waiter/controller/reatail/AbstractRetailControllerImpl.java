@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
@@ -32,7 +31,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -186,7 +184,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         if(getTableController() == null) {
             return null;
         }
-        return getTableController().getOrderDeliveredTime();
+        return getTableController().getOrderDeliveryTime();
     }
 
     protected void refreshSoldProductsTable() {

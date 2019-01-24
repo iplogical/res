@@ -26,8 +26,7 @@ public abstract class TestFXBase extends ApplicationTest {
     public static void launchApplication() throws Exception {
         if(!isApplicationStarted) {
             isApplicationStarted = true;
-//            new BuildTestSchema().buildTestSchema();
-//            WaiterApp.setTestApplication(true); // Seems like the args are not passed to the start method... Workaround.
+            new BuildTestSchema().buildTestSchema();
             System.setProperty("java.awt.headless", "false");
             AbstractJavaFxApplicationSupport.setSavedInitialView(RestaurantFxmlView.class);
             ApplicationTest.launch(WaiterApp.class);

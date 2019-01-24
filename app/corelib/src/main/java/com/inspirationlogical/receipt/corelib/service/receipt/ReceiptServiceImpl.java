@@ -54,16 +54,6 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public void setOrderDelivered(TableView tableView, boolean delivered) {
-        receiptServiceSell.setOrderDelivered(tableView, delivered);
-    }
-
-    @Override
-    public void setOrderDeliveredTime(TableView tableView, LocalDateTime now) {
-        receiptServiceSell.setOrderDelvierdTime(tableView, now);
-    }
-
-    @Override
     public void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
         receiptServiceStock.updateStock(paramsList, receiptType, listener);
     }

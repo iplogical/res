@@ -8,12 +8,6 @@ abstract class AbstractService {
 
     EntityViews entityViews;
 
-    static <View, Adapter> List<View> createViewsFromAdapters(List<Adapter> adapters, Function<Adapter, View> constructor) {
-        return adapters.stream()
-                .map(constructor)
-                .collect(Collectors.toList());
-    }
-
     AbstractService(EntityViews entityViews) {
         this.entityViews = entityViews;
     }

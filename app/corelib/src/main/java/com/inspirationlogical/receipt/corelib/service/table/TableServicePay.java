@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public interface TableServicePay {
 
-    void payTable(TableView tableView, PaymentParams paymentParams);
+    TableView payTable(int tableNumber, PaymentParams paymentParams);
 
     void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams);
 

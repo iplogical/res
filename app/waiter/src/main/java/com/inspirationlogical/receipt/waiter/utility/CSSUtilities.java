@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
 import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
+import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.waiter.controller.table.TableViewState;
 import javafx.scene.Node;
 
@@ -43,13 +44,13 @@ public class CSSUtilities {
         }
     }
 
-    public static void setBackgroundColor(TableViewState tableViewState, RecentConsumption recentConsumption, Node node) {
-        boolean isOrderNotYetDelivered = !tableViewState.isOrderDelivered();
+    public static void setBackgroundColor(TableView tableView, RecentConsumption recentConsumption, Node node) {
+        boolean isOrderNotYetDelivered = !tableView.isOrderDelivered();
         if(isOrderNotYetDelivered && recentConsumption.equals(RecentConsumption.RECENT_10_MINUTES)) {
             setBackgroundColor(node, BACKGROUND_RECENT_10_MINUTES);
         } else if(isOrderNotYetDelivered && recentConsumption.equals(RecentConsumption.RECENT_30_MINUTES)) {
             setBackgroundColor(node, BACKGROUND_RECENT_30_MINUTES);
-        } else if(tableViewState.isOpen()) {
+        } else if(tableView.isOpen()) {
             setBackgroundColor(node, BACKGROUND_OPEN);
         } else {
             setBackgroundColor(node, BACKGROUND_DEFAULT);

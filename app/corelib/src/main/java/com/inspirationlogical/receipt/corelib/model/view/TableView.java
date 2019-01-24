@@ -1,13 +1,9 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import javafx.geometry.Dimension2D;
-import javafx.geometry.Point2D;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-
 
 import java.time.LocalDateTime;
 
@@ -15,6 +11,8 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 public class TableView {
+
+    private boolean open;
 
     private TableType type;
     private int number;

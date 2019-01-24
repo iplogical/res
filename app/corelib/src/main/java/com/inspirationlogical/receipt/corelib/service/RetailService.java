@@ -12,9 +12,9 @@ import java.util.List;
 
 public interface RetailService {
 
-    void openTable(TableView tableView);
+    TableView openTable(int tableNumber);
 
-    boolean reOpenTable(TableView tableView);
+    TableView reOpenTable(int tableNumber);
 
     boolean isTableOpen(TableView tableView);
 
@@ -24,7 +24,7 @@ public interface RetailService {
 
     ReceiptRecordView sellGameFee(TableView tableView, int quantity);
 
-    void payTable(TableView tableView, PaymentParams paymentParams);
+    TableView payTable(int tableNumber, PaymentParams paymentParams);
 
     void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams);
 
@@ -38,13 +38,13 @@ public interface RetailService {
 
     List<LocalDateTime> getClosureTimes(LocalDate startDate, LocalDate endDate);
 
-    void setOrderDelivered(TableView tableView, boolean delivered);
-
-    void setOrderDeliveredTime(TableView tableView, LocalDateTime deliveredTime);
-
     void increaseSoldQuantity(ReceiptRecordView receiptRecord, double amount, boolean isSale);
 
     void decreaseSoldQuantity(ReceiptRecordView receiptRecord, double amount);
 
     RecentConsumption getRecentConsumption(TableView tableView);
+
+    TableView setOrderDelivered(int tableNumber, boolean delivered);
+
+    TableView setOrderDeliveredTime(int tableNumber, LocalDateTime deliveredTime);
 }

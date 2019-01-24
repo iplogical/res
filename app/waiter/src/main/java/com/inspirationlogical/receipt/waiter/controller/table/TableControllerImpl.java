@@ -2,13 +2,11 @@ package com.inspirationlogical.receipt.waiter.controller.table;
 
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.utility.CSSUtilities;
-import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -73,7 +71,7 @@ public class TableControllerImpl implements TableController {
 
     public void setView(TableView tableView) {
         this.tableView = tableView;
-        this.tableViewState = new TableViewState(restaurantController.getViewState(), tableView, retailService.isTableOpen(tableView));
+        this.tableViewState = new TableViewState(restaurantController.getViewState());
     }
 
     @Override
@@ -119,7 +117,7 @@ public class TableControllerImpl implements TableController {
     @Override
     public void updateTable() {
         updateTableParams();
-        CSSUtilities.setBackgroundColor(tableViewState, retailService.getRecentConsumption(tableView), tableStackPane);
+        CSSUtilities.setBackgroundColor(tableView, retailService.getRecentConsumption(tableView), tableStackPane);
         showNode(rootTable, new Point2D(tableView.getCoordinateX(), tableView.getCoordinateY()));
     }
 
@@ -130,26 +128,18 @@ public class TableControllerImpl implements TableController {
         guests.setText(valueOf(tableView.getGuestCount()));
         capacity.setText(valueOf(tableView.getCapacity()));
         note.setVisible(isNotEmpty(tableView.getNote()));
-        tableViewState.setOpen(retailService.isTableOpen(tableView));
     }
-
 
     @Override
     public void openTable(Control control) {
-        retailService.openTable(tableView);
-        tableViewState.setOpen(true);
+        tableView = retailService.openTable(tableView.getNumber());
         updateTable();
     }
 
     @Override
     public void reOpenTable(Control control) {
-        if (retailService.reOpenTable(tableView)) {
-            tableViewState.setOpen(true);
-            updateTable();
-        } else {
-            ErrorMessage.showErrorMessage(restaurantController.getRootNode(),
-                    WaiterResources.WAITER.getString("Restaurant.ReOpenTableFailed"));
-        }
+        tableView = retailService.reOpenTable(tableView.getNumber());
+        updateTable();
     }
 
     @Override
@@ -160,18 +150,16 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void setOrderDelivered(boolean delivered) {
-        tableViewState.setOrderDelivered(delivered);
-        retailService.setOrderDelivered(tableView, delivered);
+        tableView = retailService.setOrderDelivered(tableView.getNumber(), delivered);
         if (delivered) {
             LocalDateTime now = LocalDateTime.now();
-            tableViewState.setOrderDeliveredTime(now);
-            retailService.setOrderDeliveredTime(tableView, now);
+            tableView = retailService.setOrderDeliveredTime(tableView.getNumber(), now);
         }
     }
 
     @Override
-    public LocalDateTime getOrderDeliveredTime() {
-        return tableViewState.getOrderDeliveredTime();
+    public LocalDateTime getOrderDeliveryTime() {
+        return tableView.getOrderDeliveryTime();
     }
 
     @FXML

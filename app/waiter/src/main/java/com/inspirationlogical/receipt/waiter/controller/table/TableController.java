@@ -29,5 +29,5 @@ public interface TableController extends Controller {
 
     void setOrderDelivered(boolean delivered);
 
-    LocalDateTime getOrderDeliveredTime();
+    LocalDateTime getOrderDeliveryTime();
 }

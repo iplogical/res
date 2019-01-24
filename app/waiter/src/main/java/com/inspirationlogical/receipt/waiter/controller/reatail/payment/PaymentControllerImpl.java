@@ -168,7 +168,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void handleFullPayment(PaymentParams paymentParams) {
         logger.info("Handling full payment with paymentParams: " + paymentParams.toString());
-        retailService.payTable(tableView, paymentParams);
+        tableView = retailService.payTable(tableView.getNumber(), paymentParams);
+        tableConfigurationController.getTableController(tableView).setView(tableView);
         getSoldProductsAndRefreshTable();
         discardPaidRecords();
         clearPreviousPartialPrice();
@@ -392,7 +393,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private void enterSaleView() {
         saleController.enterSaleView();
         WaiterApp.showView(SaleFxmlView.class);
-//        viewLoader.loadViewIntoScene(saleController);
     }
 
     @FXML

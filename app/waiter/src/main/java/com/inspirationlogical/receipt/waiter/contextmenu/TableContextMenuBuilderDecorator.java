@@ -41,14 +41,14 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
                 MenuItem exchangeTables = buildMenuItem("ContextMenu.ExchangeTable",tableConfigurationController::exchangeTables);
                 contextMenu.getItems().add(exchangeTables);
             }
-            if(!tableViewState.isOpen()) {
+            if(!tableController.getView().isOpen()) {
                 MenuItem deleteTable = buildMenuItem("ContextMenu.DeleteTable", tableConfigurationController::deleteTable);
                 contextMenu.getItems().add(deleteTable);
                 MenuItem reOpenTable = buildMenuItem("ContextMenu.ReOpenTable", tableController::reOpenTable);
                 contextMenu.getItems().add(reOpenTable);
             }
         } else {
-            if(!tableViewState.isOpen()) {
+            if(!tableController.getView().isOpen()) {
                 MenuItem openTable = buildMenuItem("ContextMenu.OpenTable", tableController::openTable);
                 contextMenu.getItems().add(openTable);
             }

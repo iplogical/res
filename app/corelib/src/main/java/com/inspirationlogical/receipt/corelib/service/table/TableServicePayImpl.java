@@ -10,6 +10,7 @@ import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +28,12 @@ public class TableServicePayImpl implements TableServicePay {
     @Autowired
     private ReceiptService receiptService;
 
+    @Autowired
+    private TableServiceConfigImpl tableServiceConfig;
+
     @Override
-    public void payTable(TableView tableView, PaymentParams paymentParams) {
-        Table table = tableRepository.findByNumber(tableView.getNumber());
+    public TableView payTable(int tableNumber, PaymentParams paymentParams) {
+        Table table = tableRepository.findByNumber(tableNumber);
         Receipt openReceipt = receiptRepository.getOpenReceipt(table.getNumber());
         if (openReceipt == null) {
             throw new IllegalTableStateException("Pay table for a closed table. Table number: " + table.getNumber());
@@ -37,6 +41,7 @@ public class TableServicePayImpl implements TableServicePay {
         receiptService.close(openReceipt, paymentParams);
         setDefaultTableParams(table);
         tableRepository.save(table);
+        return tableServiceConfig.buildTableView(table);
     }
 
     private void setDefaultTableParams(Table table) {

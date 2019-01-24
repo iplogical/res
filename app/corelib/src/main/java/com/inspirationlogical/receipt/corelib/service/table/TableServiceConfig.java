@@ -1,12 +1,12 @@
 package com.inspirationlogical.receipt.corelib.service.table;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
 import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import javafx.geometry.Point2D;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TableServiceConfig {
@@ -17,11 +17,11 @@ public interface TableServiceConfig {
 
     void deleteTable(TableView tableView);
 
-    void openTable(TableView tableView);
+    TableView openTable(int tableNumber);
 
     boolean isTableOpen(TableView tableView);
 
-    boolean reOpenTable(TableView tableView);
+    TableView reOpenTable(int tableNumber);
 
     TableView setTableParams(int tableNumber, TableParams tableParams);
 
@@ -36,4 +36,8 @@ public interface TableServiceConfig {
     void exchangeTables(TableView selectedView, TableView otherView);
 
     RecentConsumption getRecentConsumption(TableView tableView);
+
+    TableView setOrderDelivered(int tableNumber, boolean delivered);
+
+    TableView setOrderDeliveredTime(int tableNumber, LocalDateTime now);
 }
