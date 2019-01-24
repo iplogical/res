@@ -41,8 +41,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     final private static Logger logger = LoggerFactory.getLogger(PaymentControllerImpl.class);
 
-    private static final String SALE_VIEW_PATH = "/view/fxml/Sale.fxml";
-
     @FXML
     BorderPane rootSale;
 
@@ -120,11 +118,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         updateTableSummary();
         resetToggleGroups();
         clearSearch();
-    }
-
-    @Override
-    public String getViewPath() {
-        return SALE_VIEW_PATH;
     }
 
     @Override

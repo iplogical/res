@@ -43,8 +43,6 @@ import static java.util.stream.Collectors.toList;
 public class ReservationControllerImpl extends AbstractController
         implements ReservationController {
 
-    private static final String RESERVATION_VIEW_PATH = "/view/fxml/Reservation.fxml";
-
     @FXML
     private BorderPane root;
 
@@ -121,11 +119,6 @@ public class ReservationControllerImpl extends AbstractController
         this.tableConfigurationController = tableConfigurationController;
         this.startTime = new CalendarTimePicker();
         this.endTime = new CalendarTimePicker();
-    }
-
-    @Override
-    public String getViewPath() {
-        return RESERVATION_VIEW_PATH;
     }
 
     @Override

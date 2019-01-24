@@ -10,8 +10,7 @@ import javafx.util.Duration;
 
 import java.time.LocalTime;
 
-public interface Controller extends Initializable{
-    String getViewPath();
+public interface Controller extends Initializable {
     Node getRootNode();
 
     default void initLiveTime(Label liveTime) {

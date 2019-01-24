@@ -36,8 +36,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     final private static Logger logger = LoggerFactory.getLogger(PaymentControllerImpl.class);
 
-    private static final String PAYMENT_VIEW_PATH = "/view/fxml/Payment.fxml";
-
     @FXML
     private BorderPane rootPayment;
 
@@ -111,11 +109,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private List<ReceiptRecordView> paidProductsView;
 
     private ObservableList<SoldProductViewModel> paidProductsModel;
-
-    @Override
-    public String getViewPath() {
-        return PAYMENT_VIEW_PATH;
-    }
 
     @Override
     public Node getRootNode() {

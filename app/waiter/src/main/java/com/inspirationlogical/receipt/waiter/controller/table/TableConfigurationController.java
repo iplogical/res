@@ -41,11 +41,11 @@ public interface TableConfigurationController {
 
     void drawTable(TableView tableView);
 
-    TableView getTableViewBeingDrawn();
+//    TableView getTableViewBeingDrawn();
 
-    void setTableControllerBeingDrawn(TableController tableControllerBeingDrawn);
+//    void setTableControllerBeingDrawn(TableController tableControllerBeingDrawn);
 
     TableController getTableController(TableView tableView);
 
-    Set<TableController> getTableControllers();
+//    Set<TableController> getTableControllers();
 }

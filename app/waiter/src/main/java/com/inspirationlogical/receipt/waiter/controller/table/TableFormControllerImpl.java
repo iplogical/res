@@ -25,7 +25,6 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHa
 @Component
 public class TableFormControllerImpl implements TableFormController {
 
-    private static final String TABLE_FORM_VIEW_PATH = "/view/fxml/TableForm.fxml";
     private static final Integer NORMAL_TABLE_DEFAULT_CAPACITY = 4;
     private static final Integer VIRTUAL_TABLE_DEFAULT_CAPACITY = 1;
     private static final Integer TABLE_DEFAULT_WIDTH = 80;
@@ -133,11 +132,6 @@ public class TableFormControllerImpl implements TableFormController {
         tableNote.setText(tableView.getNote());
         width.setText(String.valueOf(tableView.getWidth()));
         height.setText(String.valueOf(tableView.getHeight()));
-    }
-
-    @Override
-    public String getViewPath() {
-        return TABLE_FORM_VIEW_PATH;
     }
 
     @Override

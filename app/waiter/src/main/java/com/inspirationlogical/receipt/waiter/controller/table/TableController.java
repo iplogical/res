@@ -11,6 +11,8 @@ public interface TableController extends Controller {
 
     void setView(TableView tableView);
 
+    void initialize(TableView tableView);
+
     TableView getView();
 
     int getTableNumber();

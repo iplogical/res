@@ -3,6 +3,8 @@ package com.inspirationlogical.receipt.waiter.controller.table;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
+import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
+import com.inspirationlogical.receipt.waiter.contextmenu.TableContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
@@ -17,7 +19,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
@@ -27,14 +31,13 @@ import java.util.ResourceBundle;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @FXMLController
 @Scope("prototype")
 public class TableControllerImpl implements TableController {
-
-    private static final String TABLE_VIEW_PATH = "/view/fxml/Table.fxml";
 
     @FXML
     private Label rootTable;
@@ -52,6 +55,9 @@ public class TableControllerImpl implements TableController {
     private Label capacity;
     @FXML
     private ImageView note;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Autowired
     private RetailService retailService;
@@ -76,17 +82,17 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setView(tableConfigurationController.getTableViewBeingDrawn());
-        addDragAndDrop(rootTable, tableViewState.getRestaurantViewState().getMotionViewState());
-        setPreferredSize();
-        updateTable();
-
     }
 
-    @PostConstruct
-    private void init() {
-        tableConfigurationController.getTableControllers().add(this);
-        tableConfigurationController.setTableControllerBeingDrawn(this);
+    @Override
+    public void initialize(TableView tableView) {
+        setView(tableView);
+        addDragAndDrop(rootTable, tableViewState.getRestaurantViewState().getMotionViewState());
+        addPressAndHold(tableViewState, rootTable,
+                applicationContext.getBean(TableContextMenuBuilderDecorator.class,this, new BaseContextMenuBuilder())
+        );
+        setPreferredSize();
+        updateTable();
     }
 
     private void setPreferredSize() {
@@ -201,11 +207,6 @@ public class TableControllerImpl implements TableController {
 
     private boolean isContextMenuOpen() {
         return rootTable.getContextMenu() != null && rootTable.getContextMenu().isShowing();
-    }
-
-    @Override
-    public String getViewPath() {
-        return TABLE_VIEW_PATH;
     }
 
     @Override

@@ -11,11 +11,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 public class PressAndHoldHandler {
-    public static final int HOLD_DURATION_MILLIS = 200;
+    private static final int HOLD_DURATION_MILLIS = 200;
 
-    public static void addPressAndHold(ViewState viewState, Control control, ContextMenuBuilder contextMenuBuilder, Duration holdTime) {
+    public static void addPressAndHold(ViewState viewState, Control control, ContextMenuBuilder contextMenuBuilder) {
         Wrapper<MouseEvent> mouseEventWrapper = new Wrapper<>();
-        PauseTransition holdTimer = new PauseTransition(holdTime);
+        PauseTransition holdTimer = new PauseTransition(Duration.millis(HOLD_DURATION_MILLIS));
 
         holdTimer.setOnFinished(event -> {
             MouseEvent mouseEvent = mouseEventWrapper.getContent();

@@ -98,6 +98,12 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
         return view.getView();
     }
 
+    public static Object getController(final Class<? extends AbstractFxmlView> window) {
+        final AbstractFxmlView view = applicationContext.getBean(window);
+        view.getView();
+        return view.getController();
+    }
+
     private static void showErrorAlert(Throwable throwable) {
         Alert alert = new Alert(AlertType.ERROR, "Oops! An unrecoverable error occurred.\n" +
                 "Please contact your software vendor.\n\n" +

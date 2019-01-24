@@ -23,7 +23,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
-import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,6 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.moveNode;
-import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.HOLD_DURATION_MILLIS;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 
 @FXMLController
@@ -42,7 +40,6 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     final private static Logger logger = LoggerFactory.getLogger(RestaurantControllerImpl.class);
 
-    public static final String RESTAURANT_VIEW_PATH = "/view/fxml/Restaurant.fxml";
     static final int INITIAL_GRID_SIZE = 10;
 
     @FXML
@@ -132,8 +129,8 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private void initContextMenu(Label control) {
         addPressAndHold(restaurantViewState, control,
-                new RestaurantContextMenuBuilderDecorator(tableConfigurationController, new BaseContextMenuBuilder()),
-                Duration.millis(HOLD_DURATION_MILLIS));
+                new RestaurantContextMenuBuilderDecorator(tableConfigurationController, new BaseContextMenuBuilder())
+        );
     }
 
     private void initControls() {
@@ -244,11 +241,6 @@ public class RestaurantControllerImpl implements RestaurantController {
             default:
                 return tablesTab;
         }
-    }
-
-    @Override
-    public String getViewPath() {
-        return RESTAURANT_VIEW_PATH;
     }
 
     @Override

@@ -8,17 +8,22 @@ import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorator {
 
+    @Autowired
     private TableConfigurationController tableConfigurationController;
+
     private TableController tableController;
 
-    public TableContextMenuBuilderDecorator(TableConfigurationController tableConfigurationController,
-                                            TableController tableController,
+    public TableContextMenuBuilderDecorator(TableController tableController,
                                             ContextMenuBuilder contextMenuBuilder) {
         super(contextMenuBuilder);
-        this.tableConfigurationController = tableConfigurationController;
         this.tableController = tableController;
     }
 

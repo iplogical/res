@@ -65,27 +65,15 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
 
     private String fxmlRoot;
 
-    /**
-     * Instantiates a new abstract fxml view.
-     */
     public AbstractFxmlView() {
         LOGGER.debug("AbstractFxmlView construction");
-        // Set the root path to package path
-        final String filePathFromPackageName = PropertyReaderHelper.determineFilePathFromPackageName(getClass());
-        setFxmlRootPath(filePathFromPackageName);
+        fxmlRoot = PropertyReaderHelper.determineFilePathFromPackageName(getClass());
         annotation = getFXMLAnnotation();
         resource = getURLResource(annotation);
         presenterProperty = new SimpleObjectProperty<>();
         bundle = getResourceBundle(getBundleName());
     }
 
-    /**
-     * Gets the URL resource. This will be derived from applied annotation value
-     * or from naming convention.
-     *
-     * @param annotation the annotation as defined by inheriting class.
-     * @return the URL resource
-     */
     private URL getURLResource(final FXMLView annotation) {
         if (annotation != null && !annotation.value().equals("")) {
             return getClass().getResource(annotation.value());
@@ -94,34 +82,17 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
         }
     }
 
-    /**
-     * Gets the {@link FXMLView} annotation from inheriting class.
-     *
-     * @return the FXML annotation
-     */
     private FXMLView getFXMLAnnotation() {
         final Class<? extends AbstractFxmlView> theClass = this.getClass();
         final FXMLView annotation = theClass.getAnnotation(FXMLView.class);
         return annotation;
     }
 
-    /**
-     * Creates the controller for type.
-     *
-     * @param type the type
-     * @return the object
-     */
     private Object createControllerForType(final Class<?> type) {
         return applicationContext.getBean(type);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.springframework.context.ApplicationContextAware#setApplicationContext
-     * (org.springframework.context.ApplicationContext)
-     */
+
     @Override
     public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
 
@@ -132,18 +103,7 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    private void setFxmlRootPath(final String path) {
-        fxmlRoot = path;
-    }
 
-    /**
-     * Load synchronously.
-     *
-     * @param resource the resource
-     * @param bundle   the bundle
-     * @return the FXML loader
-     * @throws IllegalStateException the illegal state exception
-     */
     private FXMLLoader loadSynchronously(final URL resource, final Optional<ResourceBundle> bundle) throws IllegalStateException {
 
         final FXMLLoader loader = new FXMLLoader(resource, bundle.orElse(null));
@@ -158,14 +118,7 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
         return loader;
     }
 
-    /**
-     * Initializes the view by loading the FXML (if not happened yet) and
-     * returns the top Node (parent) specified in the FXML file.
-     *
-     * @return the root view as determined from {@link FXMLLoader}.
-     */
     public Parent getView() {
-
         ensureFxmlLoaderInitialized();
 
         final Parent parent = fxmlLoader.getRoot();
@@ -181,43 +134,12 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
         presenterProperty.set(fxmlLoader.getController());
     }
 
-    /**
-     * Initializes the view synchronously and invokes the consumer with the
-     * created parent Node within the FX UI thread.
-     *
-     * @param consumer - an object interested in received the {@link Parent} as
-     *                 callback
-     */
-    public void getView(final Consumer<Parent> consumer) {
-        CompletableFuture.supplyAsync(this::getView, Platform::runLater).thenAccept(consumer);
+    Object getController() {
+        return presenterProperty.get();
     }
 
-    /**
-     * Scene Builder creates for each FXML document a root container. This
-     * method omits the root container (e.g. {@link AnchorPane}) and gives you
-     * the access to its first child.
-     *
-     * @return the first child of the {@link AnchorPane} or null if there are no
-     * children available from this view.
-     */
-    public Node getViewWithoutRootContainer() {
+    private void addCSSIfAvailable(final Parent parent) {
 
-        final ObservableList<Node> children = getView().getChildrenUnmodifiable();
-        if (children.isEmpty()) {
-            return null;
-        }
-
-        return children.listIterator().next();
-    }
-
-    /**
-     * Adds the CSS if available.
-     *
-     * @param parent the parent
-     */
-    void addCSSIfAvailable(final Parent parent) {
-
-        // Read global css when available:
         final List<String> list = PropertyReaderHelper.get(applicationContext.getEnvironment(), "javafx.css");
         if (!list.isEmpty()) {
             list.forEach(css -> parent.getStylesheets().add(getClass().getResource(css).toExternalForm()));
@@ -234,9 +156,6 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
         parent.getStylesheets().add(uriToCss);
     }
 
-    /**
-     * Adds the CSS from annotation to parent.
-     */
     private void addCSSFromAnnotation(final Parent parent) {
         if (annotation != null && annotation.css().length > 0) {
             for (final String cssFile : annotation.css()) {
@@ -252,87 +171,18 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
         }
     }
 
-    /*
-     * Gets the default title for to be shown in a (un)modal window.
-     *
-     */
-    String getDefaultTitle() {
-        return annotation.title();
-    }
-
-    /*
-     * Gets the default style for a (un)modal window.
-     */
-    StageStyle getDefaultStyle() {
-        final String style = annotation.stageStyle();
-        return StageStyle.valueOf(style.toUpperCase());
-    }
-
-    /**
-     * Gets the style sheet name.
-     *
-     * @return the style sheet name
-     */
     private String getStyleSheetName() {
         return fxmlRoot + getConventionalName(".css");
     }
 
-    /**
-     * In case the view was not initialized yet, the conventional fxml
-     * (airhacks.fxml for the AirhacksView and AirhacksPresenter) are loaded and
-     * the specified presenter / controller is going to be constructed and
-     * returned.
-     *
-     * @return the corresponding controller / presenter (usually for a
-     * AirhacksView the AirhacksPresenter)
-     */
-    public Object getPresenter() {
-
-        ensureFxmlLoaderInitialized();
-
-        return presenterProperty.get();
-    }
-
-    /**
-     * Does not initialize the view. Only registers the Consumer and waits until
-     * the the view is going to be created / the method FXMLView#getView or
-     * FXMLView#getViewAsync invoked.
-     *
-     * @param presenterConsumer listener for the presenter construction
-     */
-    public void getPresenter(final Consumer<Object> presenterConsumer) {
-
-        presenterProperty.addListener(
-                (final ObservableValue<? extends Object> o, final Object oldValue, final Object newValue) -> {
-                    presenterConsumer.accept(newValue);
-                });
-    }
-
-    /**
-     * Gets the conventional name.
-     *
-     * @param ending the suffix to append
-     * @return the conventional name with stripped ending
-     */
     private String getConventionalName(final String ending) {
         return getConventionalName() + ending;
     }
 
-    /**
-     * Gets the conventional name.
-     *
-     * @return the name of the view without the "View" prefix in lowerCase. For
-     * AirhacksView just airhacks is going to be returned.
-     */
     private String getConventionalName() {
         return stripEnding(getClass().getSimpleName().toLowerCase());
     }
 
-    /**
-     * Gets the bundle name.
-     *
-     * @return the bundle name
-     */
     private String getBundleName() {
         if (StringUtils.isEmpty(annotation.bundle())) {
             final String lbundle = getClass().getPackage().getName() + "." + getConventionalName();
@@ -345,12 +195,6 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
         return lbundle;
     }
 
-    /**
-     * Strip ending.
-     *
-     * @param clazz the clazz
-     * @return the string
-     */
     private static String stripEnding(final String clazz) {
 
         if (!clazz.endsWith("view")) {
@@ -360,26 +204,12 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
         return clazz.substring(0, clazz.lastIndexOf("view"));
     }
 
-    /**
-     * Gets the fxml file path.
-     *
-     * @return the relative path to the fxml file derived from the FXML view.
-     * e.g. The name for the AirhacksView is going to be
-     * <PATH>/airhacks.fxml.
-     */
-
-    final String getFxmlPath() {
+    private String getFxmlPath() {
         final String fxmlPath = fxmlRoot + getConventionalName(".fxml");
         LOGGER.debug("Determined fxmlPath: " + fxmlPath);
         return fxmlPath;
     }
 
-    /**
-     * Returns a resource bundle if available
-     *
-     * @param name the name of the resource bundle.
-     * @return the resource bundle
-     */
     private Optional<ResourceBundle> getResourceBundle(final String name) {
         try {
             LOGGER.debug("Resource bundle: " + name);
@@ -391,23 +221,8 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
         }
     }
 
-    /**
-     * Returns the charset to use when reading resource bundles as specified in
-     * the annotation.
-     *
-     * @return the charset
-     */
     private Charset getResourceBundleCharset() {
         return Charset.forName(annotation.encoding());
-    }
-
-    /**
-     * Gets the resource bundle.
-     *
-     * @return an existing resource bundle, or null
-     */
-    public Optional<ResourceBundle> getResourceBundle() {
-        return bundle;
     }
 
     @Override

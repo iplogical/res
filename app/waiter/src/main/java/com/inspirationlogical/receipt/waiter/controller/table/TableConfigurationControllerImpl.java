@@ -10,8 +10,6 @@ import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
-import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
-import com.inspirationlogical.receipt.waiter.contextmenu.TableContextMenuBuilderDecorator;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantViewState;
@@ -22,17 +20,15 @@ import javafx.scene.Node;
 import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
-import javafx.util.Duration;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.*;
-import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.HOLD_DURATION_MILLIS;
-import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -58,10 +54,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     private RestaurantView restaurantView;
     private Popup tableForm;
-
-    private TableView tableViewBeingDrawn;
-
-    private TableController tableControllerBeingDrawn;
 
     @PostConstruct
     private void init() {
@@ -244,22 +236,10 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void drawTable(TableView tableView) {
-        tableViewBeingDrawn = tableView;
-        WaiterApp.showView(TableFxmlView.class);
-        addPressAndHold(tableControllerBeingDrawn.getViewState(), tableControllerBeingDrawn.getRoot(),
-                new TableContextMenuBuilderDecorator(this, tableControllerBeingDrawn, new BaseContextMenuBuilder()),
-                Duration.millis(HOLD_DURATION_MILLIS));
-        restaurantController.addNodeToPane(tableControllerBeingDrawn.getRoot(), tableView.getType());
-    }
-
-    @Override
-    public TableView getTableViewBeingDrawn() {
-        return tableViewBeingDrawn;
-    }
-
-    @Override
-    public void setTableControllerBeingDrawn(TableController tableControllerBeingDrawn) {
-        this.tableControllerBeingDrawn = tableControllerBeingDrawn;
+        TableController tableController = (TableController) WaiterApp.getController(TableFxmlView.class);
+        tableController.initialize(tableView);
+        tableControllers.add(tableController);
+        restaurantController.addNodeToPane(tableController.getRoot(), tableView.getType());
     }
 
     @Override

@@ -31,8 +31,6 @@ import java.util.ResourceBundle;
 public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     implements DailySummaryController {
 
-    private static final String DAILY_SUMMARY_VIEW_PATH = "/view/fxml/DailySummary.fxml";
-
     @FXML
     private BorderPane root;
 
@@ -69,11 +67,6 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     private CalendarPickerWrapper startDatePicker;
 
     private CalendarPickerWrapper endDatePicker;
-
-    @Override
-    public String getViewPath() {
-        return DAILY_SUMMARY_VIEW_PATH;
-    }
 
     @Override
     public Node getRootNode() {
