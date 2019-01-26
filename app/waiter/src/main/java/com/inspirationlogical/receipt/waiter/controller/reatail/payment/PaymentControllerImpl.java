@@ -162,7 +162,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void handleFullPayment(PaymentParams paymentParams) {
         logger.info("Handling full payment with paymentParams: " + paymentParams.toString());
         tableView = retailService.payTable(tableView.getNumber(), paymentParams);
-        tableConfigurationController.getTableController(tableView).setView(tableView);
+        getTableController().setTableView(tableView);
         getSoldProductsAndRefreshTable();
         discardPaidRecords();
         clearPreviousPartialPrice();

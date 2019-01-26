@@ -120,7 +120,7 @@ public class TableFormControllerImpl implements TableFormController {
     public void loadTableForm(TableController tableController, TableType tableType) {
         this.tableController = tableController;
         title.setText(resourceBundle.getString("TableForm.Edit"));
-        TableView tableView = tableController.getView();
+        TableView tableView = tableController.getTableView();
         tableNumber.setText(String.valueOf(tableView.getNumber()));
         tableCapacity.setText(String.valueOf(tableView.getCapacity()));
         tableName.setText(tableView.getName());

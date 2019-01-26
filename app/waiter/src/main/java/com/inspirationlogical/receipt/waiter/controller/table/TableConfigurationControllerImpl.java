@@ -5,7 +5,6 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
-import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
@@ -115,7 +114,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         try {
             TableView tableView = tableServiceConfig.updateTableParams(tableController.getTableNumber(), tableParams);
             hideTableForm();
-            tableController.setView(tableView);
+            tableController.setTableView(tableView);
             tableController.updateTable();
         } catch (IllegalTableStateException e) {
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
@@ -126,16 +125,16 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @Override
     public void deleteTable(Node node) {
         TableController tableController = getTableController(node);
-        TableView tableView = tableController.getView();
-        tableServiceConfig.deleteTable(tableView);removeNode((Pane) node.getParent(), node);
+        tableServiceConfig.deleteTable(tableController.getTableNumber());
+        removeNode((Pane) node.getParent(), node);
         tableControllers.remove(tableController);
     }
 
     @Override
     public void rotateTable(Node node) {
         TableController tableController = getTableController(node);
-        TableView tableView = tableServiceConfig.rotateTable(tableController.getView().getNumber());
-        tableController.setView(tableView);
+        TableView tableView = tableServiceConfig.rotateTable(tableController.getTableNumber());
+        tableController.setTableView(tableView);
         tableController.updateTable();
     }
 
@@ -143,8 +142,8 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     public void moveTable(TableController tableController) {
         Node view = tableController.getRoot();
         Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
-        TableView tableView = tableServiceConfig.setTablePosition(tableController.getView().getNumber(), position);
-        tableController.setView(tableView);
+        TableView tableView = tableServiceConfig.setTablePosition(tableController.getTableNumber(), position);
+        tableController.setTableView(tableView);
         tableController.updateTable();
     }
 
@@ -152,7 +151,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     public void exchangeTables() {
         List<TableController> tablesToExchange = tableControllers.stream()
                 .filter(TableController::isSelected)
-                .filter(tableController -> tableController.getView().getType().equals(TableType.NORMAL))
+                .filter(tableController -> tableController.getTableType().equals(TableType.NORMAL))
                 .collect(toList());
         if(tablesToExchange.size() != 2) {
             ErrorMessage.showErrorMessage(restaurantController.getRootNode(),
@@ -166,8 +165,8 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
         TableController selected = tablesToExchange.get(0);
         TableController other = tablesToExchange.get(1);
         List<TableView> tableViewList = tableServiceConfig.exchangeTables(selected.getTableNumber(), other.getTableNumber());
-        selected.setView(tableViewList.get(0));
-        other.setView(tableViewList.get(1));
+        selected.setTableView(tableViewList.get(0));
+        other.setTableView(tableViewList.get(1));
         tablesToExchange.forEach(TableController::updateTable);
     }
 
@@ -179,7 +178,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @Override
     public void openTableOfReservation(ReservationView reservation) {
         List<TableController> filteredControllers = tableControllers.stream()
-                .filter(controller -> controller.getView().getNumber() == Integer.valueOf(reservation.getTableNumber()))
+                .filter(controller -> controller.getTableNumber() == Integer.valueOf(reservation.getTableNumber()))
                 .limit(1)
                 .collect(toList());
         if(filteredControllers.isEmpty()) {
@@ -189,28 +188,25 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
             return;
         }
         TableController tableController = filteredControllers.get(0);
-        TableView tableView = tableController.getView();
-        if(retailService.isTableOpen(tableView)) {
+        if(tableServiceConfig.isTableOpen(tableController.getTableNumber())) {
             WaiterApp.showView(RestaurantFxmlView.class);
             ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
-                    WaiterResources.WAITER.getString("TableIsOpenReservation") + tableView.getNumber());
+                    WaiterResources.WAITER.getString("TableIsOpenReservation") + tableController.getTableNumber());
             return;
         }
-        TableParams tableParams = buildTableParams(reservation, tableView);
+        TableParams tableParams = buildTableParams(reservation);
         editTable(tableController, tableParams);
         tableController.openTable(null);
         WaiterApp.showView(RestaurantFxmlView.class);
     }
 
-    private TableParams buildTableParams(ReservationView reservation, TableView tableView) {
+    private TableParams buildTableParams(ReservationView reservation) {
         return TableParams.builder()
                 .name(reservation.getName())
                 .number(Integer.valueOf(reservation.getTableNumber()))
                 .note(reservation.getNote())
                 .guestCount(Integer.valueOf(reservation.getGuestCount()))
-                .capacity(tableView.getCapacity())
-                .width(tableView.getWidth())
-                .height(tableView.getHeight())
+                .capacity(Integer.valueOf(reservation.getGuestCount()))
                 .build();
     }
 
@@ -223,10 +219,10 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     }
 
     @Override
-    public TableController getTableController(TableView tableView) {
+    public TableController getTableController(int tableNumber) {
         return tableControllers
                 .stream()
-                .filter(tableController -> tableController.getView().getNumber() == tableView.getNumber())
+                .filter(tableController -> tableController.getTableNumber() == tableNumber)
                 .findFirst()
                 .orElseThrow(() -> new ViewNotFoundException("Table view could not be found"));
     }

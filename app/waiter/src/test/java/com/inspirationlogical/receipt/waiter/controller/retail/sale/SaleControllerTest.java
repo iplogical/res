@@ -14,9 +14,6 @@ import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.reOp
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by TheDagi on 2017. 05. 09..
- */
 public class SaleControllerTest extends SaleViewTest {
 
     @Test
@@ -125,6 +122,10 @@ public class SaleControllerTest extends SaleViewTest {
     public void testClickOnGuestPlusThenGuestMinus() {
         guestPlus();
         assertEquals(TABLE_NUMBER + " (" + (Integer.valueOf(TABLE_GUESTS) + 1) + "/" + TABLE_CAPACITY + ")", ((Label)find(SALE_TABLE_NUMBER)).getText());
+        guestPlus();
+        assertEquals(TABLE_NUMBER + " (" + (Integer.valueOf(TABLE_GUESTS) + 2) + "/" + TABLE_CAPACITY + ")", ((Label)find(SALE_TABLE_NUMBER)).getText());
+        guestMinus();
+        assertEquals(TABLE_NUMBER + " (" + (Integer.valueOf(TABLE_GUESTS) + 1) + "/" + TABLE_CAPACITY + ")", ((Label)find(SALE_TABLE_NUMBER)).getText());
         guestMinus();
         assertEquals(TABLE_NUMBER + " (" + TABLE_GUESTS + "/" + TABLE_CAPACITY + ")", ((Label)find(SALE_TABLE_NUMBER)).getText());
     }
@@ -135,34 +136,6 @@ public class SaleControllerTest extends SaleViewTest {
         guestMinus();
         guestMinus();
         assertEquals(TABLE_NUMBER + " (" + TABLE_GUESTS + "/" + TABLE_CAPACITY + ")", ((Label)find(SALE_TABLE_NUMBER)).getText());
-    }
-
-    @Test
-    public void testSortByClickTime() {
-        selectCategory(AGGREGATE_ONE);
-        sellProduct(PRODUCT_FIVE);
-        sellProduct(PRODUCT_TWO);
-        sellProduct(PRODUCT_SIX);
-        assertEquals(PRODUCT_FIVE_LONG, getSoldProductName(1));
-        assertEquals(PRODUCT_TWO_LONG, getSoldProductName(2));
-        assertEquals(PRODUCT_SIX_LONG, getSoldProductName(3));
-
-        clickOnThenWait(PRODUCT_FIVE_LONG, 50);
-        clickButtonThenWait(SORT_BY_CLICK_TIME, 50);
-        assertEquals(PRODUCT_TWO_LONG, getSoldProductName(1));
-        assertEquals(PRODUCT_SIX_LONG, getSoldProductName(2));
-        assertEquals(PRODUCT_FIVE_LONG, getSoldProductName(3));
-        clickButtonThenWait(SORT_BY_CLICK_TIME, 50);
-
-        clickOnThenWait(PRODUCT_TWO_LONG, 50);
-        clickButtonThenWait(SORT_BY_CLICK_TIME, 50);
-        assertEquals(PRODUCT_SIX_LONG, getSoldProductName(1));
-        assertEquals(PRODUCT_FIVE_LONG, getSoldProductName(2));
-        assertEquals(PRODUCT_TWO_LONG, getSoldProductName(3));
-
-        selectiveCancellation(PRODUCT_SIX_LONG);
-        selectiveCancellation(PRODUCT_FIVE_LONG);
-        selectiveCancellation(PRODUCT_TWO_LONG);
     }
 
     @Test

@@ -114,8 +114,8 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     @Override
-    public void deleteTable(TableView tableView) {
-        Table table = tableRepository.findByNumber(tableView.getNumber());
+    public void deleteTable(int tableNumber) {
+        Table table = tableRepository.findByNumber(tableNumber);
         Table orphanage = tableRepository.findAllByType(TableType.ORPHANAGE).get(0);
         moveReceiptsToOrphanageTable(table, orphanage);
         table.getReceipts().clear();
@@ -148,8 +148,8 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     @Override
-    public boolean isTableOpen(TableView tableView) {
-        Table table = tableRepository.findByNumber(tableView.getNumber());
+    public boolean isTableOpen(int tableNumber) {
+        Table table = tableRepository.findByNumber(tableNumber);
         return isTableOpen(table);
     }
 

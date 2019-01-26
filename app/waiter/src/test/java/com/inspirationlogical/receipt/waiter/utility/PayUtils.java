@@ -114,7 +114,7 @@ public class PayUtils  extends AbstractUtils {
     }
 
     public static void sellGameFee() {
-        clickOnThenWait(WaiterResources.WAITER.getString("PaymentView.ManualGameFee"), 50);
+        clickOnThenWait(WaiterResources.WAITER.getString("PaymentView.ManualGameFee"), 100);
     }
 
     public static void autoGameFee() {

@@ -7,8 +7,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
 
-import java.util.Set;
-
 public interface TableConfigurationController {
 
     void initialize();
@@ -37,5 +35,5 @@ public interface TableConfigurationController {
 
     void drawTable(TableView tableView);
 
-    TableController getTableController(TableView tableView);
+    TableController getTableController(int tableNumber);
 }

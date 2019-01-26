@@ -16,11 +16,11 @@ public interface TableServiceConfig {
 
     TableView addTable(TableParams tableParams);
 
-    void deleteTable(TableView tableView);
+    void deleteTable(int tableNumber);
 
     TableView openTable(int tableNumber);
 
-    boolean isTableOpen(TableView tableView);
+    boolean isTableOpen(int tableNumber);
 
     TableView reOpenTable(int tableNumber);
 

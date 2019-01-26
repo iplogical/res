@@ -12,12 +12,6 @@ import java.util.List;
 
 public interface RetailService {
 
-    TableView openTable(int tableNumber);
-
-    TableView reOpenTable(int tableNumber);
-
-    boolean isTableOpen(TableView tableView);
-
     void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift);
 
     void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean isTakeAway);

@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
+import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
@@ -21,6 +22,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -74,14 +76,12 @@ public class TableControllerImpl implements TableController {
     @Autowired
     private SaleController saleController;
 
+    @Getter
+    @Setter
     private TableView tableView;
 
     @Getter
     private boolean selected;
-
-    public void setView(TableView tableView) {
-        this.tableView = tableView;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -90,7 +90,7 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void initialize(TableView tableView) {
-        setView(tableView);
+        setTableView(tableView);
         addTableDragAndDrop(rootTable);
         addPressAndHold(rootTable,
                 applicationContext.getBean(TableContextMenuBuilderDecorator.class,this, new BaseContextMenuBuilder())
@@ -105,13 +105,18 @@ public class TableControllerImpl implements TableController {
     }
 
     @Override
-    public TableView getView() {
-        return tableView;
+    public boolean isOpen() {
+        return tableView.isOpen();
     }
 
     @Override
     public int getTableNumber() {
         return tableView.getNumber();
+    }
+
+    @Override
+    public TableType getTableType() {
+        return tableView.getType();
     }
 
     @Override
@@ -137,13 +142,13 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void openTable(Control control) {
-        tableView = retailService.openTable(tableView.getNumber());
+        tableView = tableServiceConfig.openTable(tableView.getNumber());
         updateTable();
     }
 
     @Override
     public void reOpenTable(Control control) {
-        tableView = retailService.reOpenTable(tableView.getNumber());
+        tableView = tableServiceConfig.reOpenTable(tableView.getNumber());
         updateTable();
     }
 
@@ -174,7 +179,7 @@ public class TableControllerImpl implements TableController {
         } else if (restaurantController.isConfigurationMode()) {
             invertSelectionState();
         } else {
-            if (retailService.isTableOpen(tableView)) {
+            if (tableServiceConfig.isTableOpen(tableView.getNumber())) {
                 enterSaleView();
             }
         }

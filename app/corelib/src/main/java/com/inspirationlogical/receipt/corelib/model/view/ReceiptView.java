@@ -2,6 +2,8 @@ package com.inspirationlogical.receipt.corelib.model.view;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Client;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
@@ -10,6 +12,7 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -57,8 +60,15 @@ public class ReceiptView {
             return Collections.emptyList();
         }
         return receipt.getRecords().stream()
+                .sorted(Comparator.comparing(this::getOldestCreated))
                 .map(ReceiptRecordView::new)
                 .collect(toList());
+    }
+
+    private LocalDateTime getOldestCreated(ReceiptRecord receiptRecord) {
+        List<ReceiptRecordCreated> sortedCreatedList =  receiptRecord.getCreatedList();
+        sortedCreatedList.sort(Comparator.comparing(ReceiptRecordCreated::getCreated));
+        return sortedCreatedList.get(0).getCreated();
     }
 
     private int initTotalPrice(Receipt receipt) {

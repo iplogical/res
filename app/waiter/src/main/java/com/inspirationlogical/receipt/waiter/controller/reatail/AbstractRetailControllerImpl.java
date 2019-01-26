@@ -105,7 +105,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     }
 
     protected void backToRestaurantView() {
-        tableConfigurationController.getTableController(tableView).updateTable();
+        tableConfigurationController.getTableController(tableView.getNumber()).updateTable();
         WaiterApp.showView(RestaurantFxmlView.class);
     }
 
@@ -113,7 +113,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     public void onGuestPlus(Event event) {
         tableView = tableServiceConfig.setGuestCount(tableView.getNumber(), tableView.getGuestCount() + 1);
         updateTableSummary();
-        tableConfigurationController.getTableController(tableView).setView(tableView);
+        tableConfigurationController.getTableController(tableView.getNumber()).setTableView(tableView);
         logger.info("The guest plus button was clicked. Guest count: " + tableView.getGuestCount());
     }
 
@@ -124,7 +124,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         }
         tableView = tableServiceConfig.setGuestCount(tableView.getNumber(), tableView.getGuestCount() - 1);
         updateTableSummary();
-        tableConfigurationController.getTableController(tableView).setView(tableView);
+        tableConfigurationController.getTableController(tableView.getNumber()).setTableView(tableView);
         logger.info("The guest minus button was clicked. Guest count: " + tableView.getGuestCount());
     }
 
@@ -181,7 +181,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         return " (" + tableView.getGuestCount() + "/" + tableView.getCapacity() + ")";
     }
 
-    protected ObservableList<SoldProductViewModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
+    private ObservableList<SoldProductViewModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
         List<SoldProductViewModel> list = soldProducts.stream()
                 .map(receiptRecordView -> new SoldProductViewModel(receiptRecordView, getOrderDeliveredTime()))
                 .collect(toList());
@@ -271,6 +271,6 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         if(tableView == null) {
             return null;
         }
-        return tableConfigurationController.getTableController(tableView);
+        return tableConfigurationController.getTableController(tableView.getNumber());
     }
 }
