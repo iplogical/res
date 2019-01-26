@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.waiter.controller.table;
 
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
+import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.contextmenu.TableContextMenuBuilderDecorator;
@@ -60,6 +61,9 @@ public class TableControllerImpl implements TableController {
 
     @Autowired
     private RetailService retailService;
+
+    @Autowired
+    private TableServiceConfig tableServiceConfig;
 
     @Autowired
     private RestaurantController restaurantController;
@@ -151,10 +155,10 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void setOrderDelivered(boolean delivered) {
-        tableView = retailService.setOrderDelivered(tableView.getNumber(), delivered);
+        tableView = tableServiceConfig.setOrderDelivered(tableView.getNumber(), delivered);
         if (delivered) {
             LocalDateTime now = LocalDateTime.now();
-            tableView = retailService.setOrderDeliveredTime(tableView.getNumber(), now);
+            tableView = tableServiceConfig.setOrderDeliveredTime(tableView.getNumber(), now);
         }
     }
 

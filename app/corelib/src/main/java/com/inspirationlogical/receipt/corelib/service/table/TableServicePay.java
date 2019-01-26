@@ -4,6 +4,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 public interface TableServicePay {

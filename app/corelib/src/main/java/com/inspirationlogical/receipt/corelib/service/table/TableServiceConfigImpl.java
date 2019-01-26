@@ -1,10 +1,10 @@
 package com.inspirationlogical.receipt.corelib.service.table;
 
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
+import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
-import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -25,6 +26,7 @@ import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
 @Service
+@Transactional
 public class TableServiceConfigImpl implements TableServiceConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(TableServiceConfigImpl.class);
@@ -69,16 +71,30 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     @Override
-    public TableView addTable(RestaurantView restaurantView, TableParams tableParams) {
+    public int getFirstUnusedNumber() {
+        return tableRepository.getFirstUnusedNumber();
+    }
+
+    @Override
+    public TableView addTable(TableParams tableParams) {
         if (isTableNumberAlreadyInUse(tableParams.getNumber())) {
             throw new IllegalTableStateException("The table number " + tableParams.getNumber() + " is already in use");
         }
         Table newTable = buildTable(tableParams);
-        Restaurant restaurant = restaurantRepository.getOne(restaurantView.getRestaurantId());
+        Restaurant restaurant = getActiveRestaurant();
         restaurant.getTables().add(newTable);
         newTable.setOwner(restaurant);
         tableRepository.save(newTable);
+        logger.info("A table was added: " + tableParams);
         return buildTableView(newTable);
+    }
+
+    private Restaurant getActiveRestaurant() {
+        List<Restaurant> restaurants = restaurantRepository.findAll();
+        if (restaurants.isEmpty()) {
+            throw new RestaurantNotFoundException();
+        }
+        return restaurants.get(0);
     }
 
     private Table buildTable(TableParams tableParams) {
@@ -209,7 +225,7 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     @Override
-    public TableView setPosition(int tableNumber, Point2D position) {
+    public TableView setTablePosition(int tableNumber, Point2D position) {
         Table table = tableRepository.findByNumber(tableNumber);
         table.setCoordinateX((int) position.getX());
         table.setCoordinateY((int) position.getY());

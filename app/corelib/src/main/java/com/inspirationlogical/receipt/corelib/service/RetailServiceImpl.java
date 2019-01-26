@@ -140,16 +140,4 @@ public class RetailServiceImpl extends AbstractService implements RetailService 
     public RecentConsumption getRecentConsumption(TableView tableView) {
         return tableServiceConfig.getRecentConsumption(tableView);
     }
-
-    @Override
-    public TableView setOrderDelivered(int tableNumber, boolean delivered) {
-        return tableServiceConfig.setOrderDelivered(tableNumber, delivered);
-    }
-
-    @Override
-    public TableView setOrderDeliveredTime(int tableNumber, LocalDateTime deliveredTime) {
-        return tableServiceConfig.setOrderDeliveredTime(tableNumber, deliveredTime);
-    }
-
-
 }

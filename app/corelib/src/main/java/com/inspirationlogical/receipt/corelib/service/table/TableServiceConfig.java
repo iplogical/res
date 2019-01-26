@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service.table;
 
 import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
-import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import javafx.geometry.Point2D;
@@ -13,7 +12,9 @@ public interface TableServiceConfig {
 
     List<TableView> getDisplayableTables();
 
-    TableView addTable(RestaurantView restaurantView, TableParams tableParams);
+    int getFirstUnusedNumber();
+
+    TableView addTable(TableParams tableParams);
 
     void deleteTable(TableView tableView);
 
@@ -27,7 +28,7 @@ public interface TableServiceConfig {
 
     TableView setGuestCount(int tableNumber, int guestCount);
 
-    TableView setPosition(int tableNumber, Point2D position);
+    TableView setTablePosition(int tableNumber, Point2D position);
 
     TableView rotateTable(int tableNumber);
 

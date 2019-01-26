@@ -6,6 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
+import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
@@ -73,6 +74,9 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     private RestaurantService restaurantService;
 
     @Autowired
+    private TableServiceConfig tableServiceConfig;
+
+    @Autowired
     protected RetailService retailService;
 
     @Autowired
@@ -103,7 +107,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     @FXML
     public void onGuestPlus(Event event) {
-        tableView = restaurantService.setGuestCount(tableView.getNumber(), tableView.getGuestCount() + 1);
+        tableView = tableServiceConfig.setGuestCount(tableView.getNumber(), tableView.getGuestCount() + 1);
         updateTableSummary();
         tableConfigurationController.getTableController(tableView).setView(tableView);
         logger.info("The guest plus button was clicked. Guest count: " + tableView.getGuestCount());
@@ -114,7 +118,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         if(tableView.getGuestCount() == 0) {
             return;
         }
-        tableView = restaurantService.setGuestCount(tableView.getNumber(), tableView.getGuestCount() - 1);
+        tableView = tableServiceConfig.setGuestCount(tableView.getNumber(), tableView.getGuestCount() - 1);
         updateTableSummary();
         tableConfigurationController.getTableController(tableView).setView(tableView);
         logger.info("The guest minus button was clicked. Guest count: " + tableView.getGuestCount());

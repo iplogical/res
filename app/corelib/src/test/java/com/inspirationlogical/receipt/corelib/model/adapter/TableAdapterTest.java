@@ -97,7 +97,7 @@ public class TableAdapterTest extends TestBase {
 //
 //    @Test
 //    public void testMoveTable() {
-//        tableNormal.setPosition(new Point2D(50, 70));
+//        tableNormal.setTablePosition(new Point2D(50, 70));
 //        assertEquals(50, getTable(
 //                tableNormal.getAdaptee().getNumber()).getAdaptee().getCoordinateX());
 //        assertEquals(70, getTable(

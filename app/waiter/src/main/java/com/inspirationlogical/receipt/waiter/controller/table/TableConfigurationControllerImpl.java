@@ -3,11 +3,11 @@ package com.inspirationlogical.receipt.waiter.controller.table;
 import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
-import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
+import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
@@ -42,12 +42,14 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     private RestaurantService restaurantService;
 
     @Autowired
+    private TableServiceConfig tableServiceConfig;
+
+    @Autowired
     private RetailService retailService;
 
     @Getter
     private Set<TableController> tableControllers;
 
-    private RestaurantView restaurantView;
     private Popup tableForm;
 
     @PostConstruct
@@ -57,13 +59,12 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void initialize() {
-        restaurantView = restaurantService.getActiveRestaurant();
         initTables();
         initTableForm();
     }
 
     private void initTables() {
-        List<TableView> tables = restaurantService.getDisplayableTables();
+        List<TableView> tables = tableServiceConfig.getDisplayableTables();
         tables.forEach(this::drawTable);
     }
 
@@ -94,7 +95,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @Override
     public void addTable(TableParams tableParams) {
         try {
-            TableView tableView = restaurantService.addTable(restaurantView, buildTableParams(tableParams));
+            TableView tableView = tableServiceConfig.addTable(buildTableParams(tableParams));
             hideTableForm();
             drawTable(tableView);
         } catch (IllegalTableStateException e) {
@@ -115,7 +116,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @Override
     public void editTable(TableController tableController, TableParams tableParams) {
         try {
-            TableView tableView = restaurantService.updateTableParams(tableController.getTableNumber(), tableParams);
+            TableView tableView = tableServiceConfig.updateTableParams(tableController.getTableNumber(), tableParams);
             hideTableForm();
             tableController.setView(tableView);
             tableController.updateTable();
@@ -129,14 +130,14 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     public void deleteTable(Node node) {
         TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
-        restaurantService.deleteTable(tableView);removeNode((Pane) node.getParent(), node);
+        tableServiceConfig.deleteTable(tableView);removeNode((Pane) node.getParent(), node);
         tableControllers.remove(tableController);
     }
 
     @Override
     public void rotateTable(Node node) {
         TableController tableController = getTableController(node);
-        TableView tableView = restaurantService.rotateTable(tableController.getView().getNumber());
+        TableView tableView = tableServiceConfig.rotateTable(tableController.getView().getNumber());
         tableController.setView(tableView);
         tableController.updateTable();
     }
@@ -145,7 +146,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     public void moveTable(TableController tableController) {
         Node view = tableController.getRoot();
         Point2D position = new Point2D(view.getLayoutX(), view.getLayoutY());
-        TableView tableView = restaurantService.setTablePosition(tableController.getView().getNumber(), position);
+        TableView tableView = tableServiceConfig.setTablePosition(tableController.getView().getNumber(), position);
         tableController.setView(tableView);
         tableController.updateTable();
     }
@@ -167,7 +168,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     private void exchangeTables(List<TableController> tablesToExchange) {
         TableController selected = tablesToExchange.get(0);
         TableController other = tablesToExchange.get(1);
-        List<TableView> tableViewList = restaurantService.exchangeTables(selected.getTableNumber(), other.getTableNumber());
+        List<TableView> tableViewList = tableServiceConfig.exchangeTables(selected.getTableNumber(), other.getTableNumber());
         selected.setView(tableViewList.get(0));
         other.setView(tableViewList.get(1));
         tablesToExchange.forEach(TableController::updateTable);

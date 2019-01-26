@@ -4,6 +4,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.fxml.FXML;
@@ -51,18 +52,16 @@ public class TableFormControllerImpl implements TableFormController {
 
     private TableController tableController = null;
 
+    @Autowired
     private TableConfigurationController tableConfigurationController;
 
+    @Autowired
     private RestaurantService restaurantService;
 
-    private ResourceBundle resourceBundle;
-
     @Autowired
-    public TableFormControllerImpl(TableConfigurationController tableConfigurationController,
-                                   RestaurantService restaurantService) {
-        this.tableConfigurationController = tableConfigurationController;
-        this.restaurantService = restaurantService;
-    }
+    TableServiceConfig tableServiceConfig;
+
+    private ResourceBundle resourceBundle;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -111,7 +110,7 @@ public class TableFormControllerImpl implements TableFormController {
     @Override
     public void createTableForm(TableType tableType) {
         title.setText(resourceBundle.getString("TableForm.Create"));
-        tableNumber.setText(String.valueOf(restaurantService.getFirstUnusedNumber()));
+        tableNumber.setText(String.valueOf(tableServiceConfig.getFirstUnusedNumber()));
         guestCount.setText(tableType == TableType.NORMAL ? "0" : "1");
         tableCapacity.setText(tableType == TableType.NORMAL ? NORMAL_TABLE_DEFAULT_CAPACITY.toString() : VIRTUAL_TABLE_DEFAULT_CAPACITY.toString());
         tableName.clear();

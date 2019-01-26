@@ -3,7 +3,6 @@ package com.inspirationlogical.receipt.waiter.controller.reservation;
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.frontend.viewmodel.ReservationViewModel;
 import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
-import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.reservation.ReservationService;

@@ -43,8 +43,4 @@ public interface RetailService {
     void decreaseSoldQuantity(ReceiptRecordView receiptRecord, double amount);
 
     RecentConsumption getRecentConsumption(TableView tableView);
-
-    TableView setOrderDelivered(int tableNumber, boolean delivered);
-
-    TableView setOrderDeliveredTime(int tableNumber, LocalDateTime deliveredTime);
 }
