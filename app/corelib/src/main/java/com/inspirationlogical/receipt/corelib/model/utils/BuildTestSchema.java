@@ -47,9 +47,7 @@ public class BuildTestSchema {
 
     public static final String RESERVATION_TEST_TABLE = "20";
     public static final String RESTAURANT_TEST_TABLE = "21";
-    public static final String CONSUMER_TEST_TABLE = "22";
-    public static final String CONSUMED_TEST_TABLE_ONE = "23";
-    public static final String CONSUMED_TEST_TABLE_TWO = "24";
+
     public static final String SALE_TEST_TABLE = "25";
     public static final String PAYMENT_TEST_TABLE = "26";
     public static final String TABLE_TEST_TABLE = "27";

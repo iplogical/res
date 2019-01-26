@@ -6,9 +6,6 @@ import javafx.geometry.Point2D;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.annotation.PostConstruct;
-
-import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.CONSUMED_TEST_TABLE_ONE;
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.RESTAURANT_TEST_TABLE;
 import static com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantSummaryControllerTest.INITIAL_PAID_CONSUMPTION;
 import static com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantSummaryControllerTest.OPEN_CONSUMPTION;
@@ -26,7 +23,8 @@ public class RestaurantControllerTest extends TestFXBase {
     @Ignore
     @Test
     public void launchAppWithTestDataBase() {
-        while (true) {}
+        while (true) {
+        }
     }
 
     @Test

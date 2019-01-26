@@ -1,10 +1,9 @@
 package com.inspirationlogical.receipt.waiter.contextmenu;
 
 import com.inspirationlogical.receipt.corelib.frontend.contextmenu.ContextMenuBuilder;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.controller.table.TableController;
-import com.inspirationlogical.receipt.waiter.controller.table.TableViewState;
-import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -19,6 +18,9 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
     @Autowired
     private TableConfigurationController tableConfigurationController;
 
+    @Autowired
+    private RestaurantController restaurantController;
+
     private TableController tableController;
 
     public TableContextMenuBuilderDecorator(TableController tableController,
@@ -28,21 +30,20 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
     }
 
     @Override
-    public ContextMenu build(ViewState viewState) {
-        TableViewState tableViewState = (TableViewState) viewState;
-        ContextMenu contextMenu = super.build(viewState);
+    public ContextMenu build() {
+        ContextMenu contextMenu = super.build();
 
-        if (tableViewState.getRestaurantViewState().getMotionViewState().getMovableProperty().getValue()) {
+        if (restaurantController.isMotionMode()) {
             return contextMenu;
         }
 
         MenuItem editTable = buildMenuItem("ContextMenu.EditTable", tableConfigurationController::showEditTableForm);
         contextMenu.getItems().add(editTable);
 
-        if (isConfigurationMode(tableViewState)) {
+        if (restaurantController.isConfigurationMode()) {
             MenuItem rotateTable = buildMenuItem("ContextMenu.RotateTable", tableConfigurationController::rotateTable);
             contextMenu.getItems().add(rotateTable);
-            if (tableViewState.isSelected()) {
+            if (tableController.isSelected()) {
                 MenuItem exchangeTables = buildMenuItem("ContextMenu.ExchangeTable",tableConfigurationController::exchangeTables);
                 contextMenu.getItems().add(exchangeTables);
             }
@@ -59,9 +60,5 @@ public class TableContextMenuBuilderDecorator extends ContextMenuBuilderDecorato
             }
         }
         return contextMenu;
-    }
-
-    private Boolean isConfigurationMode(TableViewState tableViewState) {
-        return tableViewState.getRestaurantViewState().getConfigurable().getValue();
     }
 }

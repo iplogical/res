@@ -31,21 +31,11 @@ public interface TableConfigurationController {
 
     void exchangeTables();
 
-    void selectTable(TableController tableController, boolean selected);
-
     void clearSelections();
-
-    boolean hasSelection();
 
     void openTableOfReservation(ReservationView reservation);
 
     void drawTable(TableView tableView);
 
-//    TableView getTableViewBeingDrawn();
-
-//    void setTableControllerBeingDrawn(TableController tableControllerBeingDrawn);
-
     TableController getTableController(TableView tableView);
-
-//    Set<TableController> getTableControllers();
 }

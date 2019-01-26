@@ -24,9 +24,9 @@ public interface RestaurantService {
 
     TableView rotateTable(int tableNumber);
 
-    void exchangeTables(TableView selected, TableView other);
+    List<TableView> exchangeTables(int selectedTableNumber, int otherTableNumber);
 
-    TableView setTableParams(int number, TableParams tableParams);
+    TableView updateTableParams(int number, TableParams tableParams);
 
     TableView setGuestCount(int tableNumber, int guestCount);
 

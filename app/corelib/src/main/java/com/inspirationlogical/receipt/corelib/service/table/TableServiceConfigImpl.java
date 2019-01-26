@@ -183,8 +183,13 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     @Override
-    public TableView setTableParams(int tableNumber, TableParams tableParams) {
+    public TableView updateTableParams(int tableNumber, TableParams tableParams) {
+        int newTableNumber = tableParams.getNumber();
+        if (tableNumber != newTableNumber && isTableNumberAlreadyInUse(newTableNumber)) {
+            throw new IllegalTableStateException("The table number " + newTableNumber + " is already in use");
+        }
         Table table = tableRepository.findByNumber(tableNumber);
+        table.setNumber(newTableNumber);
         table.setName(tableParams.getName());
         table.setGuestCount(tableParams.getGuestCount());
         table.setCapacity(tableParams.getCapacity());
@@ -223,16 +228,25 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         return buildTableView(table);
     }
 
-    @Override
-    public boolean isTableNumberAlreadyInUse(int tableNumber) {
+    private boolean isTableNumberAlreadyInUse(int tableNumber) {
         Table table = tableRepository.findByNumber(tableNumber);
         return table != null;
     }
 
     @Override
-    public void exchangeTables(TableView selectedView, TableView otherView) {
-        Table selected = tableRepository.findByNumber(selectedView.getNumber());
-        Table other = tableRepository.findByNumber(otherView.getNumber());
+    public List<TableView> exchangeTables(int selectedTableNumber, int otherTableNumber) {
+        Table selected = tableRepository.findByNumber(selectedTableNumber);
+        Table other = tableRepository.findByNumber(otherTableNumber);
+        exchangeReceipts(selected, other);
+        exchangeTableParams(selected, other);
+        tableRepository.save(selected);
+        tableRepository.save(other);
+        logger.info("Two tables are exchanged. Selected table number: " + selectedTableNumber +
+                ", other table number: " + otherTableNumber);
+        return Arrays.asList(buildTableView(selected), buildTableView(other));
+    }
+
+    private void exchangeReceipts(Table selected, Table other) {
         Receipt receiptOfSelected = receiptRepository.getOpenReceipt(selected.getNumber());
         Receipt receiptOfOther = receiptRepository.getOpenReceipt(other.getNumber());
         if (bothAreOpen(receiptOfSelected, receiptOfOther)) {
@@ -283,6 +297,30 @@ public class TableServiceConfigImpl implements TableServiceConfig {
             removeFromOtherAndAddToSelected(selected, other, openReceipt);
             openReceipt.setOwner(selected);
         }
+    }
+
+    private void exchangeTableParams(Table selected, Table other) {
+        exchangeTableName(selected, other);
+        exchangeTableGuestCount(selected, other);
+        exchangeTableNote(selected, other);
+    }
+
+    private void exchangeTableName(Table selected, Table other) {
+        String selectedName = selected.getName();
+        selected.setName(other.getName());
+        other.setName(selectedName);
+    }
+
+    private void exchangeTableGuestCount(Table selected, Table other) {
+        int selectedGuestCount = selected.getGuestCount();
+        selected.setGuestCount(other.getGuestCount());
+        other.setGuestCount(selectedGuestCount);
+    }
+
+    private void exchangeTableNote(Table selected, Table other) {
+        String selectedNote = selected.getNote();
+        selected.setNote(other.getNote());
+        other.setNote(selectedNote);
     }
 
     @Override

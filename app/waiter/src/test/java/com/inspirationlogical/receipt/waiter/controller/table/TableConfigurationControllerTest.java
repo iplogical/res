@@ -1,25 +1,16 @@
 package com.inspirationlogical.receipt.waiter.controller.table;
 
-import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
-import javafx.geometry.Point2D;
+import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
-import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.longClickOn;
-import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.verifyThatVisible;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
-import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.TABLEFORM_CONFIRM;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = WaiterApp.class)
 public class TableConfigurationControllerTest extends TestFXBase {
 
     @Test
@@ -119,26 +110,12 @@ public class TableConfigurationControllerTest extends TestFXBase {
         clickOn(TABLEFORM_CANCEL);
     }
 
-    @Test
-    public void testVirtualTableNotAllowedForMerge() {
-        addTableToTab("TestTable", "100", "Restaurant.Frequenters");
-        selectTab("Restaurant.Frequenters");
-        runInConfigurationMode(() -> {
-            clickOnThenWait("TestTable", 100);
-            selectTab("Restaurant.Tables");
-            clickOnThenWait(CONSUMED_TEST_TABLE_ONE, 100);
-            longClickOn(new Point2D(150, 150));
-            clickMenuThenWait("ContextMenu.MergeTable", 100);
-            verifyErrorMessage("InsufficientSelection");
-        });
-        deleteTableFromTab("TestTable", "Restaurant.Frequenters");
-    }
 
     @Test
     public void testExchangeTableInsufficientSelection() {
         runInConfigurationMode(() -> {
-            clickOnThenWait(CONSUMED_TEST_TABLE_ONE, 100);
-            longClickOn(CONSUMED_TEST_TABLE_ONE);
+            clickOnThenWait(TABLE_TEST_TABLE, 100);
+            longClickOn(TABLE_TEST_TABLE);
             clickMenuThenWait("ContextMenu.ExchangeTable", 100);
             verifyErrorMessage("TableConfiguration.InsufficientForExchange");
         });
@@ -147,10 +124,10 @@ public class TableConfigurationControllerTest extends TestFXBase {
     @Test
     public void testExchangeTableTooManySelection() {
         runInConfigurationMode(() -> {
-            clickOnThenWait(CONSUMED_TEST_TABLE_ONE, 100);
-            clickOnThenWait(CONSUMED_TEST_TABLE_TWO, 100);
             clickOnThenWait(TABLE_TEST_TABLE, 100);
-            longClickOn(CONSUMED_TEST_TABLE_ONE);
+            clickOnThenWait(RESTAURANT_TEST_TABLE, 100);
+            clickOnThenWait(RESERVATION_TEST_TABLE, 100);
+            longClickOn(TABLE_TEST_TABLE);
             clickMenuThenWait("ContextMenu.ExchangeTable", 100);
             verifyErrorMessage("TableConfiguration.InsufficientForExchange");
         });
@@ -159,31 +136,31 @@ public class TableConfigurationControllerTest extends TestFXBase {
     @Test
     public void testExchangeTableOneIsOpen() {
         openTableAndSellProducts(TABLE_TEST_TABLE, PRODUCT_FIVE);
-        exchangeTables(TABLE_TEST_TABLE, CONSUMED_TEST_TABLE_ONE);
-        enterSaleView(CONSUMED_TEST_TABLE_ONE);
+        exchangeTables(TABLE_TEST_TABLE, RESTAURANT_TEST_TABLE);
+        enterSaleView(RESTAURANT_TEST_TABLE);
         assertSoldProductFive(1, 5);
         backToRestaurantView();
-        closeTable(CONSUMED_TEST_TABLE_ONE);
+        closeTable(RESTAURANT_TEST_TABLE);
     }
 
     @Test
     public void testExchangeTableBothAreOpen() {
         openTableAndSellProducts(TABLE_TEST_TABLE, PRODUCT_FIVE);
-        openTableAndSellProducts(CONSUMED_TEST_TABLE_ONE, PRODUCT_TWO);
-        exchangeTables(TABLE_TEST_TABLE, CONSUMED_TEST_TABLE_ONE);
+        openTableAndSellProducts(RESTAURANT_TEST_TABLE, PRODUCT_TWO);
+        exchangeTables(TABLE_TEST_TABLE, RESTAURANT_TEST_TABLE);
 
-        enterSaleView(CONSUMED_TEST_TABLE_ONE);
+        enterSaleView(RESTAURANT_TEST_TABLE);
         assertSoldProductFive(1, 5);
         backToRestaurantView();
-        closeTable(CONSUMED_TEST_TABLE_ONE);
+        closeTable(RESTAURANT_TEST_TABLE);
 
         enterSaleView(TABLE_TEST_TABLE);
         assertSoldProduct(1, PRODUCT_TWO_LONG + " *", 5, 160, 800);
         backToRestaurantView();
         closeTable(TABLE_TEST_TABLE);
-   }
+    }
 
-    public void exchangeTables(String firstTable, String secondTable) {
+    private void exchangeTables(String firstTable, String secondTable) {
         runInConfigurationMode(() -> {
             clickOnThenWait(firstTable, 100);
             clickOnThenWait(secondTable, 100);
@@ -200,4 +177,8 @@ public class TableConfigurationControllerTest extends TestFXBase {
         backToRestaurantView();
     }
 
+    @After
+    public void waitOneSecAfterTest() throws Exception {
+        Thread.sleep(1000);
+    }
 }

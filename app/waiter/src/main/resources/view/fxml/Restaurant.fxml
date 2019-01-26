@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
@@ -140,50 +143,11 @@
                      <font>
                         <Font size="16.0" />
                      </font></ToggleButton>
-                  <CheckBox fx:id="snapToGrid" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" selected="true" text="%Restaurant.SnapToGrid" textAlignment="CENTER">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="-5.0" />
-                     </VBox.margin></CheckBox>
-                  <Label fx:id="getGridSize1" alignment="CENTER" maxWidth="1.7976931348623157E308" text="%Restaurant.GridSize" textAlignment="CENTER">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="-5.0" />
-                     </VBox.margin>
-                  </Label>
                   <HBox alignment="CENTER" maxWidth="1.7976931348623157E308">
-                     <children>
-                        <Label fx:id="getGridSize" alignment="CENTER_RIGHT" text="10" textAlignment="CENTER">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="getGridSize11" text="%Restaurant.GridUnit" textAlignment="CENTER">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
                      <VBox.margin>
                         <Insets top="-10.0" />
                      </VBox.margin>
                   </HBox>
-                  <Slider fx:id="setGridSize" blockIncrement="5.0" majorTickUnit="5.0" max="50.0" maxWidth="1.7976931348623157E308" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin></Slider>
-                  <Separator maxWidth="1.7976931348623157E308">
-                     <VBox.margin>
-                        <Insets top="-5.0" />
-                     </VBox.margin>
-                  </Separator>
                </children>
                <padding>
                   <Insets left="5.0" top="5.0" />

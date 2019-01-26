@@ -19,8 +19,6 @@ public interface TableController extends Controller {
 
     Control getRoot();
 
-    TableViewState getViewState();
-
     void updateTable();
 
     void openTable(Control control);
@@ -32,4 +30,6 @@ public interface TableController extends Controller {
     void setOrderDelivered(boolean delivered);
 
     LocalDateTime getOrderDeliveryTime();
+
+    boolean isSelected();
 }

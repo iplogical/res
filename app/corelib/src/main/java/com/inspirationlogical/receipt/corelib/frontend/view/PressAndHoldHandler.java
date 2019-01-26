@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.corelib.frontend.view;
 
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
 import com.inspirationlogical.receipt.corelib.frontend.contextmenu.ContextMenuBuilder;
-import com.inspirationlogical.receipt.corelib.frontend.viewstate.ViewState;
 
 import javafx.animation.PauseTransition;
 import javafx.scene.control.ContextMenu;
@@ -13,13 +12,13 @@ import javafx.util.Duration;
 public class PressAndHoldHandler {
     private static final int HOLD_DURATION_MILLIS = 200;
 
-    public static void addPressAndHold(ViewState viewState, Control control, ContextMenuBuilder contextMenuBuilder) {
+    public static void addPressAndHold(Control control, ContextMenuBuilder contextMenuBuilder) {
         Wrapper<MouseEvent> mouseEventWrapper = new Wrapper<>();
         PauseTransition holdTimer = new PauseTransition(Duration.millis(HOLD_DURATION_MILLIS));
 
         holdTimer.setOnFinished(event -> {
             MouseEvent mouseEvent = mouseEventWrapper.getContent();
-            ContextMenu contextMenu = contextMenuBuilder.build(viewState);
+            ContextMenu contextMenu = contextMenuBuilder.build();
             control.setContextMenu(contextMenu);
             contextMenu.setUserData(control);
             contextMenu.show(control, mouseEvent.getScreenX(), mouseEvent.getScreenY());

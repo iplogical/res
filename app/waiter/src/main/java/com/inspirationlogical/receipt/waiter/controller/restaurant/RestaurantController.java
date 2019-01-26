@@ -7,11 +7,13 @@ import javafx.scene.layout.Pane;
 
 public interface RestaurantController extends Controller {
 
-    RestaurantViewState getViewState();
-
     void addNodeToPane(Node node, TableType tableType);
 
     Pane getActiveTab();
 
-    Pane getTab(TableType tableType);
+    TableType getTableType();
+
+    boolean isConfigurationMode();
+
+    boolean isMotionMode();
 }

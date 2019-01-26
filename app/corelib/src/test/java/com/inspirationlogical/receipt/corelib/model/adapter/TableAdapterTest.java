@@ -50,7 +50,7 @@ public class TableAdapterTest extends TestBase {
 //                .capacity(12)
 //                .dimension(new Dimension2D(120, 160))
 //                .build();
-//        tableNormal.setTableParams(tableParams);
+//        tableNormal.updateTableParams(tableParams);
 //        Table updatedTableNormal = getTable(tableNormal.getAdaptee().getNumber()).getAdaptee();
 //        assertEquals("NewTestName", updatedTableNormal.getName());
 //        assertEquals("NewTestNote", updatedTableNormal.getNote());

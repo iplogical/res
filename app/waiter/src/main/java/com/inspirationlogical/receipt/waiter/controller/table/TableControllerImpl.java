@@ -19,19 +19,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import net.bytebuddy.asm.Advice;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 
-import javax.annotation.PostConstruct;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
+import static com.inspirationlogical.receipt.waiter.controller.table.DragAndDropHandler.addTableDragAndDrop;
 import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -73,22 +72,23 @@ public class TableControllerImpl implements TableController {
 
     private TableView tableView;
 
-    private TableViewState tableViewState;
+    @Getter
+    private boolean selected;
 
     public void setView(TableView tableView) {
         this.tableView = tableView;
-        this.tableViewState = new TableViewState(restaurantController.getViewState());
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        DragAndDropHandler.setRestaurantController(restaurantController);
     }
 
     @Override
     public void initialize(TableView tableView) {
         setView(tableView);
-        addDragAndDrop(rootTable, tableViewState.getRestaurantViewState().getMotionViewState());
-        addPressAndHold(tableViewState, rootTable,
+        addTableDragAndDrop(rootTable);
+        addPressAndHold(rootTable,
                 applicationContext.getBean(TableContextMenuBuilderDecorator.class,this, new BaseContextMenuBuilder())
         );
         setPreferredSize();
@@ -113,11 +113,6 @@ public class TableControllerImpl implements TableController {
     @Override
     public Control getRoot() {
         return rootTable;
-    }
-
-    @Override
-    public TableViewState getViewState() {
-        return tableViewState;
     }
 
     @Override
@@ -150,8 +145,8 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void deselectTable() {
-        tableViewState.setSelected(false);
-        CSSUtilities.setBorderColor(tableViewState.isSelected(), tableStackPane);
+        selected = false;
+        CSSUtilities.setBorderColor(false, tableStackPane);
     }
 
     @Override
@@ -170,9 +165,9 @@ public class TableControllerImpl implements TableController {
 
     @FXML
     public void onTableClicked(MouseEvent event) {
-        if (isContextMenuOpen() || isMotionMode()) {
+        if (isContextMenuOpen() || restaurantController.isMotionMode()) {
             moveTables();
-        } else if (isConfigurationMode()) {
+        } else if (restaurantController.isConfigurationMode()) {
             invertSelectionState();
         } else {
             if (retailService.isTableOpen(tableView)) {
@@ -181,32 +176,23 @@ public class TableControllerImpl implements TableController {
         }
     }
 
+    private boolean isContextMenuOpen() {
+        return rootTable.getContextMenu() != null && rootTable.getContextMenu().isShowing();
+    }
+
     private void moveTables() {
         tableConfigurationController.moveTable(this);
     }
 
     private void invertSelectionState() {
-        tableViewState.setSelected(!tableViewState.isSelected());
-        tableConfigurationController.selectTable(this, tableViewState.isSelected());
-        CSSUtilities.setBorderColor(tableViewState.isSelected(), tableStackPane);
+        selected = !selected;
+        CSSUtilities.setBorderColor(selected, tableStackPane);
     }
 
     private void enterSaleView() {
         saleController.setTableView(tableView);
         WaiterApp.showView(SaleFxmlView.class);
         saleController.enterSaleView();
-    }
-
-    private Boolean isMotionMode() {
-        return tableViewState.getRestaurantViewState().getMotionViewState().getMovableProperty().getValue();
-    }
-
-    private Boolean isConfigurationMode() {
-        return tableViewState.getRestaurantViewState().getConfigurable().getValue();
-    }
-
-    private boolean isContextMenuOpen() {
-        return rootTable.getContextMenu() != null && rootTable.getContextMenu().isShowing();
     }
 
     @Override

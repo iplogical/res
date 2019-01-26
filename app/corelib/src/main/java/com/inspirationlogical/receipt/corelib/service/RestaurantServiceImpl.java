@@ -95,13 +95,13 @@ public class RestaurantServiceImpl extends AbstractService implements Restaurant
     }
 
     @Override
-    public void exchangeTables(TableView selected, TableView other) {
-        tableServiceConfig.exchangeTables(selected, other);
+    public List<TableView> exchangeTables(int selectedTableNumber, int otherTableNumber) {
+        return tableServiceConfig.exchangeTables(selectedTableNumber, otherTableNumber);
     }
 
     @Override
-    public TableView setTableParams(int number, TableParams tableParams) {
-        return tableServiceConfig.setTableParams(number, tableParams);
+    public TableView updateTableParams(int number, TableParams tableParams) {
+        return tableServiceConfig.updateTableParams(number, tableParams);
     }
 
     @Override

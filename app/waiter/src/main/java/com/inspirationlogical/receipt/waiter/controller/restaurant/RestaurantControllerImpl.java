@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.restaurant;
 
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.view.RestaurantView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
@@ -11,11 +10,9 @@ import com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummar
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationController;
 import com.inspirationlogical.receipt.waiter.controller.reservation.ReservationFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
-import com.inspirationlogical.receipt.waiter.controller.table.TableController;
 import com.inspirationlogical.receipt.waiter.utility.ConfirmMessage;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import de.felixroske.jfxsupport.FXMLController;
-import javafx.beans.binding.Bindings;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -23,14 +20,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
-import java.util.LinkedHashSet;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.moveNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
@@ -55,12 +51,6 @@ public class RestaurantControllerImpl implements RestaurantController {
     private ToggleButton configuration;
     @FXML
     private ToggleButton motion;
-    @FXML
-    private CheckBox snapToGrid;
-    @FXML
-    private Slider setGridSize;
-    @FXML
-    private Label getGridSize;
 
     @FXML
     private AnchorPane tablesTab;
@@ -91,14 +81,8 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     private Popup tableForm;
 
-    private Set<TableController> selectedTables;
-
     @Autowired
     private RestaurantService restaurantService;
-
-    private RestaurantView restaurantView;
-
-    private RestaurantViewState restaurantViewState;
 
     @Autowired
     private TableConfigurationController tableConfigurationController;
@@ -109,11 +93,8 @@ public class RestaurantControllerImpl implements RestaurantController {
     @Autowired
     private ReservationController reservationController;
 
-    @Autowired
-    public RestaurantControllerImpl() {
-        selectedTables = new LinkedHashSet<>();
-        restaurantViewState = new RestaurantViewState(selectedTables);
-    }
+    @Getter
+    private TableType tableType;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -121,36 +102,17 @@ public class RestaurantControllerImpl implements RestaurantController {
         initContextMenu(loiterersControl);
         initContextMenu(frequentersControl);
         initContextMenu(employeesControl);
-        initControls();
-        initRestaurant();
         tableConfigurationController.initialize();
         initLiveTime(liveTime);
     }
 
     private void initContextMenu(Label control) {
-        addPressAndHold(restaurantViewState, control,
-                new RestaurantContextMenuBuilderDecorator(tableConfigurationController, new BaseContextMenuBuilder())
+        addPressAndHold(control,
+                new RestaurantContextMenuBuilderDecorator(
+                        tableConfigurationController,
+                        this,
+                        new BaseContextMenuBuilder())
         );
-    }
-
-    private void initControls() {
-        restaurantViewState.setConfigurable(configuration.selectedProperty());
-        restaurantViewState.getMotionViewState().setMovableProperty(motion.selectedProperty());
-        restaurantViewState.getMotionViewState().setSnapToGridProperty(snapToGrid.selectedProperty());
-        restaurantViewState.getMotionViewState().setGridSizeProperty(setGridSize.valueProperty());
-        snapToGrid.disableProperty().bind(motion.selectedProperty().not());
-        setGridSize.disableProperty().bind(motion.selectedProperty().not());
-        getGridSize.textProperty().bind(Bindings.format("%.0f", setGridSize.valueProperty()));
-        setGridSize.setValue(INITIAL_GRID_SIZE);
-    }
-
-    private void initRestaurant() {
-        restaurantView = restaurantService.getActiveRestaurant();
-    }
-
-    @Override
-    public RestaurantViewState getViewState() {
-        return restaurantViewState;
     }
 
     @FXML
@@ -182,22 +144,22 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     public void onTablesSelected(Event event) {
-        restaurantViewState.setTableType(TableType.NORMAL);
+        tableType = TableType.NORMAL;
     }
 
     @FXML
     public void onLoiterersSelected(Event event) {
-        restaurantViewState.setTableType(TableType.LOITERER);
+        tableType = TableType.LOITERER;
     }
 
     @FXML
     public void onFrequentersSelected(Event event) {
-        restaurantViewState.setTableType(TableType.FREQUENTER);
+        tableType = TableType.FREQUENTER;
     }
 
     @FXML
     public void onEmployeesSelected(Event event) {
-        restaurantViewState.setTableType(TableType.EMPLOYEE);
+        tableType = TableType.EMPLOYEE;
     }
 
     @Override
@@ -220,15 +182,6 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @Override
     public Pane getActiveTab() {
-        return getTableTabByTableType(restaurantViewState.getTableType());
-    }
-
-    @Override
-    public Pane getTab(TableType tableType) {
-        return getTableTabByTableType(tableType);
-    }
-
-    private Pane getTableTabByTableType(TableType tableType) {
         switch (tableType) {
             case NORMAL:
                 return tablesTab;
@@ -248,4 +201,13 @@ public class RestaurantControllerImpl implements RestaurantController {
         return rootRestaurant;
     }
 
+    @Override
+    public boolean isConfigurationMode() {
+        return configuration.isSelected();
+    }
+
+    @Override
+    public boolean isMotionMode() {
+        return motion.isSelected();
+    }
 }

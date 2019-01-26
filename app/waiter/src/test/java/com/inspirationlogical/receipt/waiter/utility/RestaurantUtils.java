@@ -41,7 +41,7 @@ public class RestaurantUtils  extends AbstractUtils {
     public static void addTable(String tableName, String number, String guestCount, String capacity) {
         runInConfigurationMode(() -> {
             longClickOn(new Point2D(600, 150));
-            clickOnThenWait(WaiterResources.WAITER.getString("ContextMenu.AddTable"), 100);
+            clickOnThenWait(WaiterResources.WAITER.getString("ContextMenu.AddTable"), 500);
             ((TextField)robot.find(TABLEFORM_NAME)).setText(tableName);
             ((TextField)robot.find(TABLEFORM_NUMBER)).setText(number);
             ((TextField)robot.find(TABLEFORM_GUEST_COUNT)).setText(guestCount);

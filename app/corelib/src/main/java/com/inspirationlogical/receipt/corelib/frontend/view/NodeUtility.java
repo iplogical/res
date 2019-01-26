@@ -11,19 +11,11 @@ public class NodeUtility {
 
     private static final int LAYOUT_OFFSET_Y = 100;
 
-    public static Point2D getNodePosition(Node node) {
-        return new Point2D(node.getLayoutX(), node.getLayoutY());
-    }
-
     public static void showNode(Node node, Point2D position) {
         node.setLayoutX(position.getX());
         node.setLayoutY(position.getY());
         node.toFront();
         node.setVisible(true);
-    }
-
-    public static void hideNode(Node node) {
-        node.setVisible(false);
     }
 
     public static void moveNode(Node node, Pane target) {
@@ -35,7 +27,7 @@ public class NodeUtility {
 
     public static void removeNode(Pane parent, Node node) {
         if (node != null) {
-            if (parent.getChildren().contains(node)) parent.getChildren().remove(node);
+            parent.getChildren().remove(node);
         }
     }
 

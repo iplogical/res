@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
+import static com.inspirationlogical.receipt.waiter.controller.table.DragAndDropHandler.addFormDragAndDrop;
 
 @Component
 public class TableFormControllerImpl implements TableFormController {
@@ -67,7 +67,7 @@ public class TableFormControllerImpl implements TableFormController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         resourceBundle = resources;
-        addDragAndDrop(root);
+        addFormDragAndDrop(root);
     }
 
     @FXML

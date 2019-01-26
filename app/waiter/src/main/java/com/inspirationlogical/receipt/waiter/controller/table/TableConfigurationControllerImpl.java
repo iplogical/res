@@ -12,7 +12,6 @@ import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantViewState;
 import com.inspirationlogical.receipt.waiter.exception.ViewNotFoundException;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.geometry.Point2D;
@@ -22,7 +21,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -37,8 +35,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @Autowired
     private RestaurantController restaurantController;
 
-    private RestaurantViewState restaurantViewState;
-
     @Autowired
     private TableFormController tableFormController;
 
@@ -50,7 +46,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Getter
     private Set<TableController> tableControllers;
-    private List<TableController> selectedTables;
 
     private RestaurantView restaurantView;
     private Popup tableForm;
@@ -58,13 +53,11 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     @PostConstruct
     private void init() {
         tableControllers = new HashSet<>();
-        selectedTables = new ArrayList<>();
     }
 
     @Override
     public void initialize() {
         restaurantView = restaurantService.getActiveRestaurant();
-        restaurantViewState = restaurantController.getViewState();
         initTables();
         initTableForm();
     }
@@ -76,14 +69,14 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void showCreateTableForm(Point2D position) {
-        tableFormController.createTableForm(restaurantViewState.getTableType());
+        tableFormController.createTableForm(restaurantController.getTableType());
         showPopup(tableForm, tableFormController, restaurantController.getActiveTab(), position);
     }
 
     @Override
     public void showEditTableForm(Control control) {
         TableController tableController = getTableController(control);
-        tableFormController.loadTableForm(tableController, restaurantViewState.getTableType());
+        tableFormController.loadTableForm(tableController, restaurantController.getTableType());
         Point2D position = calculatePopupPosition(control, restaurantController.getActiveTab());
         showPopup(tableForm, tableFormController, restaurantController.getActiveTab(), position);
     }
@@ -111,7 +104,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     }
 
     private TableParams buildTableParams(TableParams params) {
-        TableType tableType = restaurantViewState.getTableType();
+        TableType tableType = restaurantController.getTableType();
         Point2D position = calculateTablePosition(tableFormController.getRootNode(), restaurantController.getActiveTab());
         params.setType(tableType);
         params.setPositionX((int)position.getX());
@@ -121,11 +114,9 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void editTable(TableController tableController, TableParams tableParams) {
-
         try {
-            TableView tableView = restaurantService.setTableParams(tableController.getTableNumber(), tableParams);
+            TableView tableView = restaurantService.updateTableParams(tableController.getTableNumber(), tableParams);
             hideTableForm();
-            restaurantController.addNodeToPane(tableController.getRoot(), restaurantViewState.getTableType());
             tableController.setView(tableView);
             tableController.updateTable();
         } catch (IllegalTableStateException e) {
@@ -138,8 +129,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     public void deleteTable(Node node) {
         TableController tableController = getTableController(node);
         TableView tableView = tableController.getView();
-        restaurantService.deleteTable(tableView);
-        removeNode((Pane) node.getParent(), node);
+        restaurantService.deleteTable(tableView);removeNode((Pane) node.getParent(), node);
         tableControllers.remove(tableController);
     }
 
@@ -162,37 +152,29 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Override
     public void exchangeTables() {
-        List<TableView> tablesToExchange = selectedTables.stream()
-                .map(TableController::getView)
+        List<TableController> tablesToExchange = tableControllers.stream()
+                .filter(TableController::isSelected)
+                .filter(tableController -> tableController.getView().getType().equals(TableType.NORMAL))
                 .collect(toList());
-        if(selectedTables.size() != 2) {
+        if(tablesToExchange.size() != 2) {
             ErrorMessage.showErrorMessage(restaurantController.getRootNode(),
                     WaiterResources.WAITER.getString("TableConfiguration.InsufficientForExchange"));
-            selectedTables.clear();
             return;
         }
-        restaurantService.exchangeTables(tablesToExchange.get(0), tablesToExchange.get(1));
-        selectedTables.forEach(TableController::updateTable);
-        selectedTables.clear();
+        exchangeTables(tablesToExchange);
     }
 
-    @Override
-    public void selectTable(TableController tableController, boolean selected) {
-        if (selected) {
-            selectedTables.add(tableController);
-        } else {
-            selectedTables.remove(tableController);
-        }
-    }
-
-    @Override
-    public boolean hasSelection() {
-        return selectedTables.size() > 1;
+    private void exchangeTables(List<TableController> tablesToExchange) {
+        TableController selected = tablesToExchange.get(0);
+        TableController other = tablesToExchange.get(1);
+        List<TableView> tableViewList = restaurantService.exchangeTables(selected.getTableNumber(), other.getTableNumber());
+        selected.setView(tableViewList.get(0));
+        other.setView(tableViewList.get(1));
+        tablesToExchange.forEach(TableController::updateTable);
     }
 
     @Override
     public void clearSelections() {
-        selectedTables.clear();
         tableControllers.forEach(TableController::deselectTable);
     }
 

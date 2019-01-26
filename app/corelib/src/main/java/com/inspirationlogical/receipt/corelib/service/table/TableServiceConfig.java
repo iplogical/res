@@ -23,7 +23,7 @@ public interface TableServiceConfig {
 
     TableView reOpenTable(int tableNumber);
 
-    TableView setTableParams(int tableNumber, TableParams tableParams);
+    TableView updateTableParams(int tableNumber, TableParams tableParams);
 
     TableView setGuestCount(int tableNumber, int guestCount);
 
@@ -31,9 +31,7 @@ public interface TableServiceConfig {
 
     TableView rotateTable(int tableNumber);
 
-    boolean isTableNumberAlreadyInUse(int tableNumber);
-
-    void exchangeTables(TableView selectedView, TableView otherView);
+    List<TableView> exchangeTables(int selectedTableNumber, int otherTableNumber);
 
     RecentConsumption getRecentConsumption(TableView tableView);
 

@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.waiter.utility;
 
 import com.inspirationlogical.receipt.corelib.model.enums.RecentConsumption;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.waiter.controller.table.TableViewState;
 import javafx.scene.Node;
 
 /**
