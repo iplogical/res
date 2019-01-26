@@ -4,22 +4,24 @@ import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
+import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
 import static java.time.LocalDateTime.now;
 
 @Service
 public class DailyClosureServiceImpl implements DailyClosureService{
+
+    @Autowired
+    private StockService stockService;
 
     @Autowired
     private DailyClosureRepository dailyClosureRepository;
@@ -44,7 +46,12 @@ public class DailyClosureServiceImpl implements DailyClosureService{
     }
 
     @Override
-    public void close() {
+    public void closeDay() {
+        stockService.closeLatestStockEntries();
+        closeDailyClosure();
+    }
+
+    private void closeDailyClosure() {
         DailyClosure openDailyClosure = getOpenDailyClosure();
         if(openDailyClosure.getNumberOfReceipts() == 0) {
             return; //  Do not close a day with 0 receipt.

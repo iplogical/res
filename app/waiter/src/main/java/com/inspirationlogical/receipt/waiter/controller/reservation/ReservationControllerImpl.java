@@ -4,11 +4,9 @@ import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractContro
 import com.inspirationlogical.receipt.corelib.frontend.viewmodel.ReservationViewModel;
 import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
-import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.reservation.ReservationService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
@@ -93,11 +91,7 @@ public class ReservationControllerImpl extends AbstractController
     private CalendarTimePicker startTime;
     private CalendarTimePicker endTime;
 
-    private RestaurantService restaurantService;
-
     private ReservationService reservationService;
-
-    private RestaurantController restaurantController;
 
     private TableConfigurationController tableConfigurationController;
 
@@ -108,13 +102,9 @@ public class ReservationControllerImpl extends AbstractController
     private long reservationId;
 
     @Autowired
-    public ReservationControllerImpl(RestaurantService restaurantService,
-                                     ReservationService reservationService,
-                                     RestaurantController restaurantController,
+    public ReservationControllerImpl(ReservationService reservationService,
                                      TableConfigurationController tableConfigurationController) {
-        this.restaurantService = restaurantService;
-        this.reservationService = reservationService;
-        this.restaurantController = restaurantController;
+        this.reservationService = reservationService;;
         this.tableConfigurationController = tableConfigurationController;
         this.startTime = new CalendarTimePicker();
         this.endTime = new CalendarTimePicker();

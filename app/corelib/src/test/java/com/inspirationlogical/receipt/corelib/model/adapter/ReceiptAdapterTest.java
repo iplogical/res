@@ -140,7 +140,7 @@ public class ReceiptAdapterTest extends TestBase {
 //    */
 //    @Test
 //    public void testClose() {
-//        receiptSaleOne.close(paymentParams);
+//        receiptSaleOne.closeDay(paymentParams);
 //        assertEquals(6550, receiptSaleOne.getAdaptee().getSumPurchaseGrossPrice());
 //        assertEquals(5157, receiptSaleOne.getAdaptee().getSumPurchaseNetPrice());
 //        assertEquals(13100, receiptSaleOne.getAdaptee().getSumSaleGrossPrice());
@@ -150,7 +150,7 @@ public class ReceiptAdapterTest extends TestBase {
 //    @Test
 //    public void testCloseWithDiscountPercent() {
 //        paymentParams.setDiscountPercent(10);
-//        receiptSaleOne.close(paymentParams);
+//        receiptSaleOne.closeDay(paymentParams);
 //        assertEquals(6550, receiptSaleOne.getAdaptee().getSumPurchaseGrossPrice());
 //        assertEquals(5157, receiptSaleOne.getAdaptee().getSumPurchaseNetPrice());
 //        assertEquals(11790, receiptSaleOne.getAdaptee().getSumSaleGrossPrice());
@@ -161,7 +161,7 @@ public class ReceiptAdapterTest extends TestBase {
 //    @Test
 //    public void testCloseWithDiscountAbsolute() {
 //        paymentParams.setDiscountAbsolute(1000);
-//        receiptSaleOne.close(paymentParams);
+//        receiptSaleOne.closeDay(paymentParams);
 //        assertEquals(6550, receiptSaleOne.getAdaptee().getSumPurchaseGrossPrice());
 //        assertEquals(5157, receiptSaleOne.getAdaptee().getSumPurchaseNetPrice());
 //        assertEquals(12100, receiptSaleOne.getAdaptee().getSumSaleGrossPrice());
@@ -175,7 +175,7 @@ public class ReceiptAdapterTest extends TestBase {
 //            schema.getReceiptSaleOneRecordTwo().setDiscountPercent(20);
 //            schema.getReceiptSaleOneRecordTwo().setSalePrice(240);
 //        });
-//        receiptSaleOne.close(paymentParams);
+//        receiptSaleOne.closeDay(paymentParams);
 //        assertEquals(6550, receiptSaleOne.getAdaptee().getSumPurchaseGrossPrice());
 //        assertEquals(5157, receiptSaleOne.getAdaptee().getSumPurchaseNetPrice());
 //        assertEquals(12460, receiptSaleOne.getAdaptee().getSumSaleGrossPrice());
@@ -189,12 +189,12 @@ public class ReceiptAdapterTest extends TestBase {
 //            schema.getReceiptSaleOne().setStatus(ReceiptStatus.CLOSED);
 //            schema.getReceiptSaleOne().setClosureTime(now());
 //        });
-//        receiptSaleOne.close(paymentParams);
+//        receiptSaleOne.closeDay(paymentParams);
 //    }
 //
 //    @Test
 //    public void testCloseReceiptWithoutRecords() {
-//        receiptSaleThree.close(paymentParams);
+//        receiptSaleThree.closeDay(paymentParams);
 //        assertEquals(NUMBER_OF_RECEIPTS - 1,
 //                GuardedTransaction.runNamedQuery(Receipt.GET_RECEIPTS).size());
 //    }

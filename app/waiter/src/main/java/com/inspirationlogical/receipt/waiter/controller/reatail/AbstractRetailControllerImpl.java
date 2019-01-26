@@ -6,6 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
+import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
@@ -72,6 +73,9 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     @Autowired
     private RestaurantService restaurantService;
+
+    @Autowired
+    private ReceiptService receiptService;
 
     @Autowired
     private TableServiceConfig tableServiceConfig;
@@ -259,7 +263,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     }
 
     protected Collection<ReceiptRecordView> getSoldProducts() {
-        receiptView = restaurantService.getOpenReceipt(tableView);
+        receiptView = receiptService.getOpenReceipt(tableView.getNumber());
         return receiptView == null ? Collections.emptyList() : receiptView.getSoldProducts();
     }
 

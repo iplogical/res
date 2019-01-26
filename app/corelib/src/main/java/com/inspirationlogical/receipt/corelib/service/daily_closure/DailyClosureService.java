@@ -10,7 +10,7 @@ public interface DailyClosureService {
 
     List<LocalDateTime> getClosureTimes(LocalDate startDate, LocalDate endDate);
 
-    void close();
+    void closeDay();
 
     void update(Receipt receipt);
 }

@@ -56,9 +56,6 @@ public class TableFormControllerImpl implements TableFormController {
     private TableConfigurationController tableConfigurationController;
 
     @Autowired
-    private RestaurantService restaurantService;
-
-    @Autowired
     TableServiceConfig tableServiceConfig;
 
     private ResourceBundle resourceBundle;

@@ -48,7 +48,7 @@ public class DailyClosureAdapterTest extends TestBase {
 //    @Test
 //    public void testCloseDailyClosure() {
 //        openDailyClosure.update(receipt);
-//        openDailyClosure.close();
+//        openDailyClosure.closeDay();
 //        assertEquals(15543, openDailyClosure.getAdaptee().getProfit());
 //        assertEquals(75.09, openDailyClosure.getAdaptee().getMarkup(), 0.001);
 //        assertEquals(20700, openDailyClosure.getAdaptee().getReceiptAverage());

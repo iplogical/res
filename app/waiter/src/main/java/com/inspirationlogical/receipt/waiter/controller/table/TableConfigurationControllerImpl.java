@@ -39,9 +39,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
     private TableFormController tableFormController;
 
     @Autowired
-    private RestaurantService restaurantService;
-
-    @Autowired
     private TableServiceConfig tableServiceConfig;
 
     @Autowired

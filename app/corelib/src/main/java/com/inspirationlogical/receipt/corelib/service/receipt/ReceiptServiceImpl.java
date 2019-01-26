@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -37,6 +36,15 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Autowired
     private ReceiptServiceStock receiptServiceStock;
+
+    @Override
+    public ReceiptView getOpenReceipt(int tableNumber) {
+        Receipt receipt = receiptRepository.getOpenReceipt(tableNumber);
+        if (receipt == null) {
+            return null;
+        }
+        return new ReceiptView(receipt);
+    }
 
     @Override
     public void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {

@@ -9,7 +9,4 @@ import java.util.List;
 
 public interface RestaurantService {
 
-    ReceiptView getOpenReceipt(TableView tableView);
-
-    void closeDay();
 }

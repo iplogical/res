@@ -12,11 +12,12 @@ import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
 public interface ReceiptService {
+
+    ReceiptView getOpenReceipt(int tableNumber);
 
     static double getDiscountMultiplier(double discountPercent) {
         return (100D - discountPercent) / 100;

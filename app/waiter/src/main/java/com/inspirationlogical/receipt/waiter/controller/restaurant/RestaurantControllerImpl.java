@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.waiter.controller.restaurant;
 
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.service.RestaurantService;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
 import com.inspirationlogical.receipt.waiter.contextmenu.RestaurantContextMenuBuilderDecorator;
@@ -21,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import lombok.Getter;
+import net.bytebuddy.asm.Advice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import java.util.ResourceBundle;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.moveNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
+import static com.inspirationlogical.receipt.waiter.utility.ConfirmMessage.showConfirmDialog;
 
 @FXMLController
 public class RestaurantControllerImpl implements RestaurantController {
@@ -82,16 +85,13 @@ public class RestaurantControllerImpl implements RestaurantController {
     private Popup tableForm;
 
     @Autowired
-    private RestaurantService restaurantService;
+    DailyClosureService dailyClosureService;
 
     @Autowired
     private TableConfigurationController tableConfigurationController;
 
     @Autowired
     private DailySummaryController dailySummaryController;
-
-    @Autowired
-    private ReservationController reservationController;
 
     @Getter
     private TableType tableType;
@@ -126,7 +126,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     public void onDailyClosure(Event event) {
         logger.info("The Daily Closure was pressed in the RestaurantView.");
-        ConfirmMessage.showConfirmDialog(WaiterResources.WAITER.getString("Restaurant.DailyClosureConfirm"), () -> restaurantService.closeDay());
+        showConfirmDialog(WaiterResources.WAITER.getString("Restaurant.DailyClosureConfirm"), dailyClosureService::closeDay);
     }
 
     @FXML
