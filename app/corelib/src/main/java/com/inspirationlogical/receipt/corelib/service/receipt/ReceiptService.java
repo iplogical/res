@@ -27,7 +27,9 @@ public interface ReceiptService {
 
     void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean takeAway);
 
-    ReceiptRecordView sellGameFee(TableView tableView, int quantity);
+    void sellGameFee(TableView tableView, int quantity);
+
+    ReceiptRecordView getLatestGameFee(TableView tableView);
 
     void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener);
 

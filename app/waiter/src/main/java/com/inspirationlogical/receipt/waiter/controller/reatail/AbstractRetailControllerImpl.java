@@ -4,7 +4,6 @@ import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractContro
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
@@ -70,9 +69,6 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     private TableColumn<SoldProductViewModel, String> productUnitPrice;
     @FXML
     private TableColumn<SoldProductViewModel, String> productTotalPrice;
-
-    @Autowired
-    private RestaurantService restaurantService;
 
     @Autowired
     private ReceiptService receiptService;

@@ -57,8 +57,13 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public ReceiptRecordView sellGameFee(TableView tableView, int quantity) {
-        return receiptServiceSell.sellGameFee(tableView, quantity);
+    public void sellGameFee(TableView tableView, int quantity) {
+        receiptServiceSell.sellGameFee(tableView, quantity);
+    }
+
+    @Override
+    public ReceiptRecordView getLatestGameFee(TableView tableView) {
+        return receiptServiceSell.getLatestGameFee(tableView);
     }
 
     @Override

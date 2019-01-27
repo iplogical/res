@@ -18,15 +18,19 @@ import com.inspirationlogical.receipt.corelib.repository.ReceiptRecordRepository
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.service.product_category.ProductCategoryService;
 import com.inspirationlogical.receipt.corelib.service.vat.VATService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService.getDiscountMultiplier;
 import static java.time.LocalDateTime.now;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ReceiptServiceSell {
@@ -138,23 +142,22 @@ public class ReceiptServiceSell {
         }
     }
 
-    ReceiptRecordView sellGameFee(TableView tableView, int quantity) {
+    void sellGameFee(TableView tableView, int quantity) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         Product gameFeeProduct = getGameFeeProduct();
         List<ReceiptRecordCreated>  records = receiptRecordCreatedRepository.findRecentByTimestamp(gameFeeProduct.getLongName(), now().minusSeconds(5));
-
         if(records.size() > 0) {
             ReceiptRecord record = records.get(0).getOwner();
             record.setSoldQuantity(record.getSoldQuantity() + 1);
             record.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(record).build());
-            return new ReceiptRecordView(record);
+            receiptRecordRepository.save(record);
+            return;
         }
         ReceiptRecord record = buildReceiptRecord(quantity, gameFeeProduct);
         addCreatedListEntries(quantity, record);
         record.setOwner(openReceipt);
         openReceipt.getRecords().add(record);
         receiptRepository.save(openReceipt);
-        return new ReceiptRecordView(record);
     }
 
     private Product getGameFeeProduct() {
@@ -177,5 +180,19 @@ public class ReceiptServiceSell {
                 .discountPercent(0)
                 .createdList(new ArrayList<>())
                 .build();
+    }
+
+    ReceiptRecordView getLatestGameFee(TableView tableView) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
+        List<ReceiptRecord> gameFeeProductList = openReceipt.getRecords().stream()
+                .filter(receiptRecord -> receiptRecord.getProduct().getType().equals(ProductType.GAME_FEE_PRODUCT))
+                .sorted(Comparator.comparing(this::getNewestCreated).reversed()).collect(toList());
+        return new ReceiptRecordView(gameFeeProductList.get(0));
+    }
+
+    private LocalDateTime getNewestCreated(ReceiptRecord receiptRecord) {
+        List<ReceiptRecordCreated> sortedCreatedList =  receiptRecord.getCreatedList();
+        sortedCreatedList.sort(Comparator.comparing(ReceiptRecordCreated::getCreated).reversed());
+        return sortedCreatedList.get(0).getCreated();
     }
 }

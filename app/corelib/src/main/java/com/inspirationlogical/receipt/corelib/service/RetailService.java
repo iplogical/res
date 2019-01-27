@@ -16,7 +16,9 @@ public interface RetailService {
 
     void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean isTakeAway);
 
-    ReceiptRecordView sellGameFee(TableView tableView, int quantity);
+    void sellGameFee(TableView tableView, int quantity);
+
+    ReceiptRecordView getLatestGameFee(TableView tableView);
 
     TableView payTable(int tableNumber, PaymentParams paymentParams);
 

@@ -3,7 +3,6 @@ package com.inspirationlogical.receipt.waiter.controller.table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
-import com.inspirationlogical.receipt.corelib.service.RestaurantService;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;

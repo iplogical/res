@@ -392,10 +392,10 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void onAutoGameFee(Event event) {
         logger.info("The auto game fee button was clicked");
         ReceiptRecordView gameFee = handleAutomaticGameFee();
-        if(gameFee == null) return;
-        if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee, getOrderDeliveredTime())).size() == 0) {
-            soldProductsView.add(gameFee);
+        if(gameFee == null) {
+            return;
         }
+        updateSoldProductsViewWithGameFee(gameFee);
         refreshSoldProductsTable();
     }
 
@@ -405,7 +405,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         int price = (int)receiptView.getTotalPrice();
         int requiredGameFee = (((guestCount+1) * 2000 - (price+1)) / 2000);
         if(requiredGameFee > 0) {
-            return retailService.sellGameFee(tableView, requiredGameFee);
+            retailService.sellGameFee(tableView, requiredGameFee);
+            return retailService.getLatestGameFee(tableView);
         }
         return null;
     }
@@ -413,10 +414,20 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onManualGameFee(Event event) {
         logger.info("The manual game fee button was clicked");
-        ReceiptRecordView gameFee = retailService.sellGameFee(tableView, 1);
-        if(findMatchingView(soldProductsView, new SoldProductViewModel(gameFee, getOrderDeliveredTime())).size() == 0) {
+        retailService.sellGameFee(tableView, 1);
+        ReceiptRecordView gameFee = retailService.getLatestGameFee(tableView);
+        updateSoldProductsViewWithGameFee(gameFee);
+        refreshSoldProductsTable();
+    }
+
+    private void updateSoldProductsViewWithGameFee(ReceiptRecordView gameFee) {
+        List<ReceiptRecordView> matchingGameFeeList = findMatchingView(soldProductsView, new SoldProductViewModel(gameFee, getOrderDeliveredTime()));
+        if(matchingGameFeeList.isEmpty()) {
+            soldProductsView.add(gameFee);
+        } else {
+            ReceiptRecordView matchingGameFee = matchingGameFeeList.get(0);
+            soldProductsView.remove(matchingGameFee);
             soldProductsView.add(gameFee);
         }
-        refreshSoldProductsTable();
     }
 }
