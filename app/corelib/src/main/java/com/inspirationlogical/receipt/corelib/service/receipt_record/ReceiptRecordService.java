@@ -4,9 +4,9 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 
 public interface ReceiptRecordService {
 
-    void increaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount, boolean isSale);
+    ReceiptRecordView increaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount, boolean isSale);
 
-    void decreaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount);
+    ReceiptRecordView decreaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount);
 
     void cancelReceiptRecord(ReceiptRecordView receiptRecordView);
 

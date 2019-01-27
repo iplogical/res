@@ -5,15 +5,13 @@ import javafx.collections.ObservableList;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
 import static java.lang.String.valueOf;
 import static java.time.LocalDateTime.now;
 
-public @Data class SoldProductViewModel {
+public @Data class ProductRowModel {
 
     private String productName;
 
@@ -33,25 +31,25 @@ public @Data class SoldProductViewModel {
 
     private LocalDateTime orderDeliveredTime;
 
-    public static boolean isEquals(SoldProductViewModel row, ReceiptRecordView receiptRecordView) {
-        return receiptRecordView.getId() == row.getProductId();
+    public boolean isEqual(ReceiptRecordView receiptRecordView) {
+        return receiptRecordView.getId() == productId;
     }
 
-    public static boolean isEquivalent(SoldProductViewModel row, ReceiptRecordView receiptRecordView) {
-        return valueOf(receiptRecordView.getName()).equals(row.getProductNameWithoutStar()) &&
-                valueOf(receiptRecordView.getDiscountPercent()).equals(row.getProductDiscount()) &&
-                valueOf(receiptRecordView.getVat()).equals(row.getProductVat());
+    public boolean isEquivalent(ReceiptRecordView receiptRecordView) {
+        return valueOf(receiptRecordView.getName()).equals(getProductNameWithoutStar()) &&
+                valueOf(receiptRecordView.getDiscountPercent()).equals(productDiscount) &&
+                valueOf(receiptRecordView.getVat()).equals(productVat);
     }
 
-    public static int getTotalPrice(ObservableList<SoldProductViewModel> paidProductsModel) {
+    public static int getTotalPrice(ObservableList<ProductRowModel> paidProductsModel) {
         int totalPrice = 0;
-        for(SoldProductViewModel model : paidProductsModel) {
+        for(ProductRowModel model : paidProductsModel) {
             totalPrice += Integer.valueOf(model.getProductTotalPrice());
         }
         return totalPrice;
     }
     
-    public SoldProductViewModel(ReceiptRecordView receiptRecordView, LocalDateTime orderDeliveredTime) {
+    public ProductRowModel(ReceiptRecordView receiptRecordView, LocalDateTime orderDeliveredTime) {
         this.clickTimes = receiptRecordView.getCreated();
         this.productName = receiptRecordView.getName();
         this.orderDeliveredTime = orderDeliveredTime;
@@ -64,7 +62,7 @@ public @Data class SoldProductViewModel {
         markDiscountedProduct();
     }
 
-    public SoldProductViewModel(SoldProductViewModel other) {
+    public ProductRowModel(ProductRowModel other) {
         this.clickTimes = other.clickTimes;
         this.productName = other.productName;
         this.orderDeliveredTime = other.orderDeliveredTime;

@@ -426,7 +426,7 @@ public class PaymentControllerTest  extends TestFXBase {
         clickOnThenWait(TO_PAYMENT, 200);
 
         assertSoldTotalPrice(7999);
-        guestMinus();   // 4
+        guestMinus();
         autoGameFee();
         assertNumberOfSoldProducts(4);
         assertSoldProduct(4, GAME_FEE, 1, 300, 300);

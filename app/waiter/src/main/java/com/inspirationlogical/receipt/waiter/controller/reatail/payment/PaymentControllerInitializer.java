@@ -2,7 +2,7 @@ package com.inspirationlogical.receipt.waiter.controller.reatail.payment;
 
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.state.PaymentViewState;
-import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
+import com.inspirationlogical.receipt.waiter.viewmodel.ProductRowModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableRow;
@@ -70,15 +70,15 @@ public class PaymentControllerInitializer {
 
     private void initializePaidProductsTable() {
         p.paidProductsTable.setEditable(true);
-        p.payProductName.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productName"));
-        p.payProductQuantity.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productQuantity"));
-        p.payProductUnitPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productUnitPrice"));
-        p.payProductTotalPrice.setCellValueFactory(new PropertyValueFactory<SoldProductViewModel, String>("productTotalPrice"));
+        p.payProductName.setCellValueFactory(new PropertyValueFactory<ProductRowModel, String>("productName"));
+        p.payProductQuantity.setCellValueFactory(new PropertyValueFactory<ProductRowModel, String>("productQuantity"));
+        p.payProductUnitPrice.setCellValueFactory(new PropertyValueFactory<ProductRowModel, String>("productUnitPrice"));
+        p.payProductTotalPrice.setCellValueFactory(new PropertyValueFactory<ProductRowModel, String>("productTotalPrice"));
     }
 
     private void initializePaidProductsTableRowHandler() {
         p.paidProductsTable.setRowFactory(tv -> {
-            TableRow<SoldProductViewModel> row = new TableRow<>();
+            TableRow<ProductRowModel> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if(event.getClickCount() == 1 && (! row.isEmpty())) {
                     p.paidProductsRowClickHandler(row.getItem());

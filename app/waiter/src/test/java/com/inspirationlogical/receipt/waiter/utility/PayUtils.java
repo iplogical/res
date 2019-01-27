@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
-import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
+import com.inspirationlogical.receipt.waiter.viewmodel.ProductRowModel;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
@@ -85,8 +84,8 @@ public class PayUtils  extends AbstractUtils {
         assertTrue(getPaidProducts().isEmpty());
     }
 
-    private static ObservableList<SoldProductViewModel>  getPaidProducts() {
-        TableView<SoldProductViewModel> tableView = robot.find(PAID_PRODUCTS_TABLE);
+    private static ObservableList<ProductRowModel>  getPaidProducts() {
+        TableView<ProductRowModel> tableView = robot.find(PAID_PRODUCTS_TABLE);
         return tableView.getItems();
     }
 

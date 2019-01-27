@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.waiter.utility;
 
 import com.inspirationlogical.receipt.corelib.frontend.viewmodel.ReservationViewModel;
-import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 

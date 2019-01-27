@@ -4,14 +4,13 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 
-import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.buttons.ProductsAndCategoriesController;
-import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
+import com.inspirationlogical.receipt.waiter.viewmodel.ProductRowModel;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
@@ -148,7 +147,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    protected void soldProductsRowClickHandler(SoldProductViewModel row) {
+    protected void soldProductsRowClickHandler(ProductRowModel row) {
         logger.info("The sold products table was clicked on the row: " + row.toString() + "in sale view state: " + saleViewState.toString());
         disableSoldProductsTableRowClickHandler();
         if(saleViewState.isSelectiveCancellation()) {

@@ -8,7 +8,7 @@ import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reservation.CalendarPickerWrapper;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
-import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
+import com.inspirationlogical.receipt.waiter.viewmodel.ProductRowModel;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -114,7 +114,7 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    protected void soldProductsRowClickHandler(SoldProductViewModel row) {}
+    protected void soldProductsRowClickHandler(ProductRowModel row) {}
 
     @Override
     public void onBackToRestaurantView(Event event) {

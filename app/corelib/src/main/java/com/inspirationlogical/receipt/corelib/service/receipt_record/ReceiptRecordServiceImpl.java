@@ -39,7 +39,7 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
     private ReceiptService receiptService;
 
     @Override
-    public void increaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount, boolean isSale) {
+    public ReceiptRecordView increaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount, boolean isSale) {
         ReceiptRecord receiptRecord  = receiptRecordRepository.getOne(receiptRecordView.getId());
         logger.info("Increase quantity of a receiptRecord: name: {} soldQuantity: {}, amount: {}, size {}",
                 receiptRecord.getName(), receiptRecord.getSoldQuantity(), amount,  receiptRecord.getCreatedList().size());
@@ -50,10 +50,11 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
             receiptRecord.getCreatedList().add(ReceiptRecordCreated.builder().created(now().minusMinutes(25)).owner(receiptRecord).build());
         }
         receiptRecordRepository.save(receiptRecord);
+        return new ReceiptRecordView(receiptRecord);
     }
 
     @Override
-    public void decreaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount) {
+    public ReceiptRecordView decreaseSoldQuantity(ReceiptRecordView receiptRecordView, double amount) {
         ReceiptRecord receiptRecord  = receiptRecordRepository.getOne(receiptRecordView.getId());
         if(receiptRecord.getSoldQuantity() - amount <= 0 || receiptRecord.getCreatedList().isEmpty())
         {
@@ -61,6 +62,7 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
             receiptRecord.getOwner().getRecords().remove(receiptRecord);
             receiptRecord.setOwner(null);
             receiptRecordRepository.delete(receiptRecord);
+            return null;
         } else {
             int size = receiptRecord.getCreatedList().size() - 1;
             logger.info("Decrease quantity of a receiptRecord: name: {} soldQuantity: {}, amount: {}, size: {}",
@@ -72,6 +74,7 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
 
             receiptRecord.setSoldQuantity(roundToTwoDecimals(receiptRecord.getSoldQuantity() - amount));
             receiptRecordRepository.save(receiptRecord);
+            return new ReceiptRecordView(receiptRecord);
         }
     }
 
