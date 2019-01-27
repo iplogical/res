@@ -7,7 +7,6 @@ import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.state.PaymentViewState;
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleController;
-
 import com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleFxmlView;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import com.inspirationlogical.receipt.waiter.viewmodel.SoldProductViewModel;
@@ -215,7 +214,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private double getPartialValue() throws NumberFormatException {
         double partialValue = Double.valueOf(partialPaymentValue.getText());
-        if(partialValue > 1.00 || partialValue < 0.01) {
+        if (partialValue > 1.00 || partialValue < 0.01) {
             throw new NumberFormatException();
         }
         return partialValue;
@@ -227,11 +226,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private int applyDiscountOnTotalPrice(int totalPrice) {
-        if(paymentViewState.isDiscountAbsolute()) {
+        if (paymentViewState.isDiscountAbsolute()) {
             totalPrice -= Integer.valueOf(discountAbsoluteValue.getText());
-        } else if(paymentViewState.isDiscountPercent()) {
+        } else if (paymentViewState.isDiscountPercent()) {
             double discountPercent = Double.valueOf(discountPercentValue.getText());
-            totalPrice = (int)Math.round((double)totalPrice * ((100 - discountPercent) / 100));
+            totalPrice = (int) Math.round((double) totalPrice * ((100 - discountPercent) / 100));
         }
         return totalPrice;
     }
@@ -240,33 +239,46 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     protected void soldProductsRowClickHandler(SoldProductViewModel row) {
         logger.info("The sold products table was clicked on the row: " + row.toString() + ", in payment view state: " + paymentViewState.toString());
         disableSoldProductsTableRowClickHandler();
-        if(paymentViewState.isSelectivePayment()) {
+        if (paymentViewState.isSelectivePayment()) {
             ReceiptRecordView clickedRecord = removeRowFromSoldProducts(row);
-            if(clickedRecord == null) return;
+            if (clickedRecord == null) return;
             addRowToPaidProducts(row, clickedRecord);
-        } else if(paymentViewState.isSinglePayment()) {
+        } else if (paymentViewState.isSinglePayment()) {
             singlePaymentRowClickHandler(row);
-        } else if(paymentViewState.isPartialPayment()) {
-            if(isPartiallyPayable(row)) {
+        } else if (paymentViewState.isPartialPayment()) {
+            if (isPartiallyPayable(row)) {
                 partialPaymentRowClickHandler(row);
+            } else {
+                ErrorMessage.showErrorMessage(rootPayment,
+                        WaiterResources.WAITER.getString("PaymentView.ProductNotPartiallyPayable") + row.getProductName());
             }
         }
         enableSoldProductsTableRowClickHandler();
     }
 
     private void singlePaymentRowClickHandler(SoldProductViewModel row) {
-            double value = Math.min(Double.valueOf(row.getProductQuantity()), 1);
-            ReceiptRecordView clickedRecord = decreaseRowInSoldProducts(row, value);
-            if(clickedRecord == null) return;
-            increaseRowInPaidProducts(row, clickedRecord, value);
+        double amount = Math.min(Double.valueOf(row.getProductQuantity()), 1);
+        updateSoldAndPaidProducts(row, amount);
+    }
+
+    private void updateSoldAndPaidProducts(SoldProductViewModel row, double amount) {
+        ReceiptRecordView clickedRecord = decreaseRowInSoldProducts(row, amount);
+        if (clickedRecord == null) {
+            return;
+        }
+        increaseRowInPaidProducts(row, clickedRecord, amount);
+        receiptRecordService.decreaseSoldQuantity(clickedRecord, amount);
     }
 
     private void partialPaymentRowClickHandler(SoldProductViewModel row) {
         try {
             double amount = Double.valueOf(partialPaymentValue.getText());
-            ReceiptRecordView clickedRecord = decreaseRowInSoldProducts(row, amount);
-            if(clickedRecord == null) return;
-            increaseRowInPaidProducts(row, clickedRecord, amount);
+            if(amount > Double.parseDouble(row.getProductQuantity())) {
+                ErrorMessage.showErrorMessage(rootPayment,
+                        WaiterResources.WAITER.getString("PaymentView.PartialPayBiggerAmountError"));
+                return;
+            }
+            updateSoldAndPaidProducts(row, amount);
         } catch (NumberFormatException e) {
             ErrorMessage.showErrorMessage(rootPayment,
                     WaiterResources.WAITER.getString("PaymentView.PartialPayNumberError"));
@@ -286,7 +298,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private void increaseRowInPaidProducts(SoldProductViewModel row, ReceiptRecordView toAdd, double amount) {
         List<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentView(paidProductsView, row);
-        if(equivalentReceiptRecordView.size() == 0) {
+        if (equivalentReceiptRecordView.size() == 0) {
             cloneReceiptRecordAndAddToPaidProducts(row, toAdd, amount);
         } else {
             increaseReceiptRecordAndRowQuantity(amount, equivalentReceiptRecordView);
@@ -316,8 +328,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private SoldProductViewModel createNewRow(SoldProductViewModel row, ReceiptRecordView newRecord, double amount) {
         SoldProductViewModel newRow = new SoldProductViewModel(row);
         newRow.setProductQuantity(String.valueOf(amount));
-        newRow.setProductTotalPrice(String.valueOf((int)(Integer.valueOf(newRow.getProductUnitPrice()) * amount)));
-        newRow.setProductId(String.valueOf(newRecord.getId()));
+        newRow.setProductTotalPrice(String.valueOf((int) (Integer.valueOf(newRow.getProductUnitPrice()) * amount)));
+        newRow.setProductId(newRecord.getId());
         return newRow;
     }
 
@@ -325,7 +337,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         logger.info("The paid products table was clicked for row: " + row);
         List<SoldProductViewModel> rowInSoldProducts = soldProductsModel.stream().filter(model -> model.getProductName().equals(row.getProductName()))
                 .collect(toList());
-        if(rowInSoldProducts.isEmpty()) {
+        if (rowInSoldProducts.isEmpty()) {
             ReceiptRecordView recordInPaidProducts = cloneReceiptRecordAndAddToSoldProducts(row);
             decreaseRowInPaidProducts(row, recordInPaidProducts, 1);
         } else {
@@ -347,7 +359,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void decreaseRowQuantity(SoldProductViewModel row, double amount) {
-        if(row.decreaseProductQuantity(amount)) {
+        if (row.decreaseProductQuantity(amount)) {
             removeRowFromPaidProducts(row);
         }
     }
@@ -392,7 +404,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void onAutoGameFee(Event event) {
         logger.info("The auto game fee button was clicked");
         ReceiptRecordView gameFee = handleAutomaticGameFee();
-        if(gameFee == null) {
+        if (gameFee == null) {
             return;
         }
         updateSoldProductsViewWithGameFee(gameFee);
@@ -402,9 +414,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private ReceiptRecordView handleAutomaticGameFee() {
         //TODO: Make the 2000 configurable from the manager terminal.
         int guestCount = tableView.getGuestCount();
-        int price = (int)receiptView.getTotalPrice();
-        int requiredGameFee = (((guestCount+1) * 2000 - (price+1)) / 2000);
-        if(requiredGameFee > 0) {
+        int price = (int) receiptView.getTotalPrice();
+        int requiredGameFee = (((guestCount + 1) * 2000 - (price + 1)) / 2000);
+        if (requiredGameFee > 0) {
             receiptService.sellGameFee(tableView, requiredGameFee);
             return receiptService.getLatestGameFee(tableView);
         }
@@ -422,7 +434,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private void updateSoldProductsViewWithGameFee(ReceiptRecordView gameFee) {
         List<ReceiptRecordView> matchingGameFeeList = findMatchingView(soldProductsView, new SoldProductViewModel(gameFee, getOrderDeliveredTime()));
-        if(matchingGameFeeList.isEmpty()) {
+        if (matchingGameFeeList.isEmpty()) {
             soldProductsView.add(gameFee);
         } else {
             ReceiptRecordView matchingGameFee = matchingGameFeeList.get(0);

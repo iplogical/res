@@ -13,22 +13,17 @@ import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDec
 import static java.lang.String.valueOf;
 import static java.time.LocalDateTime.now;
 
-/**
- * Created by Bálint on 2017.03.22..
- */
 public @Data class SoldProductViewModel {
 
     private String productName;
 
     private String productQuantity;
 
-    private String recentQuantity;
-
     private String productUnitPrice;
 
     private String productTotalPrice;
 
-    private String productId;
+    private int productId;
 
     private String productDiscount;
 
@@ -39,7 +34,7 @@ public @Data class SoldProductViewModel {
     private LocalDateTime orderDeliveredTime;
 
     public static boolean isEquals(SoldProductViewModel row, ReceiptRecordView receiptRecordView) {
-        return valueOf(receiptRecordView.getId()).equals(row.getProductId());
+        return receiptRecordView.getId() == row.getProductId();
     }
 
     public static boolean isEquivalent(SoldProductViewModel row, ReceiptRecordView receiptRecordView) {
@@ -60,10 +55,10 @@ public @Data class SoldProductViewModel {
         this.clickTimes = receiptRecordView.getCreated();
         this.productName = receiptRecordView.getName();
         this.orderDeliveredTime = orderDeliveredTime;
-        this.productQuantity = valueOf(receiptRecordView.getSoldQuantity()) + (getRecentClickCount() == 0 ? "" : (" (" + getRecentClickCount() + ")"));
+        this.productQuantity = receiptRecordView.getSoldQuantity() + (getRecentClickCount() == 0 ? "" : (" (" + getRecentClickCount() + ")"));
         this.productUnitPrice = valueOf(receiptRecordView.getSalePrice());
         this.productTotalPrice = valueOf(receiptRecordView.getTotalPrice());
-        this.productId = valueOf(receiptRecordView.getId());
+        this.productId = receiptRecordView.getId();
         this.productDiscount = valueOf(receiptRecordView.getDiscountPercent());
         this.productVat = valueOf(receiptRecordView.getVat());
         markDiscountedProduct();
@@ -109,14 +104,8 @@ public @Data class SoldProductViewModel {
         return productQuantity;
     }
 
-    public String getProductNameWithoutStar() {
-        String name = productName.replaceAll("[*]","").trim();
-        return name;
-    }
-
-    public LocalDateTime getLatestClickTime() {
-        if(clickTimes.size() == 0) return now();
-        return clickTimes.get(clickTimes.size() - 1);
+    private String getProductNameWithoutStar() {
+        return productName.replaceAll("[*]","").trim();
     }
 
     private long getRecentClickCount() {

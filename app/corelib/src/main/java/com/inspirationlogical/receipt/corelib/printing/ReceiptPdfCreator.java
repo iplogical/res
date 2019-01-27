@@ -6,6 +6,8 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,8 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 public class ReceiptPdfCreator {
+
+    private final static Logger logger = LoggerFactory.getLogger(ReceiptPdfCreator.class);
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd. HH:mm:ss");
 
@@ -38,9 +42,9 @@ public class ReceiptPdfCreator {
             initFonts();
             return createPdf();
         } catch (DocumentException e) {
-
+            logger.error("DocumentException in createReceiptPdf.", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("IOException in createReceiptPdf.", e);
         }
         return new byte[0];
     }
@@ -54,6 +58,7 @@ public class ReceiptPdfCreator {
         Resource fontResource = new ClassPathResource("fop/fonts/SourceSansPro-Light.otf");
         File fontFile = getResourceAsFile(fontResource, "temp/SourceSansPro-Light.otf");
         normalFont = BaseFont.createFont(fontFile.getAbsolutePath(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
     }
 
     private void initBoldFont() throws DocumentException, IOException {
@@ -63,10 +68,13 @@ public class ReceiptPdfCreator {
     }
 
     private File getResourceAsFile(Resource resource, String filePath) throws IOException {
-        InputStream fontStream = resource.getInputStream();
-        File fontFile = new File(filePath);
-        FileUtils.copyInputStreamToFile(fontStream, fontFile);
-        return fontFile;
+        try (InputStream fontStream = resource.getInputStream()){
+            File fontFile = new File(filePath);
+            if (!fontFile.exists()) {
+                FileUtils.copyInputStreamToFile(fontStream, fontFile);
+            }
+            return fontFile;
+        }
     }
 
     private byte[] createPdf() throws DocumentException, IOException {

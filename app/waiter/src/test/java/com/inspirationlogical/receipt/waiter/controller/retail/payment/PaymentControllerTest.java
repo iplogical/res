@@ -118,6 +118,24 @@ public class PaymentControllerTest  extends TestFXBase {
         testSinglePaymentPaidProductsAssertionsAfterPay$$2();
     }
 
+
+    private void testSinglePaymentSoldProductsAssertions$$3() {
+        assertSoldProductThree(1, 2);
+        assertSoldTotalPrice(5800);
+    }
+
+    private void testSinglePaymentPaidProductsAssertions$$3() {
+        assertPaidProductFive(1, 3);
+        assertPaidTotalPrice(1320);
+        assertPreviousPartialPrice(0);
+    }
+
+    private void testSinglePaymentPaidProductsAssertionsAfterPay$$2() {
+        assertPaidTotalPrice(0);
+        assertPreviousPartialPrice(1320);
+        assertNoPaidProduct();
+    }
+
     @Test
     public void testSinglePaymentWithDiscountAbsolute() {
         paySingle(2);
@@ -150,6 +168,16 @@ public class PaymentControllerTest  extends TestFXBase {
         assertSoldProductFive(1, 3);
         assertSoldProductThree(2, 2);
         assertNoPaidProduct();
+        verifyErrorMessageWithParam("PaymentView.ProductNotPartiallyPayable", PRODUCT_FIVE_LONG);
+    }
+
+    @Test
+    public void testPartialPaymentAmountBigger() {
+        payPartial(2, 2.5);
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 2);
+        assertNoPaidProduct();
+        verifyErrorMessage("PaymentView.PartialPayBiggerAmountError");
     }
 
     @Test
@@ -159,23 +187,6 @@ public class PaymentControllerTest  extends TestFXBase {
         verifyErrorMessage("PaymentView.PartialPayNumberError");
         assertSoldProductFive(1, 3);
         assertSoldProductThree(2, 2);
-        assertNoPaidProduct();
-    }
-
-    private void testSinglePaymentSoldProductsAssertions$$3() {
-        assertSoldProductThree(1, 2);
-        assertSoldTotalPrice(5800);
-    }
-
-    private void testSinglePaymentPaidProductsAssertions$$3() {
-        assertPaidProductFive(1, 3);
-        assertPaidTotalPrice(1320);
-        assertPreviousPartialPrice(0);
-    }
-
-    private void testSinglePaymentPaidProductsAssertionsAfterPay$$2() {
-        assertPaidTotalPrice(0);
-        assertPreviousPartialPrice(1320);
         assertNoPaidProduct();
     }
 

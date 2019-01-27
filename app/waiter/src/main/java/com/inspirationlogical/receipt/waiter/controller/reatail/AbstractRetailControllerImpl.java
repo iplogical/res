@@ -215,17 +215,22 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected ReceiptRecordView decreaseRowInSoldProducts(SoldProductViewModel row, double amount) {
         List<ReceiptRecordView> matchingReceiptRecordView = findMatchingView(soldProductsView, row);
-        if(matchingReceiptRecordView.size() == 0) return null;
-        receiptRecordService.decreaseSoldQuantity(matchingReceiptRecordView.get(0), amount);
+        if(matchingReceiptRecordView.size() == 0) {
+            return null;
+        }
         decreaseClickedRow(row, amount);
         return matchingReceiptRecordView.get(0);
     }
 
     private void decreaseClickedRow(SoldProductViewModel row, double amount) {
-        if(row.decreaseProductQuantity(amount)) {
-            removeRowFromSoldProducts(row); // The whole product is paid, remove the row.
+        if(isWholeProductPaid(row, amount)) {
+            removeRowFromSoldProducts(row);
         }
         soldProductsTable.refresh();
+    }
+
+    private boolean isWholeProductPaid(SoldProductViewModel row, double amount) {
+        return row.decreaseProductQuantity(amount);
     }
 
     protected ReceiptRecordView removeRowFromSoldProducts(final SoldProductViewModel row) {

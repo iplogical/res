@@ -17,4 +17,14 @@ public enum PaymentMethod {
             return Resources.CONFIG.getString("PaymentMethod.Coupon");
         return "";
     }
+
+    public String toPrintString() {
+        if(this.equals(CASH))
+            return Resources.CONFIG.getString("PaymentMethod.Cash");
+        if(this.equals(CREDIT_CARD))
+            return Resources.CONFIG.getString("PaymentMethod.CreditCard");
+        if(this.equals(COUPON))
+            return Resources.CONFIG.getString("PaymentMethod.Cash");
+        return "";
+    }
 }

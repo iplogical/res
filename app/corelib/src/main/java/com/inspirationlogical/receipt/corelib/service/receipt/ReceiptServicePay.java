@@ -132,7 +132,7 @@ public class ReceiptServicePay {
                 .totalDiscount(receipt.getSumSaleGrossOriginalPrice() - receipt.getSumSaleGrossPrice())
                 .discountedTotalPrice(receipt.getSumSaleGrossPrice())
                 .roundedTotalPrice(receipt.getSumSaleGrossPrice())
-                .paymentMethod(receipt.getPaymentMethod().toI18nString())
+                .paymentMethod(receipt.getPaymentMethod().toPrintString())
                 .receiptDisclaimer(restaurant.getReceiptDisclaimer())
                 .receiptNote(restaurant.getReceiptNote())
                 .receiptGreet(restaurant.getReceiptGreet())
