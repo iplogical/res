@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,7 @@ import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDec
 import static java.time.LocalDateTime.now;
 
 @Service
+@Transactional
 public class ReceiptRecordServiceImpl implements ReceiptRecordService {
 
     private static final Logger logger = LoggerFactory.getLogger(ReceiptRecordServiceImpl.class);
@@ -78,13 +80,22 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
         ReceiptRecord receiptRecord = receiptRecordRepository.getOne(receiptRecordView.getId());
         receiptRecord.getOwner().getRecords().remove(receiptRecord);
         receiptRecordRepository.delete(receiptRecord);
+        logger.info("A receipt record was canceled: " + receiptRecordView);
     }
 
     @Override
     public ReceiptRecordView cloneReceiptRecord(ReceiptRecordView receiptRecordView, double quantity) {
         ReceiptRecord receiptRecord = receiptRecordRepository.getOne(receiptRecordView.getId());
+        ReceiptRecord cloneRecord = buildCloneRecord(quantity, receiptRecord);
+        cloneRecord.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(cloneRecord).build());
+        receiptRecord.getOwner().getRecords().add(cloneRecord);
+        receiptRecordRepository.save(cloneRecord);
+        logger.info("A receipt record was cloned: quantity:" + quantity + ", " + receiptRecordView);
+        return new ReceiptRecordView(cloneRecord);
+    }
 
-        ReceiptRecord cloneRecord = ReceiptRecord.builder()
+    private ReceiptRecord buildCloneRecord(double quantity, ReceiptRecord receiptRecord) {
+        return ReceiptRecord.builder()
                 .owner(receiptRecord.getOwner())
                 .product(receiptRecord.getProduct())
                 .type(receiptRecord.getType())
@@ -96,10 +107,6 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
                 .discountPercent(receiptRecord.getDiscountPercent())
                 .createdList(new ArrayList<>())
                 .build();
-        cloneRecord.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(cloneRecord).build());
-        receiptRecord.getOwner().getRecords().add(cloneRecord);
-        receiptRecordRepository.save(cloneRecord);
-        return new ReceiptRecordView(cloneRecord);
     }
 
     @Override

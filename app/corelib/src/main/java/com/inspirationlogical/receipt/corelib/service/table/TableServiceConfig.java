@@ -34,7 +34,7 @@ public interface TableServiceConfig {
 
     List<TableView> exchangeTables(int selectedTableNumber, int otherTableNumber);
 
-    RecentConsumption getRecentConsumption(TableView tableView);
+    RecentConsumption getRecentConsumption(int tableNumber);
 
     TableView setOrderDelivered(int tableNumber, boolean delivered);
 

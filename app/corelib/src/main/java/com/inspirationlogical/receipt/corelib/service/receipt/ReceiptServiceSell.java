@@ -35,6 +35,8 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class ReceiptServiceSell {
 
+    private static final Logger logger = LoggerFactory.getLogger(ReceiptServiceSell.class);
+
     @Autowired
     private ReceiptRepository receiptRepository;
 

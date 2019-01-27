@@ -161,7 +161,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void handleFullPayment(PaymentParams paymentParams) {
         logger.info("Handling full payment with paymentParams: " + paymentParams.toString());
-        tableView = retailService.payTable(tableView.getNumber(), paymentParams);
+        tableView = tableServicePay.payTable(tableView.getNumber(), paymentParams);
         getTableController().setTableView(tableView);
         getSoldProductsAndRefreshTable();
         discardPaidRecords();
@@ -193,7 +193,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void handleSelectivePayment(PaymentParams paymentParams) {
         logger.info("Handling selective payment with paymentParams: " + paymentParams.toString());
-        retailService.paySelective(tableView, paidProductsView, paymentParams);
+        tableServicePay.paySelective(tableView, paidProductsView, paymentParams);
         updatePreviousPartialPrice();
         discardPaidRecords();
         getSoldProductsAndRefreshTable();
@@ -203,7 +203,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void handlePartialPayment(PaymentParams paymentParams) {
         try {
             logger.info("Handling selective payment with paymentParams: " + paymentParams.toString());
-            retailService.payPartial(tableView, getPartialValue(), paymentParams);
+            tableServicePay.payPartial(tableView, getPartialValue(), paymentParams);
             int totalPrice = SoldProductViewModel.getTotalPrice(soldProductsModel);
             getSoldProductsAndRefreshTable();
             int paidPartialPrice = totalPrice - SoldProductViewModel.getTotalPrice(soldProductsModel);
@@ -295,13 +295,13 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void cloneReceiptRecordAndAddToPaidProducts(SoldProductViewModel row, ReceiptRecordView toAdd, double amount) {
-        ReceiptRecordView newRecord = retailService.cloneReceiptRecordView(toAdd, amount);
+        ReceiptRecordView newRecord = receiptRecordService.cloneReceiptRecord(toAdd, amount);
         paidProductsView.add(newRecord);
         paidProductsModel.add(createNewRow(row, newRecord, amount));
     }
 
     private void increaseReceiptRecordAndRowQuantity(double amount, List<ReceiptRecordView> equivalentReceiptRecordView) {
-        retailService.increaseSoldQuantity(equivalentReceiptRecordView.get(0), amount, false);
+        receiptRecordService.increaseSoldQuantity(equivalentReceiptRecordView.get(0), amount, false);
         List<SoldProductViewModel> matchingRows =
                 paidProductsModel.stream().filter(thisRow -> SoldProductViewModel.isEquals(thisRow, equivalentReceiptRecordView.get(0)))
                         .collect(toList());
@@ -339,7 +339,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private void decreaseRowInPaidProducts(SoldProductViewModel row, ReceiptRecordView toAdd, double amount) {
         List<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentView(paidProductsView, row);
-        retailService.decreaseSoldQuantity(equivalentReceiptRecordView.get(0), amount);
+        receiptRecordService.decreaseSoldQuantity(equivalentReceiptRecordView.get(0), amount);
         List<SoldProductViewModel> matchingRows =
                 paidProductsModel.stream().filter(thisRow -> SoldProductViewModel.isEquals(thisRow, equivalentReceiptRecordView.get(0)))
                         .collect(toList());
@@ -361,7 +361,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private ReceiptRecordView cloneReceiptRecordAndAddToSoldProducts(SoldProductViewModel row) {
         ReceiptRecordView recordInPaidProducts = findEquivalentView(paidProductsView, row).get(0);
-        ReceiptRecordView recordInSoldProducts = retailService.cloneReceiptRecordView(recordInPaidProducts, 1);
+        ReceiptRecordView recordInSoldProducts = receiptRecordService.cloneReceiptRecord(recordInPaidProducts, 1);
         soldProductsView.add(recordInSoldProducts);
         addRowToSoldProducts(new SoldProductViewModel(recordInSoldProducts, getOrderDeliveredTime()));
         return recordInPaidProducts;
@@ -371,7 +371,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void onBackToRestaurantView(Event event) {
         logger.info("Going to restaurant view.");
         discardPaidRecords();
-        retailService.mergeReceiptRecords(receiptView);
+        receiptService.mergeReceiptRecords(receiptView);
         backToRestaurantView();
     }
 
@@ -379,7 +379,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void onBackToSaleView(Event event) {
         logger.info("Going to sale view.");
         discardPaidRecords();
-        retailService.mergeReceiptRecords(receiptView);
+        receiptService.mergeReceiptRecords(receiptView);
         enterSaleView();
     }
 
@@ -405,8 +405,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         int price = (int)receiptView.getTotalPrice();
         int requiredGameFee = (((guestCount+1) * 2000 - (price+1)) / 2000);
         if(requiredGameFee > 0) {
-            retailService.sellGameFee(tableView, requiredGameFee);
-            return retailService.getLatestGameFee(tableView);
+            receiptService.sellGameFee(tableView, requiredGameFee);
+            return receiptService.getLatestGameFee(tableView);
         }
         return null;
     }
@@ -414,8 +414,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onManualGameFee(Event event) {
         logger.info("The manual game fee button was clicked");
-        retailService.sellGameFee(tableView, 1);
-        ReceiptRecordView gameFee = retailService.getLatestGameFee(tableView);
+        receiptService.sellGameFee(tableView, 1);
+        ReceiptRecordView gameFee = receiptService.getLatestGameFee(tableView);
         updateSoldProductsViewWithGameFee(gameFee);
         refreshSoldProductsTable();
     }

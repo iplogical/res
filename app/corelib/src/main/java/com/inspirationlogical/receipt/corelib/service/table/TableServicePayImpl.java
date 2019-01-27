@@ -11,13 +11,19 @@ import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import net.bytebuddy.asm.Advice;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
 @Service
+@Transactional
 public class TableServicePayImpl implements TableServicePay {
+
+    private static final Logger logger = LoggerFactory.getLogger(TableServicePayImpl.class);
 
     @Autowired
     private TableRepository tableRepository;
@@ -41,6 +47,7 @@ public class TableServicePayImpl implements TableServicePay {
         receiptService.close(openReceipt, paymentParams);
         setDefaultTableParams(table);
         tableRepository.save(table);
+        logger.info("A table was paid: " + tableNumber + ", " + paymentParams);
         return tableServiceConfig.buildTableView(table);
     }
 
@@ -55,6 +62,7 @@ public class TableServicePayImpl implements TableServicePay {
     public void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
         Receipt openReceipt = getOpenReceipt(tableView);
         receiptService.paySelective(openReceipt, records, paymentParams);
+        logger.info("A table was selectively paid: " + tableView + ", " + paymentParams);
     }
 
     private Receipt getOpenReceipt(TableView tableView) {
@@ -70,5 +78,6 @@ public class TableServicePayImpl implements TableServicePay {
     public void payPartial(TableView tableView, double partialValue, PaymentParams paymentParams) {
         Receipt openReceipt = getOpenReceipt(tableView);
         receiptService.payPartial(openReceipt, partialValue, paymentParams);
+        logger.info("A table was partially paid: partialValue:" + partialValue + ", " + tableView + ", " + paymentParams);
     }
 }

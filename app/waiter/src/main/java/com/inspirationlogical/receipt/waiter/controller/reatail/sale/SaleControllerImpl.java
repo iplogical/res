@@ -84,9 +84,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private Popup adHocProductForm;
 
     @Autowired
-    private CommonService commonService;
-
-    @Autowired
     private PaymentController paymentController;
 
     @Autowired
@@ -127,14 +124,14 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void sellProduct(ProductView productView) {
-        retailService.sellProduct(tableView, productView, 1, saleViewState.isTakeAway(), saleViewState.isGift());
+        receiptService.sellProduct(tableView, productView, 1, saleViewState.isTakeAway(), saleViewState.isGift());
         setOrderDelivered(false);
         getSoldProductsAndRefreshTable();
     }
 
     @Override
     public void sellAdHocProduct(AdHocProductParams adHocProductParams) {
-        retailService.sellAdHocProduct(tableView, adHocProductParams, saleViewState.isTakeAway());
+        receiptService.sellAdHocProduct(tableView, adHocProductParams, saleViewState.isTakeAway());
         setOrderDelivered(false);
         getSoldProductsAndRefreshTable();
         adHocProductForm.hide();
@@ -157,7 +154,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
         if(saleViewState.isSelectiveCancellation()) {
             ReceiptRecordView clickedRecord = removeRowFromSoldProducts(row);
             if(clickedRecord == null) return;
-            retailService.cancelReceiptRecord(clickedRecord);
+            receiptRecordService.cancelReceiptRecord(clickedRecord);
             getSoldProductsAndRefreshTable();
         } else if(saleViewState.isSingleCancellation()) {
             decreaseRowInSoldProducts(row, 1);
@@ -173,7 +170,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onToPaymentView(Event event) {
         logger.info("Entering the payment view for table: " + tableView.toString());
-        retailService.mergeReceiptRecords(receiptView);
+        receiptService.mergeReceiptRecords(receiptView);
         paymentController.setTableView(tableView);
         WaiterApp.showView(PaymentFxmlView.class);
         paymentController.enterPaymentView();

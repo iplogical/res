@@ -8,6 +8,9 @@ import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
+import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +24,8 @@ import static java.util.stream.Collectors.toList;
 @Service
 @Transactional
 public class ReceiptServiceImpl implements ReceiptService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ReceiptServiceImpl.class);
 
     @Autowired
     private ReceiptRepository receiptRepository;
@@ -49,16 +54,19 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {
         receiptServiceSell.sellProduct(tableView, productView, amount, isTakeAway, isGift);
+        logger.info("A product was sold: quantity: " + amount + ", takeAway: " + isTakeAway + " isGift: " + isGift + " " + productView + " ," + tableView);
     }
 
     @Override
     public void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean isTakeAway) {
         receiptServiceSell.sellAdHocProduct(tableView, adHocProductParams, isTakeAway);
+        logger.info("An Ad Hoc product was sold: takeAway: " + isTakeAway + " " + adHocProductParams + " ," + tableView);
     }
 
     @Override
     public void sellGameFee(TableView tableView, int quantity) {
         receiptServiceSell.sellGameFee(tableView, quantity);
+        logger.info("A game fee was sold: quantity: " + quantity + ", " + tableView);
     }
 
     @Override
@@ -95,6 +103,8 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public void mergeReceiptRecords(ReceiptView receiptView) {
         receiptServiceMerge.mergeReceiptRecords(receiptView);
+        logger.info("A the records of a receipt were merged: " + receiptView);
+
     };
 
     @Override

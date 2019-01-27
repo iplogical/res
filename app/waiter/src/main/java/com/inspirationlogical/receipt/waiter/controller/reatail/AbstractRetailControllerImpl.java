@@ -4,9 +4,10 @@ import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractContro
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
+import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordService;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
+import com.inspirationlogical.receipt.corelib.service.table.TableServicePay;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
@@ -71,13 +72,16 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     private TableColumn<SoldProductViewModel, String> productTotalPrice;
 
     @Autowired
-    private ReceiptService receiptService;
+    protected ReceiptService receiptService;
+
+    @Autowired
+    protected ReceiptRecordService receiptRecordService;
 
     @Autowired
     private TableServiceConfig tableServiceConfig;
 
     @Autowired
-    protected RetailService retailService;
+    protected TableServicePay tableServicePay;
 
     @Autowired
     protected RestaurantController restaurantController;
@@ -96,7 +100,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     @FXML
     public void onBackToRestaurantView(Event event) {
         logger.info("Back to restaurant view from table: " + tableView.toString());
-        retailService.mergeReceiptRecords(receiptView);
+        receiptService.mergeReceiptRecords(receiptView);
         backToRestaurantView();
     }
 
@@ -212,7 +216,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected ReceiptRecordView decreaseRowInSoldProducts(SoldProductViewModel row, double amount) {
         List<ReceiptRecordView> matchingReceiptRecordView = findMatchingView(soldProductsView, row);
         if(matchingReceiptRecordView.size() == 0) return null;
-        retailService.decreaseSoldQuantity(matchingReceiptRecordView.get(0), amount);
+        receiptRecordService.decreaseSoldQuantity(matchingReceiptRecordView.get(0), amount);
         decreaseClickedRow(row, amount);
         return matchingReceiptRecordView.get(0);
     }
@@ -235,7 +239,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected ReceiptRecordView increaseRowInSoldProducts(SoldProductViewModel row, double amount, boolean isSale) {
         List<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentView(soldProductsView, row);
-        retailService.increaseSoldQuantity(equivalentReceiptRecordView.get(0), amount, isSale);
+        receiptRecordService.increaseSoldQuantity(equivalentReceiptRecordView.get(0), amount, isSale);
         row.increaseProductQuantity(amount);
         return equivalentReceiptRecordView.get(0);
     }

@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.waiter.controller.dailysummary;
 
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyConsumptionService;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
@@ -62,6 +63,9 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     @Autowired
     private DailyConsumptionService dailyConsumptionService;
 
+    @Autowired
+    private DailyClosureService dailyClosureService;
+
     private CalendarPickerWrapper startDatePicker;
 
     private CalendarPickerWrapper endDatePicker;
@@ -97,7 +101,7 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void updateClosureTimeLabels() {
-        List<LocalDateTime> closureTimes = retailService.getClosureTimes(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
+        List<LocalDateTime> closureTimes = dailyClosureService.getClosureTimes(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
         startDateValue.setText(closureTimes.get(0).toString());
         endDateValue.setText(closureTimes.get(1).toString());
         getSoldProductsAndRefreshTable();

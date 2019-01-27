@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.waiter.controller.table;
 
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
-import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.contextmenu.BaseContextMenuBuilder;
@@ -60,9 +59,6 @@ public class TableControllerImpl implements TableController {
 
     @Autowired
     private ApplicationContext applicationContext;
-
-    @Autowired
-    private RetailService retailService;
 
     @Autowired
     private TableServiceConfig tableServiceConfig;
@@ -127,7 +123,7 @@ public class TableControllerImpl implements TableController {
     @Override
     public void updateTable() {
         updateTableParams();
-        CSSUtilities.setBackgroundColor(tableView, retailService.getRecentConsumption(tableView), tableStackPane);
+        CSSUtilities.setBackgroundColor(tableView, tableServiceConfig.getRecentConsumption(tableView.getNumber()), tableStackPane);
         showNode(rootTable, new Point2D(tableView.getCoordinateX(), tableView.getCoordinateY()));
     }
 

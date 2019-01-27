@@ -5,7 +5,6 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
-import com.inspirationlogical.receipt.corelib.service.RetailService;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
@@ -39,9 +38,6 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
 
     @Autowired
     private TableServiceConfig tableServiceConfig;
-
-    @Autowired
-    private RetailService retailService;
 
     @Getter
     private Set<TableController> tableControllers;

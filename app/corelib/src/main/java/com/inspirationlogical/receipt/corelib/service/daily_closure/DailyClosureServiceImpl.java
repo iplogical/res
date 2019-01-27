@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDec
 import static java.time.LocalDateTime.now;
 
 @Service
+@Transactional
 public class DailyClosureServiceImpl implements DailyClosureService{
 
     @Autowired

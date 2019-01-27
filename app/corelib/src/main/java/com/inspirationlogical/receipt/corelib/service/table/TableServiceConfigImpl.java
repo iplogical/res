@@ -340,8 +340,8 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     }
 
     @Override
-    public RecentConsumption getRecentConsumption(TableView tableView) {
-        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
+    public RecentConsumption getRecentConsumption(int tableNumber) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableNumber);
         if (openReceipt == null) {
             return RecentConsumption.NO_RECENT;
         }
