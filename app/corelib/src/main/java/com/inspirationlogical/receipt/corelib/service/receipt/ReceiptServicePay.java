@@ -163,7 +163,7 @@ public class ReceiptServicePay {
     public void paySelective(Receipt receipt, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
         Receipt paidReceipt = buildReceipt(ReceiptType.SALE);
 
-        Map<Long, ReceiptRecordView> recordsToPay = records.stream()
+        Map<Integer, ReceiptRecordView> recordsToPay = records.stream()
                 .collect(Collectors.toMap(ReceiptRecordView::getId, Function.identity()));
         List<ReceiptRecord> notPaidRecords = receipt.getRecords().stream()
                 .filter(record -> !recordsToPay.containsKey(record.getId()))

@@ -138,7 +138,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
                 .type(ReceiptType.SALE)
                 .paymentMethod(PaymentMethod.CASH)
                 .build();
-        receipt.setId(-1L);
+        receipt.setId(-1);
         return receipt;
     }
 

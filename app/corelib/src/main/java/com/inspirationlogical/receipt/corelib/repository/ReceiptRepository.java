@@ -9,9 +9,9 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface ReceiptRepository extends JpaRepository<Receipt, Long> {
+public interface ReceiptRepository extends JpaRepository<Receipt, Integer> {
 
-    Receipt findById(long id);
+    Receipt findById(int id);
 
     @Query("SELECT r FROM Receipt r WHERE r.status='OPEN' AND r.owner.number=:number")
     Receipt getOpenReceipt(@Param(value = "number") Integer number);

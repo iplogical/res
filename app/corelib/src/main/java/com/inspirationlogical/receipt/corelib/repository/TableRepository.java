@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface TableRepository extends JpaRepository<Table, Long> {
+public interface TableRepository extends JpaRepository<Table, Integer> {
 
     List<Table> findAllByVisibleIsTrue();
 

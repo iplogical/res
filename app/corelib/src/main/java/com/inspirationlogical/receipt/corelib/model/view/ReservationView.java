@@ -8,7 +8,7 @@ import lombok.ToString;
 @ToString
 public class ReservationView {
 
-    private long id;
+    private int id;
     private String name;
     private String tableNumber;
     private String guestCount;

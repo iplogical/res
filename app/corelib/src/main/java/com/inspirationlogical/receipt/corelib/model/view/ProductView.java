@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @ToString(exclude = "recipes")
 public class ProductView implements AbstractView {
 
-    private long id;
+    private int id;
     private String name;
     private int orderNumber;
     private ProductType type;

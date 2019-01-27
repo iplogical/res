@@ -65,7 +65,7 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
     }
 
     @Override
-    public void updateProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
+    public void updateProduct(int productId, ProductCategoryView parent, Product.ProductBuilder builder) {
         productService.updateProduct(productId, parent.getCategoryName(), builder);
     }
 

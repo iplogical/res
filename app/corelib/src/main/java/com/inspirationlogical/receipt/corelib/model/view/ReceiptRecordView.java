@@ -19,7 +19,7 @@ import static java.util.stream.Collectors.toList;
 @ToString
 public class ReceiptRecordView {
 
-    private long id;
+    private int id;
     private String name;
     private ReceiptRecordType type;
     private double soldQuantity;

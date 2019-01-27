@@ -19,7 +19,7 @@ public interface ManagerService {
 
     void addProduct(ProductCategoryView parent, Product.ProductBuilder builder);
 
-    void updateProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder);
+    void updateProduct(int productId, ProductCategoryView parent, Product.ProductBuilder builder);
 
     void deleteProduct(String longName);
 

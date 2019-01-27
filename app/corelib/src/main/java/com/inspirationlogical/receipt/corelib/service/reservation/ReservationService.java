@@ -12,11 +12,11 @@ public interface ReservationService {
 
     List<ReservationView> getReservations(LocalDate date);
 
-    Reservation getReservationById(long id);
+    Reservation getReservationById(int id);
 
     long addReservation(ReservationParams params);
 
-    void updateReservation(long reservationId, ReservationParams params);
+    void updateReservation(int reservationId, ReservationParams params);
 
-    void deleteReservation(long reservationId);
+    void deleteReservation(int reservationId);
 }

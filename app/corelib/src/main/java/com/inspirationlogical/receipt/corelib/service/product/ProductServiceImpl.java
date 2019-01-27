@@ -15,7 +15,6 @@ import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProduct(long productId, String parentCategoryName, Product.ProductBuilder builder) {
+    public void updateProduct(int productId, String parentCategoryName, Product.ProductBuilder builder) {
         Product originalProduct = productRepository.getOne(productId);
         Product updatedProduct = builder.build();
         if(isProductNameAlreadyUsed(originalProduct, updatedProduct))

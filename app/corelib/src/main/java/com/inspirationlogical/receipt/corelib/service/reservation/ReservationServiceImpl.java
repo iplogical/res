@@ -38,7 +38,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation getReservationById(long id) {
+    public Reservation getReservationById(int id) {
         return reservationRepository.getOne(id);
     }
 
@@ -61,7 +61,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void updateReservation(long reservationId, ReservationParams params) {
+    public void updateReservation(int reservationId, ReservationParams params) {
         Reservation reservation = reservationRepository.getOne(reservationId);
         Table table = tableRepository.findByNumber(params.getTableNumber());
         reservation.setName(params.getName());
@@ -93,7 +93,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void deleteReservation(long reservationId) {
+    public void deleteReservation(int reservationId) {
         Reservation reservation = reservationRepository.getOne(reservationId);
         reservation.getOwner().getReservations().remove(reservation);
         reservation.setOwner(null);

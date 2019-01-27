@@ -12,7 +12,7 @@ public interface ProductService {
 
     void addProduct(ProductCategoryView parent, Product.ProductBuilder builder);
 
-    void updateProduct(long productId, String parentCategoryName, Product.ProductBuilder builder);
+    void updateProduct(int productId, String parentCategoryName, Product.ProductBuilder builder);
 
     void deleteProduct(String longName);
 

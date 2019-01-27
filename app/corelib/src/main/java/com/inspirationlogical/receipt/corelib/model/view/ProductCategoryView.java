@@ -14,7 +14,7 @@ public class ProductCategoryView implements AbstractView {
         return new ProductCategoryView(backButtonText);
     }
 
-    private long id;
+    private int id;
     private String categoryName;
     private int orderNumber;
     private ProductCategoryView parent;

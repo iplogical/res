@@ -21,9 +21,9 @@ import static java.util.stream.Collectors.toList;
 @ToString
 public class ReceiptView {
 
-    private long id;
+    private int id;
     private List<ReceiptRecordView> soldProducts;
-    private long totalPrice;
+    private int totalPrice;
     private ReceiptType type;
     private ReceiptStatus status;
     private PaymentMethod paymentMethod;

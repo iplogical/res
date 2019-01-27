@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public interface DailyClosureRepository extends JpaRepository<DailyClosure, Long> {
+public interface DailyClosureRepository extends JpaRepository<DailyClosure, Integer> {
 
     DailyClosure findByClosureTimeIsNull();
 

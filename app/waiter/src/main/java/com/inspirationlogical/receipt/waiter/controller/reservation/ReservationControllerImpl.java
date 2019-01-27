@@ -157,8 +157,8 @@ public class ReservationControllerImpl extends AbstractController
 
     private void initReservations() {
         reservationViews = reservationService.getReservations(datePickerWrapper.getSelectedDate());
-        List<ReservationViewModel> models = reservationViews.stream().map(ReservationViewModel::new).collect(toList());
-        models.sort(Comparator.comparing(ReservationViewModel::getTableNumberAsInt));
+        List<ReservationViewModel> models = reservationViews.stream().map(ReservationViewModel::new)
+                .sorted(Comparator.comparing(ReservationViewModel::getTableNumberAsInt)).collect(toList());
         reservationModels = FXCollections.observableArrayList(models);
         reservationsTable.setItems(reservationModels);
     }

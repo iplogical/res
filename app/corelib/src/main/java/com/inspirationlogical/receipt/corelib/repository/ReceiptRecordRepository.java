@@ -10,5 +10,5 @@ import javax.persistence.SqlResultSetMapping;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface ReceiptRecordRepository extends JpaRepository<ReceiptRecord, Long> {
+public interface ReceiptRecordRepository extends JpaRepository<ReceiptRecord, Integer> {
 }
