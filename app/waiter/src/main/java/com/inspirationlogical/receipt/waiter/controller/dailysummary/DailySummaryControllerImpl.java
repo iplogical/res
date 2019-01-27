@@ -114,7 +114,7 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    protected void soldProductsRowClickHandler(ProductRowModel row) {}
+    protected void onSoldProductsRowClick(ProductRowModel row) {}
 
     @Override
     public void onBackToRestaurantView(Event event) {

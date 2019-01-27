@@ -147,24 +147,26 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    protected void soldProductsRowClickHandler(ProductRowModel row) {
+    protected void onSoldProductsRowClick(ProductRowModel row) {
         logger.info("The sold products table was clicked on the row: " + row.toString() + "in sale view state: " + saleViewState.toString());
         disableSoldProductsTableRowClickHandler();
+        handleSoldProductsTableRowClick(row);
+        enableSoldProductsTableRowClickHandler();
+    }
+
+    private void handleSoldProductsTableRowClick(ProductRowModel row) {
         if(saleViewState.isSelectiveCancellation()) {
-            ReceiptRecordView clickedRecord = removeRowFromSoldProducts(row);
-            if(clickedRecord == null) return;
+            ReceiptRecordView clickedRecord = findMatchingSoldProduct(row);
+            soldProductViewList.remove(clickedRecord);
             receiptRecordService.cancelReceiptRecord(clickedRecord);
-            getSoldProductsAndRefreshTable();
         } else if(saleViewState.isSingleCancellation()) {
-            ReceiptRecordView clickedRecord = decreaseRowInSoldProducts(row, 1);
+            ReceiptRecordView clickedRecord = findMatchingSoldProduct(row);
             receiptRecordService.decreaseSoldQuantity(clickedRecord, 1);
-            getSoldProductsAndRefreshTable();
         } else {
             increaseRowInSoldProducts(row, 1, true);
             setOrderDelivered(false);
-            getSoldProductsAndRefreshTable();
         }
-        enableSoldProductsTableRowClickHandler();
+        getSoldProductsAndRefreshTable();
     }
 
     @FXML

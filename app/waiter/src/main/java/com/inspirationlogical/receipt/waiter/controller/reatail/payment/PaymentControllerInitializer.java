@@ -81,7 +81,7 @@ public class PaymentControllerInitializer {
             TableRow<ProductRowModel> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if(event.getClickCount() == 1 && (! row.isEmpty())) {
-                    p.paidProductsRowClickHandler(row.getItem());
+                    p.onPaidProductsRowClicked(row.getItem());
                 }
             });
             return row;

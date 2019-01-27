@@ -1,6 +1,8 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
+import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
@@ -30,11 +32,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -93,9 +95,9 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected ReceiptView receiptView;
 
-    protected Collection<ReceiptRecordView> soldProductsView;
+    protected Collection<ReceiptRecordView> soldProductViewList;
 
-    protected ObservableList<ProductRowModel> soldProductsModel = FXCollections.observableArrayList();
+    protected ObservableList<ProductRowModel> soldProductRowList = FXCollections.observableArrayList();
 
     @FXML
     public void onBackToRestaurantView(Event event) {
@@ -152,7 +154,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     private EventHandler<MouseEvent> enableRowClickHandler(TableRow<ProductRowModel> row) {
         return event -> {
             if(event.getClickCount() == 1 && (!row.isEmpty())) {
-                soldProductsRowClickHandler(row.getItem());
+                onSoldProductsRowClick(row.getItem());
             }
         };
     }
@@ -169,7 +171,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         return event -> {};
     }
 
-    protected abstract void soldProductsRowClickHandler(ProductRowModel row);
+    protected abstract void onSoldProductsRowClick(ProductRowModel row);
 
     protected void updateTableSummary() {
         tableName.setText(tableView.getName());
@@ -181,85 +183,65 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         return " (" + tableView.getGuestCount() + "/" + tableView.getCapacity() + ")";
     }
 
-    private ObservableList<ProductRowModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
+    protected ObservableList<ProductRowModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
         List<ProductRowModel> list = soldProducts.stream()
+                .sorted(Comparator.comparing(this::getOldestCreated))
                 .map(receiptRecordView -> new ProductRowModel(receiptRecordView, getOrderDeliveredTime()))
                 .collect(toList());
         return FXCollections.observableArrayList(list);
     }
 
+    private LocalDateTime getOldestCreated(ReceiptRecordView receiptRecord) {
+        List<LocalDateTime> sortedCreatedList =  receiptRecord.getCreated();
+        Collections.sort(sortedCreatedList);
+        return sortedCreatedList.get(0);
+    }
+
     protected LocalDateTime getOrderDeliveredTime() {
-        if(getTableController() == null) {
-            return null;
-        }
         return getTableController().getOrderDeliveryTime();
     }
 
     protected void refreshSoldProductsTable() {
-        soldProductsModel.clear();
-        soldProductsModel.addAll(convertReceiptRecordViewsToModel(soldProductsView));
-        soldProductsTable.setItems(soldProductsModel);
+        soldProductRowList.clear();
+        soldProductRowList.addAll(convertReceiptRecordViewsToModel(soldProductViewList));
+        soldProductsTable.setItems(soldProductRowList);
         soldProductsTable.refresh();
         updateSoldTotalPrice();
     }
 
+    protected int getTotalPrice(ObservableList<ProductRowModel> productRowList) {
+        return productRowList.stream().map(ProductRowModel::getProductTotalPrice).mapToInt(Integer::valueOf).sum();
+    }
+
     protected void updateSoldTotalPrice() {
-        totalPrice.setText(ProductRowModel.getTotalPrice(soldProductsModel) + " Ft");
+        totalPrice.setText(getTotalPrice(soldProductRowList) + " Ft");
     }
 
-    protected List<ReceiptRecordView> findMatchingView(Collection<ReceiptRecordView> productsView, ProductRowModel row) {
-        return productsView.stream().filter(row::isEqual).collect(toList());
+    protected ReceiptRecordView findMatchingSoldProduct(ProductRowModel row) {
+        return soldProductViewList.stream().filter(row::isEqual).findFirst().get();
     }
 
-    protected ReceiptRecordView decreaseRowInSoldProducts(ProductRowModel row, double amount) {
-        List<ReceiptRecordView> matchingReceiptRecordView = findMatchingView(soldProductsView, row);
-        if(matchingReceiptRecordView.size() == 0) {
-            return null;
-        }
-        decreaseClickedRow(row, amount);
-        return matchingReceiptRecordView.get(0);
-    }
-
-    private void decreaseClickedRow(ProductRowModel row, double amount) {
-        if(isWholeProductPaid(row, amount)) {
-            removeRowFromSoldProducts(row);
-        }
-        soldProductsTable.refresh();
-    }
-
-    private boolean isWholeProductPaid(ProductRowModel row, double amount) {
-        return row.decreaseProductQuantity(amount);
-    }
-
-    protected ReceiptRecordView removeRowFromSoldProducts(final ProductRowModel row) {
-        soldProductsModel.remove(row);
-        soldProductsTable.setItems(soldProductsModel);
-        List<ReceiptRecordView> matching = findMatchingView(soldProductsView, row);
-        if(matching.size() == 0) return null;
-        soldProductsView.remove(matching.get(0));
-        return matching.get(0);
+    protected Optional<ReceiptRecordView> findMatchingSoldProductOptional(ProductRowModel row) {
+        return soldProductViewList.stream().filter(row::isEqual).findFirst();
     }
 
     protected void increaseRowInSoldProducts(ProductRowModel row, double amount, boolean isSale) {
-        List<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentView(soldProductsView, row);
-        ReceiptRecordView increasedRecord = receiptRecordService.increaseSoldQuantity(equivalentReceiptRecordView.get(0), amount, isSale);
-        soldProductsView.remove(equivalentReceiptRecordView.get(0));
-        soldProductsView.add(increasedRecord);
+        ReceiptRecordView equivalentReceiptRecordView = findEquivalentView(soldProductViewList, row);
+        ReceiptRecordView increasedRecord = receiptRecordService.increaseSoldQuantity(equivalentReceiptRecordView, amount, isSale);
+        soldProductViewList.remove(equivalentReceiptRecordView);
+        soldProductViewList.add(increasedRecord);
     }
 
-    protected List<ReceiptRecordView> findEquivalentView(Collection<ReceiptRecordView> productsView, ProductRowModel row) {
-        return productsView.stream().filter(row::isEquivalent).collect(toList());
+    protected ReceiptRecordView findEquivalentView(Collection<ReceiptRecordView> productsView, ProductRowModel row) {
+        return productsView.stream().filter(row::isEquivalent).findFirst().get();
     }
 
-    protected void addRowToSoldProducts(ProductRowModel row) {
-        soldProductsModel.add(row);
-        soldProductsModel.sort(Comparator.comparing(ProductRowModel::getProductId));
-        soldProductsTable.setItems(soldProductsModel);
-        soldProductsTable.refresh();
+    protected Optional<ReceiptRecordView> findEquivalentViewOptional(Collection<ReceiptRecordView> productsView, ProductRowModel row) {
+        return productsView.stream().filter(row::isEquivalent).findFirst();
     }
 
     protected void getSoldProductsAndRefreshTable() {
-        soldProductsView = getSoldProducts();
+        soldProductViewList = getSoldProducts();
         refreshSoldProductsTable();
     }
 
@@ -269,9 +251,6 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     }
 
     protected TableController getTableController() {
-        if(tableView == null) {
-            return null;
-        }
         return tableConfigurationController.getTableController(tableView.getNumber());
     }
 }

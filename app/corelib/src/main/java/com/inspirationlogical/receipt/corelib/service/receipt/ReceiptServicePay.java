@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.corelib.service.receipt;
 
-import com.inspirationlogical.receipt.corelib.exception.IllegalReceiptStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Address;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
@@ -57,7 +56,6 @@ public class ReceiptServicePay {
             deleteReceipt(receipt);
             return;
         }
-        checkIfReceiptIsClosed(receipt);
         receipt.setStatus(ReceiptStatus.CLOSED);
         receipt.setClosureTime(now());
         setSumValues(receipt);
@@ -85,12 +83,6 @@ public class ReceiptServicePay {
         receipt.getOwner().getReceipts().remove(receipt);
         receipt.setOwner(null);
         receiptRepository.delete(receipt);
-    }
-
-    private void checkIfReceiptIsClosed(Receipt receipt) {
-        if(receipt.getStatus() == ReceiptStatus.CLOSED) {
-            throw new IllegalReceiptStateException("Close operation is illegal for a CLOSED receipt");
-        }
     }
 
     private double calculateDiscount(Receipt receipt, PaymentParams paymentParams) {
@@ -194,7 +186,7 @@ public class ReceiptServicePay {
                 .build();
     }
 
-    public void payPartial(Receipt receipt, double partialValue, PaymentParams paymentParams) {
+    void payPartial(Receipt receipt, double partialValue, PaymentParams paymentParams) {
         Receipt partialReceipt = buildReceipt(ReceiptType.SALE);
         cloneReceiptRecords(receipt, partialReceipt, partialValue);
         receipt.getRecords().forEach(record -> record.setSoldQuantity(Round.roundToTwoDecimals(record.getSoldQuantity() * (1 - partialValue))));
@@ -209,9 +201,6 @@ public class ReceiptServicePay {
             newRecord.setSoldQuantity(Round.roundToTwoDecimals(newRecord.getSoldQuantity() * partialValue));
             newRecord.setOwner(partialReceipt);
             partialReceipt.getRecords().add(newRecord);
-//            List<Product> products = GuardedTransaction.runNamedQuery(Product.GET_PRODUCT_BY_NAME, query ->
-//                    query.setParameter("longName", record.getProduct().getLongName()));
-//            newRecord.setProduct(products.get(0));
             newRecord.setProduct(record.getProduct());
         });
     }

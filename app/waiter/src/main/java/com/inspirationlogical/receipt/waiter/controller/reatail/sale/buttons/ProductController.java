@@ -8,10 +8,6 @@ public interface ProductController {
 
     Control getRoot();
 
-    void setView(ProductView view);
-
-    ProductView getView();
-
     void select();
 
     void onProductClicked(MouseEvent event);

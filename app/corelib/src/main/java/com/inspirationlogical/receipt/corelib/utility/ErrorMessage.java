@@ -7,9 +7,6 @@ import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import javafx.geometry.Pos;
 import javafx.util.Duration;
 
-/**
- * Created by Bálint on 2017.03.21..
- */
 public class ErrorMessage {
 
     private static void showErrorMessage(Object owner, String text, int seconds) {

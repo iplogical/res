@@ -41,9 +41,6 @@ public class TableServicePayImpl implements TableServicePay {
     public TableView payTable(int tableNumber, PaymentParams paymentParams) {
         Table table = tableRepository.findByNumber(tableNumber);
         Receipt openReceipt = receiptRepository.getOpenReceipt(table.getNumber());
-        if (openReceipt == null) {
-            throw new IllegalTableStateException("Pay table for a closed table. Table number: " + table.getNumber());
-        }
         receiptService.close(openReceipt, paymentParams);
         setDefaultTableParams(table);
         tableRepository.save(table);
@@ -52,7 +49,9 @@ public class TableServicePayImpl implements TableServicePay {
     }
 
     private void setDefaultTableParams(Table table) {
-        if(TableType.isVirtualTable(table.getType())) return;
+        if(TableType.isVirtualTable(table.getType())) {
+            return;
+        }
         table.setName("");
         table.setGuestCount(0);
         table.setNote("");
@@ -60,23 +59,14 @@ public class TableServicePayImpl implements TableServicePay {
 
     @Override
     public void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-        Receipt openReceipt = getOpenReceipt(tableView);
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         receiptService.paySelective(openReceipt, records, paymentParams);
         logger.info("A table was selectively paid: " + tableView + ", " + paymentParams);
     }
 
-    private Receipt getOpenReceipt(TableView tableView) {
-        Table table = tableRepository.findByNumber(tableView.getNumber());
-        Receipt openReceipt = receiptRepository.getOpenReceipt(table.getNumber());
-        if (openReceipt == null) {
-            throw new IllegalTableStateException("Pay selective for a closed table. Table number: " + table.getNumber());
-        }
-        return openReceipt;
-    }
-
     @Override
     public void payPartial(TableView tableView, double partialValue, PaymentParams paymentParams) {
-        Receipt openReceipt = getOpenReceipt(tableView);
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         receiptService.payPartial(openReceipt, partialValue, paymentParams);
         logger.info("A table was partially paid: partialValue:" + partialValue + ", " + tableView + ", " + paymentParams);
     }

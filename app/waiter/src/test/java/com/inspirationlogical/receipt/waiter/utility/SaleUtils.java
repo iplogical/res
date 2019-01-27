@@ -109,7 +109,7 @@ public class SaleUtils  extends AbstractUtils {
     }
 
     public static String intToForint(int price) {
-        return Integer.toString(price) + " Ft";
+        return price + " Ft";
     }
 
     public static void guestMinus() {

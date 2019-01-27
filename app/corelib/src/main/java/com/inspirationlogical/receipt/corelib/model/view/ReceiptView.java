@@ -60,15 +60,8 @@ public class ReceiptView {
             return Collections.emptyList();
         }
         return receipt.getRecords().stream()
-                .sorted(Comparator.comparing(this::getOldestCreated))
                 .map(ReceiptRecordView::new)
                 .collect(toList());
-    }
-
-    private LocalDateTime getOldestCreated(ReceiptRecord receiptRecord) {
-        List<ReceiptRecordCreated> sortedCreatedList =  receiptRecord.getCreatedList();
-        sortedCreatedList.sort(Comparator.comparing(ReceiptRecordCreated::getCreated));
-        return sortedCreatedList.get(0).getCreated();
     }
 
     private int initTotalPrice(Receipt receipt) {

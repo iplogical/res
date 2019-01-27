@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.corelib.service.receipt;
 
-import com.inspirationlogical.receipt.corelib.exception.AdHocProductNotFoundException;
-import com.inspirationlogical.receipt.corelib.exception.GameFeeProductNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
@@ -34,8 +32,6 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class ReceiptServiceSell {
-
-    private static final Logger logger = LoggerFactory.getLogger(ReceiptServiceSell.class);
 
     @Autowired
     private ReceiptRepository receiptRepository;
@@ -108,20 +104,12 @@ public class ReceiptServiceSell {
 
     void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean takeAway) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
-        Product adHocProduct = getAdHocProduct();
+        Product adHocProduct = productRepository.findFirstByType(ProductType.AD_HOC_PRODUCT);
         ReceiptRecord record = buildReceiptRecord(adHocProductParams, takeAway, adHocProduct);
         addCreatedListEntries(adHocProductParams.getQuantity(), record);
         record.setOwner(openReceipt);
         openReceipt.getRecords().add(record);
         receiptRepository.save(openReceipt);
-    }
-
-    private Product getAdHocProduct() {
-        List<Product> adHocProductList = productRepository.findAllByType(ProductType.AD_HOC_PRODUCT);
-        if (adHocProductList.isEmpty()) {
-            throw new AdHocProductNotFoundException();
-        }
-        return adHocProductList.get(0);
     }
 
     private ReceiptRecord buildReceiptRecord(AdHocProductParams adHocProductParams, boolean takeAway, Product adHocProduct) {
@@ -146,7 +134,7 @@ public class ReceiptServiceSell {
 
     void sellGameFee(TableView tableView, int quantity) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
-        Product gameFeeProduct = getGameFeeProduct();
+        Product gameFeeProduct = productRepository.findFirstByType(ProductType.GAME_FEE_PRODUCT);
         List<ReceiptRecordCreated>  records = receiptRecordCreatedRepository.findRecentByTimestamp(gameFeeProduct.getLongName(), now().minusSeconds(5));
         if(records.size() > 0) {
             ReceiptRecord record = records.get(0).getOwner();
@@ -160,14 +148,6 @@ public class ReceiptServiceSell {
         record.setOwner(openReceipt);
         openReceipt.getRecords().add(record);
         receiptRepository.save(openReceipt);
-    }
-
-    private Product getGameFeeProduct() {
-        List<Product> gameFeeProductList = productRepository.findAllByType(ProductType.GAME_FEE_PRODUCT);
-        if(gameFeeProductList.isEmpty()) {
-            throw new GameFeeProductNotFoundException();
-        }
-        return gameFeeProductList.get(0);
     }
 
     private ReceiptRecord buildReceiptRecord(int quantity, Product gameFeeProduct) {

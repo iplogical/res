@@ -40,14 +40,6 @@ public @Data class ProductRowModel {
                 valueOf(receiptRecordView.getDiscountPercent()).equals(productDiscount) &&
                 valueOf(receiptRecordView.getVat()).equals(productVat);
     }
-
-    public static int getTotalPrice(ObservableList<ProductRowModel> paidProductsModel) {
-        int totalPrice = 0;
-        for(ProductRowModel model : paidProductsModel) {
-            totalPrice += Integer.valueOf(model.getProductTotalPrice());
-        }
-        return totalPrice;
-    }
     
     public ProductRowModel(ReceiptRecordView receiptRecordView, LocalDateTime orderDeliveredTime) {
         this.clickTimes = receiptRecordView.getCreated();
@@ -60,38 +52,6 @@ public @Data class ProductRowModel {
         this.productDiscount = valueOf(receiptRecordView.getDiscountPercent());
         this.productVat = valueOf(receiptRecordView.getVat());
         markDiscountedProduct();
-    }
-
-    public ProductRowModel(ProductRowModel other) {
-        this.clickTimes = other.clickTimes;
-        this.productName = other.productName;
-        this.orderDeliveredTime = other.orderDeliveredTime;
-        this.productQuantity = other.productQuantity;
-        this.productUnitPrice = other.productUnitPrice;
-        this.productTotalPrice = other.productTotalPrice;
-        this.productId = other.productId;
-        this.productDiscount = other.productDiscount;
-        this.productVat = other.productVat;
-        markDiscountedProduct();
-    }
-
-    public boolean decreaseProductQuantity(double amount) {
-        double quantity = Double.valueOf(productQuantity.split(" ")[0]);
-        if(quantity <= amount) {
-            return true;
-        }
-        productQuantity = valueOf(roundToTwoDecimals(quantity - amount));
-        int totalPrice = (int)(Integer.valueOf(productUnitPrice) * (quantity - amount));
-        productTotalPrice = valueOf(totalPrice);
-        return false;
-    }
-
-    public void increaseProductQuantity(double amount) {
-        double quantity = Double.valueOf(productQuantity.split(" ")[0]);
-        long recent = getRecentClickCount();
-        int totalPrice = (int)(Integer.valueOf(productUnitPrice) * (quantity + amount));
-        productQuantity = roundToTwoDecimals(quantity + amount) + " (" +recent + ")";
-        productTotalPrice = valueOf(totalPrice);
     }
 
     public String getProductQuantity() {

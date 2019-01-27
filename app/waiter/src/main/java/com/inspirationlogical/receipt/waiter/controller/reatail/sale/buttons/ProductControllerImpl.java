@@ -37,9 +37,7 @@ public class ProductControllerImpl implements ProductController {
     @Autowired
     private ProductsAndCategoriesController productsAndCategoriesController;
 
-    private  @Setter
-    @Getter
-    ProductView view;
+    private ProductView view;
 
     @PostConstruct
     private void init() {

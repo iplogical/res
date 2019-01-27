@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static java.util.stream.Collectors.toList;
@@ -150,7 +151,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private boolean isSoldProductsEmpty() {
-        return soldProductsView.size() == 0;
+        return soldProductViewList.size() == 0;
     }
 
     private boolean isPaidProductsEmpty() {
@@ -179,14 +180,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void refreshPaidProductsTable() {
-        updatePaidTotalPrice();
-        updateSoldTotalPrice();
+        paidProductRowList = convertReceiptRecordViewsToModel(paidProductViewList);
         paidProductsTable.setItems(paidProductRowList);
         paidProductsTable.refresh();
-    }
-
-    private void updatePaidTotalPrice() {
-        paidTotalPrice.setText(ProductRowModel.getTotalPrice(paidProductRowList) + " Ft");
+        updateSoldTotalPrice();
+        paidTotalPrice.setText(getTotalPrice(paidProductRowList) + " Ft");
     }
 
     @Override
@@ -203,9 +201,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         try {
             logger.info("Handling selective payment with paymentParams: " + paymentParams.toString());
             tableServicePay.payPartial(tableView, getPartialValue(), paymentParams);
-            int totalPrice = ProductRowModel.getTotalPrice(soldProductsModel);
+            int totalPrice = getTotalPrice(soldProductRowList);
             getSoldProductsAndRefreshTable();
-            int paidPartialPrice = totalPrice - ProductRowModel.getTotalPrice(soldProductsModel);
+            int paidPartialPrice = totalPrice - getTotalPrice(soldProductRowList);
             previousPartialPrice.setText(applyDiscountOnTotalPrice(paidPartialPrice) + " Ft");
         } catch (NumberFormatException e) {
             ErrorMessage.showErrorMessage(getRootNode(), WaiterResources.WAITER.getString("PaymentView.PartialPayNumberErrorRange"));
@@ -236,41 +234,78 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    protected void soldProductsRowClickHandler(ProductRowModel row) {
+    protected void onSoldProductsRowClick(ProductRowModel row) {
         logger.info("The sold products table was clicked on the row: " + row.toString() + ", in payment view state: " + paymentViewState.toString());
         disableSoldProductsTableRowClickHandler();
         if (paymentViewState.isSelectivePayment()) {
-            ReceiptRecordView clickedRecord = removeRowFromSoldProducts(row);
-            if (clickedRecord == null) return;
-            addRowToPaidProducts(row, clickedRecord);
+            onSelectivePaymentRowClick(row);
         } else if (paymentViewState.isSinglePayment()) {
-            singlePaymentRowClickHandler(row);
+            onSinglePaymentRowClick(row);
         } else if (paymentViewState.isPartialPayment()) {
             if (isPartiallyPayable(row)) {
-                partialPaymentRowClickHandler(row);
+                onPartialPaymentRowClick(row);
             } else {
                 ErrorMessage.showErrorMessage(rootPayment,
                         WaiterResources.WAITER.getString("PaymentView.ProductNotPartiallyPayable") + row.getProductName());
             }
         }
+        refreshSoldProductsTable();
+        refreshPaidProductsTable();
         enableSoldProductsTableRowClickHandler();
     }
 
-    private void singlePaymentRowClickHandler(ProductRowModel row) {
+    private void onSelectivePaymentRowClick(ProductRowModel row) {
+        ReceiptRecordView clickedRecord = findMatchingSoldProduct(row);
+        soldProductViewList.remove(clickedRecord);
+        paidProductViewList.add(clickedRecord);
+    }
+
+    private void onSinglePaymentRowClick(ProductRowModel row) {
         double amount = Math.min(Double.valueOf(row.getProductQuantity()), 1);
         updateSoldAndPaidProducts(row, amount);
     }
 
     private void updateSoldAndPaidProducts(ProductRowModel row, double amount) {
-        ReceiptRecordView clickedRecord = decreaseRowInSoldProducts(row, amount);
-        if (clickedRecord == null) {
-            return;
-        }
+        ReceiptRecordView clickedRecord = findMatchingSoldProduct(row);
         increaseRowInPaidProducts(row, clickedRecord, amount);
-        receiptRecordService.decreaseSoldQuantity(clickedRecord, amount);
+        decreaseRowInSoldProducts(amount, clickedRecord);
     }
 
-    private void partialPaymentRowClickHandler(ProductRowModel row) {
+    private void decreaseRowInSoldProducts(double amount, ReceiptRecordView clickedRecord) {
+        ReceiptRecordView decreasedRecord = receiptRecordService.decreaseSoldQuantity(clickedRecord, amount);
+        soldProductViewList.remove(clickedRecord);
+        if(decreasedRecord != null) {
+            soldProductViewList.add(decreasedRecord);
+        }
+    }
+
+    private void increaseRowInPaidProducts(ProductRowModel row, ReceiptRecordView toAdd, double amount) {
+        Optional<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentViewOptional(paidProductViewList, row);
+        if (!equivalentReceiptRecordView.isPresent()) {
+            cloneReceiptRecord(row, toAdd, amount);
+        } else {
+            increaseReceiptRecord(amount, equivalentReceiptRecordView.get());
+        }
+    }
+
+    private void cloneReceiptRecord(ProductRowModel row, ReceiptRecordView toAdd, double amount) {
+        ReceiptRecordView newRecord = receiptRecordService.cloneReceiptRecord(toAdd, amount);
+        paidProductViewList.add(newRecord);
+    }
+
+    private void increaseReceiptRecord(double amount, ReceiptRecordView equivalentReceiptRecordView) {
+        ReceiptRecordView increasedRecord =
+        receiptRecordService.increaseSoldQuantity(equivalentReceiptRecordView, amount, false);
+        paidProductViewList.remove(equivalentReceiptRecordView);
+        paidProductViewList.add(increasedRecord);
+    }
+
+    private boolean isPartiallyPayable(ProductRowModel row) {
+        ReceiptRecordView matchingReceiptRecordView = findMatchingSoldProduct(row);
+        return matchingReceiptRecordView.isPartiallyPayable();
+    }
+
+    private void onPartialPaymentRowClick(ProductRowModel row) {
         try {
             double amount = Double.valueOf(partialPaymentValue.getText());
             if(amount > Double.parseDouble(row.getProductQuantity())) {
@@ -285,60 +320,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         }
     }
 
-    private void addRowToPaidProducts(final ProductRowModel row, ReceiptRecordView toAdd) {
-        paidProductViewList.add(toAdd);
-        paidProductRowList.add(row);
-        refreshPaidProductsTable();
-    }
-
-    private boolean isPartiallyPayable(ProductRowModel row) {
-        List<ReceiptRecordView> matchingReceiptRecordView = findMatchingView(soldProductsView, row);
-        return matchingReceiptRecordView.get(0).isPartiallyPayable();
-    }
-
-    private void increaseRowInPaidProducts(ProductRowModel row, ReceiptRecordView toAdd, double amount) {
-        List<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentView(paidProductViewList, row);
-        if (equivalentReceiptRecordView.size() == 0) {
-            cloneReceiptRecordAndAddToPaidProducts(row, toAdd, amount);
-        } else {
-            increaseReceiptRecordAndRowQuantity(amount, equivalentReceiptRecordView);
-        }
-        refreshPaidProductsTable();
-    }
-
-    private void cloneReceiptRecordAndAddToPaidProducts(ProductRowModel row, ReceiptRecordView toAdd, double amount) {
-        ReceiptRecordView newRecord = receiptRecordService.cloneReceiptRecord(toAdd, amount);
-        paidProductViewList.add(newRecord);
-        paidProductRowList.add(createNewRow(row, newRecord, amount));
-    }
-
-    private void increaseReceiptRecordAndRowQuantity(double amount, List<ReceiptRecordView> equivalentReceiptRecordView) {
-        ReceiptRecordView increasedRecord =
-                receiptRecordService.increaseSoldQuantity(equivalentReceiptRecordView.get(0), amount, false);
-        List<ProductRowModel> matchingRows =
-                paidProductRowList.stream().filter(thisRow -> thisRow.isEqual(equivalentReceiptRecordView.get(0)))
-                        .collect(toList());
-        increaseRowQuantity(matchingRows.get(0), amount);
-        paidProductViewList.remove(equivalentReceiptRecordView.get(0));
-        paidProductViewList.add(increasedRecord);
-    }
-
-    private void increaseRowQuantity(ProductRowModel row, double amount) {
-        row.increaseProductQuantity(amount);
-        paidProductsTable.refresh();
-    }
-
-    private ProductRowModel createNewRow(ProductRowModel row, ReceiptRecordView newRecord, double amount) {
-        ProductRowModel newRow = new ProductRowModel(row);
-        newRow.setProductQuantity(String.valueOf(amount));
-        newRow.setProductTotalPrice(String.valueOf((int) (Integer.valueOf(newRow.getProductUnitPrice()) * amount)));
-        newRow.setProductId(newRecord.getId());
-        return newRow;
-    }
-
-    void paidProductsRowClickHandler(ProductRowModel row) {
+    void onPaidProductsRowClicked(ProductRowModel row) {
         logger.info("The paid products table was clicked for row: " + row);
-        List<ProductRowModel> rowInSoldProducts = soldProductsModel.stream().filter(model -> model.getProductName().equals(row.getProductName()))
+        List<ProductRowModel> rowInSoldProducts = soldProductRowList.stream().filter(model -> model.getProductName().equals(row.getProductName()))
                 .collect(toList());
         if (rowInSoldProducts.isEmpty()) {
             cloneReceiptRecordAndAddToSoldProducts(row);
@@ -354,26 +338,18 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void decreaseRowInPaidProducts(ProductRowModel row, double amount) {
-        List<ReceiptRecordView> equivalentReceiptRecordView = findEquivalentView(paidProductViewList, row);
-        ReceiptRecordView decreasedRecord = receiptRecordService.decreaseSoldQuantity(equivalentReceiptRecordView.get(0), amount);
-        removeRowFromPaidProducts(row);
+        ReceiptRecordView equivalentReceiptRecordView = findEquivalentView(paidProductViewList, row);
+        ReceiptRecordView decreasedRecord = receiptRecordService.decreaseSoldQuantity(equivalentReceiptRecordView, amount);
+        paidProductViewList.remove(equivalentReceiptRecordView);
         if (decreasedRecord != null) {
-            addRowToPaidProducts(new ProductRowModel(decreasedRecord, getOrderDeliveredTime()), decreasedRecord);
+            paidProductViewList.add(decreasedRecord);
         }
     }
 
-    private void removeRowFromPaidProducts(final ProductRowModel row) {
-        paidProductRowList.remove(row);
-        paidProductsTable.setItems(paidProductRowList);
-        List<ReceiptRecordView> matching = findMatchingView(paidProductViewList, row);
-        paidProductViewList.remove(matching.get(0));
-    }
-
     private void cloneReceiptRecordAndAddToSoldProducts(ProductRowModel row) {
-        ReceiptRecordView recordInPaidProducts = findEquivalentView(paidProductViewList, row).get(0);
+        ReceiptRecordView recordInPaidProducts = findEquivalentView(paidProductViewList, row);
         ReceiptRecordView recordInSoldProducts = receiptRecordService.cloneReceiptRecord(recordInPaidProducts, 1);
-        soldProductsView.add(recordInSoldProducts);
-        addRowToSoldProducts(new ProductRowModel(recordInSoldProducts, getOrderDeliveredTime()));
+        soldProductViewList.add(recordInSoldProducts);
     }
 
     @Override
@@ -431,13 +407,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void updateSoldProductsViewWithGameFee(ReceiptRecordView gameFee) {
-        List<ReceiptRecordView> matchingGameFeeList = findMatchingView(soldProductsView, new ProductRowModel(gameFee, getOrderDeliveredTime()));
-        if (matchingGameFeeList.isEmpty()) {
-            soldProductsView.add(gameFee);
-        } else {
-            ReceiptRecordView matchingGameFee = matchingGameFeeList.get(0);
-            soldProductsView.remove(matchingGameFee);
-            soldProductsView.add(gameFee);
+        Optional<ReceiptRecordView> matchingGameFeeOptional = findMatchingSoldProductOptional(new ProductRowModel(gameFee, getOrderDeliveredTime()));
+        if (matchingGameFeeOptional.isPresent()) {
+            ReceiptRecordView matchingGameFee = matchingGameFeeOptional.get();
+            soldProductViewList.remove(matchingGameFee);
         }
+        soldProductViewList.add(gameFee);
     }
 }
