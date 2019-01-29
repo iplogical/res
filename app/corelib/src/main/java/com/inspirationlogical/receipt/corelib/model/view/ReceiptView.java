@@ -68,4 +68,8 @@ public class ReceiptView {
         return receipt.getRecords().stream()
                 .mapToInt(record -> (int)(record.getSalePrice() * record.getSoldQuantity())).sum();
     }
+
+    public void updateTotalPrice() {
+        totalPrice = soldProducts.stream().mapToInt(ReceiptRecordView::getTotalPrice).sum();
+    }
 }

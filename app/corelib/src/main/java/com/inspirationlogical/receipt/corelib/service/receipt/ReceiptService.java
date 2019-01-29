@@ -23,7 +23,7 @@ public interface ReceiptService {
         return (100D - discountPercent) / 100;
     }
 
-    void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift);
+    void sellProduct(TableView tableView, ProductView productView, boolean isTakeAway, boolean isGift);
 
     void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean takeAway);
 

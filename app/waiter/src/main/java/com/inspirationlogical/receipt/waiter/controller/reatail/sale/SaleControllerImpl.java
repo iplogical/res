@@ -123,7 +123,7 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     @Override
     public void sellProduct(ProductView productView) {
-        receiptService.sellProduct(tableView, productView, 1, saleViewState.isTakeAway(), saleViewState.isGift());
+        receiptService.sellProduct(tableView, productView, saleViewState.isTakeAway(), saleViewState.isGift());
         setOrderDelivered(false);
         getSoldProductsAndRefreshTable();
     }

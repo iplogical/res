@@ -16,8 +16,6 @@ import com.inspirationlogical.receipt.corelib.repository.ReceiptRecordRepository
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.service.product_category.ProductCategoryService;
 import com.inspirationlogical.receipt.corelib.service.vat.VATService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import static com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService.getDiscountMultiplier;
 import static java.time.LocalDateTime.now;
@@ -37,12 +36,6 @@ public class ReceiptServiceSell {
     private ReceiptRepository receiptRepository;
 
     @Autowired
-    private ReceiptRecordRepository receiptRecordRepository;
-
-    @Autowired
-    private ReceiptRecordCreatedRepository receiptRecordCreatedRepository;
-
-    @Autowired
     private ProductRepository productRepository;
 
     @Autowired
@@ -51,16 +44,18 @@ public class ReceiptServiceSell {
     @Autowired
     private VATService vatService;
 
-    void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {
+    void sellProduct(TableView tableView, ProductView productView, boolean isTakeAway, boolean isGift) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         Product product = productRepository.findById(productView.getId());
-        List<ReceiptRecordCreated>  recordsCreated =
-                receiptRecordCreatedRepository.findRecentByTimestamp(productView.getLongName(), now().minusSeconds(5));
-        if(recordsCreated.size() > 0) {
-            increaseReceiptRecordSoldQuantity(product, recordsCreated.get(0).getOwner());
-            return;
+        Optional<ReceiptRecord> optionalReceiptRecord = openReceipt.getRecords().stream()
+                .filter(receiptRecord -> receiptRecord.getName().equals(product.getLongName()))
+                .filter(receiptRecord -> (receiptRecord.getDiscountPercent() == 100) == isGift)
+                .findAny();
+        if(optionalReceiptRecord.isPresent()) {
+            increaseReceiptRecordSoldQuantity(product, optionalReceiptRecord.get());
+        } else {
+            addNewReceiptRecord(openReceipt, product, isTakeAway, isGift);
         }
-        addNewReceiptRecord(openReceipt, product, amount, isTakeAway, isGift);
         receiptRepository.save(openReceipt);
     }
 
@@ -80,21 +75,21 @@ public class ReceiptServiceSell {
         receiptRecord.setSalePrice((int)Math.round(receiptRecord.getOriginalSalePrice() * getDiscountMultiplier(receiptRecord.getDiscountPercent())));
     }
 
-    private void addNewReceiptRecord(Receipt receipt, Product product, int amount, boolean isTakeAway, boolean isGift) {
-        ReceiptRecord record = buildReceiptRecord(product, amount, isTakeAway);
+    private void addNewReceiptRecord(Receipt receipt, Product product, boolean takeAway, boolean gift) {
+        ReceiptRecord record = buildReceiptRecord(product, takeAway);
         record.getCreatedList().add(buildReceiptRecordCreated(record));
-        record.setDiscountPercent(isGift ? 100 : productCategoryService.getDiscount(product.getCategory(), record));
+        record.setDiscountPercent(gift ? 100 : productCategoryService.getDiscount(product.getCategory(), record));
         applyDiscountOnRecordSalePrices(record);
         record.setOwner(receipt);
         receipt.getRecords().add(record);
     }
 
-    private ReceiptRecord buildReceiptRecord(Product product, int amount, boolean isTakeAway) {
+    private ReceiptRecord buildReceiptRecord(Product product, boolean isTakeAway) {
         return ReceiptRecord.builder()
                 .product(product)
                 .type(isTakeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE)
                 .name(product.getLongName())
-                .soldQuantity(amount)
+                .soldQuantity(1)
                 .purchasePrice(product.getPurchasePrice())
                 .salePrice(product.getSalePrice())
                 .VAT(vatService.getVatByName(isTakeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE).getVAT())
@@ -105,14 +100,14 @@ public class ReceiptServiceSell {
     void sellAdHocProduct(TableView tableView, AdHocProductParams adHocProductParams, boolean takeAway) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         Product adHocProduct = productRepository.findFirstByType(ProductType.AD_HOC_PRODUCT);
-        ReceiptRecord record = buildReceiptRecord(adHocProductParams, takeAway, adHocProduct);
+        ReceiptRecord record = buildAdHocReceiptRecord(adHocProductParams, takeAway, adHocProduct);
         addCreatedListEntries(adHocProductParams.getQuantity(), record);
         record.setOwner(openReceipt);
         openReceipt.getRecords().add(record);
         receiptRepository.save(openReceipt);
     }
 
-    private ReceiptRecord buildReceiptRecord(AdHocProductParams adHocProductParams, boolean takeAway, Product adHocProduct) {
+    private ReceiptRecord buildAdHocReceiptRecord(AdHocProductParams adHocProductParams, boolean takeAway, Product adHocProduct) {
         return ReceiptRecord.builder()
                 .product(adHocProduct)
                 .type(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE)
@@ -135,22 +130,22 @@ public class ReceiptServiceSell {
     void sellGameFee(TableView tableView, int quantity) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         Product gameFeeProduct = productRepository.findFirstByType(ProductType.GAME_FEE_PRODUCT);
-        List<ReceiptRecordCreated>  records = receiptRecordCreatedRepository.findRecentByTimestamp(gameFeeProduct.getLongName(), now().minusSeconds(5));
-        if(records.size() > 0) {
-            ReceiptRecord record = records.get(0).getOwner();
-            record.setSoldQuantity(record.getSoldQuantity() + 1);
-            record.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(record).build());
-            receiptRecordRepository.save(record);
-            return;
+        Optional<ReceiptRecord> optionalGameFeeRecord = openReceipt.getRecords().stream()
+                .filter(receiptRecord -> receiptRecord.getName().equals(gameFeeProduct.getLongName())).findAny();
+        if(optionalGameFeeRecord.isPresent()) {
+            ReceiptRecord gameFeeRecord = optionalGameFeeRecord.get();
+            gameFeeRecord.setSoldQuantity(gameFeeRecord.getSoldQuantity() + 1);
+            gameFeeRecord.getCreatedList().add(buildReceiptRecordCreated(gameFeeRecord));
+        } else {
+            ReceiptRecord record = buildGameFeeReceiptRecord(quantity, gameFeeProduct);
+            addCreatedListEntries(quantity, record);
+            record.setOwner(openReceipt);
+            openReceipt.getRecords().add(record);
         }
-        ReceiptRecord record = buildReceiptRecord(quantity, gameFeeProduct);
-        addCreatedListEntries(quantity, record);
-        record.setOwner(openReceipt);
-        openReceipt.getRecords().add(record);
         receiptRepository.save(openReceipt);
     }
 
-    private ReceiptRecord buildReceiptRecord(int quantity, Product gameFeeProduct) {
+    private ReceiptRecord buildGameFeeReceiptRecord(int quantity, Product gameFeeProduct) {
         return ReceiptRecord.builder()
                 .product(gameFeeProduct)
                 .type(ReceiptRecordType.HERE)

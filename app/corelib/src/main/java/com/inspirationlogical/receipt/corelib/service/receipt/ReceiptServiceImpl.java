@@ -8,7 +8,6 @@ import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
-import com.inspirationlogical.receipt.corelib.service.receipt_record.ReceiptRecordServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +51,9 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public void sellProduct(TableView tableView, ProductView productView, int amount, boolean isTakeAway, boolean isGift) {
-        receiptServiceSell.sellProduct(tableView, productView, amount, isTakeAway, isGift);
-        logger.info("A product was sold: quantity: " + amount + ", takeAway: " + isTakeAway + " isGift: " + isGift + " " + productView + " ," + tableView);
+    public void sellProduct(TableView tableView, ProductView productView, boolean isTakeAway, boolean isGift) {
+        receiptServiceSell.sellProduct(tableView, productView, isTakeAway, isGift);
+        logger.info("A product was sold: takeAway: " + isTakeAway + " isGift: " + isGift + " " + productView + " ," + tableView);
     }
 
     @Override

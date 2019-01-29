@@ -413,5 +413,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             soldProductViewList.remove(matchingGameFee);
         }
         soldProductViewList.add(gameFee);
+        receiptView.updateTotalPrice();
     }
 }

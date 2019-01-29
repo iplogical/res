@@ -35,17 +35,6 @@ public class SaleControllerTest extends SaleViewTest {
     }
 
     @Test
-    public void testSellMultipleGiftProductsWithin5Seconds() {
-        clickOnGiftProduct();
-        selectCategory(AGGREGATE_ONE);
-        sellProduct(PRODUCT_FIVE);
-        clickOnGiftProduct();
-        sellProduct(PRODUCT_FIVE);
-        assertSoldProduct(1, PRODUCT_FIVE_LONG + " *", 2, 0, 0);
-        selectiveCancellation(PRODUCT_FIVE_LONG + " *");
-    }
-
-    @Test
     public void testIncreaseGiftProduct() {
         clickOnGiftProduct();
         selectCategory(AGGREGATE_ONE);
@@ -62,7 +51,7 @@ public class SaleControllerTest extends SaleViewTest {
         clickOnGiftProduct();
         selectCategory(AGGREGATE_ONE);
         sellProduct(PRODUCT_FIVE);
-        clickButtonThenWait(GIFT_PRODUCT, 5100);
+        clickButtonThenWait(GIFT_PRODUCT, 200);
         sellProduct(PRODUCT_FIVE);
         assertSoldProduct(1, PRODUCT_FIVE_LONG + " *", 1, 0, 0);
         assertSoldProductFive(2, 1);
@@ -119,7 +108,7 @@ public class SaleControllerTest extends SaleViewTest {
     }
 
     @Test
-    public void testClickOnGuestPlusThenGuestMinus() {
+    public void testClickOnGuestPlusThenGuestMinusNegativeNotAllowed() {
         guestPlus();
         assertEquals(TABLE_NUMBER + " (" + (Integer.valueOf(TABLE_GUESTS) + 1) + "/" + TABLE_CAPACITY + ")", ((Label)find(SALE_TABLE_NUMBER)).getText());
         guestPlus();
@@ -128,10 +117,6 @@ public class SaleControllerTest extends SaleViewTest {
         assertEquals(TABLE_NUMBER + " (" + (Integer.valueOf(TABLE_GUESTS) + 1) + "/" + TABLE_CAPACITY + ")", ((Label)find(SALE_TABLE_NUMBER)).getText());
         guestMinus();
         assertEquals(TABLE_NUMBER + " (" + TABLE_GUESTS + "/" + TABLE_CAPACITY + ")", ((Label)find(SALE_TABLE_NUMBER)).getText());
-    }
-
-    @Test
-    public void testClickOnGuestMinusNegativeNotAllowed() {
         guestMinus();
         guestMinus();
         guestMinus();
