@@ -134,7 +134,7 @@ public class ReceiptServiceSell {
                 .filter(receiptRecord -> receiptRecord.getName().equals(gameFeeProduct.getLongName())).findAny();
         if(optionalGameFeeRecord.isPresent()) {
             ReceiptRecord gameFeeRecord = optionalGameFeeRecord.get();
-            gameFeeRecord.setSoldQuantity(gameFeeRecord.getSoldQuantity() + 1);
+            gameFeeRecord.setSoldQuantity(gameFeeRecord.getSoldQuantity() + quantity);
             gameFeeRecord.getCreatedList().add(buildReceiptRecordCreated(gameFeeRecord));
         } else {
             ReceiptRecord record = buildGameFeeReceiptRecord(quantity, gameFeeProduct);

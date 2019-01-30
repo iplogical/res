@@ -348,23 +348,23 @@ public class PaymentControllerTest  extends TestFXBase {
         assertPaidTotalPrice(1320);
 
         putBackToSold(1);
-        assertSoldProductFive(2, 1);
+        assertSoldProductFive(1, 1);
         assertSoldTotalPrice(6240);
         assertPaidProductFive(1, 2);
         assertPaidTotalPrice(880);
 
         putBackToSold(1);
-        assertSoldProductFive(2, 2);
+        assertSoldProductFive(1, 2);
         assertSoldTotalPrice(6680);
         assertPaidProductFive(1, 1);
         assertPaidTotalPrice(440);
         putBackToSold(1);
-        assertSoldProductFive(2, 3);
+        assertSoldProductFive(1, 3);
         assertSoldTotalPrice(7120);
         assertNoPaidProduct();
         assertPaidTotalPrice(0);
 
-        paySelective(2);
+        paySelective(1);
         assertSoldProductThree(1, 2);
         assertNumberOfSoldProducts(1);
         assertSoldTotalPrice(5800);
@@ -414,11 +414,11 @@ public class PaymentControllerTest  extends TestFXBase {
         autoGameFee();
         assertNumberOfSoldProducts(3);
         assertSoldProduct(3, GAME_FEE, 1, 300, 300);
-        sleep(5100);
+        sleep(2000);
         guestPlus();    //5
         autoGameFee();
-        assertNumberOfSoldProducts(4);
-        assertSoldProduct(4, GAME_FEE, 2, 300, 600);
+        assertNumberOfSoldProducts(3);
+        assertSoldProduct(3, GAME_FEE, 3, 300, 900);
 
         clickButtonThenWait(TO_SALE, 500);
         selectiveCancellation(GAME_FEE);

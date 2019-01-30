@@ -43,18 +43,13 @@ public class AdHocProductFormControllerImpl implements AdHocProductFormControlle
     @Autowired
     private SaleController saleController;
 
-    AdHocProductParams adHocProductParams;
+    private AdHocProductParams adHocProductParams;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addFormDragAndDrop(root);
         adHocProductQuantity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         adHocProductSalePrice.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
-    }
-
-    @Override
-    public void loadAdHocProductForm(SaleController saleController) {
-        this.saleController = saleController;
     }
 
     @FXML

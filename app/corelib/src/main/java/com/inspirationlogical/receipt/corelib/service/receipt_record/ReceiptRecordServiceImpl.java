@@ -47,7 +47,9 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
         if(isSale) {
             receiptRecord.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(receiptRecord).build());
         } else {
-            receiptRecord.getCreatedList().add(ReceiptRecordCreated.builder().created(now().minusMinutes(25)).owner(receiptRecord).build());
+            receiptRecord.getCreatedList().add(ReceiptRecordCreated.builder()
+                    .created(receiptRecordView.getCreated().get(0))
+                    .owner(receiptRecord).build());
         }
         receiptRecordRepository.save(receiptRecord);
         return new ReceiptRecordView(receiptRecord);
@@ -90,7 +92,9 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
     public ReceiptRecordView cloneReceiptRecord(ReceiptRecordView receiptRecordView, double quantity) {
         ReceiptRecord receiptRecord = receiptRecordRepository.getOne(receiptRecordView.getId());
         ReceiptRecord cloneRecord = buildCloneRecord(quantity, receiptRecord);
-        cloneRecord.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(cloneRecord).build());
+        cloneRecord.getCreatedList().add(ReceiptRecordCreated.builder()
+                .created(receiptRecord.getCreatedList().get(0).getCreated())
+                .owner(cloneRecord).build());
         receiptRecord.getOwner().getRecords().add(cloneRecord);
         receiptRecordRepository.save(cloneRecord);
         logger.info("A receipt record was cloned: quantity:" + quantity + ", " + receiptRecordView);
