@@ -1,23 +1,20 @@
 package com.inspirationlogical.receipt.corelib.service.receipt;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Address;
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
-import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.entity.*;
+import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.ReceiptPrintModel;
 import com.inspirationlogical.receipt.corelib.params.ReceiptRecordPrintModel;
 import com.inspirationlogical.receipt.corelib.printing.ReceiptPrinter;
+import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import com.inspirationlogical.receipt.corelib.utility.Round;
+import com.inspirationlogical.receipt.corelib.utility.RoundingLogic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +37,9 @@ public class ReceiptServicePay {
     private ReceiptRepository receiptRepository;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
     private VATService vatService;
 
     @Autowired
@@ -58,6 +58,9 @@ public class ReceiptServicePay {
         }
         receipt.setStatus(ReceiptStatus.CLOSED);
         receipt.setClosureTime(now());
+        if(paymentParams.isServiceFee()) {
+            addServiceFee(receipt);
+        }
         setSumValues(receipt);
         receipt.setDiscountPercent(calculateDiscount(receipt, paymentParams));
         receipt.setUserCode(paymentParams.getUserCode());
@@ -69,14 +72,6 @@ public class ReceiptServicePay {
         });
         printReceipt(receipt, paymentParams.isDoublePrint());
         receiptRepository.save(receipt);
-    }
-
-    private void printReceipt(Receipt receipt, boolean doublePrint) {
-        ReceiptPrintModel receiptPrintModel = buildReceiptPrintModel(receipt);
-        receiptPrinter.printReceipt(receiptPrintModel);
-        if(doublePrint) {
-            receiptPrinter.printReceipt(receiptPrintModel);
-        }
     }
 
     private void deleteReceipt(Receipt receipt) {
@@ -103,6 +98,45 @@ public class ReceiptServicePay {
         receipt.setSumSaleNetPrice((int)(receipt.getSumSaleNetPrice() * getDiscountMultiplier(receipt.getDiscountPercent())));
     }
 
+    private void addServiceFee(Receipt receipt) {
+        int serviceFeeTotal = calculateTotalServiceFee(receipt);
+        ReceiptRecord serviceFeeRecord = buildReceiptRecord(serviceFeeTotal);
+        serviceFeeRecord.setOwner(receipt);
+        receipt.getRecords().add(serviceFeeRecord);
+    }
+
+    private ReceiptRecord buildReceiptRecord(int serviceFeeTotal) {
+        Product serviceFeeProduct = productRepository.findFirstByType(ProductType.SERVICE_FEE_PRODUCT);
+        return ReceiptRecord.builder()
+                .product(serviceFeeProduct)
+                .type(ReceiptRecordType.HERE)
+                .name(serviceFeeProduct.getLongName())
+                .soldQuantity(1)
+                .purchasePrice(0)
+                .salePrice(serviceFeeTotal)
+                .VAT(vatService.getVatByName(ReceiptRecordType.HERE).getVAT())
+                .createdList(new ArrayList<>())
+                .build();
+    }
+
+    private int calculateTotalServiceFee(Receipt receipt) {
+        double serviceFeeBase = receipt.getRecords().stream()
+                .filter(receiptRecord -> !receiptRecord.getProduct().getType().equals(ProductType.GAME_FEE_PRODUCT))
+                .filter(receiptRecord -> !receiptRecord.getProduct().getType().equals(ProductType.AD_HOC_PRODUCT))
+                .mapToDouble(receiptRecord -> receiptRecord.getSalePrice() * receiptRecord.getSoldQuantity())
+                .sum();
+        double serviceFeePercent = receipt.getOwner().getOwner().getServiceFee();
+        return (int) Math.round(serviceFeeBase * (serviceFeePercent / 100D));
+    }
+
+    private void printReceipt(Receipt receipt, boolean doublePrint) {
+        ReceiptPrintModel receiptPrintModel = buildReceiptPrintModel(receipt);
+        receiptPrinter.printReceipt(receiptPrintModel);
+        if(doublePrint) {
+            receiptPrinter.printReceipt(receiptPrintModel);
+        }
+    }
+
     private  ReceiptPrintModel buildReceiptPrintModel(Receipt receipt) {
         Restaurant restaurant = receipt.getOwner().getOwner();
         ReceiptPrintModel receiptPrintModel = buildReceiptPrintModel(receipt, restaurant);
@@ -123,7 +157,7 @@ public class ReceiptServicePay {
                 .totalPrice(receipt.getSumSaleGrossOriginalPrice())
                 .totalDiscount(receipt.getSumSaleGrossOriginalPrice() - receipt.getSumSaleGrossPrice())
                 .discountedTotalPrice(receipt.getSumSaleGrossPrice())
-                .roundedTotalPrice(receipt.getSumSaleGrossPrice())
+                .roundedTotalPrice(calculateRoundedTotalPrice(receipt))
                 .paymentMethod(receipt.getPaymentMethod().toPrintString())
                 .receiptDisclaimer(restaurant.getReceiptDisclaimer())
                 .receiptNote(restaurant.getReceiptNote())
@@ -131,6 +165,10 @@ public class ReceiptServicePay {
                 .closureTime(receipt.getClosureTime())
                 .receiptId(receipt.getId())
                 .build();
+    }
+
+    private int calculateRoundedTotalPrice(Receipt receipt) {
+        return (int) RoundingLogic.create(receipt.getPaymentMethod()).round((double) receipt.getSumSaleGrossPrice());
     }
 
     private String getRestaurantAddress(Address address) {
@@ -205,7 +243,7 @@ public class ReceiptServicePay {
         });
     }
 
-    public void setSumValues(ReceiptView receiptView) {
+    void setSumValues(ReceiptView receiptView) {
         Receipt receipt = receiptRepository.getOne(receiptView.getId());
         setSumValues(receipt);
         receiptRepository.save(receipt);

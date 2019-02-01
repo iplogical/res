@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.Blend?>
@@ -108,13 +111,11 @@
                                     <Label fx:id="note" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="60.0" prefWidth="135.0" style="-fx-line-spacing: -2;" wrapText="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
                                  </children>
                               </AnchorPane>
-                               <TableView fx:id="soldProductsTable" prefHeight="640.0" prefWidth="458.0"
-                                          stylesheets="@../css/TableView.css">
+                               <TableView fx:id="soldProductsTable" prefHeight="640.0" prefWidth="458.0" stylesheets="@../css/TableView.css">
                                 <columns>
                                   <TableColumn fx:id="productName" prefWidth="220.0" text="%SaleView.ProductName" />
                                   <TableColumn fx:id="productQuantity" minWidth="0.0" prefWidth="75.0" text="%SaleView.ProductQuantity" />
-                                    <TableColumn fx:id="productUnitPrice" prefWidth="70.0"
-                                                 text="%SaleView.ProductUnitPrice"/>
+                                    <TableColumn fx:id="productUnitPrice" prefWidth="70.0" text="%SaleView.ProductUnitPrice" />
                                     <TableColumn fx:id="productTotalPrice" prefWidth="75.0" text="%SaleView.ProductTotalPrice" />
                                 </columns>
                               </TableView>
@@ -158,13 +159,11 @@
                                     <Pane prefHeight="83.0" />
                                  </children>
                               </VBox>
-                               <TableView fx:id="paidProductsTable" prefHeight="676.0" prefWidth="453.0"
-                                          stylesheets="@../css/TableView.css">
+                               <TableView fx:id="paidProductsTable" prefHeight="676.0" prefWidth="453.0" stylesheets="@../css/TableView.css">
                                 <columns>
                                   <TableColumn fx:id="payProductName" prefWidth="220.0" text="%SaleView.ProductName" />
                                   <TableColumn fx:id="payProductQuantity" prefWidth="75.0" text="%SaleView.ProductQuantity" />
-                                    <TableColumn fx:id="payProductUnitPrice" prefWidth="70.0"
-                                                 text="%SaleView.ProductUnitPrice"/>
+                                    <TableColumn fx:id="payProductUnitPrice" prefWidth="70.0" text="%SaleView.ProductUnitPrice" />
                                     <TableColumn fx:id="payProductTotalPrice" prefWidth="75.0" text="%SaleView.ProductTotalPrice" />
                                 </columns>
                               </TableView>
@@ -195,14 +194,15 @@
                   <ToggleGroup fx:id="discountTypeToggleGroup" />
                </toggleGroup>
             </ToggleButton>
-            <TextField fx:id="discountAbsoluteValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.DiscountAbsolutePrompt" />
             <ToggleButton fx:id="discountPercent" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%PaymentView.DiscountPercent" textAlignment="CENTER" toggleGroup="$discountTypeToggleGroup" />
-            <TextField fx:id="discountPercentValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.DiscountPercentPrompt" />
+            <TextField fx:id="discountValue" alignment="CENTER" maxWidth="1.7976931348623157E308" promptText="%PaymentView.DiscountPrompt" />
             <Separator />
             <Button fx:id="backToSaleView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToSaleView" text="%PaymentView.BackToSaleView" textAlignment="CENTER" />
             <Button fx:id="backToRestaurantView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%Common.BackToRestaurantView" textAlignment="CENTER" />
             <Separator />
             <RadioButton fx:id="doublePrint" mnemonicParsing="false" text="%PaymentView.DoublePrint" />
+            <Separator prefWidth="200.0" />
+            <RadioButton fx:id="serviceFee" mnemonicParsing="false" text="%PaymentView.ServiceFee" />
             <Separator prefWidth="200.0" />
             <VBox>
                <children>

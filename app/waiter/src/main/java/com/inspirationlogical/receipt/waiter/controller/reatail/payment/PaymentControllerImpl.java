@@ -52,6 +52,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     RadioButton doublePrint;
 
     @FXML
+    RadioButton serviceFee;
+
+    @FXML
     ToggleButton selectivePayment;
     @FXML
     ToggleButton singlePayment;
@@ -72,18 +75,17 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     ToggleButton discountAbsolute;
     @FXML
-    TextField discountAbsoluteValue;
-
-    @FXML
     ToggleButton discountPercent;
-    @FXML
-    TextField discountPercentValue;
-
     @FXML
     ToggleGroup discountTypeToggleGroup;
 
     @FXML
+    TextField discountValue;
+
+
+    @FXML
     Label paidTotalPrice;
+
     @FXML
     Label previousPartialPrice;
 
@@ -140,8 +142,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private void clearInputFields() {
         partialPaymentValue.clear();
-        discountAbsoluteValue.clear();
-        discountPercentValue.clear();
+        discountValue.clear();
     }
 
     @FXML
@@ -225,9 +226,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private int applyDiscountOnTotalPrice(int totalPrice) {
         if (paymentViewState.isDiscountAbsolute()) {
-            totalPrice -= Integer.valueOf(discountAbsoluteValue.getText());
+            totalPrice -= Integer.valueOf(discountValue.getText());
         } else if (paymentViewState.isDiscountPercent()) {
-            double discountPercent = Double.valueOf(discountPercentValue.getText());
+            double discountPercent = Double.valueOf(discountValue.getText());
             totalPrice = (int) Math.round((double) totalPrice * ((100 - discountPercent) / 100));
         }
         return totalPrice;

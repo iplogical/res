@@ -37,6 +37,7 @@ public class PaymentControllerInitializer {
         initializePaymentTypeToggles();
         initializeDiscountToggles();
         initializeDoublePrint();
+        initializeServiceFee();
     }
 
     private void initializePaymentMethodToggles() {
@@ -68,6 +69,12 @@ public class PaymentControllerInitializer {
         p.doublePrint.selectedProperty().addListener(new DoublePrintToggleListener());
     }
 
+    private void initializeServiceFee() {
+        p.serviceFee.setSelected(true);
+        p.paymentViewState.setServiceFeeState(true);
+        p.serviceFee.selectedProperty().addListener(new ServiceFeeToggleListener());
+    }
+
     private void initializePaidProductsTable() {
         p.paidProductsTable.setEditable(true);
         p.payProductName.setCellValueFactory(new PropertyValueFactory<ProductRowModel, String>("productName"));
@@ -89,8 +96,7 @@ public class PaymentControllerInitializer {
     }
 
     private void initializePaymentViewState() {
-        p.paymentViewState.setDiscountAbsoluteValue(p.discountAbsoluteValue);
-        p.paymentViewState.setDiscountPercentValue(p.discountPercentValue);
+        p.paymentViewState.setDiscountValue(p.discountValue);
     }
 
     private void initializePaidTotalPrices() {
@@ -132,6 +138,14 @@ public class PaymentControllerInitializer {
             logger.info("The payment method changed to :" + p.paymentMethodToggleGroup.getSelectedToggle().getUserData());
             p.paymentViewState.setPaymentMethod(
                     (PaymentMethod) p.paymentMethodToggleGroup.getSelectedToggle().getUserData());
+        }
+    }
+
+    private class ServiceFeeToggleListener implements ChangeListener<Boolean> {
+        @Override
+        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            logger.info("The service fee toggle changed to :" + newValue);
+            p.paymentViewState.setServiceFeeState(newValue);
         }
     }
 

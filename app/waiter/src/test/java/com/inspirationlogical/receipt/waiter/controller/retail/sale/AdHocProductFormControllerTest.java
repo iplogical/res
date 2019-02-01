@@ -1,17 +1,11 @@
 package com.inspirationlogical.receipt.waiter.controller.retail.sale;
 
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import org.junit.Test;
 
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
-import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.clickButtonThenWait;
-import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.verifyThatNotVisible;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
-import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.ADHOC_PRODUCT_SALE_PRICE;
-import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.assertSoldProduct;
-import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.selectiveCancellation;
-import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.sellAdHocProduct;
+import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 
 public class AdHocProductFormControllerTest extends SaleViewTest {
 

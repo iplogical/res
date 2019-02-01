@@ -95,6 +95,7 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
                 .map(ProductCategoryView::getProduct)
                 .filter(productView -> !productView.getType().equals(AD_HOC_PRODUCT))
                 .filter(productView -> !productView.getType().equals(GAME_FEE_PRODUCT))
+                .filter(productView -> !productView.getType().equals(SERVICE_FEE_PRODUCT))
                 .filter(productView -> !productView.getType().equals(STORABLE))
                 .filter(productView -> productView.getStatus().equals(ACTIVE))
                 .collect(toList());

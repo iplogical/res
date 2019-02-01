@@ -27,13 +27,13 @@ public @Data class PaymentViewState {
 
     private DiscountType discountType;
 
-    private TextField discountAbsoluteValue;
-
-    private TextField discountPercentValue;
+    private TextField discountValue;
 
     private PaymentState paymentState;
 
     private boolean doublePrintState;
+
+    private boolean serviceFeeState;
 
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
@@ -62,16 +62,17 @@ public @Data class PaymentViewState {
 
     private PaymentParams getPaymentParams() {
         if(isDiscountPercent()) {
-            double discountPercent = Double.valueOf(discountPercentValue.getText());
+            double discountPercent = Double.valueOf(discountValue.getText());
             if(discountPercent < 1 || discountPercent > 100) {
                 throw new NumberFormatException();
             }
         }
         return PaymentParams.builder()
                 .paymentMethod(paymentMethod)
-                .discountAbsolute(isDiscountAbsolute() ? Integer.valueOf(discountAbsoluteValue.getText()) : 0)
-                .discountPercent(isDiscountPercent() ? Double.valueOf(discountPercentValue.getText()) : 0)
-                .isDoublePrint(doublePrintState)
+                .discountAbsolute(isDiscountAbsolute() ? Integer.valueOf(discountValue.getText()) : 0)
+                .discountPercent(isDiscountPercent() ? Double.valueOf(discountValue.getText()) : 0)
+                .serviceFee(serviceFeeState)
+                .doublePrint(doublePrintState)
                 .build();
     }
 
@@ -130,8 +131,7 @@ public @Data class PaymentViewState {
                 ", paymentParams=" + paymentParams +
                 ", paymentType=" + paymentType +
                 ", discountType=" + discountType +
-                ", discountAbsoluteValue=" + discountAbsoluteValue.getText() +
-                ", discountPercentValue=" + discountPercentValue.getText() +
+                ", discounValue=" + discountValue.getText() +
                 '}';
     }
 }

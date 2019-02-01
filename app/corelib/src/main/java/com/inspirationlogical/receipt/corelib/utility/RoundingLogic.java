@@ -13,8 +13,9 @@ public interface RoundingLogic {
     }
 
     static RoundingLogic create(PaymentMethod method) {
-        if (roundingNeeded(method))
+        if (roundingNeeded(method)) {
             return new CashRoundingLogic();
+        }
         else return new NoRoundingLogic();
     }
 }

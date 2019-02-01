@@ -22,6 +22,9 @@ class Restaurant extends AbstractEntity {
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST}, orphanRemoval = true)
     private Collection<DailyClosure> dailyClosures = new HashSet<>();
 
+    @Column(name = "SERVICE_FEE")
+    private int serviceFee;
+
     @Column(name = "RESTAURANTNAME")
     private String restaurantName;
 

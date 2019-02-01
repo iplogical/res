@@ -154,6 +154,8 @@ public class ReceiptPdfCreator {
         createHeaderRow();
         receiptPrintModel.getReceiptRecordsPrintModels().forEach(this::createProductRow);
         createTotalPriceRow();
+        createDiscountRows();
+        createRoundedTotalPriceRow();
         createPaymentMethodRow();
         document.add(productsTable);
         addDoubleLineSeparator(-4, -7);
@@ -250,19 +252,21 @@ public class ReceiptPdfCreator {
     }
 
     private void createTotalPriceRow() {
-        PdfPCell summaryCell = createTableSummaryCell("Összesen:");
+        createTableSummaryRow("Összesen:", receiptPrintModel.getTotalPrice());
+    }
+
+    private void createTableSummaryRow(String text, int totalPrice) {
+        createTableSummaryTextCell(text);
+        createTableSummaryCurrencyCell();
+        createTableSummaryValueCell(totalPrice);
+    }
+
+    private void createTableSummaryTextCell(String text) {
+        PdfPCell summaryCell = createTableSummaryCell(text);
         summaryCell.setColspan(2);
         summaryCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         summaryCell.setBorder(Rectangle.NO_BORDER);
         productsTable.addCell(summaryCell);
-
-        PdfPCell currencyCell = createTableSummaryCell("HUF");
-        currencyCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        productsTable.addCell(currencyCell);
-
-        PdfPCell totalPriceCell = createTableSummaryCell(String.valueOf(receiptPrintModel.getTotalPrice()));
-        totalPriceCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        productsTable.addCell(totalPriceCell);
     }
 
     private PdfPCell createTableSummaryCell(String text) {
@@ -274,6 +278,35 @@ public class ReceiptPdfCreator {
 
     private Phrase getTableSummaryPhrase(String value) {
         return new Phrase(value, new Font(boldFont, 12));
+    }
+
+    private void createTableSummaryCurrencyCell() {
+        PdfPCell currencyCell = createTableSummaryCell("HUF");
+        currencyCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        productsTable.addCell(currencyCell);
+    }
+
+    private void createTableSummaryValueCell(int totalPrice) {
+        PdfPCell totalPriceCell = createTableSummaryCell(String.valueOf(totalPrice));
+        totalPriceCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        productsTable.addCell(totalPriceCell);
+    }
+
+    private void createDiscountRows() {
+        int totalDiscount = receiptPrintModel.getTotalDiscount();
+        if(totalDiscount == 0) {
+            return;
+        }
+        createTableSummaryRow("Kedvezmény:", receiptPrintModel.getTotalDiscount());
+        createTableSummaryRow("Összesen(kedv.):", receiptPrintModel.getDiscountedTotalPrice());
+    }
+
+    private void createRoundedTotalPriceRow() {
+        int roundedTotalPrice = receiptPrintModel.getRoundedTotalPrice();
+        if(roundedTotalPrice == receiptPrintModel.getDiscountedTotalPrice()) {
+            return;
+        }
+        createTableSummaryRow("Összesen(kerekít):", roundedTotalPrice);
     }
 
     private void createPaymentMethodRow() {

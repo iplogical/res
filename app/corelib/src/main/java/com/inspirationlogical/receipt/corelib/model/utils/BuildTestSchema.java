@@ -75,6 +75,7 @@ public class BuildTestSchema {
     private @Getter Product productEight;
     private @Getter Product productAdHoc;
     private @Getter Product productGameFee;
+    private @Getter Product productServiceFee;
 
     private @Getter Product productRecipeElementOne;
     private @Getter Product productRecipeElementTwo;
@@ -105,6 +106,7 @@ public class BuildTestSchema {
     private @Getter ProductCategory pseudoEight;
     private @Getter ProductCategory pseudoAdHoc;
     private @Getter ProductCategory pseudoGameFee;
+    private @Getter ProductCategory pseudoServiceFee;
 
     private @Getter ProductCategory pseudoRecipeElementOne;
     private @Getter ProductCategory pseudoRecipeElementTwo;
@@ -262,6 +264,7 @@ public class BuildTestSchema {
         buildProductEight();
         buildProductAdHoc();
         buildProductGameFee();
+        buildServiceFeeProduct();
         buildProductRecipeElementOne();
         buildProductRecipeElementTwo();
         buildProductRecipeElementThree();
@@ -293,6 +296,7 @@ public class BuildTestSchema {
         buildPseudoEight();
         buildPseudoAdHoc();
         buildPseudoGameFee();
+        buildPseudoServiceFee();
         buildPseudoRecipeElementOne();
         buildPseudoRecipeElementTwo();
         buildPseudoRecipeElementThree();
@@ -476,10 +480,13 @@ public class BuildTestSchema {
                 .companyTaxPayerId("1-42-6518879")
                 .companyAddress(buildDefaultAddress())
                 .restaurantAddress(buildDefaultAddress())
-                .receiptNote("Árvíztűrő tükörfúrógép")
+                .receiptNote("A végösszeg 8 % szervíz díjat tartalmaz.")
+                .receiptGreet("Köszönjük, hogy a vendégünk volt!")
                 .socialMediaInfo("facebook.com/gameuppub")
                 .webSite("http://www.gameup.hu")
+                .receiptDisclaimer("Nem adóügyi bizonylat. Készpénz átvételére nem jogosít.")
                 .phoneNumber("+36 30/287-87-66")
+                .serviceFee(8)
                 .build();
      }
 
@@ -704,13 +711,26 @@ public class BuildTestSchema {
 
     private void buildProductGameFee() {
         productGameFee = Product.builder()
-                .longName("Játékdíj")
-                .shortName("Játékdíj")
+                .longName("Játékdíj / Game Fee")
+                .shortName("Játékdíj / Game Fee")
                 .salePrice(300)
                 .purchasePrice(0)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.LITER)
                 .type(ProductType.GAME_FEE_PRODUCT)
+                .recipes(new ArrayList<>())
+                .build();
+    }
+
+    private void buildServiceFeeProduct() {
+        productServiceFee = Product.builder()
+                .longName("Szervíz díj / Service fee")
+                .shortName("Szervíz díj / Service fee")
+                .salePrice(0)
+                .purchasePrice(0)
+                .status(ProductStatus.ACTIVE)
+                .quantityUnit(QuantityUnit.LITER)
+                .type(ProductType.SERVICE_FEE_PRODUCT)
                 .recipes(new ArrayList<>())
                 .build();
     }
@@ -957,6 +977,14 @@ public class BuildTestSchema {
     private void buildPseudoGameFee() {
         pseudoGameFee = ProductCategory.builder()
                 .name("pseudoGameFee")
+                .type(ProductCategoryType.PSEUDO)
+                .status(ProductStatus.ACTIVE)
+                .build();
+    }
+
+    private void buildPseudoServiceFee() {
+        pseudoServiceFee = ProductCategory.builder()
+                .name("pseudoServiceFee")
                 .type(ProductCategoryType.PSEUDO)
                 .status(ProductStatus.ACTIVE)
                 .build();
@@ -1746,7 +1774,7 @@ public class BuildTestSchema {
     
     private void leafsAndPseudos() {
         leafOne.setChildren(new ArrayList<>(
-                Arrays.asList(pseudoOne, pseudoFive, pseudoSix, pseudoAdHoc, pseudoGameFee)));
+                Arrays.asList(pseudoOne, pseudoFive, pseudoSix, pseudoAdHoc, pseudoGameFee, pseudoServiceFee)));
         leafTwo.setChildren(new ArrayList<>(
                 Arrays.asList(pseudoThree, pseudoFour)));
         leafThree.setChildren(new ArrayList<>(
@@ -1764,6 +1792,7 @@ public class BuildTestSchema {
         pseudoSix.setParent(leafOne);
         pseudoAdHoc.setParent(leafOne);
         pseudoGameFee.setParent(leafOne);
+        pseudoServiceFee.setParent(leafOne);
         pseudoThree.setParent(leafTwo);
         pseudoFour.setParent(leafTwo);
         pseudoSeven.setParent(leafFive);
@@ -1816,6 +1845,9 @@ public class BuildTestSchema {
 
         pseudoGameFee.setProduct(productGameFee);
         productGameFee.setCategory(pseudoGameFee);
+
+        pseudoServiceFee.setProduct(productServiceFee);
+        productServiceFee.setCategory(pseudoServiceFee);
 
         pseudoRecipeElementOne.setProduct(productRecipeElementOne);
         productRecipeElementOne.setCategory(pseudoRecipeElementOne);
