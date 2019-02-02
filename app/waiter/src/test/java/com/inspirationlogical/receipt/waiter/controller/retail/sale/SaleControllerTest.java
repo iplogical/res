@@ -137,20 +137,18 @@ public class SaleControllerTest extends SaleViewTest {
     }
 
     @Test
-    public void testReOpenTable() {
+    public void testSellDiscountProduct() {
         selectCategory(AGGREGATE_ONE);
-        sellProduct(PRODUCT_FIVE, 5);
         sellProduct(PRODUCT_TWO, 2);
-        sellProduct(PRODUCT_SIX, 6);
-        enterPaymentView();
-        pay();
-        reOpenTable(TABLE_NUMBER);
-        enterSaleView(TABLE_NUMBER);
-        assertSoldProduct(1, PRODUCT_FIVE_LONG, 5, 440, 2200);
-        assertSoldProduct(2, PRODUCT_TWO_LONG, 2, 200, 400);
-        assertSoldProduct(3, PRODUCT_SIX_LONG, 6, 480, 2880);
-        selectiveCancellation(PRODUCT_FIVE_LONG);
-        selectiveCancellation(PRODUCT_TWO_LONG);
-        selectiveCancellation(PRODUCT_SIX_LONG);
+        assertSoldProduct(1, PRODUCT_TWO_LONG, 2, 200, 400);
+        sellProduct(PRODUCT_TWO, 1);
+        assertSoldProduct(1, PRODUCT_TWO_LONG_DISCOUNTED, 3, 133, 399);
+        sellProduct(PRODUCT_TWO, 1);
+        assertSoldProduct(1, PRODUCT_TWO_LONG_DISCOUNTED, 4, 150, 600);
+        sellProduct(PRODUCT_TWO, 1);
+        assertSoldProduct(1, PRODUCT_TWO_LONG_DISCOUNTED, 5, 160, 800);
+        sellProduct(PRODUCT_TWO, 1);
+        assertSoldProduct(1, PRODUCT_TWO_LONG_DISCOUNTED, 6, 133, 798);
+        selectiveCancellation(PRODUCT_TWO_LONG_DISCOUNTED);
     }
 }

@@ -120,19 +120,19 @@ public class PayUtils  extends AbstractUtils {
         clickOnThenWait(WaiterResources.WAITER.getString("PaymentView.AutomaticGameFee"), 50);
     }
 
-    public static void setDiscountAbsolute(String text) {
-        setTextField(DISCOUNT_ABSOLUTE_VALUE, text);
+    public static void setDiscountValue(String text) {
+        setTextField(DISCOUNT_VALUE, text);
     }
 
     public static void clickOnDiscountAbsolute() {
         clickButtonThenWait(DISCOUNT_ABSOLUTE, 100);
     }
 
-    public static void setDiscountPercent(String text) {
-        setTextField(DISCOUNT_PERCENT_VALUE, text);
-    }
-
     public static void clickOnDiscountPercent() {
         clickButtonThenWait(DISCOUNT_PERCENT, 100);
+    }
+
+    public static void clickOnServiceFee() {
+        clickButtonThenWait(SERVICE_FEE_BUTTON, 100);
     }
 }

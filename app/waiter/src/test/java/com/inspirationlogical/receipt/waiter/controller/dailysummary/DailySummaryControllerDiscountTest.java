@@ -47,7 +47,7 @@ public class DailySummaryControllerDiscountTest extends TestFXBase {
         clickButtonThenWait(TO_PAYMENT, 200);
         clickButtonThenWait(PAYMENT_METHOD_CASH, 50);
         clickOnDiscountPercent();
-        setDiscountPercent("50");
+        setDiscountValue("50");
         pay();
         enterDailySummary();
         assertSoldProduct(1, PRODUCT_FIVE_LONG + " *", 5, 220, 1100);
@@ -64,7 +64,7 @@ public class DailySummaryControllerDiscountTest extends TestFXBase {
         clickButtonThenWait(TO_PAYMENT, 200);
         clickButtonThenWait(PAYMENT_METHOD_CASH, 50);
         clickOnDiscountAbsolute();
-        setDiscountAbsolute("6900");
+        setDiscountValue("6900");
         pay();
         enterDailySummary();
         assertSoldProduct(1, PRODUCT_FIVE_LONG + " *", 5, 220, 1100);

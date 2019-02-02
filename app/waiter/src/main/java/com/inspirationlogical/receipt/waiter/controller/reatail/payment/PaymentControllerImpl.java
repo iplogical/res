@@ -132,6 +132,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         updateTableSummary();
         resetToggleGroups();
         clearInputFields();
+        serviceFee.setSelected(true);
     }
 
     private void resetToggleGroups() {

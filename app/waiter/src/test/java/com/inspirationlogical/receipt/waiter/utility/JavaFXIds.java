@@ -72,8 +72,7 @@ public class JavaFXIds {
     public final static String DISCOUNT_ABSOLUTE = "#discountAbsolute";
     public final static String DISCOUNT_PERCENT = "#discountPercent";
 
-    public final static String DISCOUNT_ABSOLUTE_VALUE = "#discountAbsoluteValue";
-    public final static String DISCOUNT_PERCENT_VALUE = "#discountPercentValue";
+    public final static String DISCOUNT_VALUE = "#discountValue";
 
     public final static String PAID_TOTAL_PRICE = "#paidTotalPrice";
     public final static String PREVIOUS_PARTIAL_PRICE = "#previousPartialPrice";
@@ -82,6 +81,8 @@ public class JavaFXIds {
 
     public final static String TO_SALE = "#backToSaleView";
     public final static String PAY = "#pay";
+
+    public final static String SERVICE_FEE_BUTTON = "#serviceFee";
 
     public final static String PAYMENT_METHOD_CASH = "#paymentMethodCash";
     public final static String PAYMENT_METHOD_CREDIT_CARD = "#paymentMethodCreditCard";

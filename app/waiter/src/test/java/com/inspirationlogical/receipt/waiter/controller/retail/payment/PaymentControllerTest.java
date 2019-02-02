@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller.retail.payment;
 
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
+import javafx.scene.control.ToggleButton;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,8 +11,7 @@ import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
 import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.PayUtils.*;
-import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.enterSaleView;
-import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.openTable;
+import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 import static org.junit.Assert.assertEquals;
 
@@ -140,7 +140,7 @@ public class PaymentControllerTest  extends TestFXBase {
     public void testSinglePaymentWithDiscountAbsolute() {
         paySingle(2);
         clickOnDiscountAbsolute();
-        setDiscountAbsolute("1000");
+        setDiscountValue("1000");
         pay();
         assertSoldProductFive(1, 3);
         assertSoldProductThree(2, 1);
@@ -153,7 +153,7 @@ public class PaymentControllerTest  extends TestFXBase {
     public void testSinglePaymentWithDiscountPercent() {
         paySingle(2);
         clickOnDiscountPercent();
-        setDiscountPercent("30");
+        setDiscountValue("30");
         pay();
         assertSoldProductFive(1, 3);
         assertSoldProductThree(2, 1);
@@ -295,7 +295,7 @@ public class PaymentControllerTest  extends TestFXBase {
 
     @Test
     public void testPartialPaymentOfTheTableWithDiscountAbsolute() {
-        setDiscountAbsolute("1000");
+        setDiscountValue("1000");
         clickOnDiscountAbsolute();
         payPartial(0.43);
         clickOnDiscountAbsolute();
@@ -307,7 +307,7 @@ public class PaymentControllerTest  extends TestFXBase {
 
     @Test
     public void testPartialPaymentOfTheTableWithDiscountPercent() {
-        setDiscountPercent("20");
+        setDiscountValue("20");
         clickOnDiscountPercent();
         payPartial(0.43);
         clickOnDiscountPercent();
@@ -445,7 +445,7 @@ public class PaymentControllerTest  extends TestFXBase {
     @Test
     public void testDiscountAbsoluteInvalidInput() {
         clickOnDiscountAbsolute();
-        setDiscountAbsolute("Invalid");
+        setDiscountValue("Invalid");
         pay();
         verifyErrorMessage("PaymentView.DiscountAbsoluteNumberFormatError");
         clickOnDiscountAbsolute();
@@ -454,17 +454,17 @@ public class PaymentControllerTest  extends TestFXBase {
     @Test
     public void testDiscountPercentInvalidInput() {
         clickOnDiscountPercent();
-        setDiscountPercent("Invalid");
+        setDiscountValue("Invalid");
         pay();
         verifyErrorMessage("PaymentView.DiscountPercentNumberFormatError");
         sleep(5000);
 
-        setDiscountPercent("120");
+        setDiscountValue("120");
         pay();
         verifyErrorMessage("PaymentView.DiscountPercentNumberFormatError");
         sleep(5000);
 
-        setDiscountPercent("-5");
+        setDiscountValue("-5");
         pay();
         verifyErrorMessage("PaymentView.DiscountPercentNumberFormatError");
         clickOnDiscountPercent();
@@ -485,15 +485,36 @@ public class PaymentControllerTest  extends TestFXBase {
 
     @Test
     public void testClearInputFieldsWhenEnterThePaymentView() {
-        setDiscountPercent("50");
-        setDiscountAbsolute("5000");
+        setDiscountValue("50");
         setPartialPaymentValue(1.5);
         backToRestaurantView();
         enterSaleView(TABLE_NUMBER);
         enterPaymentView();
-        assertEquals("", getTextField(DISCOUNT_PERCENT_VALUE));
-        assertEquals("", getTextField(DISCOUNT_ABSOLUTE_VALUE));
+        assertEquals("", getTextField(DISCOUNT_VALUE));
         assertEquals("", getTextField(PARTIAL_PAYMENT_VALUE));
+    }
+
+    @Test
+    public void testReOpenTableNoServiceFee() {
+        clickOnServiceFee();
+        pay();
+        reOpenTable(TABLE_NUMBER);
+        enterSaleView(TABLE_NUMBER);
+        assertSoldProduct(1, PRODUCT_FIVE_LONG, 3, 440, 1320);
+        assertSoldProduct(2, PRODUCT_THREE_LONG, 2, 2900, 5800);
+        enterPaymentView();
+        assertToggleButtonSelected(SERVICE_FEE_BUTTON);
+    }
+
+    @Test
+    public void testReOpenTableServiceFee() {
+        pay();
+        reOpenTable(TABLE_NUMBER);
+        enterSaleView(TABLE_NUMBER);
+        assertSoldProduct(1, PRODUCT_FIVE_LONG, 3, 440, 1320);
+        assertSoldProduct(2, PRODUCT_THREE_LONG, 2, 2900, 5800);
+        assertSoldProduct(3, PRODUCT_SERVICE_FEE, 1, 570, 570);
+        enterPaymentView();
     }
 
     @After

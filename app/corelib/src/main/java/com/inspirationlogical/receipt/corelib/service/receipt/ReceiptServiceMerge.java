@@ -25,7 +25,7 @@ public class ReceiptServiceMerge {
     @Autowired
     private ReceiptRecordRepository receiptRecordRepository;
 
-    public void mergeReceiptRecords(ReceiptView receiptView) {
+    void mergeReceiptRecords(ReceiptView receiptView) {
         Receipt receipt = receiptRepository.findById(receiptView.getId());
         Map<Double, Map<String, List<ReceiptRecord>>> receiptsByDiscountAndName = groupRecordsByDiscountAndName(receipt);
         List<Map<String, List<ReceiptRecord>>> listOfReceiptsByDiscountAndName = new ArrayList<>(receiptsByDiscountAndName.values());
@@ -67,6 +67,7 @@ public class ReceiptServiceMerge {
                 .absoluteQuantity(a.getAbsoluteQuantity() + b.getAbsoluteQuantity())
                 .purchasePrice(a.getPurchasePrice())
                 .salePrice(a.getSalePrice())
+                .originalSalePrice(a.getOriginalSalePrice())
                 .VAT(a.getVAT())
                 .discountPercent(a.getDiscountPercent())
                 .owner(owner)

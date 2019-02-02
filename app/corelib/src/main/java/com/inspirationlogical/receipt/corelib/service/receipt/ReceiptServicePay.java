@@ -18,10 +18,7 @@ import com.inspirationlogical.receipt.corelib.utility.RoundingLogic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
@@ -100,12 +97,13 @@ public class ReceiptServicePay {
 
     private void addServiceFee(Receipt receipt) {
         int serviceFeeTotal = calculateTotalServiceFee(receipt);
-        ReceiptRecord serviceFeeRecord = buildReceiptRecord(serviceFeeTotal);
+        ReceiptRecord serviceFeeRecord = buildServiceFeeRecord(serviceFeeTotal);
+        serviceFeeRecord.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(serviceFeeRecord).build());
         serviceFeeRecord.setOwner(receipt);
         receipt.getRecords().add(serviceFeeRecord);
     }
 
-    private ReceiptRecord buildReceiptRecord(int serviceFeeTotal) {
+    private ReceiptRecord buildServiceFeeRecord(int serviceFeeTotal) {
         Product serviceFeeProduct = productRepository.findFirstByType(ProductType.SERVICE_FEE_PRODUCT);
         return ReceiptRecord.builder()
                 .product(serviceFeeProduct)
@@ -176,8 +174,7 @@ public class ReceiptServicePay {
     }
 
     private List<ReceiptRecordPrintModel> buildReceiptRecordPrintModels(Receipt receipt) {
-        return receipt.getRecords().stream()
-                .map(this::buildReceiptRecordPrintModel).collect(Collectors.toList());
+        return receipt.getRecords().stream().map(this::buildReceiptRecordPrintModel).collect(Collectors.toList());
     }
 
     private ReceiptRecordPrintModel buildReceiptRecordPrintModel(ReceiptRecord record) {

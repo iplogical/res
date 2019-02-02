@@ -297,7 +297,7 @@ public class ReceiptPdfCreator {
         if(totalDiscount == 0) {
             return;
         }
-        createTableSummaryRow("Kedvezmény:", receiptPrintModel.getTotalDiscount());
+        createTableSummaryRow("Kedvezmény:", -1 * receiptPrintModel.getTotalDiscount());
         createTableSummaryRow("Összesen(kedv.):", receiptPrintModel.getDiscountedTotalPrice());
     }
 

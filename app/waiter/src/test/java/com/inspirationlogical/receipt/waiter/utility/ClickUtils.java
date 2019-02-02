@@ -7,13 +7,14 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import org.testfx.api.FxRobotInterface;
 import org.testfx.service.query.EmptyNodeQueryException;
 
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.testfx.api.FxAssert.verifyThat;
 
 public class ClickUtils extends AbstractUtils {
@@ -48,6 +49,11 @@ public class ClickUtils extends AbstractUtils {
 
     public static void clickButtonThenWait(String buttonName, int milliSec) {
         clickOnThenWait(WaiterResources.WAITER.getString(buttonName), milliSec);
+    }
+
+    public static void assertToggleButtonSelected(String buttonName) {
+        ToggleButton serviceFeeButton = robot.find(buttonName);
+        assertTrue(serviceFeeButton.isSelected());
     }
 
     public static void clickMenuThenWait(String menuName, int milliSec) {

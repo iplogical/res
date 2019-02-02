@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import static java.time.LocalDateTime.now;
+
 @FXMLController
 public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     implements DailySummaryController {
@@ -111,6 +113,11 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     protected Collection<ReceiptRecordView> getSoldProducts() {
         receiptView = dailyConsumptionService.getAggregatedReceipt(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
         return receiptView.getSoldProducts();
+    }
+
+    @Override
+    protected LocalDateTime getOrderDeliveredTime() {
+        return now();
     }
 
     @Override
