@@ -78,6 +78,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private Button orderDelivered;
 
     @FXML
+    private Button print;
+
+    @FXML
     Label liveTime;
 
     private Popup adHocProductForm;
@@ -196,6 +199,11 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private void setOrderDelivered(boolean isDelivered) {
         getTableController().setOrderDelivered(isDelivered);
+    }
+
+    @FXML
+    public void onPrint(Event event) {
+        receiptService.printReceiptFromSale(tableView.getNumber());
     }
 
     private void resetToggleGroups() {

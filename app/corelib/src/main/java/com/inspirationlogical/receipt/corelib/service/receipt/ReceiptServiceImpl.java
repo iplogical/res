@@ -95,6 +95,11 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
+    public void printReceiptFromSale(int number) {
+        receiptServicePay.printReceiptFromSale(number);
+    }
+
+    @Override
     public void setSumValues(ReceiptView receiptView) {
         receiptServicePay.setSumValues(receiptView);
     }

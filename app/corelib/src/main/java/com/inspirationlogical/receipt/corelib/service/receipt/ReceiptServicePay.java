@@ -287,4 +287,13 @@ public class ReceiptServicePay {
         return (100 + record.getVAT()) / 100;
     }
 
+    void printReceiptFromSale(int number) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(number);
+        ReceiptPrintModel receiptPrintModel = buildReceiptPrintModel(openReceipt);
+        receiptPrintModel.setClosureTime(now());
+        receiptPrintModel.setPaymentMethod("Nincs Fizetve");
+        receiptPrintModel.setTotalPriceNoServiceFee(getSumValue(openReceipt, this::calculateSaleGrossPrice));
+        receiptPrintModel.setReceiptNote("");
+        receiptPrinter.printReceipt(receiptPrintModel);
+    }
 }

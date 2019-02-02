@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.params;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class ReceiptPrintModel {
     private List<ReceiptRecordPrintModel> receiptRecordsPrintModels;
 
     private String receiptType;
+    @Setter
     private int totalPriceNoServiceFee;
     private int serviceFee;
     private int serviceFeePercent;
@@ -28,11 +30,16 @@ public class ReceiptPrintModel {
     private int totalDiscount;
     private int discountedTotalPrice;
     private int roundedTotalPrice;
+
+    @Setter
     private String paymentMethod;
 
     private String receiptDisclaimer;
+    @Setter
     private String receiptNote;
     private String receiptGreet;
+
+    @Setter
     private LocalDateTime closureTime;
     private long receiptId;
 }

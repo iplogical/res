@@ -39,6 +39,8 @@ public interface ReceiptService {
 
     void payPartial(Receipt receipt, double partialValue, PaymentParams paymentParams);
 
+    void printReceiptFromSale(int number);
+
     void setSumValues(ReceiptView receiptView);
 
     void mergeReceiptRecords(ReceiptView receiptView);
