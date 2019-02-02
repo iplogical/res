@@ -73,11 +73,17 @@ public @Data class Receipt extends AbstractEntity {
     @Column(name = "DISCOUNTPERCENT")
     private double discountPercent;
 
-    @Column(name = "DELIVERYTIME")
-    private LocalDateTime deliveryTime;
+    @Column(name = "FOOD_DELIVERY_TIME")
+    private LocalDateTime foodDeliveryTime;
 
-    @Column(name = "ISDELIVERED")
-    private boolean isDelivered;
+    @Column(name = "FOOD_DELIVERED")
+    private boolean foodDelivered;
+
+    @Column(name = "DRINK_DELIVERY_TIME")
+    private LocalDateTime drinkDeliveryTime;
+
+    @Column(name = "DRINK_DELIVERED")
+    private boolean drinkDelivered;
 
     @Embedded
     @AttributeOverrides({

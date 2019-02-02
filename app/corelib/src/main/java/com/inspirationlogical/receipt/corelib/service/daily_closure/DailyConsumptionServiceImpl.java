@@ -10,6 +10,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
+import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
     private VATService vatService;
 
     @Autowired
-    private ReceiptPrinter receiptPrinter;
+    private ReceiptService receiptService;
 
     @Override
     public Map<PaymentMethod, Integer> getConsumptionOfTheDay() {
@@ -89,8 +90,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
         logger.info("The aggregated consumption was printed between: " + startTime + " - " + endTime);
         List<LocalDateTime> closureTimes = dailyClosureService.getClosureTimes(startTime, endTime);
         Receipt aggregatedReceipt = createReceiptOfAggregatedConsumption(closureTimes.get(0), closureTimes.get(1));
-        // TODO: PRINT AGGREGATE;
-//        receiptPrinter.printReceipt(aggregatedReceipt);
+        receiptService.printAggregatedReceipt(aggregatedReceipt);
     }
 
     @Override

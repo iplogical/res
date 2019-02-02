@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
 
+import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryFamily;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import lombok.Builder;
@@ -49,6 +50,10 @@ class ProductCategory extends AbstractEntity {
     @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
     private ProductCategoryType type;
+
+    @Column(name = "FAMILY")
+    @Enumerated(EnumType.STRING)
+    private ProductCategoryFamily family;
 
     @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)

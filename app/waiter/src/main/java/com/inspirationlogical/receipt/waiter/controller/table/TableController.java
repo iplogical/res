@@ -32,9 +32,14 @@ public interface TableController extends Controller {
 
     void deselectTable();
 
-    void setOrderDelivered(boolean delivered);
+    void setFoodDelivered(boolean delivered);
 
-    LocalDateTime getOrderDeliveryTime();
+    LocalDateTime getFoodDeliveryTime();
+
+    void setDrinkDelivered(boolean delivered);
+
+    LocalDateTime getDrinkDeliveryTime();
 
     boolean isSelected();
+
 }

@@ -100,6 +100,11 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
+    public void printAggregatedReceipt(Receipt aggregatedReceipt) {
+        receiptServicePay.printAggregatedReceipt(aggregatedReceipt);
+    }
+
+    @Override
     public void setSumValues(ReceiptView receiptView) {
         receiptServicePay.setSumValues(receiptView);
     }

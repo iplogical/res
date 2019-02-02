@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.model.view;
 
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryFamily;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
@@ -31,6 +32,7 @@ public class ReceiptRecordView {
     private List<LocalDateTime> created;
     private boolean isPartiallyPayable;
     private ReceiptStatus ownerStatus;
+    private ProductCategoryFamily family;
 
 
     public ReceiptRecordView(ReceiptRecord receiptRecord) {
@@ -46,6 +48,15 @@ public class ReceiptRecordView {
         created = initCreated(receiptRecord);
         isPartiallyPayable = receiptRecord.getProduct() != null && receiptRecord.getProduct().getType().equals(ProductType.PARTIALLY_PAYABLE);
         ownerStatus = receiptRecord.getOwner().getStatus();
+        if (isNormalReceiptRecord(receiptRecord)) {
+            family = ProductCategoryFamily.initFamily(receiptRecord.getProduct());
+        } else {
+            family = ProductCategoryFamily.FOOD;    // TODO: Fix this. Due to aggregated receipt special records
+        }
+    }
+
+    private boolean isNormalReceiptRecord(ReceiptRecord receiptRecord) {
+        return receiptRecord.getProduct() != null;
     }
 
     private List<LocalDateTime> initCreated(ReceiptRecord receiptRecord) {

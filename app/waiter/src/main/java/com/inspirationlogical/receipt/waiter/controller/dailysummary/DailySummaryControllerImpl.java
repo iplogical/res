@@ -116,7 +116,12 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    protected LocalDateTime getOrderDeliveredTime() {
+    protected LocalDateTime getFoodDeliveredTime() {
+        return now();
+    }
+
+    @Override
+    protected LocalDateTime getDrinkDeliveredTime() {
         return now();
     }
 

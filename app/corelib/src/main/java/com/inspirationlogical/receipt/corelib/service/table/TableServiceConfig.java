@@ -36,7 +36,11 @@ public interface TableServiceConfig {
 
     RecentConsumption getRecentConsumption(int tableNumber);
 
-    TableView setOrderDelivered(int tableNumber, boolean delivered);
+    TableView setFoodDelivered(int tableNumber, boolean delivered);
 
-    TableView setOrderDeliveredTime(int tableNumber, LocalDateTime now);
+    TableView setFoodDeliveryTime(int tableNumber, LocalDateTime now);
+
+    TableView setDrinkDelivered(int tableNumber, boolean delivered);
+
+    TableView setDrinkDeliveryTime(int tableNumber, LocalDateTime now);
 }

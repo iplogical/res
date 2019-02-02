@@ -84,6 +84,7 @@ public class RestaurantControllerTest extends TestFXBase {
         clickOnThenWait("No", 500);
     }
 
+    @Ignore
     @Test
     public void testDailyClosureWithYes() {
         assertEquals(INITIAL_PAID_CONSUMPTION, getPaidConsumption());

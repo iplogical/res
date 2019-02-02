@@ -295,7 +295,7 @@ public class ReceiptAdapterTest extends TestBase {
 //
 //    @Test
 //    public void testDeliveredSetToTrue() {
-//        receiptSaleOne.setOrderDelivered(true);
+//        receiptSaleOne.setFoodDelivered(true);
 //
 //    }
 }

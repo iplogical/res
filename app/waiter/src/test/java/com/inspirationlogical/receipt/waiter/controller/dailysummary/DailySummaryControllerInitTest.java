@@ -4,12 +4,14 @@ import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import com.inspirationlogical.receipt.waiter.utility.DailySummaryUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.inspirationlogical.receipt.waiter.utility.DailySummaryUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.enterDailySummary;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.assertSoldProduct;
 
+@Ignore
 public class DailySummaryControllerInitTest extends TestFXBase {
 
     @Before

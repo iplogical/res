@@ -30,10 +30,14 @@ public class NameUtils {
 
     public static final String PRODUCT_SIX = "product6";
     public static final String PRODUCT_SIX_LONG = "productSix";
+
     public static final String PRODUCT_SERVICE_FEE = "Szervízdíj / Service fee";
 
     public static final String PRODUCT_THREE = "product3";
     public static final String PRODUCT_THREE_LONG = "productThree";
+
+    public static final String PRODUCT_EIGHT = "product8";
+    public static final String PRODUCT_EIGHT_LONG = "productEight";
 
     public static final String GAME_FEE = "Játékdíj / Game Fee";
 }

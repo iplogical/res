@@ -41,6 +41,8 @@ public interface ReceiptService {
 
     void printReceiptFromSale(int number);
 
+    void printAggregatedReceipt(Receipt aggregatedReceipt);
+
     void setSumValues(ReceiptView receiptView);
 
     void mergeReceiptRecords(ReceiptView receiptView);

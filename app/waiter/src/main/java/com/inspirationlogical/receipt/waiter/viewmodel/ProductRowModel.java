@@ -1,13 +1,12 @@
 package com.inspirationlogical.receipt.waiter.viewmodel;
 
+import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryFamily;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
-import javafx.collections.ObservableList;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.inspirationlogical.receipt.corelib.utility.Round.roundToTwoDecimals;
 import static java.lang.String.valueOf;
 import static java.time.LocalDateTime.now;
 
@@ -29,7 +28,11 @@ public @Data class ProductRowModel {
 
     private List<LocalDateTime> clickTimes;
 
-    private LocalDateTime orderDeliveredTime;
+    private LocalDateTime foodDeliveryTime;
+
+    private LocalDateTime drinkDeliveryTime;
+
+    private ProductCategoryFamily family;
 
     public boolean isEqual(ReceiptRecordView receiptRecordView) {
         return receiptRecordView.getId() == productId;
@@ -40,11 +43,13 @@ public @Data class ProductRowModel {
                 valueOf(receiptRecordView.getDiscountPercent()).equals(productDiscount) &&
                 valueOf(receiptRecordView.getVat()).equals(productVat);
     }
-    
-    public ProductRowModel(ReceiptRecordView receiptRecordView, LocalDateTime orderDeliveredTime) {
+
+    public ProductRowModel(ReceiptRecordView receiptRecordView, LocalDateTime foodDeliveryTime, LocalDateTime drinkDeliveryTime) {
         this.clickTimes = receiptRecordView.getCreated();
         this.productName = receiptRecordView.getName();
-        this.orderDeliveredTime = orderDeliveredTime;
+        this.foodDeliveryTime = foodDeliveryTime;
+        this.drinkDeliveryTime = drinkDeliveryTime;
+        this.family = receiptRecordView.getFamily();
         this.productQuantity = receiptRecordView.getSoldQuantity() + (getRecentClickCount() == 0 ? "" : (" (" + getRecentClickCount() + ")"));
         this.productUnitPrice = valueOf(receiptRecordView.getSalePrice());
         this.productTotalPrice = valueOf(receiptRecordView.getTotalPrice());
@@ -68,12 +73,19 @@ public @Data class ProductRowModel {
 
     private long getRecentClickCount() {
         LocalDateTime boundaryTime;
-        if(orderDeliveredTime == null) {
+        LocalDateTime deliveryTime = family.equals(ProductCategoryFamily.FOOD) ? foodDeliveryTime : drinkDeliveryTime;
+        boundaryTime = getBoundaryTime(deliveryTime);
+        return clickTimes.stream().filter(localDateTime -> localDateTime.isAfter(boundaryTime)).count();
+    }
+
+    private LocalDateTime getBoundaryTime(LocalDateTime deliveryTime) {
+        LocalDateTime boundaryTime;
+        if(deliveryTime == null) {
             boundaryTime = now().minusMinutes(30);
         } else {
-            boundaryTime = orderDeliveredTime.isAfter(now().minusMinutes(30)) ? orderDeliveredTime : now().minusMinutes(30);
+            boundaryTime = deliveryTime.isAfter(now().minusMinutes(30)) ? deliveryTime : now().minusMinutes(30);
         }
-        return clickTimes.stream().filter(localDateTime -> localDateTime.isAfter(boundaryTime)).count();
+        return boundaryTime;
     }
 
     private void markDiscountedProduct() {

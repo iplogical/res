@@ -65,8 +65,10 @@ public class TableServiceConfigImpl implements TableServiceConfig {
                 .coordinateY(table.getCoordinateY())
                 .width(table.getDimensionX())
                 .height(table.getDimensionY())
-                .orderDelivered(openReceipt == null || openReceipt.isDelivered())
-                .orderDeliveryTime(openReceipt == null ? now() : openReceipt.getDeliveryTime())
+                .foodDelivered(openReceipt == null || openReceipt.isFoodDelivered())
+                .foodDeliveryTime(openReceipt == null ? now() : openReceipt.getFoodDeliveryTime())
+                .drinkDelivered(openReceipt == null || openReceipt.isDrinkDelivered())
+                .drinkDeliveryTime(openReceipt == null ? now() : openReceipt.getDrinkDeliveryTime())
                 .build();
     }
 
@@ -367,21 +369,38 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         }
     }
 
-
     @Override
-    public TableView setOrderDelivered(int tableNumber, boolean delivered) {
+    public TableView setFoodDelivered(int tableNumber, boolean delivered) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableNumber);
         Table table = tableRepository.findByNumber(tableNumber);
-        openReceipt.setDelivered(delivered);
+        openReceipt.setFoodDelivered(delivered);
         receiptRepository.save(openReceipt);
         return buildTableView(table);
     }
 
     @Override
-    public TableView setOrderDeliveredTime(int tableNumber, LocalDateTime now) {
+    public TableView setFoodDeliveryTime(int tableNumber, LocalDateTime now) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableNumber);
         Table table = tableRepository.findByNumber(tableNumber);
-        openReceipt.setDeliveryTime(now);
+        openReceipt.setFoodDeliveryTime(now);
+        receiptRepository.save(openReceipt);
+        return buildTableView(table);
+    }
+
+    @Override
+    public TableView setDrinkDelivered(int tableNumber, boolean delivered) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableNumber);
+        Table table = tableRepository.findByNumber(tableNumber);
+        openReceipt.setDrinkDelivered(delivered);
+        receiptRepository.save(openReceipt);
+        return buildTableView(table);
+    }
+
+    @Override
+    public TableView setDrinkDeliveryTime(int tableNumber, LocalDateTime now) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableNumber);
+        Table table = tableRepository.findByNumber(tableNumber);
+        openReceipt.setDrinkDeliveryTime(now);
         receiptRepository.save(openReceipt);
         return buildTableView(table);
     }

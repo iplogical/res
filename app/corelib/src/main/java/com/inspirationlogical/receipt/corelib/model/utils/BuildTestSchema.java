@@ -788,6 +788,7 @@ public class BuildTestSchema {
                 .name(AGGREGATE_TOP_ONE_NAME)
                 .type(ProductCategoryType.AGGREGATE)
                 .status(ProductStatus.ACTIVE)
+                .family(ProductCategoryFamily.FOOD)
                 .orderNumber(1)
                 .build();
     }
@@ -797,6 +798,7 @@ public class BuildTestSchema {
                 .name("aggregateTopTwo")
                 .type(ProductCategoryType.AGGREGATE)
                 .status(ProductStatus.ACTIVE)
+                .family(ProductCategoryFamily.DRINK)
                 .orderNumber(2)
                 .build();
     }

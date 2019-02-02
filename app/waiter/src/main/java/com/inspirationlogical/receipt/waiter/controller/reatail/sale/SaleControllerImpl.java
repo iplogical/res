@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
+import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryFamily;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
@@ -75,7 +76,10 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private Button backToRestaurantView;
 
     @FXML
-    private Button orderDelivered;
+    private Button foodDelivered;
+
+    @FXML
+    private Button drinkDelivered;
 
     @FXML
     private Button print;
@@ -127,14 +131,22 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void sellProduct(ProductView productView) {
         receiptService.sellProduct(tableView, productView, saleViewState.isTakeAway(), saleViewState.isGift());
-        setOrderDelivered(false);
+        setDelivered(productView.getFamily(), false);
         getSoldProductsAndRefreshTable();
+    }
+
+    private void setDelivered(ProductCategoryFamily family, boolean delivered) {
+        if (family.equals(ProductCategoryFamily.FOOD)) {
+            setFoodDelivered(delivered);
+        } else if(family.equals(ProductCategoryFamily.DRINK)) {
+            setDrinkDelivered(delivered);
+        }
     }
 
     @Override
     public void sellAdHocProduct(AdHocProductParams adHocProductParams) {
         receiptService.sellAdHocProduct(tableView, adHocProductParams, saleViewState.isTakeAway());
-        setOrderDelivered(false);
+        setDrinkDelivered(false);
         getSoldProductsAndRefreshTable();
         adHocProductForm.hide();
     }
@@ -166,8 +178,9 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
             ReceiptRecordView clickedRecord = findMatchingSoldProduct(row);
             receiptRecordService.decreaseSoldQuantity(clickedRecord, 1);
         } else {
-            increaseRowInSoldProducts(row, 1, true);
-            setOrderDelivered(false);
+            ReceiptRecordView equivalentReceiptRecordView = findEquivalentView(soldProductViewList, row);
+            increaseRowInSoldProducts(equivalentReceiptRecordView, 1, true);
+            setDelivered(equivalentReceiptRecordView.getFamily(), false);
         }
         getSoldProductsAndRefreshTable();
     }
@@ -192,13 +205,23 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     }
 
     @FXML
-    public void onOrderDelivered(Event event) {
-        setOrderDelivered(true);
+    public void onFoodDelivered(Event event) {
+        setFoodDelivered(true);
         backToRestaurantView();
     }
 
-    private void setOrderDelivered(boolean isDelivered) {
-        getTableController().setOrderDelivered(isDelivered);
+    private void setFoodDelivered(boolean delivered) {
+        getTableController().setFoodDelivered(delivered);
+    }
+
+    @FXML
+    public void onDrinkDelivered(Event event) {
+        setDrinkDelivered(true);
+        backToRestaurantView();
+    }
+
+    private void setDrinkDelivered(boolean delivered) {
+        getTableController().setDrinkDelivered(delivered);
     }
 
     @FXML

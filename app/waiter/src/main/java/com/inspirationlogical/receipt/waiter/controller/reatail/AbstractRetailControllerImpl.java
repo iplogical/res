@@ -1,8 +1,6 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
@@ -32,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -185,7 +182,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     protected ObservableList<ProductRowModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
         List<ProductRowModel> list = soldProducts.stream()
                 .sorted(Comparator.comparing(this::getOldestCreated))
-                .map(receiptRecordView -> new ProductRowModel(receiptRecordView, getOrderDeliveredTime()))
+                .map(receiptRecordView -> new ProductRowModel(receiptRecordView, getFoodDeliveredTime(), getDrinkDeliveredTime()))
                 .collect(toList());
         return FXCollections.observableArrayList(list);
     }
@@ -196,8 +193,12 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         return sortedCreatedList.get(0);
     }
 
-    protected LocalDateTime getOrderDeliveredTime() {
-        return getTableController().getOrderDeliveryTime();
+    protected LocalDateTime getFoodDeliveredTime() {
+        return getTableController().getFoodDeliveryTime();
+    }
+
+    protected LocalDateTime getDrinkDeliveredTime() {
+        return getTableController().getDrinkDeliveryTime();
     }
 
     protected void refreshSoldProductsTable() {
@@ -224,8 +225,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         return soldProductViewList.stream().filter(row::isEqual).findFirst();
     }
 
-    protected void increaseRowInSoldProducts(ProductRowModel row, double amount, boolean isSale) {
-        ReceiptRecordView equivalentReceiptRecordView = findEquivalentView(soldProductViewList, row);
+    protected void increaseRowInSoldProducts(ReceiptRecordView equivalentReceiptRecordView, double amount, boolean isSale) {
         ReceiptRecordView increasedRecord = receiptRecordService.increaseSoldQuantity(equivalentReceiptRecordView, amount, isSale);
         soldProductViewList.remove(equivalentReceiptRecordView);
         soldProductViewList.add(increasedRecord);

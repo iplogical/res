@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.waiter.controller.reservation;
 import com.inspirationlogical.receipt.waiter.controller.TestFXBase;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.*;
@@ -14,6 +15,7 @@ import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.ente
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.enterPaymentView;
 import static org.junit.Assert.assertEquals;
 
+@Ignore
 public class ReservationControllerTest extends TestFXBase {
 
     @Before

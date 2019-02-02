@@ -125,15 +125,44 @@ public class SaleControllerTest extends SaleViewTest {
 
     @Test
     public void testOrderDeliveredButton() {
-        selectCategory(AGGREGATE_ONE);
+        selectCategory(AGGREGATE_TOP_TWO);
+        selectCategory(AGGREGATE_TOP_ONE);
         sellProduct(PRODUCT_FIVE, 3);
+
+        selectCategory(AGGREGATE_TOP_TWO);
+        sellProduct(PRODUCT_EIGHT, 3);
+
         assertEquals("3.0 (3)", getSoldProductQuantityWithRecent(1));
-        clickButtonThenWait(ORDER_DELIVERED, 50);
+        assertEquals("3.0 (3)", getSoldProductQuantityWithRecent(2));
+
+        clickButtonThenWait(FOOD_DELIVERED, 50);
         enterSaleView(TABLE_NUMBER);
         assertEquals("3.0", getSoldProductQuantityWithRecent(1));
+        assertEquals("3.0 (3)", getSoldProductQuantityWithRecent(2));
+
+        clickButtonThenWait(DRINK_DELIVERED, 50);
+        enterSaleView(TABLE_NUMBER);
+
+        assertEquals("3.0", getSoldProductQuantityWithRecent(1));
+        assertEquals("3.0", getSoldProductQuantityWithRecent(2));
+
         clickOnThenWait(PRODUCT_FIVE_LONG, 50);
+        clickOnThenWait(PRODUCT_EIGHT_LONG, 50);
         assertEquals("4.0 (1)", getSoldProductQuantityWithRecent(1));
+        assertEquals("4.0 (1)", getSoldProductQuantityWithRecent(2));
+
+        clickButtonThenWait(DRINK_DELIVERED, 50);
+        enterSaleView(TABLE_NUMBER);
+        assertEquals("4.0 (1)", getSoldProductQuantityWithRecent(1));
+        assertEquals("4.0", getSoldProductQuantityWithRecent(2));
+
+        clickButtonThenWait(FOOD_DELIVERED, 50);
+        enterSaleView(TABLE_NUMBER);
+        assertEquals("4.0", getSoldProductQuantityWithRecent(1));
+        assertEquals("4.0", getSoldProductQuantityWithRecent(2));
+
         selectiveCancellation(PRODUCT_FIVE_LONG);
+        selectiveCancellation(PRODUCT_EIGHT_LONG);
     }
 
     @Test

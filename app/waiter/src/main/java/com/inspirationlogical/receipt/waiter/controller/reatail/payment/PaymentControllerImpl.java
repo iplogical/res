@@ -332,7 +332,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         } else {
             double amount = Double.parseDouble(row.getProductQuantity());
             amount = amount < 1 ? amount : 1;
-            increaseRowInSoldProducts(rowInSoldProducts.get(0), amount, false);
+            ReceiptRecordView equivalentReceiptRecordView = findEquivalentView(soldProductViewList, row);
+            increaseRowInSoldProducts(equivalentReceiptRecordView, amount, false);
             decreaseRowInPaidProducts(row, amount);
         }
         refreshPaidProductsTable();
@@ -409,7 +410,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void updateSoldProductsViewWithGameFee(ReceiptRecordView gameFee) {
-        Optional<ReceiptRecordView> matchingGameFeeOptional = findMatchingSoldProductOptional(new ProductRowModel(gameFee, getOrderDeliveredTime()));
+        Optional<ReceiptRecordView> matchingGameFeeOptional = findMatchingSoldProductOptional(new ProductRowModel(gameFee, getFoodDeliveredTime(), getDrinkDeliveredTime()));
         if (matchingGameFeeOptional.isPresent()) {
             ReceiptRecordView matchingGameFee = matchingGameFeeOptional.get();
             soldProductViewList.remove(matchingGameFee);

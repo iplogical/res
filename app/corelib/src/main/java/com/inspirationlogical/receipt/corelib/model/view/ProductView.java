@@ -1,14 +1,16 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
-import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
+import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
+import com.inspirationlogical.receipt.corelib.model.enums.*;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryFamily.FOOD;
+import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryFamily.initFamily;
 
 @Getter
 @ToString(exclude = "recipes")
@@ -29,6 +31,7 @@ public class ProductView implements AbstractView {
     private int minimumStock;
     private int stockWindow;
     private List<RecipeView> recipes;
+    private ProductCategoryFamily family;
 
     public ProductView(Product product) {
         id = product.getId();
@@ -46,6 +49,8 @@ public class ProductView implements AbstractView {
         minimumStock = product.getMinimumStock();
         stockWindow = product.getStockWindow();
         recipes = initRecipeViews(product);
+        family = initFamily(product);
+
     }
 
     private List<RecipeView> initRecipeViews(Product product) {

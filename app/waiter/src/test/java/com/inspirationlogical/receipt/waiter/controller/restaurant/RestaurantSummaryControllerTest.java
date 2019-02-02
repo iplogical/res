@@ -17,8 +17,7 @@ import static com.inspirationlogical.receipt.waiter.utility.RestaurantUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.*;
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@Ignore
 public class RestaurantSummaryControllerTest extends TestFXBase {
 
     private static final String TABLE_NUMBER = RESTAURANT_TEST_TABLE;

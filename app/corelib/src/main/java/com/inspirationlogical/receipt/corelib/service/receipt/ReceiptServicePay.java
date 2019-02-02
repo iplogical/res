@@ -10,11 +10,13 @@ import com.inspirationlogical.receipt.corelib.params.ReceiptRecordPrintModel;
 import com.inspirationlogical.receipt.corelib.printing.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
+import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import com.inspirationlogical.receipt.corelib.utility.Round;
 import com.inspirationlogical.receipt.corelib.utility.RoundingLogic;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +37,9 @@ public class ReceiptServicePay {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     @Autowired
     private VATService vatService;
@@ -245,6 +250,7 @@ public class ReceiptServicePay {
             ReceiptRecord newRecord = ReceiptRecord.cloneReceiptRecord(record);
             newRecord.setSoldQuantity(Round.roundToTwoDecimals(newRecord.getSoldQuantity() * partialValue));
             newRecord.setOwner(partialReceipt);
+            newRecord.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(newRecord).build());
             partialReceipt.getRecords().add(newRecord);
             newRecord.setProduct(record.getProduct());
         });
@@ -295,5 +301,28 @@ public class ReceiptServicePay {
         receiptPrintModel.setTotalPriceNoServiceFee(getSumValue(openReceipt, this::calculateSaleGrossPrice));
         receiptPrintModel.setReceiptNote("");
         receiptPrinter.printReceipt(receiptPrintModel);
+    }
+
+    void printAggregatedReceipt(Receipt aggregatedReceipt) {
+        Restaurant restaurant = restaurantRepository.findAll().get(0);
+        ReceiptPrintModel receiptPrintModel = buildReceiptPrintModel(aggregatedReceipt, restaurant);
+        List<ReceiptRecordPrintModel> receiptRecordPrintModels = aggregatedReceipt.getRecords().stream()
+                .map(this::buildReceiptRecordPrintModel).collect(Collectors.toList());
+        receiptPrintModel.getReceiptRecordsPrintModels().addAll(receiptRecordPrintModels);
+
+        receiptPrintModel.setClosureTime(now());
+        receiptPrintModel.setPaymentMethod("Napi Összesítő");
+        receiptPrintModel.setTotalPriceNoServiceFee(getTotalPriceForAggregated(aggregatedReceipt));
+        receiptPrintModel.setServiceFee(0);
+        receiptPrintModel.setServiceFeePercent(0);
+        receiptPrintModel.setReceiptNote("");
+        receiptPrinter.printReceipt(receiptPrintModel);
+    }
+
+    private int getTotalPriceForAggregated(Receipt aggregatedReceipt) {
+        return (int) aggregatedReceipt.getRecords().stream()
+                .filter(receiptRecord -> receiptRecord.getProduct()!= null)
+                .mapToDouble(receiptRecord -> receiptRecord.getSalePrice() * receiptRecord.getSoldQuantity())
+                .sum();
     }
 }

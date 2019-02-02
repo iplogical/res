@@ -155,17 +155,31 @@ public class TableControllerImpl implements TableController {
     }
 
     @Override
-    public void setOrderDelivered(boolean delivered) {
-        tableView = tableServiceConfig.setOrderDelivered(tableView.getNumber(), delivered);
+    public void setFoodDelivered(boolean delivered) {
+        tableView = tableServiceConfig.setFoodDelivered(tableView.getNumber(), delivered);
         if (delivered) {
             LocalDateTime now = LocalDateTime.now();
-            tableView = tableServiceConfig.setOrderDeliveredTime(tableView.getNumber(), now);
+            tableView = tableServiceConfig.setFoodDeliveryTime(tableView.getNumber(), now);
         }
     }
 
     @Override
-    public LocalDateTime getOrderDeliveryTime() {
-        return tableView.getOrderDeliveryTime();
+    public LocalDateTime getFoodDeliveryTime() {
+        return tableView.getFoodDeliveryTime();
+    }
+
+    @Override
+    public void setDrinkDelivered(boolean delivered) {
+        tableView = tableServiceConfig.setDrinkDelivered(tableView.getNumber(), delivered);
+        if (delivered) {
+            LocalDateTime now = LocalDateTime.now();
+            tableView = tableServiceConfig.setDrinkDeliveryTime(tableView.getNumber(), now);
+        }
+    }
+
+    @Override
+    public LocalDateTime getDrinkDeliveryTime() {
+        return tableView.getDrinkDeliveryTime();
     }
 
     @FXML

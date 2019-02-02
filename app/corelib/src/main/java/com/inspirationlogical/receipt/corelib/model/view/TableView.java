@@ -28,6 +28,9 @@ public class TableView {
     private int height;
     private int width;
 
-    private boolean orderDelivered;
-    private LocalDateTime orderDeliveryTime;
+    private boolean foodDelivered;
+    private LocalDateTime foodDeliveryTime;
+
+    private boolean drinkDelivered;
+    private LocalDateTime drinkDeliveryTime;
 }
