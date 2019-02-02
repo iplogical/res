@@ -53,7 +53,7 @@ public class ReceiptPdfCreatorTest {
                 .restaurantSocialMediaInfo("facebook.com/gameuppub")
                 .restaurantWebsite("www.gameup.hu")
                 .receiptRecordsPrintModels(new ArrayList<>())
-                .totalPrice(2680)
+                .totalPriceNoServiceFee(2680)
                 .totalDiscount(0) // TODO
                 .discountedTotalPrice(2680)
                 .roundedTotalPrice(2680)

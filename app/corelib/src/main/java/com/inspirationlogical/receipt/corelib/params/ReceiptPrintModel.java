@@ -21,7 +21,10 @@ public class ReceiptPrintModel {
     private List<ReceiptRecordPrintModel> receiptRecordsPrintModels;
 
     private String receiptType;
-    private int totalPrice;
+    private int totalPriceNoServiceFee;
+    private int serviceFee;
+    private int serviceFeePercent;
+    private int totalPriceWithServiceFee;
     private int totalDiscount;
     private int discountedTotalPrice;
     private int roundedTotalPrice;

@@ -480,13 +480,13 @@ public class BuildTestSchema {
                 .companyTaxPayerId("1-42-6518879")
                 .companyAddress(buildDefaultAddress())
                 .restaurantAddress(buildDefaultAddress())
-                .receiptNote("A végösszeg 8 % szervíz díjat tartalmaz.")
+                .receiptNote("A végösszeg 8 % szervízdíjat tartalmaz.")
                 .receiptGreet("Köszönjük, hogy a vendégünk volt!")
                 .socialMediaInfo("facebook.com/gameuppub")
                 .webSite("http://www.gameup.hu")
-                .receiptDisclaimer("Nem adóügyi bizonylat. Készpénz átvételére nem jogosít.")
+                .receiptDisclaimer("Nem adóügyi bizonylat.\n Készpénz átvételére nem jogosít.")
                 .phoneNumber("+36 30/287-87-66")
-                .serviceFee(8)
+                .serviceFeePercent(8)
                 .build();
      }
 
@@ -724,8 +724,8 @@ public class BuildTestSchema {
 
     private void buildServiceFeeProduct() {
         productServiceFee = Product.builder()
-                .longName("Szervíz díj / Service fee")
-                .shortName("Szervíz díj / Service fee")
+                .longName("Szervízdíj / Service fee")
+                .shortName("Szervízdíj / Service fee")
                 .salePrice(0)
                 .purchasePrice(0)
                 .status(ProductStatus.ACTIVE)

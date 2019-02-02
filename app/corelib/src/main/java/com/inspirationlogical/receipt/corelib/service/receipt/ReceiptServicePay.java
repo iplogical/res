@@ -112,6 +112,7 @@ public class ReceiptServicePay {
                 .soldQuantity(1)
                 .purchasePrice(0)
                 .salePrice(serviceFeeTotal)
+                .originalSalePrice(serviceFeeTotal)
                 .VAT(vatService.getVatByName(ReceiptRecordType.HERE).getVAT())
                 .createdList(new ArrayList<>())
                 .build();
@@ -123,7 +124,7 @@ public class ReceiptServicePay {
                 .filter(receiptRecord -> !receiptRecord.getProduct().getType().equals(ProductType.AD_HOC_PRODUCT))
                 .mapToDouble(receiptRecord -> receiptRecord.getSalePrice() * receiptRecord.getSoldQuantity())
                 .sum();
-        double serviceFeePercent = receipt.getOwner().getOwner().getServiceFee();
+        double serviceFeePercent = receipt.getOwner().getOwner().getServiceFeePercent();
         return (int) Math.round(serviceFeeBase * (serviceFeePercent / 100D));
     }
 
@@ -144,6 +145,10 @@ public class ReceiptServicePay {
     }
 
     private ReceiptPrintModel buildReceiptPrintModel(Receipt receipt, Restaurant restaurant) {
+        Optional<ReceiptRecord> serviceFeeRecordOptional = receipt.getRecords().stream()
+                .filter(receiptRecord -> receiptRecord.getProduct().getType().equals(ProductType.SERVICE_FEE_PRODUCT))
+                .findFirst();
+        int serviceFee = serviceFeeRecordOptional.map(ReceiptRecord::getSalePrice).orElse(0);
         return ReceiptPrintModel.builder()
                 .restaurantName(restaurant.getRestaurantName())
                 .restaurantAddress(getRestaurantAddress(restaurant.getRestaurantAddress()))
@@ -152,7 +157,10 @@ public class ReceiptServicePay {
                 .restaurantPhoneNumber(restaurant.getPhoneNumber())
                 .receiptRecordsPrintModels(new ArrayList<>())
                 .receiptType(receipt.getType().toString().toUpperCase())
-                .totalPrice(receipt.getSumSaleGrossOriginalPrice())
+                .totalPriceNoServiceFee(receipt.getSumSaleGrossOriginalPrice() - serviceFee)
+                .serviceFee(serviceFee)
+                .serviceFeePercent(restaurant.getServiceFeePercent())
+                .totalPriceWithServiceFee(receipt.getSumSaleGrossOriginalPrice())
                 .totalDiscount(receipt.getSumSaleGrossOriginalPrice() - receipt.getSumSaleGrossPrice())
                 .discountedTotalPrice(receipt.getSumSaleGrossPrice())
                 .roundedTotalPrice(calculateRoundedTotalPrice(receipt))
@@ -175,6 +183,7 @@ public class ReceiptServicePay {
 
     private List<ReceiptRecordPrintModel> buildReceiptRecordPrintModels(Receipt receipt) {
         return receipt.getRecords().stream()
+                .filter(receiptRecord -> !receiptRecord.getProduct().getType().equals(ProductType.SERVICE_FEE_PRODUCT))
                 .map(this::buildReceiptRecordPrintModel).collect(Collectors.toList());
     }
 
