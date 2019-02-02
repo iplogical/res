@@ -20,7 +20,7 @@ public class PaymentControllerTest  extends TestFXBase {
     private static final String TABLE_NUMBER = PAYMENT_TEST_TABLE;
 
     @Before
-    public void setUpPaymentControllerTest() throws Exception {
+    public void setUpPaymentControllerTest() {
         openTable(TABLE_NUMBER);
         clickOnThenWait(TABLE_NUMBER, 200);
         selectCategory(AGGREGATE_ONE);
@@ -420,7 +420,7 @@ public class PaymentControllerTest  extends TestFXBase {
         assertNumberOfSoldProducts(3);
         assertSoldProduct(3, GAME_FEE, 3, 300, 900);
 
-        clickButtonThenWait(TO_SALE, 500);
+        backToSaleView();
         selectiveCancellation(GAME_FEE);
         sellAdHocProduct("Test", 1, 500, 879);
         clickOnThenWait(TO_PAYMENT, 200);
@@ -431,7 +431,7 @@ public class PaymentControllerTest  extends TestFXBase {
         assertNumberOfSoldProducts(4);
         assertSoldProduct(4, GAME_FEE, 1, 300, 300);
 
-        clickButtonThenWait(TO_SALE, 500);
+        backToSaleView();
         selectiveCancellation(GAME_FEE);
         selectiveCancellation("Test");
         sellAdHocProduct("Test", 1, 500, 880);
@@ -471,19 +471,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    public void testBackToSaleView() {
-        clickButtonThenWait(TO_SALE, 500);
-        clickOnThenWait(TO_PAYMENT, 200);
-    }
-
-    @Test
-    public void testBackToRestaurantView() {
-        backToRestaurantView();
-        enterSaleView(TABLE_NUMBER);
-        enterPaymentView();
-    }
-
-    @Test
     public void testClearInputFieldsWhenEnterThePaymentView() {
         setDiscountValue("50");
         setPartialPaymentValue(1.5);
@@ -515,6 +502,24 @@ public class PaymentControllerTest  extends TestFXBase {
         assertSoldProduct(2, PRODUCT_THREE_LONG, 2, 2900, 5800);
         assertSoldProduct(3, PRODUCT_SERVICE_FEE, 1, 570, 570);
         enterPaymentView();
+    }
+
+    @Test
+    public void testReceiptRecordsMergedWhenLeaveThePaymentView() {
+        paySingle(1);
+        assertSoldProductFive(1, 2);
+        assertPaidProductFive(1, 1);
+        backToRestaurantView();
+        enterSaleView(TABLE_NUMBER);
+        assertSoldProductFive(1, 3);
+        enterPaymentView();
+        paySingle(1);
+        assertSoldProductFive(1, 2);
+        assertPaidProductFive(1, 1);
+        backToSaleView();
+        assertSoldProductFive(1, 3);
+        enterPaymentView();
+        assertSoldProductFive(1, 3);
     }
 
     @After

@@ -135,4 +135,8 @@ public class PayUtils  extends AbstractUtils {
     public static void clickOnServiceFee() {
         clickButtonThenWait(SERVICE_FEE_BUTTON, 100);
     }
+
+    public static void backToSaleView() {
+        clickButtonThenWait(TO_SALE, 500);
+    }
 }

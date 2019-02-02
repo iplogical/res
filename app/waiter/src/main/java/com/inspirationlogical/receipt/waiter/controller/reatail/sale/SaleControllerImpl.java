@@ -172,7 +172,6 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     @FXML
     public void onToPaymentView(Event event) {
         logger.info("Entering the payment view for table: " + tableView.toString());
-        receiptService.mergeReceiptRecords(receiptView);
         paymentController.setTableView(tableView);
         WaiterApp.showView(PaymentFxmlView.class);
         paymentController.enterPaymentView();

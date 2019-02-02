@@ -102,7 +102,6 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
     @FXML
     public void onBackToRestaurantView(Event event) {
         logger.info("Back to restaurant view from table: " + tableView.toString());
-        receiptService.mergeReceiptRecords(receiptView);
         backToRestaurantView();
     }
 

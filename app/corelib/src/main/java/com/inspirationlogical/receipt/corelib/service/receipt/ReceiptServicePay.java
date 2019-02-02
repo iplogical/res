@@ -174,7 +174,8 @@ public class ReceiptServicePay {
     }
 
     private List<ReceiptRecordPrintModel> buildReceiptRecordPrintModels(Receipt receipt) {
-        return receipt.getRecords().stream().map(this::buildReceiptRecordPrintModel).collect(Collectors.toList());
+        return receipt.getRecords().stream()
+                .map(this::buildReceiptRecordPrintModel).collect(Collectors.toList());
     }
 
     private ReceiptRecordPrintModel buildReceiptRecordPrintModel(ReceiptRecord record) {
