@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryController">
+
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.inspirationlogical.receipt.waiter.controller.dailysummary.DailySummaryController">
     <stylesheets>
-        <URL value="@../css/Common.css"/>
+        <URL value="@../css/Common.css" />
     </stylesheets>
     <center>
         <AnchorPane fx:id="centrer" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <SplitPane dividerPositions="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <SplitPane dividerPositions="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                             <children>
-                                <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0"
-                                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                      AnchorPane.topAnchor="0.0">
+                                <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <AnchorPane>
                                             <children>
@@ -29,48 +27,34 @@
                                                     <children>
                                                         <AnchorPane>
                                                             <children>
-                                                                <Label fx:id="tableName" alignment="CENTER"
-                                                                       textAlignment="CENTER"
-                                                                       AnchorPane.bottomAnchor="0.0"
-                                                                       AnchorPane.leftAnchor="0.0"
-                                                                       AnchorPane.rightAnchor="0.0"
-                                                                       AnchorPane.topAnchor="0.0">
+                                                                <Label fx:id="tableName" alignment="CENTER" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                     <font>
-                                                                        <Font name="System Bold" size="16.0"/>
+                                                                        <Font name="System Bold" size="16.0" />
                                                                     </font>
                                                                 </Label>
                                                             </children>
                                                         </AnchorPane>
                                                         <AnchorPane>
                                                             <children>
-                                                                <Label fx:id="tableNumber" alignment="CENTER"
-                                                                       textAlignment="CENTER"
-                                                                       AnchorPane.bottomAnchor="0.0"
-                                                                       AnchorPane.leftAnchor="0.0"
-                                                                       AnchorPane.rightAnchor="0.0"
-                                                                       AnchorPane.topAnchor="0.0">
+                                                                <Label fx:id="tableNumber" alignment="CENTER" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                     <font>
-                                                                        <Font size="24.0"/>
+                                                                        <Font size="24.0" />
                                                                     </font>
                                                                 </Label>
                                                             </children>
                                                         </AnchorPane>
                                                         <AnchorPane>
                                                             <children>
-                                                                <Label fx:id="totalPrice" alignment="CENTER"
-                                                                       AnchorPane.bottomAnchor="0.0"
-                                                                       AnchorPane.leftAnchor="0.0"
-                                                                       AnchorPane.rightAnchor="0.0"
-                                                                       AnchorPane.topAnchor="0.0">
+                                                                <Label fx:id="totalPrice" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                     <font>
-                                                                        <Font size="36.0"/>
+                                                                        <Font size="36.0" />
                                                                     </font>
                                                                 </Label>
                                                             </children>
                                                         </AnchorPane>
                                                         <AnchorPane>
                                                             <children>
-                                                                <Label fx:id="note"/>
+                                                                <Label fx:id="note" />
                                                             </children>
                                                         </AnchorPane>
                                                     </children>
@@ -79,14 +63,10 @@
                                         </AnchorPane>
                                         <TableView fx:id="soldProductsTable" prefHeight="640.0" prefWidth="458.0">
                                             <columns>
-                                                <TableColumn fx:id="productName" prefWidth="180.0"
-                                                             text="%SaleView.ProductName"/>
-                                                <TableColumn fx:id="productQuantity" minWidth="0.0" prefWidth="100.0"
-                                                             text="%SaleView.ProductQuantity"/>
-                                                <TableColumn fx:id="productUnitPrice"
-                                                             text="%SaleView.ProductUnitPrice"/>
-                                                <TableColumn fx:id="productTotalPrice"
-                                                             text="%SaleView.ProductTotalPrice"/>
+                                                <TableColumn fx:id="productName" prefWidth="180.0" text="%SaleView.ProductName" />
+                                                <TableColumn fx:id="productQuantity" minWidth="0.0" prefWidth="100.0" text="%SaleView.ProductQuantity" />
+                                                <TableColumn fx:id="productUnitPrice" text="%SaleView.ProductUnitPrice" />
+                                                <TableColumn fx:id="productTotalPrice" text="%SaleView.ProductTotalPrice" />
                                             </columns>
                                         </TableView>
                                     </children>
@@ -95,108 +75,98 @@
                         </AnchorPane>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                             <children>
-                                <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0"
-                                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                      AnchorPane.topAnchor="0.0">
+                                <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <VBox>
                                             <children>
                                                 <HBox prefWidth="200.0" spacing="5.0">
                                                     <children>
-                                                        <Label prefWidth="100.0" text="%DailySummary.OpenConsumption"/>
-                                                        <Label fx:id="openConsumption" alignment="CENTER_RIGHT"
-                                                               contentDisplay="RIGHT" prefWidth="60.0"/>
-                                                        <Label text="Ft"/>
+                                                        <Label prefWidth="100.0" text="%DailySummary.OpenConsumption" />
+                                                        <Label fx:id="openConsumption" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="60.0" />
+                                                        <Label text="Ft" />
+                                          <Label prefWidth="150.0" text="%DailySummary.ProductDiscount" />
+                                          <Label fx:id="productDiscount" prefWidth="60.0" />
+                                          <Label text="Ft" />
                                                     </children>
                                                     <VBox.margin>
-                                                        <Insets/>
+                                                        <Insets />
                                                     </VBox.margin>
                                                 </HBox>
-                                                <HBox prefWidth="150.0" spacing="5.0" AnchorPane.bottomAnchor="0.0"
-                                                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                      AnchorPane.topAnchor="0.0">
+                                                <HBox prefWidth="150.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <children>
-                                                        <Label prefWidth="100.0" text="%Common.Cash"/>
-                                                        <Label fx:id="cashTotalPrice" alignment="CENTER_RIGHT"
-                                                               contentDisplay="RIGHT" prefWidth="60.0"
-                                                               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                                               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <Label prefWidth="100.0" text="%Common.Cash" />
+                                                        <Label fx:id="cashTotalPrice" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                             <font>
-                                                                <Font name="System Bold" size="16.0"/>
+                                                                <Font name="System Bold" size="16.0" />
                                                             </font>
                                                         </Label>
-                                                        <Label text="Ft"/>
+                                                        <Label text="Ft" />
+                                          <Label prefWidth="150.0" text="%DailySummary.TableDiscount" />
+                                          <Label fx:id="tableDiscount" prefWidth="60.0" />
+                                          <Label text="Ft" />
                                                     </children>
                                                 </HBox>
-                                                <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0"
-                                                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                      AnchorPane.topAnchor="0.0">
+                                                <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <children>
-                                                        <Label prefWidth="100.0" text="%Common.CreditCard"/>
-                                                        <Label fx:id="creditCardTotalPrice" alignment="CENTER_RIGHT"
-                                                               contentDisplay="RIGHT" prefWidth="60.0"
-                                                               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                                               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <Label prefWidth="100.0" text="%Common.CreditCard" />
+                                                        <Label fx:id="creditCardTotalPrice" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                             <font>
-                                                                <Font size="24.0"/>
+                                                                <Font size="24.0" />
                                                             </font>
                                                         </Label>
-                                                        <Label text="Ft"/>
+                                                        <Label text="Ft" />
+                                          <Label prefWidth="150.0" text="%DailySummary.TotalDiscount" />
+                                          <Label fx:id="totalDiscount" prefWidth="60.0" />
+                                          <Label text="Ft" />
                                                     </children>
                                                 </HBox>
-                                                <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0"
-                                                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                      AnchorPane.topAnchor="0.0">
+                                                <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <children>
-                                                        <Label prefWidth="100.0" text="%Common.Coupon"/>
-                                                        <Label fx:id="couponTotalPrice" alignment="CENTER_RIGHT"
-                                                               contentDisplay="RIGHT" prefWidth="60.0"
-                                                               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                                               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <Label prefWidth="100.0" text="%Common.Coupon" />
+                                                        <Label fx:id="couponTotalPrice" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                             <font>
-                                                                <Font size="36.0"/>
+                                                                <Font size="36.0" />
                                                             </font>
                                                         </Label>
-                                                        <Label text="Ft"/>
+                                                        <Label text="Ft" />
                                                     </children>
                                                 </HBox>
                                                 <HBox prefWidth="200.0" spacing="5.0">
                                                     <children>
-                                                        <Label prefWidth="100.0" text="%DailySummary.TotalPrice"/>
-                                                        <Label fx:id="dailySummaryTotalPrice" alignment="CENTER_RIGHT"
-                                                               contentDisplay="RIGHT" prefWidth="60.0"/>
-                                                        <Label text="Ft"/>
+                                                        <Label prefWidth="100.0" text="%DailySummary.TotalPrice" />
+                                                        <Label fx:id="dailySummaryTotalPrice" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="60.0" />
+                                                        <Label text="Ft" />
                                                     </children>
                                                 </HBox>
-                                                <Separator/>
+                                                <Separator />
                                                 <HBox spacing="5.0">
                                                     <children>
-                                                        <Label text="%DailySummary.StartDate"/>
-                                                        <Label fx:id="startDateValue"/>
+                                                        <Label text="%DailySummary.StartDate" />
+                                                        <Label fx:id="startDateValue" />
                                                     </children>
                                                 </HBox>
                                                 <HBox fx:id="startDateContainer" prefHeight="100.0" prefWidth="200.0">
                                                     <VBox.margin>
-                                                        <Insets top="10.0"/>
+                                                        <Insets top="10.0" />
                                                     </VBox.margin>
                                                 </HBox>
                                                 <HBox spacing="5.0">
                                                     <children>
-                                                        <Label text="%DailySummary.EndDate"/>
-                                                        <Label fx:id="endDateValue"/>
+                                                        <Label text="%DailySummary.EndDate" />
+                                                        <Label fx:id="endDateValue" />
                                                     </children>
                                                 </HBox>
                                                 <HBox fx:id="endDateContainer" prefHeight="100.0" prefWidth="200.0">
                                                     <VBox.margin>
-                                                        <Insets top="10.0"/>
+                                                        <Insets top="10.0" />
                                                     </VBox.margin>
                                                 </HBox>
                                             </children>
                                             <VBox.margin>
-                                                <Insets top="5.0"/>
+                                                <Insets top="5.0" />
                                             </VBox.margin>
                                             <padding>
-                                                <Insets left="10.0"/>
+                                                <Insets left="10.0" />
                                             </padding>
                                         </VBox>
                                     </children>
@@ -211,38 +181,33 @@
     <right>
         <VBox fx:id="left" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="printDailyConsumption" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                        onAction="#onPrintDailyConsumption" text="%DailySummary.PrintDailyConsumption"/>
-                <Button fx:id="backToRestaurantView" alignment="CENTER" contentDisplay="CENTER"
-                        maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView"
-                        text="%Common.BackToRestaurantView" textAlignment="CENTER">
+                <Button fx:id="printDailyConsumption" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPrintDailyConsumption" text="%DailySummary.PrintDailyConsumption" />
+                <Button fx:id="backToRestaurantView" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%Common.BackToRestaurantView" textAlignment="CENTER">
                     <VBox.margin>
-                        <Insets top="340.0"/>
+                        <Insets top="340.0" />
                     </VBox.margin>
                 </Button>
             </children>
             <padding>
-                <Insets left="5.0" top="5.0"/>
+                <Insets left="5.0" top="5.0" />
             </padding>
         </VBox>
     </right>
     <padding>
-        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
     </padding>
     <top>
         <AnchorPane BorderPane.alignment="CENTER">
             <children>
-                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;"
-                       text="%DailySummary.Title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #e3e3e3;" text="%DailySummary.Title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <font>
-                        <Font size="16.0"/>
+                        <Font size="16.0" />
                     </font>
                 </Label>
-                <Label fx:id="liveTime" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="100.0"
-                       AnchorPane.rightAnchor="0.0"/>
+                <Label fx:id="liveTime" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="100.0" AnchorPane.rightAnchor="0.0" />
             </children>
             <BorderPane.margin>
-                <Insets bottom="5.0"/>
+                <Insets bottom="5.0" />
             </BorderPane.margin>
         </AnchorPane>
     </top>

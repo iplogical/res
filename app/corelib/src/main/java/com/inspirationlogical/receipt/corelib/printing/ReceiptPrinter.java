@@ -5,4 +5,6 @@ import com.inspirationlogical.receipt.corelib.params.ReceiptPrintModel;
 public interface ReceiptPrinter {
 
     void printReceipt(ReceiptPrintModel receiptPrintModel);
+
+    void printAggregatedReceipt(ReceiptPrintModel receiptPrintModel);
 }

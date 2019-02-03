@@ -21,7 +21,6 @@ public class ReceiptPrintModel {
 
     private List<ReceiptRecordPrintModel> receiptRecordsPrintModels;
 
-    private String receiptType;
     @Setter
     private int totalPriceNoServiceFee;
     @Setter
@@ -32,6 +31,14 @@ public class ReceiptPrintModel {
     private int totalDiscount;
     private int discountedTotalPrice;
     private int roundedTotalPrice;
+
+    private int consumptionCash;
+    private int consumptionCreditCard;
+    private int consumptionCoupon;
+    private int openConsumption;
+    private int totalConsumption;
+    private int productDiscount;
+    private int tableDiscount;
 
     @Setter
     private String paymentMethod;

@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller.dailysummary;
 
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.view.DailyConsumptionModel;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyConsumptionService;
@@ -45,6 +46,15 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     private Label couponTotalPrice;
     @FXML
     private Label dailySummaryTotalPrice;
+
+    @FXML
+    private Label productDiscount;
+
+    @FXML
+    private Label tableDiscount;
+
+    @FXML
+    private Label totalDiscount;
 
     @FXML
     private Label startDateValue;
@@ -106,14 +116,8 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
         List<LocalDateTime> closureTimes = dailyClosureService.getClosureTimes(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
         startDateValue.setText(closureTimes.get(0).toString());
         endDateValue.setText(closureTimes.get(1).toString());
-        getSoldProductsAndRefreshTable();
     }
 
-    @Override
-    protected Collection<ReceiptRecordView> getSoldProducts() {
-        receiptView = dailyConsumptionService.getAggregatedReceipt(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
-        return receiptView.getSoldProducts();
-    }
 
     @Override
     protected LocalDateTime getFoodDeliveredTime() {
@@ -124,7 +128,6 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     protected LocalDateTime getDrinkDeliveredTime() {
         return now();
     }
-
     @Override
     protected void onSoldProductsRowClick(ProductRowModel row) {}
 
@@ -134,20 +137,25 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     }
 
     @Override
-    public void updatePriceFields() {
-        Map<PaymentMethod, Integer> dailyConsumptionMap = dailyConsumptionService.getConsumptionOfTheDay();
-        cashTotalPrice.setText(String.valueOf(dailyConsumptionMap.get(PaymentMethod.CASH)));
-        creditCardTotalPrice.setText(String.valueOf(dailyConsumptionMap.get(PaymentMethod.CREDIT_CARD)));
-        couponTotalPrice.setText(String.valueOf(dailyConsumptionMap.get(PaymentMethod.COUPON)));
-        int openConsumptionValue = dailyConsumptionService.getOpenConsumption();
-        openConsumption.setText(String.valueOf(openConsumptionValue));
-        int totalPriceInt  = dailyConsumptionMap.values().stream().mapToInt(Integer::intValue).sum() + openConsumptionValue;
-        dailySummaryTotalPrice.setText(String.valueOf(totalPriceInt));
-        getSoldProductsAndRefreshTable();
+    public void enter() {
+        DailyConsumptionModel dailyConsumptionModel =
+                dailyConsumptionService.getDailyConsumptionModel(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
+        cashTotalPrice.setText(String.valueOf(dailyConsumptionModel.getConsumptionCash()));
+        creditCardTotalPrice.setText(String.valueOf(dailyConsumptionModel.getConsumptionCreditCard()));
+        couponTotalPrice.setText(String.valueOf(dailyConsumptionModel.getConsumptionCoupon()));
+        openConsumption.setText(String.valueOf(dailyConsumptionModel.getOpenConsumption()));
+        dailySummaryTotalPrice.setText(String.valueOf(dailyConsumptionModel.getTotalConsumption()));
+        productDiscount.setText(String.valueOf(dailyConsumptionModel.getProductDiscount()));
+        tableDiscount.setText(String.valueOf(dailyConsumptionModel.getTableDiscount()));
+        totalDiscount.setText(String.valueOf(dailyConsumptionModel.getTotalDiscount()));
+        soldProductViewList = dailyConsumptionModel.getSoldProducts();
+        refreshSoldProductsTable();
     }
 
     @FXML
     public void onPrintDailyConsumption(Event event) {
-        dailyConsumptionService.printAggregatedConsumption(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
+        DailyConsumptionModel dailyConsumptionModel =
+                dailyConsumptionService.getDailyConsumptionModel(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
+        dailyConsumptionService.printAggregatedConsumption(dailyConsumptionModel);
     }
 }

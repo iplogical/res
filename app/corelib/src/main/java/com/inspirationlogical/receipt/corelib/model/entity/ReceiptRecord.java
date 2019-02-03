@@ -70,6 +70,7 @@ class ReceiptRecord extends AbstractEntity {
         newRecord.setAbsoluteQuantity(record.getAbsoluteQuantity());
         newRecord.setPurchasePrice(record.getPurchasePrice());
         newRecord.setSalePrice(record.getSalePrice());
+        newRecord.setOriginalSalePrice(record.getOriginalSalePrice());
         newRecord.setVAT(record.getVAT());
         newRecord.setDiscountPercent(record.getDiscountPercent());
         newRecord.setCreatedList(new ArrayList<>());

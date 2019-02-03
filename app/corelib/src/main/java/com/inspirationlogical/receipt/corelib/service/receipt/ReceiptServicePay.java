@@ -2,6 +2,7 @@ package com.inspirationlogical.receipt.corelib.service.receipt;
 
 import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
+import com.inspirationlogical.receipt.corelib.model.view.DailyConsumptionModel;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
@@ -161,7 +162,6 @@ public class ReceiptServicePay {
                 .restaurantWebsite(restaurant.getWebSite())
                 .restaurantPhoneNumber(restaurant.getPhoneNumber())
                 .receiptRecordsPrintModels(new ArrayList<>())
-                .receiptType(receipt.getType().toString().toUpperCase())
                 .totalPriceNoServiceFee(receipt.getSumSaleGrossOriginalPrice() - serviceFee)
                 .serviceFee(serviceFee)
                 .serviceFeePercent(restaurant.getServiceFeePercent())
@@ -303,26 +303,57 @@ public class ReceiptServicePay {
         receiptPrinter.printReceipt(receiptPrintModel);
     }
 
-    void printAggregatedReceipt(Receipt aggregatedReceipt) {
+    void printAggregatedReceipt(DailyConsumptionModel dailyConsumptionModel) {
         Restaurant restaurant = restaurantRepository.findAll().get(0);
-        ReceiptPrintModel receiptPrintModel = buildReceiptPrintModel(aggregatedReceipt, restaurant);
-        List<ReceiptRecordPrintModel> receiptRecordPrintModels = aggregatedReceipt.getRecords().stream()
-                .map(this::buildReceiptRecordPrintModel).collect(Collectors.toList());
+        ReceiptPrintModel receiptPrintModel = buildReceiptPrintModelForDailyConsumption(dailyConsumptionModel, restaurant);
+        List<ReceiptRecordPrintModel> receiptRecordPrintModels = dailyConsumptionModel.getSoldProducts().stream()
+                .map(this::buildReceiptRecordPrintModel)
+                .sorted(Comparator.comparing(ReceiptRecordPrintModel::getSoldQuantity).reversed())
+                .collect(Collectors.toList());
         receiptPrintModel.getReceiptRecordsPrintModels().addAll(receiptRecordPrintModels);
 
         receiptPrintModel.setClosureTime(now());
         receiptPrintModel.setPaymentMethod("Napi Összesítő");
-        receiptPrintModel.setTotalPriceNoServiceFee(getTotalPriceForAggregated(aggregatedReceipt));
-        receiptPrintModel.setServiceFee(0);
-        receiptPrintModel.setServiceFeePercent(0);
         receiptPrintModel.setReceiptNote("");
-        receiptPrinter.printReceipt(receiptPrintModel);
+        receiptPrinter.printAggregatedReceipt(receiptPrintModel);
     }
 
-    private int getTotalPriceForAggregated(Receipt aggregatedReceipt) {
-        return (int) aggregatedReceipt.getRecords().stream()
-                .filter(receiptRecord -> receiptRecord.getProduct()!= null)
-                .mapToDouble(receiptRecord -> receiptRecord.getSalePrice() * receiptRecord.getSoldQuantity())
-                .sum();
+    private ReceiptPrintModel buildReceiptPrintModelForDailyConsumption(DailyConsumptionModel dailyConsumptionModel, Restaurant restaurant) {
+        return ReceiptPrintModel.builder()
+                .restaurantName(restaurant.getRestaurantName())
+                .restaurantAddress(getRestaurantAddress(restaurant.getRestaurantAddress()))
+                .restaurantSocialMediaInfo(restaurant.getSocialMediaInfo())
+                .restaurantWebsite(restaurant.getWebSite())
+                .restaurantPhoneNumber(restaurant.getPhoneNumber())
+                .receiptRecordsPrintModels(new ArrayList<>())
+                .totalPriceNoServiceFee(dailyConsumptionModel.getTotalConsumption())
+                .serviceFee(0)
+                .serviceFeePercent(0)
+
+                .consumptionCash(dailyConsumptionModel.getConsumptionCash())
+                .consumptionCreditCard(dailyConsumptionModel.getConsumptionCreditCard())
+                .consumptionCoupon(dailyConsumptionModel.getConsumptionCoupon())
+                .openConsumption(dailyConsumptionModel.getOpenConsumption())
+                .totalConsumption(dailyConsumptionModel.getTotalConsumption())
+
+                .productDiscount(dailyConsumptionModel.getProductDiscount())
+                .tableDiscount(dailyConsumptionModel.getTableDiscount())
+                .totalDiscount(dailyConsumptionModel.getTotalDiscount())
+                .receiptDisclaimer(restaurant.getReceiptDisclaimer())
+                .receiptNote(restaurant.getReceiptNote())
+                .receiptGreet(restaurant.getReceiptGreet())
+                .closureTime(dailyConsumptionModel.getEndTime())
+                .receiptId(-1)
+                .build();
+    }
+
+    private ReceiptRecordPrintModel buildReceiptRecordPrintModel(ReceiptRecordView record) {
+        return ReceiptRecordPrintModel.builder()
+                .productName(record.getName())
+                .soldQuantity(record.getSoldQuantity())
+                .productPrice(record.getSalePrice())
+                .totalPrice(record.getTotalPrice())
+                .discount(record.getDiscountPercent() != 0)
+                .build();
     }
 }

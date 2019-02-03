@@ -43,6 +43,16 @@ public class ReceiptPrinterImpl implements ReceiptPrinter {
         });
     }
 
+    @Override
+    public void printAggregatedReceipt(ReceiptPrintModel receiptPrintModel) {
+        BackgroundThread.execute(() -> {
+            logger.info("Start printing of the the receipt: " + receiptPrintModel);
+            byte[] receiptPdf = receiptPdfCreator.createAggregatedReceiptPdf(receiptPrintModel);
+            printPdf(receiptPdf);
+            logger.info("Printing executed successfully");
+        });
+    }
+
     private void printPdf(byte[] receiptPdf) {
         File pdf = saveToFile(receiptPdf);
         printPdf(pdf);

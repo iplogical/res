@@ -4,5 +4,5 @@ import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailCo
 
 public interface DailySummaryController extends AbstractRetailController {
 
-    void updatePriceFields();
+    void enter();
 }

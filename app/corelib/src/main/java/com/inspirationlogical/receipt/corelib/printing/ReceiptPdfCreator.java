@@ -34,10 +34,16 @@ public class ReceiptPdfCreator {
     private BaseFont boldFont;
 
     private ReceiptPrintModel receiptPrintModel;
+    private boolean aggregated = false;
     private PdfPTable productsTable;
 
     byte[] createReceiptPdf(ReceiptPrintModel receiptPrintModel) {
         this.receiptPrintModel = receiptPrintModel;
+        aggregated = false;
+        return createReceiptPdf();
+    }
+
+    private byte[] createReceiptPdf() {
         try {
             initFonts();
             return createPdf();
@@ -153,7 +159,11 @@ public class ReceiptPdfCreator {
         createProductsTable();
         createHeaderRow();
         receiptPrintModel.getReceiptRecordsPrintModels().forEach(this::createProductRow);
-        createSummaryRows();
+        if(aggregated) {
+            createAggregatedSummaryRows();
+        } else {
+            createSummaryRows();
+        }
         document.add(productsTable);
         addDoubleLineSeparator(-4, -7);
     }
@@ -357,5 +367,23 @@ public class ReceiptPdfCreator {
         paragraph.setAlignment(alignment);
         paragraph.setSpacingBefore(5);
         document.add(paragraph);
+    }
+
+    byte[] createAggregatedReceiptPdf(ReceiptPrintModel receiptPrintModel) {
+        this.receiptPrintModel = receiptPrintModel;
+        aggregated = true;
+        return createReceiptPdf();
+    }
+
+    private void createAggregatedSummaryRows() {
+        createTableSummaryRow("Nyitott:", receiptPrintModel.getOpenConsumption());
+        createTableSummaryRow("Készpénz:", receiptPrintModel.getConsumptionCash());
+        createTableSummaryRow("Bankkártya:", receiptPrintModel.getConsumptionCreditCard());
+        createTableSummaryRow("Kupon:", receiptPrintModel.getConsumptionCoupon());
+        createTableSummaryRow("Összesen:", receiptPrintModel.getTotalConsumption());
+
+        createTableSummaryRow("Termék kedvezmény:", receiptPrintModel.getProductDiscount());
+        createTableSummaryRow("Asztal kedvezmény:", receiptPrintModel.getTableDiscount());
+        createTableSummaryRow("Összes kedvezmény:", receiptPrintModel.getTotalDiscount());
     }
 }

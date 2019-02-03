@@ -6,8 +6,10 @@ import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryFamily;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.Tolerate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +20,7 @@ import static java.util.stream.Collectors.toList;
 
 @Getter
 @ToString
+@Builder
 public class ReceiptRecordView {
 
     private int id;
@@ -34,7 +37,11 @@ public class ReceiptRecordView {
     private ReceiptStatus ownerStatus;
     private ProductCategoryFamily family;
 
+    @Tolerate
+    public ReceiptRecordView() {
+    }
 
+    @Tolerate
     public ReceiptRecordView(ReceiptRecord receiptRecord) {
         id = receiptRecord.getId();
         name = receiptRecord.getName();

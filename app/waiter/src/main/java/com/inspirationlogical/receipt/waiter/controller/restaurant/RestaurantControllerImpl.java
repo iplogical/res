@@ -128,7 +128,7 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     public void onDailySummary(Event event) {
         WaiterApp.showView(DailySummaryFxmlView.class);
-        dailySummaryController.updatePriceFields();
+        dailySummaryController.enter();
         logger.info("Entering the Daily Summary.");
     }
 
