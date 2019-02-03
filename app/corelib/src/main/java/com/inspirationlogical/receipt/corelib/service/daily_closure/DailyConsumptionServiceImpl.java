@@ -191,6 +191,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
                 .name(receiptRecord.getName())
                 .soldQuantity(receiptRecord.getSoldQuantity())
                 .purchasePrice(receiptRecord.getPurchasePrice())
+                .originalSalePrice(receiptRecord.getOriginalSalePrice())
                 .salePrice(receiptRecord.getSalePrice())
                 .VAT(receiptRecord.getVAT())
                 .discountPercent(receiptRecord.getDiscountPercent())

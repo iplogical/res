@@ -163,24 +163,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    public void testPartialPaymentNotAllowed() {
-        payPartial(1, 0.5);
-        assertSoldProductFive(1, 3);
-        assertSoldProductThree(2, 2);
-        assertNoPaidProduct();
-        verifyErrorMessageWithParam("PaymentView.ProductNotPartiallyPayable", PRODUCT_FIVE_LONG);
-    }
-
-    @Test
-    public void testPartialPaymentAmountBigger() {
-        payPartial(2, 2.5);
-        assertSoldProductFive(1, 3);
-        assertSoldProductThree(2, 2);
-        assertNoPaidProduct();
-        verifyErrorMessage("PaymentView.PartialPayBiggerAmountError");
-    }
-
-    @Test
     public void testPartialPaymentIllegalInput() {
         setTextField(PARTIAL_PAYMENT_VALUE, "NotDouble");
         payPartial(2);
@@ -188,6 +170,19 @@ public class PaymentControllerTest  extends TestFXBase {
         assertSoldProductFive(1, 3);
         assertSoldProductThree(2, 2);
         assertNoPaidProduct();
+
+        payPartial(2, 2.5);
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 2);
+        assertNoPaidProduct();
+        verifyErrorMessage("PaymentView.PartialPayBiggerAmountError");
+
+        payPartial(1, 0.5);
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 2);
+        assertNoPaidProduct();
+        verifyErrorMessageWithParam("PaymentView.ProductNotPartiallyPayable", PRODUCT_FIVE_LONG);
+
     }
 
     @Test

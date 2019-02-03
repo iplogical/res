@@ -19,23 +19,6 @@ import static java.time.LocalDateTime.now;
 
 public class BuildTestSchema {
 
-    public static final int NUMBER_OF_PRODUCTS = 13;
-    public static final int NUMBER_OF_PRODUCT_CATEGORIES = 28;
-    public static final int NUMBER_OF_PRICE_MODIFIERS = 4;
-    public static final int NUMBER_OF_RECIPES = 13;
-    public static final int NUMBER_OF_STOCKS = 3;
-    public static final int NUMBER_OF_RECEIPTS = 10;
-    public static final int NUMBER_OF_CLOSED_RECEIPTS = 3;
-    public static final int NUMBER_OF_RECEIPT_RECORDS = 9;
-    public static final int NUMBER_OF_RECEIPT_RECORD_CREATEDS = 9;
-    public static final int NUMBER_OF_TABLES = 20;
-    public static final int NUMBER_OF_DISPLAYABLE_TABLES = 14;
-    public static final int NUMBER_OF_RESERVATIONS = 2;
-    public static final int NUMBER_OF_RESTAURANT = 1;
-    public static final int NUMBER_OF_VAT_SERIE = 1;
-    public static final int NUMBER_OF_VAT_RECORDS = 5;
-    public static final int NUMBER_OF_DAILY_CLOSURES = 3;
-
     public static final String PRODUCT_ONE_LONG_NAME = "productOne";
     public static final String PRODUCT_ONE_SHORT_NAME = "product1";
 
@@ -57,13 +40,7 @@ public class BuildTestSchema {
     public static final String RESERVATION_ONE_NAME = "TestName1";
     public static final String RESERVATION_ONE_NOTE = "TestNote1";
 
-    public static final int OPEN_DAILY_CLOSURE_INIT_GROSS_CASH = 5600;
-    public static final int OPEN_DAILY_CLOSURE_INIT_GROSS_CREDIT_CARD = 2000;
-    public static final int OPEN_DAILY_CLOSURE_INIT_GROSS_COUPON = 0;
-    public static final int OPEN_DAILY_CLOSURE_INIT_GROSS_TOTAL = 7600;
-
     private @Getter EntityManager entityManager;
-    private @Getter EntityManager entityManagerArchive;
 
     private @Getter Product productOne;
     private @Getter Product productTwo;
@@ -135,42 +112,14 @@ public class BuildTestSchema {
     private @Getter Stock stockTwo;
     private @Getter Stock stockThree;
 
-    private @Getter Receipt receiptSaleOne;
-    private @Getter Receipt receiptSaleTwo;
-    private @Getter Receipt receiptSaleThree;
-    private @Getter Receipt receiptSaleFour;
-    private @Getter Receipt receiptSaleClosedTable;
     private @Getter Receipt receiptTableSaleTest;
     private @Getter Receipt receiptPurchase;
     private @Getter Receipt receiptInventory;
     private @Getter Receipt receiptDisposal;
+
     private @Getter Receipt receiptOther;
-
-    private @Getter ReceiptRecord receiptSaleOneRecordOne;
-    private @Getter ReceiptRecord receiptSaleOneRecordTwo;
-    private @Getter ReceiptRecord receiptSaleTwoRecordOne;
-    private @Getter ReceiptRecord receiptSaleTwoRecordTwo;
-    private @Getter ReceiptRecord receiptSaleOneRecordThree;
-    private @Getter ReceiptRecord receiptSaleOneRecordFour;
-    private @Getter ReceiptRecord receiptSaleFourRecordOne;
-    private @Getter ReceiptRecord receiptSaleClosedTableRecordOne;
     private @Getter ReceiptRecord receiptRecordOther;
-
-    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleOne;
-    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleTwo;
-    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleThree;
-    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleFour;
-    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleFive;
-    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleSix;
-    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleFourRecordOne;
-    private @Getter ReceiptRecordCreated receiptRecordCreatedSaleClosedTableRecordOne;
     private @Getter ReceiptRecordCreated receiptRecordCreatedOther;
-    
-    private @Getter Table tableNormal;
-    private @Getter Table tableNormalClosed;
-    private @Getter Table tableLoiterer;
-    private @Getter Table tableFrequenter;
-    private @Getter Table tableEmployee;
 
     private @Getter Table tableReservationTest;
     private @Getter Table tableRestaurantTest;
@@ -183,9 +132,6 @@ public class BuildTestSchema {
     private @Getter Table tableDisposal;
     private @Getter Table tableOther;
     private @Getter Table tableOrphanage;
-
-    private @Getter Reservation reservationOne;
-    private @Getter Reservation reservationTwo;
 
     private @Getter Restaurant restaurant;
 
@@ -224,7 +170,6 @@ public class BuildTestSchema {
         buildVatSeries();
         BuildVATs();
         buildTables();
-        buildReservations();
         buildRestaurant();
         buildDailyClosures();
     }
@@ -243,12 +188,10 @@ public class BuildTestSchema {
         recipesAndProducts();
         productFourAndStocks();
         tablesAndReceipts();
-        tablesAndReservations();
         receiptsAndReceiptRecords();
         receiptRecordsAndCreated();
         receiptsAndVatSerie();
         vatSerieAndVatValues();
-        receiptRecordsAndProducts();
         restaurantAndTables();
         restaurantAndDailyClosures();
     }
@@ -334,11 +277,6 @@ public class BuildTestSchema {
 
 
     private void buildReceipts() {
-        buildReceiptSaleOne();
-        buildReceiptSaleTwo();
-        buildReceiptSaleThree();
-        buildReceiptSaleFour();
-        buildReceiptSaleClosedTable();
         buildReceiptTableSaleTest();
         buildReceiptPurchase();
         buildReceiptInventory();
@@ -347,26 +285,10 @@ public class BuildTestSchema {
     }
 
     private void buildReceiptRecords() {
-        buildReceiptRecordSaleOne();
-        buildReceiptRecordSaleTwo();
-        buildReceiptRecordSaleThree();
-        buildReceiptRecordSaleFour();
-        buildReceiptRecordSaleFive();
-        buildReceiptRecordSaleSix();
-        buildReceiptSaleFourRecordOne();
-        buildReceiptSaleClosedTableRecordOne();
         buildReceiptRecordOther();
     }
 
     private void buildReceiptRecordCreateds() {
-        buildReceiptRecordCreatedSaleOne();
-        buildReceiptRecordCreatedSaleTwo();
-        buildReceiptRecordCreatedSaleThree();
-        buildReceiptRecordCreatedSaleFour();
-        buildReceiptRecordCreatedSaleFive();
-        buildReceiptRecordCreatedSaleSix();
-        buildReceiptRecordCreatedSaleFourRecordOne();
-        buildReceiptRecordCreatedSaleClosedTableRecordOne();
         buildReceiptRecordCreatedOther();
     }
 
@@ -383,12 +305,6 @@ public class BuildTestSchema {
     }
 
     private void buildTables() {
-        buildTableNormal();
-        buildTableNormalClosed();
-        buildTableLoiterer();
-        buildTableFrequenter();
-        buildTableEmployee();
-
         buildTableReservationTest();
         buildTableRestaurantTest();
         buildTableSaleTest();
@@ -400,12 +316,6 @@ public class BuildTestSchema {
         buildTableDisposal();
         buildTableOrphanage();
         buildTableOther();
-    }
-
-    private void buildReservations() {
-        buildReservationOne();
-        buildReservationTwo();
-        
     }
 
     private void dropAll(){
@@ -431,19 +341,28 @@ public class BuildTestSchema {
 
     private void persistObjects() {
         GuardedTransaction.persist(restaurant);
+        persistProducts();
         persistReceipts();
         persistRecipes();
         persistStocks();
     }
 
+    private void persistProducts() {
+        GuardedTransaction.persist(productOne);
+        GuardedTransaction.persist(productTwo);
+        GuardedTransaction.persist(productThree);
+        GuardedTransaction.persist(productFour);
+        GuardedTransaction.persist(productFive);
+        GuardedTransaction.persist(productSix);
+        GuardedTransaction.persist(productSeven);
+        GuardedTransaction.persist(productEight);
+        GuardedTransaction.persist(productAdHoc);
+        GuardedTransaction.persist(productGameFee);
+        GuardedTransaction.persist(productServiceFee);
+    }
 
 
     private void persistReceipts() {
-        GuardedTransaction.persist(receiptSaleOne);
-        GuardedTransaction.persist(receiptSaleTwo);
-        GuardedTransaction.persist(receiptSaleThree);
-        GuardedTransaction.persist(receiptSaleFour);
-        GuardedTransaction.persist(receiptSaleClosedTable);
         GuardedTransaction.persist(receiptTableSaleTest);
         GuardedTransaction.persist(receiptPurchase);
         GuardedTransaction.persist(receiptInventory);
@@ -1170,85 +1089,6 @@ public class BuildTestSchema {
                 .build();
     }
 
-    private void buildReceiptSaleOne() {
-        receiptSaleOne = Receipt.builder()
-                .type(ReceiptType.SALE)
-                .status(ReceiptStatus.OPEN)
-                .paymentMethod(PaymentMethod.CASH)
-                .openTime(LocalDateTime.now())
-                .discountPercent(10)
-                .sumPurchaseGrossPrice(6550)
-                .sumPurchaseNetPrice(5157)
-                .sumSaleGrossPrice(13100)
-                .sumSaleNetPrice(10314)
-                .client(buildDefaultClient())
-                .build();
-    }
-
-    private void buildReceiptSaleTwo() {
-        receiptSaleTwo = Receipt.builder()
-                .type(ReceiptType.SALE)
-                .status(ReceiptStatus.CLOSED)
-                .paymentMethod(PaymentMethod.CREDIT_CARD)
-                .openTime(LocalDateTime.now())
-                .closureTime(LocalDateTime.now().minusHours(1))
-                .sumPurchaseGrossPrice(1500)
-                .sumPurchaseNetPrice(1200)
-                .sumSaleGrossPrice(2000)
-                .sumSaleNetPrice(1600)
-                .sumSaleGrossOriginalPrice(2000)
-                .sumSaleNetOriginalPrice(1600)
-                .discountPercent(0.0D)
-                .client(buildDefaultClient())
-                .build();
-    }
-
-    private void buildReceiptSaleThree() {
-        receiptSaleThree = Receipt.builder()
-                .type(ReceiptType.SALE)
-                .status(ReceiptStatus.OPEN)
-                .paymentMethod(PaymentMethod.CASH)
-                .openTime(LocalDateTime.now())
-                .client(buildDefaultClient())
-                .build();
-    }
-
-    private void buildReceiptSaleFour() {
-        receiptSaleFour = Receipt.builder()
-                .type(ReceiptType.SALE)
-                .status(ReceiptStatus.CLOSED)
-                .paymentMethod(PaymentMethod.CASH)
-                .openTime(LocalDateTime.now())
-                .closureTime(LocalDateTime.now().minusHours(2))
-                .sumPurchaseGrossPrice(1000)
-                .sumPurchaseNetPrice(800)
-                .sumSaleGrossPrice(1600)
-                .sumSaleNetPrice(1200)
-                .sumSaleGrossOriginalPrice(2000)
-                .sumSaleNetOriginalPrice(1600)
-                .discountPercent(20)
-                .client(buildDefaultClient())
-                .build();
-    }
-
-    private void buildReceiptSaleClosedTable() {
-        receiptSaleClosedTable = Receipt.builder()
-                .type(ReceiptType.SALE)
-                .status(ReceiptStatus.CLOSED)
-                .paymentMethod(PaymentMethod.CASH)
-                .openTime(LocalDateTime.now().minusHours(6))
-                .closureTime(LocalDateTime.now().minusHours(3))
-                .sumPurchaseGrossPrice(3000)
-                .sumPurchaseNetPrice(2400)
-                .sumSaleGrossPrice(4000)
-                .sumSaleNetPrice(3200)
-                .sumSaleGrossOriginalPrice(4000)
-                .sumSaleNetOriginalPrice(3200)
-                .discountPercent(0)
-                .client(buildDefaultClient())
-                .build();
-    }
-
     private void buildReceiptTableSaleTest() {
         receiptTableSaleTest = Receipt.builder()
                 .type(ReceiptType.SALE)
@@ -1320,107 +1160,6 @@ public class BuildTestSchema {
                 .build();
     }
 
-    private void buildReceiptRecordSaleOne() {
-        receiptSaleOneRecordOne = ReceiptRecord.builder()
-                .name("Soproni 0,5L")
-                .type(ReceiptRecordType.HERE)
-                .VAT(27)
-                .salePrice(440)
-                .originalSalePrice(440)
-                .purchasePrice(250)
-                .soldQuantity(1D)
-                .createdList(new ArrayList<>())
-                .build();
-    }
-
-    private void buildReceiptRecordSaleTwo() {
-        receiptSaleOneRecordTwo = ReceiptRecord.builder()
-                .name("Jim Beam")
-                .type(ReceiptRecordType.HERE)
-                .VAT(27)
-                .soldQuantity(2D)
-                .absoluteQuantity(2D)
-                .salePrice(560)
-                .originalSalePrice(560)
-                .purchasePrice(300)
-                .createdList(new ArrayList<>())
-                .build();
-    }
-
-    private void buildReceiptRecordSaleThree() {
-        receiptSaleTwoRecordOne = ReceiptRecord.builder()
-                .name("receiptSaleTwoRecordOne")
-                .soldQuantity(1D)
-                .salePrice(1000)
-                .originalSalePrice(1000)
-                .type(ReceiptRecordType.HERE)
-                .createdList(new ArrayList<>())
-                .build();
-    }
-
-    private void buildReceiptRecordSaleFour() {
-        receiptSaleTwoRecordTwo = ReceiptRecord.builder()
-                .name("receiptSaleTwoRecordTwo")
-                .soldQuantity(0.5)
-                .salePrice(2000)
-                .originalSalePrice(2000)
-                .type(ReceiptRecordType.HERE)
-                .createdList(new ArrayList<>())
-                .build();
-    }
-
-    private void buildReceiptRecordSaleFive() {
-        receiptSaleOneRecordThree = ReceiptRecord.builder()
-                .name("Edelweiss 0,5L")
-                .type(ReceiptRecordType.HERE)
-                .VAT(27)
-                .salePrice(780)
-                .originalSalePrice(780)
-                .purchasePrice(350)
-                .soldQuantity(2D)
-                .createdList(new ArrayList<>())
-                .build();
-    }
-
-    private void buildReceiptRecordSaleSix() {
-        receiptSaleOneRecordFour = ReceiptRecord.builder()
-                .name("Game Up Menu")
-                .type(ReceiptRecordType.HERE)
-                .VAT(27)
-                .salePrice(4990)
-                .originalSalePrice(4990)
-                .purchasePrice(2500)
-                .soldQuantity(2D)
-                .createdList(new ArrayList<>())
-                .build();
-    }
-
-    private void buildReceiptSaleFourRecordOne() {
-        receiptSaleFourRecordOne = ReceiptRecord.builder()
-                .name("receiptSaleFourRecordOne")
-                .type(ReceiptRecordType.HERE)
-                .VAT(27)
-                .salePrice(1000)
-                .originalSalePrice(1000)
-                .purchasePrice(500)
-                .soldQuantity(2D)
-                .createdList(new ArrayList<>())
-                .build();
-    }
-
-    private void buildReceiptSaleClosedTableRecordOne() {
-        receiptSaleClosedTableRecordOne = ReceiptRecord.builder()
-                .name("receiptSaleClosedTableROne")
-                .type(ReceiptRecordType.HERE)
-                .VAT(27)
-                .salePrice(2000)
-                .originalSalePrice(2000)
-                .purchasePrice(1000)
-                .soldQuantity(2D)
-                .createdList(new ArrayList<>())
-                .build();
-    }
-
     private void buildReceiptRecordOther() {
         receiptRecordOther = ReceiptRecord.builder()
                 .name("E")
@@ -1429,56 +1168,6 @@ public class BuildTestSchema {
                 .createdList(new ArrayList<>())
                 .build();
     }
-
-    private void buildReceiptRecordCreatedSaleOne() {
-        receiptRecordCreatedSaleOne = ReceiptRecordCreated.builder()
-                .created(now())
-                .build();
-    }
-
-    private void buildReceiptRecordCreatedSaleTwo() {
-        receiptRecordCreatedSaleTwo = ReceiptRecordCreated.builder()
-                .created(now())
-                .build();
-    }
-
-    private void buildReceiptRecordCreatedSaleThree() {
-        receiptRecordCreatedSaleThree = ReceiptRecordCreated.builder()
-                .created(now())
-                .build();
-    }
-
-    private void buildReceiptRecordCreatedSaleFour() {
-        receiptRecordCreatedSaleFour = ReceiptRecordCreated.builder()
-                .created(now())
-                .build();
-    }
-
-    private void buildReceiptRecordCreatedSaleFive() {
-        receiptRecordCreatedSaleFive = ReceiptRecordCreated.builder()
-                .created(now())
-                .build();
-    }
-
-    private void buildReceiptRecordCreatedSaleSix() {
-        receiptRecordCreatedSaleSix = ReceiptRecordCreated.builder()
-                .created(now())
-                .build();
-    }
-
-
-    private void buildReceiptRecordCreatedSaleFourRecordOne() {
-        receiptRecordCreatedSaleFourRecordOne = ReceiptRecordCreated.builder()
-                .created(now())
-                .build();
-    }
-
-    private void buildReceiptRecordCreatedSaleClosedTableRecordOne() {
-        receiptRecordCreatedSaleClosedTableRecordOne = ReceiptRecordCreated.builder()
-                .created(now())
-                .build();
-    }
-
 
     private void buildReceiptRecordCreatedOther() {
         receiptRecordCreatedOther = ReceiptRecordCreated.builder()
@@ -1529,76 +1218,6 @@ public class BuildTestSchema {
                 .name(VATName.TAX_FREE)
                 .status(VATStatus.VALID)
                 .VAT(0)
-                .build();
-    }
-
-    private void buildTableNormal() {
-        tableNormal = Table.builder()
-                .number(1)
-                .name("Spicces Feri")
-                .type(TableType.NORMAL)
-                .visible(true)
-                .capacity(6)
-                .guestCount(4)
-                .coordinateX(100)
-                .coordinateY(50)
-                .reservations(new ArrayList<>())
-                .build();
-    }
-
-    private void buildTableNormalClosed() {
-        tableNormalClosed = Table.builder()
-                .number(3)
-                .name("Ittas Juci")
-                .type(TableType.NORMAL)
-                .visible(true)
-                .capacity(6)
-                .guestCount(6)
-                .coordinateX(250)
-                .coordinateY(50)
-                .reservations(new ArrayList<>())
-                .build();
-    }
-
-    private void buildTableLoiterer() {
-        tableLoiterer = Table.builder()
-                .number(2)
-                .name("Bódult Karcsi")
-                .type(TableType.LOITERER)
-                .visible(true)
-                .capacity(1)
-                .guestCount(1)
-                .coordinateX(400)
-                .coordinateY(50)
-                .reservations(new ArrayList<>())
-                .build();
-    }
-
-    private void buildTableFrequenter() {
-        tableFrequenter = Table.builder()
-                .number(6)
-                .name("Törzs Vendég")
-                .type(TableType.FREQUENTER)
-                .visible(true)
-                .capacity(1)
-                .guestCount(1)
-                .coordinateX(100)
-                .coordinateY(100)
-                .reservations(new ArrayList<>())
-                .build();
-    }
-
-    private void buildTableEmployee() {
-        tableEmployee = Table.builder()
-                .number(7)
-                .name("Csapos Csajszi")
-                .type(TableType.EMPLOYEE)
-                .visible(true)
-                .capacity(1)
-                .guestCount(1)
-                .coordinateX(100)
-                .coordinateY(100)
-                .reservations(new ArrayList<>())
                 .build();
     }
 
@@ -1706,28 +1325,6 @@ public class BuildTestSchema {
                 .type(TableType.OTHER)
                 .build();
        }
-
-    private void buildReservationOne() {
-        reservationOne = Reservation.builder()
-                .tableNumber(RESERVATION_ONE_TABLE_NUMBER)
-                .date(LocalDate.now())
-                .startTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(14, 0)))
-                .endTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)))
-                .name(RESERVATION_ONE_NAME)
-                .note(RESERVATION_ONE_NOTE)
-                .build();
-    }
-
-    private void buildReservationTwo() {
-        reservationTwo = Reservation.builder()
-                .tableNumber(2)
-                .date(LocalDate.now())
-                .startTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(14, 0)))
-                .endTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)))
-                .name("TestName2")
-                .note("TestNote2")
-                .build();
-    }
 
     private void productCategories() {
         rootAndAggregates();
@@ -1929,76 +1526,18 @@ public class BuildTestSchema {
         tablesToReceipts();
      }
 
-    private void tablesAndReservations() {
-        tableNormal.setReservations(new HashSet<>(
-                Arrays.asList(reservationOne, reservationTwo)));
-        reservationOne.setOwner(tableNormal);
-        reservationTwo.setOwner(tableNormal);
-    }
-
     private void receiptsAndReceiptRecords() {
-        receiptSaleOne.setRecords(new ArrayList<>(
-                Arrays.asList(receiptSaleOneRecordOne, receiptSaleOneRecordTwo,
-                        receiptSaleOneRecordThree, receiptSaleOneRecordFour)));
-        receiptSaleTwo.setRecords(new ArrayList<>(
-                Arrays.asList(receiptSaleTwoRecordOne, receiptSaleTwoRecordTwo)));
-        receiptSaleFour.setRecords(new ArrayList<>(
-                Collections.singletonList(receiptSaleFourRecordOne)));
-        receiptSaleClosedTable.setRecords(new ArrayList<>(
-                Collections.singletonList(receiptSaleClosedTableRecordOne)));
         receiptOther.setRecords(new ArrayList<>(
                 Collections.singletonList(receiptRecordOther)));
-        receiptSaleOneRecordOne.setOwner(receiptSaleOne);
-        receiptSaleOneRecordTwo.setOwner(receiptSaleOne);
-        receiptSaleOneRecordThree.setOwner(receiptSaleOne);
-        receiptSaleOneRecordFour.setOwner(receiptSaleOne);
-        receiptSaleTwoRecordOne.setOwner(receiptSaleTwo);
-        receiptSaleTwoRecordTwo.setOwner(receiptSaleTwo);
-        receiptSaleFourRecordOne.setOwner(receiptSaleFour);
-        receiptSaleClosedTableRecordOne.setOwner(receiptSaleClosedTable);
         receiptRecordOther.setOwner(receiptOther);
     }
 
-    private void receiptRecordsAndProducts() {
-        receiptSaleOneRecordOne.setProduct(productOne);
-        receiptSaleOneRecordTwo.setProduct(productTwo);
-        receiptSaleTwoRecordOne.setProduct(productThree);
-        receiptSaleTwoRecordTwo.setProduct(productFour);
-        receiptSaleOneRecordThree.setProduct(productFive);
-        receiptSaleOneRecordFour.setProduct(productSix);
-        receiptSaleFourRecordOne.setProduct(productOne);
-        receiptSaleClosedTableRecordOne.setProduct(productTwo);
-    }
-
-
     private void receiptRecordsAndCreated() {
-        receiptSaleOneRecordOne.getCreatedList().add(receiptRecordCreatedSaleOne);
-        receiptSaleOneRecordTwo.getCreatedList().add(receiptRecordCreatedSaleTwo);
-        receiptSaleTwoRecordOne.getCreatedList().add(receiptRecordCreatedSaleThree);
-        receiptSaleTwoRecordTwo.getCreatedList().add(receiptRecordCreatedSaleFour);
-        receiptSaleOneRecordThree.getCreatedList().add(receiptRecordCreatedSaleFive);
-        receiptSaleOneRecordFour.getCreatedList().add(receiptRecordCreatedSaleSix);
-        receiptSaleFourRecordOne.getCreatedList().add(receiptRecordCreatedSaleFourRecordOne);
-        receiptSaleClosedTableRecordOne.getCreatedList().add(receiptRecordCreatedSaleClosedTableRecordOne);
         receiptRecordOther.getCreatedList().add(receiptRecordCreatedOther);
-
-        receiptRecordCreatedSaleOne.setOwner(receiptSaleOneRecordOne);
-        receiptRecordCreatedSaleTwo.setOwner(receiptSaleOneRecordTwo);
-        receiptRecordCreatedSaleThree.setOwner(receiptSaleTwoRecordOne);
-        receiptRecordCreatedSaleFour.setOwner(receiptSaleTwoRecordTwo);
-        receiptRecordCreatedSaleFive.setOwner(receiptSaleOneRecordThree);
-        receiptRecordCreatedSaleSix.setOwner(receiptSaleOneRecordFour);
-        receiptRecordCreatedSaleFourRecordOne.setOwner(receiptSaleFourRecordOne);
-        receiptRecordCreatedSaleClosedTableRecordOne.setOwner(receiptSaleClosedTableRecordOne);
         receiptRecordCreatedOther.setOwner(receiptRecordOther);
     }
     
     private void receiptsAndVatSerie() {
-        receiptSaleOne.setVATSerie(vatSerie);
-        receiptSaleTwo.setVATSerie(vatSerie);
-        receiptSaleThree.setVATSerie(vatSerie);
-        receiptSaleFour.setVATSerie(vatSerie);
-        receiptSaleClosedTable.setVATSerie(vatSerie);
         receiptTableSaleTest.setVATSerie(vatSerie);
         receiptPurchase.setVATSerie(vatSerie);
         receiptInventory.setVATSerie(vatSerie);
@@ -2019,17 +1558,9 @@ public class BuildTestSchema {
     private void restaurantAndTables() {
         //FIXME: Add service for building special tables in production
         restaurant.setTables(new HashSet<>(
-                Arrays.asList(tableNormal, tableNormalClosed, tableLoiterer,
-                        tableFrequenter, tableEmployee,
+                Arrays.asList(
                         tableReservationTest, tableRestaurantTest, tableSaleTest, tablePaymentTest, tableTableTest,
-                        tablePurchase, tableInventory, tableDisposal, tableOther,
-                        tableOrphanage)));
-
-        tableNormal.setOwner(restaurant);
-        tableNormalClosed.setOwner(restaurant);
-        tableLoiterer.setOwner(restaurant);
-        tableFrequenter.setOwner(restaurant);
-        tableEmployee.setOwner(restaurant);
+                        tablePurchase, tableInventory, tableDisposal, tableOther, tableOrphanage)));
 
         tableReservationTest.setOwner(restaurant);
         tableRestaurantTest.setOwner(restaurant);
@@ -2053,11 +1584,6 @@ public class BuildTestSchema {
     }
 
     private void tablesToReceipts() {
-        receiptSaleOne.setOwner(tableNormal);
-        receiptSaleTwo.setOwner(tableNormal);
-        receiptSaleThree.setOwner(tableLoiterer);
-        receiptSaleFour.setOwner(tableLoiterer);
-        receiptSaleClosedTable.setOwner(tableNormalClosed);
         receiptTableSaleTest.setOwner(tableSaleTest);
         receiptPurchase.setOwner(tablePurchase);
         receiptInventory.setOwner(tableInventory);
@@ -2066,14 +1592,8 @@ public class BuildTestSchema {
     }
 
     private void receiptsToTables() {
-        tableNormal.setReceipts(new HashSet<>(
-                Arrays.asList(receiptSaleOne, receiptSaleTwo)));
-        tableNormalClosed.setReceipts(new HashSet<>(
-                Collections.singletonList(receiptSaleClosedTable)));
         tableSaleTest.setReceipts(new HashSet<>(
                 Collections.singletonList(receiptTableSaleTest)));
-        tableLoiterer.setReceipts(new HashSet<>(
-                Arrays.asList(receiptSaleThree, receiptSaleFour)));
         tablePurchase.setReceipts(new HashSet<>(
                 Collections.singletonList(receiptPurchase)));
         tableInventory.setReceipts(new HashSet<>(

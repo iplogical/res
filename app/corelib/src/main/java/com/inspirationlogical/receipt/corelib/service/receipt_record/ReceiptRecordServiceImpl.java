@@ -110,6 +110,7 @@ public class ReceiptRecordServiceImpl implements ReceiptRecordService {
                 .soldQuantity(quantity)
                 .purchasePrice(receiptRecord.getPurchasePrice())
                 .salePrice(receiptRecord.getSalePrice())
+                .originalSalePrice(receiptRecord.getOriginalSalePrice())
                 .VAT(receiptRecord.getVAT())
                 .discountPercent(receiptRecord.getDiscountPercent())
                 .createdList(new ArrayList<>())

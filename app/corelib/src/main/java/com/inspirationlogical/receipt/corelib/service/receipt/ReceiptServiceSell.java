@@ -153,6 +153,7 @@ public class ReceiptServiceSell {
                 .soldQuantity(quantity)
                 .purchasePrice(gameFeeProduct.getPurchasePrice())
                 .salePrice(gameFeeProduct.getSalePrice())
+                .originalSalePrice(gameFeeProduct.getSalePrice())
                 .VAT(vatService.getVatByName(ReceiptRecordType.HERE).getVAT())
                 .discountPercent(0)
                 .createdList(new ArrayList<>())

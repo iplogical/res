@@ -223,8 +223,6 @@
             <ToggleButton fx:id="singleCancellation" mnemonicParsing="false" prefWidth="150.0" text="%SaleView.SingleCancellation" toggleGroup="$cancellationTypeToggleGroup" />
             <Separator prefWidth="200.0" />
             <TextField fx:id="searchField" onKeyReleased="#onSearchChanged" promptText="%SaleView.Search" />
-            <Separator prefWidth="200.0" />
-            <Button fx:id="toPaymentView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onToPaymentView" text="%SaleView.ToPaymentView" textAlignment="CENTER" />
             <Separator prefHeight="25.0" prefWidth="200.0" />
             <Button fx:id="foodDelivered" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onFoodDelivered" text="%SaleView.FoodDelivered" />
             <Separator prefHeight="25.0" prefWidth="200.0" />
@@ -233,6 +231,8 @@
             <Button fx:id="print" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPrint" text="%SaleView.Print" />
             <Separator prefHeight="25.0" prefWidth="200.0" />
             <Button fx:id="backToRestaurantView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%Common.BackToRestaurantView" textAlignment="CENTER" />
+            <Separator prefHeight="25.0" prefWidth="200.0" />
+            <Button fx:id="toPaymentView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onToPaymentView" text="%SaleView.ToPaymentView" textAlignment="CENTER" />
          </children>
          <BorderPane.margin>
             <Insets />

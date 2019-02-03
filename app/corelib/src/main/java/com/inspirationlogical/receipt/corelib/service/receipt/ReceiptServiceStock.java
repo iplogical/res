@@ -78,6 +78,7 @@ public class ReceiptServiceStock {
                 .absoluteQuantity(params.isAbsoluteQuantity() ? params.getQuantity() : params.getQuantity() * product.getStorageMultiplier())
                 .purchasePrice(product.getPurchasePrice())
                 .salePrice(product.getSalePrice())
+                .originalSalePrice(product.getSalePrice())
                 .VAT(vatService.getVatByName(ReceiptRecordType.HERE).getVAT())
                 .discountPercent(0)
                 .createdList(new ArrayList<>())
