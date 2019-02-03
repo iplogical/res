@@ -37,12 +37,12 @@ public final class ResourceBundleControl extends ResourceBundle.Control {
     throws IllegalAccessException, InstantiationException, IOException {
 
         final String bundleName = toBundleName(baseName, locale);
-        final String resourceName = toResourceName(bundleName, "properties");
+//        final String resourceName = toResourceName(bundleName, "properties");
 
         ResourceBundle bundle = null;
         InputStream stream    = null;
         if (reload) {
-            URL url = loader.getResource(resourceName);
+            URL url = loader.getResource(bundleName);
             if (url != null) {
                 URLConnection connection = url.openConnection();
                 if (connection != null) {
@@ -51,7 +51,7 @@ public final class ResourceBundleControl extends ResourceBundle.Control {
                 }
             }
         } else {
-            stream = loader.getResourceAsStream(resourceName);
+            stream = loader.getResourceAsStream(bundleName);
         }
 
         if (stream != null) {
