@@ -94,7 +94,7 @@ public class ReceiptPdfCreator {
 
     private void initDocument(ByteArrayOutputStream os) throws DocumentException {
         document = new Document(new RectangleReadOnly(227, 600));
-        document.setMargins(6f, 14f, 24f, 6f);
+        document.setMargins(0f, 24f, 24f, 6f);
         PdfWriter.getInstance(document, os);
         document.open();
     }
@@ -306,9 +306,9 @@ public class ReceiptPdfCreator {
         if(serviceFee == 0) {
             return;
         }
-        String serviceFeeText = "Szervízdíj / Service Fee (" + receiptPrintModel.getServiceFeePercent() + " %)";
+        String serviceFeeText = "Szervízdíj / Service (" + receiptPrintModel.getServiceFeePercent() + " %)";
         createTableSummaryRow(serviceFeeText, serviceFee);
-        createTableSummaryRow("Összesen(Szerv.):", receiptPrintModel.getTotalPriceWithServiceFee());
+        createTableSummaryRow("Összesen(szerv.):", receiptPrintModel.getTotalPriceWithServiceFee());
     }
 
     private void createDiscountRows() {
