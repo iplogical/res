@@ -167,6 +167,10 @@ public class TableServiceConfigImpl implements TableServiceConfig {
                 .openTime(now())
                 .VATSerie(vatService.findValidVATSerie())
                 .records(new ArrayList<>())
+                .foodDelivered(true)
+                .foodDeliveryTime(now())
+                .drinkDelivered(true)
+                .drinkDeliveryTime(now())
                 .build();
     }
 
