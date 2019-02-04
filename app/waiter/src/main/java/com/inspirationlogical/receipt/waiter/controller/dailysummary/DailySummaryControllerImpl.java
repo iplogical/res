@@ -11,6 +11,8 @@ import com.inspirationlogical.receipt.waiter.controller.reservation.CalendarPick
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
 import com.inspirationlogical.receipt.waiter.viewmodel.ProductRowModel;
 import de.felixroske.jfxsupport.FXMLController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -22,16 +24,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 import static java.time.LocalDateTime.now;
+import static java.util.stream.Collectors.toList;
 
 @FXMLController
 public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
     implements DailySummaryController {
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd. HH:mm:ss");
 
     @FXML
     private BorderPane root;
@@ -114,20 +117,11 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
 
     private void updateClosureTimeLabels() {
         List<LocalDateTime> closureTimes = dailyClosureService.getClosureTimes(startDatePicker.getSelectedDate(), endDatePicker.getSelectedDate());
-        startDateValue.setText(closureTimes.get(0).toString());
-        endDateValue.setText(closureTimes.get(1).toString());
+        startDateValue.setText(closureTimes.get(0).format(DATE_TIME_FORMATTER));
+        endDateValue.setText(closureTimes.get(1).format(DATE_TIME_FORMATTER));
+        enter();
     }
 
-
-    @Override
-    protected LocalDateTime getFoodDeliveredTime() {
-        return now();
-    }
-
-    @Override
-    protected LocalDateTime getDrinkDeliveredTime() {
-        return now();
-    }
     @Override
     protected void onSoldProductsRowClick(ProductRowModel row) {}
 
@@ -150,6 +144,14 @@ public class DailySummaryControllerImpl extends AbstractRetailControllerImpl
         totalDiscount.setText(String.valueOf(dailyConsumptionModel.getTotalDiscount()));
         soldProductViewList = dailyConsumptionModel.getSoldProducts();
         refreshSoldProductsTable();
+    }
+
+    @Override
+    protected ObservableList<ProductRowModel> convertReceiptRecordViewsToModel(Collection<ReceiptRecordView> soldProducts) {
+        List<ProductRowModel> list = soldProducts.stream()
+                .map(receiptRecordView -> new ProductRowModel(receiptRecordView, now(), now()))
+                .collect(toList());
+        return FXCollections.observableArrayList(list);
     }
 
     @FXML

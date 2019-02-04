@@ -41,16 +41,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
     private DailyClosureService dailyClosureService;
 
     @Autowired
-    private DailyClosureRepository dailyClosureRepository;
-
-    @Autowired
     private ReceiptRepository receiptRepository;
-
-    @Autowired
-    private TableRepository tableRepository;
-
-    @Autowired
-    private VATService vatService;
 
     @Autowired
     private ReceiptService receiptService;
@@ -84,6 +75,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
         if(serviceFeeRecord != null) {
             dailyConsumptionModel.getSoldProducts().add(serviceFeeRecord);
         }
+        dailyConsumptionModel.getSoldProducts().sort(Comparator.comparing(ReceiptRecordView::getSoldQuantity).reversed());
         return dailyConsumptionModel;
     }
 
@@ -107,14 +99,6 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
                 .ownerStatus(recordA.getOwnerStatus())
                 .family(recordA.getFamily())
                 .build();
-
-    }
-
-    private void reduceByName(String productName, Map<Double, List<ReceiptRecordView>> discountMap) {
-        discountMap.forEach(this::reduceByDiscount);
-    }
-
-    private void reduceByDiscount(Double discount, List<ReceiptRecordView> receiptRecordViews) {
 
     }
 
@@ -148,8 +132,10 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
     }
 
     private int getProductDiscount(List<Receipt> receipts) {
-        return receipts.stream().map(Receipt::getRecords).flatMap(Collection::stream)
-                .mapToInt(receiptRecord -> receiptRecord.getOriginalSalePrice() - receiptRecord.getSalePrice()).sum();
+        return (int) Math.round(receipts.stream().map(Receipt::getRecords).flatMap(Collection::stream)
+                .mapToDouble(receiptRecord ->
+                        (receiptRecord.getOriginalSalePrice() - receiptRecord.getSalePrice()) * receiptRecord.getSoldQuantity())
+                .sum());
     }
 
 

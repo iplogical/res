@@ -115,6 +115,7 @@ public class ReceiptServiceSell {
                 .soldQuantity(adHocProductParams.getQuantity())
                 .purchasePrice(adHocProductParams.getPurchasePrice())
                 .salePrice(adHocProductParams.getSalePrice())
+                .originalSalePrice(adHocProductParams.getSalePrice())
                 .VAT(vatService.getVatByName(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE).getVAT())
                 .discountPercent(0)
                 .createdList(new ArrayList<>())
