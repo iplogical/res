@@ -8,6 +8,7 @@ public enum ProductType {
     STORABLE,
     AD_HOC_PRODUCT,
     GAME_FEE_PRODUCT,
+    SERVICE_FEE_PRODUCT,
     PARTIALLY_PAYABLE;
 
     public static boolean needReceipt(ProductType type) {

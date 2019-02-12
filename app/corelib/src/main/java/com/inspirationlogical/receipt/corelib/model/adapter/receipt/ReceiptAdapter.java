@@ -34,8 +34,8 @@ public interface ReceiptAdapter {
                 .openTime(now())
                 .VATSerie(VATSerieAdapter.getActiveVATSerieAdapter().getAdaptee())
                 .records(new ArrayList<>())
-                .deliveryTime(now())
-                .isDelivered(true)
+                .foodDeliveryTime(now())
+                .foodDelivered(true)
                 .build();
         return new ReceiptAdapterBase(newReceipt);
     }

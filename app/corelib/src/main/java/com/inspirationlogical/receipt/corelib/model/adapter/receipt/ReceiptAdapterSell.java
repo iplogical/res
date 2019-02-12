@@ -172,21 +172,21 @@ public class ReceiptAdapterSell extends AbstractAdapter<Receipt> {
 
     public void setOrderDelivered(boolean delivered) {
         GuardedTransaction.run(() -> {
-            adaptee.setDelivered(delivered);
+            adaptee.setFoodDelivered(delivered);
         });
     }
 
     public boolean isOrderDelivered() {
-        return adaptee.isDelivered();
+        return adaptee.isFoodDelivered();
     }
 
     public void setOrderDeliveredTime(LocalDateTime now) {
         GuardedTransaction.run(() -> {
-            adaptee.setDeliveryTime(now);
+            adaptee.setFoodDeliveryTime(now);
         });
     }
 
     public LocalDateTime getOrderDeliveryTime() {
-        return adaptee.getDeliveryTime();
+        return adaptee.getFoodDeliveryTime();
     }
 }
