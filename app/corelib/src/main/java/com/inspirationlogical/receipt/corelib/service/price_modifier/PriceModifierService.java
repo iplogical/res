@@ -17,8 +17,4 @@ public interface PriceModifierService {
     void updatePriceModifier(PriceModifierParams params);
 
     void deletePriceModifier(PriceModifierParams params);
-
-    double getDiscountPercent(PriceModifier priceModifier, ReceiptRecord receiptRecord);
-
-    boolean isValidNow(PriceModifier priceModifier, LocalDateTime now);
 }

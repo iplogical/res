@@ -72,41 +72,4 @@ public class PriceModifierServiceImpl implements PriceModifierService {
         priceModifier.getOwner().getPriceModifiers().remove(priceModifier);
         priceModifierRepository.delete(priceModifier);
     }
-
-    @Override
-    public double getDiscountPercent(PriceModifier priceModifier, ReceiptRecord receiptRecord) {
-        if(priceModifier.getType().equals(PriceModifierType.SIMPLE_DISCOUNT)) {
-            return priceModifier.getDiscountPercent();
-        }
-        return calculateDiscount(priceModifier, (int)receiptRecord.getSoldQuantity());
-    }
-
-    private double calculateDiscount(PriceModifier priceModifier, int soldQuantity) {
-        return ((soldQuantity - (soldQuantity % priceModifier.getQuantityLimit())) * priceModifier.getDiscountPercent()) / soldQuantity;
-    }
-
-    @Override
-    public boolean isValidNow(PriceModifier priceModifier, LocalDateTime now) {
-        if(priceModifier.getRepeatPeriod().equals(PriceModifierRepeatPeriod.NO_REPETITION)) {
-            return true;
-        } else if(priceModifier.getRepeatPeriod().equals(PriceModifierRepeatPeriod.DAILY)) {
-            return isTimeMatches(priceModifier, now.toLocalTime());
-        } else if(priceModifier.getRepeatPeriod().equals(PriceModifierRepeatPeriod.WEEKLY)) {
-            return isDayOfWeekMatches(priceModifier, now);
-        }
-        return false;
-    }
-
-    private boolean isTimeMatches(PriceModifier priceModifier, LocalTime now) {
-        return now.plusMinutes(1).isAfter(priceModifier.getStartTime()) && now.minusMinutes(1).isBefore(priceModifier.getEndTime());
-    }
-
-    private boolean isDayOfWeekMatches(PriceModifier priceModifier, LocalDateTime now) {
-        boolean isToday = now.getDayOfWeek().equals(priceModifier.getDayOfWeek());
-        boolean isYesterday = now.minusDays(1).getDayOfWeek().equals(priceModifier.getDayOfWeek());
-        boolean isNight = now.toLocalTime().isBefore(LocalTime.of(4,0));
-        boolean isDay = now.toLocalTime().isAfter(LocalTime.of(4, 0));
-        return (isToday && isDay) || (isYesterday && isNight);
-    }
-
 }

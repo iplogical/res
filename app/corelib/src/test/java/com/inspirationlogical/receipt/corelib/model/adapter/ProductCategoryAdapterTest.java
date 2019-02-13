@@ -51,19 +51,19 @@ public class ProductCategoryAdapterTest extends TestBase {
 //
 //    @Test
 //    public void testGetDiscountNoPriceModifier() {
-//        assertEquals(0, pseudoFour.getDiscount(receiptRecordAdapter), 0.01);
+//        assertEquals(0, pseudoFour.getPriceModifier(receiptRecordAdapter), 0.01);
 //    }
 //
 //
 //    @Test
 //    public void testGetDiscountQuantityBelow() {
-//        assertEquals(0, pseudoTwo.getDiscount(receiptRecordAdapter), 0.01);
+//        assertEquals(0, pseudoTwo.getPriceModifier(receiptRecordAdapter), 0.01);
 //    }
 //
 //    @Test
 //    public void testGetDiscountQuantityEnough() {
 //        receiptRecordAdapter.getAdaptee().setSoldQuantity(3);
-//        assertEquals(33.333, pseudoTwo.getDiscount(receiptRecordAdapter), 0.01);
+//        assertEquals(33.333, pseudoTwo.getPriceModifier(receiptRecordAdapter), 0.01);
 //    }
 //
 //    @Test

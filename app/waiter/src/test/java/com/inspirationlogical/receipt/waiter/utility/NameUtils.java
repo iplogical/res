@@ -22,6 +22,7 @@ public class NameUtils {
 
     public static final String PRODUCT_FIVE = "product5";
     public static final String PRODUCT_FIVE_LONG = "productFive";
+    public static final String PRODUCT_FIVE_LONG_DISCOUNTED = "productFive *";
     public static final String PRODUCT_FIVE_RAPID_CODE = "13";
 
     public static final String PRODUCT_TWO = "product2";

@@ -29,21 +29,9 @@ public class SaleControllerTest extends SaleViewTest {
         clickOnGiftProduct();
         selectCategory(AGGREGATE_ONE);
         sellProduct(PRODUCT_FIVE);
-        assertSoldProduct(1, PRODUCT_FIVE_LONG + " *", 1, 0, 0);
+        assertSoldProduct(1, PRODUCT_FIVE_LONG_DISCOUNTED, 1, 0, 0);
         clickOnGiftProduct();
-        selectiveCancellation(PRODUCT_FIVE_LONG + " *");
-    }
-
-    @Test
-    public void testIncreaseGiftProduct() {
-        clickOnGiftProduct();
-        selectCategory(AGGREGATE_ONE);
-        sellProduct(PRODUCT_FIVE);
-        clickOnThenWait(PRODUCT_FIVE_LONG + " *", 20);
-        clickOnGiftProduct();
-        clickOnThenWait(PRODUCT_FIVE_LONG + " *", 20);
-        assertSoldProduct(1, PRODUCT_FIVE_LONG + " *", 3, 0, 0);
-        selectiveCancellation(PRODUCT_FIVE_LONG + " *");
+        selectiveCancellation(PRODUCT_FIVE_LONG_DISCOUNTED);
     }
 
     @Test
@@ -173,11 +161,43 @@ public class SaleControllerTest extends SaleViewTest {
         sellProduct(PRODUCT_TWO, 1);
         assertSoldProduct(1, PRODUCT_TWO_LONG_DISCOUNTED, 3, 133, 399);
         sellProduct(PRODUCT_TWO, 1);
-        assertSoldProduct(1, PRODUCT_TWO_LONG_DISCOUNTED, 4, 150, 600);
+        assertSoldProduct(1, PRODUCT_TWO_LONG_DISCOUNTED, 3, 133, 399);
+        assertSoldProduct(2, PRODUCT_TWO_LONG, 1, 200, 200);
         sellProduct(PRODUCT_TWO, 1);
-        assertSoldProduct(1, PRODUCT_TWO_LONG_DISCOUNTED, 5, 160, 800);
+        assertSoldProduct(1, PRODUCT_TWO_LONG_DISCOUNTED, 3, 133, 399);
+        assertSoldProduct(2, PRODUCT_TWO_LONG, 2, 200, 400);
         sellProduct(PRODUCT_TWO, 1);
         assertSoldProduct(1, PRODUCT_TWO_LONG_DISCOUNTED, 6, 133, 798);
+        assertNumberOfSoldProducts(1);
         selectiveCancellation(PRODUCT_TWO_LONG_DISCOUNTED);
+    }
+
+    @Test
+    public void testIncreaseProducts() {
+        selectCategory(AGGREGATE_ONE);
+        sellProduct(PRODUCT_TWO, 5);
+        assertSoldProduct(1, PRODUCT_TWO_LONG_DISCOUNTED, 3, 133, 399);
+        assertSoldProduct(2, PRODUCT_TWO_LONG, 2, 200, 400);
+        clickOnThenWait(PRODUCT_TWO_LONG_DISCOUNTED, 20);
+        assertSoldProduct(1, PRODUCT_TWO_LONG_DISCOUNTED, 4, 133, 532);
+        clickOnThenWait(PRODUCT_TWO_LONG, 500);
+        assertSoldProduct(2, PRODUCT_TWO_LONG, 3, 200, 600);
+        clickOnThenWait(PRODUCT_TWO_LONG, 20);
+        assertSoldProduct(2, PRODUCT_TWO_LONG, 4, 200, 800);
+        selectiveCancellation(PRODUCT_TWO_LONG);
+        selectiveCancellation(PRODUCT_TWO_LONG_DISCOUNTED);
+    }
+
+    @Test
+    public void testIncreaseGiftProduct() {
+        clickOnGiftProduct();
+        selectCategory(AGGREGATE_ONE);
+        sellProduct(PRODUCT_FIVE);
+        clickOnThenWait(PRODUCT_FIVE_LONG_DISCOUNTED, 20);
+        assertSoldProduct(1, PRODUCT_FIVE_LONG_DISCOUNTED, 2, 0, 0);
+        clickOnGiftProduct();
+        clickOnThenWait(PRODUCT_FIVE_LONG_DISCOUNTED, 20);
+        assertSoldProduct(1, PRODUCT_FIVE_LONG_DISCOUNTED, 3, 0, 0);
+        selectiveCancellation(PRODUCT_FIVE_LONG_DISCOUNTED);
     }
 }

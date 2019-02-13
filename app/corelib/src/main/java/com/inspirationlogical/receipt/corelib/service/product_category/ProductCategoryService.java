@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service.product_category;
 
+import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
@@ -11,5 +12,5 @@ public interface ProductCategoryService {
 
     void deleteProductCategory(String name);
 
-    double getDiscount(ProductCategory category, ReceiptRecord receiptRecord);
+    PriceModifier getPriceModifier(ProductCategory category, ReceiptRecord receiptRecord);
 }

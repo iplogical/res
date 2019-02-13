@@ -138,7 +138,7 @@ public class TableConfigurationControllerTest extends TestFXBase {
         openTableAndSellProducts(TABLE_TEST_TABLE, PRODUCT_FIVE);
         exchangeTables(TABLE_TEST_TABLE, RESTAURANT_TEST_TABLE);
         enterSaleView(RESTAURANT_TEST_TABLE);
-        assertSoldProductFive(1, 5);
+        assertSoldProductFive(1, 6);
         backToRestaurantView();
         closeTable(RESTAURANT_TEST_TABLE);
     }
@@ -150,12 +150,12 @@ public class TableConfigurationControllerTest extends TestFXBase {
         exchangeTables(TABLE_TEST_TABLE, RESTAURANT_TEST_TABLE);
 
         enterSaleView(RESTAURANT_TEST_TABLE);
-        assertSoldProductFive(1, 5);
+        assertSoldProductFive(1, 6);
         backToRestaurantView();
         closeTable(RESTAURANT_TEST_TABLE);
 
         enterSaleView(TABLE_TEST_TABLE);
-        assertSoldProduct(1, PRODUCT_TWO_LONG + " *", 5, 160, 800);
+        assertSoldProduct(1, PRODUCT_TWO_LONG + " *", 6, 133, 798);
         backToRestaurantView();
         closeTable(TABLE_TEST_TABLE);
     }
@@ -173,7 +173,7 @@ public class TableConfigurationControllerTest extends TestFXBase {
         openTable(tableName);
         enterSaleView(tableName);
         selectCategory(AGGREGATE_ONE);
-        sellProduct(product, 5);
+        sellProduct(product, 6);
         backToRestaurantView();
     }
 
