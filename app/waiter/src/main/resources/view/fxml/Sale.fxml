@@ -228,6 +228,8 @@
             <Separator prefHeight="25.0" prefWidth="200.0" />
             <Button fx:id="drinkDelivered" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDrinkDelivered" text="%SaleView.DrinkDelivered" />
             <Separator prefHeight="25.0" prefWidth="200.0" />
+            <Button fx:id="allDelivered" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAllDelivered" text="%SaleView.AllDelivered" />
+            <Separator prefHeight="25.0" prefWidth="200.0" />
             <Button fx:id="print" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPrint" text="%SaleView.Print" />
             <Separator prefHeight="25.0" prefWidth="200.0" />
             <Button fx:id="backToRestaurantView" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%Common.BackToRestaurantView" textAlignment="CENTER" />

@@ -82,6 +82,10 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
     private Button drinkDelivered;
 
     @FXML
+    private Button allDelivered;
+
+
+    @FXML
     private Button print;
 
     @FXML
@@ -222,6 +226,13 @@ public class SaleControllerImpl extends AbstractRetailControllerImpl
 
     private void setDrinkDelivered(boolean delivered) {
         getTableController().setDrinkDelivered(delivered);
+    }
+
+    @FXML
+    public void onAllDelivered(Event event) {
+        setDrinkDelivered(true);
+        setFoodDelivered(true);
+        backToRestaurantView();
     }
 
     @FXML
