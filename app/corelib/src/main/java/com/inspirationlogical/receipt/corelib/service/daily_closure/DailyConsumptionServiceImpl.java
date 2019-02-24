@@ -6,6 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.view.DailyConsumptionModel;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
+import com.inspirationlogical.receipt.corelib.model.view.ReceiptRowModel;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -195,6 +197,26 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
                 .build();
     }
 
+    @Override
+    public List<ReceiptRowModel> getReceipts(LocalDate startDate, LocalDate endDate) {
+        List<LocalDateTime> closureTimes = dailyClosureService.getClosureTimes(startDate, endDate);
+        List<Receipt> receipts = receiptRepository.getReceiptsByClosureTime(closureTimes.get(0), closureTimes.get(1));
+        return receipts.stream()
+                .map(this::buildReceiptRowModel)
+                .sorted(Comparator.comparing(ReceiptRowModel::getReceiptClosureTime))
+                .collect(toList());
+    }
+
+    private ReceiptRowModel buildReceiptRowModel(Receipt receipt) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+        return ReceiptRowModel.builder()
+                .receiptId(String.valueOf(receipt.getId()))
+                .receiptTotalPrice(String.valueOf(receipt.getSumSaleGrossPrice()))
+                .receiptPaymentMethod(receipt.getPaymentMethod().toI18nString())
+                .receiptOpenTime(receipt.getOpenTime().format(dtf))
+                .receiptClosureTime(receipt.getClosureTime().format(dtf))
+                .build();
+    }
 
     public enum DiscountType {
         PRODUCT,

@@ -17,7 +17,6 @@ import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import com.inspirationlogical.receipt.corelib.utility.Round;
 import com.inspirationlogical.receipt.corelib.utility.RoundingLogic;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -203,7 +202,7 @@ public class ReceiptServicePay {
     }
 
     public void paySelective(Receipt receipt, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
-        Receipt paidReceipt = buildReceipt(ReceiptType.SALE);
+        Receipt paidReceipt = buildReceipt(receipt);
 
         Map<Integer, ReceiptRecordView> recordsToPay = records.stream()
                 .collect(Collectors.toMap(ReceiptRecordView::getId, Function.identity()));
@@ -225,19 +224,19 @@ public class ReceiptServicePay {
         close(paidReceipt, paymentParams);
     }
 
-    private Receipt buildReceipt(ReceiptType type) {
+    private Receipt buildReceipt(Receipt originalReceipt) {
         return Receipt.builder()
-                .type(type)
+                .type(ReceiptType.SALE)
                 .status(ReceiptStatus.OPEN)
                 .paymentMethod(PaymentMethod.CASH)
-                .openTime(now())
+                .openTime(originalReceipt.getOpenTime())
                 .VATSerie(vatService.findValidVATSerie())
                 .records(new ArrayList<>())
                 .build();
     }
 
     void payPartial(Receipt receipt, double partialValue, PaymentParams paymentParams) {
-        Receipt partialReceipt = buildReceipt(ReceiptType.SALE);
+        Receipt partialReceipt = buildReceipt(receipt);
         cloneReceiptRecords(receipt, partialReceipt, partialValue);
         receipt.getRecords().forEach(record -> record.setSoldQuantity(Round.roundToTwoDecimals(record.getSoldQuantity() * (1 - partialValue))));
         partialReceipt.setOwner(receipt.getOwner());

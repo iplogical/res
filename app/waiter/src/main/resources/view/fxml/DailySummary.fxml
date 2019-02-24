@@ -21,52 +21,14 @@
                             <children>
                                 <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <AnchorPane>
-                                            <children>
-                                                <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                                    <children>
-                                                        <AnchorPane>
-                                                            <children>
-                                                                <Label fx:id="tableName" alignment="CENTER" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                    <font>
-                                                                        <Font name="System Bold" size="16.0" />
-                                                                    </font>
-                                                                </Label>
-                                                            </children>
-                                                        </AnchorPane>
-                                                        <AnchorPane>
-                                                            <children>
-                                                                <Label fx:id="tableNumber" alignment="CENTER" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                    <font>
-                                                                        <Font size="24.0" />
-                                                                    </font>
-                                                                </Label>
-                                                            </children>
-                                                        </AnchorPane>
-                                                        <AnchorPane>
-                                                            <children>
-                                                                <Label fx:id="totalPrice" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                    <font>
-                                                                        <Font size="36.0" />
-                                                                    </font>
-                                                                </Label>
-                                                            </children>
-                                                        </AnchorPane>
-                                                        <AnchorPane>
-                                                            <children>
-                                                                <Label fx:id="note" />
-                                                            </children>
-                                                        </AnchorPane>
-                                                    </children>
-                                                </VBox>
-                                            </children>
-                                        </AnchorPane>
-                                        <TableView fx:id="soldProductsTable" prefHeight="640.0" prefWidth="458.0">
+                                        <AnchorPane />
+                                        <TableView fx:id="receiptTable" prefHeight="640.0" prefWidth="458.0">
                                             <columns>
-                                                <TableColumn fx:id="productName" prefWidth="180.0" text="%SaleView.ProductName" />
-                                                <TableColumn fx:id="productQuantity" minWidth="0.0" prefWidth="100.0" text="%SaleView.ProductQuantity" />
-                                                <TableColumn fx:id="productUnitPrice" text="%SaleView.ProductUnitPrice" />
-                                                <TableColumn fx:id="productTotalPrice" text="%SaleView.ProductTotalPrice" />
+                                                <TableColumn fx:id="receiptId" prefWidth="65.0" text="%DailySummary.ReceiptId" />
+                                                <TableColumn fx:id="receiptTotalPrice" minWidth="0.0" prefWidth="65.0" text="%DailySummary.ReceiptTotalPrice" />
+                                                <TableColumn fx:id="receiptPaymentMethod" prefWidth="68.0" text="%DailySummary.ReceiptPaymentMethod" />
+                                    <TableColumn fx:id="receiptOpenTime" prefWidth="115.0" text="%DailySummary.ReceiptOpenTime" />
+                                                <TableColumn fx:id="receiptClosureTime" prefWidth="115.0" text="%DailySummary.ReceiptClosureTime" />
                                             </columns>
                                         </TableView>
                                     </children>
@@ -138,28 +100,26 @@
                                                         <Label text="Ft" />
                                                     </children>
                                                 </HBox>
-                                                <Separator />
+                                                <Separator>
+                                       <padding>
+                                          <Insets bottom="5.0" />
+                                       </padding></Separator>
                                                 <HBox spacing="5.0">
                                                     <children>
-                                                        <Label text="%DailySummary.StartDate" />
-                                                        <Label fx:id="startDateValue" />
+                                                        <Label prefHeight="30.0" prefWidth="90.0" text="%DailySummary.StartDate" />
+                                          <TextField fx:id="startDateTextField" />
+                                                        <Label fx:id="startDateValue" prefHeight="30.0" />
                                                     </children>
-                                                </HBox>
-                                                <HBox fx:id="startDateContainer" prefHeight="100.0" prefWidth="200.0">
-                                                    <VBox.margin>
-                                                        <Insets top="10.0" />
-                                                    </VBox.margin>
+                                       <padding>
+                                          <Insets bottom="5.0" />
+                                       </padding>
                                                 </HBox>
                                                 <HBox spacing="5.0">
                                                     <children>
-                                                        <Label text="%DailySummary.EndDate" />
-                                                        <Label fx:id="endDateValue" />
+                                                        <Label prefHeight="30.0" prefWidth="90.0" text="%DailySummary.EndDate" />
+                                          <TextField fx:id="endDateTextField" />
+                                                        <Label fx:id="endDateValue" prefHeight="30.0" />
                                                     </children>
-                                                </HBox>
-                                                <HBox fx:id="endDateContainer" prefHeight="100.0" prefWidth="200.0">
-                                                    <VBox.margin>
-                                                        <Insets top="10.0" />
-                                                    </VBox.margin>
                                                 </HBox>
                                             </children>
                                             <VBox.margin>
