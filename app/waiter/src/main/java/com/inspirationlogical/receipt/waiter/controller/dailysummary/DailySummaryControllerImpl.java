@@ -1,31 +1,34 @@
 package com.inspirationlogical.receipt.waiter.controller.dailysummary;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.DailyConsumptionModel;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRowModel;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyConsumptionService;
+import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
-import com.inspirationlogical.receipt.waiter.viewmodel.ProductRowModel;
+import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import static java.util.stream.Collectors.toList;
 
 @FXMLController
 public class DailySummaryControllerImpl extends AbstractController implements DailySummaryController {
@@ -37,11 +40,10 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
     private BorderPane root;
 
     @FXML
-    private javafx.scene.control.TableView<ReceiptRowModel> receiptTable;
-    private ObservableList<ReceiptRowModel> receiptRowList = FXCollections.observableArrayList();
+    private TableView<ReceiptRowModel> receiptTable;
 
     @FXML
-    protected TableColumn<ReceiptRowModel, String> receiptId;
+    private TableColumn<ReceiptRowModel, String> receiptId;
     @FXML
     private TableColumn<ReceiptRowModel, String> receiptTotalPrice;
     @FXML
@@ -89,6 +91,15 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
     private Button printDailyConsumption;
 
     @FXML
+    private Button reloadButton;
+
+    @FXML
+    private ComboBox<PaymentMethod> paymentMethodCombo;
+
+    @FXML
+    private Button updatePaymentMethodButton;
+
+    @FXML
     private Label liveTime;
 
     @Autowired
@@ -107,10 +118,10 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
         initializeReceiptTable();
         initDate();
         initLiveTime(liveTime);
+        initPaymentMethodCombo();
     }
 
     private void initializeReceiptTable() {
-        receiptTable.setEditable(true);
         initColumn(receiptId, ReceiptRowModel::getReceiptId);
         initColumn(receiptTotalPrice, ReceiptRowModel::getReceiptTotalPrice);
         initColumn(receiptPaymentMethod, ReceiptRowModel::getReceiptPaymentMethod);
@@ -120,7 +131,6 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
 
     private void initDate() {
         initDateTextFields();
-        updateClosureTimeLabels();
     }
 
     private void initDateTextFields() {
@@ -128,21 +138,19 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
         startDateTextField.setText(DATE_FORMATTER.format(startDate));
         endDate = LocalDate.now();
         endDateTextField.setText(DATE_FORMATTER.format(endDate));
-        startDateTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            startDate = LocalDate.parse(newValue, DATE_FORMATTER);
-            updateClosureTimeLabels();
-        });
-        endDateTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            endDate = LocalDate.parse(newValue, DATE_FORMATTER);
-            updateClosureTimeLabels();
-        });
     }
 
     private void updateClosureTimeLabels() {
         List<LocalDateTime> closureTimes = dailyClosureService.getClosureTimes(startDate, endDate);
         startDateValue.setText(closureTimes.get(0).format(DATE_TIME_FORMATTER));
         endDateValue.setText(closureTimes.get(1).format(DATE_TIME_FORMATTER));
-        enter();
+    }
+
+    private void initPaymentMethodCombo() {
+        ObservableList<PaymentMethod> paymentMethods = FXCollections.observableArrayList();
+        paymentMethods.addAll(PaymentMethod.values());
+        paymentMethodCombo.setItems(paymentMethods);
+        paymentMethodCombo.setConverter(new PaymentMethodStringConverter(paymentMethods));
     }
 
     @FXML
@@ -152,6 +160,7 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
 
     @Override
     public void enter() {
+        updateClosureTimeLabels();
         DailyConsumptionModel dailyConsumptionModel =
                 dailyConsumptionService.getDailyConsumptionModel(startDate, endDate);
         cashTotalPrice.setText(String.valueOf(dailyConsumptionModel.getConsumptionCash()));
@@ -163,8 +172,7 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
         tableDiscount.setText(String.valueOf(dailyConsumptionModel.getTableDiscount()));
         totalDiscount.setText(String.valueOf(dailyConsumptionModel.getTotalDiscount()));
         List<ReceiptRowModel> receiptRowModels = dailyConsumptionService.getReceipts(startDate, endDate);
-        receiptRowList.clear();
-        receiptRowList.addAll(receiptRowModels);
+        ObservableList<ReceiptRowModel> receiptRowList = FXCollections.observableArrayList(receiptRowModels);
         receiptTable.setItems(receiptRowList);
         receiptTable.refresh();
     }
@@ -174,5 +182,58 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
         DailyConsumptionModel dailyConsumptionModel =
                 dailyConsumptionService.getDailyConsumptionModel(startDate, endDate);
         dailyConsumptionService.printAggregatedConsumption(dailyConsumptionModel);
+    }
+
+    @FXML
+    public void onReloadButtonClicked(Event event) {
+        try {
+            startDate = LocalDate.parse(startDateTextField.getText(), DATE_FORMATTER);
+            endDate = LocalDate.parse(endDateTextField.getText(), DATE_FORMATTER);
+        } catch (Exception e) {
+            ErrorMessage.showErrorMessage(root,
+                    WaiterResources.WAITER.getString("DailySummary.InvalidDateFormat"));
+            return;
+        }
+        enter();
+    }
+
+    @FXML
+    public void onUpdatePaymentMethodButtonClicked(Event event) {
+        ReceiptRowModel receiptRowModel = receiptTable.getSelectionModel().getSelectedItem();
+        if(receiptRowModel == null) {
+            ErrorMessage.showErrorMessage(root,
+                    WaiterResources.WAITER.getString("DailySummary.NoReceiptSelected"));
+            return;
+        }
+        PaymentMethod newPaymentMethod = paymentMethodCombo.getSelectionModel().getSelectedItem();
+        if(newPaymentMethod == null) {
+            ErrorMessage.showErrorMessage(root,
+                    WaiterResources.WAITER.getString("DailySummary.NoPaymentMethodSelected"));
+            return;
+        }
+        if(newPaymentMethod.toI18nString().equals(receiptRowModel.getReceiptPaymentMethod())) {
+            return;
+        }
+        dailyConsumptionService.updatePaymentMethod(Integer.parseInt(receiptRowModel.getReceiptId()), newPaymentMethod);
+        enter();
+    }
+
+    public class PaymentMethodStringConverter extends StringConverter<PaymentMethod> {
+        private ObservableList<PaymentMethod> paymentMethods;
+
+        public PaymentMethodStringConverter(ObservableList<PaymentMethod> paymentMethods) {
+            this.paymentMethods = paymentMethods;
+        }
+
+        @Override
+        public String toString(PaymentMethod productStatus) {
+            return productStatus.toI18nString();
+        }
+
+        @Override
+        public PaymentMethod fromString(String string) {
+            return paymentMethods.stream().filter(paymentMethod -> paymentMethod.toI18nString().equals(string))
+                    .collect(toList()).get(0);
+        }
     }
 }

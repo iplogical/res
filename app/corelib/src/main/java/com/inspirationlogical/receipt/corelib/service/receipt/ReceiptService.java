@@ -1,6 +1,7 @@
 package com.inspirationlogical.receipt.corelib.service.receipt;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
 import com.inspirationlogical.receipt.corelib.model.view.*;

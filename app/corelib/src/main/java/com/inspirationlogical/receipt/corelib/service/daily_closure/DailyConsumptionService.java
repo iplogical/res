@@ -1,5 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service.daily_closure;
 
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.DailyConsumptionModel;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRowModel;
 
@@ -13,4 +14,7 @@ public interface DailyConsumptionService {
     DailyConsumptionModel getDailyConsumptionModel(LocalDate startTime, LocalDate endTime);
 
     List<ReceiptRowModel> getReceipts(LocalDate startDate, LocalDate endDate);
+
+    void updatePaymentMethod(int receiptId, PaymentMethod paymentMethod);
+
 }

@@ -218,6 +218,13 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
                 .build();
     }
 
+    @Override
+    public void updatePaymentMethod(int receiptId, PaymentMethod paymentMethod) {
+        Receipt receipt = receiptRepository.findById(receiptId);
+        receipt.setPaymentMethod(paymentMethod);
+        receiptRepository.save(receipt);
+    }
+
     public enum DiscountType {
         PRODUCT,
         TABLE,

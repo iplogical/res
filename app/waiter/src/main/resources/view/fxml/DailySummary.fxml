@@ -21,16 +21,24 @@
                             <children>
                                 <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <AnchorPane />
-                                        <TableView fx:id="receiptTable" prefHeight="640.0" prefWidth="458.0">
-                                            <columns>
-                                                <TableColumn fx:id="receiptId" prefWidth="65.0" text="%DailySummary.ReceiptId" />
-                                                <TableColumn fx:id="receiptTotalPrice" minWidth="0.0" prefWidth="65.0" text="%DailySummary.ReceiptTotalPrice" />
-                                                <TableColumn fx:id="receiptPaymentMethod" prefWidth="68.0" text="%DailySummary.ReceiptPaymentMethod" />
+                              <TableView fx:id="receiptTable" prefHeight="811.0" prefWidth="443.0" style="-fx-selection-bar: ;" stylesheets="@../css/ReceiptTable.css">
+                                <columns>
+                                  <TableColumn fx:id="receiptId" prefWidth="60.0" text="%DailySummary.ReceiptId" />
+                                  <TableColumn fx:id="receiptTotalPrice" prefWidth="68.0" text="%DailySummary.ReceiptTotalPrice" />
+                                    <TableColumn fx:id="receiptPaymentMethod" prefWidth="68.0" text="%DailySummary.ReceiptPaymentMethod" />
                                     <TableColumn fx:id="receiptOpenTime" prefWidth="115.0" text="%DailySummary.ReceiptOpenTime" />
-                                                <TableColumn fx:id="receiptClosureTime" prefWidth="115.0" text="%DailySummary.ReceiptClosureTime" />
-                                            </columns>
-                                        </TableView>
+                                    <TableColumn fx:id="receiptClosureTime" prefWidth="115.0" text="%DailySummary.ReceiptClosureTime" />
+                                </columns>
+                              </TableView>
+                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                                 <children>
+                                    <ComboBox fx:id="paymentMethodCombo" prefHeight="34.0" prefWidth="150.0" promptText="%DailySummary.PaymentMethodComboPrompt" />
+                                    <Button fx:id="updatePaymentMethodButton" mnemonicParsing="false" onAction="#onUpdatePaymentMethodButtonClicked" text="%DailySummary.UpdatePaymentMethodButton" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
                                     </children>
                                 </VBox>
                             </children>
@@ -142,6 +150,7 @@
         <VBox fx:id="left" prefWidth="120.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
                 <Button fx:id="printDailyConsumption" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPrintDailyConsumption" text="%DailySummary.PrintDailyConsumption" />
+            <Button fx:id="reloadButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onReloadButtonClicked" text="%DailySummary.Reload" />
                 <Button fx:id="backToRestaurantView" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%Common.BackToRestaurantView" textAlignment="CENTER">
                     <VBox.margin>
                         <Insets top="340.0" />

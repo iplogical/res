@@ -1,11 +1,10 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import lombok.*;
 
 @Getter
+@Setter
 @Builder
 @ToString
 @EqualsAndHashCode
