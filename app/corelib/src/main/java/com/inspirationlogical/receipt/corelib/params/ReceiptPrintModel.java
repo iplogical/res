@@ -36,6 +36,7 @@ public class ReceiptPrintModel {
     private int consumptionCreditCard;
     private int consumptionCoupon;
     private int openConsumption;
+    private int netServiceFee;
     private int totalConsumption;
     private int productDiscount;
     private int tableDiscount;

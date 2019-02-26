@@ -326,13 +326,14 @@ public class ReceiptServicePay {
                 .restaurantPhoneNumber(restaurant.getPhoneNumber())
                 .receiptRecordsPrintModels(new ArrayList<>())
                 .totalPriceNoServiceFee(dailyConsumptionModel.getTotalConsumption())
-                .serviceFee(0)
                 .serviceFeePercent(0)
 
                 .consumptionCash(dailyConsumptionModel.getConsumptionCash())
                 .consumptionCreditCard(dailyConsumptionModel.getConsumptionCreditCard())
                 .consumptionCoupon(dailyConsumptionModel.getConsumptionCoupon())
+                .netServiceFee(dailyConsumptionModel.getNetServiceFee())
                 .openConsumption(dailyConsumptionModel.getOpenConsumption())
+                .serviceFee(dailyConsumptionModel.getServiceFeeTotal())
                 .totalConsumption(dailyConsumptionModel.getTotalConsumption())
 
                 .productDiscount(dailyConsumptionModel.getProductDiscount())

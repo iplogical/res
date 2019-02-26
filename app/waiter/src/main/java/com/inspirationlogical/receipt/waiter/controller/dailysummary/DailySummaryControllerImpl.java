@@ -8,7 +8,6 @@ import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosure
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyConsumptionService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import de.felixroske.jfxsupport.FXMLController;
@@ -67,6 +66,8 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
     private Label creditCardTotalPrice;
     @FXML
     private Label couponTotalPrice;
+    @FXML
+    private Label serviceFeeTotal;
     @FXML
     private Label dailySummaryTotalPrice;
 
@@ -188,6 +189,7 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
         creditCardTotalPrice.setText(String.valueOf(dailyConsumptionModel.getConsumptionCreditCard()));
         couponTotalPrice.setText(String.valueOf(dailyConsumptionModel.getConsumptionCoupon()));
         openConsumption.setText(String.valueOf(dailyConsumptionModel.getOpenConsumption()));
+        serviceFeeTotal.setText(String.valueOf(dailyConsumptionModel.getServiceFeeTotal()));
         dailySummaryTotalPrice.setText(String.valueOf(dailyConsumptionModel.getTotalConsumption()));
         productDiscount.setText(String.valueOf(dailyConsumptionModel.getProductDiscount()));
         tableDiscount.setText(String.valueOf(dailyConsumptionModel.getTableDiscount()));

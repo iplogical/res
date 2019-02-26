@@ -55,7 +55,7 @@
                                                         <Label fx:id="openConsumption" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="60.0" />
                                                         <Label text="Ft" />
                                           <Label prefWidth="150.0" text="%DailySummary.ProductDiscount" />
-                                          <Label fx:id="productDiscount" prefWidth="60.0" />
+                                          <Label fx:id="productDiscount" alignment="CENTER_RIGHT" prefWidth="60.0" />
                                           <Label text="Ft" />
                                                     </children>
                                                     <VBox.margin>
@@ -72,7 +72,7 @@
                                                         </Label>
                                                         <Label text="Ft" />
                                           <Label prefWidth="150.0" text="%DailySummary.TableDiscount" />
-                                          <Label fx:id="tableDiscount" prefWidth="60.0" />
+                                          <Label fx:id="tableDiscount" alignment="CENTER_RIGHT" prefWidth="60.0" />
                                           <Label text="Ft" />
                                                     </children>
                                                 </HBox>
@@ -86,7 +86,7 @@
                                                         </Label>
                                                         <Label text="Ft" />
                                           <Label prefWidth="150.0" text="%DailySummary.TotalDiscount" />
-                                          <Label fx:id="totalDiscount" prefWidth="60.0" />
+                                          <Label fx:id="totalDiscount" alignment="CENTER_RIGHT" prefWidth="60.0" />
                                           <Label text="Ft" />
                                                     </children>
                                                 </HBox>
@@ -101,6 +101,13 @@
                                                         <Label text="Ft" />
                                                     </children>
                                                 </HBox>
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Label prefWidth="100.0" text="%DailySummary.ServiceFeeTotal" />
+                                          <Label fx:id="serviceFeeTotal" alignment="CENTER_RIGHT" prefWidth="60.0" />
+                                          <Label text="Ft" />
+                                       </children>
+                                    </HBox>
                                                 <HBox prefWidth="200.0" spacing="5.0">
                                                     <children>
                                                         <Label prefWidth="100.0" text="%DailySummary.TotalPrice" />

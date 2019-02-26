@@ -7,12 +7,9 @@ import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.view.DailyConsumptionModel;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRowModel;
-import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
-import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
-import com.inspirationlogical.receipt.corelib.repository.TableRepository;
+import com.inspirationlogical.receipt.corelib.repository.VATSerieRepository;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
-import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +22,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus.CLOSED;
-import static com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService.getDiscountMultiplier;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
@@ -43,10 +38,13 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
     private DailyClosureService dailyClosureService;
 
     @Autowired
+    private ReceiptService receiptService;
+
+    @Autowired
     private ReceiptRepository receiptRepository;
 
     @Autowired
-    private ReceiptService receiptService;
+    private VATSerieRepository vatSerieRepository;
 
     private int getTotalSalePrice(ReceiptRecord receiptRecord) {
         return (int) (receiptRecord.getSalePrice() * receiptRecord.getSoldQuantity());
@@ -73,10 +71,6 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
         setDiscountFields(dailyConsumptionModel, receipts);
         List<ReceiptRecordView> reducedSoldProducts = getReducedSoldProducts(receipts);
         dailyConsumptionModel.setSoldProducts(reducedSoldProducts);
-        ReceiptRecordView serviceFeeRecord = getServiceFeeRecord(receipts);
-        if(serviceFeeRecord != null) {
-            dailyConsumptionModel.getSoldProducts().add(serviceFeeRecord);
-        }
         dailyConsumptionModel.getSoldProducts().sort(Comparator.comparing(ReceiptRecordView::getSoldQuantity).reversed());
         return dailyConsumptionModel;
     }
@@ -101,7 +95,6 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
                 .ownerStatus(recordA.getOwnerStatus())
                 .family(recordA.getFamily())
                 .build();
-
     }
 
     private void setConsumptionFields(DailyConsumptionModel dailyConsumptionModel, List<Receipt> receipts) {
@@ -109,10 +102,13 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
         dailyConsumptionModel.setConsumptionCash(getConsumptionOfTheDay(receipts, PaymentMethod.CASH));
         dailyConsumptionModel.setConsumptionCreditCard(getConsumptionOfTheDay(receipts, PaymentMethod.CREDIT_CARD));
         dailyConsumptionModel.setConsumptionCoupon(getConsumptionOfTheDay(receipts, PaymentMethod.COUPON));
+        dailyConsumptionModel.setServiceFeeTotal(getServiceFeeOfTheDay(receipts));
+        dailyConsumptionModel.setNetServiceFee(getNetServiceFee(receipts));
         dailyConsumptionModel.setTotalConsumption(dailyConsumptionModel.getOpenConsumption() +
                         dailyConsumptionModel.getConsumptionCash() +
                         dailyConsumptionModel.getConsumptionCreditCard() +
-                        dailyConsumptionModel.getConsumptionCoupon());
+                        dailyConsumptionModel.getConsumptionCoupon() +
+                        dailyConsumptionModel.getServiceFeeTotal());
     }
 
     public int getOpenConsumption() {
@@ -121,12 +117,50 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
     }
 
     private int getConsumptionOfTheDay(List<Receipt> receipts, PaymentMethod paymentMethod) {
-        int totalConsumption = (int) receipts.stream().filter(receipt -> receipt.getPaymentMethod().equals(paymentMethod))
+        int totalConsumption = (int) receipts.stream()
+                .filter(receipt -> receipt.getPaymentMethod().equals(paymentMethod))
                 .map(Receipt::getRecords).flatMap(Collection::stream)
+                .filter(receiptRecord -> !receiptRecord.getProduct().getType().equals(ProductType.SERVICE_FEE_PRODUCT))
                 .mapToDouble(receiptRecord -> receiptRecord.getSalePrice() * receiptRecord.getSoldQuantity())
                 .sum();
         int tableDiscount = getTableDiscount(receipts, paymentMethod);
         return totalConsumption - tableDiscount;
+    }
+
+    private int getServiceFeeOfTheDay(List<Receipt> receipts) {
+        return getServiceFeeOfTheDay(receipts, PaymentMethod.CASH) +
+                getServiceFeeOfTheDay(receipts, PaymentMethod.CREDIT_CARD) +
+                getServiceFeeOfTheDay(receipts, PaymentMethod.COUPON);
+    }
+
+    private int getServiceFeeOfTheDay(List<Receipt> receipts, PaymentMethod paymentMethod) {
+        return (int) receipts.stream()
+                .filter(receipt -> receipt.getPaymentMethod().equals(paymentMethod))
+                .map(Receipt::getRecords).flatMap(Collection::stream)
+                .filter(receiptRecord -> receiptRecord.getProduct().getType().equals(ProductType.SERVICE_FEE_PRODUCT))
+                .mapToDouble(receiptRecord -> receiptRecord.getSalePrice() * receiptRecord.getSoldQuantity())
+                .sum();
+    }
+
+    private int getNetServiceFee(List<Receipt> receipts) {
+        int vatPercent = getVatPercent();
+        int grossCashServiceFee = getServiceFeeOfTheDay(receipts, PaymentMethod.CASH);
+        int netCashServiceFee = calculateNetServiceFee(grossCashServiceFee, vatPercent);
+
+        int grossCreditCardServiceFee = getServiceFeeOfTheDay(receipts, PaymentMethod.CREDIT_CARD);
+        int netCreditCardServiceFee = calculateNetServiceFee(grossCreditCardServiceFee, vatPercent);
+
+        int netCouponServiceFee = getServiceFeeOfTheDay(receipts, PaymentMethod.COUPON);
+        return netCashServiceFee + netCreditCardServiceFee + netCouponServiceFee;
+    }
+
+    private int getVatPercent() {
+        return (int) vatSerieRepository.findFirstByStatus(VATStatus.VALID).getVat().stream()
+                .filter(vat -> vat.getName().equals(VATName.NORMAL)).collect(toList()).get(0).getVAT();
+    }
+
+    private int calculateNetServiceFee(double grossServiceFee, double vatPercent) {
+        return (int) Math.round((grossServiceFee / (100D + vatPercent)) * 100D);
     }
 
     private int getTableDiscount(List<Receipt> receipts, PaymentMethod paymentMethod) {
@@ -134,7 +168,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
                 .filter(receipt -> receipt.getPaymentMethod().equals(paymentMethod))
                 .mapToInt(receipt -> receipt.getSumSaleGrossOriginalPrice() - receipt.getSumSaleGrossPrice()).sum();
     }
-    
+
     private void setDiscountFields(DailyConsumptionModel dailyConsumptionModel, List<Receipt> receipts) {
         dailyConsumptionModel.setProductDiscount(getProductDiscount(receipts));
         dailyConsumptionModel.setTableDiscount(getTableDiscount(receipts));
@@ -147,7 +181,6 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
                         (receiptRecord.getOriginalSalePrice() - receiptRecord.getSalePrice()) * receiptRecord.getSoldQuantity())
                 .sum());
     }
-
 
     private int getTableDiscount(List<Receipt> receipts) {
         return receipts.stream()
@@ -174,35 +207,6 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
                 .filter(receiptRecord -> !receiptRecord.getProduct().getType().equals(ProductType.SERVICE_FEE_PRODUCT))
                 .map(ReceiptRecordView::new)
                 .collect(toList());
-    }
-
-    private ReceiptRecordView getServiceFeeRecord(List<Receipt> receipts) {
-        List<ReceiptRecord> serviceFees = receipts.stream()
-                .map(Receipt::getRecords)
-                .flatMap(Collection::stream)
-                .filter(receiptRecord -> receiptRecord.getProduct().getType().equals(ProductType.SERVICE_FEE_PRODUCT))
-                .collect(toList());
-        if(serviceFees.isEmpty()) {
-            return null;
-        }
-        ReceiptRecord serviceFeeRecord = serviceFees.get(0);
-        int totalServiceFee = serviceFees.stream().mapToInt(ReceiptRecord::getSalePrice).sum();
-        double avgServiceFee = serviceFees.stream().mapToInt(ReceiptRecord::getSalePrice).average().orElse(0D);
-        return ReceiptRecordView.builder()
-                .id(serviceFeeRecord.getId())
-                .name(serviceFeeRecord.getName())
-                .type(serviceFeeRecord.getType())
-                .soldQuantity(serviceFees.size())
-                .purchasePrice(serviceFeeRecord.getPurchasePrice())
-                .salePrice((int) Math.round(avgServiceFee))
-                .totalPrice(totalServiceFee)
-                .discountPercent(serviceFeeRecord.getDiscountPercent())
-                .vat(serviceFeeRecord.getVAT())
-                .created(serviceFeeRecord.getCreatedList().stream().map(ReceiptRecordCreated::getCreated).collect(toList()))
-                .isPartiallyPayable(false)
-                .ownerStatus(CLOSED)
-                .family(ProductCategoryFamily.FOOD)
-                .build();
     }
 
     @Override

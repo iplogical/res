@@ -380,7 +380,11 @@ public class ReceiptPdfCreator {
         createTableSummaryRow("Készpénz:", receiptPrintModel.getConsumptionCash());
         createTableSummaryRow("Bankkártya:", receiptPrintModel.getConsumptionCreditCard());
         createTableSummaryRow("Kupon:", receiptPrintModel.getConsumptionCoupon());
+        createTableSummaryRow("Szervízdj:", receiptPrintModel.getServiceFee());
+
         createTableSummaryRow("Összesen:", receiptPrintModel.getTotalConsumption());
+
+        createTableSummaryRow("Nettó szervízdíj:", receiptPrintModel.getNetServiceFee());
 
         createTableSummaryRow("Termék kedvezmény:", receiptPrintModel.getProductDiscount());
         createTableSummaryRow("Asztal kedvezmény:", receiptPrintModel.getTableDiscount());
