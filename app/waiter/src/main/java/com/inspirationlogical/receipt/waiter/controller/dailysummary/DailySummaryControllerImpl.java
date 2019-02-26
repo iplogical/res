@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosure
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyConsumptionService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
+import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import de.felixroske.jfxsupport.FXMLController;
@@ -19,6 +20,8 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.util.StringConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
@@ -28,10 +31,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static com.inspirationlogical.receipt.waiter.utility.ConfirmMessage.showConfirmDialog;
 import static java.util.stream.Collectors.toList;
 
 @FXMLController
 public class DailySummaryControllerImpl extends AbstractController implements DailySummaryController {
+
+    final private static Logger logger = LoggerFactory.getLogger(DailySummaryControllerImpl.class);
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd. HH:mm:ss");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
@@ -88,10 +94,25 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
     private LocalDate endDate;
 
     @FXML
+    private TextField totalCommerce;
+
+    @FXML
+    private TextField otherIncome;
+
+    @FXML
+    private TextField creditCardTerminal;
+
+    @FXML
+    private TextField serviceFeeExtra;
+
+    @FXML
     private Button printDailyConsumption;
 
     @FXML
     private Button reloadButton;
+
+    @FXML
+    private Button closeDayButton;
 
     @FXML
     private ComboBox<PaymentMethod> paymentMethodCombo;
@@ -216,6 +237,12 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
         }
         dailyConsumptionService.updatePaymentMethod(Integer.parseInt(receiptRowModel.getReceiptId()), newPaymentMethod);
         enter();
+    }
+
+    @FXML
+    public void onCloseDayButtonClicked(Event event) {
+        logger.info("The Daily Closure was pressed in the RestaurantView.");
+        showConfirmDialog(WaiterResources.WAITER.getString("DailyClosure.CloseDayConfirm"), dailyClosureService::closeDay);
     }
 
     public class PaymentMethodStringConverter extends StringConverter<PaymentMethod> {

@@ -120,12 +120,6 @@ public class RestaurantControllerImpl implements RestaurantController {
     }
 
     @FXML
-    public void onDailyClosure(Event event) {
-        logger.info("The Daily Closure was pressed in the RestaurantView.");
-        showConfirmDialog(WaiterResources.WAITER.getString("Restaurant.DailyClosureConfirm"), dailyClosureService::closeDay);
-    }
-
-    @FXML
     public void onDailySummary(Event event) {
         WaiterApp.showView(DailySummaryFxmlView.class);
         dailySummaryController.enter();

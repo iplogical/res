@@ -130,10 +130,6 @@
                      <font>
                         <Font size="16.0" />
                      </font></Button>
-                  <Button fx:id="dailyClosure" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDailyClosure" text="%Restaurant.DailyClosure" textAlignment="CENTER">
-                     <font>
-                        <Font size="16.0" />
-                     </font></Button>
                   <Separator maxWidth="1.7976931348623157E308" />
                   <ToggleButton fx:id="configuration" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onConfigurationToggle" text="%Restaurant.Configuration" textAlignment="CENTER">
                      <font>

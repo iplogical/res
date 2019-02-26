@@ -128,7 +128,51 @@
                                           <TextField fx:id="endDateTextField" />
                                                         <Label fx:id="endDateValue" prefHeight="30.0" />
                                                     </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
                                                 </HBox>
+                                    <Separator prefWidth="200.0" />
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Label prefHeight="30.0" prefWidth="90.0" text="%DailySummary.TotalCommerce" />
+                                          <TextField fx:id="totalCommerce" />
+                                          <Label prefHeight="30.0" text="Ft" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Label prefHeight="30.0" prefWidth="90.0" text="%DailySummary.OtherIncome" />
+                                          <TextField fx:id="otherIncome" />
+                                          <Label prefHeight="30.0" text="Ft" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Label prefHeight="30.0" prefWidth="90.0" text="%DailySummary.CreditCardTerminal" />
+                                          <TextField fx:id="creditCardTerminal" />
+                                          <Label prefHeight="30.0" text="Ft" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <Label prefHeight="30.0" prefWidth="90.0" text="%DailySummary.ServiceFeeExtra" />
+                                          <TextField fx:id="serviceFeeExtra" />
+                                          <Label prefHeight="30.0" text="Ft" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
+                                    </HBox>
                                             </children>
                                             <VBox.margin>
                                                 <Insets top="5.0" />
@@ -151,6 +195,7 @@
             <children>
                 <Button fx:id="printDailyConsumption" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPrintDailyConsumption" text="%DailySummary.PrintDailyConsumption" />
             <Button fx:id="reloadButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onReloadButtonClicked" text="%DailySummary.Reload" />
+            <Button fx:id="closeDayButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCloseDayButtonClicked" text="%DailySummary.CloseDay" />
                 <Button fx:id="backToRestaurantView" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackToRestaurantView" text="%Common.BackToRestaurantView" textAlignment="CENTER">
                     <VBox.margin>
                         <Insets top="340.0" />
