@@ -121,12 +121,20 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
     }
 
     private int getConsumptionOfTheDay(List<Receipt> receipts, PaymentMethod paymentMethod) {
-        return (int) receipts.stream().filter(receipt -> receipt.getPaymentMethod().equals(paymentMethod))
+        int totalConsumption = (int) receipts.stream().filter(receipt -> receipt.getPaymentMethod().equals(paymentMethod))
                 .map(Receipt::getRecords).flatMap(Collection::stream)
                 .mapToDouble(receiptRecord -> receiptRecord.getSalePrice() * receiptRecord.getSoldQuantity())
                 .sum();
+        int tableDiscount = getTableDiscount(receipts, paymentMethod);
+        return totalConsumption - tableDiscount;
     }
 
+    private int getTableDiscount(List<Receipt> receipts, PaymentMethod paymentMethod) {
+        return receipts.stream()
+                .filter(receipt -> receipt.getPaymentMethod().equals(paymentMethod))
+                .mapToInt(receipt -> receipt.getSumSaleGrossOriginalPrice() - receipt.getSumSaleGrossPrice()).sum();
+    }
+    
     private void setDiscountFields(DailyConsumptionModel dailyConsumptionModel, List<Receipt> receipts) {
         dailyConsumptionModel.setProductDiscount(getProductDiscount(receipts));
         dailyConsumptionModel.setTableDiscount(getTableDiscount(receipts));
