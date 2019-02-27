@@ -100,7 +100,6 @@ public class PaymentControllerInitializer {
     }
 
     private void initializePaidTotalPrices() {
-        p.paidTotalPrice.setText("0 Ft");
         p.previousPartialPrice.setText("0 Ft");
     }
 

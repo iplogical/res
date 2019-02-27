@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service.receipt;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
 import com.inspirationlogical.receipt.corelib.model.view.*;
@@ -42,6 +41,14 @@ public interface ReceiptService {
     void printAggregatedReceipt(DailyConsumptionModel dailyConsumptionModel);
 
     void setSumValues(ReceiptView receiptView);
+
+    int getTotalPrice(int number);
+
+    int getTotalServiceFee(int tableNumber);
+
+    int getTotalPrice(List<ReceiptRecordView> recordViewList);
+
+    int getTotalServiceFee(List<ReceiptRecordView> recordViewList);
 
     void mergeReceiptRecords(ReceiptView receiptView);
 

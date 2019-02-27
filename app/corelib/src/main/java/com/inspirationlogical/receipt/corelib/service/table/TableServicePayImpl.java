@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @Transactional
@@ -69,5 +70,15 @@ public class TableServicePayImpl implements TableServicePay {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         receiptService.payPartial(openReceipt, partialValue, paymentParams);
         logger.info("A table was partially paid: partialValue:" + partialValue + ", " + tableView + ", " + paymentParams);
+    }
+
+    @Override
+    public int getTotalPrice(List<ReceiptRecordView> recordViewList) {
+        return receiptService.getTotalPrice(recordViewList);
+    }
+
+    @Override
+    public int getTotalServiceFee(List<ReceiptRecordView> recordViewList) {
+        return receiptService.getTotalServiceFee(recordViewList);
     }
 }

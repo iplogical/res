@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -111,10 +110,29 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
+    public int getTotalPrice(int tableNumber) {
+        return receiptServicePay.getTotalPrice(tableNumber);
+    }
+
+    @Override
+    public int getTotalServiceFee(int tableNumber) {
+        return receiptServicePay.getTotalServiceFee(tableNumber);
+    }
+
+    @Override
+    public int getTotalPrice(List<ReceiptRecordView> recordViewList) {
+        return receiptServicePay.getTotalPrice(recordViewList);
+    }
+
+    @Override
+    public int getTotalServiceFee(List<ReceiptRecordView> recordViewList) {
+        return receiptServicePay.getTotalServiceFee(recordViewList);
+    }
+
+    @Override
     public void mergeReceiptRecords(ReceiptView receiptView) {
         receiptServiceMerge.mergeReceiptRecords(receiptView);
         logger.info("A the records of a receipt were merged: " + receiptView);
-
     };
 
     @Override

@@ -6,6 +6,7 @@ import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 public interface TableServicePay {
 
@@ -14,4 +15,8 @@ public interface TableServicePay {
     void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams);
 
     void payPartial(TableView tableView, double partialValue, PaymentParams paymentParams);
+
+    int getTotalPrice(List<ReceiptRecordView> recordViewList);
+
+    int getTotalServiceFee(List<ReceiptRecordView> recordViewList);
 }

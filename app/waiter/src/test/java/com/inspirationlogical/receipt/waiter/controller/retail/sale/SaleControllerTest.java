@@ -71,28 +71,28 @@ public class SaleControllerTest extends SaleViewTest {
 
     @Test
     public void testTableSummaryTotalPrice() {
-        assertSoldTotalPrice(0);
+        assertSoldTotalPrice(0, 0);
         selectCategory(AGGREGATE_ONE);
         sellProduct(PRODUCT_FIVE);
-        assertSoldTotalPrice(440);
+        assertSoldTotalPrice(440, 475);
         sellProduct(PRODUCT_FIVE);
-        assertSoldTotalPrice(880);
+        assertSoldTotalPrice(880, 950);
         sellProduct(PRODUCT_SIX);
-        assertSoldTotalPrice(1360);
+        assertSoldTotalPrice(1360, 1469);
         sellProduct(PRODUCT_SIX_LONG);
-        assertSoldTotalPrice(1840);
+        assertSoldTotalPrice(1840, 1987);
         selectiveCancellation(PRODUCT_FIVE_LONG);
-        assertSoldTotalPrice(960);
+        assertSoldTotalPrice(960, 1037);
         selectiveCancellation(PRODUCT_SIX_LONG);
-        assertSoldTotalPrice(0);
+        assertSoldTotalPrice(0, 0);
         sellProduct(PRODUCT_FIVE, 3);
-        assertSoldTotalPrice(1320);
+        assertSoldTotalPrice(1320, 1426);
         singleCancellation(PRODUCT_FIVE_LONG);
-        assertSoldTotalPrice(880);
+        assertSoldTotalPrice(880, 950);
         singleCancellation(PRODUCT_FIVE_LONG);
-        assertSoldTotalPrice(440);
+        assertSoldTotalPrice(440, 475);
         singleCancellation(PRODUCT_FIVE_LONG);
-        assertSoldTotalPrice(0);
+        assertSoldTotalPrice(0, 0);
     }
 
     @Test

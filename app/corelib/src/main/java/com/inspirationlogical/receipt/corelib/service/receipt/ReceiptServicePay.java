@@ -10,6 +10,7 @@ import com.inspirationlogical.receipt.corelib.params.ReceiptPrintModel;
 import com.inspirationlogical.receipt.corelib.params.ReceiptRecordPrintModel;
 import com.inspirationlogical.receipt.corelib.printing.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
+import com.inspirationlogical.receipt.corelib.repository.ReceiptRecordRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
@@ -17,6 +18,8 @@ import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import com.inspirationlogical.receipt.corelib.utility.Round;
 import com.inspirationlogical.receipt.corelib.utility.RoundingLogic;
+import javafx.scene.control.Label;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +37,9 @@ public class ReceiptServicePay {
 
     @Autowired
     private ReceiptRepository receiptRepository;
+
+    @Autowired
+    private ReceiptRecordRepository receiptRecordRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -101,7 +107,7 @@ public class ReceiptServicePay {
     }
 
     private void addServiceFee(Receipt receipt) {
-        int serviceFeeTotal = calculateTotalServiceFee(receipt);
+        int serviceFeeTotal = calculateTotalServiceFee(receipt.getRecords());
         ReceiptRecord serviceFeeRecord = buildServiceFeeRecord(serviceFeeTotal);
         serviceFeeRecord.getCreatedList().add(ReceiptRecordCreated.builder().created(now()).owner(serviceFeeRecord).build());
         serviceFeeRecord.setOwner(receipt);
@@ -123,13 +129,13 @@ public class ReceiptServicePay {
                 .build();
     }
 
-    private int calculateTotalServiceFee(Receipt receipt) {
-        double serviceFeeBase = receipt.getRecords().stream()
+    private int calculateTotalServiceFee(List<ReceiptRecord> receiptRecords) {
+        double serviceFeeBase = receiptRecords.stream()
                 .filter(receiptRecord -> !receiptRecord.getProduct().getType().equals(ProductType.GAME_FEE_PRODUCT))
                 .filter(receiptRecord -> !receiptRecord.getProduct().getType().equals(ProductType.AD_HOC_PRODUCT))
-                .mapToDouble(receiptRecord -> receiptRecord.getSalePrice() * receiptRecord.getSoldQuantity())
+                .mapToInt(this::getReceiptRecordTotalPrice)
                 .sum();
-        double serviceFeePercent = receipt.getOwner().getOwner().getServiceFeePercent();
+        double serviceFeePercent = restaurantRepository.findAll().get(0).getServiceFeePercent();
         return (int) Math.round(serviceFeeBase * (serviceFeePercent / 100D));
     }
 
@@ -355,5 +361,38 @@ public class ReceiptServicePay {
                 .totalPrice(record.getTotalPrice())
                 .discount(record.getDiscountPercent() != 0)
                 .build();
+    }
+
+    public int getTotalServiceFee(int tableNumber) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableNumber);
+        if(openReceipt == null) {
+            return 0;
+        }
+        return calculateTotalServiceFee(openReceipt.getRecords());
+    }
+
+    public int getTotalPrice(int tableNumber) {
+        Receipt openReceipt = receiptRepository.getOpenReceipt(tableNumber);
+        if(openReceipt == null) {
+            return 0;
+        }
+        return openReceipt.getRecords().stream()
+                .mapToInt(this::getReceiptRecordTotalPrice).sum();
+    }
+
+    private int getReceiptRecordTotalPrice(ReceiptRecord receiptRecord) {
+        return (int) (receiptRecord.getSalePrice() * receiptRecord.getSoldQuantity());
+    }
+
+    public int getTotalPrice(List<ReceiptRecordView> recordViewList) {
+        List<Integer> receiptRecordIds = recordViewList.stream().map(ReceiptRecordView::getId).collect(toList());
+        List<ReceiptRecord> receiptRecordList = receiptRecordRepository.findAllById(receiptRecordIds);
+        return receiptRecordList.stream().mapToInt(this::getReceiptRecordTotalPrice).sum();
+    }
+
+    public int getTotalServiceFee(List<ReceiptRecordView> recordViewList) {
+        List<Integer> receiptRecordIds = recordViewList.stream().map(ReceiptRecordView::getId).collect(toList());
+        List<ReceiptRecord> receiptRecordList = receiptRecordRepository.findAllById(receiptRecordIds);
+        return calculateTotalServiceFee(receiptRecordList);
     }
 }

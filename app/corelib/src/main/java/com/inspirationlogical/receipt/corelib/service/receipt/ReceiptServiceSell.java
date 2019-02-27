@@ -13,6 +13,7 @@ import com.inspirationlogical.receipt.corelib.repository.ReceiptRecordRepository
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.service.product_category.ProductCategoryService;
 import com.inspirationlogical.receipt.corelib.service.vat.VATService;
+import javafx.scene.control.Label;
 import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -209,12 +209,14 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         updateSoldTotalPrice();
     }
 
-    protected int getTotalPrice(ObservableList<ProductRowModel> productRowList) {
-        return productRowList.stream().map(ProductRowModel::getProductTotalPrice).mapToInt(Integer::valueOf).sum();
+    protected void updateSoldTotalPrice() {
+        int totalPriceNoServiceFee = getTotalPrice();
+        int totalServiceFee = receiptService.getTotalServiceFee(tableView.getNumber());
+        totalPrice.setText(totalPriceNoServiceFee + " Ft" + " (" + (totalPriceNoServiceFee + totalServiceFee) + " Ft)");
     }
 
-    protected void updateSoldTotalPrice() {
-        totalPrice.setText(getTotalPrice(soldProductRowList) + " Ft");
+    protected int getTotalPrice() {
+        return receiptService.getTotalPrice(tableView.getNumber());
     }
 
     protected ReceiptRecordView findMatchingSoldProduct(ProductRowModel row) {

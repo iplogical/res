@@ -104,8 +104,12 @@ public class PayUtils  extends AbstractUtils {
         assertPaidProduct(row, PRODUCT_THREE_LONG, quantity, 2900, (int)(quantity * 2900));
     }
 
-    public static void assertPaidTotalPrice(int price) {
-        assertEquals(intToForint(price), getPaidTotalPrice());
+//    public static void assertPaidTotalPrice(int price) {
+//        assertEquals(intToForint(price), getPaidTotalPrice());
+//    }
+
+    public static void assertPaidTotalPrice(int price, int priceWithServiceFee) {
+        assertEquals(intToForint(price, priceWithServiceFee), getPaidTotalPrice());
     }
 
     public static void assertPreviousPartialPrice(int price) {

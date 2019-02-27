@@ -25,6 +25,7 @@ public class ReceiptRecordView {
 
     private int id;
     private String name;
+    private int productId;
     private ReceiptRecordType type;
     private double soldQuantity;
     private int purchasePrice;
@@ -45,6 +46,7 @@ public class ReceiptRecordView {
     public ReceiptRecordView(ReceiptRecord receiptRecord) {
         id = receiptRecord.getId();
         name = receiptRecord.getName();
+        productId = receiptRecord.getProduct().getId();
         type = receiptRecord.getType();
         soldQuantity = receiptRecord.getSoldQuantity();
         purchasePrice = receiptRecord.getPurchasePrice();

@@ -100,9 +100,13 @@ public class SaleUtils  extends AbstractUtils {
         assertEquals(expected, getSoldProducts().size());
     }
 
-    public static void assertSoldTotalPrice(int price) {
-        assertEquals(intToForint(price), getSoldTotalPrice());
+    public static void assertSoldTotalPrice(int price, int priceWithServiceFee) {
+        assertEquals(intToForint(price, priceWithServiceFee), getSoldTotalPrice());
     }
+
+//    public static void assertSoldTotalPrice(int price) {
+//        assertEquals(intToForint(price), getSoldTotalPrice());
+//    }
 
     private static String getSoldTotalPrice() {
         return getLabel(SOLD_TOTAL_PRICE);
@@ -110,6 +114,10 @@ public class SaleUtils  extends AbstractUtils {
 
     public static String intToForint(int price) {
         return price + " Ft";
+    }
+
+    public static String intToForint(int price, int priceWithServiceFee) {
+        return price + " Ft " + "(" + priceWithServiceFee + " Ft)";
     }
 
     public static void guestMinus() {
