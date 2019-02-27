@@ -43,7 +43,6 @@ public class PaymentControllerTest  extends TestFXBase {
         assertNoPaidProduct();
     }
 
-    @Ignore
     @Test
     public void testSelectivePayment() {
         paySelective(1);
@@ -60,7 +59,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testSinglePayment() {
         paySingle(1);
         testSinglePaymentSoldProductsAssertions$$1();
@@ -111,7 +109,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testSinglePaymentPayAllOfTheRow() {
         paySingle(1);
         testSinglePaymentSoldProductsAssertions$$1();
@@ -145,7 +142,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testSinglePaymentWithDiscountAbsolute() {
         paySingle(2);
         clickOnDiscountAbsolute();
@@ -159,7 +155,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testSinglePaymentWithDiscountPercent() {
         paySingle(2);
         clickOnDiscountPercent();
@@ -173,7 +168,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testPartialPaymentIllegalInput() {
         setTextField(PARTIAL_PAYMENT_VALUE, "NotDouble");
         payPartial(2);
@@ -209,7 +203,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testPartialPaymentAllOfTheRow() {
         System.out.println("In the test: " + Thread.currentThread().getName());
         payPartialOneAndHalf();
@@ -234,7 +227,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testSinglePaymentPartialValue() {
         payPartialOneAndHalf();
         pay();
@@ -248,7 +240,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testFullPaymentWhenSoldProductsEmptyInCaseOfSelectivePayment() {
         paySelective(1);
         paySelective(1);
@@ -260,7 +251,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testFullPaymentWhenSoldProductsEmptyInCaseOfFullPayment() {
         paySelective(1);
         paySelective(1);
@@ -271,14 +261,12 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testPartialPaymentInvalidRange() {
         payPartial(1.01);
         verifyErrorMessage("PaymentView.PartialPayNumberErrorRange");
     }
 
     @Test
-    @Ignore
     public void testPartialPaymentInvalidInput() {
         setTextField(PARTIAL_PAYMENT_VALUE, String.valueOf("Invalid"));
         clickButtonThenWait(PARTIAL_PAYMENT, 50);
@@ -288,7 +276,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testPartialPaymentOfTheTable() {
         payPartial(0.43);
         assertSoldProductFive(1, 0.57 * 3);
@@ -298,7 +285,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testPartialPaymentWithPaidProductsNotEmpty() {
         payPartial(2, 0.5);
         payPartial(0.5);
@@ -333,7 +319,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testSelectivePaymentWithoutPaidProduct() {
         clickOnThenWait(SINGLE_PAYMENT, 100);
         pay();
@@ -342,7 +327,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testMovePaidProductBackToSoldProducts() {
         paySingle(1);
         assertSoldProductFive(1, 2);
@@ -394,7 +378,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testMovePaidProductBackToSoldProductsForPartialPayment() {
         payPartial(2, 0.5);
         assertPaidProductThree(1, 0.5);
@@ -404,7 +387,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testManualGameFee() {
         sellGameFee();
         assertSoldProduct(3, GAME_FEE, 1, 300, 300);
@@ -418,7 +400,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testAutoGameFee() {
         guestPlus();    // 1
         autoGameFee();
@@ -462,7 +443,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testDiscountAbsoluteInvalidInput() {
         clickOnDiscountAbsolute();
         setDiscountValue("Invalid");
@@ -472,7 +452,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testDiscountPercentInvalidInput() {
         clickOnDiscountPercent();
         setDiscountValue("Invalid");
@@ -492,7 +471,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testClearInputFieldsWhenEnterThePaymentView() {
         setDiscountValue("50");
         setPartialPaymentValue(1.5);
@@ -504,7 +482,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testReOpenTableNoServiceFee() {
         clickOnServiceFee();
         pay();
@@ -517,7 +494,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testReOpenTableServiceFee() {
         pay();
         reOpenTable(TABLE_NUMBER);
@@ -529,7 +505,6 @@ public class PaymentControllerTest  extends TestFXBase {
     }
 
     @Test
-    @Ignore
     public void testReceiptRecordsMergedWhenLeaveThePaymentView() {
         paySingle(1);
         assertSoldProductFive(1, 2);
