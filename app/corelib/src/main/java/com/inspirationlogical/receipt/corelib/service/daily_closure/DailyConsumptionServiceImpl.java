@@ -1,16 +1,22 @@
 package com.inspirationlogical.receipt.corelib.service.daily_closure;
 
+import com.inspirationlogical.receipt.corelib.model.entity.DailyClosureNew;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecordCreated;
-import com.inspirationlogical.receipt.corelib.model.enums.*;
+import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
+import com.inspirationlogical.receipt.corelib.model.enums.VATName;
+import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
 import com.inspirationlogical.receipt.corelib.model.view.DailyConsumptionModel;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRowModel;
+import com.inspirationlogical.receipt.corelib.params.CloseDayParams;
+import com.inspirationlogical.receipt.corelib.repository.DailyClosureNewRepository;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.VATSerieRepository;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
+import net.bytebuddy.asm.Advice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +30,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus.CLOSED;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
@@ -36,6 +41,9 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
 
     @Autowired
     private DailyClosureService dailyClosureService;
+
+    @Autowired
+    private DailyClosureNewRepository dailyClosureNewRepository;
 
     @Autowired
     private ReceiptService receiptService;
@@ -87,7 +95,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
                 .soldQuantity(sumSoldQuantity)
                 .purchasePrice(recordA.getPurchasePrice())
                 .salePrice(recordA.getSalePrice())
-                .totalPrice((int)Math.round(recordA.getSalePrice() * sumSoldQuantity))
+                .totalPrice((int) Math.round(recordA.getSalePrice() * sumSoldQuantity))
                 .discountPercent(recordA.getDiscountPercent())
                 .vat(recordA.getVat())
                 .created(created)
@@ -102,13 +110,16 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
         dailyConsumptionModel.setConsumptionCash(getConsumptionOfTheDay(receipts, PaymentMethod.CASH));
         dailyConsumptionModel.setConsumptionCreditCard(getConsumptionOfTheDay(receipts, PaymentMethod.CREDIT_CARD));
         dailyConsumptionModel.setConsumptionCoupon(getConsumptionOfTheDay(receipts, PaymentMethod.COUPON));
+        dailyConsumptionModel.setServiceFeeCash(getServiceFeeOfTheDay(receipts, PaymentMethod.CASH));
+        dailyConsumptionModel.setServiceFeeCreditCard(getServiceFeeOfTheDay(receipts, PaymentMethod.CREDIT_CARD));
+        dailyConsumptionModel.setServiceFeeCoupon(getServiceFeeOfTheDay(receipts, PaymentMethod.COUPON));
         dailyConsumptionModel.setServiceFeeTotal(getServiceFeeOfTheDay(receipts));
         dailyConsumptionModel.setNetServiceFee(getNetServiceFee(receipts));
         dailyConsumptionModel.setTotalConsumption(dailyConsumptionModel.getOpenConsumption() +
-                        dailyConsumptionModel.getConsumptionCash() +
-                        dailyConsumptionModel.getConsumptionCreditCard() +
-                        dailyConsumptionModel.getConsumptionCoupon() +
-                        dailyConsumptionModel.getServiceFeeTotal());
+                dailyConsumptionModel.getConsumptionCash() +
+                dailyConsumptionModel.getConsumptionCreditCard() +
+                dailyConsumptionModel.getConsumptionCoupon() +
+                dailyConsumptionModel.getServiceFeeTotal());
     }
 
     public int getOpenConsumption() {
@@ -235,6 +246,26 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
         Receipt receipt = receiptRepository.findById(receiptId);
         receipt.setPaymentMethod(paymentMethod);
         receiptRepository.save(receipt);
+    }
+
+    @Override
+    public void closeDay(CloseDayParams closeDayParams) {
+        DailyConsumptionModel dailyConsumptionModel = getDailyConsumptionModel(closeDayParams.getStartDate(), closeDayParams.getEndDate());
+        DailyClosureNew dailyClosureNew = new DailyClosureNew();
+        dailyClosureNew.setClosureTime(now());
+        dailyClosureNew.setTotalCash(dailyConsumptionModel.getConsumptionCash());
+        dailyClosureNew.setTotalCreditCard(dailyConsumptionModel.getConsumptionCreditCard());
+        dailyClosureNew.setTotalCoupon(dailyConsumptionModel.getConsumptionCoupon());
+        dailyClosureNew.setServiceFeeCash(dailyConsumptionModel.getServiceFeeCash());
+        dailyClosureNew.setServiceFeeCreditCard(dailyConsumptionModel.getServiceFeeCreditCard());
+        dailyClosureNew.setServiceFeeCoupon(dailyConsumptionModel.getServiceFeeCoupon());
+        dailyClosureNew.setServiceFeeNet(dailyConsumptionModel.getNetServiceFee());
+        dailyClosureNew.setServiceFeeTotal(dailyConsumptionModel.getServiceFeeTotal());
+        dailyClosureNew.setTotalCommerce(closeDayParams.getTotalCommerce());
+        dailyClosureNew.setOtherIncome(closeDayParams.getOtherIncome());
+        dailyClosureNew.setCreditCardTerminal(closeDayParams.getCreditCardTerminal());
+        dailyClosureNew.setServiceFeeOver(closeDayParams.getServiceFeeOver());
+        dailyClosureNewRepository.save(dailyClosureNew);
     }
 
     public enum DiscountType {

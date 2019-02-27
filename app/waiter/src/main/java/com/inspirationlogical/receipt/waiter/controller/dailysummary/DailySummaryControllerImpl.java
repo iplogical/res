@@ -4,6 +4,7 @@ import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractContro
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
 import com.inspirationlogical.receipt.corelib.model.view.DailyConsumptionModel;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRowModel;
+import com.inspirationlogical.receipt.corelib.params.CloseDayParams;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyConsumptionService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
@@ -19,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.util.StringConverter;
+import org.apache.batik.svggen.font.table.LocaTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -223,18 +226,18 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
     @FXML
     public void onUpdatePaymentMethodButtonClicked(Event event) {
         ReceiptRowModel receiptRowModel = receiptTable.getSelectionModel().getSelectedItem();
-        if(receiptRowModel == null) {
+        if (receiptRowModel == null) {
             ErrorMessage.showErrorMessage(root,
                     WaiterResources.WAITER.getString("DailySummary.NoReceiptSelected"));
             return;
         }
         PaymentMethod newPaymentMethod = paymentMethodCombo.getSelectionModel().getSelectedItem();
-        if(newPaymentMethod == null) {
+        if (newPaymentMethod == null) {
             ErrorMessage.showErrorMessage(root,
                     WaiterResources.WAITER.getString("DailySummary.NoPaymentMethodSelected"));
             return;
         }
-        if(newPaymentMethod.toI18nString().equals(receiptRowModel.getReceiptPaymentMethod())) {
+        if (newPaymentMethod.toI18nString().equals(receiptRowModel.getReceiptPaymentMethod())) {
             return;
         }
         dailyConsumptionService.updatePaymentMethod(Integer.parseInt(receiptRowModel.getReceiptId()), newPaymentMethod);
@@ -244,7 +247,40 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
     @FXML
     public void onCloseDayButtonClicked(Event event) {
         logger.info("The Daily Closure was pressed in the RestaurantView.");
-        showConfirmDialog(WaiterResources.WAITER.getString("DailyClosure.CloseDayConfirm"), dailyClosureService::closeDay);
+        showConfirmDialog(WaiterResources.WAITER.getString("DailyClosure.CloseDayConfirm"), this::onCloseDayConfirmed);
+    }
+
+    private void onCloseDayConfirmed() {
+        try {
+            int totalCommerceValue = Integer.parseInt(totalCommerce.getText());
+            int otherIncomeValue = Integer.parseInt(otherIncome.getText());
+            int creditCardTerminalValue = Integer.parseInt(creditCardTerminal.getText());
+            int serviceFeeOverValue = Integer.parseInt(serviceFeeExtra.getText());
+
+            dailyClosureService.closeDay();
+            CloseDayParams closeDayParams = CloseDayParams.builder()
+                    .totalCommerce(totalCommerceValue)
+                    .otherIncome(otherIncomeValue)
+                    .creditCardTerminal(creditCardTerminalValue)
+                    .serviceFeeOver(serviceFeeOverValue)
+                    .startDate(getDate())
+                    .endDate(getDate())
+                    .build();
+            dailyConsumptionService.closeDay(closeDayParams);
+            enter();
+        } catch (NumberFormatException e) {
+            ErrorMessage.showErrorMessage(root,
+                    WaiterResources.WAITER.getString("DailySummary.InvalidNumberFormat"));
+            return;
+        }
+    }
+
+    private LocalDate getDate() {
+        LocalTime currentTime = LocalTime.now();
+        if(currentTime.getHour() < 4) {
+            return LocalDate.now().minusDays(1);
+        }
+        return LocalDate.now();
     }
 
     public class PaymentMethodStringConverter extends StringConverter<PaymentMethod> {

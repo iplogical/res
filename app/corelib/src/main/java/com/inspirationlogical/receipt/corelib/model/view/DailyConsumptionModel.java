@@ -1,8 +1,5 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,9 +18,12 @@ public class DailyConsumptionModel {
     private int consumptionCash;
     private int consumptionCreditCard;
     private int consumptionCoupon;
+    private int serviceFeeCash;
+    private int serviceFeeCreditCard;
+    private int serviceFeeCoupon;
     private int serviceFeeTotal;
-    private int totalConsumption;
     private int netServiceFee;
+    private int totalConsumption;
 
     private int productDiscount;
     private int tableDiscount;
