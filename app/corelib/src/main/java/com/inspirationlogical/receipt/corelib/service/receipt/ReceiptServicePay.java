@@ -156,10 +156,7 @@ public class ReceiptServicePay {
     }
 
     private ReceiptPrintModel buildReceiptPrintModel(Receipt receipt, Restaurant restaurant) {
-        Optional<ReceiptRecord> serviceFeeRecordOptional = receipt.getRecords().stream()
-                .filter(receiptRecord -> receiptRecord.getProduct().getType().equals(ProductType.SERVICE_FEE_PRODUCT))
-                .findFirst();
-        int serviceFee = serviceFeeRecordOptional.map(ReceiptRecord::getSalePrice).orElse(0);
+        int serviceFee = calculateServiceFee(receipt);
         return ReceiptPrintModel.builder()
                 .restaurantName(restaurant.getRestaurantName())
                 .restaurantAddress(getRestaurantAddress(restaurant.getRestaurantAddress()))
@@ -181,6 +178,13 @@ public class ReceiptServicePay {
                 .closureTime(receipt.getClosureTime())
                 .receiptId(receipt.getId())
                 .build();
+    }
+
+    private int calculateServiceFee(Receipt receipt) {
+        Optional<ReceiptRecord> serviceFeeRecordOptional = receipt.getRecords().stream()
+                .filter(receiptRecord -> receiptRecord.getProduct().getType().equals(ProductType.SERVICE_FEE_PRODUCT))
+                .findFirst();
+        return serviceFeeRecordOptional.map(ReceiptRecord::getSalePrice).orElse(0);
     }
 
     private int calculateRoundedTotalPrice(Receipt receipt) {
@@ -304,6 +308,8 @@ public class ReceiptServicePay {
         receiptPrintModel.setClosureTime(now());
         receiptPrintModel.setPaymentMethod("Nincs Fizetve");
         receiptPrintModel.setTotalPriceNoServiceFee(getSumValue(openReceipt, this::calculateSaleGrossPrice));
+        receiptPrintModel.setServiceFee(calculateTotalServiceFee(openReceipt.getRecords()));
+        receiptPrintModel.setTotalPriceWithServiceFee(receiptPrintModel.getTotalPriceNoServiceFee() + receiptPrintModel.getServiceFee());
         receiptPrintModel.setReceiptNote("");
         receiptPrinter.printReceipt(receiptPrintModel);
     }

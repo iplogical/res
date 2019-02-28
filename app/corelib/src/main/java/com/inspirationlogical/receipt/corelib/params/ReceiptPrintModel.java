@@ -27,6 +27,7 @@ public class ReceiptPrintModel {
     private int serviceFee;
     @Setter
     private int serviceFeePercent;
+    @Setter
     private int totalPriceWithServiceFee;
     private int totalDiscount;
     private int discountedTotalPrice;
