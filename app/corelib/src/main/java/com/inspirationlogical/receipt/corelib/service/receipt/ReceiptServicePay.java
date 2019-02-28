@@ -340,7 +340,7 @@ public class ReceiptServicePay {
                 .netServiceFee(dailyConsumptionModel.getNetServiceFee())
                 .openConsumption(dailyConsumptionModel.getOpenConsumption())
                 .serviceFee(dailyConsumptionModel.getServiceFeeTotal())
-                .totalConsumption(dailyConsumptionModel.getTotalConsumption())
+                .totalConsumption(dailyConsumptionModel.getTotalConsumption() - dailyConsumptionModel.getOpenConsumption())
 
                 .productDiscount(dailyConsumptionModel.getProductDiscount())
                 .tableDiscount(dailyConsumptionModel.getTableDiscount())

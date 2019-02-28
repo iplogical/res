@@ -353,8 +353,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             increaseRowInSoldProducts(equivalentReceiptRecordView, amount, false);
             decreaseRowInPaidProducts(row, amount);
         }
-        refreshPaidProductsTable();
         refreshSoldProductsTable();
+        refreshPaidProductsTable();
     }
 
     private void decreaseRowInPaidProducts(ProductRowModel row, double amount) {

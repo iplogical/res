@@ -231,7 +231,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
     }
 
     private ReceiptRowModel buildReceiptRowModel(Receipt receipt) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM.dd HH:mm:ss");
         return ReceiptRowModel.builder()
                 .receiptId(String.valueOf(receipt.getId()))
                 .receiptTotalPrice(String.valueOf(receipt.getSumSaleGrossPrice()))

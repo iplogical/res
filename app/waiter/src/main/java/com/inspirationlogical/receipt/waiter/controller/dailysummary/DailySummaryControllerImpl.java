@@ -41,7 +41,7 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
 
     final private static Logger logger = LoggerFactory.getLogger(DailySummaryControllerImpl.class);
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd. HH:mm:ss");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MM.dd. HH:mm:ss");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
 
     @FXML
