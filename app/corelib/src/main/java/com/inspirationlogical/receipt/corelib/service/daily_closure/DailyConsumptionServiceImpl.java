@@ -16,7 +16,6 @@ import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.VATSerieRepository;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
-import net.bytebuddy.asm.Advice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,10 +110,13 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
         dailyConsumptionModel.setConsumptionCreditCard(getConsumptionOfTheDay(receipts, PaymentMethod.CREDIT_CARD));
         dailyConsumptionModel.setConsumptionCoupon(getConsumptionOfTheDay(receipts, PaymentMethod.COUPON));
         dailyConsumptionModel.setServiceFeeCash(getServiceFeeOfTheDay(receipts, PaymentMethod.CASH));
+        int vatPercent = getVatPercent();
+        dailyConsumptionModel.setServiceFeeNetCash(calculateNetServiceFee(dailyConsumptionModel.getServiceFeeCash(), vatPercent));
         dailyConsumptionModel.setServiceFeeCreditCard(getServiceFeeOfTheDay(receipts, PaymentMethod.CREDIT_CARD));
+        dailyConsumptionModel.setServiceFeeNetCreditCard(calculateNetServiceFee(dailyConsumptionModel.getServiceFeeCreditCard(), vatPercent));
         dailyConsumptionModel.setServiceFeeCoupon(getServiceFeeOfTheDay(receipts, PaymentMethod.COUPON));
         dailyConsumptionModel.setServiceFeeTotal(getServiceFeeOfTheDay(receipts));
-        dailyConsumptionModel.setNetServiceFee(getNetServiceFee(receipts));
+        dailyConsumptionModel.setServiceFeeNetTotal(getNetServiceFee(receipts));
         dailyConsumptionModel.setTotalConsumption(dailyConsumptionModel.getOpenConsumption() +
                 dailyConsumptionModel.getConsumptionCash() +
                 dailyConsumptionModel.getConsumptionCreditCard() +
@@ -259,7 +261,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
         dailyClosureNew.setServiceFeeCash(dailyConsumptionModel.getServiceFeeCash());
         dailyClosureNew.setServiceFeeCreditCard(dailyConsumptionModel.getServiceFeeCreditCard());
         dailyClosureNew.setServiceFeeCoupon(dailyConsumptionModel.getServiceFeeCoupon());
-        dailyClosureNew.setServiceFeeNet(dailyConsumptionModel.getNetServiceFee());
+        dailyClosureNew.setServiceFeeNet(dailyConsumptionModel.getServiceFeeNetTotal());
         dailyClosureNew.setServiceFeeTotal(dailyConsumptionModel.getServiceFeeTotal());
         dailyClosureNew.setTotalCommerce(closeDayParams.getTotalCommerce());
         dailyClosureNew.setOtherIncome(closeDayParams.getOtherIncome());

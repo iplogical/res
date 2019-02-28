@@ -18,8 +18,6 @@ import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import com.inspirationlogical.receipt.corelib.service.vat.VATService;
 import com.inspirationlogical.receipt.corelib.utility.Round;
 import com.inspirationlogical.receipt.corelib.utility.RoundingLogic;
-import javafx.scene.control.Label;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -341,9 +339,12 @@ public class ReceiptServicePay {
                 .serviceFeePercent(0)
 
                 .consumptionCash(dailyConsumptionModel.getConsumptionCash())
+                .serviceFeeCash(dailyConsumptionModel.getServiceFeeCash())
                 .consumptionCreditCard(dailyConsumptionModel.getConsumptionCreditCard())
+                .serviceFeeCreditCard(dailyConsumptionModel.getServiceFeeCreditCard())
                 .consumptionCoupon(dailyConsumptionModel.getConsumptionCoupon())
-                .netServiceFee(dailyConsumptionModel.getNetServiceFee())
+                .serviceFeeCoupon(dailyConsumptionModel.getServiceFeeCoupon())
+                .netServiceFee(dailyConsumptionModel.getServiceFeeNetTotal())
                 .openConsumption(dailyConsumptionModel.getOpenConsumption())
                 .serviceFee(dailyConsumptionModel.getServiceFeeTotal())
                 .totalConsumption(dailyConsumptionModel.getTotalConsumption() - dailyConsumptionModel.getOpenConsumption())

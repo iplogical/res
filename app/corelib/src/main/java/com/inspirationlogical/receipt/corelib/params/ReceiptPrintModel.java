@@ -42,6 +42,10 @@ public class ReceiptPrintModel {
     private int productDiscount;
     private int tableDiscount;
 
+    private int serviceFeeCash;
+    private int serviceFeeCreditCard;
+    private int serviceFeeCoupon;
+
     @Setter
     private String paymentMethod;
 

@@ -172,6 +172,16 @@
                                     </HBox>
                                     <HBox spacing="5.0">
                                        <children>
+                                          <Label prefHeight="30.0" prefWidth="120.0" text="%DailySummary.CreditCardTerminalOver" />
+                                          <Label fx:id="creditCardTerminalOver" prefHeight="30.0" prefWidth="150.0" />
+                                          <Label text="Ft" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox spacing="5.0">
+                                       <children>
                                           <Label prefHeight="30.0" prefWidth="120.0" text="%DailySummary.ServiceFeeExtra" />
                                           <TextField fx:id="serviceFeeExtra" prefWidth="150.0" />
                                           <Label prefHeight="30.0" text="Ft" />

@@ -169,10 +169,13 @@ public class ReceiptPdfCreator {
     }
 
     private void addDoubleLineSeparator(float offsetOne, float offsetTwo) throws DocumentException {
-        LineSeparator lineSeparator1 = new LineSeparator(1.5f, 100, null, 0, offsetOne);
+        addLineSeparator(offsetOne);
+        addLineSeparator(offsetTwo);
+    }
+
+    private void addLineSeparator(float offset) throws DocumentException {
+        LineSeparator lineSeparator1 = new LineSeparator(1.5f, 100, null, 0, offset);
         document.add(lineSeparator1);
-        LineSeparator lineSeparator2 = new LineSeparator(1.5f, 100, null, 0, offsetTwo);
-        document.add(lineSeparator2);
     }
 
     private void createProductsTable() throws DocumentException {
@@ -272,22 +275,34 @@ public class ReceiptPdfCreator {
     }
 
     private void createTableSummaryRow(String text, int totalPrice) {
-        createTableSummaryTextCell(text);
-        createTableSummaryValueCell(totalPrice);
+        createTableSummaryTextCell(text, Rectangle.NO_BORDER);
+        createTableSummaryValueCell(totalPrice, Rectangle.NO_BORDER);
+    }
+
+    private void createTableSummaryRow(String text, int totalPrice, int border) {
+        createTableSummaryTextCell(text, border);
+        createTableSummaryValueCell(totalPrice, border);
     }
 
     private void createTableSummaryTextCell(String text) {
-        PdfPCell summaryCell = createTableSummaryCell(text);
+        createTableSummaryTextCell(text, Rectangle.NO_BORDER);
+    }
+    private void createTableSummaryTextCell(String text, int border) {
+        PdfPCell summaryCell = createTableSummaryCell(text, border);
         summaryCell.setColspan(3);
         summaryCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-        summaryCell.setBorder(Rectangle.NO_BORDER);
+        summaryCell.setBorder(border);
         productsTable.addCell(summaryCell);
     }
 
     private PdfPCell createTableSummaryCell(String text) {
+        return createTableSummaryCell(text, Rectangle.NO_BORDER);
+    }
+
+    private PdfPCell createTableSummaryCell(String text, int border) {
         Phrase phrase = getTableSummaryPhrase(text);
         PdfPCell cell = new PdfPCell(phrase);
-        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setBorder(border);
         return cell;
     }
 
@@ -295,8 +310,8 @@ public class ReceiptPdfCreator {
         return new Phrase(value, new Font(boldFont, 12));
     }
 
-    private void createTableSummaryValueCell(int totalPrice) {
-        PdfPCell totalPriceCell = createTableSummaryCell(String.valueOf(totalPrice));
+    private void createTableSummaryValueCell(int totalPrice, int border) {
+        PdfPCell totalPriceCell = createTableSummaryCell(String.valueOf(totalPrice), border);
         totalPriceCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         productsTable.addCell(totalPriceCell);
     }
@@ -375,18 +390,20 @@ public class ReceiptPdfCreator {
         return createReceiptPdf();
     }
 
-    private void createAggregatedSummaryRows() {
+    private void createAggregatedSummaryRows() throws DocumentException {
         createTableSummaryRow("Nyitott:", receiptPrintModel.getOpenConsumption());
-        createTableSummaryRow("Készpénz:", receiptPrintModel.getConsumptionCash());
+        createTableSummaryRow("Készpénz:", receiptPrintModel.getConsumptionCash(), Rectangle.TOP);
         createTableSummaryRow("Bankkártya:", receiptPrintModel.getConsumptionCreditCard());
         createTableSummaryRow("Kupon:", receiptPrintModel.getConsumptionCoupon());
-        createTableSummaryRow("Szervízdj:", receiptPrintModel.getServiceFee());
-
+        createTableSummaryRow("Össz szervízdj:", receiptPrintModel.getServiceFee());
         createTableSummaryRow("Összesen:", receiptPrintModel.getTotalConsumption());
 
+        createTableSummaryRow("Készpénz szervízdíj:", receiptPrintModel.getServiceFeeCash(), Rectangle.TOP);
+        createTableSummaryRow("Bankkártya szervízdíj:", receiptPrintModel.getServiceFeeCreditCard());
+        createTableSummaryRow("Kupon szervízdíj:", receiptPrintModel.getServiceFeeCoupon());
         createTableSummaryRow("Nettó szervízdíj:", receiptPrintModel.getNetServiceFee());
 
-        createTableSummaryRow("Termék kedvezmény:", receiptPrintModel.getProductDiscount());
+        createTableSummaryRow("Termék kedvezmény:", receiptPrintModel.getProductDiscount(), Rectangle.TOP);
         createTableSummaryRow("Asztal kedvezmény:", receiptPrintModel.getTableDiscount());
         createTableSummaryRow("Összes kedvezmény:", receiptPrintModel.getTotalDiscount());
     }

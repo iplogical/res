@@ -20,7 +20,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.util.StringConverter;
-import org.apache.batik.svggen.font.table.LocaTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,6 +106,9 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
     private TextField creditCardTerminal;
 
     @FXML
+    private Label creditCardTerminalOver;
+
+    @FXML
     private TextField serviceFeeExtra;
 
     @FXML
@@ -132,6 +134,7 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
 
     @Autowired
     private DailyClosureService dailyClosureService;
+    private DailyConsumptionModel dailyConsumptionModel;
 
     @Override
     public Node getRootNode() {
@@ -186,8 +189,7 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
     @Override
     public void enter() {
         updateClosureTimeLabels();
-        DailyConsumptionModel dailyConsumptionModel =
-                dailyConsumptionService.getDailyConsumptionModel(startDate, endDate);
+        dailyConsumptionModel = dailyConsumptionService.getDailyConsumptionModel(startDate, endDate);
         cashTotalPrice.setText(String.valueOf(dailyConsumptionModel.getConsumptionCash()));
         creditCardTotalPrice.setText(String.valueOf(dailyConsumptionModel.getConsumptionCreditCard()));
         couponTotalPrice.setText(String.valueOf(dailyConsumptionModel.getConsumptionCoupon()));
@@ -266,6 +268,7 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
                     .startDate(getDate())
                     .endDate(getDate())
                     .build();
+            creditCardTerminalOver.setText(calculateCreditCardOver(creditCardTerminalValue));
             dailyConsumptionService.closeDay(closeDayParams);
             enter();
         } catch (NumberFormatException e) {
@@ -275,9 +278,15 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
         }
     }
 
+    private String calculateCreditCardOver(int creditCardTerminalValue) {
+        int creditCardTerminalOver = creditCardTerminalValue - dailyConsumptionModel.getConsumptionCreditCard() -
+                dailyConsumptionModel.getServiceFeeCreditCard();
+        return String.valueOf(creditCardTerminalOver);
+    }
+
     private LocalDate getDate() {
         LocalTime currentTime = LocalTime.now();
-        if(currentTime.getHour() < 4) {
+        if (currentTime.getHour() < 4) {
             return LocalDate.now().minusDays(1);
         }
         return LocalDate.now();

@@ -78,12 +78,6 @@ public class RestaurantControllerTest extends TestFXBase {
         backToRestaurantView();
     }
 
-    @Test
-    public void testDailyClosureWithNo() {
-        clickButtonThenWait("Restaurant.DailyClosure", 500);
-        clickOnThenWait("No", 500);
-    }
-
     @Ignore
     @Test
     public void testDailyClosureWithYes() {
