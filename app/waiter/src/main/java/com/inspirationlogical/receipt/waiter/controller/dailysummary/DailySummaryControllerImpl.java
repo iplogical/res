@@ -279,9 +279,10 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
     }
 
     private String calculateCreditCardOver(int creditCardTerminalValue) {
+        // TODO: divide with 1.27
         int creditCardTerminalOver = creditCardTerminalValue - dailyConsumptionModel.getConsumptionCreditCard() -
                 dailyConsumptionModel.getServiceFeeCreditCard();
-        return String.valueOf(creditCardTerminalOver);
+        return String.valueOf((int)((double)creditCardTerminalOver / 1.27D));
     }
 
     private LocalDate getDate() {

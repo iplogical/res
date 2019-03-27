@@ -94,7 +94,7 @@ public class ReceiptPdfCreator {
 
     private void initDocument(ByteArrayOutputStream os) throws DocumentException {
         document = new Document(new RectangleReadOnly(227, 600));
-        document.setMargins(0f, 24f, 24f, 6f);
+        document.setMargins(0f, 24f, 0f, 6f);
         PdfWriter.getInstance(document, os);
         document.open();
     }
