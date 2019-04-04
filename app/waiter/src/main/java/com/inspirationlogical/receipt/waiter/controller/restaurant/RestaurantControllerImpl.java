@@ -15,6 +15,8 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
@@ -22,7 +24,11 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -48,6 +54,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 
     @FXML
     private ToggleButton configuration;
+
     @FXML
     private ToggleButton motion;
 
@@ -78,6 +85,12 @@ public class RestaurantControllerImpl implements RestaurantController {
     @FXML
     private Label liveTime;
 
+    @FXML
+    private ImageView layoutImage;
+
+    @Value("${layout.image}")
+    Resource layoutImageResource;
+
     private Popup tableForm;
 
     @Autowired
@@ -99,7 +112,17 @@ public class RestaurantControllerImpl implements RestaurantController {
         initContextMenu(frequentersControl);
         initContextMenu(employeesControl);
         tableConfigurationController.initialize();
+        initLayoutImage();
         initLiveTime(liveTime);
+    }
+
+    private void initLayoutImage() {
+        try {
+            Image layoutImagePicture = new Image(layoutImageResource.getInputStream());
+        layoutImage.setImage(layoutImagePicture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initContextMenu(Label control) {

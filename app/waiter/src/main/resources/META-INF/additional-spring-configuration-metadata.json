@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "layout.image",
+      "type": "java.lang.String",
+      "description": "Description for layout.image."
+    },
+    {
+      "name": "print.logo",
+      "type": "java.lang.String",
+      "description": "Description for print.logo."
+    }
+  ]
+}

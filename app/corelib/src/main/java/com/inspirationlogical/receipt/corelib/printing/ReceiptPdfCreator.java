@@ -8,6 +8,7 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,9 @@ public class ReceiptPdfCreator {
     private static final int FONT_SIZE = 10;
     private static final int TITLE_FONT_SIZE = 14;
     private static final int PADDING_BOTTOM = 6;
+
+    @Value("${print.logo}")
+    private Resource imageResource;
 
     private Document document;
     private BaseFont normalFont;
@@ -118,12 +122,10 @@ public class ReceiptPdfCreator {
         paragraph.add(new Chunk(image, 0, 0, true));
         paragraph.setAlignment(Element.ALIGN_CENTER);
         document.add(paragraph);
-
     }
 
     private Image getLogoFromResource() throws IOException, BadElementException {
-        Resource imageResource = new ClassPathResource("images/game_up_logo.png");
-        File imageFile = getResourceAsFile(imageResource, "temp/game_up_logo.png");
+        File imageFile = getResourceAsFile(imageResource, "temp/logo.png");
         Image image = Image.getInstance(imageFile.getAbsolutePath());
         image.setAlignment(Image.LEFT | Image.TEXTWRAP);
         return image;

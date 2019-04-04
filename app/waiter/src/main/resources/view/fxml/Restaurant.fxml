@@ -30,11 +30,7 @@
                                        <children>
                                       <AnchorPane fx:id="tablesTab" StackPane.alignment="CENTER">
                                              <children>
-                                                <ImageView fx:id="layoutImage" fitWidth="1034.0" preserveRatio="true" AnchorPane.leftAnchor="-70.0" AnchorPane.topAnchor="-97.0">
-                                                   <image>
-                                                      <Image url="@../../images/game_up_layout.png" />
-                                                   </image>
-                                                </ImageView>
+                                                <ImageView fx:id="layoutImage" fitWidth="1034.0" preserveRatio="true" AnchorPane.leftAnchor="-70.0" AnchorPane.topAnchor="-97.0" />
                                                 <Pane maxHeight="5.0" maxWidth="1.7976931348623157E308" prefHeight="5.0" style="-fx-background-color: #f3f3f3;" AnchorPane.leftAnchor="-70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                 <Label fx:id="tablesControl" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                              </children>
