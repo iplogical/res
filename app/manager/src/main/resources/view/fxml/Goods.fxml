@@ -17,13 +17,13 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <SplitPane dividerPositions="0.23" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <SplitPane dividerPositions="0.07" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>
                         <TreeTableView fx:id="categoriesTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
-                            <TreeTableColumn fx:id="categoryName" prefWidth="200.0" text="%Goods.CategoryName" />
+                            <TreeTableColumn fx:id="categoryName" maxWidth="1.7976931348623157E308" prefWidth="180.0" text="%Goods.CategoryName" />
                           </columns>
                         </TreeTableView>
                      </children>
@@ -32,17 +32,16 @@
                      <children>
                         <TableView fx:id="productsTable" prefHeight="696.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
-                            <TableColumn fx:id="productShortName" prefWidth="75.0" text="%Common.ProductShortName" />
+                            <TableColumn fx:id="productShortName" prefWidth="180.0" text="%Common.ProductShortName" />
+                              <TableColumn fx:id="productType" prefWidth="75.0" text="%Common.ProductType" />
                             <TableColumn fx:id="productRapidCode" prefWidth="75.0" text="%Common.ProductRapidCode" />
                               <TableColumn fx:id="productOrderNumber" prefWidth="75.0" text="%Common.ProductOrderNumber" />
-                              <TableColumn fx:id="productPurchasePrice" prefWidth="75.0" text="%Common.ProductPurchasePrice" />
                               <TableColumn fx:id="productSalePrice" prefWidth="75.0" text="%Common.ProductSalePrice" />
-                              <TableColumn fx:id="productStorageMultiplier" prefWidth="75.0" text="%Common.ProductStorageMultiplier" />
+                              <TableColumn fx:id="productPurchasePrice" prefWidth="75.0" text="%Common.ProductPurchasePrice" />
                               <TableColumn fx:id="productQuantityUnit" prefWidth="75.0" text="%Common.ProductQuantityUnit" />
-                              <TableColumn fx:id="productQuantityMultiplier" prefWidth="75.0" text="%Common.ProductQuantityMultiplier" />
+                              <TableColumn fx:id="productStorageMultiplier" prefWidth="75.0" text="%Common.ProductStorageMultiplier" />
                               <TableColumn fx:id="productMinimumStock" prefWidth="75.0" text="%Common.ProductMinimumStock" />
                               <TableColumn fx:id="productStockWindow" prefWidth="75.0" text="%Common.ProductStockWindow" />
-                              <TableColumn fx:id="productType" prefWidth="75.0" text="%Common.ProductType" />
                               <TableColumn fx:id="productStatus" prefWidth="75.0" text="%Common.ProductStatus" />
                           </columns>
                         </TableView>

@@ -17,7 +17,9 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.manager.application.ManagerApp;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
+import com.inspirationlogical.receipt.manager.controller.goods.GoodsFxmlView;
 import com.inspirationlogical.receipt.manager.utility.*;
 import com.inspirationlogical.receipt.manager.viewmodel.*;
 
@@ -239,7 +241,7 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
 
     @FXML
     public void onShowGoods(Event event) {
-//        viewLoader.loadViewIntoScene(goodsController);
+        ManagerApp.showView(GoodsFxmlView.class);
     }
 
     @FXML

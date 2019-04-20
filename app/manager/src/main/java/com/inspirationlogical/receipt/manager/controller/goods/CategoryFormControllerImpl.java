@@ -18,7 +18,6 @@ import com.inspirationlogical.receipt.manager.exception.InvalidInputFormExceptio
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 
-import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStatusStringConverter;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.FXCollections;
@@ -113,16 +112,16 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     }
 
     @Override
-    public void setCategory(GoodsTableViewModel goodsTableViewModel) {
+    public void setCategory(ProductCategoryView categoryViewModel) {
         CategoryStringConverter converterAll = new CategoryStringConverter(allCategories);
         CategoryStringConverter converterParent = new CategoryStringConverter(parentCategories);
-        originalCategoryName = goodsTableViewModel.getName();
+        originalCategoryName = categoryViewModel.getName();
         name.setText(originalCategoryName);
-        orderNumber.setText(goodsTableViewModel.getOrderNumber());
-        type.setValue(converterAll.fromString(goodsTableViewModel.getName()).getType());
+        orderNumber.setText(String.valueOf(categoryViewModel.getOrderNumber()));
+        type.setValue(converterAll.fromString(categoryViewModel.getName()).getType());
         type.setDisable(true);
-        status.setValue(status.getConverter().fromString(goodsTableViewModel.getStatus()));
-        String parentName = converterAll.fromString(goodsTableViewModel.getName()).getParent().getCategoryName();
+        status.setValue(status.getConverter().fromString(categoryViewModel.getStatus().toI18nString()));
+        String parentName = converterAll.fromString(categoryViewModel.getName()).getParent().getCategoryName();
         parent.setValue(converterParent.fromString(parentName));
         parent.setDisable(true);
     }

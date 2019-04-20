@@ -21,4 +21,6 @@ public interface ProductService {
     void updateRecipe(ProductView owner, List<RecipeParams> recipeParamsList);
 
     List<Product> getStorableProducts();
+
+    List<ProductView> getProductsByCategory(ProductCategoryView productCategoryView, boolean showDeleted);
 }

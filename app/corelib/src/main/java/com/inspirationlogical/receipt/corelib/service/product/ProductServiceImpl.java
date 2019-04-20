@@ -174,4 +174,13 @@ public class ProductServiceImpl implements ProductService {
         Map<Object,Boolean> seen = new ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
+
+    @Override
+    public List<ProductView> getProductsByCategory(ProductCategoryView productCategoryView, boolean showDeleted) {
+        ProductCategory productCategory = productCategoryRepository.findById(productCategoryView.getId());
+        List<ProductCategory> pseudoCategories = new ArrayList<>();
+        
+        List<ProductCategory> childrenCategories = productCategory.getChildren();
+        return new ArrayList<>();
+    }
 }

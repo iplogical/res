@@ -23,5 +23,7 @@ public interface CommonService {
 
     List<ProductView> getSellableProducts(ProductCategoryView productCategoryView);
 
+    List<ProductView> getProductsByCategory(ProductCategoryView productCategoryView, boolean showDeleted);
+
     List<ProductView> getStorableProducts();
 }

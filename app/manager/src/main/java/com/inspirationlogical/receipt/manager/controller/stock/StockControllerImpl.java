@@ -7,7 +7,9 @@ import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.manager.application.ManagerApp;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
+import com.inspirationlogical.receipt.manager.controller.goods.GoodsFxmlView;
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewstate.StockViewState;
 import de.felixroske.jfxsupport.FXMLController;
@@ -106,7 +108,7 @@ public class StockControllerImpl extends AbstractController implements StockCont
 
     @FXML
     public void onShowGoods(Event event) {
-//        viewLoader.loadViewIntoScene(goodsController);
+        ManagerApp.showView(GoodsFxmlView.class);
     }
 
     @FXML
