@@ -11,13 +11,18 @@ import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.manager.application.ManagerApp;
+import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
 import com.inspirationlogical.receipt.manager.controller.stock.*;
 import com.inspirationlogical.receipt.manager.controller.pricemodifier.*;
 import com.inspirationlogical.receipt.manager.controller.receipt.*;
 
 import de.felixroske.jfxsupport.FXMLController;
+import javafx.beans.Observable;
+import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -28,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
 import java.util.Comparator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
@@ -35,24 +41,24 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.s
 @FXMLController
 public class GoodsControllerImpl extends AbstractController implements GoodsController {
 
-    private static final String GOODS_VIEW_PATH = "/view/fxml/Goods.fxml";
-
     private @FXML BorderPane root;
 
-    private @FXML TreeTableView<GoodsTableViewModel> goodsTable;
+    private @FXML TreeTableView<GoodsTableViewModel> categoriesTable;
     private @FXML TreeTableColumn<GoodsTableViewModel, String> categoryName;
-    private @FXML TreeTableColumn<GoodsTableViewModel, String> productShortName;
-    private @FXML TreeTableColumn<GoodsTableViewModel, String> productRapidCode;
-    private @FXML TreeTableColumn<GoodsTableViewModel, String> productOrderNumber;
-    private @FXML TreeTableColumn<GoodsTableViewModel, String> productType;
-    private @FXML TreeTableColumn<GoodsTableViewModel, String> productStatus;
-    private @FXML TreeTableColumn<GoodsTableViewModel, String> productQuantityUnit;
-    private @FXML TreeTableColumn<GoodsTableViewModel, String> productStorageMultiplier;
-    private @FXML TreeTableColumn<GoodsTableViewModel, String> productQuantityMultiplier;
-    private @FXML TreeTableColumn<GoodsTableViewModel, String> productPurchasePrice;
-    private @FXML TreeTableColumn<GoodsTableViewModel, String> productSalePrice;
-    private @FXML TreeTableColumn<GoodsTableViewModel, String> productMinimumStock;
-    private @FXML TreeTableColumn<GoodsTableViewModel, String> productStockWindow;
+
+    private @FXML TableView<GoodsTableViewModel> productsTable;
+    private @FXML TableColumn<GoodsTableViewModel, String> productShortName;
+    private @FXML TableColumn<GoodsTableViewModel, String> productRapidCode;
+    private @FXML TableColumn<GoodsTableViewModel, String> productOrderNumber;
+    private @FXML TableColumn<GoodsTableViewModel, String> productType;
+    private @FXML TableColumn<GoodsTableViewModel, String> productStatus;
+    private @FXML TableColumn<GoodsTableViewModel, String> productQuantityUnit;
+    private @FXML TableColumn<GoodsTableViewModel, String> productStorageMultiplier;
+    private @FXML TableColumn<GoodsTableViewModel, String> productQuantityMultiplier;
+    private @FXML TableColumn<GoodsTableViewModel, String> productPurchasePrice;
+    private @FXML TableColumn<GoodsTableViewModel, String> productSalePrice;
+    private @FXML TableColumn<GoodsTableViewModel, String> productMinimumStock;
+    private @FXML TableColumn<GoodsTableViewModel, String> productStockWindow;
 
     private @FXML CheckBox showDeleted;
     private @FXML Button addCategory;
@@ -68,24 +74,24 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     private @FXML Button showReceipts;
 
     @Autowired
-    private StockController stockController;
-
-    @Autowired
-    private PriceModifierController priceModifierController;
-
-    @Autowired
-    private ReceiptController receiptController;
-
     private CommonService commonService;
+
+    @Autowired
     private ManagerService managerService;
 
     private Popup productForm;
+
+    @Autowired
     private ProductFormController productFormController;
 
     private Popup categoryForm;
+
+    @Autowired
     private CategoryFormController categoryFormController;
 
     private Popup recipeForm;
+
+    @Autowired
     private RecipeFormController recipeFormController;
 
 
@@ -127,19 +133,19 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     private void initCategoryForm() {
         categoryForm = new Popup();
-        categoryForm.getContent().add(viewLoader.loadView(categoryFormController));
+        categoryForm.getContent().add(ManagerApp.getRootNode(CategoryFormFxmlView.class));
         categoryFormController.loadCategoryForm(this);
     }
 
     private void initProductForm() {
         productForm = new Popup();
-        productForm.getContent().add(viewLoader.loadView(productFormController));
+        productForm.getContent().add(ManagerApp.getRootNode(ProductFormFxmlView.class));
         productFormController.loadProductForm(this);
     }
 
     private void initRecipeForm() {
         recipeForm = new Popup();
-        recipeForm.getContent().add(viewLoader.loadView(recipeFormController));
+        recipeForm.getContent().add(ManagerApp.getRootNode(RecipeFormFxmlView.class));
         recipeFormController.loadRecipeForm(this);
     }
 
@@ -147,10 +153,20 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         ProductCategoryView rootCategory = commonService.getRootProductCategory();
         GoodsTableViewModel goodsTableViewModel = createGoodsTableViewModel(rootCategory);
         TreeItem<GoodsTableViewModel> rootItem = new TreeItem<>(goodsTableViewModel);
-        goodsTable.setRoot(rootItem);
-        goodsTable.setShowRoot(false);
+        categoriesTable.setRoot(rootItem);
+        categoriesTable.setShowRoot(false);
         updateCategory(rootCategory, rootItem);
+        categoriesTable.getSelectionModel().selectedItemProperty().addListener(this::onCategoriesTableSelectionChanged);
     }
+
+    private void onCategoriesTableSelectionChanged(ObservableValue<? extends TreeItem<GoodsTableViewModel>> obs,
+                                           TreeItem<GoodsTableViewModel> oldSelection,
+                                           TreeItem<GoodsTableViewModel> newSelection) {
+        if (newSelection != null) {
+            List<ProductView> productViewList = commonService.getSellableProducts();
+        }
+    }
+
 
     private void updateCategory(ProductCategoryView productCategoryView, TreeItem<GoodsTableViewModel> parentTreeItem) {
         parentTreeItem.setExpanded(true);
@@ -171,7 +187,6 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         TreeItem<GoodsTableViewModel> childTreeItem = new TreeItem<>(goodsTableViewModel);
         parentTreeItem.getChildren().add(childTreeItem);
         sortTreeItemChildren(parentTreeItem);
-        addRecipeItemsToProduct(goodsTableViewModel, childTreeItem);
         return childTreeItem;
     }
 
@@ -193,18 +208,6 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         treeItem.getChildren().sort(Comparator.comparing(categoryViewModelTreeItem -> categoryViewModelTreeItem.getValue().getName()));
     }
 
-    private void addRecipeItemsToProduct(GoodsTableViewModel goodsTableViewModel, TreeItem<GoodsTableViewModel> productItem) {
-        goodsTableViewModel.getRecipes().forEach(recipe -> {
-            TreeItem<GoodsTableViewModel> recipeItem = new TreeItem<>(new GoodsTableViewModel(recipe.getComponent()));
-            productItem.getChildren().add(recipeItem);
-        });
-    }
-
-    @Override
-    public String getViewPath() {
-        return GOODS_VIEW_PATH;
-    }
-
     @Override
     public Node getRootNode() {
         return root;
@@ -224,11 +227,11 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     private void initCategoriesAndScrollBack() {
         int index = 0;
-        if (goodsTable.getSelectionModel() != null) {
-            index = goodsTable.getSelectionModel().getFocusedIndex();
+        if (categoriesTable.getSelectionModel() != null) {
+            index = categoriesTable.getSelectionModel().getFocusedIndex();
         }
         initCategories();
-        goodsTable.scrollTo(index);
+        categoriesTable.scrollTo(index);
     }
 
     private void addOrUpdateProduct(int productId, ProductCategoryView parent, Product.ProductBuilder builder) {
@@ -264,19 +267,34 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         initCategoriesAndScrollBack();
     }
 
+    @Override
+    public void hideCategoryForm() {
+        categoryForm.hide();
+    }
+
+    @Override
+    public void hideProductForm() {
+        productForm.hide();
+    }
+
+    @Override
+    public void hideRecipeForm() {
+        recipeForm.hide();
+    }
+
     @FXML
     public void onShowStock(Event event) {
-        viewLoader.loadViewIntoScene(stockController);
+        ManagerApp.showView(StockFxmlView.class);
     }
 
     @FXML
     public void onShowPriceModifiers(Event event) {
-        viewLoader.loadViewIntoScene(priceModifierController);
+        ManagerApp.showView(PriceModifierFxmlView.class);
     }
 
     @FXML
     public void onShowReceipts(Event event) {
-        viewLoader.loadViewIntoScene(receiptController);
+        ManagerApp.showView(ReceiptFxmlView.class);
     }
 
     @FXML
@@ -293,7 +311,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
             return;
         }
         GoodsTableViewModel selected = getGoodsTableSelectedValue();
-        GoodsTableViewModel parent = goodsTable.getSelectionModel().getSelectedItem().getParent().getValue();
+        GoodsTableViewModel parent = categoriesTable.getSelectionModel().getSelectedItem().getParent().getValue();
         if(selected.isCategory()) {
             ErrorMessage.showErrorMessage(root,
                     ManagerResources.MANAGER.getString("ProductForm.SelectProductForModify"));
@@ -306,7 +324,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     }
 
     private GoodsTableViewModel getGoodsTableSelectedValue() {
-        return goodsTable.getSelectionModel().getSelectedItem().getValue();
+        return categoriesTable.getSelectionModel().getSelectedItem().getValue();
     }
 
     @FXML
@@ -386,6 +404,6 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     }
 
     private boolean isSelectionNull() {
-        return goodsTable.getSelectionModel().getSelectedItem() == null;
+        return categoriesTable.getSelectionModel().getSelectedItem() == null;
     }
 }

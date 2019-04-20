@@ -1,11 +1,9 @@
-package com.inspirationlogical.receipt.waiter.controller.table;
+package com.inspirationlogical.receipt.corelib.frontend.view;
 
 import com.inspirationlogical.receipt.corelib.utility.Wrapper;
-import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import lombok.Setter;
 
 public class DragAndDropHandler {
 
@@ -13,26 +11,8 @@ public class DragAndDropHandler {
     private static final int POSITION_X_MAX = 810;
     private static final int POSITION_Y_MIN = 10;
     private static final int POSITION_Y_MAX = 600;
-    public static final int GRID_SIZE_IN_PIXELS = 5;
+    private static final int GRID_SIZE_IN_PIXELS = 5;
 
-    @Setter
-    static RestaurantController restaurantController;
-
-    public static void addTableDragAndDrop(Node view) {
-        final Wrapper<Point2D> deltaWrapper = new Wrapper<>();
-
-        view.setOnMousePressed(mouseEvent -> {
-            if (restaurantController.isMotionMode()) {
-                savePosition(mouseEvent, deltaWrapper);
-            }
-        });
-
-        view.setOnMouseDragged(mouseEvent -> {
-            if (restaurantController.isMotionMode()) {
-                updatePosition(mouseEvent, deltaWrapper);
-            }
-        });
-    }
 
     public static void addFormDragAndDrop(Node view) {
         final Wrapper<Point2D> deltaWrapper = new Wrapper<>();
@@ -40,7 +20,7 @@ public class DragAndDropHandler {
         view.setOnMouseDragged(mouseEvent -> updatePosition(mouseEvent, deltaWrapper));
     }
 
-    private static void updatePosition(MouseEvent mouseEvent, Wrapper<Point2D> deltaWrapper) {
+    public static void updatePosition(MouseEvent mouseEvent, Wrapper<Point2D> deltaWrapper) {
         Node node = (Node)mouseEvent.getSource();
         double posX = mouseEvent.getSceneX() + deltaWrapper.getContent().getX();
         double posY = mouseEvent.getSceneY() + deltaWrapper.getContent().getY();
@@ -62,7 +42,7 @@ public class DragAndDropHandler {
         node.setLayoutY(posY);
     }
 
-    private static void savePosition(MouseEvent mouseEvent, Wrapper<Point2D> deltaWrapper) {
+    public static void savePosition(MouseEvent mouseEvent, Wrapper<Point2D> deltaWrapper) {
         Node node = (Node)mouseEvent.getSource();
         double posX = node.getLayoutX() - mouseEvent.getSceneX();
         double posY = node.getLayoutY() - mouseEvent.getSceneY();

@@ -5,7 +5,9 @@ import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.manager.application.ManagerApp;
 import com.inspirationlogical.receipt.manager.controller.goods.*;
+import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.*;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -31,8 +33,6 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.s
  */
 @FXMLController
 public class PriceModifierControllerImpl implements PriceModifierController {
-
-    public static final String PRICE_MODIFIER_VIEW_PATH = "/view/fxml/PriceModifier.fxml";
 
     @FXML
     private BorderPane root;
@@ -107,9 +107,10 @@ public class PriceModifierControllerImpl implements PriceModifierController {
         priceModifierForm.hide();
     }
 
+
     @FXML
     public void onShowGoods(Event event) {
-//        viewLoader.loadViewIntoScene(goodsController);
+        ManagerApp.showView(GoodsFxmlView.class);
     }
 
     @FXML
@@ -120,9 +121,14 @@ public class PriceModifierControllerImpl implements PriceModifierController {
 
     private void showPriceModifierForm() {
         priceModifierForm = new Popup();
-//        priceModifierForm.getContent().add(viewLoader.loadView(priceModifierFormController));
-//        priceModifierFormController.loadPriceModifierForm(this);
+        priceModifierForm.getContent().add(ManagerApp.getRootNode(PriceModifierFormFxmlView.class));
+        priceModifierFormController.loadPriceModifierForm(this);
         showPopup(priceModifierForm, priceModifierFormController, root, new Point2D(520, 200));
+    }
+
+    @Override
+    public void hidePriceModifierForm() {
+        priceModifierForm.hide();
     }
 
     @FXML

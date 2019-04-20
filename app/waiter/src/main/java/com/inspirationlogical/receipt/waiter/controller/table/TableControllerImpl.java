@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showNode;
 import static com.inspirationlogical.receipt.corelib.frontend.view.PressAndHoldHandler.addPressAndHold;
-import static com.inspirationlogical.receipt.waiter.controller.table.DragAndDropHandler.addTableDragAndDrop;
+import static com.inspirationlogical.receipt.waiter.controller.table.TableDragAndDropHandler.addTableDragAndDrop;
 import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -81,7 +81,7 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        DragAndDropHandler.setRestaurantController(restaurantController);
+        TableDragAndDropHandler.setRestaurantController(restaurantController);
     }
 
     @Override

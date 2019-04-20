@@ -12,6 +12,7 @@ import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStatusStringConverter;
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -21,22 +22,20 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addFormDragAndDrop;
 import static java.util.stream.Collectors.toList;
 
 /**
  * Created by régiDAGi on 2017. 04. 10..
  */
-@Singleton
+@FXMLController
 public class ProductFormControllerImpl implements ProductFormController {
 
     @FXML
@@ -70,15 +69,10 @@ public class ProductFormControllerImpl implements ProductFormController {
 
     private GoodsController goodsController;
 
-    @Inject
+    @Autowired
     private CommonService commonService;
 
-    private Long productId;
-
-    @Override
-    public String getViewPath() {
-        return "/view/fxml/ProductForm.fxml";
-    }
+    private int productId;
 
     @Override
     public Node getRootNode() {
@@ -87,7 +81,7 @@ public class ProductFormControllerImpl implements ProductFormController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(root);
+        addFormDragAndDrop(root);
         initChoiceBoxes();
     }
 
@@ -130,7 +124,7 @@ public class ProductFormControllerImpl implements ProductFormController {
     public void loadProductForm(GoodsController goodsController) {
         initCategoryChoiceBox();
         this.goodsController = goodsController;
-        productId = 0L;
+        productId = 0;
         longName.clear();
         shortName.clear();
         rapidCode.clear();
@@ -182,25 +176,25 @@ public class ProductFormControllerImpl implements ProductFormController {
     }
 
     private Product.ProductBuilder buildProduct() throws NumberFormatException, InvalidInputFormException {
-        if(isChoiceBoxEmpty() || isLongNameEmpty())
+        if (isChoiceBoxEmpty() || isLongNameEmpty())
             throw new InvalidInputFormException("");
         return commonService.productBuilder()
-            .longName(longName.getText())
-            .shortName(shortName.getText().equals("") ? longName.getText() : shortName.getText())
-            .type(type.getValue())
-            .status(status.getValue())
-            .rapidCode(Integer.valueOf(rapidCode.getText()))
-            .quantityUnit(quantityUnit.getValue())
-            .storageMultiplier(Double.valueOf(storageMultiplier.getText()))
-            .purchasePrice(Integer.valueOf(purchasePrice.getText()))
-            .salePrice(Integer.valueOf(salePrice.getText()))
-            .minimumStock(Integer.valueOf(minimumStock.getText()))
-            .stockWindow(Integer.valueOf(stockWindow.getText()))
-            .orderNumber(Integer.valueOf(orderNumber.getText()));
+                .longName(longName.getText())
+                .shortName(shortName.getText().equals("") ? longName.getText() : shortName.getText())
+                .type(type.getValue())
+                .status(status.getValue())
+                .rapidCode(Integer.valueOf(rapidCode.getText()))
+                .quantityUnit(quantityUnit.getValue())
+                .storageMultiplier(Double.valueOf(storageMultiplier.getText()))
+                .purchasePrice(Integer.valueOf(purchasePrice.getText()))
+                .salePrice(Integer.valueOf(salePrice.getText()))
+                .minimumStock(Integer.valueOf(minimumStock.getText()))
+                .stockWindow(Integer.valueOf(stockWindow.getText()))
+                .orderNumber(Integer.valueOf(orderNumber.getText()));
     }
 
     private boolean isChoiceBoxEmpty() {
-        return type.getValue() == null || category.getValue() == null || status.getValue() == null || quantityUnit.getValue() ==null;
+        return type.getValue() == null || category.getValue() == null || status.getValue() == null || quantityUnit.getValue() == null;
     }
 
     private boolean isLongNameEmpty() {
@@ -209,7 +203,7 @@ public class ProductFormControllerImpl implements ProductFormController {
 
     @FXML
     public void onCancel(Event event) {
-        hideNode(root);
+        goodsController.hideProductForm();
     }
 
     private class ProductTypeStringConverter extends StringConverter<ProductType> {

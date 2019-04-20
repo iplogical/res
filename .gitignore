@@ -23,6 +23,7 @@ target/
 temp/
 
 # IntelliJ IDEA Files #
+.idea/*
 app/.idea/*
 app/out
 app/**/*.iml

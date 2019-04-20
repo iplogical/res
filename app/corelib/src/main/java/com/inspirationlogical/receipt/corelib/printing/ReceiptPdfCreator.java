@@ -30,7 +30,7 @@ public class ReceiptPdfCreator {
     private static final int TITLE_FONT_SIZE = 14;
     private static final int PADDING_BOTTOM = 6;
 
-    @Value("${print.logo}")
+    @Value("${print.logo:}")
     private Resource imageResource;
 
     private Document document;

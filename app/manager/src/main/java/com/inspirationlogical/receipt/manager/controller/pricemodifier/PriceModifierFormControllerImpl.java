@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.manager.controller.pricemodifier;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addFormDragAndDrop;
 import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.DAILY;
 import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.NO_REPETITION;
 import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.WEEKLY;
@@ -21,9 +20,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.inject.Inject;
 
-import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
@@ -52,6 +49,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @FXMLController
 public class PriceModifierFormControllerImpl implements PriceModifierFormController {
@@ -95,10 +93,10 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
 
     private PriceModifierViewModel priceModifierViewModel;
 
-    @Inject
+    @Autowired
     private CommonService commonService;
 
-    @Inject
+    @Autowired
     private ManagerService managerService;
 
     private BooleanProperty isCategorySelected;
@@ -116,18 +114,13 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
     public static String PRICE_MODIFIER_FORM_VIEW_PATH =  "/view/fxml/PriceModifierForm.fxml";
 
     @Override
-    public String getViewPath() {
-        return PRICE_MODIFIER_FORM_VIEW_PATH;
-    }
-
-    @Override
     public Node getRootNode() {
         return root;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(root);
+        addFormDragAndDrop(root);
         initOwnerProduct();
         initOwnerCategory();
         initPriceModifierType();
@@ -330,7 +323,7 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
 
     @FXML
     public void onCancel(Event event) {
-        hideNode(root);
+        priceModifierController.hidePriceModifierForm();
     }
 
     private class PriceModifierTypeStringConverter extends StringConverter<PriceModifierType> {
@@ -421,7 +414,7 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
             validateName();
             validateType();
             validateOwner();
-            validateDisountPercent();
+            validateDiscountPercent();
             ValidateDates();
             validateRepeatPeriod();
             return new ValidationResult(valid, errorMessage.toString());
@@ -473,7 +466,7 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
             }
         }
 
-        private void validateDisountPercent() {
+        private void validateDiscountPercent() {
             try {
                 double discount = Double.valueOf(discountPercent.getText());
             } catch (NumberFormatException e) {

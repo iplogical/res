@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static com.inspirationlogical.receipt.waiter.controller.table.DragAndDropHandler.addFormDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addFormDragAndDrop;
 
 @FXMLController
 public class AdHocProductFormControllerImpl implements AdHocProductFormController {

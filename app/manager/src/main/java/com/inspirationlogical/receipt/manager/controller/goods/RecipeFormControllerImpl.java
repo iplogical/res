@@ -1,16 +1,5 @@
 package com.inspirationlogical.receipt.manager.controller.goods;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
-import static java.util.stream.Collectors.toList;
-
-import java.net.URL;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
@@ -21,7 +10,7 @@ import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.RecipeViewModel;
-
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -29,20 +18,20 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * Created by régiDAGi on 2017. 04. 10..
- */
-@Singleton
+import java.net.URL;
+import java.util.Comparator;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addFormDragAndDrop;
+import static java.util.stream.Collectors.toList;
+
+@FXMLController
 public class RecipeFormControllerImpl extends AbstractController implements RecipeFormController {
-
-    private static final String RECIPE_FORM_VIEW_PATH =  "/view/fxml/RecipeForm.fxml";
 
     @FXML
     private VBox root;
@@ -63,23 +52,18 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
     @FXML
     private Label quantityUnit;
 
-    @Inject
+    @Autowired
     private GoodsController goodsController;
 
-    @Inject
+    @Autowired
     private CommonService commonService;
 
-    @Inject
+    @Autowired
     private ManagerService managerService;
 
     private ObservableList<ProductView> sellableProducts;
 
     private ObservableList<ProductView> storalbeProducts;
-
-    @Override
-    public String getViewPath() {
-        return RECIPE_FORM_VIEW_PATH;
-    }
 
     @Override
     public Node getRootNode() {
@@ -88,7 +72,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(root);
+        addFormDragAndDrop(root);
         initProductChoiceBox();
         initComponentChoiceBox();
         initComponentTable();
@@ -148,7 +132,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
 
     @Override
     public void updateComponentsTable() {
-        if(!noProductSelected()) {
+        if (!noProductSelected()) {
             updateComponentsTable(product.getValue());
         }
     }
@@ -157,7 +141,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
     public void onClose(Event event) {
         goodsController.updateGoods();
         clearRecipeForm();
-        hideNode(root);
+        goodsController.hideRecipeForm();
     }
 
     private void clearRecipeForm() {
@@ -169,11 +153,11 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
 
     @FXML
     public void onAdd(Event event) {
-        if(noProductSelected() || noComponentSelected()) {
+        if (noProductSelected() || noComponentSelected()) {
             ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.EmptyChoiceBox"));
             return;
         }
-        if(componentAlreadyAdded()) {
+        if (componentAlreadyAdded()) {
             ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.ComponentAlreadyAdded"));
             return;
         }
@@ -234,11 +218,11 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
 
     @FXML
     public void onDelete(Event event) {
-        if(componentTable.getSelectionModel().getSelectedItem() == null) {
+        if (componentTable.getSelectionModel().getSelectedItem() == null) {
             ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.SelectComponentForDelete"));
             return;
         }
-        if(componentTable.getItems().size() == 1) {
+        if (componentTable.getItems().size() == 1) {
             ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.DeleteLastComponent"));
             return;
         }
@@ -249,7 +233,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
     private class ProductChoiceBoxListener implements ChangeListener<ProductView> {
         @Override
         public void changed(ObservableValue<? extends ProductView> observable, ProductView oldValue, ProductView newValue) {
-            if(newValue != null) {
+            if (newValue != null) {
                 updateComponentsTable(newValue);
             }
         }
@@ -264,7 +248,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
     private class ComponentChoiceBoxListener implements ChangeListener<ProductView> {
         @Override
         public void changed(ObservableValue<? extends ProductView> observable, ProductView oldValue, ProductView newValue) {
-            if(newValue != null) {
+            if (newValue != null) {
                 quantityUnit.setText(newValue.getQuantityUnit().toString());
             }
         }

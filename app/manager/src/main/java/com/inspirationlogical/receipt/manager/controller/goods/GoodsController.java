@@ -12,4 +12,10 @@ public interface GoodsController extends Controller {
     void addCategory(ProductCategoryParams params);
 
     void updateGoods();
+
+    void hideCategoryForm();
+
+    void hideProductForm();
+
+    void hideRecipeForm();
 }

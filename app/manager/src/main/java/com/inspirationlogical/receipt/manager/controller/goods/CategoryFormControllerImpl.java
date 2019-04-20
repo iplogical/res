@@ -1,15 +1,12 @@
 package com.inspirationlogical.receipt.manager.controller.goods;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addDragAndDrop;
-import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.hideNode;
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addFormDragAndDrop;
 import static java.util.stream.Collectors.toList;
 
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.ResourceBundle;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
@@ -23,6 +20,7 @@ import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 
 import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStatusStringConverter;
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -32,11 +30,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * Created by régiDAGi on 2017. 04. 10..
- */
-@Singleton
+@FXMLController
 public class CategoryFormControllerImpl implements CategoryFormController {
 
     private @FXML VBox root;
@@ -46,11 +42,9 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     private @FXML ChoiceBox<ProductCategoryView> parent;
     private @FXML TextField orderNumber;
 
-    private static String PRODUCT_CATEGORY_FORM_VIEW_PATH = "/view/fxml/CategoryForm.fxml";
-
     private GoodsController goodsController;
 
-    @Inject
+    @Autowired
     private CommonService commonService;
 
     private ObservableList<ProductCategoryView> allCategories;
@@ -60,18 +54,13 @@ public class CategoryFormControllerImpl implements CategoryFormController {
     private String originalCategoryName;
 
     @Override
-    public String getViewPath() {
-        return PRODUCT_CATEGORY_FORM_VIEW_PATH;
-    }
-
-    @Override
     public Node getRootNode() {
         return root;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addDragAndDrop(root);
+        addFormDragAndDrop(root);
         initCategories();
         initCategoryTypes();
         initCategoryStatuses();
@@ -175,7 +164,7 @@ public class CategoryFormControllerImpl implements CategoryFormController {
 
     @FXML
     public void onCancel(Event event) {
-        hideNode(root);
+        goodsController.hideCategoryForm();
     }
 
     private class ProductCategoryTypeStringConverter extends StringConverter<ProductCategoryType> {

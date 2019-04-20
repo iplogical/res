@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 public class ReceiptRecordViewModel {
-    private Long id = -1L;
+    private int id = -1;
     private String name = EMPTY;
     private String soldQuantity = EMPTY;
     private String salePrice = EMPTY;

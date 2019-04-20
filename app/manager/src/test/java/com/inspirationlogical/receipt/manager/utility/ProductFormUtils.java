@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.manager.utility;
 
-import com.inspirationlogical.receipt.waiter.controller.reatail.payment.state.AbstractPaymentState;
-
 import static com.inspirationlogical.receipt.manager.utility.ClickUtils.selectChoiceBoxItem;
 import static com.inspirationlogical.receipt.manager.utility.ClickUtils.setTextField;
 import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.*;

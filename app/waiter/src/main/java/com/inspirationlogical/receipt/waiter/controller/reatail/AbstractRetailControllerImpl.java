@@ -38,9 +38,6 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-/**
- * Created by Bálint on 2017.03.28..
- */
 @Component
 public abstract class AbstractRetailControllerImpl extends AbstractController {
 

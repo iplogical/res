@@ -62,15 +62,16 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
         return entityViews.getCategoryViews().stream()
                 .filter(this::isNotRootCategory)
                 .filter(categoryView -> isMyChild(productCategoryView, categoryView))
+                .filter(categoryView -> categoryView.getType() != PSEUDO)
                 .collect(toList());
-    }
-
-    private boolean isMyChild(ProductCategoryView productCategoryView, ProductCategoryView categoryView) {
-        return categoryView.getParent().getCategoryName().equals(productCategoryView.getCategoryName());
     }
 
     private boolean isNotRootCategory(ProductCategoryView categoryView) {
         return !categoryView.getType().equals(ROOT);
+    }
+
+    private boolean isMyChild(ProductCategoryView productCategoryView, ProductCategoryView categoryView) {
+        return categoryView.getParent().getCategoryName().equals(productCategoryView.getCategoryName());
     }
 
     @Override

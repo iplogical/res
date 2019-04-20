@@ -34,8 +34,6 @@ public class GoodsTableViewModel {
     private String stockWindow = EMPTY;
     private String orderNumber = EMPTY;
 
-    private List<RecipeView> recipes = new ArrayList<>();
-
     public GoodsTableViewModel() {
     }
 
@@ -53,8 +51,6 @@ public class GoodsTableViewModel {
         minimumStock =  valueOf(productView.getMinimumStock());
         stockWindow =  valueOf(productView.getStockWindow());
         orderNumber = valueOf(productView.getOrderNumber());
-
-        recipes = productView.getRecipes().stream().filter(recipeView -> !recipeView.isTrivial()).collect(Collectors.toList());
 
         Optional<RecipeView> recipeView = productView.getRecipes().stream()
                 .filter(RecipeView::isTrivial).findFirst();
