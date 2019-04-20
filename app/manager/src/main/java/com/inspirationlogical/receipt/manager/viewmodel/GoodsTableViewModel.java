@@ -20,7 +20,7 @@ public class GoodsTableViewModel {
     private static String PERCENT = " %";
 
     private String name = EMPTY;
-    private Long id;
+    private int id;
     private String type = EMPTY;
     private String status = EMPTY;
     private String shortName = EMPTY;

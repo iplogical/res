@@ -18,6 +18,7 @@
     <modules>
         <module>corelib</module>
         <module>waiter</module>
+        <module>manager</module>
     </modules>
 
     <properties>

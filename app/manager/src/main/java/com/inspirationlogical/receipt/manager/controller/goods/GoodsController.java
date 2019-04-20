@@ -7,7 +7,7 @@ import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 
 public interface GoodsController extends Controller {
 
-    void addProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder);
+    void addProduct(int productId, ProductCategoryView parent, Product.ProductBuilder builder);
 
     void addCategory(ProductCategoryParams params);
 

@@ -1,11 +1,8 @@
 package com.inspirationlogical.receipt.manager.controller.goods;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
@@ -14,11 +11,12 @@ import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.manager.controller.pricemodifier.PriceModifierController;
-import com.inspirationlogical.receipt.manager.controller.receipt.ReceiptController;
-import com.inspirationlogical.receipt.manager.controller.stock.StockController;
-import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
+import com.inspirationlogical.receipt.manager.controller.stock.*;
+import com.inspirationlogical.receipt.manager.controller.pricemodifier.*;
+import com.inspirationlogical.receipt.manager.controller.receipt.*;
+
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -26,6 +24,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Popup;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
 import java.util.Comparator;
@@ -33,7 +32,7 @@ import java.util.ResourceBundle;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
 
-@Singleton
+@FXMLController
 public class GoodsControllerImpl extends AbstractController implements GoodsController {
 
     private static final String GOODS_VIEW_PATH = "/view/fxml/Goods.fxml";
@@ -68,23 +67,26 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     private @FXML Button showPriceModifiers;
     private @FXML Button showReceipts;
 
-    private @Inject ViewLoader viewLoader;
+    @Autowired
+    private StockController stockController;
 
-    private @Inject StockController stockController;
-    private @Inject PriceModifierController priceModifierController;
-    private @Inject ReceiptController receiptController;
+    @Autowired
+    private PriceModifierController priceModifierController;
 
-    private @Inject CommonService commonService;
-    private @Inject ManagerService managerService;
+    @Autowired
+    private ReceiptController receiptController;
+
+    private CommonService commonService;
+    private ManagerService managerService;
 
     private Popup productForm;
-    private @Inject ProductFormController productFormController;
+    private ProductFormController productFormController;
 
     private Popup categoryForm;
-    private @Inject CategoryFormController categoryFormController;
+    private CategoryFormController categoryFormController;
 
     private Popup recipeForm;
-    private @Inject RecipeFormController recipeFormController;
+    private RecipeFormController recipeFormController;
 
 
     @Override
@@ -209,7 +211,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     }
 
     @Override
-    public void addProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
+    public void addProduct(int productId, ProductCategoryView parent, Product.ProductBuilder builder) {
         try {
             addOrUpdateProduct(productId, parent, builder);
         } catch (IllegalProductStateException e ) {
@@ -229,7 +231,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         goodsTable.scrollTo(index);
     }
 
-    private void addOrUpdateProduct(Long productId, ProductCategoryView parent, Product.ProductBuilder builder) {
+    private void addOrUpdateProduct(int productId, ProductCategoryView parent, Product.ProductBuilder builder) {
         if(productId == 0) {
             managerService.addProduct(parent, builder);
         } else {

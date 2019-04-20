@@ -1,19 +1,13 @@
 package com.inspirationlogical.receipt.manager.controller.stock;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
-import com.inspirationlogical.receipt.manager.utility.ManagerResources;
-import com.inspirationlogical.receipt.manager.viewmodel.StockViewModel;
-import com.inspirationlogical.receipt.manager.viewstate.StockViewState;
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -22,6 +16,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.inspirationlogical.receipt.manager.viewmodel.*;
 
 import java.net.URL;
 import java.util.Comparator;
@@ -29,10 +25,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-@Singleton
+@FXMLController
 public class StockControllerImpl extends AbstractController implements StockController {
-
-    public static final String STOCK_VIEW_PATH = "/view/fxml/Stock.fxml";
 
     @FXML
     private BorderPane root;
@@ -79,19 +73,16 @@ public class StockControllerImpl extends AbstractController implements StockCont
     @FXML
     private Button showGoods;
 
-    @Inject
-    private ViewLoader viewLoader;
-
-    @Inject
+    @Autowired
     private GoodsController goodsController;
 
-    @Inject
+    @Autowired
     private CommonService commonService;
 
-    @Inject
+    @Autowired
     private ManagerService managerService;
 
-    @Inject
+    @Autowired
     private StockListener.StockUpdateListener stockListener;
 
     private StockViewState stockViewState;
@@ -106,31 +97,26 @@ public class StockControllerImpl extends AbstractController implements StockCont
     }
 
     @Override
-    public String getViewPath() {
-        return STOCK_VIEW_PATH;
-    }
-
-    @Override
     public Node getRootNode() {
         return root;
     }
 
     @FXML
     public void onShowGoods(Event event) {
-        viewLoader.loadViewIntoScene(goodsController);
+//        viewLoader.loadViewIntoScene(goodsController);
     }
 
     @FXML
     public void onUpdateStock(Event event) {
-        if(stockViewState.getReceiptType() == null) {
+        if (stockViewState.getReceiptType() == null) {
             ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("Stock.SelectReceiptType"));
             return;
         }
         try {
             List<StockParams> stockParamsList = stockTable.getItems().stream()
-            .filter(stockViewModel -> stockViewModel.getInputQuantity() != null)
-            .map(this::buildStockParams)
-            .collect(Collectors.toList());
+                    .filter(stockViewModel -> stockViewModel.getInputQuantity() != null)
+                    .map(this::buildStockParams)
+                    .collect(Collectors.toList());
             managerService.updateStock(stockParamsList, stockViewState.getReceiptType(), stockListener);
             hideInputColumn();
             actionTypeToggleGroup.selectToggle(null);
@@ -149,7 +135,7 @@ public class StockControllerImpl extends AbstractController implements StockCont
 
     @FXML
     public void onQuantityDisplayToggle(Event event) {
-        if(stockViewState.getIsAbsoluteQuantity().getValue()) {
+        if (stockViewState.getIsAbsoluteQuantity().getValue()) {
             displayAbsoluteValues();
         } else {
             displayUnitValues();
@@ -183,7 +169,7 @@ public class StockControllerImpl extends AbstractController implements StockCont
     public void updateStockItems() {
         stockTable.getItems().clear();
         managerService.getStockItems().forEach(stockView -> stockTable.getItems().add(new StockViewModel(stockView)));
-        ObservableList<StockViewModel>  items = stockTable.getItems();
+        ObservableList<StockViewModel> items = stockTable.getItems();
         items.sort(Comparator.comparing(StockViewModel::getName));
         stockTable.setItems(items);
     }
@@ -227,12 +213,12 @@ public class StockControllerImpl extends AbstractController implements StockCont
 
         @Override
         public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-            if(actionTypeToggleGroup.getSelectedToggle() == null) {
+            if (actionTypeToggleGroup.getSelectedToggle() == null) {
                 hideInputColumn();
                 stockViewState.setReceiptType(null);
                 return;
             }
-            stockViewState.setReceiptType((ReceiptType)actionTypeToggleGroup.getSelectedToggle().getUserData());
+            stockViewState.setReceiptType((ReceiptType) actionTypeToggleGroup.getSelectedToggle().getUserData());
             showInputColumn();
         }
     }

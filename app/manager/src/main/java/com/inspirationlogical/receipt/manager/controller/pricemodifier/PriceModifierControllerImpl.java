@@ -1,15 +1,13 @@
 package com.inspirationlogical.receipt.manager.controller.pricemodifier;
 
-import com.google.inject.Inject;
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
-import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
-import com.inspirationlogical.receipt.manager.utility.ManagerResources;
-import com.inspirationlogical.receipt.manager.viewmodel.PriceModifierViewModel;
+import com.inspirationlogical.receipt.manager.controller.goods.*;
+import com.inspirationlogical.receipt.manager.viewmodel.*;
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -20,8 +18,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Popup;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.inject.Singleton;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Function;
@@ -31,7 +29,7 @@ import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.s
 /**
  * Created by régiDAGi on 2017. 04. 08..
  */
-@Singleton
+@FXMLController
 public class PriceModifierControllerImpl implements PriceModifierController {
 
     public static final String PRICE_MODIFIER_VIEW_PATH = "/view/fxml/PriceModifier.fxml";
@@ -75,24 +73,17 @@ public class PriceModifierControllerImpl implements PriceModifierController {
     @FXML
     Button showGoods;
 
-    @Inject
-    private ViewLoader viewLoader;
 
-    @Inject
+    @Autowired
     private GoodsController goodsController;
 
-    @Inject
+    @Autowired
     private PriceModifierFormController priceModifierFormController;
 
-    @Inject
+    @Autowired
     private ManagerService managerService;
 
     private Popup priceModifierForm;
-
-    @Override
-    public String getViewPath() {
-        return PRICE_MODIFIER_VIEW_PATH;
-    }
 
     @Override
     public Node getRootNode() {
@@ -118,7 +109,7 @@ public class PriceModifierControllerImpl implements PriceModifierController {
 
     @FXML
     public void onShowGoods(Event event) {
-        viewLoader.loadViewIntoScene(goodsController);
+//        viewLoader.loadViewIntoScene(goodsController);
     }
 
     @FXML
@@ -129,8 +120,8 @@ public class PriceModifierControllerImpl implements PriceModifierController {
 
     private void showPriceModifierForm() {
         priceModifierForm = new Popup();
-        priceModifierForm.getContent().add(viewLoader.loadView(priceModifierFormController));
-        priceModifierFormController.loadPriceModifierForm(this);
+//        priceModifierForm.getContent().add(viewLoader.loadView(priceModifierFormController));
+//        priceModifierFormController.loadPriceModifierForm(this);
         showPopup(priceModifierForm, priceModifierFormController, root, new Point2D(520, 200));
     }
 

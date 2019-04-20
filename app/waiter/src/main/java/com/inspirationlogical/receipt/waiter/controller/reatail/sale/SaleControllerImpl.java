@@ -32,9 +32,6 @@ import java.util.ResourceBundle;
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
 import static com.inspirationlogical.receipt.waiter.controller.reatail.sale.SaleViewState.CancellationType.NONE;
 
-/**
- * Created by Bálint on 2017.03.22..
- */
 @FXMLController
 public class SaleControllerImpl extends AbstractRetailControllerImpl
         implements SaleController {

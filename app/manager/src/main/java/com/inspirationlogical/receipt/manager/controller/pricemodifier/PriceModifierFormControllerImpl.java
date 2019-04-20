@@ -39,6 +39,7 @@ import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.PriceModifierViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStringConverter;
 
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,10 +53,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
-/**
- * Created by régiDAGi on 2017. 04. 08..
- */
-@Singleton
+@FXMLController
 public class PriceModifierFormControllerImpl implements PriceModifierFormController {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd.");

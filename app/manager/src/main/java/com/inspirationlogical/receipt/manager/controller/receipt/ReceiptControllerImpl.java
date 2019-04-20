@@ -11,31 +11,27 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
-import com.inspirationlogical.receipt.corelib.frontend.view.ViewLoader;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
-import com.inspirationlogical.receipt.manager.utility.ManagerResources;
-import com.inspirationlogical.receipt.manager.viewmodel.ReceiptRecordViewModel;
-import com.inspirationlogical.receipt.manager.viewmodel.ReceiptViewModel;
+import com.inspirationlogical.receipt.manager.utility.*;
+import com.inspirationlogical.receipt.manager.viewmodel.*;
 
+import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Singleton
+@FXMLController
 public class ReceiptControllerImpl extends AbstractController implements ReceiptController {
-
-    private static final String RECEIPT_VIEW_PATH = "/view/fxml/Receipt.fxml";
 
     @FXML
     private BorderPane root;
@@ -128,13 +124,10 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     @FXML
     private Label totalGrossExpenditure;
 
-    @Inject
-    private ViewLoader viewLoader;
-
-    @Inject
+    @Autowired
     private GoodsController goodsController;
 
-    @Inject
+    @Autowired
     private ManagerService managerService;
 
     private Map<LocalDate, List<ReceiptView>> receiptsByDate;
@@ -154,11 +147,6 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
         initReceipts();
         initReceiptsColumns();
         initReceiptRecordsColumns();
-    }
-
-    @Override
-    public String getViewPath() {
-        return RECEIPT_VIEW_PATH;
     }
 
     @Override
@@ -251,7 +239,7 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
 
     @FXML
     public void onShowGoods(Event event) {
-        viewLoader.loadViewIntoScene(goodsController);
+//        viewLoader.loadViewIntoScene(goodsController);
     }
 
     @FXML
