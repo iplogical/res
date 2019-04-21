@@ -118,11 +118,6 @@ public class CommonServiceImpl extends AbstractService implements CommonService 
     }
 
     @Override
-    public List<ProductView> getProductsByCategory(ProductCategoryView productCategoryView, boolean showDeleted) {
-        return productService.getProductsByCategory(productCategoryView, showDeleted);
-    }
-
-    @Override
     public List<ProductView> getStorableProducts() {
         return productService.getStorableProducts().stream().map(ProductView::new).collect(toList());
     }

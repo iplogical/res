@@ -103,12 +103,6 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         initCategories();
     }
 
-    private void initCheckBox() {
-        showDeleted.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            initCategories();
-        });
-    }
-
     private void initColumns() {
         initColumn(categoryName, ProductCategoryView::getName);
         initColumn(productShortName, ProductView::getShortName);
@@ -122,6 +116,15 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         initColumn(productStockWindow, productView -> String.valueOf(productView.getStockWindow()));
         initColumn(productType, productView -> productView.getType().toI18nString());
         initColumn(productStatus, productView -> productView.getStatus().toI18nString());
+    }
+
+    private void initCheckBox() {
+        showDeleted.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            ProductCategoryView selectedCategory = getSelectedCategory();
+            if (selectedCategory != null) {
+                refreshProductsTable(selectedCategory);
+            }
+        });
     }
 
     private void initForms() {
@@ -166,7 +169,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     }
 
     private void refreshProductsTable(ProductCategoryView selectedCategory) {
-        List<ProductView> productViewList = commonService.getProductsByCategory(selectedCategory, showDeleted.isSelected());
+        List<ProductView> productViewList = managerService.getProductsByCategory(selectedCategory, showDeleted.isSelected());
         ObservableList<ProductView> productViewObservableList = FXCollections.observableArrayList();
         productViewObservableList.addAll(productViewList);
         productsTable.setItems(productViewObservableList);
@@ -325,7 +328,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
             return;
         }
         managerService.deleteProduct(selected.getName());
-        initCategories();
+        refreshProductsTable(getSelectedCategory());
     }
 
     @FXML

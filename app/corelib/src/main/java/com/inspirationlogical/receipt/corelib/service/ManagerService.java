@@ -23,6 +23,8 @@ public interface ManagerService {
 
     void deleteProduct(String longName);
 
+    List<ProductView> getProductsByCategory(ProductCategoryView productCategoryView, boolean showDeleted);
+
     void addProductCategory(ProductCategoryParams params);
 
     void updateProductCategory(ProductCategoryParams params);

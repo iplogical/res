@@ -16,10 +16,7 @@ import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -177,10 +174,48 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductView> getProductsByCategory(ProductCategoryView productCategoryView, boolean showDeleted) {
-        ProductCategory productCategory = productCategoryRepository.findById(productCategoryView.getId());
-        List<ProductCategory> pseudoCategories = new ArrayList<>();
-        
-        List<ProductCategory> childrenCategories = productCategory.getChildren();
-        return new ArrayList<>();
+        ProductCategory selectedProductCategory = productCategoryRepository.findById(productCategoryView.getId());
+        if(selectedProductCategory.getType() == ProductCategoryType.LEAF) {
+            return buildProductViewList(selectedProductCategory.getChildren(), showDeleted);
+        }
+        List<ProductCategory> pseudoCategories = extractPseudoCategories(selectedProductCategory);
+        return buildProductViewList(pseudoCategories, showDeleted);
+    }
+
+    private List<ProductView> buildProductViewList(List<ProductCategory> productCategoryList, boolean showDeleted) {
+        return productCategoryList.stream()
+                .map(ProductCategory::getProduct)
+                .filter(product -> showDeleted || product.getStatus() == ProductStatus.ACTIVE)
+                .map(ProductView::new)
+                .sorted(Comparator.comparing(ProductView::getOrderNumber))
+                .collect(toList());
+    }
+
+    private List<ProductCategory> extractPseudoCategories(ProductCategory selectedProductCategory) {
+        List<ProductCategory> leafCategories = extractLeafCategories(selectedProductCategory);
+        return leafCategories.stream()
+                .map(ProductCategory::getChildren)
+                .flatMap(Collection::stream)
+                .collect(toList());
+    }
+
+    private List<ProductCategory> extractLeafCategories(ProductCategory selectedProductCategory) {
+        List<ProductCategory> aggregateCategories = getProductCategoriesByType(selectedProductCategory.getChildren(), ProductCategoryType.AGGREGATE);
+        List<ProductCategory> leafCategories = getProductCategoriesByType(selectedProductCategory.getChildren(), ProductCategoryType.LEAF);
+        while(!aggregateCategories.isEmpty()) {
+            List<ProductCategory> childrenCategories = aggregateCategories.stream()
+                    .map(ProductCategory::getChildren)
+                    .flatMap(Collection::stream)
+                    .collect(toList());
+            aggregateCategories = getProductCategoriesByType(childrenCategories, ProductCategoryType.AGGREGATE);
+            leafCategories.addAll(getProductCategoriesByType(childrenCategories, ProductCategoryType.LEAF));
+        }
+        return leafCategories;
+    }
+
+    private List<ProductCategory> getProductCategoriesByType(List<ProductCategory> productCategoryList, ProductCategoryType type) {
+        return productCategoryList.stream()
+                .filter(productCategory -> productCategory.getType() == type)
+                .collect(toList());
     }
 }

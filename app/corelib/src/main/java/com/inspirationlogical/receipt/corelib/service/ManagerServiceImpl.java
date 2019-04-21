@@ -75,6 +75,11 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
     }
 
     @Override
+    public List<ProductView> getProductsByCategory(ProductCategoryView productCategoryView, boolean showDeleted) {
+        return productService.getProductsByCategory(productCategoryView, showDeleted);
+    }
+
+    @Override
     public void addProductCategory(ProductCategoryParams params) {
         productCategoryService.addProductCategory(params);
         entityViews.initEntityViews();
