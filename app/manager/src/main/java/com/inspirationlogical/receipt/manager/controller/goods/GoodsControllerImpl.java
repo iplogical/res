@@ -12,12 +12,10 @@ import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
 import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.manager.application.ManagerApp;
+import com.inspirationlogical.receipt.manager.controller.pricemodifier.PriceModifierFxmlView;
+import com.inspirationlogical.receipt.manager.controller.receipt.ReceiptFxmlView;
+import com.inspirationlogical.receipt.manager.controller.stock.StockFxmlView;
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
-import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
-import com.inspirationlogical.receipt.manager.controller.stock.*;
-import com.inspirationlogical.receipt.manager.controller.pricemodifier.*;
-import com.inspirationlogical.receipt.manager.controller.receipt.*;
-
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -34,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Observable;
 import java.util.ResourceBundle;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.showPopup;
@@ -170,8 +167,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     private void refreshProductsTable(ProductCategoryView selectedCategory) {
         List<ProductView> productViewList = managerService.getProductsByCategory(selectedCategory, showDeleted.isSelected());
-        ObservableList<ProductView> productViewObservableList = FXCollections.observableArrayList();
-        productViewObservableList.addAll(productViewList);
+        ObservableList<ProductView> productViewObservableList = FXCollections.observableArrayList(productViewList);
         productsTable.setItems(productViewObservableList);
         productsTable.refresh();
     }

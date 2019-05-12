@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.corelib.service.receipt;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
@@ -74,8 +73,8 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
-        receiptServiceStock.updateStock(paramsList, receiptType, listener);
+    public void updateStock(List<StockParams> paramsList, ReceiptType receiptType) {
+        receiptServiceStock.updateStock(paramsList, receiptType);
     }
 
     @Override

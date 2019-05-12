@@ -3,7 +3,6 @@ package com.inspirationlogical.receipt.corelib.service;
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
@@ -31,7 +30,7 @@ public interface ManagerService {
 
     void deleteProductCategory(String name);
 
-    void updateStock(List<StockParams> params, ReceiptType receiptType, StockListener.StockUpdateListener listener);
+    void updateStock(List<StockParams> params, ReceiptType receiptType);
 
     void addPriceModifier(PriceModifierParams params);
 
@@ -41,7 +40,7 @@ public interface ManagerService {
 
     void updateRecipe(ProductView owner, List<RecipeParams> recipeParamsList);
 
-    List<StockView> getStockItems();
+    List<StockView> getStockViewListByCategory(ProductCategoryView selectedCategory);
 
     List<PriceModifierView> getPriceModifiers();
 

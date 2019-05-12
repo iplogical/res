@@ -187,7 +187,7 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         Receipt latestReceipt = receipts.stream().sorted(Comparator.comparing(Receipt::getClosureTime).reversed())
                 .collect(toList()).get(0);
         reopenReceipt(latestReceipt);
-        updateStockRecords(latestReceipt);
+        stockService.decreaseStock(latestReceipt, latestReceipt.getType());
         tableRepository.save(table);
         logger.info("A table was re-opened: " + tableNumber);
         return buildTableView(table);
@@ -196,12 +196,6 @@ public class TableServiceConfigImpl implements TableServiceConfig {
     private void reopenReceipt(Receipt latestReceipt) {
         latestReceipt.setStatus(ReceiptStatus.OPEN);
         latestReceipt.setClosureTime(null);
-    }
-
-    private void updateStockRecords(Receipt latestReceipt) {
-        latestReceipt.getRecords().forEach(receiptRecord -> {
-            stockService.decreaseStock(receiptRecord, latestReceipt.getType());
-        });
     }
 
     @Override

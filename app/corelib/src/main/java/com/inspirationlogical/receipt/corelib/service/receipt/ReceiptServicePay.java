@@ -58,13 +58,13 @@ public class ReceiptServicePay {
     private ReceiptPrinter receiptPrinter;
 
     public void close(Receipt receipt, PaymentParams paymentParams) {
-        if(receipt.getRecords().isEmpty()) {
+        if (receipt.getRecords().isEmpty()) {
             deleteReceipt(receipt);
             return;
         }
         receipt.setStatus(ReceiptStatus.CLOSED);
         receipt.setClosureTime(now());
-        if(paymentParams.isServiceFee()) {
+        if (paymentParams.isServiceFee()) {
             addServiceFee(receipt);
         }
         setSumValues(receipt);
@@ -73,9 +73,7 @@ public class ReceiptServicePay {
         receipt.setPaymentMethod(paymentParams.getPaymentMethod());
         applyDiscountOnSalePrices(receipt);
         dailyClosureService.update(receipt);
-        receipt.getRecords().forEach(receiptRecord -> {
-            stockService.increaseStock(receiptRecord, receipt.getType());
-        });
+        stockService.increaseStock(receipt, receipt.getType());
         printReceipt(receipt, paymentParams.isDoublePrint());
         receiptRepository.save(receipt);
     }
@@ -87,9 +85,9 @@ public class ReceiptServicePay {
     }
 
     private double calculateDiscount(Receipt receipt, PaymentParams paymentParams) {
-        if(paymentParams.getDiscountPercent() != 0) {
+        if (paymentParams.getDiscountPercent() != 0) {
             return paymentParams.getDiscountPercent();
-        } else if(paymentParams.getDiscountAbsolute() != 0) {
+        } else if (paymentParams.getDiscountAbsolute() != 0) {
             double discountAbs = paymentParams.getDiscountAbsolute();
             double sumSale = receipt.getSumSaleGrossPrice();
             double discount = discountAbs / sumSale * 100;
@@ -100,8 +98,8 @@ public class ReceiptServicePay {
     private void applyDiscountOnSalePrices(Receipt receipt) {
         receipt.setSumSaleGrossOriginalPrice(receipt.getSumSaleGrossPrice());
         receipt.setSumSaleNetOriginalPrice(receipt.getSumSaleNetPrice());
-        receipt.setSumSaleGrossPrice((int)(receipt.getSumSaleGrossPrice() * getDiscountMultiplier(receipt.getDiscountPercent())));
-        receipt.setSumSaleNetPrice((int)(receipt.getSumSaleNetPrice() * getDiscountMultiplier(receipt.getDiscountPercent())));
+        receipt.setSumSaleGrossPrice((int) (receipt.getSumSaleGrossPrice() * getDiscountMultiplier(receipt.getDiscountPercent())));
+        receipt.setSumSaleNetPrice((int) (receipt.getSumSaleNetPrice() * getDiscountMultiplier(receipt.getDiscountPercent())));
     }
 
     private void addServiceFee(Receipt receipt) {
@@ -138,14 +136,16 @@ public class ReceiptServicePay {
     }
 
     private void printReceipt(Receipt receipt, boolean doublePrint) {
-        ReceiptPrintModel receiptPrintModel = buildReceiptPrintModel(receipt);
-        receiptPrinter.printReceipt(receiptPrintModel);
-        if(doublePrint) {
+        if (receipt.getType() == ReceiptType.SALE) {
+            ReceiptPrintModel receiptPrintModel = buildReceiptPrintModel(receipt);
             receiptPrinter.printReceipt(receiptPrintModel);
+            if (doublePrint) {
+                receiptPrinter.printReceipt(receiptPrintModel);
+            }
         }
     }
 
-    private  ReceiptPrintModel buildReceiptPrintModel(Receipt receipt) {
+    private ReceiptPrintModel buildReceiptPrintModel(Receipt receipt) {
         Restaurant restaurant = receipt.getOwner().getOwner();
         ReceiptPrintModel receiptPrintModel = buildReceiptPrintModel(receipt, restaurant);
         List<ReceiptRecordPrintModel> receiptRecordPrintModels = buildReceiptRecordPrintModels(receipt);
@@ -277,7 +277,7 @@ public class ReceiptServicePay {
     }
 
     private int getSumValue(Receipt receipt, ToDoubleFunction<ReceiptRecord> calculator) {
-        return (int)receipt.getRecords().stream().mapToDouble(calculator).sum();
+        return (int) receipt.getRecords().stream().mapToDouble(calculator).sum();
     }
 
     private double calculatePurchaseGrossPrice(ReceiptRecord record) {
@@ -372,7 +372,7 @@ public class ReceiptServicePay {
 
     public int getTotalServiceFee(int tableNumber) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableNumber);
-        if(openReceipt == null) {
+        if (openReceipt == null) {
             return 0;
         }
         return calculateTotalServiceFee(openReceipt.getRecords());
@@ -380,7 +380,7 @@ public class ReceiptServicePay {
 
     public int getTotalPrice(int tableNumber) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableNumber);
-        if(openReceipt == null) {
+        if (openReceipt == null) {
             return 0;
         }
         return openReceipt.getRecords().stream()

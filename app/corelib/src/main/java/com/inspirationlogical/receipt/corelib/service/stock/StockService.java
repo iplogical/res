@@ -1,16 +1,19 @@
 package com.inspirationlogical.receipt.corelib.service.stock;
 
+import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.StockView;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 public interface StockService {
-    List<StockView> getItems();
+    List<StockView> getStockViewListByCategory(ProductCategoryView selectedCategory);
 
-    void increaseStock(ReceiptRecord receiptRecord, ReceiptType receiptType);
+    void increaseStock(Receipt receipt, ReceiptType receiptType);
+
+    void decreaseStock(Receipt receipt, ReceiptType receiptType);
 
     void decreaseStock(ReceiptRecord receiptRecord, ReceiptType receiptType);
 

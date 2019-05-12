@@ -46,6 +46,7 @@ hs_err_pid*
 
 #default receipt out dir
 app/receipts/
+receipts/
 
 #duplicated resources
 #app/waiter/src/main/resources/*

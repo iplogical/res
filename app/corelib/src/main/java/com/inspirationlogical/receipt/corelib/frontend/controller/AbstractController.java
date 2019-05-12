@@ -1,13 +1,12 @@
 package com.inspirationlogical.receipt.corelib.frontend.controller;
 
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.control.cell.TextFieldTreeTableCell;
+
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * Created by TheDagi on 2017. 04. 15..
@@ -35,10 +34,5 @@ public class AbstractController {
     protected <T> void initInputColumn(TableColumn<T, String> tableColumn, BiConsumer<T, String> method) {
         tableColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         tableColumn.setOnEditCommit(event -> method.accept(event.getRowValue(), event.getNewValue()));
-    }
-
-    protected <T> void initInputColumn(TreeTableColumn<T, String> tableColumn, BiConsumer<T, String> method) {
-        tableColumn.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
-        tableColumn.setOnEditCommit(event -> method.accept(event.getRowValue().getValue(), event.getNewValue()));
     }
 }

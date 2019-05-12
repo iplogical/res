@@ -1,8 +1,10 @@
 package com.inspirationlogical.receipt.manager.controller.stock;
 
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
+import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
+import com.inspirationlogical.receipt.corelib.model.view.StockView;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
@@ -15,6 +17,7 @@ import com.inspirationlogical.receipt.manager.viewstate.StockViewState;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -22,7 +25,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.inspirationlogical.receipt.manager.viewmodel.*;
 
 import java.net.URL;
 import java.util.Comparator;
@@ -35,34 +37,34 @@ public class StockControllerImpl extends AbstractController implements StockCont
 
     @FXML
     private BorderPane root;
+
+    private @FXML
+    TreeTableView<ProductCategoryView> categoriesTable;
+    private @FXML
+    TreeTableColumn<ProductCategoryView, String> categoryName;
+
     @FXML
-    private TableView<StockViewModel> stockTable;
+    private TableView<StockView> stockTable;
     @FXML
-    private TableColumn<StockViewModel, String> productLongName;
+    private TableColumn<StockView, String> productLongName;
     @FXML
-    private TableColumn<StockViewModel, String> stockAvailableQuantity;
+    private TableColumn<StockView, String> stockAvailableQuantity;
     @FXML
-    private TableColumn<StockViewModel, String> stockInitialQuantity;
+    private TableColumn<StockView, String> stockInitialQuantity;
     @FXML
-    private TableColumn<StockViewModel, String> stockSoldQuantity;
+    private TableColumn<StockView, String> stockSoldQuantity;
     @FXML
-    private TableColumn<StockViewModel, String> stockPurchasedQuantity;
+    private TableColumn<StockView, String> stockPurchasedQuantity;
     @FXML
-    private TableColumn<StockViewModel, String> stockInventoryQuantity;
+    private TableColumn<StockView, String> stockInventoryQuantity;
     @FXML
-    private TableColumn<StockViewModel, String> stockDisposedQuantity;
+    private TableColumn<StockView, String> stockDisposedQuantity;
     @FXML
-    private TableColumn<StockViewModel, String> stockInputQuantity;
+    private TableColumn<StockView, String> stockInputQuantity;
     @FXML
-    private TableColumn<StockViewModel, String> stockDate;
+    private TableColumn<StockView, String> productQuantityUnit;
     @FXML
-    private TableColumn<StockViewModel, String> productType;
-    @FXML
-    private TableColumn<StockViewModel, String> productStatus;
-    @FXML
-    private TableColumn<StockViewModel, String> productQuantityUnit;
-    @FXML
-    private TableColumn<StockViewModel, String> productStorageMultiplier;
+    private TableColumn<StockView, String> productStorageMultiplier;
     @FXML
     private CheckBox quantityDisplay;
     @FXML
@@ -87,18 +89,15 @@ public class StockControllerImpl extends AbstractController implements StockCont
     @Autowired
     private ManagerService managerService;
 
-    @Autowired
-    private StockListener.StockUpdateListener stockListener;
-
     private StockViewState stockViewState;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.stockViewState = new StockViewState();
         initColumns();
-        initStockItems();
         initActionTypeToggles();
         initCheckBox();
+        initCategories();
     }
 
     @Override
@@ -119,21 +118,22 @@ public class StockControllerImpl extends AbstractController implements StockCont
         }
         try {
             List<StockParams> stockParamsList = stockTable.getItems().stream()
-                    .filter(stockViewModel -> stockViewModel.getInputQuantity() != null)
+                    .filter(stockView -> stockView.getInputQuantity() != null)
                     .map(this::buildStockParams)
                     .collect(Collectors.toList());
-            managerService.updateStock(stockParamsList, stockViewState.getReceiptType(), stockListener);
+            managerService.updateStock(stockParamsList, stockViewState.getReceiptType());
             hideInputColumn();
             actionTypeToggleGroup.selectToggle(null);
+            refreshStockTable(getSelectedCategory());
         } catch (NumberFormatException e) {
             ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("Stock.NumberFormatQuantity"));
         }
     }
 
-    private StockParams buildStockParams(StockViewModel stockViewModel) {
+    private StockParams buildStockParams(StockView stockView) {
         return StockParams.builder()
-                .productName(stockViewModel.getName())
-                .quantity(Double.valueOf(stockViewModel.getInputQuantity()))
+                .productName(stockView.getProduct().getLongName())
+                .quantity(stockView.getInputQuantity())
                 .isAbsoluteQuantity(quantityDisplay.selectedProperty().getValue())
                 .build();
     }
@@ -145,38 +145,76 @@ public class StockControllerImpl extends AbstractController implements StockCont
         } else {
             displayUnitValues();
         }
-        updateStockItems();
+        ProductCategoryView selectedCategory = getSelectedCategory();
+        if (selectedCategory != null) {
+            refreshStockTable(selectedCategory);
+        }
+    }
+
+    private ProductCategoryView getSelectedCategory() {
+        return categoriesTable.getSelectionModel().getSelectedItem().getValue();
     }
 
     private void initColumns() {
-        initColumn(productLongName, StockViewModel::getName);
-        initColumn(stockAvailableQuantity, StockViewModel::getAvailableQuantity);
-        initColumn(stockInitialQuantity, StockViewModel::getInitialQuantity);
-        initColumn(stockSoldQuantity, StockViewModel::getSoldQuantity);
-        initColumn(stockPurchasedQuantity, StockViewModel::getPurchasedQuantity);
-        initColumn(stockInventoryQuantity, StockViewModel::getInventoryQuantity);
-        initColumn(stockDisposedQuantity, StockViewModel::getDisposedQuantity);
-        initColumn(stockDate, StockViewModel::getDate);
-        initColumn(productType, StockViewModel::getType);
-        initColumn(productStatus, StockViewModel::getStatus);
-        initColumn(productQuantityUnit, StockViewModel::getQuantityUnit);
-        initColumn(productStorageMultiplier, StockViewModel::getStorageMultiplier);
-        initInputColumn(stockInputQuantity, StockViewModel::setInputQuantity);
+        initColumn(categoryName, ProductCategoryView::getName);
+        initColumn(productLongName, stockView -> stockView.getProduct().getLongName());
+        initColumn(stockAvailableQuantity, stockView -> String.valueOf(stockView.getAvailableQuantity()));
+        initColumn(stockInitialQuantity, stockView -> String.valueOf(stockView.getInitialQuantity()));
+        initColumn(stockSoldQuantity, stockView -> String.valueOf(stockView.getSoldQuantity()));
+        initColumn(stockPurchasedQuantity, stockView -> String.valueOf(stockView.getPurchasedQuantity()));
+        initColumn(stockInventoryQuantity, stockView -> String.valueOf(stockView.getInventoryQuantity()));
+        initColumn(stockDisposedQuantity, stockView -> String.valueOf(stockView.getDisposedQuantity()));
+        initColumn(productQuantityUnit, stockView -> stockView.getProduct().getQuantityUnit().toI18nString());
+        initColumn(productStorageMultiplier, stockView -> String.valueOf(stockView.getProduct().getStorageMultiplier()));
+        initInputColumn(stockInputQuantity, (stockView, input) -> stockView.setInputQuantity(Double.valueOf(input)));
         hideInputColumn();
         stockTable.setEditable(true);
     }
 
-    private void initStockItems() {
-        updateStockItems();
+    private void initCategories() {
+        ProductCategoryView rootCategory = commonService.getRootProductCategory();
+        TreeItem<ProductCategoryView> rootItem = new TreeItem<>(rootCategory);
+        categoriesTable.setRoot(rootItem);
+        categoriesTable.setShowRoot(false);
+        updateCategory(rootCategory, rootItem);
+        categoriesTable.getSelectionModel().selectedItemProperty().addListener(this::onCategoriesTableSelectionChanged);
     }
 
-    @Override
-    public void updateStockItems() {
+    private void onCategoriesTableSelectionChanged(ObservableValue<? extends TreeItem<ProductCategoryView>> obs,
+                                                   TreeItem<ProductCategoryView> oldSelection,
+                                                   TreeItem<ProductCategoryView> newSelection) {
+        if (newSelection != null) {
+            refreshStockTable(newSelection.getValue());
+        }
+    }
+
+    private void updateCategory(ProductCategoryView productCategoryView, TreeItem<ProductCategoryView> parentTreeItem) {
+        parentTreeItem.setExpanded(true);
+        commonService.getChildCategories(productCategoryView).forEach(childCategory -> {
+            if (childCategory.getStatus() == ProductStatus.ACTIVE) {
+                TreeItem<ProductCategoryView> childTreeItem = addProductsAndRecipeItems(parentTreeItem, childCategory);
+                updateCategory(childCategory, childTreeItem);
+            }
+        });
+    }
+
+    private TreeItem<ProductCategoryView> addProductsAndRecipeItems(TreeItem<ProductCategoryView> parentTreeItem, ProductCategoryView childCategory) {
+        TreeItem<ProductCategoryView> childTreeItem = new TreeItem<>(childCategory);
+        parentTreeItem.getChildren().add(childTreeItem);
+        sortTreeItemChildren(parentTreeItem);
+        return childTreeItem;
+    }
+
+    private void sortTreeItemChildren(TreeItem<ProductCategoryView> treeItem) {
+        treeItem.getChildren().sort(Comparator.comparing(categoryViewModelTreeItem -> categoryViewModelTreeItem.getValue().getName()));
+    }
+
+    private void refreshStockTable(ProductCategoryView selectedCategory) {
         stockTable.getItems().clear();
-        managerService.getStockItems().forEach(stockView -> stockTable.getItems().add(new StockViewModel(stockView)));
-        ObservableList<StockViewModel> items = stockTable.getItems();
-        items.sort(Comparator.comparing(StockViewModel::getName));
-        stockTable.setItems(items);
+        List<StockView> stockViewList = managerService.getStockViewListByCategory(selectedCategory);
+        ObservableList<StockView> stockViewObservableList = FXCollections.observableArrayList(stockViewList);
+        stockTable.setItems(stockViewObservableList);
+        stockTable.refresh();
     }
 
     private void initActionTypeToggles() {
@@ -191,19 +229,21 @@ public class StockControllerImpl extends AbstractController implements StockCont
     }
 
     private void displayUnitValues() {
-        initColumn(stockAvailableQuantity, StockViewModel::getAvailableQuantity);
-        initColumn(stockInitialQuantity, StockViewModel::getInitialQuantity);
-        initColumn(stockSoldQuantity, StockViewModel::getSoldQuantity);
-        initColumn(stockPurchasedQuantity, StockViewModel::getPurchasedQuantity);
-        initColumn(stockInventoryQuantity, StockViewModel::getInventoryQuantity);
+        initColumn(stockAvailableQuantity, stockView -> String.valueOf(stockView.getAvailableQuantity()));
+        initColumn(stockInitialQuantity, stockView -> String.valueOf(stockView.getInitialQuantity()));
+        initColumn(stockSoldQuantity, stockView -> String.valueOf(stockView.getSoldQuantity()));
+        initColumn(stockPurchasedQuantity, stockView -> String.valueOf(stockView.getPurchasedQuantity()));
+        initColumn(stockInventoryQuantity, stockView -> String.valueOf(stockView.getInventoryQuantity()));
+        initColumn(stockDisposedQuantity, stockView -> String.valueOf(stockView.getDisposedQuantity()));
     }
 
     private void displayAbsoluteValues() {
-        initColumn(stockAvailableQuantity, StockViewModel::getAvailableQuantityAbsolute);
-        initColumn(stockInitialQuantity, StockViewModel::getInitialQuantityAbsolute);
-        initColumn(stockSoldQuantity, StockViewModel::getSoldQuantityAbsolute);
-        initColumn(stockPurchasedQuantity, StockViewModel::getPurchasedQuantityAbsolute);
-        initColumn(stockInventoryQuantity, StockViewModel::getInventoryQuantityAbsolute);
+        initColumn(stockAvailableQuantity, stockView -> String.valueOf(stockView.getAvailableQuantityAbsolute()));
+        initColumn(stockInitialQuantity, stockView -> String.valueOf(stockView.getInitialQuantityAbsolute()));
+        initColumn(stockSoldQuantity, stockView -> String.valueOf(stockView.getSoldQuantityAbsolute()));
+        initColumn(stockPurchasedQuantity, stockView -> String.valueOf(stockView.getPurchasedQuantityAbsolute()));
+        initColumn(stockInventoryQuantity, stockView -> String.valueOf(stockView.getInventoryQuantityAbsolute()));
+        initColumn(stockDisposedQuantity, stockView -> String.valueOf(stockView.getDisposedQuantityAbsolute()));
     }
 
     private void showInputColumn() {

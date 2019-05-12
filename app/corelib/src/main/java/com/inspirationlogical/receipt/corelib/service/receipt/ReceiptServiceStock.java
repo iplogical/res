@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.corelib.service.receipt;
 
 import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
-import com.inspirationlogical.receipt.corelib.model.listeners.StockListener;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
@@ -31,11 +30,10 @@ public class ReceiptServiceStock {
     @Autowired
     private ReceiptService receiptService;
 
-    public void updateStock(List<StockParams> paramsList, ReceiptType receiptType, StockListener.StockUpdateListener listener) {
+    void updateStock(List<StockParams> paramsList, ReceiptType receiptType) {
         Receipt receipt = buildReceipt(receiptType);
         addStockRecords(receipt, paramsList);
         bindReceiptToTable(receipt);
-        StockListener.addObserver(listener);
 
         receiptService.close(receipt, PaymentParams.builder().paymentMethod(PaymentMethod.CASH)
                 .discountAbsolute(0)

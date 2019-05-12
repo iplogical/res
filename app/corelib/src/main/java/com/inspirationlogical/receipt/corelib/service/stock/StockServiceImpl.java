@@ -1,12 +1,12 @@
 package com.inspirationlogical.receipt.corelib.service.stock;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.entity.ReceiptRecord;
-import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
-import com.inspirationlogical.receipt.corelib.model.entity.Stock;
+import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
+import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
+import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.StockView;
+import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
 import com.inspirationlogical.receipt.corelib.repository.RecipeRepository;
 import com.inspirationlogical.receipt.corelib.repository.StockRepository;
 import com.inspirationlogical.receipt.corelib.service.product.ProductService;
@@ -32,38 +32,23 @@ public class StockServiceImpl implements StockService {
     private RecipeRepository recipeRepository;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
     private ProductService productService;
 
     @Override
-    public List<StockView> getItems() {
-        return productService.getStorableProducts().stream()
+    public List<StockView> getStockViewListByCategory(ProductCategoryView selectedCategory) {
+        List<ProductView> productViewList = productService.getProductsByCategory(selectedCategory, false);
+        return productViewList.stream()
                 .map(this::getLatestItemByProduct)
                 .map(StockView::new)
                 .collect(toList());
     }
 
-    @Override
-    public void increaseStock(ReceiptRecord receiptRecord, ReceiptType receiptType) {
-        List<Recipe> recipes = recipeRepository.findAllByOwner(receiptRecord.getProduct());
-        recipes.forEach(recipe ->
-        {
-            Stock stock = getLatestItemByProduct(recipe.getComponent());
-            double quantity = calculateStockQuantity(receiptRecord, receiptType, recipe);
-            increaseStock(stock, roundToTwoDecimals(quantity), receiptType);
-            stockRepository.save(stock);
-        });
-    }
-
-    @Override
-    public void decreaseStock(ReceiptRecord receiptRecord, ReceiptType receiptType) {
-        List<Recipe> recipes = recipeRepository.findAllByOwner(receiptRecord.getProduct());
-        recipes.forEach(recipe ->
-        {
-            Stock stock = getLatestItemByProduct(recipe.getComponent());
-            double quantity = calculateStockQuantity(receiptRecord, receiptType, recipe);
-            decreaseStock(stock, roundToTwoDecimals(quantity), receiptType);
-            stockRepository.save(stock);
-        });
+    private Stock getLatestItemByProduct(ProductView productView) {
+        Product product = productRepository.findById(productView.getId());
+        return getLatestItemByProduct(product);
     }
 
     private Stock getLatestItemByProduct(Product product) {
@@ -88,6 +73,37 @@ public class StockServiceImpl implements StockService {
         return stock;
     }
 
+    @Override
+    public void increaseStock(Receipt receipt, ReceiptType receiptType) {
+        receipt.getRecords().forEach(receiptRecord -> increaseStock(receiptRecord, receipt.getType()));
+    }
+
+    private void increaseStock(ReceiptRecord receiptRecord, ReceiptType receiptType) {
+        List<Recipe> recipes = recipeRepository.findAllByOwner(receiptRecord.getProduct());
+        recipes.forEach(recipe -> {
+            Stock stock = getLatestItemByProduct(recipe.getComponent());
+            double quantity = calculateStockQuantity(receiptRecord, receiptType, recipe);
+            increaseStock(stock, roundToTwoDecimals(quantity), receiptType);
+            stockRepository.save(stock);
+        });
+    }
+
+    @Override
+    public void decreaseStock(Receipt receipt, ReceiptType receiptType) {
+        receipt.getRecords().forEach(receiptRecord -> decreaseStock(receiptRecord, receipt.getType()));
+    }
+
+    @Override
+    public void decreaseStock(ReceiptRecord receiptRecord, ReceiptType receiptType) {
+        List<Recipe> recipes = recipeRepository.findAllByOwner(receiptRecord.getProduct());
+        recipes.forEach(recipe -> {
+            Stock stock = getLatestItemByProduct(recipe.getComponent());
+            double quantity = calculateStockQuantity(receiptRecord, receiptType, recipe);
+            decreaseStock(stock, roundToTwoDecimals(quantity), receiptType);
+            stockRepository.save(stock);
+        });
+    }
+
     private Double calculateStockQuantity(ReceiptRecord receiptRecord, ReceiptType receiptType, Recipe recipe) {
         return Optional.of(receiptType).filter(type -> type.equals(ReceiptType.SALE))
                 .map(type -> recipe.getQuantityMultiplier() * receiptRecord.getSoldQuantity())
@@ -96,8 +112,7 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public void closeLatestStockEntries() {
-        productService.getStorableProducts().forEach(productAdapter ->
-                {
+        productService.getStorableProducts().forEach(productAdapter -> {
                     Stock stock = getLatestItemByProduct(productAdapter);
                     if (isStockChanged(stock)) {
                         createStockEntry(productAdapter, getInitialQuantity(stock));
