@@ -1,16 +1,5 @@
 package com.inspirationlogical.receipt.manager.controller.receipt;
 
-import static java.time.LocalDate.now;
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-import static javafx.collections.FXCollections.observableArrayList;
-
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
@@ -20,9 +9,9 @@ import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
 import com.inspirationlogical.receipt.manager.application.ManagerApp;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsFxmlView;
-import com.inspirationlogical.receipt.manager.utility.*;
-import com.inspirationlogical.receipt.manager.viewmodel.*;
-
+import com.inspirationlogical.receipt.manager.utility.ManagerResources;
+import com.inspirationlogical.receipt.manager.viewmodel.ReceiptRecordViewModel;
+import com.inspirationlogical.receipt.manager.viewmodel.ReceiptViewModel;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -31,6 +20,17 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.time.LocalDate.now;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static javafx.collections.FXCollections.observableArrayList;
 
 @FXMLController
 public class ReceiptControllerImpl extends AbstractController implements ReceiptController {
@@ -52,8 +52,6 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     @FXML
     private TreeTableColumn<ReceiptViewModel, String> closureTime;
     @FXML
-    private TreeTableColumn<ReceiptViewModel, String> userCode;
-    @FXML
     private TreeTableColumn<ReceiptViewModel, String> sumPurchaseNetPrice;
     @FXML
     private TreeTableColumn<ReceiptViewModel, String> sumPurchaseGrossPrice;
@@ -63,12 +61,6 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     private TreeTableColumn<ReceiptViewModel, String> sumSaleGrossPrice;
     @FXML
     private TreeTableColumn<ReceiptViewModel, String> discountPercent;
-    @FXML
-    private TreeTableColumn<ReceiptViewModel, String> clientName;
-    @FXML
-    private TreeTableColumn<ReceiptViewModel, String> clientAddress;
-    @FXML
-    private TreeTableColumn<ReceiptViewModel, String> clientTAXNumber;
 
     @FXML
     private TableView<ReceiptRecordViewModel> receiptRecordsTable;
@@ -95,7 +87,12 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     @FXML
     private Button selectiveCancellation;
     @FXML
+    private Button deleteReceiptButton;
+    @FXML
     private TextField decreaseQuantity;
+
+    @FXML
+    private Button dailyClosureReportButton;
 
     @FXML
     private Button refreshButton;
@@ -180,10 +177,6 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
         initColumn(sumPurchaseGrossPrice, ReceiptViewModel::getSumPurchaseGrossPrice);
         initColumn(sumPurchaseNetPrice, ReceiptViewModel::getSumPurchaseNetPrice);
         initColumn(discountPercent, ReceiptViewModel::getDiscountPercent);
-        initColumn(userCode, ReceiptViewModel::getUserCode);
-        initColumn(clientName, ReceiptViewModel::getClientName);
-        initColumn(clientAddress, ReceiptViewModel::getClientAddress);
-        initColumn(clientTAXNumber, ReceiptViewModel::getClientTAXNumber);
 
         TreeItem<ReceiptViewModel> rootItem = new TreeItem<>(new ReceiptViewModel());
         receiptsTable.setRoot(rootItem);
@@ -281,6 +274,16 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
         } catch (NumberFormatException e) {
             return 1D;
         }
+    }
+
+    @FXML
+    public void onDeleteReceiptButtonClicked(Event event) {
+        //TODO: Delete receipt
+    }
+
+    @FXML
+    public void onDailyClosureReportButtonClicked(Event event) {
+        //TODO: Daily Closure Report
     }
 
     @FXML

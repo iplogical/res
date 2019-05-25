@@ -5,8 +5,6 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import lombok.Data;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -53,14 +51,13 @@ public class ReceiptViewModel {
     }
 
     public ReceiptViewModel(ReceiptView receiptView) {
-        DateTimeFormatter openTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        DateTimeFormatter closureTimeFormatter = DateTimeFormatter.ofPattern("MM.dd HH:mm");
+        DateTimeFormatter receiptTimeFormatter = DateTimeFormatter.ofPattern("MM.dd HH:mm");
         if (receiptView != null) {
             type = valueOf(receiptView.getType());
             status = valueOf(receiptView.getStatus());
             paymentMethod = valueOf(receiptView.getPaymentMethod());
-            openTime = receiptView.getOpenTime().format(openTimeFormatter);
-            closureTime = receiptView.getClosureTime() == null ? "" : receiptView.getClosureTime().format(closureTimeFormatter);
+            openTime = receiptView.getOpenTime().format(receiptTimeFormatter);
+            closureTime = receiptView.getClosureTime() == null ? "" : receiptView.getClosureTime().format(receiptTimeFormatter);
             userCode = valueOf(receiptView.getUserCode());
             sumPurchaseNetPrice = valueOf(receiptView.getSumPurchaseNetPrice());
             sumPurchaseGrossPrice = valueOf(receiptView.getSumPurchaseGrossPrice());
