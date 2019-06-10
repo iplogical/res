@@ -5,7 +5,7 @@ import com.inspirationlogical.receipt.corelib.frontend.viewmodel.ReservationView
 import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.params.ReservationParams;
 import com.inspirationlogical.receipt.corelib.service.reservation.ReservationService;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
 import com.inspirationlogical.receipt.waiter.controller.table.TableConfigurationController;
@@ -224,7 +224,7 @@ public class ReservationControllerImpl extends AbstractController
     }
 
     private void showNumberFormatErrorMessage() {
-        ErrorMessage.showErrorMessage(getRootNode(), WaiterResources.WAITER.getString("Reservation.NumberFormatError"));
+        NotificationMessage.showErrorMessage(getRootNode(), WaiterResources.WAITER.getString("Reservation.NumberFormatError"));
     }
 
     private ReservationParams initReservationParams() {

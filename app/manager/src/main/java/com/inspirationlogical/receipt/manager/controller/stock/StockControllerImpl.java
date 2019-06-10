@@ -8,7 +8,7 @@ import com.inspirationlogical.receipt.corelib.model.view.StockView;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.manager.application.ManagerApp;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsFxmlView;
@@ -113,7 +113,7 @@ public class StockControllerImpl extends AbstractController implements StockCont
     @FXML
     public void onUpdateStock(Event event) {
         if (stockViewState.getReceiptType() == null) {
-            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("Stock.SelectReceiptType"));
+            NotificationMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("Stock.SelectReceiptType"));
             return;
         }
         try {
@@ -126,7 +126,7 @@ public class StockControllerImpl extends AbstractController implements StockCont
             actionTypeToggleGroup.selectToggle(null);
             refreshStockTable(getSelectedCategory());
         } catch (NumberFormatException e) {
-            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("Stock.NumberFormatQuantity"));
+            NotificationMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("Stock.NumberFormatQuantity"));
         }
     }
 

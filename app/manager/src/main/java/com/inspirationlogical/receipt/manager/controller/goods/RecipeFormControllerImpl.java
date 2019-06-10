@@ -5,7 +5,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.GoodsTableViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStringConverter;
@@ -108,7 +108,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
             recipe.setQuantity(newQuantity);
             updateRecipe();
         } catch (NumberFormatException e) {
-            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.NumberFormatQuantity"));
+            NotificationMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.NumberFormatQuantity"));
         }
     }
 
@@ -154,11 +154,11 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
     @FXML
     public void onAdd(Event event) {
         if (noProductSelected() || noComponentSelected()) {
-            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.EmptyChoiceBox"));
+            NotificationMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.EmptyChoiceBox"));
             return;
         }
         if (componentAlreadyAdded()) {
-            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.ComponentAlreadyAdded"));
+            NotificationMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.ComponentAlreadyAdded"));
             return;
         }
         try {
@@ -166,7 +166,7 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
             componentTable.getItems().add(newComponent);
             updateRecipe();
         } catch (NumberFormatException e) {
-            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.NumberFormatQuantity"));
+            NotificationMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.NumberFormatQuantity"));
         }
 
     }
@@ -219,11 +219,11 @@ public class RecipeFormControllerImpl extends AbstractController implements Reci
     @FXML
     public void onDelete(Event event) {
         if (componentTable.getSelectionModel().getSelectedItem() == null) {
-            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.SelectComponentForDelete"));
+            NotificationMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.SelectComponentForDelete"));
             return;
         }
         if (componentTable.getItems().size() == 1) {
-            ErrorMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.DeleteLastComponent"));
+            NotificationMessage.showErrorMessage(root, ManagerResources.MANAGER.getString("RecipeForm.DeleteLastComponent"));
             return;
         }
         componentTable.getItems().remove(componentTable.getSelectionModel().getSelectedItem());

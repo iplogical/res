@@ -10,7 +10,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.manager.application.ManagerApp;
 import com.inspirationlogical.receipt.manager.controller.pricemodifier.PriceModifierFxmlView;
 import com.inspirationlogical.receipt.manager.controller.receipt.ReceiptFxmlView;
@@ -207,7 +207,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         try {
             addOrUpdateProduct(productId, parent, builder);
         } catch (IllegalProductStateException e ) {
-            ErrorMessage.showErrorMessage(root, e.getMessage());
+            NotificationMessage.showErrorMessage(root, e.getMessage());
         } finally {
             productForm.hide();
             refreshProductsTable(getSelectedCategory());
@@ -237,7 +237,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
             addOrUpdateCategory(params);
             initCategoriesAndScrollBack();
         } catch (IllegalProductCategoryStateException e) {
-            ErrorMessage.showErrorMessage(root, e.getMessage());
+            NotificationMessage.showErrorMessage(root, e.getMessage());
         }  finally {
             categoryForm.hide();
         }
@@ -296,7 +296,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void onModifyProduct(Event event) {
         ProductView selected = getSelectedProduct();
         if(selected == null) {
-            ErrorMessage.showErrorMessage(root,
+            NotificationMessage.showErrorMessage(root,
                     ManagerResources.MANAGER.getString("ProductForm.SelectProductForModify"));
             return;
         }
@@ -319,7 +319,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void onDeleteProduct(Event event) {
         ProductView selected = getSelectedProduct();
         if(selected == null) {
-            ErrorMessage.showErrorMessage(root,
+            NotificationMessage.showErrorMessage(root,
                     ManagerResources.MANAGER.getString("ProductForm.SelectProductForDelete"));
             return;
         }
@@ -337,7 +337,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void onModifyCategory(Event event) {
         ProductCategoryView selected = getSelectedCategory();
         if(selected  == null) {
-            ErrorMessage.showErrorMessage(root,
+            NotificationMessage.showErrorMessage(root,
                     ManagerResources.MANAGER.getString("ProductForm.SelectCategoryForModify"));
             return;
         }
@@ -350,7 +350,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     public void onDeleteCategory(Event event) {
         ProductCategoryView selected = getSelectedCategory();
         if(selected  == null) {
-            ErrorMessage.showErrorMessage(root,
+            NotificationMessage.showErrorMessage(root,
                     ManagerResources.MANAGER.getString("ProductForm.SelectCategoryForDelete"));
             return;
         }

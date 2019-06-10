@@ -4,7 +4,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.TableType;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.fxml.FXML;
 import javafx.geometry.Dimension2D;
@@ -76,7 +76,7 @@ public class TableFormControllerImpl implements TableFormController {
                 tableController = null;
             }
         } catch (NumberFormatException e) {
-            ErrorMessage.showErrorMessage(getRootNode(),
+            NotificationMessage.showErrorMessage(getRootNode(),
                     WaiterResources.WAITER.getString("TableForm.NumberFormatError"));
         }
     }

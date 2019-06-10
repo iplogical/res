@@ -6,7 +6,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReservationView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.service.table.TableServiceConfig;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantController;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
@@ -22,7 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.inspirationlogical.receipt.corelib.frontend.view.NodeUtility.*;
 import static java.util.stream.Collectors.toList;
@@ -91,7 +93,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
             hideTableForm();
             drawTable(tableView);
         } catch (IllegalTableStateException e) {
-            ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
+            NotificationMessage.showErrorMessage(restaurantController.getActiveTab(),
                     WaiterResources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
         }
     }
@@ -113,7 +115,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
             tableController.setTableView(tableView);
             tableController.updateTable();
         } catch (IllegalTableStateException e) {
-            ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
+            NotificationMessage.showErrorMessage(restaurantController.getActiveTab(),
                     WaiterResources.WAITER.getString("TableAlreadyUsed") + tableParams.getNumber());
         }
     }
@@ -150,7 +152,7 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
                 .filter(tableController -> tableController.getTableType().equals(TableType.NORMAL))
                 .collect(toList());
         if(tablesToExchange.size() != 2) {
-            ErrorMessage.showErrorMessage(restaurantController.getRootNode(),
+            NotificationMessage.showErrorMessage(restaurantController.getRootNode(),
                     WaiterResources.WAITER.getString("TableConfiguration.InsufficientForExchange"));
             return;
         }
@@ -179,14 +181,14 @@ public class TableConfigurationControllerImpl implements TableConfigurationContr
                 .collect(toList());
         if(filteredControllers.isEmpty()) {
             WaiterApp.showView(RestaurantFxmlView.class);
-            ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
+            NotificationMessage.showErrorMessage(restaurantController.getActiveTab(),
                     WaiterResources.WAITER.getString("TableDoesNotExist") + reservation.getTableNumber());
             return;
         }
         TableController tableController = filteredControllers.get(0);
         if(tableServiceConfig.isTableOpen(tableController.getTableNumber())) {
             WaiterApp.showView(RestaurantFxmlView.class);
-            ErrorMessage.showErrorMessage(restaurantController.getActiveTab(),
+            NotificationMessage.showErrorMessage(restaurantController.getActiveTab(),
                     WaiterResources.WAITER.getString("TableIsOpenReservation") + tableController.getTableNumber());
             return;
         }

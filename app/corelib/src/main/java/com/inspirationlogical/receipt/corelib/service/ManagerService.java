@@ -50,4 +50,5 @@ public interface ManagerService {
 
     ReceiptRecordView decreaseReceiptRecord(ReceiptRecordView receiptRecordView, double quantity);
 
+    String createDailyClosureReport(LocalDate startDate, LocalDate endDate);
 }

@@ -7,7 +7,7 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptRowModel;
 import com.inspirationlogical.receipt.corelib.params.CloseDayParams;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyConsumptionService;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.restaurant.RestaurantFxmlView;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
@@ -218,7 +218,7 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
             startDate = LocalDate.parse(startDateTextField.getText(), DATE_FORMATTER);
             endDate = LocalDate.parse(endDateTextField.getText(), DATE_FORMATTER);
         } catch (Exception e) {
-            ErrorMessage.showErrorMessage(root,
+            NotificationMessage.showErrorMessage(root,
                     WaiterResources.WAITER.getString("DailySummary.InvalidDateFormat"));
             return;
         }
@@ -229,13 +229,13 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
     public void onUpdatePaymentMethodButtonClicked(Event event) {
         ReceiptRowModel receiptRowModel = receiptTable.getSelectionModel().getSelectedItem();
         if (receiptRowModel == null) {
-            ErrorMessage.showErrorMessage(root,
+            NotificationMessage.showErrorMessage(root,
                     WaiterResources.WAITER.getString("DailySummary.NoReceiptSelected"));
             return;
         }
         PaymentMethod newPaymentMethod = paymentMethodCombo.getSelectionModel().getSelectedItem();
         if (newPaymentMethod == null) {
-            ErrorMessage.showErrorMessage(root,
+            NotificationMessage.showErrorMessage(root,
                     WaiterResources.WAITER.getString("DailySummary.NoPaymentMethodSelected"));
             return;
         }
@@ -272,7 +272,7 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
             dailyConsumptionService.closeDay(closeDayParams);
             enter();
         } catch (NumberFormatException e) {
-            ErrorMessage.showErrorMessage(root,
+            NotificationMessage.showErrorMessage(root,
                     WaiterResources.WAITER.getString("DailySummary.InvalidNumberFormat"));
             return;
         }

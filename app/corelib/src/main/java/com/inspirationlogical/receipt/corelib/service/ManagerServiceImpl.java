@@ -8,6 +8,7 @@ import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureReportGenerator;
 import com.inspirationlogical.receipt.corelib.service.price_modifier.PriceModifierService;
 import com.inspirationlogical.receipt.corelib.service.product.ProductService;
 import com.inspirationlogical.receipt.corelib.service.product_category.ProductCategoryService;
@@ -46,6 +47,9 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
 
     @Autowired
     private PriceModifierService priceModifierService;
+
+    @Autowired
+    private DailyClosureReportGenerator dailyClosureReportGenerator;
 
     @Autowired
     ManagerServiceImpl(EntityViews entityViews) {
@@ -143,5 +147,10 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
     public ReceiptRecordView decreaseReceiptRecord(ReceiptRecordView receiptRecordView, double quantity) {
         logger.info("A receipt record was decreased by the manager: " + receiptRecordView);
         return receiptRecordService.decreaseReceiptRecord(receiptRecordView, quantity);
+    }
+
+    @Override
+    public String createDailyClosureReport(LocalDate startDate, LocalDate endDate) {
+        return dailyClosureReportGenerator.createDailyClosureReport(startDate, endDate);
     }
 }

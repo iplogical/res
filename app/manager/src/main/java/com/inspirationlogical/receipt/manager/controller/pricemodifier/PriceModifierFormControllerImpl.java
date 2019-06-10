@@ -1,26 +1,5 @@
 package com.inspirationlogical.receipt.manager.controller.pricemodifier;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addFormDragAndDrop;
-import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.DAILY;
-import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.NO_REPETITION;
-import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.WEEKLY;
-import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType.QUANTITY_DISCOUNT;
-import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType.SIMPLE_DISCOUNT;
-import static java.util.stream.Collectors.toList;
-
-import java.net.URL;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.TextStyle;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
 import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
@@ -29,13 +8,12 @@ import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.corelib.utility.ValidationResult;
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.PriceModifierViewModel;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStringConverter;
-
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
@@ -50,6 +28,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.net.URL;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.TextStyle;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addFormDragAndDrop;
+import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod.*;
+import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType.QUANTITY_DISCOUNT;
+import static com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType.SIMPLE_DISCOUNT;
+import static java.util.stream.Collectors.toList;
 
 @FXMLController
 public class PriceModifierFormControllerImpl implements PriceModifierFormController {
@@ -254,7 +251,7 @@ public class PriceModifierFormControllerImpl implements PriceModifierFormControl
     public void onConfirm(Event event) {
         ValidationResult validationResult = new InputValidator().validate();
         if(!validationResult.isValid()) {
-            ErrorMessage.showErrorMessage(root, validationResult.getErrorMessage());
+            NotificationMessage.showErrorMessage(root, validationResult.getErrorMessage());
             return;
         }
         PriceModifier.PriceModifierBuilder builder = getPriceModifierBuilder();

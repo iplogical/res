@@ -96,8 +96,8 @@
                                  <children>
                                     <HBox prefWidth="200.0" spacing="5.0">
                                        <children>
-                                          <DatePicker fx:id="startDate" promptText="%Receipt.StartDate" />
-                                          <DatePicker fx:id="endDate" promptText="%Receipt.EndDate" />
+                                           <DatePicker fx:id="startDatePicker" promptText="%Receipt.StartDate"/>
+                                           <DatePicker fx:id="endDatePicker" promptText="%Receipt.EndDate"/>
                                        </children>
                                        <padding>
                                           <Insets left="5.0" right="5.0" />

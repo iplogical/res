@@ -1,9 +1,8 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.payment.state;
 
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import javafx.scene.control.TextField;
@@ -78,11 +77,11 @@ public @Data class PaymentViewState {
 
     private void showErrorMessage() {
         if(isDiscountAbsolute()) {
-            ErrorMessage.showErrorMessage(paymentController.getRootNode(),
+            NotificationMessage.showErrorMessage(paymentController.getRootNode(),
                     WaiterResources.WAITER.getString("PaymentView.DiscountAbsoluteNumberFormatError"));
 
         } else if(isDiscountPercent()) {
-            ErrorMessage.showErrorMessage(paymentController.getRootNode(),
+            NotificationMessage.showErrorMessage(paymentController.getRootNode(),
                     WaiterResources.WAITER.getString("PaymentView.DiscountPercentNumberFormatError"));
         }
     }

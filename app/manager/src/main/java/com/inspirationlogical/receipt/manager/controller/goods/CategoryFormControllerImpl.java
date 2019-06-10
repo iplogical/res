@@ -1,23 +1,14 @@
 package com.inspirationlogical.receipt.manager.controller.goods;
 
-import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addFormDragAndDrop;
-import static java.util.stream.Collectors.toList;
-
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.ResourceBundle;
-
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
-import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.params.ProductCategoryParams;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.service.CommonService;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.manager.exception.InvalidInputFormException;
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
-
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStatusStringConverter;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.FXCollections;
@@ -30,6 +21,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.ResourceBundle;
+
+import static com.inspirationlogical.receipt.corelib.frontend.view.DragAndDropHandler.addFormDragAndDrop;
+import static java.util.stream.Collectors.toList;
 
 @FXMLController
 public class CategoryFormControllerImpl implements CategoryFormController {
@@ -132,10 +131,10 @@ public class CategoryFormControllerImpl implements CategoryFormController {
             ProductCategoryParams params = buildProductCategoryParams();
             goodsController.addCategory(params);
         } catch (NumberFormatException e) {
-            ErrorMessage.showErrorMessage(getRootNode(),
+            NotificationMessage.showErrorMessage(getRootNode(),
                     ManagerResources.MANAGER.getString("Form.NumberFormatException"));
         } catch (InvalidInputFormException e) {
-            ErrorMessage.showErrorMessage(getRootNode(),
+            NotificationMessage.showErrorMessage(getRootNode(),
                     ManagerResources.MANAGER.getString("Form.EmptyNameOrChoiceBox"));
         }
     }

@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.sale;
 
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.utility.WaiterResources;
 import de.felixroske.jfxsupport.FXMLController;
@@ -65,7 +65,7 @@ public class AdHocProductFormControllerImpl implements AdHocProductFormControlle
             saleController.sellAdHocProduct(adHocProductParams);
         } catch (NumberFormatException e) {
             logger.error("Wrong adHocParams.", e);
-            ErrorMessage.showErrorMessage(saleController.getRootNode(),
+            NotificationMessage.showErrorMessage(saleController.getRootNode(),
                     WaiterResources.WAITER.getString("AdHocProductForm.NumberFormatError"));
         }
     }

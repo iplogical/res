@@ -1,14 +1,13 @@
 package com.inspirationlogical.receipt.manager.controller.pricemodifier;
 
-import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
-import com.inspirationlogical.receipt.corelib.service.CommonService;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.manager.application.ManagerApp;
-import com.inspirationlogical.receipt.manager.controller.goods.*;
+import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
+import com.inspirationlogical.receipt.manager.controller.goods.GoodsFxmlView;
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
-import com.inspirationlogical.receipt.manager.viewmodel.*;
+import com.inspirationlogical.receipt.manager.viewmodel.PriceModifierViewModel;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.Event;
@@ -134,7 +133,7 @@ public class PriceModifierControllerImpl implements PriceModifierController {
     @FXML
     public void onModifyItem(Event event) {
         if(isSelectionNull()) {
-            ErrorMessage.showErrorMessage(root,
+            NotificationMessage.showErrorMessage(root,
                     ManagerResources.MANAGER.getString("PriceModifier.SelectPriceModifierForModify"));
             return;
         }
@@ -153,7 +152,7 @@ public class PriceModifierControllerImpl implements PriceModifierController {
     @FXML
     public void onDeleteItem(Event event) {
         if(isSelectionNull()) {
-            ErrorMessage.showErrorMessage(root,
+            NotificationMessage.showErrorMessage(root,
                     ManagerResources.MANAGER.getString("PriceModifier.SelectPriceModifierForDelete"));
             return;
         }

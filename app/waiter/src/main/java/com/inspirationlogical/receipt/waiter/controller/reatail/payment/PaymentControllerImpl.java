@@ -2,7 +2,7 @@ package com.inspirationlogical.receipt.waiter.controller.reatail.payment;
 
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
 import com.inspirationlogical.receipt.waiter.controller.reatail.payment.state.PaymentViewState;
@@ -225,7 +225,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             int paidPartialPrice = totalPrice - getTotalPrice();
             previousPartialPrice.setText(applyDiscountOnTotalPrice(paidPartialPrice) + " Ft");
         } catch (NumberFormatException e) {
-            ErrorMessage.showErrorMessage(getRootNode(), WaiterResources.WAITER.getString("PaymentView.PartialPayNumberErrorRange"));
+            NotificationMessage.showErrorMessage(getRootNode(), WaiterResources.WAITER.getString("PaymentView.PartialPayNumberErrorRange"));
         }
     }
 
@@ -264,7 +264,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             if (isPartiallyPayable(row)) {
                 onPartialPaymentRowClick(row);
             } else {
-                ErrorMessage.showErrorMessage(rootPayment,
+                NotificationMessage.showErrorMessage(rootPayment,
                         WaiterResources.WAITER.getString("PaymentView.ProductNotPartiallyPayable") + row.getProductName());
             }
         }
@@ -328,13 +328,13 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         try {
             double amount = Double.valueOf(partialPaymentValue.getText());
             if(amount > Double.parseDouble(row.getProductQuantity())) {
-                ErrorMessage.showErrorMessage(rootPayment,
+                NotificationMessage.showErrorMessage(rootPayment,
                         WaiterResources.WAITER.getString("PaymentView.PartialPayBiggerAmountError"));
                 return;
             }
             updateSoldAndPaidProducts(row, amount);
         } catch (NumberFormatException e) {
-            ErrorMessage.showErrorMessage(rootPayment,
+            NotificationMessage.showErrorMessage(rootPayment,
                     WaiterResources.WAITER.getString("PaymentView.PartialPayNumberError"));
         }
     }

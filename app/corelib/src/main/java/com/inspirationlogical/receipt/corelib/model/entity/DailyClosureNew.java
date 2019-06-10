@@ -1,7 +1,7 @@
 package com.inspirationlogical.receipt.corelib.model.entity;
 
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.AttributeOverride;
@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Setter
+@Getter
 @Table(name = "DAILY_CLOSURE_NEW")
 @EqualsAndHashCode(callSuper = true)
 @AttributeOverride(name = "id", column = @Column(name = "DAILY_CLOSURE_NEW_ID"))

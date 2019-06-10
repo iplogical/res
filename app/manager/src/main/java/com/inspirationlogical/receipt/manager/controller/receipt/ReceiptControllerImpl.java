@@ -5,7 +5,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.service.ManagerService;
-import com.inspirationlogical.receipt.corelib.utility.ErrorMessage;
+import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.manager.application.ManagerApp;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsController;
 import com.inspirationlogical.receipt.manager.controller.goods.GoodsFxmlView;
@@ -98,9 +98,9 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     private Button refreshButton;
 
     @FXML
-    private DatePicker startDate;
+    private DatePicker startDatePicker;
     @FXML
-    private DatePicker endDate;
+    private DatePicker endDatePicker;
 
     @FXML
     private Label numberOfReceipts;
@@ -138,8 +138,8 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     }
 
     private void initDatePickers() {
-        startDate.setValue(now().withDayOfMonth(1));
-        endDate.setValue(now().withDayOfMonth(now().lengthOfMonth()));
+        startDatePicker.setValue(now().withDayOfMonth(1));
+        endDatePicker.setValue(now().withDayOfMonth(now().lengthOfMonth()));
     }
 
     private void initReceiptController() {
@@ -154,7 +154,7 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
     }
 
     private void initReceipts() {
-        Map<LocalDate, List<ReceiptView>> unsortedReceiptsByDate = managerService.getReceipts(startDate.getValue(), endDate.getValue())
+        Map<LocalDate, List<ReceiptView>> unsortedReceiptsByDate = managerService.getReceipts(startDatePicker.getValue(), endDatePicker.getValue())
                 .stream()
                 .sorted(comparing(ReceiptView::getOpenTime))
                 .collect(groupingBy(receiptView -> receiptView.getOpenTime().toLocalDate()));
@@ -243,12 +243,12 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
         ReceiptViewModel selectedReceiptModel = receiptsTable.getSelectionModel().getSelectedItem().getValue();
 
         if(selectedRecordModel == null || selectedReceiptModel == null) {
-            ErrorMessage.showErrorMessage(getRootNode(), ManagerResources.MANAGER.getString("Receipt.SelectRecordForCancellation"));
+            NotificationMessage.showErrorMessage(getRootNode(), ManagerResources.MANAGER.getString("Receipt.SelectRecordForCancellation"));
             return;
         }
         ReceiptRecordView selectedRecordView = selectedRecordModel.getReceiptRecordView();
         if(!selectedRecordView.getOwnerStatus().equals(ReceiptStatus.CLOSED)) {
-            ErrorMessage.showErrorMessage(getRootNode(), ManagerResources.MANAGER.getString("Receipt.CancellationForOpenReceipt"));
+            NotificationMessage.showErrorMessage(getRootNode(), ManagerResources.MANAGER.getString("Receipt.CancellationForOpenReceipt"));
             return;
         }
         double decreaseQuantityValue = getDecreaseQuantity();
@@ -283,7 +283,10 @@ public class ReceiptControllerImpl extends AbstractController implements Receipt
 
     @FXML
     public void onDailyClosureReportButtonClicked(Event event) {
-        //TODO: Daily Closure Report
+        LocalDate startDate = startDatePicker.getValue();
+        LocalDate endDate = endDatePicker.getValue();
+        String fileName = managerService.createDailyClosureReport(startDate, endDate);
+        NotificationMessage.showSaveSuccessfulMessage(root, ManagerResources.MANAGER.getString("Receipt.ReportSaved") + fileName);
     }
 
     @FXML
