@@ -57,7 +57,7 @@
             <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
-                <version>1.5.2</version>
+                <version>1.7.25</version>
                 <executions>
                     <execution>
                         <id>l4j-gui</id>
@@ -67,28 +67,29 @@
                         </goals>
                         <configuration>
                             <headerType>gui</headerType>
-                            <outfile>target/Project.exe</outfile>
+                            <outfile>target/Manager.exe</outfile>
                             <jar>target/${project.artifactId}-${project.version}.jar</jar>
-                            <!-- if <dontWrapJar>true</dontWrapJar> change to this conf <jar>${project.artifactId}-${project.version}.jar</jar> -->
                             <dontWrapJar>false</dontWrapJar>
                             <errTitle>Error in launch4j plugin</errTitle>
                             <classPath>
-                                <mainClass>com.inspirationlogical.receipt.manager.application.ManagerApp</mainClass>
+                                <mainClass>org.springframework.boot.loader.JarLauncher</mainClass>
                             </classPath>
-                            <!--                            <icon>Project.ico</icon>-->
+                            <icon>src/main/resources/icons/meeple.ico</icon>
                             <jre>
-                                <minVersion>1.8.0</minVersion>
-                                <maxVersion>1.8.0</maxVersion>
+                                <minVersion>1.8.0_152</minVersion>
                                 <initialHeapSize>512</initialHeapSize>
-                                <maxHeapSize>1024</maxHeapSize>
+                                <maxHeapSize>2048</maxHeapSize>
+                                <opts>
+                                    <opt>-Dspring.profiles.active=game_up</opt>
+                                </opts>
                             </jre>
                             <versionInfo>
-                                <fileVersion>1.0.0</fileVersion>
+                                <fileVersion>1.0.0.0</fileVersion>
                                 <txtFileVersion>1.0.0</txtFileVersion>
                                 <fileDescription>des</fileDescription>
                                 <copyright>Copyright (c) 2019</copyright>
                                 <companyName>comp</companyName>
-                                <productVersion>1.0.0</productVersion>
+                                <productVersion>1.0.0.0</productVersion>
                                 <txtProductVersion>${project.version}</txtProductVersion>
                                 <productName>Manager</productName>
                                 <internalName>Manager</internalName>

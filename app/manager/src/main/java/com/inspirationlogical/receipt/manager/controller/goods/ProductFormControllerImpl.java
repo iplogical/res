@@ -127,7 +127,7 @@ public class ProductFormControllerImpl implements ProductFormController {
         productId = 0;
         longName.clear();
         shortName.clear();
-        rapidCode.clear();
+        rapidCode.setText("0");
         storageMultiplier.clear();
         salePrice.clear();
         purchasePrice.clear();

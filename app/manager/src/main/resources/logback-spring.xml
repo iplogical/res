@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="LOG_PATH" value="./log"/>
+
+    <springProfile name="dev">
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>
+                    %d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n
+                </pattern>
+            </encoder>
+        </appender>
+
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_PATH}/manager.log</file>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <Pattern>
+                    %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n
+                </Pattern>
+            </encoder>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>
+                    ${LOG_PATH}/archived/manager_%d{dd-MM-yyyy}.log
+                </fileNamePattern>
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>5GB</totalSizeCap>
+            </rollingPolicy>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="FILE"/>
+        </root>
+        <logger name="org.hibernate" additivity="false" level="info">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="FILE"/>
+        </logger>
+        <logger name="org.springframework" additivity="false" level="info">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="FILE"/>
+        </logger>
+        <logger name="com.inspirationlogical.receipt" additivity="false" level="info">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="FILE"/>
+        </logger>
+    </springProfile>
+
+    <springProfile name="game_up">
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>
+                    %d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n
+                </pattern>
+            </encoder>
+        </appender>
+        <appender name="SYSLOG_ALAPANYAGPORTA" class="ch.qos.logback.classic.net.SyslogAppender">
+            <syslogHost>localhost</syslogHost>
+            <facility>LOCAL4</facility>
+            <suffixPattern>alapanyag: %thread: %-5level %logger{36}.%M - %msg%n</suffixPattern>
+        </appender>
+
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_PATH}/manager.log</file>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <Pattern>
+                    %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n
+                </Pattern>
+            </encoder>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>
+                    ${LOG_PATH}/archived/manager_%d{dd-MM-yyyy}.log
+                </fileNamePattern>
+                <maxHistory>365</maxHistory>
+                <totalSizeCap>5GB</totalSizeCap>
+            </rollingPolicy>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="FILE"/>
+        </root>
+        <logger name="org.hibernate" additivity="false" level="info">
+            <appender-ref ref="FILE"/>
+        </logger>
+        <logger name="org.springframework" additivity="false" level="info">
+            <appender-ref ref="FILE"/>
+        </logger>
+        <logger name="com.inspirationlogical.receipt" additivity="false" level="info">
+            <appender-ref ref="FILE"/>
+        </logger>
+    </springProfile>
+</configuration>
