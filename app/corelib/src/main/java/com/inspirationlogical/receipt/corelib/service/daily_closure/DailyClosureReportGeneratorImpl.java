@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.inspirationlogical.receipt.corelib.service.daily_closure.DailyConsumptionServiceImpl.getCreditCardOver;
 import static com.inspirationlogical.receipt.corelib.utility.XSSUtils.*;
 
 @Service
@@ -28,7 +29,7 @@ public class DailyClosureReportGeneratorImpl implements DailyClosureReportGenera
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
     private static final DateTimeFormatter FILE_NAME_SUFFIX_FORMATTER = DateTimeFormatter.ofPattern("HHmmss");
 
-    private static final int END_COLUMN_INDEX = 9;
+    private static final int END_COLUMN_INDEX = 10;
 
     @Autowired
     private DailyClosureNewRepository dailyClosureNewRepository;
@@ -100,14 +101,15 @@ public class DailyClosureReportGeneratorImpl implements DailyClosureReportGenera
 
         createStringHeaderCell(sheet, centerAlignedStyle, row, 0, "Nap", 3000);
         createStringHeaderCell(sheet, centerAlignedStyle, row, 1, "Zárás ideje", 2300);
-        createStringHeaderCell(sheet, centerAlignedStyle, row, 2, "Készpénz", 2000);
-        createStringHeaderCell(sheet, centerAlignedStyle, row, 3, "Kártya", 2000);
-        createStringHeaderCell(sheet, centerAlignedStyle, row, 4, "Kupon", 2000);
+        createStringHeaderCell(sheet, centerAlignedStyle, row, 2, "KP", 1800);
+        createStringHeaderCell(sheet, centerAlignedStyle, row, 3, "Kártya", 1800);
+        createStringHeaderCell(sheet, centerAlignedStyle, row, 4, "Kupon", 1800);
         createStringHeaderCell(sheet, centerAlignedStyle, row, 5, "Nettó Szervízdíj", 2000);
-        createStringHeaderCell(sheet, centerAlignedStyle, row, 6, "Over KP", 2000);
-        createStringHeaderCell(sheet, centerAlignedStyle, row, 7, "Over BK", 2000);
-        createStringHeaderCell(sheet, centerAlignedStyle, row, 8, "Jatt össz", 2000);
-        createStringHeaderCell(sheet, centerAlignedStyle, row, 9, "Összesen", 2300);
+        createStringHeaderCell(sheet, centerAlignedStyle, row, 6, "Over KP", 1800);
+        createStringHeaderCell(sheet, centerAlignedStyle, row, 7, "Over BK", 1800);
+        createStringHeaderCell(sheet, centerAlignedStyle, row, 8, "Jatt össz", 1800);
+        createStringHeaderCell(sheet, centerAlignedStyle, row, 9, "Összesen", 2100);
+        createStringHeaderCell(sheet, centerAlignedStyle, row, 10, "Boríték", 2100);
         createMediumTopBorder(sheet, rowNum, END_COLUMN_INDEX);
     }
 
@@ -134,12 +136,27 @@ public class DailyClosureReportGeneratorImpl implements DailyClosureReportGenera
         createNumericCell(sheet, rightAlignedStyle, row, 3, null, dailyClosureNew.getTotalCreditCard());
         createNumericCell(sheet, rightAlignedStyle, row, 4, null, dailyClosureNew.getTotalCoupon());
         createNumericCell(sheet, rightAlignedStyle, row, 5, null, dailyClosureNew.getServiceFeeNet());
-        createNumericCell(sheet, rightAlignedStyle, row, 6, null, dailyClosureNew.getCreditCardTerminal() - dailyClosureNew.getTotalCreditCard());
-        createNumericCell(sheet, rightAlignedStyle, row, 7, null, dailyClosureNew.getServiceFeeOver());
-        createNumericCell(sheet, rightAlignedStyle, row, 8, null, dailyClosureNew.getServiceFeeTotal());
-        createNumericCell(sheet, rightAlignedStyle, row, 9, null, dailyClosureNew.getTotalCommerce());
+        createNumericCell(sheet, rightAlignedStyle, row, 6, null, dailyClosureNew.getServiceFeeOver());
+        createNumericCell(sheet, rightAlignedStyle, row, 7, null, getCreditCardOver(dailyClosureNew));
+        createNumericCell(sheet, rightAlignedStyle, row, 8, null, getTotalServiceFee(dailyClosureNew));
+        createNumericCell(sheet, rightAlignedStyle, row, 9, null, getTotalCommerce(dailyClosureNew));
+        createNumericCell(sheet, rightAlignedStyle, row, 10, null, getEnvelope(dailyClosureNew));
         createThinTopBorder(sheet, rowNum, END_COLUMN_INDEX);
         rowNumMap.put(0, ++rowNum);
+    }
+
+    private int getTotalServiceFee(DailyClosureNew dailyClosureNew) {
+        return dailyClosureNew.getServiceFeeNet() + dailyClosureNew.getServiceFeeOver() + getCreditCardOver(dailyClosureNew);
+    }
+
+    private int getTotalCommerce(DailyClosureNew dailyClosureNew) {
+        return dailyClosureNew.getTotalCash() + dailyClosureNew.getTotalCreditCard() + dailyClosureNew.getTotalCoupon() +
+                getTotalServiceFee(dailyClosureNew);
+    }
+
+    private int getEnvelope(DailyClosureNew dailyClosureNew) {
+        return dailyClosureNew.getTotalCash() + dailyClosureNew.getTotalCoupon() + dailyClosureNew.getServiceFeeCash() +
+                dailyClosureNew.getServiceFeeCoupon() + dailyClosureNew.getServiceFeeOver();
     }
 
     private String getDateString(DailyClosureNew dailyClosureNew) {

@@ -37,7 +37,6 @@ public class ReceiptPrintModel {
     private int consumptionCreditCard;
     private int consumptionCoupon;
     private int openConsumption;
-    private int netServiceFee;
     private int totalConsumption;
     private int productDiscount;
     private int tableDiscount;
@@ -45,6 +44,12 @@ public class ReceiptPrintModel {
     private int serviceFeeCash;
     private int serviceFeeCreditCard;
     private int serviceFeeCoupon;
+    private int netServiceFee;
+
+    private int serviceFeeOver;
+    private int creditCardOver;
+
+    private int envelope;
 
     @Setter
     private String paymentMethod;

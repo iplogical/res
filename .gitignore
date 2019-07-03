@@ -59,3 +59,4 @@ app/waiter/log/logFile.log
 app/waiter/out/test/resources/META-INF/persistence.xml
 app/manager/log/logFile.log
 *.log
+*.xlsx

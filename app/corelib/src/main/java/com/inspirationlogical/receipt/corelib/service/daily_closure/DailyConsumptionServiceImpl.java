@@ -75,6 +75,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
 
         List<Receipt> receipts = receiptRepository.getReceiptsByClosureTime(closureTimes.get(0), closureTimes.get(1));
         setConsumptionFields(dailyConsumptionModel, receipts);
+        setServiceFeeOverFields(dailyConsumptionModel);
         setDiscountFields(dailyConsumptionModel, receipts);
         List<ReceiptRecordView> reducedSoldProducts = getReducedSoldProducts(receipts);
         dailyConsumptionModel.setSoldProducts(reducedSoldProducts);
@@ -124,7 +125,7 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
                 dailyConsumptionModel.getServiceFeeTotal());
     }
 
-    public int getOpenConsumption() {
+    private int getOpenConsumption() {
         List<Receipt> openReceipts = receiptRepository.getAllOpenReceipts();
         return openReceipts.stream().map(Receipt::getRecords).flatMap(Collection::stream).mapToInt(this::getTotalSalePrice).sum();
     }
@@ -180,6 +181,19 @@ public class DailyConsumptionServiceImpl implements DailyConsumptionService {
         return receipts.stream()
                 .filter(receipt -> receipt.getPaymentMethod().equals(paymentMethod))
                 .mapToInt(receipt -> receipt.getSumSaleGrossOriginalPrice() - receipt.getSumSaleGrossPrice()).sum();
+    }
+
+    private void setServiceFeeOverFields(DailyConsumptionModel dailyConsumptionModel) {
+        List<DailyClosureNew> dailyClosureNewList =
+                dailyClosureNewRepository.findAllByClosureTimeBetween(
+                        dailyConsumptionModel.getStartTime().plusHours(1), dailyConsumptionModel.getEndTime().plusHours(1));
+        dailyConsumptionModel.setServiceFeeOver(dailyClosureNewList.stream().mapToInt(DailyClosureNew::getServiceFeeOver).sum());
+        dailyConsumptionModel.setCreditCardOver(dailyClosureNewList.stream().mapToInt(DailyConsumptionServiceImpl::getCreditCardOver).sum());
+    }
+
+    static int getCreditCardOver(DailyClosureNew dailyClosureNew) {
+        int grossCreditCardOver = (dailyClosureNew.getCreditCardTerminal() - dailyClosureNew.getTotalCreditCard() - dailyClosureNew.getServiceFeeCreditCard());
+        return (int) Math.round(((double) grossCreditCardOver) / 1.27D);
     }
 
     private void setDiscountFields(DailyConsumptionModel dailyConsumptionModel, List<Receipt> receipts) {

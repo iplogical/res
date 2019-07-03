@@ -405,6 +405,10 @@ public class ReceiptPdfCreator {
         createTableSummaryRow("Kupon szervízdíj:", receiptPrintModel.getServiceFeeCoupon());
         createTableSummaryRow("Nettó szervízdíj:", receiptPrintModel.getNetServiceFee());
 
+        createTableSummaryRow("Szervízdíj over:", receiptPrintModel.getServiceFeeOver(), Rectangle.TOP);
+        createTableSummaryRow("Bankkártya over:", receiptPrintModel.getCreditCardOver());
+        createTableSummaryRow("Boríték:", receiptPrintModel.getEnvelope());
+
         createTableSummaryRow("Termék kedvezmény:", receiptPrintModel.getProductDiscount(), Rectangle.TOP);
         createTableSummaryRow("Asztal kedvezmény:", receiptPrintModel.getTableDiscount());
         createTableSummaryRow("Összes kedvezmény:", receiptPrintModel.getTotalDiscount());

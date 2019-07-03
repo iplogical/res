@@ -249,7 +249,14 @@ public class DailySummaryControllerImpl extends AbstractController implements Da
     @FXML
     public void onCloseDayButtonClicked(Event event) {
         logger.info("The Daily Closure was pressed in the RestaurantView.");
-        showConfirmDialog(WaiterResources.WAITER.getString("DailyClosure.CloseDayConfirm"), this::onCloseDayConfirmed);
+        showConfirmDialog(getCloseDayConfirmString(), this::onCloseDayConfirmed);
+    }
+
+    private String getCloseDayConfirmString() {
+        LocalDateTime latestClosureTime = dailyClosureService.getLatestClosureTime();
+        return WaiterResources.WAITER.getString("DailyClosure.CloseDayWarning") +
+                latestClosureTime.format(DATE_TIME_FORMATTER) + "\n" +
+                WaiterResources.WAITER.getString("DailyClosure.CloseDayConfirm");
     }
 
     private void onCloseDayConfirmed() {

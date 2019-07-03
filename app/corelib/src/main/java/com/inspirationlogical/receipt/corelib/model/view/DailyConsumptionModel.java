@@ -25,6 +25,10 @@ public class DailyConsumptionModel {
     private int serviceFeeCoupon;
     private int serviceFeeTotal;
     private int serviceFeeNetTotal;
+
+    private int serviceFeeOver;
+    private int creditCardOver;
+
     private int totalConsumption;
 
     private int productDiscount;

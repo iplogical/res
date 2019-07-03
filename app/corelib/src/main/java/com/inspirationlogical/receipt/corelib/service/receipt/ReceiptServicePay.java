@@ -349,6 +349,10 @@ public class ReceiptServicePay {
                 .serviceFee(dailyConsumptionModel.getServiceFeeTotal())
                 .totalConsumption(dailyConsumptionModel.getTotalConsumption() - dailyConsumptionModel.getOpenConsumption())
 
+                .serviceFeeOver(dailyConsumptionModel.getServiceFeeOver())
+                .creditCardOver(dailyConsumptionModel.getCreditCardOver())
+                .envelope(getEnvelope(dailyConsumptionModel))
+
                 .productDiscount(dailyConsumptionModel.getProductDiscount())
                 .tableDiscount(dailyConsumptionModel.getTableDiscount())
                 .totalDiscount(dailyConsumptionModel.getTotalDiscount())
@@ -358,6 +362,12 @@ public class ReceiptServicePay {
                 .closureTime(dailyConsumptionModel.getEndTime())
                 .receiptId(-1)
                 .build();
+    }
+
+    private int getEnvelope(DailyConsumptionModel dailyConsumptionModel) {
+        return dailyConsumptionModel.getConsumptionCash() + dailyConsumptionModel.getConsumptionCoupon() +
+                dailyConsumptionModel.getServiceFeeCash() + dailyConsumptionModel.getServiceFeeCoupon() +
+                dailyConsumptionModel.getServiceFeeOver();
     }
 
     private ReceiptRecordPrintModel buildReceiptRecordPrintModel(ReceiptRecordView record) {

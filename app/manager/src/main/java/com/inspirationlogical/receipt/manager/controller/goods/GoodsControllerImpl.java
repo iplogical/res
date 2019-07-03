@@ -45,6 +45,8 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     private @FXML TreeTableColumn<ProductCategoryView, String> categoryName;
 
     private @FXML TableView<ProductView> productsTable;
+    private @FXML
+    TableColumn<ProductView, String> productLongName;
     private @FXML TableColumn<ProductView, String> productShortName;
     private @FXML TableColumn<ProductView, String> productRapidCode;
     private @FXML TableColumn<ProductView, String> productOrderNumber;
@@ -102,6 +104,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     private void initColumns() {
         initColumn(categoryName, ProductCategoryView::getName);
+        initColumn(productLongName, ProductView::getLongName);
         initColumn(productShortName, ProductView::getShortName);
         initColumn(productRapidCode, productView -> String.valueOf(productView.getRapidCode()));
         initColumn(productOrderNumber, productView -> String.valueOf(productView.getOrderNumber()));

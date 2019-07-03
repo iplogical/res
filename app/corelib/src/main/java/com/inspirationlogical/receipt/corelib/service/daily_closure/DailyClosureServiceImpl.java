@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.corelib.service.daily_closure;
 import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
+import com.inspirationlogical.receipt.corelib.repository.DailyClosureNewRepository;
 import com.inspirationlogical.receipt.corelib.repository.DailyClosureRepository;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,19 @@ public class DailyClosureServiceImpl implements DailyClosureService{
     @Autowired
     private DailyClosureRepository dailyClosureRepository;
 
+    @Autowired
+    private DailyClosureNewRepository dailyClosureNewRepository;
+
     @Override
     public List<LocalDateTime> getClosureTimes(LocalDate startDate, LocalDate endDate) {
         LocalDateTime startClosureTime = getStartClosureTime(startDate);
         LocalDateTime endClosureTime = getEndClosureTime(endDate);
         return Arrays.asList(startClosureTime, endClosureTime);
+    }
+
+    @Override
+    public LocalDateTime getLatestClosureTime() {
+        return dailyClosureNewRepository.findTopByOrderByClosureTimeDesc().getClosureTime();
     }
 
     private LocalDateTime getStartClosureTime(LocalDate startDate) {
