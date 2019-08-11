@@ -1,7 +1,9 @@
 package com.inspirationlogical.receipt.waiter.controller.reatail.payment;
 
+import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+import com.inspirationlogical.receipt.corelib.params.VatPriceModel;
 import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
 import com.inspirationlogical.receipt.waiter.controller.reatail.AbstractRetailControllerImpl;
@@ -23,10 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -82,12 +81,50 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     TextField discountValue;
 
-
     @FXML
     Label paidTotalPrice;
+    @FXML
+    Label paidPrice;
 
     @FXML
     Label previousPartialPrice;
+
+    @FXML
+    private Label vatDrinkPercentPrevious;
+    @FXML
+    private Label vatDrinkPricePrevious;
+    @FXML
+    private Label vatDrinkServiceFeePrevious;
+    @FXML
+    private Label vatDrinkTotalPricePrevious;
+
+    @FXML
+    private Label vatFoodPercentPrevious;
+    @FXML
+    private Label vatFoodPricePrevious;
+    @FXML
+    private Label vatFoodServiceFeePrevious;
+    @FXML
+    private Label vatFoodTotalPricePrevious;
+
+    @FXML
+    private Label vatDrinkPercent;
+    @FXML
+    private Label vatDrinkPrice;
+    @FXML
+    private Label vatDrinkServiceFee;
+    @FXML
+    private Label vatDrinkTotalPrice;
+
+    @FXML
+    private Label vatFoodPercent;
+    @FXML
+    private Label vatFoodPrice;
+    @FXML
+    private Label vatFoodServiceFee;
+    @FXML
+    private Label vatFoodTotalPrice;
+
 
     @FXML
     Label liveTime;
@@ -192,10 +229,32 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private void updateTotalPrices() {
         int totalPricePaid = getTotalPrice(paidProductViewList);
         int totalServiceFeePaid = getTotalServiceFee(paidProductViewList);
-        paidTotalPrice.setText(totalPricePaid + " Ft" + " ("+ (totalPricePaid + totalServiceFeePaid) + " Ft)");
+        updatePriceLabels();
+        paidPrice.setText(totalPricePaid + " Ft");
+        paidTotalPrice.setText("("+ (totalPricePaid + totalServiceFeePaid) + " Ft)");
         int totalPriceSold = getTotalPrice() - totalPricePaid;
         int totalServiceFeeSold = receiptService.getTotalServiceFee(tableView.getNumber()) - totalServiceFeePaid;
         totalPrice.setText(totalPriceSold + " Ft" + " (" + (totalPriceSold + totalServiceFeeSold) + " Ft)");
+    }
+
+    private void updatePriceLabels() {
+        Map<VATName, VatPriceModel> vatPriceModelMap = tableServicePay.getVatPriceModelMap(paidProductViewList);
+        updateDrinkPriceLabels(vatPriceModelMap.get(VATName.NORMAL));
+        updateFoodPriceLables(vatPriceModelMap.get(VATName.GREATLY_REDUCED));
+    }
+
+    private void updateDrinkPriceLabels(VatPriceModel vatPriceModel) {
+        vatDrinkPercent.setText(vatPriceModel.getVatPercent() + " % :");
+        vatDrinkPrice.setText(vatPriceModel.getPrice() + " Ft");
+        vatDrinkServiceFee.setText(vatPriceModel.getServiceFee() + " Ft");
+        vatDrinkTotalPrice.setText(vatPriceModel.getTotalPrice() + " Ft");
+    }
+
+    private void updateFoodPriceLables(VatPriceModel vatPriceModel) {
+        vatFoodPercent.setText(vatPriceModel.getVatPercent() + " % :");
+        vatFoodPrice.setText(vatPriceModel.getPrice() + " Ft");
+        vatFoodServiceFee.setText(vatPriceModel.getServiceFee() + " Ft");
+        vatFoodTotalPrice.setText(vatPriceModel.getTotalPrice() + " Ft");
     }
 
     private int getTotalPrice(List<ReceiptRecordView> recordViewList) {
@@ -205,6 +264,8 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private int getTotalServiceFee(List<ReceiptRecordView> recordViewList) {
         return tableServicePay.getTotalServiceFee(recordViewList);
     }
+
+
 
     @Override
     public void handleSelectivePayment(PaymentParams paymentParams) {

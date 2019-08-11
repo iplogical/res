@@ -126,7 +126,7 @@ public class ReceiptServiceSell {
                 .purchasePrice(product.getPurchasePrice())
                 .salePrice(product.getSalePrice())
                 .originalSalePrice(product.getSalePrice())
-                .VAT(vatService.getVatByName(isTakeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE).getVAT())
+                .VAT(isTakeAway ? product.getVATTakeAway(): product.getVATLocal())
                 .createdList(new ArrayList<>())
                 .build();
     }
@@ -150,7 +150,7 @@ public class ReceiptServiceSell {
                 .purchasePrice(adHocProductParams.getPurchasePrice())
                 .salePrice(adHocProductParams.getSalePrice())
                 .originalSalePrice(adHocProductParams.getSalePrice())
-                .VAT(vatService.getVatByName(takeAway ? ReceiptRecordType.TAKE_AWAY : ReceiptRecordType.HERE).getVAT())
+                .VAT(takeAway ? adHocProduct.getVATTakeAway(): adHocProduct.getVATLocal())
                 .discountPercent(0)
                 .createdList(new ArrayList<>())
                 .build();
@@ -189,7 +189,7 @@ public class ReceiptServiceSell {
                 .purchasePrice(gameFeeProduct.getPurchasePrice())
                 .salePrice(gameFeeProduct.getSalePrice())
                 .originalSalePrice(gameFeeProduct.getSalePrice())
-                .VAT(vatService.getVatByName(ReceiptRecordType.HERE).getVAT())
+                .VAT(gameFeeProduct.getVATLocal())
                 .discountPercent(0)
                 .createdList(new ArrayList<>())
                 .build();

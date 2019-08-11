@@ -77,7 +77,7 @@ public class ReceiptServiceStock {
                 .purchasePrice(product.getPurchasePrice())
                 .salePrice(product.getSalePrice())
                 .originalSalePrice(product.getSalePrice())
-                .VAT(vatService.getVatByName(ReceiptRecordType.HERE).getVAT())
+                .VAT(product.getVATLocal())
                 .discountPercent(0)
                 .createdList(new ArrayList<>())
                 .build();

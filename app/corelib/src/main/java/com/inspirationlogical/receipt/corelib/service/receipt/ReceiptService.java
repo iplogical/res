@@ -2,14 +2,17 @@ package com.inspirationlogical.receipt.corelib.service.receipt;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+import com.inspirationlogical.receipt.corelib.params.VatPriceModel;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public interface ReceiptService {
 
@@ -48,6 +51,8 @@ public interface ReceiptService {
     int getTotalPrice(List<ReceiptRecordView> recordViewList);
 
     int getTotalServiceFee(List<ReceiptRecordView> recordViewList);
+
+    Map<VATName, VatPriceModel> getVatPriceModelMap(List<ReceiptRecordView> paidProductViewList);
 
     void mergeReceiptRecords(ReceiptView receiptView);
 

@@ -60,11 +60,13 @@ class Product extends AbstractEntity {
     @Column(name = "SALEPRICE")
     private int salePrice;
 
-    @Column(name = "VATLOCAL")
-    private double VATLocal;
+    @ManyToOne
+    @JoinColumn(name = "VATLOCAL")
+    private VAT VATLocal;
 
-    @Column(name = "VATTAKEAWAY")
-    private double VATTakeAway;
+    @ManyToOne
+    @JoinColumn(name = "VATTAKEAWAY")
+    private VAT VATTakeAway;
 
     @Column(name = "MINIMUMSTOCK")
     private int minimumStock;

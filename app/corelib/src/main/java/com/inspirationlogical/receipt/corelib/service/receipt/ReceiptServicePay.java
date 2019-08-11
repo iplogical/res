@@ -8,11 +8,9 @@ import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.ReceiptPrintModel;
 import com.inspirationlogical.receipt.corelib.params.ReceiptRecordPrintModel;
+import com.inspirationlogical.receipt.corelib.params.VatPriceModel;
 import com.inspirationlogical.receipt.corelib.printing.ReceiptPrinter;
-import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
-import com.inspirationlogical.receipt.corelib.repository.ReceiptRecordRepository;
-import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
-import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
+import com.inspirationlogical.receipt.corelib.repository.*;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
 import com.inspirationlogical.receipt.corelib.service.vat.VATService;
@@ -28,7 +26,7 @@ import java.util.stream.Collectors;
 
 import static com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService.getDiscountMultiplier;
 import static java.time.LocalDateTime.now;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 @Service
 public class ReceiptServicePay {
@@ -47,6 +45,9 @@ public class ReceiptServicePay {
 
     @Autowired
     private VATService vatService;
+
+    @Autowired
+    private VATRepository vatRepository;
 
     @Autowired
     private DailyClosureService dailyClosureService;
@@ -120,7 +121,7 @@ public class ReceiptServicePay {
                 .purchasePrice(0)
                 .salePrice(serviceFeeTotal)
                 .originalSalePrice(serviceFeeTotal)
-                .VAT(vatService.getVatByName(ReceiptRecordType.HERE).getVAT())
+                .VAT(serviceFeeProduct.getVATLocal())
                 .createdList(new ArrayList<>())
                 .build();
     }
@@ -297,7 +298,7 @@ public class ReceiptServicePay {
     }
 
     private double calculateVATDivider(ReceiptRecord record) {
-        return (100 + record.getVAT()) / 100;
+        return (100 + record.getVAT().getVAT()) / 100;
     }
 
     void printReceiptFromSale(int number) {
@@ -411,5 +412,39 @@ public class ReceiptServicePay {
         List<Integer> receiptRecordIds = recordViewList.stream().map(ReceiptRecordView::getId).collect(toList());
         List<ReceiptRecord> receiptRecordList = receiptRecordRepository.findAllById(receiptRecordIds);
         return calculateTotalServiceFee(receiptRecordList);
+    }
+
+    public Map<VATName, VatPriceModel> getVatPriceModelMap(List<ReceiptRecordView> recordViewList) {
+        List<Integer> receiptRecordIds = recordViewList.stream().map(ReceiptRecordView::getId).collect(toList());
+        List<ReceiptRecord> receiptRecordList = receiptRecordRepository.findAllById(receiptRecordIds);
+        Map<VATName, List<ReceiptRecord>> vatNameReceiptRecordListMap = receiptRecordList.stream()
+                .collect(groupingBy(receiptRecord ->  receiptRecord.getVAT().getName()));
+        Map<VATName, VatPriceModel> vatPriceModelMap = vatNameReceiptRecordListMap.entrySet().stream()
+                .collect(toMap(Map.Entry::getKey, this::calculateVatPriceModel));
+        vatPriceModelMap.computeIfAbsent(VATName.NORMAL, this::buildEmptyVatPriceModel);
+        vatPriceModelMap.computeIfAbsent(VATName.GREATLY_REDUCED, this::buildEmptyVatPriceModel);
+        return vatPriceModelMap;
+    }
+
+    private VatPriceModel calculateVatPriceModel(Map.Entry<VATName, List<ReceiptRecord>> entry) {
+        VATName vatName = entry.getKey();
+        List<ReceiptRecord> receiptRecordList = entry.getValue();
+        int price = receiptRecordList.stream().mapToInt(this::getReceiptRecordTotalPrice).sum();
+        int serviceFee = calculateTotalServiceFee(receiptRecordList);
+        return VatPriceModel.builder()
+                .vatPercent(vatRepository.getVatByName(vatName).getVAT())
+                .price(price)
+                .serviceFee(serviceFee)
+                .totalPrice(price + serviceFee)
+                .build();
+    }
+
+    private VatPriceModel buildEmptyVatPriceModel(VATName vatName) {
+        return VatPriceModel.builder()
+                .vatPercent(vatRepository.getVatByName(vatName).getVAT())
+                .price(0)
+                .serviceFee(0)
+                .totalPrice(0)
+                .build();
     }
 }

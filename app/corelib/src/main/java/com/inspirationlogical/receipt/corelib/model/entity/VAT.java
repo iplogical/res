@@ -14,18 +14,9 @@ import javax.persistence.*;
 @Builder
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "VAT")
-@NamedQueries({
-        @NamedQuery(name = VAT.GET_TEST_VAT_RECORDS,
-                query = "FROM VAT v"),
-        @NamedQuery(name = VAT.GET_VAT_BY_NAME,
-                query = "FROM VAT v WHERE v.name = :name AND v.status = :status")
-})
 @AttributeOverride(name = "id", column = @Column(name = "VAT_ID"))
 public @Data
 class VAT extends AbstractEntity {
-
-    public static final String GET_TEST_VAT_RECORDS = "VAT.GetTestVATRecords";
-    public static final String GET_VAT_BY_NAME = "VAT.GetVATByName";
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "VAT_SERIE_ID")

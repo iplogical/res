@@ -2,10 +2,12 @@ package com.inspirationlogical.receipt.corelib.service.receipt;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
+import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.AdHocProductParams;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.StockParams;
+import com.inspirationlogical.receipt.corelib.params.VatPriceModel;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
@@ -126,6 +129,11 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public int getTotalServiceFee(List<ReceiptRecordView> recordViewList) {
         return receiptServicePay.getTotalServiceFee(recordViewList);
+    }
+
+    @Override
+    public Map<VATName, VatPriceModel> getVatPriceModelMap(List<ReceiptRecordView> recordViewList) {
+        return receiptServicePay.getVatPriceModelMap(recordViewList);
     }
 
     @Override

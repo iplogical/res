@@ -23,8 +23,4 @@ public class VATServiceImpl implements VATService {
         return vatSerieRepository.findFirstByStatus(VATStatus.VALID);
     }
 
-    @Override
-    public VAT getVatByName(ReceiptRecordType receiptRecordType) {
-        return vatRepository.getVatByName(ReceiptRecordType.getVatName(receiptRecordType));
-    }
 }

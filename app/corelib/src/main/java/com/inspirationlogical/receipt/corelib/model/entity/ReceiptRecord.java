@@ -52,8 +52,9 @@ class ReceiptRecord extends AbstractEntity {
     @Column(name = "ORIGINALSALEPRICE")
     private int originalSalePrice;
 
-    @Column(name = "VAT")
-    private double VAT;
+    @ManyToOne
+    @JoinColumn(name = "VAT")
+    private VAT VAT;
 
     @Column(name = "DISCOUNTPERCENT")
     private double discountPercent;

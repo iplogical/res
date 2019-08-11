@@ -7,6 +7,4 @@ import com.inspirationlogical.receipt.corelib.model.enums.ReceiptRecordType;
 public interface VATService {
 
     VATSerie findValidVATSerie();
-
-    VAT getVatByName(ReceiptRecordType receiptRecordType);
 }

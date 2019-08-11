@@ -53,7 +53,7 @@ public class ReceiptRecordView {
         salePrice = receiptRecord.getSalePrice();
         totalPrice = (int)Math.round(receiptRecord.getSalePrice() * receiptRecord.getSoldQuantity());
         discountPercent = receiptRecord.getDiscountPercent();
-        vat = receiptRecord.getVAT();
+        vat = receiptRecord.getVAT().getVAT();
         created = initCreated(receiptRecord);
         isPartiallyPayable = receiptRecord.getProduct() != null && receiptRecord.getProduct().getType().equals(ProductType.PARTIALLY_PAYABLE);
         ownerStatus = receiptRecord.getOwner().getStatus();
