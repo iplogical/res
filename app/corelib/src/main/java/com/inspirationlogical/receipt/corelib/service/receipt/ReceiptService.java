@@ -10,7 +10,6 @@ import com.inspirationlogical.receipt.corelib.params.StockParams;
 import com.inspirationlogical.receipt.corelib.params.VatPriceModel;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +33,7 @@ public interface ReceiptService {
 
     void close(Receipt receipt, PaymentParams paymentParams);
 
-    void paySelective(Receipt receipt, Collection<ReceiptRecordView> records, PaymentParams paymentParams);
+    void paySelective(Receipt receipt, List<ReceiptRecordView> records, PaymentParams paymentParams);
 
     void payPartial(Receipt receipt, double partialValue, PaymentParams paymentParams);
 

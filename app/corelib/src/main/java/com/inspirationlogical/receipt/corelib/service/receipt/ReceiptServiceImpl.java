@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +86,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
 
     @Override
-    public void paySelective(Receipt receipt, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
+    public void paySelective(Receipt receipt, List<ReceiptRecordView> records, PaymentParams paymentParams) {
         receiptServicePay.paySelective(receipt, records, paymentParams);
     }
 

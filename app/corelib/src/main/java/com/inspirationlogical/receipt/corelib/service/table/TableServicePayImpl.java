@@ -1,6 +1,5 @@
 package com.inspirationlogical.receipt.corelib.service.table;
 
-import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateException;
 import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
 import com.inspirationlogical.receipt.corelib.model.entity.Table;
 import com.inspirationlogical.receipt.corelib.model.enums.TableType;
@@ -12,14 +11,12 @@ import com.inspirationlogical.receipt.corelib.params.VatPriceModel;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
 import com.inspirationlogical.receipt.corelib.service.receipt.ReceiptService;
-import net.bytebuddy.asm.Advice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +59,7 @@ public class TableServicePayImpl implements TableServicePay {
     }
 
     @Override
-    public void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
+    public void paySelective(TableView tableView, List<ReceiptRecordView> records, PaymentParams paymentParams) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
         receiptService.paySelective(openReceipt, records, paymentParams);
         logger.info("A table was selectively paid: " + tableView + ", " + paymentParams);

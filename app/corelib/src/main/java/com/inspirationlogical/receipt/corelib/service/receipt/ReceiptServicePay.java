@@ -210,7 +210,7 @@ public class ReceiptServicePay {
                 .build();
     }
 
-    public void paySelective(Receipt receipt, Collection<ReceiptRecordView> records, PaymentParams paymentParams) {
+    public void paySelective(Receipt receipt, List<ReceiptRecordView> records, PaymentParams paymentParams) {
         Receipt paidReceipt = buildReceipt(receipt);
 
         Map<Integer, ReceiptRecordView> recordsToPay = records.stream()

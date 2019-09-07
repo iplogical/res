@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.Blend?>
@@ -10,8 +7,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import java.lang.String?>
 <?import java.net.URL?>
-
 <BorderPane fx:id="rootPayment" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.inspirationlogical.receipt.waiter.controller.reatail.payment.PaymentController">
    <stylesheets>
       <URL value="@../css/Common.css" />
@@ -133,27 +130,56 @@
                                        <children>
                                           <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <Label fx:id="previousPartialPrice" alignment="CENTER" minHeight="54.0" prefHeight="54.0" prefWidth="200.0" styleClass="sub-header-label">
+                                                <Label fx:id="previousPartialPrice" alignment="CENTER" minHeight="54.0"
+                                                       minWidth="120.0" prefHeight="54.0" prefWidth="120.0">
                                                    <font>
                                                       <Font size="30.0" />
                                                    </font>
+                                                   <styleClass>
+                                                      <String fx:value="sub-header-label"/>
+                                                      <String fx:value="header-label"/>
+                                                   </styleClass>
                                                 </Label>
-                                                <VBox prefHeight="54.0" prefWidth="280.0">
+                                                <VBox prefHeight="54.0" prefWidth="360.0">
                                                    <children>
                                                       <HBox prefHeight="100.0" prefWidth="200.0">
                                                          <children>
-                                                            <Label fx:id="vatFoodPercentPrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="110.0" styleClass="sub-header-label" />
-                                                            <Label fx:id="vatFoodPricePrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="110.0" />
-                                                            <Label fx:id="vatFoodServiceFeePrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="110.0" />
-                                                            <Label fx:id="vatFoodTotalPricePrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="113.0" />
+                                                            <Label fx:id="vatFoodPercentPrevious"
+                                                                   alignment="CENTER_RIGHT" minHeight="27.0"
+                                                                   prefHeight="27.0" prefWidth="70.0"
+                                                                   styleClass="sub-header-label"/>
+                                                            <Label fx:id="vatFoodPricePrevious"
+                                                                   alignment="CENTER_RIGHT" minHeight="27.0"
+                                                                   prefHeight="27.0" prefWidth="90.0"
+                                                                   styleClass="sub-header-label"/>
+                                                            <Label fx:id="vatFoodServiceFeePrevious"
+                                                                   alignment="CENTER_RIGHT" minHeight="27.0"
+                                                                   prefHeight="27.0" prefWidth="70.0"
+                                                                   styleClass="sub-header-label"/>
+                                                            <Label fx:id="vatFoodTotalPricePrevious"
+                                                                   alignment="CENTER_RIGHT" minHeight="27.0"
+                                                                   prefHeight="27.0" prefWidth="90.0"
+                                                                   styleClass="sub-header-label"/>
                                                          </children>
                                                       </HBox>
                                                       <HBox prefHeight="100.0" prefWidth="200.0">
                                                          <children>
-                                                            <Label fx:id="vatDrinkPercentPrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="110.0" styleClass="sub-header-label" />
-                                                            <Label fx:id="vatDrinkPricePrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="110.0" styleClass="sub-header-label" />
-                                                            <Label fx:id="vatDrinkServiceFeePrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="110.0" styleClass="sub-header-label" />
-                                                            <Label fx:id="vatDrinkTotalPricePrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="113.0" styleClass="sub-header-label" />
+                                                            <Label fx:id="vatDrinkPercentPrevious"
+                                                                   alignment="CENTER_RIGHT" minHeight="27.0"
+                                                                   prefHeight="27.0" prefWidth="70.0"
+                                                                   styleClass="sub-header-label"/>
+                                                            <Label fx:id="vatDrinkPricePrevious"
+                                                                   alignment="CENTER_RIGHT" minHeight="27.0"
+                                                                   prefHeight="27.0" prefWidth="90.0"
+                                                                   styleClass="sub-header-label"/>
+                                                            <Label fx:id="vatDrinkServiceFeePrevious"
+                                                                   alignment="CENTER_RIGHT" minHeight="27.0"
+                                                                   prefHeight="27.0" prefWidth="70.0"
+                                                                   styleClass="sub-header-label"/>
+                                                            <Label fx:id="vatDrinkTotalPricePrevious"
+                                                                   alignment="CENTER_RIGHT" minHeight="27.0"
+                                                                   prefHeight="27.0" prefWidth="90.0"
+                                                                   styleClass="sub-header-label"/>
                                                          </children>
                                                       </HBox>
                                                    </children>

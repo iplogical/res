@@ -240,7 +240,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private void updatePriceLabels() {
         Map<VATName, VatPriceModel> vatPriceModelMap = tableServicePay.getVatPriceModelMap(paidProductViewList);
         updateDrinkPriceLabels(vatPriceModelMap.get(VATName.NORMAL));
-        updateFoodPriceLables(vatPriceModelMap.get(VATName.GREATLY_REDUCED));
+        updateFoodPriceLabels(vatPriceModelMap.get(VATName.GREATLY_REDUCED));
     }
 
     private void updateDrinkPriceLabels(VatPriceModel vatPriceModel) {
@@ -250,7 +250,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         vatDrinkTotalPrice.setText(vatPriceModel.getTotalPrice() + " Ft");
     }
 
-    private void updateFoodPriceLables(VatPriceModel vatPriceModel) {
+    private void updateFoodPriceLabels(VatPriceModel vatPriceModel) {
         vatFoodPercent.setText(vatPriceModel.getVatPercent() + " % :");
         vatFoodPrice.setText(vatPriceModel.getPrice() + " Ft");
         vatFoodServiceFee.setText(vatPriceModel.getServiceFee() + " Ft");
@@ -265,15 +265,51 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         return tableServicePay.getTotalServiceFee(recordViewList);
     }
 
-
-
     @Override
     public void handleSelectivePayment(PaymentParams paymentParams) {
         logger.info("Handling selective payment with paymentParams: " + paymentParams.toString());
         tableServicePay.paySelective(tableView, paidProductViewList, paymentParams);
-        updatePreviousPartialPrice();
+        updatePreviousPartialPriceValues();
         discardPaidRecords();
         getSoldProductsAndRefreshTable();
+    }
+
+    private void updatePreviousPartialPriceValues() {
+        int totalPrice = paymentViewState.isServiceFeeState() ? getTotalPriceWithServiceFee() : Integer.parseInt(paidPrice.getText().split(" ")[0]);
+        previousPartialPrice.setText(applyDiscountOnTotalPrice(totalPrice) + " Ft");
+        updateDrinkPricePreviousLabels();
+        updateFoodPricePreviousLabels();
+    }
+
+    private int getTotalPriceWithServiceFee() {
+        return Integer.parseInt(paidTotalPrice.getText().split(" ")[0]
+                .replaceAll("\\(", "")
+                .replaceAll("\\)", ""));
+    }
+
+    private int applyDiscountOnTotalPrice(int totalPrice) {
+
+        if (paymentViewState.isDiscountAbsolute()) {
+            totalPrice -= Integer.parseInt(discountValue.getText());
+        } else if (paymentViewState.isDiscountPercent()) {
+            double discountPercent = Double.parseDouble(discountValue.getText());
+            totalPrice = (int) Math.round((double) totalPrice * ((100 - discountPercent) / 100));
+        }
+        return totalPrice;
+    }
+
+    private void updateDrinkPricePreviousLabels() {
+        vatDrinkPercentPrevious.setText(vatDrinkPercent.getText());
+        vatDrinkPricePrevious.setText(vatDrinkPrice.getText());
+        vatDrinkServiceFeePrevious.setText(vatDrinkServiceFee.getText());
+        vatDrinkTotalPricePrevious.setText(vatDrinkTotalPrice.getText());
+    }
+
+    private void updateFoodPricePreviousLabels() {
+        vatFoodPercentPrevious.setText(vatFoodPercent.getText());
+        vatFoodPricePrevious.setText(vatFoodPrice.getText());
+        vatFoodServiceFeePrevious.setText(vatFoodServiceFee.getText());
+        vatFoodTotalPricePrevious.setText(vatFoodTotalPrice.getText());
     }
 
     @Override
@@ -296,21 +332,6 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
             throw new NumberFormatException();
         }
         return partialValue;
-    }
-
-    private void updatePreviousPartialPrice() {
-        int totalPrice = Integer.valueOf(paidTotalPrice.getText().split(" ")[0]);
-        previousPartialPrice.setText(applyDiscountOnTotalPrice(totalPrice) + " Ft");
-    }
-
-    private int applyDiscountOnTotalPrice(int totalPrice) {
-        if (paymentViewState.isDiscountAbsolute()) {
-            totalPrice -= Integer.valueOf(discountValue.getText());
-        } else if (paymentViewState.isDiscountPercent()) {
-            double discountPercent = Double.valueOf(discountValue.getText());
-            totalPrice = (int) Math.round((double) totalPrice * ((100 - discountPercent) / 100));
-        }
-        return totalPrice;
     }
 
     @Override

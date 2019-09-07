@@ -6,8 +6,6 @@ import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
 import com.inspirationlogical.receipt.corelib.params.VatPriceModel;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +13,7 @@ public interface TableServicePay {
 
     TableView payTable(int tableNumber, PaymentParams paymentParams);
 
-    void paySelective(TableView tableView, Collection<ReceiptRecordView> records, PaymentParams paymentParams);
+    void paySelective(TableView tableView, List<ReceiptRecordView> records, PaymentParams paymentParams);
 
     void payPartial(TableView tableView, double partialValue, PaymentParams paymentParams);
 
