@@ -63,3 +63,7 @@
     -fx-font-size: 24;
     -fx-line-spacing: -5;
 }
+
+.mini-label {
+    -fx-font-size: 10;
+}

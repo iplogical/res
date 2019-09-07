@@ -33,9 +33,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import java.util.Collection;
-import java.util.List;
-
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -89,7 +86,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
 
     protected ReceiptView receiptView;
 
-    protected Collection<ReceiptRecordView> soldProductViewList;
+    protected List<ReceiptRecordView> soldProductViewList;
 
     protected ObservableList<ProductRowModel> soldProductRowList = FXCollections.observableArrayList();
 
@@ -243,7 +240,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         refreshSoldProductsTable();
     }
 
-    protected Collection<ReceiptRecordView> getSoldProducts() {
+    private List<ReceiptRecordView> getSoldProducts() {
         receiptView = receiptService.getOpenReceipt(tableView.getNumber());
         return receiptView == null ? Collections.emptyList() : receiptView.getSoldProducts();
     }

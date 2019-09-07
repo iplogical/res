@@ -3,6 +3,7 @@ package com.inspirationlogical.receipt.waiter.controller.reatail.payment;
 import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+import com.inspirationlogical.receipt.corelib.params.VatCashierNumberModel;
 import com.inspirationlogical.receipt.corelib.params.VatPriceModel;
 import com.inspirationlogical.receipt.corelib.utility.NotificationMessage;
 import com.inspirationlogical.receipt.waiter.application.WaiterApp;
@@ -94,7 +95,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     private Label vatDrinkPricePrevious;
     @FXML
+    private Label vatDrinkCashierNumberPrevious;
+    @FXML
     private Label vatDrinkServiceFeePrevious;
+    @FXML
+    private Label vatDrinkServiceFeeCashierNumberPrevious;
     @FXML
     private Label vatDrinkTotalPricePrevious;
 
@@ -103,7 +108,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     private Label vatFoodPricePrevious;
     @FXML
+    private Label vatFoodCashierNumberPrevious;
+    @FXML
     private Label vatFoodServiceFeePrevious;
+    @FXML
+    private Label vatFoodServiceFeeCashierNumberPrevious;
     @FXML
     private Label vatFoodTotalPricePrevious;
 
@@ -112,7 +121,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     private Label vatDrinkPrice;
     @FXML
+    private Label vatDrinkCashierNumber;
+    @FXML
     private Label vatDrinkServiceFee;
+    @FXML
+    private Label vatDrinkServiceFeeCashierNumber;
     @FXML
     private Label vatDrinkTotalPrice;
 
@@ -121,7 +134,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @FXML
     private Label vatFoodPrice;
     @FXML
+    private Label vatFoodCashierNumber;
+    @FXML
     private Label vatFoodServiceFee;
+    @FXML
+    private Label vatFoodServiceFeeCashierNumber;
     @FXML
     private Label vatFoodTotalPrice;
 
@@ -166,10 +183,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void enterPaymentView() {
         getSoldProductsAndRefreshTable();
-        updateTotalPrices();
+        updateTotalPrices(paidProductViewList);
         updateTableSummary();
         resetToggleGroups();
         clearInputFields();
+        updateCashierNumbers();
         serviceFee.setSelected(true);
     }
 
@@ -182,6 +200,18 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private void clearInputFields() {
         partialPaymentValue.clear();
         discountValue.clear();
+    }
+
+    private void updateCashierNumbers() {
+        VatCashierNumberModel vatCashierNumberModel = tableServicePay.getVatCashierNumberModel();
+        vatDrinkCashierNumber.setText(String.valueOf(vatCashierNumberModel.getVatDrinkCashierNumber()));
+        vatDrinkCashierNumberPrevious.setText(String.valueOf(vatCashierNumberModel.getVatDrinkCashierNumber()));
+        vatDrinkServiceFeeCashierNumber.setText(String.valueOf(vatCashierNumberModel.getVatDrinkServiceFeeCashierNumber()));
+        vatDrinkServiceFeeCashierNumberPrevious.setText(String.valueOf(vatCashierNumberModel.getVatDrinkServiceFeeCashierNumber()));
+        vatFoodCashierNumber.setText(String.valueOf(vatCashierNumberModel.getVatFoodCashierNumber()));
+        vatFoodCashierNumberPrevious.setText(String.valueOf(vatCashierNumberModel.getVatFoodCashierNumber()));
+        vatFoodServiceFeeCashierNumber.setText(String.valueOf(vatCashierNumberModel.getVatFoodServiceFeeCashierNumber()));
+        vatFoodServiceFeeCashierNumberPrevious.setText(String.valueOf(vatCashierNumberModel.getVatFoodServiceFeeCashierNumber()));
     }
 
     @FXML
@@ -201,12 +231,17 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void handleFullPayment(PaymentParams paymentParams) {
         logger.info("Handling full payment with paymentParams: " + paymentParams.toString());
+        updateTotalPricesForFullPayment();
         tableView = tableServicePay.payTable(tableView.getNumber(), paymentParams);
         getTableController().setTableView(tableView);
         getSoldProductsAndRefreshTable();
         discardPaidRecords();
-        clearPreviousPartialPrice();
-        backToRestaurantView();
+    }
+
+    private void updateTotalPricesForFullPayment() {
+        List<ReceiptRecordView> allProductsList = new ArrayList<>(soldProductViewList);
+        allProductsList.addAll(paidProductViewList);
+        updateTotalPrices(allProductsList);
     }
 
     private void discardPaidRecords() {
@@ -215,30 +250,25 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         refreshPaidProductsTable();
     }
 
-    private void clearPreviousPartialPrice() {
-        previousPartialPrice.setText("0 Ft");
-    }
-
     private void refreshPaidProductsTable() {
         paidProductRowList = convertReceiptRecordViewsToModel(paidProductViewList);
         paidProductsTable.setItems(paidProductRowList);
         paidProductsTable.refresh();
-        updateTotalPrices();
     }
 
-    private void updateTotalPrices() {
-        int totalPricePaid = getTotalPrice(paidProductViewList);
-        int totalServiceFeePaid = getTotalServiceFee(paidProductViewList);
-        updatePriceLabels();
+    private void updateTotalPrices(List<ReceiptRecordView> productViewList) {
+        int totalPricePaid = getTotalPrice(productViewList);
+        int totalServiceFeePaid = getTotalServiceFee(productViewList);
         paidPrice.setText(totalPricePaid + " Ft");
         paidTotalPrice.setText("("+ (totalPricePaid + totalServiceFeePaid) + " Ft)");
         int totalPriceSold = getTotalPrice() - totalPricePaid;
         int totalServiceFeeSold = receiptService.getTotalServiceFee(tableView.getNumber()) - totalServiceFeePaid;
         totalPrice.setText(totalPriceSold + " Ft" + " (" + (totalPriceSold + totalServiceFeeSold) + " Ft)");
+        updatePriceLabels(productViewList);
     }
 
-    private void updatePriceLabels() {
-        Map<VATName, VatPriceModel> vatPriceModelMap = tableServicePay.getVatPriceModelMap(paidProductViewList);
+    private void updatePriceLabels(List<ReceiptRecordView> productViewList) {
+        Map<VATName, VatPriceModel> vatPriceModelMap = tableServicePay.getVatPriceModelMap(productViewList);
         updateDrinkPriceLabels(vatPriceModelMap.get(VATName.NORMAL));
         updateFoodPriceLabels(vatPriceModelMap.get(VATName.GREATLY_REDUCED));
     }
@@ -352,6 +382,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         }
         refreshSoldProductsTable();
         refreshPaidProductsTable();
+        updateTotalPrices(paidProductViewList);
         enableSoldProductsTableRowClickHandler();
     }
 
@@ -437,6 +468,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         }
         refreshSoldProductsTable();
         refreshPaidProductsTable();
+        updateTotalPrices(paidProductViewList);
     }
 
     private void decreaseRowInPaidProducts(ProductRowModel row, double amount) {
@@ -458,7 +490,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void onBackToRestaurantView(Event event) {
         logger.info("Going to restaurant view.");
         discardPaidRecords();
-        receiptService.mergeReceiptRecords(receiptView);
+        if (receiptView != null) {
+            receiptService.mergeReceiptRecords(receiptView);
+        }
         backToRestaurantView();
     }
 
@@ -466,8 +500,12 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void onBackToSaleView(Event event) {
         logger.info("Going to sale view.");
         discardPaidRecords();
-        receiptService.mergeReceiptRecords(receiptView);
-        enterSaleView();
+        if (receiptView != null) {
+            receiptService.mergeReceiptRecords(receiptView);
+            enterSaleView();
+        } else {
+            backToRestaurantView();
+        }
     }
 
     private void enterSaleView() {

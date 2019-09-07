@@ -5,10 +5,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.*;
 import com.inspirationlogical.receipt.corelib.model.view.DailyConsumptionModel;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptView;
-import com.inspirationlogical.receipt.corelib.params.PaymentParams;
-import com.inspirationlogical.receipt.corelib.params.ReceiptPrintModel;
-import com.inspirationlogical.receipt.corelib.params.ReceiptRecordPrintModel;
-import com.inspirationlogical.receipt.corelib.params.VatPriceModel;
+import com.inspirationlogical.receipt.corelib.params.*;
 import com.inspirationlogical.receipt.corelib.printing.ReceiptPrinter;
 import com.inspirationlogical.receipt.corelib.repository.*;
 import com.inspirationlogical.receipt.corelib.service.daily_closure.DailyClosureService;
@@ -18,6 +15,7 @@ import com.inspirationlogical.receipt.corelib.utility.Round;
 import com.inspirationlogical.receipt.corelib.utility.RoundingLogic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.function.Function;
@@ -45,6 +43,9 @@ public class ReceiptServicePay {
 
     @Autowired
     private VATService vatService;
+
+    @Autowired
+    private VATSerieRepository vatSerieRepository;
 
     @Autowired
     private VATRepository vatRepository;
@@ -91,8 +92,7 @@ public class ReceiptServicePay {
         } else if (paymentParams.getDiscountAbsolute() != 0) {
             double discountAbs = paymentParams.getDiscountAbsolute();
             double sumSale = receipt.getSumSaleGrossPrice();
-            double discount = discountAbs / sumSale * 100;
-            return discount;
+            return discountAbs / sumSale * 100;
         } else return 0;
     }
 
@@ -381,7 +381,7 @@ public class ReceiptServicePay {
                 .build();
     }
 
-    public int getTotalServiceFee(int tableNumber) {
+    int getTotalServiceFee(int tableNumber) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableNumber);
         if (openReceipt == null) {
             return 0;
@@ -408,13 +408,13 @@ public class ReceiptServicePay {
         return receiptRecordList.stream().mapToInt(this::getReceiptRecordTotalPrice).sum();
     }
 
-    public int getTotalServiceFee(List<ReceiptRecordView> recordViewList) {
+    int getTotalServiceFee(List<ReceiptRecordView> recordViewList) {
         List<Integer> receiptRecordIds = recordViewList.stream().map(ReceiptRecordView::getId).collect(toList());
         List<ReceiptRecord> receiptRecordList = receiptRecordRepository.findAllById(receiptRecordIds);
         return calculateTotalServiceFee(receiptRecordList);
     }
 
-    public Map<VATName, VatPriceModel> getVatPriceModelMap(List<ReceiptRecordView> recordViewList) {
+    Map<VATName, VatPriceModel> getVatPriceModelMap(List<ReceiptRecordView> recordViewList) {
         List<Integer> receiptRecordIds = recordViewList.stream().map(ReceiptRecordView::getId).collect(toList());
         List<ReceiptRecord> receiptRecordList = receiptRecordRepository.findAllById(receiptRecordIds);
         Map<VATName, List<ReceiptRecord>> vatNameReceiptRecordListMap = receiptRecordList.stream()
@@ -446,5 +446,24 @@ public class ReceiptServicePay {
                 .serviceFee(0)
                 .totalPrice(0)
                 .build();
+    }
+
+    @Transactional
+    VatCashierNumberModel getVatCashierNumberModel() {
+        VATSerie validVatSerie = vatSerieRepository.findFirstByStatus(VATStatus.VALID);
+        VAT drinkVat = getValidVat(validVatSerie, VATName.NORMAL);
+        VAT foodVat = getValidVat(validVatSerie, VATName.GREATLY_REDUCED);
+        return VatCashierNumberModel.builder()
+                .vatDrinkCashierNumber(drinkVat.getCashierNumber())
+                .vatDrinkServiceFeeCashierNumber(drinkVat.getServiceFeeCashierNumber())
+                .vatFoodCashierNumber(foodVat.getCashierNumber())
+                .vatFoodServiceFeeCashierNumber(foodVat.getServiceFeeCashierNumber())
+                .build();
+    }
+
+    private VAT getValidVat(VATSerie validVatSerie, VATName vatName) {
+        return validVatSerie.getVat().stream()
+                .filter(vat -> vat.getName() == vatName)
+                .findFirst().orElseThrow(() -> new RuntimeException("Missing VAT"));
     }
 }

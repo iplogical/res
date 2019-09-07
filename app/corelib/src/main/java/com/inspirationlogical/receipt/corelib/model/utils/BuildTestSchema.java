@@ -1546,7 +1546,7 @@ public class BuildTestSchema {
     }
 
     private void vatSerieAndVatValues() {
-        vatSerie.setVat(new HashSet<>(
+        vatSerie.setVat(new ArrayList<>(
                 Arrays.asList(vatOne, vatTwo, vatThree, vatFour, vatFive)));
         vatOne.setSerie(vatSerie);
         vatTwo.setSerie(vatSerie);

@@ -33,6 +33,12 @@ class VAT extends AbstractEntity {
     @Column(name = "VAT")
     private double VAT;
 
+    @Column(name = "CASHIER_NUMBER")
+    private int cashierNumber;
+
+    @Column(name = "SERVICE_FEE_CASHIER_NUMBER")
+    private int serviceFeeCashierNumber;
+
     @Tolerate
     VAT() {
     }

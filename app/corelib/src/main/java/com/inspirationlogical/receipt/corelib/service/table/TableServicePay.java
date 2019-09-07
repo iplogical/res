@@ -4,6 +4,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+import com.inspirationlogical.receipt.corelib.params.VatCashierNumberModel;
 import com.inspirationlogical.receipt.corelib.params.VatPriceModel;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface TableServicePay {
     int getTotalServiceFee(List<ReceiptRecordView> recordViewList);
 
     Map<VATName, VatPriceModel> getVatPriceModelMap(List<ReceiptRecordView> paidProductViewList);
+
+    VatCashierNumberModel getVatCashierNumberModel();
 }

@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.view.ReceiptRecordView;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.PaymentParams;
+import com.inspirationlogical.receipt.corelib.params.VatCashierNumberModel;
 import com.inspirationlogical.receipt.corelib.params.VatPriceModel;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
@@ -85,5 +86,10 @@ public class TableServicePayImpl implements TableServicePay {
     @Override
     public Map<VATName, VatPriceModel> getVatPriceModelMap(List<ReceiptRecordView> paidProductViewList) {
         return receiptService.getVatPriceModelMap(paidProductViewList);
+    }
+
+    @Override
+    public VatCashierNumberModel getVatCashierNumberModel() {
+        return receiptService.getVatCashierNumberModel();
     }
 }

@@ -1,7 +1,12 @@
 package com.inspirationlogical.receipt.corelib.utility;
 
-import static java.time.LocalDateTime.now;
+import com.inspirationlogical.receipt.corelib.model.entity.*;
+import com.inspirationlogical.receipt.corelib.model.enums.*;
+import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
+import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
+import lombok.Getter;
 
+import javax.persistence.EntityManager;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,37 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import javax.persistence.EntityManager;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Address;
-import com.inspirationlogical.receipt.corelib.model.entity.Client;
-import com.inspirationlogical.receipt.corelib.model.entity.DailyClosure;
-import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
-import com.inspirationlogical.receipt.corelib.model.entity.Receipt;
-import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
-import com.inspirationlogical.receipt.corelib.model.entity.Reservation;
-import com.inspirationlogical.receipt.corelib.model.entity.Restaurant;
-import com.inspirationlogical.receipt.corelib.model.entity.Table;
-import com.inspirationlogical.receipt.corelib.model.entity.VAT;
-import com.inspirationlogical.receipt.corelib.model.entity.VATSerie;
-import com.inspirationlogical.receipt.corelib.model.enums.PaymentMethod;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierRepeatPeriod;
-import com.inspirationlogical.receipt.corelib.model.enums.PriceModifierType;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
-import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptStatus;
-import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.enums.TableType;
-import com.inspirationlogical.receipt.corelib.model.enums.VATName;
-import com.inspirationlogical.receipt.corelib.model.enums.VATStatus;
-import com.inspirationlogical.receipt.corelib.model.transaction.EntityManagerProvider;
-import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
-
-import lombok.Getter;
+import static java.time.LocalDateTime.now;
 
 public class BuildSchema  {
 
@@ -13160,7 +13136,7 @@ public class BuildSchema  {
     }
     
     private void vatSerieAndVatValues() {
-        vatSerie.setVat(new HashSet<>(
+        vatSerie.setVat(new ArrayList<>(
                 Arrays.asList(vatOne, vatTwo, vatThree, vatFour, vatFive)));
         vatOne.setSerie(vatSerie);
         vatTwo.setSerie(vatSerie);

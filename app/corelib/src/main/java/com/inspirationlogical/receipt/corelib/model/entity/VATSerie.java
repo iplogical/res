@@ -8,7 +8,7 @@ import lombok.experimental.Tolerate;
 
 import javax.persistence.Table;
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Builder
@@ -18,8 +18,8 @@ import java.util.Collection;
 public @Data
 class VATSerie extends AbstractEntity {
 
-    @OneToMany(mappedBy = "serie", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
-    private Collection<VAT> vat;
+    @OneToMany(mappedBy = "serie", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<VAT> vat;
 
     @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
