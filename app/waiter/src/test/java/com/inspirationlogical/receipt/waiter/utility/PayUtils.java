@@ -6,13 +6,12 @@ import javafx.scene.control.TableView;
 
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
-import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.SELECTIVE_PAYMENT;
-import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
-import static com.inspirationlogical.receipt.waiter.utility.SaleUtils.intToForint;
+import static com.inspirationlogical.receipt.waiter.utility.NameUtils.PRODUCT_FIVE_LONG;
+import static com.inspirationlogical.receipt.waiter.utility.NameUtils.PRODUCT_THREE_LONG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class PayUtils  extends AbstractUtils {
+public class PayUtils extends AbstractUtils {
 
     public static void pay() {
         clickButtonThenWait(PAY, 1000);
@@ -56,8 +55,60 @@ public class PayUtils  extends AbstractUtils {
         clickOnThenWait(PAID_POINTS.get(row - 1), 500);
     }
 
-    public static String getPaidTotalPrice() {
-        return getLabel(PAID_TOTAL_PRICE);
+    public static String getPaidPrice() {
+        return getLabel(PAID_PRICE);
+    }
+
+    public static String getPaidPriceWithServiceFee() {
+        return getLabel(PAID_PRICE_WITH_SERVICE_FEE);
+    }
+
+    public static String getVatDrinkPrice() {
+        return getLabel(VAT_DRINK_PRICE);
+    }
+    
+    public static String getVatDrinkServiceFee() {
+        return getLabel(VAT_DRINK_SERVICE_FEE);
+    }
+
+    public static String getVatDrinkTotalPrice() {
+        return getLabel(VAT_DRINK_TOTAL_PRICE);
+    }
+
+    public static String getVatFoodPrice() {
+        return getLabel(VAT_FOOD_PRICE);
+    }
+
+    public static String getVatFoodServiceFee() {
+        return getLabel(VAT_FOOD_SERVICE_FEE);
+    }
+
+    public static String getVatFoodTotalPrice() {
+        return getLabel(VAT_FOOD_TOTAL_PRICE);
+    }
+
+    public static String getVatDrinkPricePrevious() {
+        return getLabel(VAT_DRINK_PRICE_PREVIOUS);
+    }
+
+    public static String getVatDrinkServiceFeePrevious() {
+        return getLabel(VAT_DRINK_SERVICE_FEE_PREVIOUS);
+    }
+
+    public static String getVatDrinkTotalPricePrevious() {
+        return getLabel(VAT_DRINK_TOTAL_PRICE_PREVIOUS);
+    }
+
+    public static String getVatFoodPricePrevious() {
+        return getLabel(VAT_FOOD_PRICE_PREVIOUS);
+    }
+
+    public static String getVatFoodServiceFeePrevious() {
+        return getLabel(VAT_FOOD_SERVICE_FEE_PREVIOUS);
+    }
+
+    public static String getVatFoodTotalPricePrevious() {
+        return getLabel(VAT_FOOD_TOTAL_PRICE_PREVIOUS);
     }
 
     public static String getPreviousPartialPrice() {
@@ -84,7 +135,7 @@ public class PayUtils  extends AbstractUtils {
         assertTrue(getPaidProducts().isEmpty());
     }
 
-    private static ObservableList<ProductRowModel>  getPaidProducts() {
+    private static ObservableList<ProductRowModel> getPaidProducts() {
         TableView<ProductRowModel> tableView = robot.find(PAID_PRODUCTS_TABLE);
         return tableView.getItems();
     }
@@ -97,19 +148,48 @@ public class PayUtils  extends AbstractUtils {
     }
 
     public static void assertPaidProductFive(int row, double quantity) {
-        assertPaidProduct(row, PRODUCT_FIVE_LONG, quantity, 440, (int)(quantity * 440));
+        assertPaidProduct(row, PRODUCT_FIVE_LONG, quantity, 440, (int) (quantity * 440));
     }
 
     public static void assertPaidProductThree(int row, double quantity) {
-        assertPaidProduct(row, PRODUCT_THREE_LONG, quantity, 2900, (int)(quantity * 2900));
+        assertPaidProduct(row, PRODUCT_THREE_LONG, quantity, 2900, (int) (quantity * 2900));
     }
 
-//    public static void assertPaidTotalPrice(int price) {
-//        assertEquals(intToForint(price), getPaidTotalPrice());
-//    }
+    public static void assertPaidPrice(int price, int priceWithServiceFee) {
+        assertEquals(intToForint(price), getPaidPrice());
+        assertEquals(intToForintWithBraces(priceWithServiceFee), getPaidPriceWithServiceFee());
+    }
 
-    public static void assertPaidTotalPrice(int price, int priceWithServiceFee) {
-        assertEquals(intToForint(price, priceWithServiceFee), getPaidTotalPrice());
+    private static String intToForint(int price) {
+        return price + " Ft";
+    }
+
+    private static String intToForintWithBraces(int price) {
+        return "(" + price + " Ft)";
+    }
+
+    public static void assertVatDrinkPaidPrices(int price, int serviceFee, int totalPrice) {
+        assertEquals(intToForint(price), getVatDrinkPrice());
+        assertEquals(intToForint(serviceFee), getVatDrinkServiceFee());
+        assertEquals(intToForint(totalPrice), getVatDrinkTotalPrice());
+    }
+
+    public static void assertVatFoodPaidPrices(int price, int serviceFee, int totalPrice) {
+        assertEquals(intToForint(price), getVatFoodPrice());
+        assertEquals(intToForint(serviceFee), getVatFoodServiceFee());
+        assertEquals(intToForint(totalPrice), getVatFoodTotalPrice());
+    }
+
+    public static void assertPreviousVatDrinkPaidPrices(int price, int serviceFee, int totalPrice) {
+        assertEquals(intToForint(price), getVatDrinkPricePrevious());
+        assertEquals(intToForint(serviceFee), getVatDrinkServiceFeePrevious());
+        assertEquals(intToForint(totalPrice), getVatDrinkTotalPricePrevious());
+    }
+
+    public static void assertPreviousVatFoodPaidPrices(int price, int serviceFee, int totalPrice) {
+        assertEquals(intToForint(price), getVatFoodPricePrevious());
+        assertEquals(intToForint(serviceFee), getVatFoodServiceFeePrevious());
+        assertEquals(intToForint(totalPrice), getVatFoodTotalPricePrevious());
     }
 
     public static void assertPreviousPartialPrice(int price) {

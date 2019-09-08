@@ -648,6 +648,8 @@ public class BuildTestSchema {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .type(ProductType.AD_HOC_PRODUCT)
+                .VATLocal(vatNormal)
+                .VATTakeAway(vatNormal)
                 .recipes(new ArrayList<>())
                 .build();
     }
@@ -661,6 +663,8 @@ public class BuildTestSchema {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.LITER)
                 .type(ProductType.GAME_FEE_PRODUCT)
+                .VATLocal(vatNormal)
+                .VATTakeAway(vatNormal)
                 .recipes(new ArrayList<>())
                 .build();
     }
@@ -674,6 +678,8 @@ public class BuildTestSchema {
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.LITER)
                 .type(ProductType.SERVICE_FEE_PRODUCT)
+                .VATLocal(vatNormal)
+                .VATTakeAway(vatNormal)
                 .recipes(new ArrayList<>())
                 .build();
     }
@@ -1222,6 +1228,8 @@ public class BuildTestSchema {
                 .name(VATName.NORMAL)
                 .status(VATStatus.VALID)
                 .VAT(27)
+                .cashierNumber(4)
+                .serviceFeeCashierNumber(1)
                 .build();
     }
 
@@ -1238,6 +1246,8 @@ public class BuildTestSchema {
                 .name(VATName.GREATLY_REDUCED)
                 .status(VATStatus.VALID)
                 .VAT(5)
+                .cashierNumber(3)
+                .serviceFeeCashierNumber(2)
                 .build();
     }
 

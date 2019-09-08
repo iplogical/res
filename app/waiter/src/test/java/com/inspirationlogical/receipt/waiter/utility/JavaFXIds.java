@@ -76,7 +76,25 @@ public class JavaFXIds {
 
     public final static String DISCOUNT_VALUE = "#discountValue";
 
-    public final static String PAID_TOTAL_PRICE = "#paidTotalPrice";
+    public final static String PAID_PRICE = "#paidPrice";
+    public final static String PAID_PRICE_WITH_SERVICE_FEE = "#paidPriceWithServiceFee";
+
+    public final static String VAT_DRINK_PRICE = "#vatDrinkPrice";
+    public final static String VAT_DRINK_SERVICE_FEE = "#vatDrinkServiceFee";
+    public final static String VAT_DRINK_TOTAL_PRICE = "#vatDrinkTotalPrice";
+
+    public final static String VAT_FOOD_PRICE = "#vatFoodPrice";
+    public final static String VAT_FOOD_SERVICE_FEE = "#vatFoodServiceFee";
+    public final static String VAT_FOOD_TOTAL_PRICE = "#vatFoodTotalPrice";
+
+    public final static String VAT_DRINK_PRICE_PREVIOUS = "#vatDrinkPricePrevious";
+    public final static String VAT_DRINK_SERVICE_FEE_PREVIOUS = "#vatDrinkServiceFeePrevious";
+    public final static String VAT_DRINK_TOTAL_PRICE_PREVIOUS = "#vatDrinkTotalPricePrevious";
+
+    public final static String VAT_FOOD_PRICE_PREVIOUS = "#vatFoodPricePrevious";
+    public final static String VAT_FOOD_SERVICE_FEE_PREVIOUS = "#vatFoodServiceFeePrevious";
+    public final static String VAT_FOOD_TOTAL_PRICE_PREVIOUS = "#vatFoodTotalPricePrevious";
+
     public final static String PREVIOUS_PARTIAL_PRICE = "#previousPartialPrice";
 
     public final static String PAID_PRODUCTS_TABLE = "#paidProductsTable";

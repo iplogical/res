@@ -5,9 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.*;
-import static com.inspirationlogical.receipt.waiter.utility.ClickUtils.setTextField;
 import static com.inspirationlogical.receipt.waiter.utility.JavaFXIds.*;
-import static com.inspirationlogical.receipt.waiter.utility.NameUtils.*;
+import static com.inspirationlogical.receipt.waiter.utility.NameUtils.PRODUCT_FIVE_LONG;
+import static com.inspirationlogical.receipt.waiter.utility.NameUtils.PRODUCT_THREE_LONG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -95,7 +95,6 @@ public class SaleUtils  extends AbstractUtils {
         assertSoldProduct(row, PRODUCT_THREE_LONG, quantity, 2900, (int)Math.round(quantity * 2900));
     }
 
-
     public static void assertNumberOfSoldProducts(int expected) {
         assertEquals(expected, getSoldProducts().size());
     }
@@ -104,16 +103,8 @@ public class SaleUtils  extends AbstractUtils {
         assertEquals(intToForint(price, priceWithServiceFee), getSoldTotalPrice());
     }
 
-//    public static void assertSoldTotalPrice(int price) {
-//        assertEquals(intToForint(price), getSoldTotalPrice());
-//    }
-
     private static String getSoldTotalPrice() {
         return getLabel(SOLD_TOTAL_PRICE);
-    }
-
-    public static String intToForint(int price) {
-        return price + " Ft";
     }
 
     public static String intToForint(int price, int priceWithServiceFee) {

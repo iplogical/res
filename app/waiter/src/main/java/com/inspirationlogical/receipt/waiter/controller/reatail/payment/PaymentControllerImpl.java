@@ -83,9 +83,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     TextField discountValue;
 
     @FXML
-    Label paidTotalPrice;
+    private Label paidPriceWithServiceFee;
     @FXML
-    Label paidPrice;
+    private Label paidPrice;
 
     @FXML
     Label previousPartialPrice;
@@ -259,15 +259,23 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private void updateTotalPrices(List<ReceiptRecordView> productViewList) {
         int totalPricePaid = getTotalPrice(productViewList);
         int totalServiceFeePaid = getTotalServiceFee(productViewList);
+        updatePaidPrices(productViewList, totalPricePaid, totalServiceFeePaid);
+        updateSoldTotalPrice(totalPricePaid, totalServiceFeePaid);
+    }
+
+    private void updatePaidPrices(List<ReceiptRecordView> productViewList, int totalPricePaid, int totalServiceFeePaid) {
         paidPrice.setText(totalPricePaid + " Ft");
-        paidTotalPrice.setText("("+ (totalPricePaid + totalServiceFeePaid) + " Ft)");
+        paidPriceWithServiceFee.setText("("+ (totalPricePaid + totalServiceFeePaid) + " Ft)");
+        updatePartialPriceLabels(productViewList);
+    }
+
+    private void updateSoldTotalPrice(int totalPricePaid, int totalServiceFeePaid) {
         int totalPriceSold = getTotalPrice() - totalPricePaid;
         int totalServiceFeeSold = receiptService.getTotalServiceFee(tableView.getNumber()) - totalServiceFeePaid;
         totalPrice.setText(totalPriceSold + " Ft" + " (" + (totalPriceSold + totalServiceFeeSold) + " Ft)");
-        updatePriceLabels(productViewList);
     }
 
-    private void updatePriceLabels(List<ReceiptRecordView> productViewList) {
+    private void updatePartialPriceLabels(List<ReceiptRecordView> productViewList) {
         Map<VATName, VatPriceModel> vatPriceModelMap = tableServicePay.getVatPriceModelMap(productViewList);
         updateDrinkPriceLabels(vatPriceModelMap.get(VATName.NORMAL));
         updateFoodPriceLabels(vatPriceModelMap.get(VATName.GREATLY_REDUCED));
@@ -299,12 +307,13 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void handleSelectivePayment(PaymentParams paymentParams) {
         logger.info("Handling selective payment with paymentParams: " + paymentParams.toString());
         tableServicePay.paySelective(tableView, paidProductViewList, paymentParams);
-        updatePreviousPartialPriceValues();
+        updatePreviousPartialPriceLabels();
         discardPaidRecords();
         getSoldProductsAndRefreshTable();
+        updateTotalPrices(paidProductViewList);
     }
 
-    private void updatePreviousPartialPriceValues() {
+    private void updatePreviousPartialPriceLabels() {
         int totalPrice = paymentViewState.isServiceFeeState() ? getTotalPriceWithServiceFee() : Integer.parseInt(paidPrice.getText().split(" ")[0]);
         previousPartialPrice.setText(applyDiscountOnTotalPrice(totalPrice) + " Ft");
         updateDrinkPricePreviousLabels();
@@ -312,7 +321,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private int getTotalPriceWithServiceFee() {
-        return Integer.parseInt(paidTotalPrice.getText().split(" ")[0]
+        return Integer.parseInt(paidPriceWithServiceFee.getText().split(" ")[0]
                 .replaceAll("\\(", "")
                 .replaceAll("\\)", ""));
     }

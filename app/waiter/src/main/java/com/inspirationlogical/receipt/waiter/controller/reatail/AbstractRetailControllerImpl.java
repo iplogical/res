@@ -203,7 +203,7 @@ public abstract class AbstractRetailControllerImpl extends AbstractController {
         updateSoldTotalPrice();
     }
 
-    protected void updateSoldTotalPrice() {
+    private void updateSoldTotalPrice() {
         int totalPriceNoServiceFee = getTotalPrice();
         int totalServiceFee = receiptService.getTotalServiceFee(tableView.getNumber());
         totalPrice.setText(totalPriceNoServiceFee + " Ft" + " (" + (totalPriceNoServiceFee + totalServiceFee) + " Ft)");
