@@ -137,11 +137,11 @@ public class BuildTestSchema {
 
     private @Getter VATSerie vatSerie;
 
-    private @Getter VAT vatOne;
-    private @Getter VAT vatTwo;
-    private @Getter VAT vatThree;
-    private @Getter VAT vatFour;
-    private @Getter VAT vatFive;
+    private @Getter VAT vatNormal;
+    private @Getter VAT vatReduced;
+    private @Getter VAT vatGreatlyReduced;
+    private @Getter VAT vatTaxTicket;
+    private @Getter VAT vatTaxFree;
 
     private @Getter DailyClosure dailyClosureOne;
     private @Getter DailyClosure dailyClosureTwo;
@@ -159,6 +159,8 @@ public class BuildTestSchema {
     }
 
     private void buildObjects() {
+        buildVatSeries();
+        BuildVATs();
         buildProducts();
         buildProductCategories();
         buildPriceModifiers();
@@ -167,8 +169,6 @@ public class BuildTestSchema {
         buildReceipts();
         buildReceiptRecords();
         buildReceiptRecordCreateds();
-        buildVatSeries();
-        BuildVATs();
         buildTables();
         buildRestaurant();
         buildDailyClosures();
@@ -197,7 +197,7 @@ public class BuildTestSchema {
     }
 
     private void buildProducts() {
-        buildProduct();
+        buildProductOne();
         buildProductTwo();
         buildProductThree();
         buildProductFour();
@@ -509,10 +509,11 @@ public class BuildTestSchema {
                 .build();
     }
 
-    private void buildProduct() {
+    private void buildProductOne() {
         this.productOne = Product.builder()
                 .longName(PRODUCT_ONE_LONG_NAME)
                 .shortName(PRODUCT_ONE_SHORT_NAME)
+                .orderNumber(1)
                 .salePrice(440)
                 .purchasePrice(500)
                 .rapidCode(11)
@@ -520,6 +521,8 @@ public class BuildTestSchema {
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(70)
                 .type(ProductType.SELLABLE)
+                .VATLocal(vatNormal)
+                .VATTakeAway(vatNormal)
                 .build();
     }
 
@@ -527,6 +530,7 @@ public class BuildTestSchema {
         productTwo = Product.builder()
                 .longName("productTwo")
                 .shortName("product2")
+                .orderNumber(2)
                 .salePrice(200)
                 .purchasePrice(100)
                 .rapidCode(12)
@@ -534,6 +538,8 @@ public class BuildTestSchema {
                 .quantityUnit(QuantityUnit.LITER)
                 .storageMultiplier(50)
                 .type(ProductType.SELLABLE)
+                .VATLocal(vatNormal)
+                .VATTakeAway(vatNormal)
                 .build();
     }
 
@@ -541,12 +547,15 @@ public class BuildTestSchema {
         productThree = Product.builder()
                 .longName("productThree")
                 .shortName("product3")
+                .orderNumber(3)
                 .salePrice(2900)
                 .purchasePrice(400)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.GRAM)
                 .storageMultiplier(1000)
                 .type(ProductType.PARTIALLY_PAYABLE)
+                .VATLocal(vatGreatlyReduced)
+                .VATTakeAway(vatGreatlyReduced)
                 .build();
     }
 
@@ -554,12 +563,15 @@ public class BuildTestSchema {
         productFour = Product.builder()
                 .longName("productFour")
                 .shortName("product4")
+                .orderNumber(4)
                 .salePrice(990)
                 .purchasePrice(500)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.GRAM)
                 .storageMultiplier(2000)
                 .type(ProductType.SELLABLE)
+                .VATLocal(vatGreatlyReduced)
+                .VATTakeAway(vatGreatlyReduced)
                 .build();
     }
 
@@ -567,6 +579,7 @@ public class BuildTestSchema {
         productFive = Product.builder()
                 .longName("productFive")
                 .shortName("product5")
+                .orderNumber(5)
                 .salePrice(440)
                 .purchasePrice(450)
                 .rapidCode(13)
@@ -574,6 +587,8 @@ public class BuildTestSchema {
                 .quantityUnit(QuantityUnit.LITER)
                 .storageMultiplier(2)
                 .type(ProductType.SELLABLE)
+                .VATLocal(vatNormal)
+                .VATTakeAway(vatNormal)
                 .build();
     }
 
@@ -581,12 +596,15 @@ public class BuildTestSchema {
         productSix = Product.builder()
                 .longName("productSix")
                 .shortName("product6")
+                .orderNumber(6)
                 .salePrice(480)
                 .purchasePrice(200)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(100)
                 .type(ProductType.PARTIALLY_PAYABLE)
+                .VATLocal(vatNormal)
+                .VATTakeAway(vatNormal)
                 .build();
     }
 
@@ -595,12 +613,15 @@ public class BuildTestSchema {
         productSeven = Product.builder()
                 .longName("productSeven")
                 .shortName("product7")
+                .orderNumber(7)
                 .salePrice(780)
                 .purchasePrice(400)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
+                .VATLocal(vatNormal)
+                .VATTakeAway(vatNormal)
                 .build();
     }
 
@@ -608,12 +629,15 @@ public class BuildTestSchema {
         productEight = Product.builder()
                 .longName("productEight")
                 .shortName("product8")
+                .orderNumber(8)
                 .salePrice(500)
                 .purchasePrice(200)
                 .status(ProductStatus.ACTIVE)
                 .quantityUnit(QuantityUnit.CENTILITER)
                 .storageMultiplier(100)
                 .type(ProductType.SELLABLE)
+                .VATLocal(vatNormal)
+                .VATTakeAway(vatNormal)
                 .build();
     }
     
@@ -705,6 +729,7 @@ public class BuildTestSchema {
     private void buildAggregateTopOne() {
         this.aggregateTopOne = ProductCategory.builder()
                 .name(AGGREGATE_TOP_ONE_NAME)
+                .orderNumber(1)
                 .type(ProductCategoryType.AGGREGATE)
                 .status(ProductStatus.ACTIVE)
                 .family(ProductCategoryFamily.FOOD)
@@ -715,6 +740,7 @@ public class BuildTestSchema {
     private void buildAggregateTopTwo() {
         aggregateTopTwo = ProductCategory.builder()
                 .name("aggregateTopTwo")
+                .orderNumber(2)
                 .type(ProductCategoryType.AGGREGATE)
                 .status(ProductStatus.ACTIVE)
                 .family(ProductCategoryFamily.DRINK)
@@ -725,6 +751,7 @@ public class BuildTestSchema {
     private void buildAggregateOne() {
         aggregateOne = ProductCategory.builder()
                 .name(AGGREGATE_ONE_NAME)
+                .orderNumber(3)
                 .type(ProductCategoryType.AGGREGATE)
                 .status(ProductStatus.ACTIVE)
                 .build();
@@ -733,6 +760,7 @@ public class BuildTestSchema {
     private void buildAggregateTwo() {
         aggregateTwo = ProductCategory.builder()
                 .name("aggregateTwo")
+                .orderNumber(4)
                 .type(ProductCategoryType.AGGREGATE)
                 .status(ProductStatus.ACTIVE)
                 .build();
@@ -741,6 +769,7 @@ public class BuildTestSchema {
     private void buildAggregateThree() {
         aggregateThree = ProductCategory.builder()
                 .name("aggregateThree")
+                .orderNumber(5)
                 .type(ProductCategoryType.AGGREGATE)
                 .status(ProductStatus.ACTIVE)
                 .build();
@@ -749,6 +778,7 @@ public class BuildTestSchema {
     private void buildAggregateFour() {
         aggregateFour = ProductCategory.builder()
                 .name("aggregateFour")
+                .orderNumber(6)
                 .type(ProductCategoryType.AGGREGATE)
                 .status(ProductStatus.ACTIVE)
                 .build();
@@ -765,6 +795,7 @@ public class BuildTestSchema {
     private void buildLeafOne() {
         this.leafOne = ProductCategory.builder()
                 .name(LEAF_ONE_NAME)
+                .orderNumber(7)
                 .type(ProductCategoryType.LEAF)
                 .status(ProductStatus.ACTIVE)
                 .priceModifiers(new ArrayList<>())
@@ -774,6 +805,7 @@ public class BuildTestSchema {
     private void buildLeafTwo() {
         leafTwo = ProductCategory.builder()
                 .name("leafTwo")
+                .orderNumber(8)
                 .type(ProductCategoryType.LEAF)
                 .status(ProductStatus.ACTIVE)
                 .build();
@@ -782,6 +814,7 @@ public class BuildTestSchema {
     private void buildLeafThree() {
         leafThree = ProductCategory.builder()
                 .name("leafThree")
+                .orderNumber(9)
                 .type(ProductCategoryType.LEAF)
                 .status(ProductStatus.ACTIVE)
                 .build();
@@ -790,6 +823,7 @@ public class BuildTestSchema {
     private void buildLeafFour() {
         leafFour = ProductCategory.builder()
                 .name("leafFour")
+                .orderNumber(10)
                 .type(ProductCategoryType.LEAF)
                 .status(ProductStatus.ACTIVE)
                 .build();
@@ -798,6 +832,7 @@ public class BuildTestSchema {
     private void buildLeafFive() {
         leafFive = ProductCategory.builder()
                 .name("leafFive")
+                .orderNumber(11)
                 .type(ProductCategoryType.LEAF)
                 .status(ProductStatus.ACTIVE)
                 .build();
@@ -806,6 +841,7 @@ public class BuildTestSchema {
     private void buildLeafSix() {
         leafSix = ProductCategory.builder()
                 .name("leafSix")
+                .orderNumber(12)
                 .type(ProductCategoryType.LEAF)
                 .status(ProductStatus.ACTIVE)
                 .build();
@@ -1174,7 +1210,7 @@ public class BuildTestSchema {
                 .created(now())
                 .build();
     }
-    
+
     private void buildVatSerieOne() {
         vatSerie = VATSerie.builder()
                 .status(VATStatus.VALID)
@@ -1182,7 +1218,7 @@ public class BuildTestSchema {
     }
 
     private void buildVatOne() {
-        vatOne = VAT.builder()
+        vatNormal = VAT.builder()
                 .name(VATName.NORMAL)
                 .status(VATStatus.VALID)
                 .VAT(27)
@@ -1190,7 +1226,7 @@ public class BuildTestSchema {
     }
 
     private void buildVatTwo() {
-        vatTwo = VAT.builder()
+        vatReduced = VAT.builder()
                 .name(VATName.REDUCED)
                 .status(VATStatus.VALID)
                 .VAT(18)
@@ -1198,7 +1234,7 @@ public class BuildTestSchema {
     }
 
     private void buildVatThree() {
-        vatThree = VAT.builder()
+        vatGreatlyReduced = VAT.builder()
                 .name(VATName.GREATLY_REDUCED)
                 .status(VATStatus.VALID)
                 .VAT(5)
@@ -1206,7 +1242,7 @@ public class BuildTestSchema {
     }
 
     private void buildVatFour() {
-        vatFour = VAT.builder()
+        vatTaxTicket = VAT.builder()
                 .name(VATName.TAX_TICKET)
                 .status(VATStatus.VALID)
                 .VAT(0)
@@ -1214,7 +1250,7 @@ public class BuildTestSchema {
     }
 
     private void buildVatFive() {
-        vatFive = VAT.builder()
+        vatTaxFree = VAT.builder()
                 .name(VATName.TAX_FREE)
                 .status(VATStatus.VALID)
                 .VAT(0)
@@ -1547,12 +1583,12 @@ public class BuildTestSchema {
 
     private void vatSerieAndVatValues() {
         vatSerie.setVat(new ArrayList<>(
-                Arrays.asList(vatOne, vatTwo, vatThree, vatFour, vatFive)));
-        vatOne.setSerie(vatSerie);
-        vatTwo.setSerie(vatSerie);
-        vatThree.setSerie(vatSerie);
-        vatFour.setSerie(vatSerie);
-        vatFive.setSerie(vatSerie);
+                Arrays.asList(vatNormal, vatReduced, vatGreatlyReduced, vatTaxTicket, vatTaxFree)));
+        vatNormal.setSerie(vatSerie);
+        vatReduced.setSerie(vatSerie);
+        vatGreatlyReduced.setSerie(vatSerie);
+        vatTaxTicket.setSerie(vatSerie);
+        vatTaxFree.setSerie(vatSerie);
     }
 
     private void restaurantAndTables() {
