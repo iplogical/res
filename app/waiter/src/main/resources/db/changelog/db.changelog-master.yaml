@@ -1,0 +1,1526 @@
+databaseChangeLog:
+- changeSet:
+    id: 2019-09-08-1
+    author: TheDagi
+    changes:
+    - createSequence:
+        sequenceName: a_seq
+
+- changeSet:
+    id: 2019-09-08-2
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: _table_pkey
+            name: table_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: capacity
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: coordinatex
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: coordinatey
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: dimensionx
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: dimensiony
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: guestcount
+            type: INTEGER
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: note
+            type: VARCHAR(255)
+        - column:
+            name: number
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: type
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: visible
+            type: BOOLEAN
+        - column:
+            name: consumer_table_id
+            type: BIGINT
+        - column:
+            name: host_table_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: restaurant_id
+            type: BIGINT
+        tableName: _table
+
+- changeSet:
+    id: 2019-09-08-3
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: daily_closure_pkey
+            name: daily_closure_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            name: closuretime
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: discount
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: markup
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: numberofreceipts
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: profit
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: receiptaverage
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumpurchasegrosspricecash
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumpurchasegrosspricecoupon
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumpurchasegrosspricecreditcard
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumpurchasegrosspricetotal
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumpurchasenetpricecash
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumpurchasenetpricecoupon
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumpurchasenetpricecreditcard
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumpurchasenetpricetotal
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumsalegrosspricecash
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumsalegrosspricecoupon
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumsalegrosspricecreditcard
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumsalegrosspricetotal
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumsalenetpricecash
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumsalenetpricecoupon
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumsalenetpricecreditcard
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumsalenetpricetotal
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: restaurant_id
+            type: BIGINT
+        tableName: daily_closure
+
+- changeSet:
+    id: 2019-09-08-4
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: daily_closure_new_pkey
+            name: daily_closure_new_id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: version
+            type: BIGINT
+        - column:
+            name: closure_time
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: total_cash
+            type: INTEGER
+        - column:
+            name: total_credit_card
+            type: INTEGER
+        - column:
+            name: total_coupon
+            type: INTEGER
+        - column:
+            name: service_fee_cash
+            type: INTEGER
+        - column:
+            name: service_fee_credit_card
+            type: INTEGER
+        - column:
+            name: service_fee_coupon
+            type: INTEGER
+        - column:
+            name: service_fee_net
+            type: INTEGER
+        - column:
+            name: service_fee_total
+            type: INTEGER
+        - column:
+            name: total_commerce
+            type: INTEGER
+        - column:
+            name: other_income
+            type: INTEGER
+        - column:
+            name: credit_card_terminal
+            type: INTEGER
+        - column:
+            name: service_fee_over
+            type: INTEGER
+        tableName: daily_closure_new
+
+- changeSet:
+    id: 2019-09-08-5
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: price_modifier_pkey
+            name: price_modifier_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            name: dayofweek
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: discountpercent
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: enddate
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: endtime
+            type: TIME WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: quantitylimit
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: repeatperiod
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: repeatperiodmultiplier
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: startdate
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: starttime
+            type: TIME WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: type
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: product_category_id
+            type: BIGINT
+        tableName: price_modifier
+
+- changeSet:
+    id: 2019-09-08-6
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: product_pkey
+            name: product_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: vatlocal
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: vattakeaway
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: longname
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: minimumstock
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: ordernumber
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: purchaseprice
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: quantityunit
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: rapidcode
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: saleprice
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: shortname
+            type: VARCHAR(20)
+        - column:
+            constraints:
+              nullable: false
+            name: status
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: stockwindow
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: storagemultiplier
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: type
+            type: VARCHAR(255)
+        tableName: product
+
+- changeSet:
+    id: 2019-09-08-7
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: product_category_pkey
+            name: category_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: ordernumber
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: status
+            type: VARCHAR(255)
+        - column:
+            name: type
+            type: VARCHAR(255)
+        - column:
+            name: parent_category_id
+            type: BIGINT
+        - column:
+            name: product_product_id
+            type: BIGINT
+        - column:
+            name: family
+            type: VARCHAR(20)
+        tableName: product_category
+
+- changeSet:
+    id: 2019-09-08-8
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: parent
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: children
+            type: BIGINT
+        tableName: product_category_relations
+
+- changeSet:
+    id: 2019-09-08-9
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: receipt_pkey
+            name: receipt_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            name: taxnumber
+            type: VARCHAR(255)
+        - column:
+            name: address
+            type: VARCHAR(255)
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: closuretime
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: discountpercent
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: opentime
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: paymentmethod
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: status
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: sumpurchasegrossprice
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumpurchasenetprice
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumsalegrossprice
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sumsalenetprice
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: type
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: usercode
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: vat_serie_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: table_id
+            type: BIGINT
+        - column:
+            name: sumsalegrossoriginalprice
+            type: INTEGER
+        - column:
+            name: sumsalenetoriginalprice
+            type: INTEGER
+        - column:
+            name: food_delivery_time
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            defaultValueBoolean: true
+            name: food_delivered
+            type: BOOLEAN
+        - column:
+            name: drink_delivery_time
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: drink_delivered
+            type: BOOLEAN
+        - column:
+            name: deliverytime
+            type: TIMESTAMP WITHOUT TIME ZONE
+        tableName: receipt
+
+- changeSet:
+    id: 2019-09-08-10
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: receipt_record_pkey
+            name: receipt_record_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: vat
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: absolutequantity
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: discountpercent
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: purchaseprice
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: saleprice
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: soldquantity
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: type
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: receipt_id
+            type: BIGINT
+        - column:
+            name: product_id
+            type: BIGINT
+        - column:
+            name: originalsaleprice
+            type: INTEGER
+        tableName: receipt_record
+
+- changeSet:
+    id: 2019-09-08-11
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: receipt_record_created_pkey
+            name: receipt_record_created_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            name: created
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: receipt_record_id
+            type: BIGINT
+        tableName: receipt_record_created
+
+- changeSet:
+    id: 2019-09-08-12
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: recipe_pkey
+            name: recipe_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: quantitymultiplier
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: component_product_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: product_id
+            type: BIGINT
+        tableName: recipe
+
+- changeSet:
+    id: 2019-09-08-13
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: reservation_pkey
+            name: reservation_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: date
+            type: date
+        - column:
+            name: endtime
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: guestcount
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: note
+            type: VARCHAR(255)
+        - column:
+            name: phonenumber
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: starttime
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: tablenumber
+            type: INTEGER
+        - column:
+            name: table_id
+            type: BIGINT
+        tableName: reservation
+
+- changeSet:
+    id: 2019-09-08-14
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: restaurant_pkey
+            name: restaurant_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: companyzipcode
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: companycity
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: companystreet
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: companyname
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: companytaxpayerid
+            type: VARCHAR(255)
+        - column:
+            name: phonenumber
+            type: VARCHAR(255)
+        - column:
+            name: receiptdisclaimer
+            type: VARCHAR(255)
+        - column:
+            name: receiptgreet
+            type: VARCHAR(255)
+        - column:
+            name: receiptnote
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: restaurantzipcode
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: restaurantcity
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: restaurantstreet
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: restaurantname
+            type: VARCHAR(255)
+        - column:
+            name: socialmediainfo
+            type: VARCHAR(255)
+        - column:
+            name: website
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: service_fee_percent
+            type: INTEGER
+        tableName: restaurant
+
+- changeSet:
+    id: 2019-09-08-15
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: stock_pkey
+            name: stock_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            name: date
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: disposedquantity
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: initialquantity
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: inventoryquantity
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: purchasedquantity
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: soldquantity
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: product_id
+            type: BIGINT
+        tableName: stock
+
+- changeSet:
+    id: 2019-09-08-16
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: vat_pkey
+            name: vat_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: vat
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: status
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: vat_serie_id
+            type: BIGINT
+        tableName: vat
+
+- changeSet:
+    id: 2019-09-08-17
+    author: TheDagi
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: vat_serie_pkey
+            name: vat_serie_id
+            type: INTEGER
+        - column:
+            name: version
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: status
+            type: VARCHAR(255)
+        tableName: vat_serie
+
+- changeSet:
+    id: 2019-09-08-18
+    author: TheDagi
+    changes:
+    - addUniqueConstraint:
+        columnNames: children
+        constraintName: uk_1shxuw3uccwr2hwmo9wr9jctx
+        tableName: product_category_relations
+
+- changeSet:
+    id: 2019-09-08-19
+    author: TheDagi
+    changes:
+    - addUniqueConstraint:
+        columnNames: name
+        constraintName: uk_h3uy8nfdnki1df8pecwojbos6
+        tableName: product_category
+
+- changeSet:
+    id: 2019-09-08-20
+    author: TheDagi
+    changes:
+    - addUniqueConstraint:
+        columnNames: number
+        constraintName: uk_tn0xh3e1kf46b9ty21j6fwyvn
+        tableName: _table
+
+- changeSet:
+    id: 2019-09-08-21
+    author: TheDagi
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: children
+        baseTableName: product_category_relations
+        constraintName: fk1tfpiiu01j2my5jevmo3vaehc
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: category_id
+        referencedTableName: product_category
+        validate: true
+
+- changeSet:
+    id: 2019-09-08-22
+    author: TheDagi
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: vat_serie_id
+        baseTableName: vat
+        constraintName: fk21s4deulwdjcp7tqaegygp4mf
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: vat_serie_id
+        referencedTableName: vat_serie
+        validate: true
+
+- changeSet:
+    id: 2019-09-08-23
+    author: TheDagi
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: component_product_id
+        baseTableName: recipe
+        constraintName: fk4m7exksmoydc0hnpoomlq0wax
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: product_id
+        referencedTableName: product
+        validate: true
+
+- changeSet:
+    id: 2019-09-08-24
+    author: TheDagi
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: product_id
+        baseTableName: recipe
+        constraintName: fk6v57gfytje5fej73nc457nhkk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: product_id
+        referencedTableName: product
+        validate: true
+
+- changeSet:
+    id: 2019-09-08-25
+    author: TheDagi
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: restaurant_id
+        baseTableName: daily_closure
+        constraintName: fkak9gguivmhaf0nugbd2o9n6fj
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: restaurant_id
+        referencedTableName: restaurant
+        validate: true
+
+- changeSet:
+    id: 2019-09-08-26
+    author: TheDagi
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: receipt_record_id
+        baseTableName: receipt_record_created
+        constraintName: fkaxsef3tmvt3799879atwlh8cf
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: receipt_record_id
+        referencedTableName: receipt_record
+        validate: true
+
+- changeSet:
+    id: 2019-09-08-27
+    author: TheDagi
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: restaurant_id
+        baseTableName: _table
+        constraintName: fkdrhghxnv4me7g5qiyivfmn91y
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: restaurant_id
+        referencedTableName: restaurant
+        validate: true
+
+- changeSet:
+    id: 2019-09-08-28
+    author: TheDagi
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: table_id
+        baseTableName: reservation
+        constraintName: fkesrwfn4ew8ui4oudy1vrjhtyr
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: table_id
+        referencedTableName: _table
+        validate: true
+
+- changeSet:
+    id: 2019-09-08-29
+    author: TheDagi
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: table_id
+        baseTableName: receipt
+        constraintName: fkjkag406of33ikpyrv8vjr1lir
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: table_id
+        referencedTableName: _table
+        validate: true
+
+- changeSet:
+    id: 2019-09-08-30
+    author: TheDagi
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: product_id
+        baseTableName: stock
+        constraintName: fkocjxt3jri1ivtm9quhmj6h33i
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: product_id
+        referencedTableName: product
+        validate: true
+
+- changeSet:
+    id: 2019-09-08-31
+    author: TheDagi
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: product_category_id
+        baseTableName: price_modifier
+        constraintName: fkraq8cx6ft5is3hji9k2guie8r
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: category_id
+        referencedTableName: product_category
+        validate: true
+
+- changeSet:
+    id: 2019-09-08-32
+    author: TheDagi
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: receipt_id
+        baseTableName: receipt_record
+        constraintName: fkvthd95w2rjv66iwds7w1ab9e
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: receipt_id
+        referencedTableName: receipt
+        validate: true
+
+- changeSet:
+      id: 2019-09-08-33
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: table_id
+                newDataType: INTEGER
+                tableName: _table
+
+- changeSet:
+      id: 2019-09-08-34
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: daily_closure_id
+                newDataType: INTEGER
+                tableName: daily_closure
+
+- changeSet:
+      id: 2019-09-08-35
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: daily_closure_new_id
+                newDataType: INTEGER
+                tableName: daily_closure_new
+
+- changeSet:
+      id: 2019-09-08-36
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: price_modifier_id
+                newDataType: INTEGER
+                tableName: price_modifier
+
+- changeSet:
+      id: 2019-09-08-37
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: product_id
+                newDataType: INTEGER
+                tableName: product
+
+- changeSet:
+      id: 2019-09-08-38
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: category_id
+                newDataType: INTEGER
+                tableName: product_category
+
+- changeSet:
+      id: 2019-09-08-39
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: parent
+                newDataType: INTEGER
+                tableName: product_category_relations
+
+- changeSet:
+      id: 2019-09-08-40
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: children
+                newDataType: INTEGER
+                tableName: product_category_relations
+
+- changeSet:
+      id: 2019-09-08-41
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: receipt_id
+                newDataType: INTEGER
+                tableName: receipt
+
+- changeSet:
+      id: 2019-09-08-42
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: receipt_record_id
+                newDataType: INTEGER
+                tableName: receipt_record
+
+- changeSet:
+      id: 2019-09-08-43
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: receipt_record_created_id
+                newDataType: INTEGER
+                tableName: receipt_record_created
+
+- changeSet:
+      id: 2019-09-08-44
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: recipe_id
+                newDataType: INTEGER
+                tableName: recipe
+
+- changeSet:
+      id: 2019-09-08-45
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: reservation_id
+                newDataType: INTEGER
+                tableName: reservation
+
+- changeSet:
+      id: 2019-09-08-46
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: restaurant_id
+                newDataType: INTEGER
+                tableName: restaurant
+
+- changeSet:
+      id: 2019-09-08-47
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: stock_id
+                newDataType: INTEGER
+                tableName: stock
+
+- changeSet:
+      id: 2019-09-08-48
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: vat_id
+                newDataType: INTEGER
+                tableName: vat
+
+- changeSet:
+      id: 2019-09-08-49
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: vat_serie_id
+                newDataType: INTEGER
+                tableName: vat_serie
+
+- changeSet:
+      id: 2019-09-08-50
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: restaurant_id
+                newDataType: INTEGER
+                tableName: _table
+
+- changeSet:
+      id: 2019-09-08-51
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: restaurant_id
+                newDataType: INTEGER
+                tableName: daily_closure
+
+- changeSet:
+      id: 2019-09-08-52
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: product_category_id
+                newDataType: INTEGER
+                tableName: price_modifier
+
+- changeSet:
+      id: 2019-09-08-53
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: vatlocal
+                newDataType: INTEGER
+                tableName: product
+
+- changeSet:
+      id: 2019-09-08-54
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: vattakeaway
+                newDataType: INTEGER
+                tableName: product
+
+- changeSet:
+      id: 2019-09-08-55
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: parent_category_id
+                newDataType: INTEGER
+                tableName: product_category
+- changeSet:
+      id: 2019-09-08-56
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: product_product_id
+                newDataType: INTEGER
+                tableName: product_category
+
+- changeSet:
+      id: 2019-09-08-57
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: vat_serie_id
+                newDataType: INTEGER
+                tableName: receipt
+
+- changeSet:
+      id: 2019-09-08-58
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: table_id
+                newDataType: INTEGER
+                tableName: receipt
+
+- changeSet:
+      id: 2019-09-08-59
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: vat
+                newDataType: INTEGER
+                tableName: receipt_record
+
+- changeSet:
+      id: 2019-09-08-60
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: receipt_id
+                newDataType: INTEGER
+                tableName: receipt_record
+
+- changeSet:
+      id: 2019-09-08-61
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: product_id
+                newDataType: INTEGER
+                tableName: receipt_record
+
+- changeSet:
+      id: 2019-09-08-62
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: receipt_record_id
+                newDataType: INTEGER
+                tableName: receipt_record_created
+
+- changeSet:
+      id: 2019-09-08-63
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: component_product_id
+                newDataType: INTEGER
+                tableName: recipe
+
+- changeSet:
+      id: 2019-09-08-64
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: product_id
+                newDataType: INTEGER
+                tableName: recipe
+
+- changeSet:
+      id: 2019-09-08-65
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: table_id
+                newDataType: INTEGER
+                tableName: reservation
+
+- changeSet:
+      id: 2019-09-08-66
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: product_id
+                newDataType: INTEGER
+                tableName: stock
+
+- changeSet:
+      id: 2019-09-08-67
+      author: TheDagi
+      changes:
+          - addColumn:
+                columns:
+                    - column:
+                          name: cashier_number
+                          defaultValue: 0
+                          type: INTEGER
+                    - column:
+                          name: service_fee_cashier_number
+                          defaultValue: 0
+                          type: INTEGER
+                tableName: vat
+
+- changeSet:
+      id: 2019-09-08-68
+      author: TheDagi
+      changes:
+          - modifyDataType:
+                columnName: vat_serie_id
+                newDataType: INTEGER
+                tableName: vat

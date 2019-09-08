@@ -357,7 +357,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private double getPartialValue() throws NumberFormatException {
-        double partialValue = Double.valueOf(partialPaymentValue.getText());
+        double partialValue = Double.parseDouble(partialPaymentValue.getText());
         if (partialValue > 1.00 || partialValue < 0.01) {
             throw new NumberFormatException();
         }
@@ -393,7 +393,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void onSinglePaymentRowClick(ProductRowModel row) {
-        double amount = Math.min(Double.valueOf(row.getProductQuantity()), 1);
+        double amount = Math.min(Double.parseDouble(row.getProductQuantity()), 1);
         updateSoldAndPaidProducts(row, amount);
     }
 
@@ -439,7 +439,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
 
     private void onPartialPaymentRowClick(ProductRowModel row) {
         try {
-            double amount = Double.valueOf(partialPaymentValue.getText());
+            double amount = Double.parseDouble(partialPaymentValue.getText());
             if(amount > Double.parseDouble(row.getProductQuantity())) {
                 NotificationMessage.showErrorMessage(rootPayment,
                         WaiterResources.WAITER.getString("PaymentView.PartialPayBiggerAmountError"));
