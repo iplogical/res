@@ -44,11 +44,9 @@ public interface ReceiptService {
 
     int getTotalServiceFee(int tableNumber);
 
-    int getTotalPrice(List<ReceiptRecordView> recordViewList);
+    List<Integer> getTotalPriceAndServiceFee(List<ReceiptRecordView> recordViewList, PaymentParams paymentParams);
 
-    int getTotalServiceFee(List<ReceiptRecordView> recordViewList);
-
-    Map<VATName, VatPriceModel> getVatPriceModelMap(List<ReceiptRecordView> paidProductViewList);
+    Map<VATName, VatPriceModel> getVatPriceModelMap(List<ReceiptRecordView> paidProductViewList, PaymentParams paymentParams);
 
     VatCashierNumberModel getVatCashierNumberModel();
 

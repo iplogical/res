@@ -1,12 +1,10 @@
 package com.inspirationlogical.receipt.corelib.params;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @Builder
 @Getter
+@Setter
 @ToString
 @EqualsAndHashCode
 public class VatPriceModel {

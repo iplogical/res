@@ -74,18 +74,13 @@ public class TableServicePayImpl implements TableServicePay {
     }
 
     @Override
-    public int getTotalPrice(List<ReceiptRecordView> recordViewList) {
-        return receiptService.getTotalPrice(recordViewList);
+    public List<Integer> getTotalPriceAndServiceFee(List<ReceiptRecordView> recordViewList, PaymentParams paymentParams) {
+        return receiptService.getTotalPriceAndServiceFee(recordViewList, paymentParams);
     }
 
     @Override
-    public int getTotalServiceFee(List<ReceiptRecordView> recordViewList) {
-        return receiptService.getTotalServiceFee(recordViewList);
-    }
-
-    @Override
-    public Map<VATName, VatPriceModel> getVatPriceModelMap(List<ReceiptRecordView> paidProductViewList) {
-        return receiptService.getVatPriceModelMap(paidProductViewList);
+    public Map<VATName, VatPriceModel> getVatPriceModelMap(List<ReceiptRecordView> paidProductViewList, PaymentParams paymentParams) {
+        return receiptService.getVatPriceModelMap(paidProductViewList, paymentParams);
     }
 
     @Override

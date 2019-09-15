@@ -118,20 +118,14 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public int getTotalPrice(List<ReceiptRecordView> recordViewList) {
-        return receiptServicePay.getTotalPrice(recordViewList);
+    public List<Integer> getTotalPriceAndServiceFee(List<ReceiptRecordView> recordViewList, PaymentParams paymentParams) {
+        return receiptServicePay.getTotalPriceAndServiceFee(recordViewList, paymentParams);
     }
 
     @Override
-    public int getTotalServiceFee(List<ReceiptRecordView> recordViewList) {
-        return receiptServicePay.getTotalServiceFee(recordViewList);
+    public Map<VATName, VatPriceModel> getVatPriceModelMap(List<ReceiptRecordView> recordViewList, PaymentParams paymentParams) {
+        return receiptServicePay.getVatPriceModelMap(recordViewList, paymentParams);
     }
-
-    @Override
-    public Map<VATName, VatPriceModel> getVatPriceModelMap(List<ReceiptRecordView> recordViewList) {
-        return receiptServicePay.getVatPriceModelMap(recordViewList);
-    }
-
 
     @Override
     public VatCashierNumberModel getVatCashierNumberModel() {

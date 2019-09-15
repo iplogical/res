@@ -183,7 +183,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void enterPaymentView() {
         getSoldProductsAndRefreshTable();
-        updateTotalPrices(paidProductViewList);
+        updatePricesLabels(paidProductViewList, null);
         updateTableSummary();
         resetToggleGroups();
         clearInputFields();
@@ -231,52 +231,37 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     @Override
     public void handleFullPayment(PaymentParams paymentParams) {
         logger.info("Handling full payment with paymentParams: " + paymentParams.toString());
-        updateTotalPricesForFullPayment();
+        updateTotalPricesForFullPayment(paymentParams);
         tableView = tableServicePay.payTable(tableView.getNumber(), paymentParams);
         getTableController().setTableView(tableView);
+        copyPartialPriceLabelsToPreviousLabels();
+        clearPartialPriceLabels();
         getSoldProductsAndRefreshTable();
         discardPaidRecords();
     }
 
-    private void updateTotalPricesForFullPayment() {
-        List<ReceiptRecordView> allProductsList = new ArrayList<>(soldProductViewList);
-        allProductsList.addAll(paidProductViewList);
-        updateTotalPrices(allProductsList);
+    private void updateTotalPricesForFullPayment(PaymentParams paymentParams) {
+        List<ReceiptRecordView> allProductViewList = new ArrayList<>(soldProductViewList);
+        allProductViewList.addAll(paidProductViewList);
+        updatePricesLabels(allProductViewList, paymentParams);
     }
 
-    private void discardPaidRecords() {
-        paidProductRowList.clear();
-        paidProductViewList.clear();
-        refreshPaidProductsTable();
-    }
-
-    private void refreshPaidProductsTable() {
-        paidProductRowList = convertReceiptRecordViewsToModel(paidProductViewList);
-        paidProductsTable.setItems(paidProductRowList);
-        paidProductsTable.refresh();
-    }
-
-    private void updateTotalPrices(List<ReceiptRecordView> productViewList) {
-        int totalPricePaid = getTotalPrice(productViewList);
-        int totalServiceFeePaid = getTotalServiceFee(productViewList);
-        updatePaidPrices(productViewList, totalPricePaid, totalServiceFeePaid);
+    private void updatePricesLabels(List<ReceiptRecordView> productViewList, PaymentParams paymentParams) {
+        List<Integer> totalPriceList = tableServicePay.getTotalPriceAndServiceFee(productViewList, paymentParams);
+        int totalPricePaid = totalPriceList.get(0);
+        int totalServiceFeePaid = totalPriceList.get(1);
+        updatePaidTotalPriceLabels(totalPricePaid, totalServiceFeePaid);
+        updatePartialPriceLabels(productViewList, paymentParams);
         updateSoldTotalPrice(totalPricePaid, totalServiceFeePaid);
     }
 
-    private void updatePaidPrices(List<ReceiptRecordView> productViewList, int totalPricePaid, int totalServiceFeePaid) {
+    private void updatePaidTotalPriceLabels(int totalPricePaid, int totalServiceFeePaid) {
         paidPrice.setText(totalPricePaid + " Ft");
         paidPriceWithServiceFee.setText("("+ (totalPricePaid + totalServiceFeePaid) + " Ft)");
-        updatePartialPriceLabels(productViewList);
     }
 
-    private void updateSoldTotalPrice(int totalPricePaid, int totalServiceFeePaid) {
-        int totalPriceSold = getTotalPrice() - totalPricePaid;
-        int totalServiceFeeSold = receiptService.getTotalServiceFee(tableView.getNumber()) - totalServiceFeePaid;
-        totalPrice.setText(totalPriceSold + " Ft" + " (" + (totalPriceSold + totalServiceFeeSold) + " Ft)");
-    }
-
-    private void updatePartialPriceLabels(List<ReceiptRecordView> productViewList) {
-        Map<VATName, VatPriceModel> vatPriceModelMap = tableServicePay.getVatPriceModelMap(productViewList);
+    private void updatePartialPriceLabels(List<ReceiptRecordView> productViewList, PaymentParams paymentParams) {
+        Map<VATName, VatPriceModel> vatPriceModelMap = tableServicePay.getVatPriceModelMap(productViewList, paymentParams);
         updateDrinkPriceLabels(vatPriceModelMap.get(VATName.NORMAL));
         updateFoodPriceLabels(vatPriceModelMap.get(VATName.GREATLY_REDUCED));
     }
@@ -295,39 +280,42 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         vatFoodTotalPrice.setText(vatPriceModel.getTotalPrice() + " Ft");
     }
 
-    private int getTotalPrice(List<ReceiptRecordView> recordViewList) {
-        return tableServicePay.getTotalPrice(recordViewList);
+    private void updateSoldTotalPrice(int totalPricePaid, int totalServiceFeePaid) {
+        int totalPriceSold = getTotalPrice() - totalPricePaid;
+        int totalServiceFeeSold = receiptService.getTotalServiceFee(tableView.getNumber()) - totalServiceFeePaid;
+        totalPrice.setText(totalPriceSold + " Ft" + " (" + (totalPriceSold + totalServiceFeeSold) + " Ft)");
     }
 
-    private int getTotalServiceFee(List<ReceiptRecordView> recordViewList) {
-        return tableServicePay.getTotalServiceFee(recordViewList);
+    private void discardPaidRecords() {
+        paidProductRowList.clear();
+        paidProductViewList.clear();
+        refreshPaidProductsTable();
+    }
+
+    private void refreshPaidProductsTable() {
+        paidProductRowList = convertReceiptRecordViewsToModel(paidProductViewList);
+        paidProductsTable.setItems(paidProductRowList);
+        paidProductsTable.refresh();
     }
 
     @Override
     public void handleSelectivePayment(PaymentParams paymentParams) {
         logger.info("Handling selective payment with paymentParams: " + paymentParams.toString());
+        updatePricesLabels(paidProductViewList, paymentParams);
         tableServicePay.paySelective(tableView, paidProductViewList, paymentParams);
-        updatePreviousPartialPriceLabels();
+        copyPartialPriceLabelsToPreviousLabels();
+        clearPartialPriceLabels();
         discardPaidRecords();
         getSoldProductsAndRefreshTable();
-        updateTotalPrices(paidProductViewList);
     }
 
-    private void updatePreviousPartialPriceLabels() {
-        int totalPrice = paymentViewState.isServiceFeeState() ? getTotalPriceWithServiceFee() : Integer.parseInt(paidPrice.getText().split(" ")[0]);
-        previousPartialPrice.setText(applyDiscountOnTotalPrice(totalPrice) + " Ft");
-        updateDrinkPricePreviousLabels();
-        updateFoodPricePreviousLabels();
-    }
-
-    private int getTotalPriceWithServiceFee() {
-        return Integer.parseInt(paidPriceWithServiceFee.getText().split(" ")[0]
-                .replaceAll("\\(", "")
-                .replaceAll("\\)", ""));
+    private void copyPartialPriceLabelsToPreviousLabels() {
+        previousPartialPrice.setText(paymentViewState.isServiceFeeState() ? paidPriceWithServiceFee.getText() : paidPrice.getText());
+        copyDrinkPriceLabelsToPreviousLabels();
+        copyFoodPriceLabelsToPreviousLabels();
     }
 
     private int applyDiscountOnTotalPrice(int totalPrice) {
-
         if (paymentViewState.isDiscountAbsolute()) {
             totalPrice -= Integer.parseInt(discountValue.getText());
         } else if (paymentViewState.isDiscountPercent()) {
@@ -337,18 +325,31 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         return totalPrice;
     }
 
-    private void updateDrinkPricePreviousLabels() {
+    private void copyDrinkPriceLabelsToPreviousLabels() {
         vatDrinkPercentPrevious.setText(vatDrinkPercent.getText());
         vatDrinkPricePrevious.setText(vatDrinkPrice.getText());
         vatDrinkServiceFeePrevious.setText(vatDrinkServiceFee.getText());
         vatDrinkTotalPricePrevious.setText(vatDrinkTotalPrice.getText());
     }
 
-    private void updateFoodPricePreviousLabels() {
+    private void copyFoodPriceLabelsToPreviousLabels() {
         vatFoodPercentPrevious.setText(vatFoodPercent.getText());
         vatFoodPricePrevious.setText(vatFoodPrice.getText());
         vatFoodServiceFeePrevious.setText(vatFoodServiceFee.getText());
         vatFoodTotalPricePrevious.setText(vatFoodTotalPrice.getText());
+    }
+
+    private void clearPartialPriceLabels() {
+        paidPrice.setText("0 Ft");
+        paidPriceWithServiceFee.setText("(0 Ft)");
+        vatDrinkPercent.setText("0 Ft");
+        vatDrinkPrice.setText("0 Ft");
+        vatDrinkServiceFee.setText("0 Ft");
+        vatDrinkTotalPrice.setText("0 Ft");
+        vatFoodPercent.setText("0 Ft");
+        vatFoodPrice.setText("0 Ft");
+        vatFoodServiceFee.setText("0 Ft");
+        vatFoodTotalPrice.setText("0 Ft");
     }
 
     @Override
@@ -391,7 +392,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         }
         refreshSoldProductsTable();
         refreshPaidProductsTable();
-        updateTotalPrices(paidProductViewList);
+        updatePricesLabels(paidProductViewList, null);
         enableSoldProductsTableRowClickHandler();
     }
 
@@ -477,7 +478,7 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
         }
         refreshSoldProductsTable();
         refreshPaidProductsTable();
-        updateTotalPrices(paidProductViewList);
+        updatePricesLabels(paidProductViewList, null);
     }
 
     private void decreaseRowInPaidProducts(ProductRowModel row, double amount) {
