@@ -7,6 +7,7 @@ import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransacti
 import lombok.Getter;
 
 import javax.persistence.EntityManager;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -1006,12 +1007,18 @@ public class BuildTestSchema {
                 .name("TestPriceModifier3")
                 .type(PriceModifierType.QUANTITY_DISCOUNT)
                 .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
-                .dayOfWeek(LocalDate.now().getDayOfWeek())
+                .dayOfWeek(getDayOfWeek())
                 .startDate(LocalDateTime.of(2017, 2, 8, 16, 0))
                 .endDate(LocalDateTime.of(2017, 5, 8, 20, 20))
                 .discountPercent(33.333)
                 .quantityLimit(3)
                 .build();
+    }
+
+    private DayOfWeek getDayOfWeek() {
+        return LocalTime.now().isBefore(LocalTime.of(4, 0)) ?
+                LocalDate.now().minusDays(1).getDayOfWeek() :
+                LocalDate.now().getDayOfWeek();
     }
 
 
@@ -1020,7 +1027,7 @@ public class BuildTestSchema {
                 .name("TestPriceModifier4")
                 .type(PriceModifierType.QUANTITY_DISCOUNT)
                 .repeatPeriod(PriceModifierRepeatPeriod.WEEKLY)
-                .dayOfWeek(LocalDate.now().getDayOfWeek())
+                .dayOfWeek(getDayOfWeek())
                 .startDate(LocalDateTime.of(2017, 2, 8, 16, 0))
                 .endDate(LocalDateTime.of(2020, 5, 8, 20, 20))
                 .discountPercent(33.333)
