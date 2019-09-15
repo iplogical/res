@@ -67,10 +67,11 @@ public class TableServicePayImpl implements TableServicePay {
     }
 
     @Override
-    public void payPartial(TableView tableView, double partialValue, PaymentParams paymentParams) {
+    public List<ReceiptRecordView> payPartial(TableView tableView, double partialValue, PaymentParams paymentParams) {
         Receipt openReceipt = receiptRepository.getOpenReceipt(tableView.getNumber());
-        receiptService.payPartial(openReceipt, partialValue, paymentParams);
+        List<ReceiptRecordView> paidRecordViews = receiptService.payPartial(openReceipt, partialValue, paymentParams);
         logger.info("A table was partially paid: partialValue:" + partialValue + ", " + tableView + ", " + paymentParams);
+        return paidRecordViews;
     }
 
     @Override

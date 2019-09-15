@@ -244,13 +244,17 @@ public class ReceiptServicePay {
                 .build();
     }
 
-    void payPartial(Receipt receipt, double partialValue, PaymentParams paymentParams) {
+    List<ReceiptRecordView> payPartial(Receipt receipt, double partialValue, PaymentParams paymentParams) {
         Receipt partialReceipt = buildReceipt(receipt);
         cloneReceiptRecords(receipt, partialReceipt, partialValue);
         receipt.getRecords().forEach(record -> record.setSoldQuantity(Round.roundToTwoDecimals(record.getSoldQuantity() * (1 - partialValue))));
         partialReceipt.setOwner(receipt.getOwner());
         receiptRepository.save(receipt);
         close(partialReceipt, paymentParams);
+        ReceiptView paidReceiptView = new ReceiptView(partialReceipt);
+        return paidReceiptView.getSoldProducts().stream()
+                .filter(receiptRecordView -> receiptRecordView.getProductId() != productRepository.findFirstByType(ProductType.SERVICE_FEE_PRODUCT).getId())
+                .collect(toList());
     }
 
     private void cloneReceiptRecords(Receipt receipt, Receipt partialReceipt, double partialValue) {
@@ -399,7 +403,7 @@ public class ReceiptServicePay {
     }
 
     private int getReceiptRecordTotalPrice(ReceiptRecord receiptRecord) {
-        return (int) (receiptRecord.getSalePrice() * receiptRecord.getSoldQuantity());
+        return (int) Math.round(receiptRecord.getSalePrice() * receiptRecord.getSoldQuantity());
     }
 
     List<Integer> getTotalPriceAndServiceFee(List<ReceiptRecordView> recordViewList, PaymentParams paymentParams) {
@@ -408,11 +412,12 @@ public class ReceiptServicePay {
         if (paymentParams != null) {
             int discountAbsolute = paymentParams.getDiscountAbsolute();
             double discountPercent = paymentParams.getDiscountPercent();
-            if(discountPercent != 0) {
+            if (discountPercent != 0) {
                 return applyDiscountPercentOnTotalPrices(totalPrice, totalServiceFee, discountPercent, paymentParams.isServiceFee());
-            } else if(discountAbsolute != 0) {
+            } else if (discountAbsolute != 0) {
                 return applyDiscountAbsoluteOnTotalPrices(totalPrice, totalServiceFee, discountAbsolute, paymentParams.isServiceFee());
             }
+            return Arrays.asList(totalPrice, paymentParams.isServiceFee() ? totalServiceFee : 0);
         }
         return Arrays.asList(totalPrice, totalServiceFee);
     }
@@ -431,7 +436,7 @@ public class ReceiptServicePay {
 
     private List<Integer> applyDiscountAbsoluteOnTotalPrices(int totalPrice, int totalServiceFee, int discountAbsolute, boolean serviceFee) {
         if (serviceFee) {
-            double serviceFeeTotalPriceRatio = (double)totalServiceFee / ((double)totalPrice + (double)totalServiceFee);
+            double serviceFeeTotalPriceRatio = (double) totalServiceFee / ((double) totalPrice + (double) totalServiceFee);
             int serviceFeeDiscount = multiply(discountAbsolute, serviceFeeTotalPriceRatio);
             totalServiceFee = totalServiceFee - serviceFeeDiscount;
             totalPrice = totalPrice - discountAbsolute + serviceFeeDiscount;
@@ -461,7 +466,7 @@ public class ReceiptServicePay {
         List<Integer> receiptRecordIds = recordViewList.stream().map(ReceiptRecordView::getId).collect(toList());
         List<ReceiptRecord> receiptRecordList = receiptRecordRepository.findAllById(receiptRecordIds);
         Map<VATName, List<ReceiptRecord>> vatNameReceiptRecordListMap = receiptRecordList.stream()
-                .collect(groupingBy(receiptRecord ->  receiptRecord.getVAT().getName()));
+                .collect(groupingBy(receiptRecord -> receiptRecord.getVAT().getName()));
         Map<VATName, VatPriceModel> vatPriceModelMap = vatNameReceiptRecordListMap.entrySet().stream()
                 .collect(toMap(Map.Entry::getKey, this::calculateVatPriceModel));
         vatPriceModelMap.computeIfAbsent(VATName.NORMAL, this::buildEmptyVatPriceModel);
@@ -469,10 +474,12 @@ public class ReceiptServicePay {
         if (paymentParams != null) {
             int discountAbsolute = paymentParams.getDiscountAbsolute();
             double discountPercent = paymentParams.getDiscountPercent();
-            if(discountPercent != 0) {
+            if (discountPercent != 0) {
                 return applyDiscountPercentOnVatPriceModelMap(vatPriceModelMap, discountPercent, paymentParams.isServiceFee());
-            } else if(discountAbsolute != 0) {
+            } else if (discountAbsolute != 0) {
                 return applyDiscountAbsoluteOnVatPriceModelMap(vatPriceModelMap, discountAbsolute, paymentParams.isServiceFee());
+            } else if (!paymentParams.isServiceFee()) {
+                clearServiceFee(vatPriceModelMap);
             }
         }
         return vatPriceModelMap;
@@ -518,19 +525,16 @@ public class ReceiptServicePay {
     private Map<VATName, VatPriceModel> applyDiscountAbsoluteOnVatPriceModelMap(Map<VATName, VatPriceModel> vatPriceModelMap, int discountAbsolute, boolean serviceFee) {
         VatPriceModel normalVatPriceModel = vatPriceModelMap.get(VATName.NORMAL);
         VatPriceModel greatlyReducesVatPriceModel = vatPriceModelMap.get(VATName.GREATLY_REDUCED);
-        if(!serviceFee) {
-            normalVatPriceModel.setServiceFee(0);
-            normalVatPriceModel.setTotalPrice(normalVatPriceModel.getPrice());
-            greatlyReducesVatPriceModel.setServiceFee(0);
-            greatlyReducesVatPriceModel.setTotalPrice(greatlyReducesVatPriceModel.getPrice());
+        if (!serviceFee) {
+            clearServiceFee(vatPriceModelMap);
         }
-        if(normalVatPriceModel.getTotalPrice() == 0) {
+        if (normalVatPriceModel.getTotalPrice() == 0) {
             applyDiscountAbsoluteOnVatPriceModel(discountAbsolute, greatlyReducesVatPriceModel);
-        } else if(greatlyReducesVatPriceModel.getTotalPrice() == 0) {
+        } else if (greatlyReducesVatPriceModel.getTotalPrice() == 0) {
             applyDiscountAbsoluteOnVatPriceModel(discountAbsolute, normalVatPriceModel);
         } else {
-            double normalGreatlyReducesVatRatio = (double)normalVatPriceModel.getTotalPrice() /
-                    ((double)normalVatPriceModel.getTotalPrice() + (double)greatlyReducesVatPriceModel.getTotalPrice());
+            double normalGreatlyReducesVatRatio = (double) normalVatPriceModel.getTotalPrice() /
+                    ((double) normalVatPriceModel.getTotalPrice() + (double) greatlyReducesVatPriceModel.getTotalPrice());
             int normalDiscountAbsolute = multiply(discountAbsolute, normalGreatlyReducesVatRatio);
             int greatlyReducedDiscountAbsolute = discountAbsolute - normalDiscountAbsolute;
             applyDiscountAbsoluteOnVatPriceModel(greatlyReducedDiscountAbsolute, greatlyReducesVatPriceModel);
@@ -540,11 +544,20 @@ public class ReceiptServicePay {
     }
 
     private void applyDiscountAbsoluteOnVatPriceModel(int discountAbsolute, VatPriceModel vatPriceModel) {
-        double serviceFeePriceRatio = (double)vatPriceModel.getServiceFee() / (double)vatPriceModel.getTotalPrice();
+        double serviceFeePriceRatio = (double) vatPriceModel.getServiceFee() / (double) vatPriceModel.getTotalPrice();
         int serviceFeeDiscount = multiply(discountAbsolute, serviceFeePriceRatio);
         vatPriceModel.setServiceFee(vatPriceModel.getServiceFee() - serviceFeeDiscount);
         vatPriceModel.setPrice(vatPriceModel.getPrice() - discountAbsolute + serviceFeeDiscount);
         vatPriceModel.setTotalPrice(vatPriceModel.getPrice() + vatPriceModel.getServiceFee());
+    }
+
+    private void clearServiceFee(Map<VATName, VatPriceModel> vatPriceModelMap) {
+        VatPriceModel normalVatPriceModel = vatPriceModelMap.get(VATName.NORMAL);
+        VatPriceModel greatlyReducesVatPriceModel = vatPriceModelMap.get(VATName.GREATLY_REDUCED);
+        normalVatPriceModel.setServiceFee(0);
+        normalVatPriceModel.setTotalPrice(normalVatPriceModel.getPrice());
+        greatlyReducesVatPriceModel.setServiceFee(0);
+        greatlyReducesVatPriceModel.setTotalPrice(greatlyReducesVatPriceModel.getPrice());
     }
 
     @Transactional

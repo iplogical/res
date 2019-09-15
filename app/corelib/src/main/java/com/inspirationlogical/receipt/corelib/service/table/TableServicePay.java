@@ -16,7 +16,7 @@ public interface TableServicePay {
 
     void paySelective(TableView tableView, List<ReceiptRecordView> records, PaymentParams paymentParams);
 
-    void payPartial(TableView tableView, double partialValue, PaymentParams paymentParams);
+    List<ReceiptRecordView> payPartial(TableView tableView, double partialValue, PaymentParams paymentParams);
 
     List<Integer> getTotalPriceAndServiceFee(List<ReceiptRecordView> recordViewList, PaymentParams paymentParams);
 

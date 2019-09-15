@@ -32,7 +32,7 @@ public interface ReceiptService {
 
     void paySelective(Receipt receipt, List<ReceiptRecordView> records, PaymentParams paymentParams);
 
-    void payPartial(Receipt receipt, double partialValue, PaymentParams paymentParams);
+    List<ReceiptRecordView> payPartial(Receipt receipt, double partialValue, PaymentParams paymentParams);
 
     void printReceiptFromSale(int number);
 

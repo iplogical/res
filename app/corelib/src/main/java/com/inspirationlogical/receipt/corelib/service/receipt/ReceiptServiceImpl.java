@@ -88,8 +88,8 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public void payPartial(Receipt receipt, double partialValue, PaymentParams paymentParams) {
-        receiptServicePay.payPartial(receipt, partialValue, paymentParams);
+    public List<ReceiptRecordView> payPartial(Receipt receipt, double partialValue, PaymentParams paymentParams) {
+        return receiptServicePay.payPartial(receipt, partialValue, paymentParams);
     }
 
     @Override

@@ -37,7 +37,8 @@ public class PaymentControllerTest  extends TestFXBase {
         assertSoldTotalPrice(7120, 7690);
 
         assertPaidPrice(0, 0);
-        assertPreviousPartialPrice(0);
+        assertVatDrinkPaidPrices(0, 0, 0);
+        assertVatFoodPaidPrices(0, 0, 0);
         assertNoPaidProduct();
     }
 
@@ -48,7 +49,6 @@ public class PaymentControllerTest  extends TestFXBase {
         assertPaidPrice(1320, 1426);
         assertVatDrinkPaidPrices(1320, 106, 1426);
         assertVatFoodPaidPrices(0, 0, 0);
-        assertPreviousPartialPrice(0);
         pay();
 
         assertSoldProductThree(1, 2);
@@ -57,7 +57,7 @@ public class PaymentControllerTest  extends TestFXBase {
         assertPaidPrice(0, 0);
         assertVatDrinkPaidPrices(0, 0, 0);
         assertVatFoodPaidPrices(0, 0, 0);
-        assertPreviousPartialPrice(1426);
+        assertPreviousPaidPrice(1426);
     }
 
     @Test
@@ -86,7 +86,6 @@ public class PaymentControllerTest  extends TestFXBase {
         assertPaidPrice(440, 475);
         assertVatDrinkPaidPrices(440, 35, 475);
         assertVatFoodPaidPrices(0, 0, 0);
-        assertPreviousPartialPrice(0);
     }
 
     private void testSinglePaymentSoldProductsAssertions$$2() {
@@ -100,7 +99,6 @@ public class PaymentControllerTest  extends TestFXBase {
         assertPaidPrice(880, 950);
         assertVatDrinkPaidPrices(880, 70, 950);
         assertVatFoodPaidPrices(0, 0, 0);
-        assertPreviousPartialPrice(0);
     }
 
     private void testSinglePaymentSoldProductsAssertionsAfterPay$$1() {
@@ -113,7 +111,7 @@ public class PaymentControllerTest  extends TestFXBase {
         assertPaidPrice(0, 0);
         assertVatDrinkPaidPrices(0, 0, 0);
         assertVatFoodPaidPrices(0, 0, 0);
-        assertPreviousPartialPrice(950);
+        assertPreviousPaidPrice(950);
         assertPreviousVatDrinkPaidPrices(880, 70, 950);
         assertPreviousVatFoodPaidPrices(0, 0, 0);
         assertNoPaidProduct();
@@ -146,7 +144,6 @@ public class PaymentControllerTest  extends TestFXBase {
         assertPaidPrice(1320, 1426);
         assertVatDrinkPaidPrices(1320, 106, 1426);
         assertVatFoodPaidPrices(0, 0, 0);
-        assertPreviousPartialPrice(0);
     }
 
     private void testSinglePaymentSoldProductsAssertionsAfterPay$$2() {
@@ -158,14 +155,14 @@ public class PaymentControllerTest  extends TestFXBase {
         assertPaidPrice(0, 0);
         assertVatDrinkPaidPrices(0, 0, 0);
         assertVatFoodPaidPrices(0, 0, 0);
-        assertPreviousPartialPrice(1426);
+        assertPreviousPaidPrice(1426);
         assertPreviousVatDrinkPaidPrices(1320, 106, 1426);
         assertPreviousVatFoodPaidPrices(0, 0, 0);
         assertNoPaidProduct();
     }
 
     @Test
-    public void testSinglePaymentWithDiscountAbsolute() {
+    public void testSinglePaymentWithDiscountAbsoluteServiceFeeFoodOnly() {
         paySingle(2);
         clickOnDiscountAbsolute();
         setDiscountValue("1000");
@@ -174,11 +171,93 @@ public class PaymentControllerTest  extends TestFXBase {
         assertSoldProductThree(2, 1);
         assertNoPaidProduct();
         assertPaidPrice(0, 0);
-        assertPreviousPartialPrice(1900);
+        assertPreviousPaidPrice(2132);
+        assertPreviousVatFoodPaidPrices(1974, 158, 2132);
+        assertPreviousVatDrinkPaidPrices(0, 0, 0);
     }
 
     @Test
-    public void testSinglePaymentWithDiscountPercent() {
+    public void testSinglePaymentWithDiscountAbsoluteNoServiceFeeFoodOnly() {
+        paySingle(2);
+        clickOnDiscountAbsolute();
+        setDiscountValue("1000");
+        clickOnServiceFee();
+        pay();
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 1);
+        assertNoPaidProduct();
+        assertPaidPrice(0, 0);
+        assertPreviousPaidPrice(1900);
+        assertPreviousVatFoodPaidPrices(1900, 0, 1900);
+        assertPreviousVatDrinkPaidPrices(0, 0, 0);
+    }
+
+    @Test
+    public void testSinglePaymentWithDiscountAbsoluteServiceFeeDrinkOnly() {
+        paySingle(1);
+        clickOnDiscountAbsolute();
+        setDiscountValue("200");
+        pay();
+        assertSoldProductFive(1, 2);
+        assertSoldProductThree(2, 2);
+        assertNoPaidProduct();
+        assertPaidPrice(0, 0);
+        assertPreviousPaidPrice(275);
+        assertPreviousVatDrinkPaidPrices(255, 20, 275);
+        assertPreviousVatFoodPaidPrices(0, 0, 0);
+    }
+
+    @Test
+    public void testSinglePaymentWithDiscountAbsoluteNoServiceFeeDrinkOnly() {
+        paySingle(1);
+        clickOnDiscountAbsolute();
+        setDiscountValue("200");
+        clickOnServiceFee();
+        pay();
+        assertSoldProductFive(1, 2);
+        assertSoldProductThree(2, 2);
+        assertNoPaidProduct();
+        assertPaidPrice(0, 0);
+        assertPreviousPaidPrice(240);
+        assertPreviousVatDrinkPaidPrices(240, 0, 240);
+        assertPreviousVatFoodPaidPrices(0, 0, 0);
+    }
+
+    @Test
+    public void testSinglePaymentWithDiscountAbsoluteServiceFeeBothDrinkAndFood() {
+        paySingle(1);
+        paySingle(2);
+        clickOnDiscountAbsolute();
+        setDiscountValue("1000");
+        pay();
+        assertSoldProductFive(1, 2);
+        assertSoldProductThree(2, 1);
+        assertNoPaidProduct();
+        assertPaidPrice(0, 0);
+        assertPreviousPaidPrice(2607);
+        assertPreviousVatDrinkPaidPrices(318, 25, 343);
+        assertPreviousVatFoodPaidPrices(2096, 168, 2264);
+    }
+
+    @Test
+    public void testSinglePaymentWithDiscountAbsoluteNoServiceFeeBothDrinkAndFood() {
+        paySingle(1);
+        paySingle(2);
+        clickOnDiscountAbsolute();
+        setDiscountValue("1000");
+        clickOnServiceFee();
+        pay();
+        assertSoldProductFive(1, 2);
+        assertSoldProductThree(2, 1);
+        assertNoPaidProduct();
+        assertPaidPrice(0, 0);
+        assertPreviousPaidPrice(2340);
+        assertPreviousVatDrinkPaidPrices(308, 0, 308);
+        assertPreviousVatFoodPaidPrices(2032, 0, 2032);
+    }
+
+    @Test
+    public void testSinglePaymentWithDiscountPercentServiceFeeFoodOnly() {
         paySingle(2);
         clickOnDiscountPercent();
         setDiscountValue("30");
@@ -187,7 +266,89 @@ public class PaymentControllerTest  extends TestFXBase {
         assertSoldProductThree(2, 1);
         assertNoPaidProduct();
         assertPaidPrice(0, 0);
-        assertPreviousPartialPrice(2030);
+        assertPreviousPaidPrice(2192);
+        assertPreviousVatDrinkPaidPrices(0, 0, 0);
+        assertPreviousVatFoodPaidPrices(2030, 162, 2192);
+    }
+
+    @Test
+    public void testSinglePaymentWithDiscountPercentNoServiceFeeFoodOnly() {
+        paySingle(2);
+        clickOnDiscountPercent();
+        setDiscountValue("30");
+        clickOnServiceFee();
+        pay();
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 1);
+        assertNoPaidProduct();
+        assertPaidPrice(0, 0);
+        assertPreviousPaidPrice(2030);
+        assertPreviousVatDrinkPaidPrices(0, 0, 0);
+        assertPreviousVatFoodPaidPrices(2030, 0, 2030);
+    }
+
+    @Test
+    public void testSinglePaymentWithDiscountPercentServiceFeeDrinkOnly() {
+        paySingle(1);
+        clickOnDiscountPercent();
+        setDiscountValue("30");
+        pay();
+        assertSoldProductFive(1, 2);
+        assertSoldProductThree(2, 2);
+        assertNoPaidProduct();
+        assertPaidPrice(0, 0);
+        assertPreviousPaidPrice(333);
+        assertPreviousVatDrinkPaidPrices(308, 25, 333);
+        assertPreviousVatFoodPaidPrices(0, 0, 0);
+    }
+
+    @Test
+    public void testSinglePaymentWithDiscountPercentNoServiceFeeDrinkOnly() {
+        paySingle(1);
+        clickOnDiscountPercent();
+        setDiscountValue("30");
+        clickOnServiceFee();
+        pay();
+        assertSoldProductFive(1, 2);
+        assertSoldProductThree(2, 2);
+        assertNoPaidProduct();
+        assertPaidPrice(0, 0);
+        assertPreviousPaidPrice(308);
+        assertPreviousVatDrinkPaidPrices(308, 0, 308);
+        assertPreviousVatFoodPaidPrices(0, 0, 0);
+    }
+
+    @Test
+    public void testSinglePaymentWithDiscountPercentServiceFeeBothFoodAndDrink() {
+        paySingle(1);
+        paySingle(2);
+        clickOnDiscountPercent();
+        setDiscountValue("30");
+        pay();
+        assertSoldProductFive(1, 2);
+        assertSoldProductThree(2, 1);
+        assertNoPaidProduct();
+        assertPaidPrice(0, 0);
+        assertPreviousPaidPrice(2525);
+        assertPreviousVatDrinkPaidPrices(308, 25, 333);
+        assertPreviousVatFoodPaidPrices(2030, 162, 2192);
+    }
+
+    @Test
+    public void testSinglePaymentWithDiscountPercentNoServiceFeeBothFoodAndDrink() {
+        paySingle(1);
+        paySingle(2);
+        clickOnDiscountPercent();
+        setDiscountValue("30");
+        clickOnServiceFee();
+        pay();
+        assertSoldProductFive(1, 2);
+        assertSoldProductThree(2, 1);
+        assertNoPaidProduct();
+        assertPaidPrice(0, 0);
+        assertPreviousPaidPrice(2338);
+        assertPreviousVatDrinkPaidPrices(308, 0, 308);
+        assertPreviousVatFoodPaidPrices(2030, 0, 2030);
     }
 
     @Test
@@ -220,8 +381,29 @@ public class PaymentControllerTest  extends TestFXBase {
         assertSoldTotalPrice(5670, 6124);
         assertPaidProductThree(1, 0.5);
         assertPaidPrice(1450, 1566);
-        assertPreviousPartialPrice(0);
+        assertVatDrinkPaidPrices(0, 0, 0);
+        assertVatFoodPaidPrices(1450, 116, 1566);
         pay();
+        assertPreviousPaidPrice(1566);
+        assertPreviousVatDrinkPaidPrices(0, 0, 0);
+        assertPreviousVatFoodPaidPrices(1450, 116, 1566);
+    }
+
+    @Test
+    public void testPartialPaymentOfAProductNoServiceFee() {
+        payPartial(2, 0.5);
+        assertSoldProductFive(1, 3);
+        assertSoldProductThree(2, 1.5);
+        assertSoldTotalPrice(5670, 6124);
+        assertPaidProductThree(1, 0.5);
+        assertPaidPrice(1450, 1566);
+        assertVatDrinkPaidPrices(0, 0, 0);
+        assertVatFoodPaidPrices(1450, 116, 1566);
+        clickOnServiceFee();
+        pay();
+        assertPreviousPaidPrice(1450);
+        assertPreviousVatDrinkPaidPrices(0, 0, 0);
+        assertPreviousVatFoodPaidPrices(1450, 0, 1450);
     }
 
     @Test
@@ -229,13 +411,18 @@ public class PaymentControllerTest  extends TestFXBase {
         System.out.println("In the test: " + Thread.currentThread().getName());
         payPartialOneAndHalf();
         pay();
+        assertPreviousPaidPrice(4698);
+        assertPreviousVatDrinkPaidPrices(0, 0, 0);
+        assertPreviousVatFoodPaidPrices(4350, 348, 4698);
         payPartial(2, 0.5);
         assertSoldProductFive(1, 3);
         assertSoldTotalPrice(1320, 1426);
         assertPaidProductThree(1, 0.5);
         assertPaidPrice(1450, 1566);
-        assertPreviousPartialPrice(4350);
         pay();
+        assertPreviousPaidPrice(1566);
+        assertPreviousVatDrinkPaidPrices(0, 0, 0);
+        assertPreviousVatFoodPaidPrices(1450, 116, 1566);
     }
 
     private void payPartialOneAndHalf() {
@@ -245,20 +432,47 @@ public class PaymentControllerTest  extends TestFXBase {
         assertSoldTotalPrice(2770, 2992);
         assertPaidProductThree(1, 1.5);
         assertPaidPrice(4350, 4698);
-        assertPreviousPartialPrice(0);
+        assertVatDrinkPaidPrices(0, 0, 0);
+        assertVatFoodPaidPrices(4350, 348, 4698);
+    }
+
+    @Test
+    public void testPartialPaymentAllOfTheRowNoServiceFee() {
+        System.out.println("In the test: " + Thread.currentThread().getName());
+        payPartialOneAndHalf();
+        clickOnServiceFee();
+        pay();
+        assertPreviousPaidPrice(4350);
+        assertPreviousVatDrinkPaidPrices(0, 0, 0);
+        assertPreviousVatFoodPaidPrices(4350, 0, 4350);
+        payPartial(2, 0.5);
+        assertSoldProductFive(1, 3);
+        assertSoldTotalPrice(1320, 1426);
+        assertPaidProductThree(1, 0.5);
+        assertPaidPrice(1450, 1566);
+        pay();
+        assertPreviousPaidPrice(1450);
+        assertPreviousVatDrinkPaidPrices(0, 0, 0);
+        assertPreviousVatFoodPaidPrices(1450, 0, 1450);
     }
 
     @Test
     public void testSinglePaymentPartialValue() {
         payPartialOneAndHalf();
         pay();
+        assertPreviousPaidPrice(4698);
+        assertPreviousVatDrinkPaidPrices(0, 0, 0);
+        assertPreviousVatFoodPaidPrices(4350, 348, 4698);
+
         paySingle(2);
         assertSoldProductFive(1, 3);
         assertSoldTotalPrice(1320, 1426);
         assertPaidProductThree(1, 0.5);
         assertPaidPrice(1450, 1566);
-        assertPreviousPartialPrice(4350);
         pay();
+        assertPreviousPaidPrice(1566);
+        assertPreviousVatDrinkPaidPrices(0, 0, 0);
+        assertPreviousVatFoodPaidPrices(1450, 116, 1566);
     }
 
     @Test
@@ -267,9 +481,25 @@ public class PaymentControllerTest  extends TestFXBase {
         paySelective(1);
         clickOnThenWait(SINGLE_PAYMENT, 100);
         pay();
-        openTable(TABLE_NUMBER);
-        clickOnThenWait(TABLE_NUMBER, 200);
-        clickOnThenWait(TO_PAYMENT, 200);
+        assertPreviousPaidPrice(7690);
+        assertPreviousVatDrinkPaidPrices(1320, 106, 1426);
+        assertPreviousVatFoodPaidPrices(5800, 464, 6264);
+        backToRestaurantView();
+        reOPenTable();
+    }
+
+    @Test
+    public void testFullPaymentWhenSoldProductsEmptyInCaseOfSelectivePaymentNoServiceFee() {
+        paySelective(1);
+        paySelective(1);
+        clickOnThenWait(SINGLE_PAYMENT, 100);
+        clickOnServiceFee();
+        pay();
+        assertPreviousPaidPrice(7120);
+        assertPreviousVatDrinkPaidPrices(1320, 0, 1320);
+        assertPreviousVatFoodPaidPrices(5800, 0, 5800);
+        backToRestaurantView();
+        reOPenTable();
     }
 
     @Test
@@ -277,9 +507,30 @@ public class PaymentControllerTest  extends TestFXBase {
         paySelective(1);
         paySelective(1);
         pay();
+        assertPreviousPaidPrice(7690);
+        assertPreviousVatDrinkPaidPrices(1320, 106, 1426);
+        assertPreviousVatFoodPaidPrices(5800, 464, 6264);
+        backToRestaurantView();
+        reOPenTable();
+    }
+
+    private void reOPenTable() {
         openTable(TABLE_NUMBER);
         clickOnThenWait(TABLE_NUMBER, 200);
         clickOnThenWait(TO_PAYMENT, 200);
+    }
+
+    @Test
+    public void testFullPaymentWhenSoldProductsEmptyInCaseOfFullPaymentNoServiceFee() {
+        paySelective(1);
+        paySelective(1);
+        clickOnServiceFee();
+        pay();
+        assertPreviousPaidPrice(7120);
+        assertPreviousVatDrinkPaidPrices(1320, 0, 1320);
+        assertPreviousVatFoodPaidPrices(5800, 0, 5800);
+        backToRestaurantView();
+        reOPenTable();
     }
 
     @Test
@@ -302,8 +553,22 @@ public class PaymentControllerTest  extends TestFXBase {
         payPartial(0.43);
         assertSoldProductFive(1, 0.57 * 3);
         assertSoldProductThree(2, 0.57 * 2);
-        assertSoldTotalPrice((int)Math.round(4057), 4382);
-        assertPreviousPartialPrice(3063);
+        assertSoldTotalPrice((int)Math.round(4058), 4383);
+        assertPreviousPaidPrice(3307);
+        assertPreviousVatDrinkPaidPrices(568, 45, 613);
+        assertPreviousVatFoodPaidPrices(2494, 200, 2694);
+    }
+
+    @Test
+    public void testPartialPaymentOfTheTableNoServiceFee() {
+        clickOnServiceFee();
+        payPartial(0.43);
+        assertSoldProductFive(1, 0.57 * 3);
+        assertSoldProductThree(2, 0.57 * 2);
+        assertSoldTotalPrice((int)Math.round(4058), 4383);
+        assertPreviousPaidPrice(3062);
+        assertPreviousVatDrinkPaidPrices(568, 0, 568);
+        assertPreviousVatFoodPaidPrices(2494, 0, 2494);
     }
 
     @Test
@@ -312,7 +577,9 @@ public class PaymentControllerTest  extends TestFXBase {
         payPartial(0.5);
         assertSoldProductFive(1, 3);
         assertSoldProductThree(2, 1.5);
-        assertPreviousPartialPrice(1450);
+        assertPreviousPaidPrice(1566);
+        assertPreviousVatDrinkPaidPrices(0, 0, 0);
+        assertPreviousVatFoodPaidPrices(1450, 116, 1566);
     }
 
     @Test
@@ -323,21 +590,54 @@ public class PaymentControllerTest  extends TestFXBase {
         clickOnDiscountAbsolute();
         assertSoldProductFive(1, 0.57 * 3);
         assertSoldProductThree(2, 0.57 * 2);
-        assertSoldTotalPrice((int)Math.round(4057), 4382);
-        assertPreviousPartialPrice(2063);
+        assertSoldTotalPrice((int)Math.round(4058), 4383);
+        assertPreviousPaidPrice(2307);
+        assertPreviousVatDrinkPaidPrices(397, 31, 428);
+        assertPreviousVatFoodPaidPrices(1740, 139, 1879);
+    }
+
+    @Test
+    public void testPartialPaymentOfTheTableWithDiscountAbsoluteNoServiceFee() {
+        setDiscountValue("1000");
+        clickOnDiscountAbsolute();
+        clickOnServiceFee();
+        payPartial(0.43);
+        clickOnDiscountAbsolute();
+        assertSoldProductFive(1, 0.57 * 3);
+        assertSoldProductThree(2, 0.57 * 2);
+        assertSoldTotalPrice((int)Math.round(4058), 4383);
+        assertPreviousPaidPrice(2062);
+        assertPreviousVatDrinkPaidPrices(383, 0, 383);
+        assertPreviousVatFoodPaidPrices(1679, 0, 1679);
     }
 
     @Test
     public void testPartialPaymentOfTheTableWithDiscountPercent() {
-        setDiscountValue("20");
+        setDiscountValue("30");
         clickOnDiscountPercent();
         payPartial(0.43);
         clickOnDiscountPercent();
         assertSoldProductFive(1, 0.57 * 3);
         assertSoldProductThree(2, 0.57 * 2);
-        assertSoldTotalPrice((int)Math.round(4057), 4382);
-        int round = (int) Math.round(0.43 * 7120);
-        assertPreviousPartialPrice((int)Math.round(round * 0.80));
+        assertSoldTotalPrice((int)Math.round(4058), 4383);
+        assertPreviousPaidPrice(2315);
+        assertPreviousVatDrinkPaidPrices(398, 31, 429);
+        assertPreviousVatFoodPaidPrices(1746, 140, 1886);
+    }
+
+    @Test
+    public void testPartialPaymentOfTheTableWithDiscountPercentNoServiceFe() {
+        setDiscountValue("30");
+        clickOnDiscountPercent();
+        clickOnServiceFee();
+        payPartial(0.43);
+        clickOnDiscountPercent();
+        assertSoldProductFive(1, 0.57 * 3);
+        assertSoldProductThree(2, 0.57 * 2);
+        assertSoldTotalPrice((int)Math.round(4058), 4383);
+        assertPreviousPaidPrice(2143);      // Wrong rounding
+        assertPreviousVatDrinkPaidPrices(398, 0, 398);
+        assertPreviousVatFoodPaidPrices(1746, 0, 1746);
     }
 
     @Test
@@ -396,7 +696,9 @@ public class PaymentControllerTest  extends TestFXBase {
         pay();
         assertNoPaidProduct();
         assertPaidPrice(0, 0);
-        assertPreviousPartialPrice(1320);
+        assertPreviousPaidPrice(1426);
+        assertPreviousVatDrinkPaidPrices(1320, 106, 1426);
+        assertPreviousVatFoodPaidPrices(0, 0, 0);
     }
 
     @Test
@@ -419,6 +721,20 @@ public class PaymentControllerTest  extends TestFXBase {
         assertSoldProduct(3, GAME_FEE, 2, 300, 600);
         assertSoldTotalPrice(7720, 8290);
         assertNumberOfSoldProducts(3);
+    }
+
+    @Test
+    public void testSellGameFee() {
+        sellGameFee();
+        sellGameFee();
+        assertSoldProduct(3, GAME_FEE, 2, 300, 600);
+        assertSoldTotalPrice(7720, 8290);
+        assertNumberOfSoldProducts(3);
+        paySingle(4);       // Fix points - row coordinates
+        pay();
+        assertPreviousPaidPrice(300);
+        assertPreviousVatDrinkPaidPrices(300, 0, 300);
+        assertPreviousVatFoodPaidPrices(0, 0, 0);
     }
 
     @Test
@@ -507,6 +823,7 @@ public class PaymentControllerTest  extends TestFXBase {
     public void testReOpenTableNoServiceFee() {
         clickOnServiceFee();
         pay();
+        backToRestaurantView();
         reOpenTable(TABLE_NUMBER);
         enterSaleView(TABLE_NUMBER);
         assertSoldProduct(1, PRODUCT_FIVE_LONG, 3, 440, 1320);
@@ -518,6 +835,7 @@ public class PaymentControllerTest  extends TestFXBase {
     @Test
     public void testReOpenTableServiceFee() {
         pay();
+        backToRestaurantView();
         reOpenTable(TABLE_NUMBER);
         enterSaleView(TABLE_NUMBER);
         assertSoldProduct(1, PRODUCT_FIVE_LONG, 3, 440, 1320);
@@ -547,5 +865,6 @@ public class PaymentControllerTest  extends TestFXBase {
     @After
     public void payTable() {
         pay();
+        backToRestaurantView();
     }
 }

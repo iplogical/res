@@ -310,7 +310,9 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     }
 
     private void copyPartialPriceLabelsToPreviousLabels() {
-        previousPartialPrice.setText(paymentViewState.isServiceFeeState() ? paidPriceWithServiceFee.getText() : paidPrice.getText());
+        previousPartialPrice.setText(paymentViewState.isServiceFeeState() ? paidPriceWithServiceFee.getText()
+                .replaceAll("\\(","").replaceAll("\\)","")
+                : paidPrice.getText());
         copyDrinkPriceLabelsToPreviousLabels();
         copyFoodPriceLabelsToPreviousLabels();
     }
@@ -342,10 +344,18 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     private void clearPartialPriceLabels() {
         paidPrice.setText("0 Ft");
         paidPriceWithServiceFee.setText("(0 Ft)");
+        clearDrinkPartialPriceLabels();
+        clearFoodPartialPriceLabels();
+    }
+
+    private void clearDrinkPartialPriceLabels() {
         vatDrinkPercent.setText("0 Ft");
         vatDrinkPrice.setText("0 Ft");
         vatDrinkServiceFee.setText("0 Ft");
         vatDrinkTotalPrice.setText("0 Ft");
+    }
+
+    private void clearFoodPartialPriceLabels() {
         vatFoodPercent.setText("0 Ft");
         vatFoodPrice.setText("0 Ft");
         vatFoodServiceFee.setText("0 Ft");
@@ -356,11 +366,11 @@ public class PaymentControllerImpl extends AbstractRetailControllerImpl
     public void handlePartialPayment(PaymentParams paymentParams) {
         try {
             logger.info("Handling selective payment with paymentParams: " + paymentParams.toString());
-            int totalPrice = getTotalPrice();
-            tableServicePay.payPartial(tableView, getPartialValue(), paymentParams);
+            List<ReceiptRecordView> paidRecordViews = tableServicePay.payPartial(tableView, getPartialValue(), paymentParams);
+            updatePricesLabels(paidRecordViews, paymentParams);
+            copyPartialPriceLabelsToPreviousLabels();
+            clearPartialPriceLabels();
             getSoldProductsAndRefreshTable();
-            int paidPartialPrice = totalPrice - getTotalPrice();
-            previousPartialPrice.setText(applyDiscountOnTotalPrice(paidPartialPrice) + " Ft");
         } catch (NumberFormatException e) {
             NotificationMessage.showErrorMessage(getRootNode(), WaiterResources.WAITER.getString("PaymentView.PartialPayNumberErrorRange"));
         }

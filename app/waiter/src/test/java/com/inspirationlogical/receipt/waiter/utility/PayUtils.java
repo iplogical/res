@@ -192,7 +192,7 @@ public class PayUtils extends AbstractUtils {
         assertEquals(intToForint(totalPrice), getVatFoodTotalPricePrevious());
     }
 
-    public static void assertPreviousPartialPrice(int price) {
+    public static void assertPreviousPaidPrice(int price) {
         assertEquals(intToForint(price), getPreviousPartialPrice());
     }
 
