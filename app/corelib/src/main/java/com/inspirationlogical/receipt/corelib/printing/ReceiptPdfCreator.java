@@ -33,6 +33,15 @@ public class ReceiptPdfCreator {
     @Value("${print.logo:}")
     private Resource imageResource;
 
+    @Value("${print.margin.left:0f}")
+    private float marginLeft;
+    @Value("${print.margin.right:0f}")
+    private float marginRight;
+    @Value("${print.margin.top:0f}")
+    private float marginTop;
+    @Value("${print.margin.bottom:6f}")
+    private float marginBottom;
+
     private Document document;
     private BaseFont normalFont;
     private BaseFont boldFont;
@@ -98,7 +107,7 @@ public class ReceiptPdfCreator {
 
     private void initDocument(ByteArrayOutputStream os) throws DocumentException {
         document = new Document(new RectangleReadOnly(227, 600));
-        document.setMargins(0f, 0f, 0f, 6f);
+        document.setMargins(marginLeft, marginRight, marginTop, marginBottom);
         PdfWriter.getInstance(document, os);
         document.open();
     }
