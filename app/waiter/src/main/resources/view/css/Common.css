@@ -55,15 +55,15 @@
 }
 
 .sub-header-label {
-    -fx-font-size: 18;
+    -fx-font-size: 16;
     -fx-line-spacing: -5;
 }
 
 .header-label {
-    -fx-font-size: 24;
+    -fx-font-size: 20;
     -fx-line-spacing: -5;
 }
 
 .mini-label {
-    -fx-font-size: 10;
+    -fx-font-size: 12;
 }

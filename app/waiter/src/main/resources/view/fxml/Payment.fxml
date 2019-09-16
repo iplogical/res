@@ -130,7 +130,7 @@
                                        <children>
                                           <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                 <Label fx:id="previousPartialPrice" alignment="CENTER" minHeight="54.0" minWidth="120.0" prefHeight="54.0" prefWidth="120.0">
+                                                 <Label fx:id="previousPartialPrice" alignment="CENTER" minHeight="54.0" minWidth="110.0" prefHeight="54.0" prefWidth="110.0">
                                                    <font>
                                                       <Font size="30.0" />
                                                    </font>
@@ -143,21 +143,21 @@
                                                    <children>
                                                       <HBox prefHeight="100.0" prefWidth="200.0">
                                                          <children>
-                                                             <Label fx:id="vatDrinkPercentPrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="70.0" styleClass="sub-header-label" />
+                                                             <Label fx:id="vatDrinkPercentPrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="74.0" styleClass="sub-header-label" />
                                                              <Label fx:id="vatDrinkPricePrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="90.0" styleClass="sub-header-label" />
-                                                            <Label fx:id="vatDrinkCashierNumberPrevious" alignment="BOTTOM_CENTER" contentDisplay="CENTER" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="6.0" styleClass="mini-label" />
+                                                            <Label fx:id="vatDrinkCashierNumberPrevious" alignment="BOTTOM_CENTER" contentDisplay="CENTER" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="9.0" styleClass="mini-label" />
                                                              <Label fx:id="vatDrinkServiceFeePrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="62.0" styleClass="sub-header-label" />
-                                                            <Label fx:id="vatDrinkServiceFeeCashierNumberPrevious" alignment="BOTTOM_CENTER" contentDisplay="CENTER" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="6.0" styleClass="mini-label" />
+                                                            <Label fx:id="vatDrinkServiceFeeCashierNumberPrevious" alignment="BOTTOM_CENTER" contentDisplay="CENTER" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="9.0" styleClass="mini-label" />
                                                              <Label fx:id="vatDrinkTotalPricePrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="90.0" styleClass="sub-header-label" />
                                                          </children>
                                                       </HBox>
                                                       <HBox prefHeight="100.0" prefWidth="200.0">
                                                          <children>
-                                                             <Label fx:id="vatFoodPercentPrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="70.0" styleClass="sub-header-label" />
+                                                             <Label fx:id="vatFoodPercentPrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="74.0" styleClass="sub-header-label" />
                                                              <Label fx:id="vatFoodPricePrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="90.0" styleClass="sub-header-label" />
-                                                            <Label fx:id="vatFoodCashierNumberPrevious" alignment="BOTTOM_CENTER" contentDisplay="CENTER" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="6.0" styleClass="mini-label" />
+                                                            <Label fx:id="vatFoodCashierNumberPrevious" alignment="BOTTOM_CENTER" contentDisplay="CENTER" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="9.0" styleClass="mini-label" />
                                                              <Label fx:id="vatFoodServiceFeePrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="62.0" styleClass="sub-header-label" />
-                                                            <Label fx:id="vatFoodServiceFeeCashierNumberPrevious" alignment="BOTTOM_CENTER" contentDisplay="CENTER" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="6.0" styleClass="mini-label" />
+                                                            <Label fx:id="vatFoodServiceFeeCashierNumberPrevious" alignment="BOTTOM_CENTER" contentDisplay="CENTER" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="9.0" styleClass="mini-label" />
                                                              <Label fx:id="vatFoodTotalPricePrevious" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="90.0" styleClass="sub-header-label" />
                                                          </children>
                                                       </HBox>
@@ -174,12 +174,12 @@
                                              <children>
                                                 <HBox prefHeight="100.0" prefWidth="200.0">
                                                    <children>
-                                                      <Label fx:id="paidPrice" alignment="CENTER" minHeight="27.0" prefHeight="27.0" prefWidth="120.0" styleClass="header-label">
+                                                      <Label fx:id="paidPrice" alignment="CENTER" minHeight="27.0" prefHeight="27.0" prefWidth="110.0" styleClass="header-label">
                                                          <font>
                                                             <Font size="36.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label fx:id="vatDrinkPercent" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="70.0" styleClass="sub-header-label">
+                                                      <Label fx:id="vatDrinkPercent" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="74.0" styleClass="sub-header-label">
                                                          <font>
                                                             <Font size="24.0" />
                                                          </font>
@@ -189,13 +189,13 @@
                                                             <Font size="24.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label fx:id="vatDrinkCashierNumber" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="6.0" styleClass="mini-label" />
+                                                      <Label fx:id="vatDrinkCashierNumber" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="9.0" styleClass="mini-label" />
                                                       <Label fx:id="vatDrinkServiceFee" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="62.0" styleClass="sub-header-label">
                                                          <font>
                                                             <Font size="24.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label fx:id="vatDrinkServiceFeeCashierNumber" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="6.0" styleClass="mini-label" />
+                                                      <Label fx:id="vatDrinkServiceFeeCashierNumber" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="9.0" styleClass="mini-label" />
                                                       <Label fx:id="vatDrinkTotalPrice" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="90.0" styleClass="sub-header-label">
                                                          <font>
                                                             <Font size="24.0" />
@@ -205,12 +205,12 @@
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0">
                                                    <children>
-                                                      <Label fx:id="paidPriceWithServiceFee" alignment="CENTER" minHeight="27.0" prefHeight="27.0" prefWidth="120.0" styleClass="header-label">
+                                                      <Label fx:id="paidPriceWithServiceFee" alignment="CENTER" minHeight="27.0" prefHeight="27.0" prefWidth="110.0" styleClass="header-label">
                                                          <font>
                                                             <Font size="36.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label fx:id="vatFoodPercent" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="70.0" styleClass="sub-header-label">
+                                                      <Label fx:id="vatFoodPercent" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="74.0" styleClass="sub-header-label">
                                                          <font>
                                                             <Font size="24.0" />
                                                          </font>
@@ -220,13 +220,13 @@
                                                             <Font size="24.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label fx:id="vatFoodCashierNumber" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="6.0" styleClass="mini-label" />
+                                                      <Label fx:id="vatFoodCashierNumber" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="9.0" styleClass="mini-label" />
                                                       <Label fx:id="vatFoodServiceFee" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="62.0" styleClass="sub-header-label">
                                                          <font>
                                                             <Font size="24.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label fx:id="vatFoodServiceFeeCashierNumber" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="6.0" styleClass="mini-label" />
+                                                      <Label fx:id="vatFoodServiceFeeCashierNumber" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" minHeight="27.0" minWidth="6.0" prefHeight="27.0" prefWidth="9.0" styleClass="mini-label" />
                                                       <Label fx:id="vatFoodTotalPrice" alignment="CENTER_RIGHT" minHeight="27.0" prefHeight="27.0" prefWidth="90.0" styleClass="sub-header-label">
                                                          <font>
                                                             <Font size="24.0" />
