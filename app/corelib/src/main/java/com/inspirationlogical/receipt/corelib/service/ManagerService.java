@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
@@ -16,9 +15,9 @@ public interface ManagerService {
 
     PriceModifier.PriceModifierBuilder priceModifierBuilder();
 
-    void addProduct(ProductCategoryView parent, Product.ProductBuilder builder);
+    void addProduct(ProductView productView, ProductCategoryView parent);
 
-    void updateProduct(int productId, ProductCategoryView parent, Product.ProductBuilder builder);
+    void updateProduct(ProductView productView, ProductCategoryView parent);
 
     void deleteProduct(String longName);
 

@@ -1,18 +1,19 @@
 package com.inspirationlogical.receipt.corelib.model.view;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
-import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.Tolerate;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryFamily.FOOD;
 import static com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryFamily.initFamily;
 
 @Getter
+@Builder
 @ToString(exclude = "recipes")
 public class ProductView implements AbstractView {
 
@@ -21,6 +22,7 @@ public class ProductView implements AbstractView {
     private int orderNumber;
     private ProductType type;
     private ProductStatus status;
+    private VATName vat;
     private String shortName;
     private String longName;
     private int rapidCode;
@@ -33,12 +35,18 @@ public class ProductView implements AbstractView {
     private List<RecipeView> recipes;
     private ProductCategoryFamily family;
 
+    @Tolerate
+    public ProductView() {
+    }
+
+    @Tolerate
     public ProductView(Product product) {
         id = product.getId();
         name = product.getShortName();
         orderNumber = product.getOrderNumber();
         type = product.getType();
         status = product.getStatus();
+        vat = product.getVATLocal().getName();
         shortName = product.getShortName();
         longName = product.getLongName();
         rapidCode = product.getRapidCode();

@@ -3,7 +3,6 @@ package com.inspirationlogical.receipt.manager.controller.goods;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductCategoryStateException;
 import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateException;
 import com.inspirationlogical.receipt.corelib.frontend.controller.AbstractController;
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
@@ -206,9 +205,9 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     }
 
     @Override
-    public void addProduct(int productId, ProductCategoryView parent, Product.ProductBuilder builder) {
+    public void addProduct(ProductView productView, ProductCategoryView parent) {
         try {
-            addOrUpdateProduct(productId, parent, builder);
+            addOrUpdateProduct(productView, parent);
         } catch (IllegalProductStateException e ) {
             NotificationMessage.showErrorMessage(root, e.getMessage());
         } finally {
@@ -226,11 +225,11 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         categoriesTable.scrollTo(index);
     }
 
-    private void addOrUpdateProduct(int productId, ProductCategoryView parent, Product.ProductBuilder builder) {
-        if(productId == 0) {
-            managerService.addProduct(parent, builder);
+    private void addOrUpdateProduct(ProductView productView, ProductCategoryView parent) {
+        if(productView.getId() == 0) {
+            managerService.addProduct(productView, parent);
         } else {
-            managerService.updateProduct(productId, parent, builder);
+            managerService.updateProduct(productView, parent);
         }
     }
 

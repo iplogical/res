@@ -4,6 +4,7 @@ import com.inspirationlogical.receipt.corelib.exception.IllegalProductStateExcep
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.ProductCategory;
 import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
+import com.inspirationlogical.receipt.corelib.model.entity.VAT;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductCategoryType;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
@@ -12,6 +13,7 @@ import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
 import com.inspirationlogical.receipt.corelib.repository.ProductCategoryRepository;
 import com.inspirationlogical.receipt.corelib.repository.ProductRepository;
+import com.inspirationlogical.receipt.corelib.repository.VATRepository;
 import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,16 +38,39 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private RecipeServiceImpl recipeService;
 
+    @Autowired
+    private VATRepository vatRepository;
+
     @Override
-    public void addProduct(ProductCategoryView parentCategoryView, Product.ProductBuilder builder) {
-        Product newProduct = builder.build();
-        ProductCategory parentCategory = productCategoryRepository.getOne(parentCategoryView.getId());
+    public void addProduct(ProductView productView, ProductCategoryView parent) {
+        Product newProduct = buildProduct(productView);
+        ProductCategory parentCategory = productCategoryRepository.getOne(parent.getId());
         if(isProductNameUsed(newProduct))
             throw new IllegalProductStateException(Resources.CONFIG.getString("ProductNameAlreadyUsed") + newProduct.getLongName());
         ProductCategory pseudo = buildPseudoCategory(newProduct, parentCategory);
         bindProductToPseudo(newProduct, parentCategory, pseudo);
         addDefaultRecipe(newProduct);
         productRepository.save(newProduct);
+    }
+
+    private Product buildProduct(ProductView productView) {
+        VAT vat = vatRepository.getVatByName(productView.getVat());
+        return Product.builder()
+                .longName(productView.getLongName())
+                .shortName(productView.getShortName())
+                .type(productView.getType())
+                .status(productView.getStatus())
+                .VATLocal(vat)
+                .VATTakeAway(vat)
+                .rapidCode(productView.getRapidCode())
+                .quantityUnit(productView.getQuantityUnit())
+                .storageMultiplier(productView.getStorageMultiplier())
+                .purchasePrice(productView.getPurchasePrice())
+                .salePrice(productView.getSalePrice())
+                .minimumStock(productView.getMinimumStock())
+                .stockWindow(productView.getStockWindow())
+                .orderNumber(productView.getOrderNumber())
+                .build();
     }
 
     private boolean isProductNameUsed(Product product) {
@@ -80,12 +105,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProduct(int productId, String parentCategoryName, Product.ProductBuilder builder) {
-        Product originalProduct = productRepository.getOne(productId);
-        Product updatedProduct = builder.build();
+    public void updateProduct(ProductView productView, ProductCategoryView parent) {
+        Product originalProduct = productRepository.getOne(productView.getId());
+        Product updatedProduct = buildProduct(productView);
         if(isProductNameAlreadyUsed(originalProduct, updatedProduct))
             throw new IllegalProductStateException(Resources.CONFIG.getString("ProductNameAlreadyUsed") + updatedProduct.getLongName());
         setProductParameters(originalProduct, updatedProduct);
+        String parentCategoryName = parent.getCategoryName();
         if(isCategoryChanged(originalProduct, parentCategoryName)) {
             movePseudoToNewParent(originalProduct, parentCategoryName);
         }
@@ -102,6 +128,8 @@ public class ProductServiceImpl implements ProductService {
         originalProduct.setShortName(updatedProduct.getShortName());
         originalProduct.setType(updatedProduct.getType());
         setAdapteeAndPseudoStatus(originalProduct, updatedProduct.getStatus());
+        originalProduct.setVATLocal(updatedProduct.getVATLocal());
+        originalProduct.setVATTakeAway(updatedProduct.getVATTakeAway());
         originalProduct.setRapidCode(updatedProduct.getRapidCode());
         originalProduct.setQuantityUnit(updatedProduct.getQuantityUnit());
         originalProduct.setStorageMultiplier(updatedProduct.getStorageMultiplier());

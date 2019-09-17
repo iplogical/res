@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface ProductService {
 
-    void addProduct(ProductCategoryView parent, Product.ProductBuilder builder);
+    void addProduct(ProductView productView, ProductCategoryView parent);
 
-    void updateProduct(int productId, String parentCategoryName, Product.ProductBuilder builder);
+    void updateProduct(ProductView productView, ProductCategoryView parent);
 
     void deleteProduct(String longName);
 

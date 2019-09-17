@@ -13,7 +13,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Builder
+@Builder()
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "PRODUCT")
 @AttributeOverride(name = "id", column = @Column(name = "PRODUCT_ID"))

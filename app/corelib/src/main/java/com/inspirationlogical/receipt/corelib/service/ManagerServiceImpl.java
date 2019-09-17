@@ -1,7 +1,6 @@
 package com.inspirationlogical.receipt.corelib.service;
 
 import com.inspirationlogical.receipt.corelib.model.entity.PriceModifier;
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
 import com.inspirationlogical.receipt.corelib.model.view.*;
 import com.inspirationlogical.receipt.corelib.params.PriceModifierParams;
@@ -62,14 +61,14 @@ public class ManagerServiceImpl extends AbstractService implements ManagerServic
     }
 
     @Override
-    public void addProduct(ProductCategoryView parent, Product.ProductBuilder builder) {
-        productService.addProduct(parent, builder);
+    public void addProduct(ProductView productView, ProductCategoryView parent) {
+        productService.addProduct(productView, parent);
         entityViews.initEntityViews();
     }
 
     @Override
-    public void updateProduct(int productId, ProductCategoryView parent, Product.ProductBuilder builder) {
-        productService.updateProduct(productId, parent.getCategoryName(), builder);
+    public void updateProduct(ProductView productView, ProductCategoryView parent) {
+        productService.updateProduct(productView, parent);
     }
 
     @Override

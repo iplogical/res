@@ -1,9 +1,9 @@
 package com.inspirationlogical.receipt.manager.controller.goods;
 
-import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductStatus;
 import com.inspirationlogical.receipt.corelib.model.enums.ProductType;
 import com.inspirationlogical.receipt.corelib.model.enums.QuantityUnit;
+import com.inspirationlogical.receipt.corelib.model.enums.VATName;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.service.CommonService;
@@ -12,6 +12,7 @@ import com.inspirationlogical.receipt.manager.exception.InvalidInputFormExceptio
 import com.inspirationlogical.receipt.manager.utility.ManagerResources;
 import com.inspirationlogical.receipt.manager.viewmodel.CategoryStringConverter;
 import com.inspirationlogical.receipt.manager.viewmodel.ProductStatusStringConverter;
+import com.inspirationlogical.receipt.manager.viewmodel.VatNameStringConverter;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -51,6 +52,8 @@ public class ProductFormControllerImpl implements ProductFormController {
     @FXML
     private ChoiceBox<ProductStatus> status;
     @FXML
+    private ChoiceBox<VATName> vat;
+    @FXML
     private TextField rapidCode;
     @FXML
     private ChoiceBox<QuantityUnit> quantityUnit;
@@ -89,6 +92,7 @@ public class ProductFormControllerImpl implements ProductFormController {
         initCategoryChoiceBox();
         initProductTypeChoiceBox();
         initProductStatusChoiceBox();
+        initProductVatChoiceBox();
         initQuantityUnitChoiceBox();
     }
 
@@ -113,6 +117,13 @@ public class ProductFormControllerImpl implements ProductFormController {
         status.setConverter(new ProductStatusStringConverter(productStatuses));
     }
 
+    private void initProductVatChoiceBox() {
+        ObservableList<VATName> vatNameList = FXCollections.observableArrayList(Arrays.asList(VATName.NORMAL, VATName.GREATLY_REDUCED));
+        vatNameList.sort(Comparator.comparing(VATName::toI18nString));
+        vat.setItems(vatNameList);
+        vat.setConverter(new VatNameStringConverter(vatNameList));
+    }
+
     private void initQuantityUnitChoiceBox() {
         ObservableList<QuantityUnit> quantityUnits = FXCollections.observableArrayList(Arrays.asList(QuantityUnit.values()));
         quantityUnits.sort(Comparator.comparing(QuantityUnit::toI18nString));
@@ -127,34 +138,36 @@ public class ProductFormControllerImpl implements ProductFormController {
         productId = 0;
         longName.clear();
         shortName.clear();
-        rapidCode.setText("0");
+        type.setValue(ProductType.SELLABLE);
+        category.setValue(null);
+        status.setValue(ProductStatus.ACTIVE);
+        vat.setValue(VATName.NORMAL);
+        quantityUnit.setValue(null);
         storageMultiplier.clear();
         salePrice.clear();
         purchasePrice.clear();
         minimumStock.setText("7");
         stockWindow.setText("60");
         orderNumber.setText("0");
-        type.setValue(ProductType.SELLABLE);
-        status.setValue(ProductStatus.ACTIVE);
-        quantityUnit.setValue(null);
-        category.setValue(null);
+        rapidCode.setText("0");
     }
 
     @Override
-    public void setProductViewModel(ProductView productViewModel) {
-        productId = productViewModel.getId();
-        longName.setText(productViewModel.getName());
-        shortName.setText(productViewModel.getShortName());
-        rapidCode.setText(String.valueOf(productViewModel.getRapidCode()));
-        storageMultiplier.setText(String.valueOf(productViewModel.getStorageMultiplier()));
-        salePrice.setText(String.valueOf(productViewModel.getSalePrice()));
-        purchasePrice.setText(String.valueOf(productViewModel.getPurchasePrice()));
-        minimumStock.setText(String.valueOf(productViewModel.getMinimumStock()));
-        stockWindow.setText(String.valueOf(productViewModel.getStockWindow()));
-        orderNumber.setText(String.valueOf(productViewModel.getOrderNumber()));
-        type.setValue(type.getConverter().fromString(productViewModel.getType().toI18nString()));
-        status.setValue(status.getConverter().fromString(productViewModel.getStatus().toI18nString()));
-        quantityUnit.setValue(quantityUnit.getConverter().fromString(productViewModel.getQuantityUnit().toI18nString()));
+    public void setProductViewModel(ProductView productView) {
+        productId = productView.getId();
+        longName.setText(productView.getName());
+        shortName.setText(productView.getShortName());
+        type.setValue(type.getConverter().fromString(productView.getType().toI18nString()));
+        status.setValue(status.getConverter().fromString(productView.getStatus().toI18nString()));
+        vat.setValue(vat.getConverter().fromString(productView.getVat().toI18nString()));
+        storageMultiplier.setText(String.valueOf(productView.getStorageMultiplier()));
+        salePrice.setText(String.valueOf(productView.getSalePrice()));
+        purchasePrice.setText(String.valueOf(productView.getPurchasePrice()));
+        minimumStock.setText(String.valueOf(productView.getMinimumStock()));
+        stockWindow.setText(String.valueOf(productView.getStockWindow()));
+        orderNumber.setText(String.valueOf(productView.getOrderNumber()));
+        quantityUnit.setValue(quantityUnit.getConverter().fromString(productView.getQuantityUnit().toI18nString()));
+        rapidCode.setText(String.valueOf(productView.getRapidCode()));
     }
 
     @Override
@@ -165,7 +178,7 @@ public class ProductFormControllerImpl implements ProductFormController {
     @FXML
     public void onConfirm(Event event) {
         try {
-            goodsController.addProduct(productId, category.getValue(), buildProduct());
+            goodsController.addProduct(buildProductView(), category.getValue());
         } catch (NumberFormatException e) {
             NotificationMessage.showErrorMessage(getRootNode(),
                     ManagerResources.MANAGER.getString("Form.NumberFormatException"));
@@ -175,26 +188,30 @@ public class ProductFormControllerImpl implements ProductFormController {
         }
     }
 
-    private Product.ProductBuilder buildProduct() throws NumberFormatException, InvalidInputFormException {
+    private ProductView buildProductView() throws NumberFormatException, InvalidInputFormException {
         if (isChoiceBoxEmpty() || isLongNameEmpty())
             throw new InvalidInputFormException("");
-        return commonService.productBuilder()
+        return ProductView.builder()
+                .id(productId)
                 .longName(longName.getText())
                 .shortName(shortName.getText().equals("") ? longName.getText() : shortName.getText())
                 .type(type.getValue())
                 .status(status.getValue())
-                .rapidCode(Integer.valueOf(rapidCode.getText()))
+                .vat(vat.getValue())
+                .rapidCode(Integer.parseInt(rapidCode.getText()))
                 .quantityUnit(quantityUnit.getValue())
-                .storageMultiplier(Double.valueOf(storageMultiplier.getText()))
-                .purchasePrice(Integer.valueOf(purchasePrice.getText()))
-                .salePrice(Integer.valueOf(salePrice.getText()))
-                .minimumStock(Integer.valueOf(minimumStock.getText()))
-                .stockWindow(Integer.valueOf(stockWindow.getText()))
-                .orderNumber(Integer.valueOf(orderNumber.getText()));
+                .storageMultiplier(Double.parseDouble(storageMultiplier.getText()))
+                .purchasePrice(Integer.parseInt(purchasePrice.getText()))
+                .salePrice(Integer.parseInt(salePrice.getText()))
+                .minimumStock(Integer.parseInt(minimumStock.getText()))
+                .stockWindow(Integer.parseInt(stockWindow.getText()))
+                .orderNumber(Integer.parseInt(orderNumber.getText()))
+                .build();
     }
 
     private boolean isChoiceBoxEmpty() {
-        return type.getValue() == null || category.getValue() == null || status.getValue() == null || quantityUnit.getValue() == null;
+        return type.getValue() == null || category.getValue() == null || status.getValue() == null || quantityUnit.getValue() == null
+                || vat.getValue() == null;
     }
 
     private boolean isLongNameEmpty() {

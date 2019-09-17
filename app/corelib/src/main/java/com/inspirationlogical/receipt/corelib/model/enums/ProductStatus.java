@@ -13,5 +13,4 @@ public enum ProductStatus {
             return Resources.CONFIG.getString("ProductStatus.Deleted");
         return "";
     }
-
-    }
+}

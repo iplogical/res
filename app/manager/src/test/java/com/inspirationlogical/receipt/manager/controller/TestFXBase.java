@@ -28,6 +28,7 @@ public abstract class TestFXBase extends ApplicationTest {
             isApplicationStarted = true;
             new BuildTestSchema().buildTestSchema();
             System.setProperty("java.awt.headless", "false");
+            System.setProperty("spring.profiles.active", "test");
             AbstractJavaFxApplicationSupport.setSavedInitialView(GoodsFxmlView.class);
             ApplicationTest.launch(ManagerApp.class);
         }
