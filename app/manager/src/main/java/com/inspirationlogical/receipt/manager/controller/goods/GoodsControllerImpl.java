@@ -53,8 +53,9 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     private @FXML TableColumn<ProductView, String> productStatus;
     private @FXML TableColumn<ProductView, String> productQuantityUnit;
     private @FXML TableColumn<ProductView, String> productStorageMultiplier;
-    private @FXML TableColumn<ProductView, String> productPurchasePrice;
     private @FXML TableColumn<ProductView, String> productSalePrice;
+    private @FXML TableColumn<ProductView, String> productPurchasePrice;
+    private @FXML TableColumn<ProductView, String> productVat;
     private @FXML TableColumn<ProductView, String> productMinimumStock;
     private @FXML TableColumn<ProductView, String> productStockWindow;
 
@@ -107,8 +108,9 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
         initColumn(productShortName, ProductView::getShortName);
         initColumn(productRapidCode, productView -> String.valueOf(productView.getRapidCode()));
         initColumn(productOrderNumber, productView -> String.valueOf(productView.getOrderNumber()));
-        initColumn(productPurchasePrice, productView -> String.valueOf(productView.getPurchasePrice()));
         initColumn(productSalePrice, productView -> String.valueOf(productView.getSalePrice()));
+        initColumn(productPurchasePrice, productView -> String.valueOf(productView.getPurchasePrice()));
+        initColumn(productVat, productView -> productView.getVat().toI18nString());
         initColumn(productStorageMultiplier, productView -> String.valueOf(productView.getStorageMultiplier()));
         initColumn(productQuantityUnit, productView -> productView.getQuantityUnit().toI18nString());
         initColumn(productMinimumStock, productView -> String.valueOf(productView.getMinimumStock()));

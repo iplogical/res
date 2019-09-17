@@ -57,7 +57,7 @@
                </font>
             </Label>
             <ChoiceBox fx:id="status" prefWidth="150.0" />
-            <Label prefWidth="100.0" text="%ProductForm.Vat">
+            <Label prefWidth="100.0" text="%Common.Vat">
                <font>
                   <Font size="16.0" />
                </font>
