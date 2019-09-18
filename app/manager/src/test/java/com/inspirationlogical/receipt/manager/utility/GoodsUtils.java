@@ -1,7 +1,5 @@
 package com.inspirationlogical.receipt.manager.utility;
 
-import javafx.scene.input.KeyCode;
-
 import static com.inspirationlogical.receipt.manager.utility.CategoryFormUtils.setCategoryName;
 import static com.inspirationlogical.receipt.manager.utility.ClickUtils.*;
 import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.*;
@@ -30,7 +28,7 @@ public class GoodsUtils extends AbstractUtils {
     }
 
     public static void clickOnAddProduct() {
-        clickButtonThenWait(ADD_PRODUCT, 500);
+        clickButtonThenWait(ADD_PRODUCT, 1000);
     }
 
     public static void clickOnModifyProduct() {

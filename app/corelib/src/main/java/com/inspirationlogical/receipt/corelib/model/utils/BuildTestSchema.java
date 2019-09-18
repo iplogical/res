@@ -26,6 +26,7 @@ public class BuildTestSchema {
     public static final String AGGREGATE_TOP_ONE_NAME = "aggregateTopOne";
     public static final String AGGREGATE_ONE_NAME = "aggregateOne";
     public static final String LEAF_ONE_NAME = "leafOne";
+    public static final String LEAF_FIVE_NAME = "leafFive";
 
     public static final String PRICE_MODIFIER1_NAME = "TestPriceModifier1";
 
@@ -695,6 +696,8 @@ public class BuildTestSchema {
                 .quantityUnit(QuantityUnit.KILOGRAM)
                 .storageMultiplier(10)
                 .type(ProductType.STORABLE)
+                .VATLocal(vatNormal)
+                .VATTakeAway(vatNormal)
                 .build();
     }
 
@@ -708,6 +711,8 @@ public class BuildTestSchema {
                 .quantityUnit(QuantityUnit.GRAM)
                 .storageMultiplier(5000)
                 .type(ProductType.STORABLE)
+                .VATLocal(vatNormal)
+                .VATTakeAway(vatNormal)
                 .build();
     }
 
@@ -721,6 +726,8 @@ public class BuildTestSchema {
                 .quantityUnit(QuantityUnit.KILOGRAM)
                 .storageMultiplier(2)
                 .type(ProductType.STORABLE)
+                .VATLocal(vatNormal)
+                .VATTakeAway(vatNormal)
                 .build();
     }
 

@@ -121,10 +121,7 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
 
     private void initCheckBox() {
         showDeleted.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            ProductCategoryView selectedCategory = getSelectedCategory();
-            if (selectedCategory != null) {
-                refreshProductsTable(selectedCategory);
-            }
+            refreshProductsTable();
         });
     }
 
@@ -214,7 +211,14 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
             NotificationMessage.showErrorMessage(root, e.getMessage());
         } finally {
             productForm.hide();
-            refreshProductsTable(getSelectedCategory());
+            refreshProductsTable();
+        }
+    }
+
+    private void refreshProductsTable() {
+        ProductCategoryView selectedCategory = getSelectedCategory();
+        if (selectedCategory != null) {
+            refreshProductsTable(selectedCategory);
         }
     }
 
@@ -316,7 +320,8 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
     }
 
     private ProductCategoryView getSelectedCategory() {
-        return categoriesTable.getSelectionModel().getSelectedItem().getValue();
+        TreeItem<ProductCategoryView> productCategoryViewTreeItem = categoriesTable.getSelectionModel().getSelectedItem();
+        return productCategoryViewTreeItem == null ? null : productCategoryViewTreeItem.getValue();
     }
 
     @FXML
@@ -327,8 +332,8 @@ public class GoodsControllerImpl extends AbstractController implements GoodsCont
                     ManagerResources.MANAGER.getString("ProductForm.SelectProductForDelete"));
             return;
         }
-        managerService.deleteProduct(selected.getName());
-        refreshProductsTable(getSelectedCategory());
+        managerService.deleteProduct(selected.getLongName());
+        refreshProductsTable();
     }
 
     @FXML

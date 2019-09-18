@@ -155,7 +155,7 @@ public class ProductFormControllerImpl implements ProductFormController {
     @Override
     public void setProductViewModel(ProductView productView) {
         productId = productView.getId();
-        longName.setText(productView.getName());
+        longName.setText(productView.getLongName());
         shortName.setText(productView.getShortName());
         type.setValue(type.getConverter().fromString(productView.getType().toI18nString()));
         status.setValue(status.getConverter().fromString(productView.getStatus().toI18nString()));

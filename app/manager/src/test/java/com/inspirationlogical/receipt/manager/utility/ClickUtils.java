@@ -1,14 +1,18 @@
 package com.inspirationlogical.receipt.manager.utility;
 
-import com.inspirationlogical.receipt.corelib.utility.resources.Resources;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import org.testfx.api.FxRobotInterface;
+import org.testfx.service.query.EmptyNodeQueryException;
 
-import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.*;
+import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.CANCEL;
+import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.CONFIRM;
 import static org.junit.Assert.fail;
 import static org.testfx.api.FxAssert.verifyThat;
 
@@ -91,8 +95,8 @@ public class ClickUtils extends AbstractUtils {
     public static void verifyThatNotVisible(String nodeQuery) {
         try {
             verifyThat(nodeQuery, Node::isVisible);
-            fail("Should not find2 the node");
-        } catch (NullPointerException e) {}
+            fail("Should not find the node");
+        } catch (EmptyNodeQueryException e) {}
     }
 
     public static void verifyErrorMessage(String error) {

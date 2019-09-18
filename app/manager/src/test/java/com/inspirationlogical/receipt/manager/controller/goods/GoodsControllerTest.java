@@ -7,16 +7,13 @@ import org.junit.Test;
 
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.AGGREGATE_TOP_ONE_NAME;
 import static com.inspirationlogical.receipt.corelib.model.utils.BuildTestSchema.PRODUCT_ONE_LONG_NAME;
-import static com.inspirationlogical.receipt.manager.utility.ClickUtils.clickButtonThenWait;
 import static com.inspirationlogical.receipt.manager.utility.ClickUtils.verifyErrorMessage;
 import static com.inspirationlogical.receipt.manager.utility.GoodsUtils.*;
-import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.SHOW_RECIPE_FORM;
-import static com.inspirationlogical.receipt.manager.utility.JavaFXIds.CLOSE;
 import static com.inspirationlogical.receipt.manager.utility.RecipeFormUtils.clickOnClose;
 
 public class GoodsControllerTest extends TestFXBase {
 
-//    @Ignore
+    @Ignore
     @Test
     public void launchAppWithTestDataBase() {
         while (true) {}
