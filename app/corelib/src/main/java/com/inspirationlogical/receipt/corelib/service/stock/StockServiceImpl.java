@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.corelib.service.stock;
 
 import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.ReceiptType;
-import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ProductCategoryView;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.StockView;
@@ -172,7 +171,7 @@ public class StockServiceImpl implements StockService {
     }
 
     private void decreaseSoldQuantity(Stock stock, double quantity) {
-        GuardedTransaction.run(() -> stock.setSoldQuantity(stock.getSoldQuantity() - quantity / stock.getOwner().getStorageMultiplier()));
+        stock.setSoldQuantity(stock.getSoldQuantity() - quantity / stock.getOwner().getStorageMultiplier());
+        stockRepository.save(stock);
     }
-
 }

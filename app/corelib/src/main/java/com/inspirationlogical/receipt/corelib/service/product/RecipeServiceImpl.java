@@ -2,7 +2,6 @@ package com.inspirationlogical.receipt.corelib.service.product;
 
 import com.inspirationlogical.receipt.corelib.model.entity.Product;
 import com.inspirationlogical.receipt.corelib.model.entity.Recipe;
-import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.ProductView;
 import com.inspirationlogical.receipt.corelib.model.view.RecipeView;
 import com.inspirationlogical.receipt.corelib.params.RecipeParams;
@@ -75,10 +74,10 @@ public class RecipeServiceImpl {
     }
 
     private void updateComponents(List<Recipe> components, Map<String, Double> recipeParamsMap) {
-        components.forEach(recipeAdapter -> {
-            String componentName = recipeAdapter.getComponent().getLongName();
-            recipeAdapter.setQuantityMultiplier(recipeParamsMap.get(componentName));
-            GuardedTransaction.persist(recipeAdapter);
+        components.forEach(recipe -> {
+            String componentName = recipe.getComponent().getLongName();
+            recipe.setQuantityMultiplier(recipeParamsMap.get(componentName));
+            recipeRepository.save(recipe);
         });
     }
 
@@ -99,7 +98,7 @@ public class RecipeServiceImpl {
     private void addNewComponent(Product owner, Product component, Double value) {
         Recipe newComponent = Recipe.builder().component(component).quantityMultiplier(value).owner(owner).build();
         owner.getRecipes().add(newComponent);
-        GuardedTransaction.persist(newComponent);
+        recipeRepository.save(newComponent);
     }
 
     List<RecipeView> getRecipeComponents(ProductView productView) {

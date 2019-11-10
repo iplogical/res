@@ -4,10 +4,10 @@ import com.inspirationlogical.receipt.corelib.exception.IllegalTableStateExcepti
 import com.inspirationlogical.receipt.corelib.exception.RestaurantNotFoundException;
 import com.inspirationlogical.receipt.corelib.model.entity.*;
 import com.inspirationlogical.receipt.corelib.model.enums.*;
-import com.inspirationlogical.receipt.corelib.model.transaction.GuardedTransaction;
 import com.inspirationlogical.receipt.corelib.model.view.TableView;
 import com.inspirationlogical.receipt.corelib.params.TableParams;
 import com.inspirationlogical.receipt.corelib.repository.ReceiptRepository;
+import com.inspirationlogical.receipt.corelib.repository.ReservationRepository;
 import com.inspirationlogical.receipt.corelib.repository.RestaurantRepository;
 import com.inspirationlogical.receipt.corelib.repository.TableRepository;
 import com.inspirationlogical.receipt.corelib.service.stock.StockService;
@@ -45,6 +45,9 @@ public class TableServiceConfigImpl implements TableServiceConfig {
 
     @Autowired
     private ReceiptRepository receiptRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     @Override
     public List<TableView> getDisplayableTables() {
@@ -121,8 +124,7 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         Table orphanage = tableRepository.findAllByType(TableType.ORPHANAGE).get(0);
         moveReceiptsToOrphanageTable(table, orphanage);
         table.getReceipts().clear();
-        table.getReservations().forEach(reservation -> GuardedTransaction.delete(reservation, () -> {
-        }));
+        table.getReservations().forEach(reservation -> reservationRepository.delete(reservation));
         table.getReservations().clear();
         table.getOwner().getTables().remove(table);
         tableRepository.delete(table);
@@ -211,7 +213,7 @@ public class TableServiceConfigImpl implements TableServiceConfig {
         table.setCapacity(tableParams.getCapacity());
         table.setNote(tableParams.getNote());
         table.setDimensionX(tableParams.getWidth());
-        table.setDimensionY( tableParams.getHeight());
+        table.setDimensionY(tableParams.getHeight());
         tableRepository.save(table);
         return buildTableView(table);
     }

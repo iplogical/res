@@ -13,7 +13,7 @@
         </appender>
 
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${LOG_PATH}/manager.log</file>
+            <file>${LOG_PATH}/waiter.log</file>
             <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
                 <Pattern>
                     %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n
@@ -21,7 +21,7 @@
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <fileNamePattern>
-                    ${LOG_PATH}/archived/manager_%d{dd-MM-yyyy}.log
+                    ${LOG_PATH}/archived/waiter_%d{dd-MM-yyyy}.log
                 </fileNamePattern>
                 <maxHistory>30</maxHistory>
                 <totalSizeCap>5GB</totalSizeCap>
@@ -55,7 +55,7 @@
             </encoder>
         </appender>
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${LOG_PATH}/manager.log</file>
+            <file>${LOG_PATH}/waiter.log</file>
             <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
                 <Pattern>
                     %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n
@@ -63,7 +63,7 @@
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <fileNamePattern>
-                    ${LOG_PATH}/archived/manager_%d{dd-MM-yyyy}.log
+                    ${LOG_PATH}/archived/waiter_%d{dd-MM-yyyy}.log
                 </fileNamePattern>
                 <maxHistory>365</maxHistory>
                 <totalSizeCap>5GB</totalSizeCap>
@@ -93,7 +93,7 @@
             </encoder>
         </appender>
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${LOG_PATH}/manager.log</file>
+            <file>${LOG_PATH}/waiter.log</file>
             <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
                 <Pattern>
                     %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n
@@ -101,7 +101,7 @@
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <fileNamePattern>
-                    ${LOG_PATH}/archived/manager_%d{dd-MM-yyyy}.log
+                    ${LOG_PATH}/archived/waiter_%d{dd-MM-yyyy}.log
                 </fileNamePattern>
                 <maxHistory>365</maxHistory>
                 <totalSizeCap>5GB</totalSizeCap>
